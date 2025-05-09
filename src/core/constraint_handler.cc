@@ -165,7 +165,15 @@ constraintHandler<dim>::update_time_dependent_constraints(
 {
   for (const auto &[index, variable] : *user_inputs->var_attributes)
     {
-      make_time_dependent_constraint(mapping, *dof_handlers.at(index), index);
+      // Check that we have time-dependent constraints before recreating the whole
+      // constraint set.
+      if (user_inputs->boundary_parameters.time_dependent_BC_list.contains(index))
+        {
+          // TODO (landinjm): Is there a way to update the constraint set without
+          // recreating
+          // it?
+          make_constraint(mapping, *dof_handlers.at(index), index);
+        }
     }
 }
 
@@ -180,14 +188,20 @@ constraintHandler<dim>::update_time_dependent_mg_constraints(
 
   for (unsigned int index = 0; index < dof_handlers.size(); index++)
     {
-      // TODO (landinjm): Fix this so we can actually apply constraints to the LHS fields
-      // baseded on whether it is normal or change. For now, I know this will have no
-      // effect on the precipitate app, so I'll leave it.
-      make_time_dependent_mg_constraint(mapping,
-                                        *dof_handlers[index],
-                                        index,
-                                        level,
-                                        dependencyType::CHANGE);
+      if (user_inputs->boundary_parameters.time_dependent_BC_list.contains(index))
+        {
+          // TODO (landinjm): Fix this so we can actually apply constraints to the LHS
+          // fields baseded on whether it is normal or change. For now, I know this will
+          // have no effect on the precipitate app, so I'll leave it.
+
+          // TODO (landinjm): Is there a way to update the constraint set without
+          // recreating it?
+          make_mg_constraint(mapping,
+                             *dof_handlers[index],
+                             index,
+                             level,
+                             dependencyType::CHANGE);
+        }
     }
 }
 
@@ -364,174 +378,6 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
                                            unsigned int                   index,
                                            unsigned int                   level,
                                            dependencyType                 dependency_type)
-{
-  // Convert the global index and absolute level to a local index and relative level.
-  const unsigned int relative_level = level - global_min_level;
-  const unsigned int global_index   = mg_info->get_global_index(index, relative_level);
-
-  // The constraint that we are going to modify
-  Assert(relative_level < mg_constraints.size(),
-         dealii::ExcMessage("The mg constraint set does not contain level = " +
-                            std::to_string(level)));
-  Assert(index < mg_constraints[relative_level].size(),
-         dealii::ExcMessage("The mg constraint set does not contain index = " +
-                            std::to_string(global_index)));
-  auto &local_constraint = mg_constraints[relative_level][index];
-
-  apply_generic_constraints<float>(dof_handler, local_constraint);
-
-  if (dependency_type == dependencyType::CHANGE)
-    {
-      const auto &boundary_condition =
-        this->user_inputs->boundary_parameters.boundary_condition_list.at(global_index);
-      for (const auto &[component, condition] : boundary_condition)
-        {
-          for (const auto &[boundary_id, boundary_type] :
-               condition.get_boundary_condition_map())
-            {
-              if (user_inputs->var_attributes->at(global_index).field_type !=
-                  fieldType::VECTOR)
-                {
-                  apply_constraints<float, 1>(mapping,
-                                              dof_handler,
-                                              local_constraint,
-                                              condition,
-                                              boundary_type,
-                                              boundary_id,
-                                              component,
-                                              global_index,
-                                              true);
-                  continue;
-                }
-              apply_constraints<float, dim>(mapping,
-                                            dof_handler,
-                                            local_constraint,
-                                            condition,
-                                            boundary_type,
-                                            boundary_id,
-                                            component,
-                                            global_index,
-                                            true);
-            }
-        }
-
-      // Second check for pinned points, if they exist
-      if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
-        {
-          set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
-        }
-    }
-  else if (dependency_type == dependencyType::NORMAL)
-    {
-      const auto &boundary_condition =
-        this->user_inputs->boundary_parameters.boundary_condition_list.at(global_index);
-      for (const auto &[component, condition] : boundary_condition)
-        {
-          for (const auto &[boundary_id, boundary_type] :
-               condition.get_boundary_condition_map())
-            {
-              if (user_inputs->var_attributes->at(global_index).field_type !=
-                  fieldType::VECTOR)
-                {
-                  apply_constraints<float, 1>(mapping,
-                                              dof_handler,
-                                              local_constraint,
-                                              condition,
-                                              boundary_type,
-                                              boundary_id,
-                                              component,
-                                              index);
-                  continue;
-                }
-              apply_constraints<float, dim>(mapping,
-                                            dof_handler,
-                                            local_constraint,
-                                            condition,
-                                            boundary_type,
-                                            boundary_id,
-                                            component,
-                                            index);
-            }
-        }
-
-      // Second check for pinned points, if they exist
-      if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
-        {
-          set_pinned_point<float>(dof_handler, local_constraint, global_index, false);
-        }
-    }
-  else
-    {
-      AssertThrow(false, dealii::ExcNotImplemented());
-    }
-
-  local_constraint.close();
-}
-
-template <unsigned int dim>
-void
-constraintHandler<dim>::make_time_dependent_constraint(
-  const dealii::Mapping<dim>    &mapping,
-  const dealii::DoFHandler<dim> &dof_handler,
-  unsigned int                   index)
-{
-  // The constraint that we are going to modify
-  Assert(index < constraints.size(),
-         dealii::ExcMessage("The constraint set does not contain index = " +
-                            std::to_string(index)));
-  auto &local_constraint = constraints[index];
-
-  apply_generic_constraints<double>(dof_handler, local_constraint);
-
-  // First check the normal boundary conditions
-  const auto &boundary_condition =
-    user_inputs->boundary_parameters.boundary_condition_list.at(index);
-  for (const auto &[component, condition] : boundary_condition)
-    {
-      for (const auto &[boundary_id, boundary_type] :
-           condition.get_boundary_condition_map())
-        {
-          if (user_inputs->var_attributes->at(index).field_type != fieldType::VECTOR)
-            {
-              apply_constraints<double, 1>(mapping,
-                                           dof_handler,
-                                           local_constraint,
-                                           condition,
-                                           boundary_type,
-                                           boundary_id,
-                                           component,
-                                           index);
-              continue;
-            }
-          apply_constraints<double, dim>(mapping,
-                                         dof_handler,
-                                         local_constraint,
-                                         condition,
-                                         boundary_type,
-                                         boundary_id,
-                                         component,
-                                         index);
-        }
-    }
-
-  // Second check for pinned points, if they exist
-  if (user_inputs->boundary_parameters.pinned_point_list.contains(index))
-    {
-      set_pinned_point<double>(dof_handler, local_constraint, index, false);
-    }
-
-  // Close constraints
-  local_constraint.close();
-}
-
-template <unsigned int dim>
-void
-constraintHandler<dim>::make_time_dependent_mg_constraint(
-  const dealii::Mapping<dim>    &mapping,
-  const dealii::DoFHandler<dim> &dof_handler,
-  unsigned int                   index,
-  unsigned int                   level,
-  dependencyType                 dependency_type)
 {
   // Convert the global index and absolute level to a local index and relative level.
   const unsigned int relative_level = level - global_min_level;

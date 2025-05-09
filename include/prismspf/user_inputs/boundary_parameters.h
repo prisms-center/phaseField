@@ -180,6 +180,10 @@ public:
   // second key is the number of dimensions.
   BCList BC_list;
 
+  // Map of time-dependent boundary conditions strings. The first key is the global index.
+  // The second key is the number of dimensions.
+  std::set<types::index> time_dependent_BC_list;
+
   // Map of pinned points. The first key is the global index. The pair is the pinned
   // value and point.
   PinnedPointMap pinned_point_list = {};
@@ -476,12 +480,14 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
           condition.add_boundary_condition(
             i,
             boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
+          time_dependent_BC_list.insert(index);
         }
       else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
         {
           AssertThrow(false,
                       FeatureNotImplemented(
                         "Time-dependent neumann boundary conditions"));
+          time_dependent_BC_list.insert(index);
         }
       else
         {
