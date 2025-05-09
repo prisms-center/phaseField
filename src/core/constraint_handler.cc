@@ -350,7 +350,7 @@ constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
   // Second check for pinned points, if they exist
   if (user_inputs->boundary_parameters.pinned_point_list.contains(index))
     {
-      set_pinned_point<double>(dof_handler, local_constraint, index);
+      set_pinned_point<double>(dof_handler, local_constraint, index, false);
     }
 
   // Close constraints
@@ -412,7 +412,7 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
       // Second check for pinned points, if they exist
       if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
         {
-          set_mg_pinned_point<float>(dof_handler, local_constraint, global_index);
+          set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
         }
     }
   else if (dependency_type == dependencyType::NORMAL)
@@ -451,7 +451,7 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
       // Second check for pinned points, if they exist
       if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
         {
-          set_pinned_point<float>(dof_handler, local_constraint, global_index);
+          set_pinned_point<float>(dof_handler, local_constraint, global_index, false);
         }
     }
   else
@@ -511,7 +511,7 @@ constraintHandler<dim>::make_time_dependent_constraint(
   // Second check for pinned points, if they exist
   if (user_inputs->boundary_parameters.pinned_point_list.contains(index))
     {
-      set_pinned_point<double>(dof_handler, local_constraint, index);
+      set_pinned_point<double>(dof_handler, local_constraint, index, false);
     }
 
   // Close constraints
@@ -574,7 +574,7 @@ constraintHandler<dim>::make_time_dependent_mg_constraint(
       // Second check for pinned points, if they exist
       if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
         {
-          set_mg_pinned_point<float>(dof_handler, local_constraint, global_index);
+          set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
         }
     }
   else if (dependency_type == dependencyType::NORMAL)
@@ -613,7 +613,7 @@ constraintHandler<dim>::make_time_dependent_mg_constraint(
       // Second check for pinned points, if they exist
       if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
         {
-          set_pinned_point<float>(dof_handler, local_constraint, global_index);
+          set_pinned_point<float>(dof_handler, local_constraint, global_index, false);
         }
     }
   else
@@ -629,7 +629,8 @@ template <typename number>
 void
 constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
                                          dealii::AffineConstraints<number> &constraints,
-                                         unsigned int                       index) const
+                                         unsigned int                       index,
+                                         bool is_change_term) const
 {
   const number tolerance = 1.0e-2;
 
@@ -655,64 +656,28 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_
                     {
                       if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
                         {
-                          constraints.set_inhomogeneity(nodeID, value);
+                          if (is_change_term)
+                            {
+                              constraints.set_inhomogeneity(nodeID, value);
+                            }
+                          else
+                            {
+                              constraints.set_inhomogeneity(nodeID, 0.0);
+                            }
                         }
                       else
                         {
                           // For vector fields, set each component
                           for (unsigned int d = 0; d < dim; ++d)
                             {
-                              constraints.set_inhomogeneity(nodeID + d, value[d]);
-                            }
-                        }
-                    },
-                    value_point_pair.first);
-                }
-            }
-        }
-    }
-}
-
-template <unsigned int dim>
-template <typename number>
-void
-constraintHandler<dim>::set_mg_pinned_point(
-  const dealii::DoFHandler<dim>     &dof_handler,
-  dealii::AffineConstraints<number> &constraints,
-  unsigned int                       index) const
-{
-  const number tolerance = 1.0e-2;
-
-  const auto &value_point_pair =
-    user_inputs->boundary_parameters.pinned_point_list.at(index);
-
-  for (const auto &cell : dof_handler.active_cell_iterators())
-    {
-      if (cell->is_locally_owned())
-        {
-          for (unsigned int i = 0; i < dealii::GeometryInfo<dim>::vertices_per_cell; ++i)
-            {
-              // Check if the vertex is the target vertex
-              if (value_point_pair.second.distance(cell->vertex(i)) <
-                  tolerance * cell->diameter())
-                {
-                  const unsigned int nodeID = cell->vertex_dof_index(i, 0);
-                  constraints.add_line(nodeID);
-
-                  // For multigrid, we always set to zero
-                  std::visit(
-                    [&](const auto &value)
-                    {
-                      if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
-                        {
-                          constraints.set_inhomogeneity(nodeID, 0.0);
-                        }
-                      else
-                        {
-                          // For vector fields, set each component to zero
-                          for (unsigned int d = 0; d < dim; ++d)
-                            {
-                              constraints.set_inhomogeneity(nodeID + d, 0.0);
+                              if (is_change_term)
+                                {
+                                  constraints.set_inhomogeneity(nodeID + d, value[d]);
+                                }
+                              else
+                                {
+                                  constraints.set_inhomogeneity(nodeID + d, 0.0);
+                                }
                             }
                         }
                     },

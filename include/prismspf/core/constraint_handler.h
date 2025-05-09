@@ -187,16 +187,8 @@ private:
   void
   set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
                    dealii::AffineConstraints<number> &constraints,
-                   unsigned int                       index) const;
-
-  /**
-   * \brief Set the dirichlet constraint for the pinned point.
-   */
-  template <typename number>
-  void
-  set_mg_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
-                      dealii::AffineConstraints<number> &constraints,
-                      unsigned int                       index) const;
+                   unsigned int                       index,
+                   bool                               is_change_term = false) const;
 
   /**
    * \brief Clear, reinitialize and make hanging node constraints
