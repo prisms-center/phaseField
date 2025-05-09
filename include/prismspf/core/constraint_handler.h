@@ -95,6 +95,12 @@ public:
 
 private:
   /**
+   * \brief Create a component mask.
+   */
+  [[nodiscard]] dealii::ComponentMask
+  create_component_mask(unsigned int component, bool is_vector_field) const;
+
+  /**
    * \brief Make the constraint for a single index.
    */
   void
@@ -111,6 +117,25 @@ private:
                      unsigned int                   index,
                      unsigned int                   level,
                      dependencyType                 dependency_type);
+
+  /**
+   * \brief Make the time-dependent constraint for a single index.
+   */
+  void
+  make_time_dependent_constraint(const dealii::Mapping<dim>    &mapping,
+                                 const dealii::DoFHandler<dim> &dof_handler,
+                                 unsigned int                   index);
+
+  /**
+   * \brief Make the time-dependent multigrid constraint for a single index at a single
+   * level.
+   */
+  void
+  make_time_dependent_mg_constraint(const dealii::Mapping<dim>    &mapping,
+                                    const dealii::DoFHandler<dim> &dof_handler,
+                                    unsigned int                   index,
+                                    unsigned int                   level,
+                                    dependencyType                 dependency_type);
 
   /**
    * \brief Set the dirichlet constraint for the pinned point.

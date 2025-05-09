@@ -42,7 +42,9 @@ public:
     PERIODIC,
     NEUMANN,
     NON_UNIFORM_DIRICHLET,
-    NON_UNIFORM_NEUMANN
+    NON_UNIFORM_NEUMANN,
+    TIME_DEPENDENT_NON_UNIFORM_DIRICHLET,
+    TIME_DEPENDENT_NON_UNIFORM_NEUMANN,
   };
 
   /**
@@ -119,6 +121,10 @@ public:
           return "NON_UNIFORM_DIRICHLET";
         case type::NON_UNIFORM_NEUMANN:
           return "NON_UNIFORM_NEUMANN";
+        case type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
+          return "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET";
+        case type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
+          return "TIME_DEPENDENT_NON_UNIFORM_NEUMANN";
         default:
           return "UNKNOWN";
       }
@@ -442,6 +448,18 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
         {
           AssertThrow(false,
                       FeatureNotImplemented("Nonuniform neumann boundary conditions"));
+        }
+      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET"))
+        {
+          condition.add_boundary_condition(
+            i,
+            boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
+        }
+      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
+        {
+          AssertThrow(false,
+                      FeatureNotImplemented(
+                        "Time-dependent neumann boundary conditions"));
         }
       else
         {
