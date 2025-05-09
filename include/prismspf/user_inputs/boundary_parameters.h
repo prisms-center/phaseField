@@ -508,13 +508,11 @@ inline void
 boundaryParameters<dim>::validate_boundary_conditions() const
 {
   // Throw a warning if the pinned point is not on a vertex
-  // TODO (landinjm): This should be fixed
+  // TODO (landinjm): How do we want to handle this?
   for (const auto &[index, point_value_pair] : pinned_point_list)
     {
-      const auto               point = point_value_pair.second;
-      const dealii::Point<dim> origin {};
-      AssertThrow(point == origin,
-                  dealii::ExcMessage("Pinned point must be on the origin"));
+      Assert(point_value_pair.second == dealii::Point<dim>(),
+             dealii::ExcMessage("Pinned point must be on the origin"));
 
       // Validate that vector values have the correct size
       std::visit(
