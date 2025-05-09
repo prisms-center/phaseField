@@ -8,6 +8,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -74,8 +76,7 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-  dealii::Tensor<2, CIJ_tensor_size, number> CIJ =
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ =
     this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ");
 };
 

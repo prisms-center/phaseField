@@ -74,14 +74,12 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-
   number clength =
     this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
   number Mn  = this->get_user_inputs().user_constants.get_model_constant_double("Mn");
   number ell = this->get_user_inputs().user_constants.get_model_constant_double("ell");
   number Gc0 = this->get_user_inputs().user_constants.get_model_constant_double("Gc0");
-  dealii::Tensor<2, CIJ_tensor_size, number> CIJ_base =
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
     this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
       "CIJ_base");
   number KI_nom =

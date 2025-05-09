@@ -6,6 +6,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 #include <cmath>
@@ -70,8 +72,6 @@ customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
     {
       const number time = user_inputs.temporal_discretization.get_current_time();
 
-      constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-
       const number dx =
         user_inputs.spatial_discretization.size[0] /
         number(user_inputs.spatial_discretization.subdivisions[0]) /
@@ -79,7 +79,7 @@ customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
 
       const number clength =
         user_inputs.user_constants.get_model_constant_double("cracklength");
-      const dealii::Tensor<2, CIJ_tensor_size, number> CIJ_base =
+      const dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
         user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_base");
       const number KI_nom =
         user_inputs.user_constants.get_model_constant_double("KI_nom");
