@@ -208,6 +208,102 @@ constraintHandler<dim>::create_component_mask(unsigned int component,
 
 template <unsigned int dim>
 void
+constraintHandler<dim>::apply_natural_constraints() const
+{
+  // Do nothing because they are naturally enforced.
+}
+
+template <unsigned int dim>
+template <typename number>
+void
+constraintHandler<dim>::apply_dirichlet_constraints(
+  const dealii::Mapping<dim>        &mapping,
+  const dealii::DoFHandler<dim>     &dof_handler,
+  const unsigned int                &boundary_id,
+  const bool                        &is_vector_field,
+  const number                      &value,
+  dealii::AffineConstraints<number> &constraints,
+  const dealii::ComponentMask       &mask) const
+{
+  dealii::VectorTools::interpolate_boundary_values(
+    mapping,
+    dof_handler,
+    boundary_id,
+    dealii::Functions::ConstantFunction<dim, number>(value, is_vector_field ? dim : 1),
+    constraints,
+    mask);
+}
+
+template <unsigned int dim>
+template <typename number>
+void
+constraintHandler<dim>::apply_periodic_constraints(
+  const dealii::DoFHandler<dim>     &dof_handler,
+  const unsigned int                &boundary_id,
+  dealii::AffineConstraints<number> &constraints,
+  const dealii::ComponentMask       &mask) const
+{
+  // Create a vector of matched pairs that we fill and enforce upon the
+  // constaints
+  std::vector<
+    dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
+    periodicity_vector;
+
+  // Determine the direction
+  const auto direction = static_cast<unsigned int>(std::floor(boundary_id / dim));
+
+  // Collect the matched pairs on the coarsest level of the mesh
+  dealii::GridTools::collect_periodic_faces(dof_handler,
+                                            boundary_id,
+                                            boundary_id + 1,
+                                            direction,
+                                            periodicity_vector);
+
+  // Set constraints
+  dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
+                                                                   constraints,
+                                                                   mask);
+}
+
+template <unsigned int dim>
+template <typename number>
+void
+constraintHandler<dim>::apply_nonuniform_dirichlet_constraints(
+  const dealii::Mapping<dim>        &mapping,
+  const dealii::DoFHandler<dim>     &dof_handler,
+  const unsigned int                &boundary_id,
+  const unsigned int                &index,
+  const bool                        &is_vector_field,
+  dealii::AffineConstraints<number> &constraints,
+  const dealii::ComponentMask       &mask,
+  bool                               is_change_term) const
+{
+  if (!is_change_term)
+    {
+      dealii::VectorTools::interpolate_boundary_values(
+        mapping,
+        dof_handler,
+        boundary_id,
+        nonuniformDirichlet<dim, number>(index,
+                                         boundary_id,
+                                         *user_inputs,
+                                         is_vector_field ? dim : 1),
+        constraints,
+        mask);
+      return;
+    }
+
+  dealii::VectorTools::interpolate_boundary_values(
+    mapping,
+    dof_handler,
+    boundary_id,
+    dealii::Functions::ZeroFunction<dim, number>(is_vector_field ? dim : 1),
+    constraints,
+    mask);
+}
+
+template <unsigned int dim>
+void
 constraintHandler<dim>::make_constraint(const dealii::Mapping<dim>    &mapping,
                                         const dealii::DoFHandler<dim> &dof_handler,
                                         unsigned int                   index)
@@ -627,84 +723,73 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
                                           unsigned int             component,
                                           unsigned int             index) const
 {
-  constexpr bool is_vector_field = spacedim != 1;
-
-  // Create a component mask. This will only select a certain component for vector
-  // fields
+  constexpr bool        is_vector_field = spacedim != 1;
   dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
 
   // Apply the boundary conditions
-  if (boundary_type == boundaryCondition::type::NATURAL)
+  switch (boundary_type)
     {
-      // Do nothing because they are naturally enforced.
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::DIRICHLET)
-    {
-      dealii::VectorTools::interpolate_boundary_values(
-        mapping,
-        dof_handler,
-        boundary_id,
-        dealii::Functions::ConstantFunction<dim, number>(
-          boundary_condition.get_dirichlet_value(boundary_id),
-          is_vector_field ? dim : 1),
-        constraints,
-        mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::PERIODIC)
-    {
-      // Skip boundary ids that are odd since those map to the even faces
-      if (boundary_id % 2 != 0)
+      case boundaryCondition::type::NATURAL:
         {
-          return;
+          apply_natural_constraints();
+          break;
         }
-      // Create a vector of matched pairs that we fill and enforce upon the
-      // constaints
-      std::vector<dealii::GridTools::PeriodicFacePair<
-        typename dealii::DoFHandler<dim>::cell_iterator>>
-        periodicity_vector;
-
-      // Determine the direction
-      const auto direction = static_cast<unsigned int>(std::floor(boundary_id / dim));
-
-      // Collect the matched pairs on the coarsest level of the mesh
-      dealii::GridTools::collect_periodic_faces(dof_handler,
-                                                boundary_id,
-                                                boundary_id + 1,
-                                                direction,
-                                                periodicity_vector);
-
-      // Set constraints
-      dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
-                                                                       constraints,
-                                                                       mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NEUMANN)
-    {
-      Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET ||
-      boundary_type == boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET)
-    {
-      dealii::VectorTools::interpolate_boundary_values(
-        mapping,
-        dof_handler,
-        boundary_id,
-        nonuniformDirichlet<dim, number>(index,
-                                         boundary_id,
-                                         *user_inputs,
-                                         is_vector_field ? dim : 1),
-        constraints,
-        mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NON_UNIFORM_NEUMANN)
-    {
-      Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
-      return;
+      case boundaryCondition::type::DIRICHLET:
+        {
+          apply_dirichlet_constraints<number>(mapping,
+                                              dof_handler,
+                                              boundary_id,
+                                              is_vector_field,
+                                              boundary_condition.get_dirichlet_value(
+                                                boundary_id),
+                                              constraints,
+                                              mask);
+          break;
+        }
+      case boundaryCondition::type::PERIODIC:
+        {
+          // Skip boundary ids that are odd since those map to the even faces
+          if (boundary_id % 2 != 0)
+            {
+              break;
+            }
+          apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
+          break;
+        }
+      case boundaryCondition::type::NEUMANN:
+        {
+          Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
+          break;
+        }
+      case boundaryCondition::type::NON_UNIFORM_DIRICHLET:
+      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
+        {
+          apply_nonuniform_dirichlet_constraints<number>(mapping,
+                                                         dof_handler,
+                                                         boundary_id,
+                                                         index,
+                                                         is_vector_field,
+                                                         constraints,
+                                                         mask,
+                                                         false);
+          break;
+        }
+      case boundaryCondition::type::NON_UNIFORM_NEUMANN:
+        {
+          Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
+          break;
+        }
+      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
+        {
+          Assert(false,
+                 FeatureNotImplemented(
+                   "Time dependent nonuniform neumann boundary conditions"));
+          break;
+        }
+      default:
+        {
+          AssertThrow(false, UnreachableCode());
+        }
     }
 }
 
@@ -719,79 +804,72 @@ constraintHandler<dim>::apply_mg_constraints(
   unsigned int                       boundary_id,
   unsigned int                       component) const
 {
-  constexpr bool is_vector_field = spacedim != 1;
-
-  // Create a component mask. This will only select a certain component for vector
-  // fields
+  constexpr bool        is_vector_field = spacedim != 1;
   dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
 
   // Apply the boundary conditions
-  if (boundary_type == boundaryCondition::type::NATURAL)
+  switch (boundary_type)
     {
-      // Do nothing because they are naturally enforced.
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::DIRICHLET)
-    {
-      dealii::VectorTools::interpolate_boundary_values(
-        mapping,
-        dof_handler,
-        boundary_id,
-        dealii::Functions::ZeroFunction<dim, number>(is_vector_field ? dim : 1),
-        constraints,
-        mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::PERIODIC)
-    {
-      // Skip boundary ids that are odd since those map to the even faces
-      if (boundary_id % 2 != 0)
+      case boundaryCondition::type::NATURAL:
         {
-          return;
+          apply_natural_constraints();
+          break;
         }
-      // Create a vector of matched pairs that we fill and enforce upon the
-      // constaints
-      std::vector<dealii::GridTools::PeriodicFacePair<
-        typename dealii::DoFHandler<dim>::cell_iterator>>
-        periodicity_vector;
-
-      // Determine the direction
-      const auto direction = static_cast<unsigned int>(std::floor(boundary_id / dim));
-
-      // Collect the matched pairs on the coarsest level of the mesh
-      dealii::GridTools::collect_periodic_faces(dof_handler,
-                                                boundary_id,
-                                                boundary_id + 1,
-                                                direction,
-                                                periodicity_vector);
-
-      // Set constraints
-      dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
-                                                                       constraints,
-                                                                       mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NEUMANN)
-    {
-      Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NON_UNIFORM_DIRICHLET ||
-      boundary_type == boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET)
-    {
-      dealii::VectorTools::interpolate_boundary_values(
-        mapping,
-        dof_handler,
-        boundary_id,
-        dealii::Functions::ZeroFunction<dim, number>(is_vector_field ? dim : 1),
-        constraints,
-        mask);
-      return;
-    }
-  if (boundary_type == boundaryCondition::type::NON_UNIFORM_NEUMANN)
-    {
-      Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
-      return;
+      case boundaryCondition::type::DIRICHLET:
+        {
+          apply_dirichlet_constraints<number>(mapping,
+                                              dof_handler,
+                                              boundary_id,
+                                              is_vector_field,
+                                              0.0,
+                                              constraints,
+                                              mask);
+          break;
+        }
+      case boundaryCondition::type::PERIODIC:
+        {
+          // Skip boundary ids that are odd since those map to the even faces
+          if (boundary_id % 2 != 0)
+            {
+              break;
+            }
+          apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
+          break;
+        }
+      case boundaryCondition::type::NEUMANN:
+        {
+          Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
+          break;
+        }
+      case boundaryCondition::type::NON_UNIFORM_DIRICHLET:
+      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
+        {
+          apply_nonuniform_dirichlet_constraints<number>(mapping,
+                                                         dof_handler,
+                                                         boundary_id,
+                                                         0,
+                                                         is_vector_field,
+                                                         constraints,
+                                                         mask,
+                                                         true);
+          break;
+        }
+      case boundaryCondition::type::NON_UNIFORM_NEUMANN:
+        {
+          Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
+          break;
+        }
+      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
+        {
+          Assert(false,
+                 FeatureNotImplemented(
+                   "Time dependent nonuniform neumann boundary conditions"));
+          break;
+        }
+      default:
+        {
+          AssertThrow(false, UnreachableCode());
+        }
     }
 }
 

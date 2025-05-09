@@ -101,6 +101,49 @@ private:
   create_component_mask(unsigned int component, bool is_vector_field) const;
 
   /**
+   * \brief Apply natural constraints.
+   */
+  void
+  apply_natural_constraints() const;
+
+  /**
+   * \brief Apply dirichlet constraints.
+   */
+  template <typename number>
+  void
+  apply_dirichlet_constraints(const dealii::Mapping<dim>        &mapping,
+                              const dealii::DoFHandler<dim>     &dof_handler,
+                              const unsigned int                &boundary_id,
+                              const bool                        &is_vector_field,
+                              const number                      &value,
+                              dealii::AffineConstraints<number> &constraints,
+                              const dealii::ComponentMask       &mask) const;
+
+  /**
+   * \brief Apply periodic constraints.
+   */
+  template <typename number>
+  void
+  apply_periodic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
+                             const unsigned int                &boundary_id,
+                             dealii::AffineConstraints<number> &constraints,
+                             const dealii::ComponentMask       &mask) const;
+
+  /**
+   * \brief Apply nonuniform dirichlet constraints.
+   */
+  template <typename number>
+  void
+  apply_nonuniform_dirichlet_constraints(const dealii::Mapping<dim>    &mapping,
+                                         const dealii::DoFHandler<dim> &dof_handler,
+                                         const unsigned int            &boundary_id,
+                                         const unsigned int            &index,
+                                         const bool                    &is_vector_field,
+                                         dealii::AffineConstraints<number> &constraints,
+                                         const dealii::ComponentMask       &mask,
+                                         bool is_change_term = false) const;
+
+  /**
    * \brief Make the constraint for a single index.
    */
   void
