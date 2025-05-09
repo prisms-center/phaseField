@@ -20,6 +20,7 @@
 #include <cstddef>
 #include <map>
 #include <string>
+#include <variant>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -42,7 +43,9 @@ public:
     PERIODIC,
     NEUMANN,
     NON_UNIFORM_DIRICHLET,
-    NON_UNIFORM_NEUMANN
+    NON_UNIFORM_NEUMANN,
+    TIME_DEPENDENT_NON_UNIFORM_DIRICHLET,
+    TIME_DEPENDENT_NON_UNIFORM_NEUMANN,
   };
 
   /**
@@ -119,6 +122,10 @@ public:
           return "NON_UNIFORM_DIRICHLET";
         case type::NON_UNIFORM_NEUMANN:
           return "NON_UNIFORM_NEUMANN";
+        case type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
+          return "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET";
+        case type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
+          return "TIME_DEPENDENT_NON_UNIFORM_NEUMANN";
         default:
           return "UNKNOWN";
       }
@@ -144,8 +151,10 @@ struct boundaryParameters
 public:
   using BoundaryConditionMap =
     std::map<types::index, std::map<unsigned int, boundaryCondition>>;
-  using BCList         = std::map<types::index, std::map<unsigned int, std::string>>;
-  using PinnedPointMap = std::map<types::index, std::pair<double, dealii::Point<dim>>>;
+  using BCList = std::map<types::index, std::map<unsigned int, std::string>>;
+  using PinnedPointMap =
+    std::map<types::index,
+             std::pair<std::variant<double, std::vector<double>>, dealii::Point<dim>>>;
 
   /**
    * \brief Postprocess and validate parameters.
@@ -170,6 +179,10 @@ public:
   // Map of unfiltered boundary conditions strings. The first key is the global index. The
   // second key is the number of dimensions.
   BCList BC_list;
+
+  // Map of time-dependent boundary conditions strings. The first key is the global index.
+  // The second key is the number of dimensions.
+  std::set<types::index> time_dependent_BC_list;
 
   // Map of pinned points. The first key is the global index. The pair is the pinned
   // value and point.
@@ -371,12 +384,31 @@ boundaryParameters<dim>::print_parameter_summary() const
     {
       conditionalOStreams::pout_summary() << "Pinned field index: ";
     }
-  for (const auto &[index, point_value_map] : pinned_point_list)
+  for (const auto &[index, point_value_pair] : pinned_point_list)
     {
+      conditionalOStreams::pout_summary() << index << "\n"
+                                          << "  Value: ";
+
+      // Handle variant value printing
+      std::visit(
+        [&](const auto &value)
+        {
+          if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
+            {
+              conditionalOStreams::pout_summary() << value;
+            }
+          else
+            {
+              for (unsigned int i = 0; i < value.size(); ++i)
+                {
+                  conditionalOStreams::pout_summary() << value[i] << " ";
+                }
+            }
+        },
+        point_value_pair.first);
+
       conditionalOStreams::pout_summary()
-        << index << "\n"
-        << "  Value: " << point_value_map.first << "\n"
-        << "  Point: " << point_value_map.second << "\n";
+        << "\n  Point: " << point_value_pair.second << "\n";
     }
   conditionalOStreams::pout_summary() << "\n" << std::flush;
 }
@@ -443,6 +475,20 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
           AssertThrow(false,
                       FeatureNotImplemented("Nonuniform neumann boundary conditions"));
         }
+      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET"))
+        {
+          condition.add_boundary_condition(
+            i,
+            boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
+          time_dependent_BC_list.insert(index);
+        }
+      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
+        {
+          AssertThrow(false,
+                      FeatureNotImplemented(
+                        "Time-dependent neumann boundary conditions"));
+          time_dependent_BC_list.insert(index);
+        }
       else
         {
           AssertThrow(false,
@@ -468,13 +514,24 @@ inline void
 boundaryParameters<dim>::validate_boundary_conditions() const
 {
   // Throw a warning if the pinned point is not on a vertex
-  // TODO (landinjm): This should be fixed
-  for (const auto &[index, point_value_map] : pinned_point_list)
+  // TODO (landinjm): How do we want to handle this?
+  for (const auto &[index, point_value_pair] : pinned_point_list)
     {
-      const auto               point = point_value_map.second;
-      const dealii::Point<dim> origin {};
-      AssertThrow(point == origin,
-                  dealii::ExcMessage("Pinned point must be on the origin"));
+      Assert(point_value_pair.second == dealii::Point<dim>(),
+             dealii::ExcMessage("Pinned point must be on the origin"));
+
+      // Validate that vector values have the correct size
+      std::visit(
+        [&](const auto &value)
+        {
+          if constexpr (std::is_same_v<std::decay_t<decltype(value)>,
+                                       std::vector<double>>)
+            {
+              AssertThrow(value.size() == dim,
+                          dealii::ExcMessage("Vector value size must match dimension"));
+            }
+        },
+        point_value_pair.first);
     }
 
   // Throw a warning if only some fields have periodic boundary conditions

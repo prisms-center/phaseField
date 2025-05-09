@@ -219,7 +219,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
 
       // Create a temporary collection of the the dst pointers
       dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
-      for (unsigned int level = min_level; level < max_level; ++level)
+      for (unsigned int level = min_level; level <= max_level; ++level)
         {
           mg_src_subset[level] =
             *this->solution_handler->get_mg_solution_vector(level, local_index);
@@ -239,7 +239,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
                                                   *this->newton_update_src[local_index]);
 
       // Copy back the vectors
-      for (unsigned int level = min_level; level < max_level; ++level)
+      for (unsigned int level = min_level; level <= max_level; ++level)
         {
           *this->solution_handler->get_mg_solution_vector(level, local_index) =
             mg_src_subset[level];

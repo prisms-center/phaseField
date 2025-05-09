@@ -255,8 +255,17 @@ userInputParameters<dim>::assign_boundary_parameters(
               parameter_handler.leave_subsection();
               continue;
             }
-
-          AssertThrow(false, FeatureNotImplemented("Vector pinned points"));
+          // Otherwise, fill out point and value
+          std::vector<std::string> axis_labels = {"x", "y", "z"};
+          dealii::Point<dim>       point;
+          std::vector<double>      value(dim);
+          for (unsigned int i = 0; i < dim; ++i)
+            {
+              point[i] = parameter_handler.get_double(axis_labels[i]);
+              value[i] = parameter_handler.get_double(axis_labels[i] + " value");
+            }
+          boundary_parameters.pinned_point_list.emplace(index,
+                                                        std::make_pair(value, point));
         }
       parameter_handler.leave_subsection();
     }
