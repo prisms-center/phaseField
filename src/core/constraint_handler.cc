@@ -631,9 +631,6 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_
                                          dealii::AffineConstraints<number> &constraints,
                                          unsigned int                       index) const
 {
-  Assert(user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR,
-         FeatureNotImplemented("Pinned points for vector fields"));
-
   const number tolerance = 1.0e-2;
 
   const auto &value_point_pair =
@@ -651,7 +648,25 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_
                 {
                   const unsigned int nodeID = cell->vertex_dof_index(i, 0);
                   constraints.add_line(nodeID);
-                  constraints.set_inhomogeneity(nodeID, value_point_pair.first);
+
+                  // Handle both scalar and vector values
+                  std::visit(
+                    [&](const auto &value)
+                    {
+                      if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
+                        {
+                          constraints.set_inhomogeneity(nodeID, value);
+                        }
+                      else
+                        {
+                          // For vector fields, set each component
+                          for (unsigned int d = 0; d < dim; ++d)
+                            {
+                              constraints.set_inhomogeneity(nodeID + d, value[d]);
+                            }
+                        }
+                    },
+                    value_point_pair.first);
                 }
             }
         }
@@ -666,9 +681,6 @@ constraintHandler<dim>::set_mg_pinned_point(
   dealii::AffineConstraints<number> &constraints,
   unsigned int                       index) const
 {
-  Assert(user_inputs->var_attributes->at(index).field_type == fieldType::VECTOR,
-         FeatureNotImplemented("Pinned points for vector fields"));
-
   const number tolerance = 1.0e-2;
 
   const auto &value_point_pair =
@@ -686,7 +698,25 @@ constraintHandler<dim>::set_mg_pinned_point(
                 {
                   const unsigned int nodeID = cell->vertex_dof_index(i, 0);
                   constraints.add_line(nodeID);
-                  constraints.set_inhomogeneity(nodeID, 0.0);
+
+                  // For multigrid, we always set to zero
+                  std::visit(
+                    [&](const auto &value)
+                    {
+                      if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
+                        {
+                          constraints.set_inhomogeneity(nodeID, 0.0);
+                        }
+                      else
+                        {
+                          // For vector fields, set each component to zero
+                          for (unsigned int d = 0; d < dim; ++d)
+                            {
+                              constraints.set_inhomogeneity(nodeID + d, 0.0);
+                            }
+                        }
+                    },
+                    value_point_pair.first);
                 }
             }
         }
