@@ -8,8 +8,6 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/utilities.h>
-
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -75,6 +73,19 @@ private:
     variableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
+
+  number clength =
+    this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
+  number Mn  = this->get_user_inputs().user_constants.get_model_constant_double("Mn");
+  number ell = this->get_user_inputs().user_constants.get_model_constant_double("ell");
+  number Gc0 = this->get_user_inputs().user_constants.get_model_constant_double("Gc0");
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
+    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
+      "CIJ_base");
+  number KI_nom =
+    this->get_user_inputs().user_constants.get_model_constant_double("KI_nom");
+  number vel_nom =
+    this->get_user_inputs().user_constants.get_model_constant_double("vel_nom");
 };
 
 PRISMS_PF_END_NAMESPACE
