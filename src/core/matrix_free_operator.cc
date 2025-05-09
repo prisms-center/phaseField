@@ -71,9 +71,6 @@ matrixFreeOperator<dim, degree, number>::initialize(
           selected_fields.push_back(selected_field_indexes[i]);
         }
     }
-
-  edge_constrained_indices.clear();
-  edge_constrained_indices.resize(selected_fields.size());
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -136,11 +133,6 @@ matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
         {
           dealii::MatrixFreeOperators::BlockHelper::subblock(dst, j).local_element(
             constrained_dof) = 1.0;
-        }
-      for (unsigned int i = 0; i < edge_constrained_indices[j].size(); ++i)
-        {
-          dealii::MatrixFreeOperators::BlockHelper::subblock(dst, j).local_element(
-            edge_constrained_indices[j][i]) = 1.0;
         }
     }
 }
