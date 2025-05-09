@@ -133,14 +133,8 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       vectorGrad  ux = variable_list.get_vector_symmetric_gradient(1);
       scalarValue Ex = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ;
-      for (unsigned int i = 0; i < CIJ_tensor_size; i++)
-        {
-          for (unsigned int j = 0; j < CIJ_tensor_size; j++)
-            {
-              CIJ[i][j] = CIJ_base[i][j] * Ex * (1.0 - 2.0 * n + n * n);
-            }
-        }
+      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ =
+        CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
       compute_stress<dim, scalarValue>(CIJ, ux, stress);
 
@@ -154,17 +148,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       scalarValue Ex = variable_list.get_scalar_value(3);
       scalarValue Gx = variable_list.get_scalar_value(4);
 
-      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ;
-      for (unsigned int i = 0; i < CIJ_tensor_size; i++)
-        {
-          for (unsigned int j = 0; j < CIJ_tensor_size; j++)
-            {
-              CIJ[i][j] = CIJ_base[i][j] * Ex;
-            }
-        }
-      vectorGrad stress;
+      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ = CIJ_base * Ex;
+      vectorGrad                                      stress;
       compute_stress<dim, scalarValue>(CIJ, ux, stress);
-      scalarValue elastic_energy = constV<number>(0.0);
+      scalarValue elastic_energy = 0.0;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -194,14 +181,8 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
       vectorGrad  ux_change = variable_list.get_vector_symmetric_gradient(1, CHANGE);
       scalarValue Ex        = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ;
-      for (unsigned int i = 0; i < CIJ_tensor_size; i++)
-        {
-          for (unsigned int j = 0; j < CIJ_tensor_size; j++)
-            {
-              CIJ[i][j] = CIJ_base[i][j] * Ex * (1.0 - 2.0 * n + n * n);
-            }
-        }
+      dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ =
+        CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
       compute_stress<dim, scalarValue>(CIJ, ux_change, stress);
 
@@ -222,20 +203,10 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   scalarValue Ex = variable_list.get_scalar_value(3);
   scalarValue Gx = variable_list.get_scalar_value(4);
 
-  scalarValue f_int = Gc0 * n * Gx * 3.0 / 8.0 / ell;
-  for (unsigned int i = 0; i < dim; i++)
-    {
-      f_int += Gc0 * Gx * 0.5 * ell * nx[i] * nx[i];
-    }
+  scalarValue f_int = Gc0 * n * Gx * 3.0 / 8.0 / ell + Gc0 * Gx * 0.5 * ell * nx * nx;
 
-  dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ;
-  for (unsigned int i = 0; i < CIJ_tensor_size; i++)
-    {
-      for (unsigned int j = 0; j < CIJ_tensor_size; j++)
-        {
-          CIJ[i][j] = CIJ_base[i][j] * Ex * (1.0 - 2.0 * n + n * n);
-        }
-    }
+  dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ =
+    CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
   vectorGrad stress;
   compute_stress<dim, scalarValue>(CIJ, ux, stress);
 
