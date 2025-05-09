@@ -43,6 +43,55 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_name(4, "Gx");
   set_variable_type(4, SCALAR);
   set_variable_equation_type(4, CONSTANT);
+
+  set_variable_name(5, "f_tot");
+  set_variable_type(5, SCALAR);
+  set_variable_equation_type(5, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(5, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_RHS(5, "");
+  set_is_postprocessed_field(5, true);
+
+  set_variable_name(6, "s11");
+  set_variable_type(6, SCALAR);
+  set_variable_equation_type(6, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(6, "n, grad(u), Ex");
+  set_dependencies_gradient_term_RHS(6, "");
+  set_is_postprocessed_field(6, true);
+
+  set_variable_name(7, "s12");
+  set_variable_type(7, SCALAR);
+  set_variable_equation_type(7, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(7, "n, grad(u), Ex");
+  set_dependencies_gradient_term_RHS(7, "");
+  set_is_postprocessed_field(7, true);
+
+  set_variable_name(8, "s22");
+  set_variable_type(8, SCALAR);
+  set_variable_equation_type(8, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(8, "n, grad(u), Ex");
+  set_dependencies_gradient_term_RHS(8, "");
+  set_is_postprocessed_field(8, true);
+
+  set_variable_name(9, "e22");
+  set_variable_type(9, SCALAR);
+  set_variable_equation_type(9, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(9, "grad(u), Ex");
+  set_dependencies_gradient_term_RHS(9, "");
+  set_is_postprocessed_field(9, true);
+
+  set_variable_name(10, "f_int");
+  set_variable_type(10, SCALAR);
+  set_variable_equation_type(10, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(10, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_RHS(10, "");
+  set_is_postprocessed_field(10, true);
+
+  set_variable_name(11, "f_el");
+  set_variable_type(11, SCALAR);
+  set_variable_equation_type(11, EXPLICIT_TIME_DEPENDENT);
+  set_dependencies_value_term_RHS(11, "n, grad(u), Ex");
+  set_dependencies_gradient_term_RHS(11, "");
+  set_is_postprocessed_field(11, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -166,7 +215,53 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
-{}
+{
+  scalarValue n  = variable_list.get_scalar_value(0);
+  scalarGrad  nx = variable_list.get_scalar_gradient(0);
+  vectorGrad  ux = variable_list.get_vector_symmetric_gradient(1);
+  scalarValue Ex = variable_list.get_scalar_value(3);
+  scalarValue Gx = variable_list.get_scalar_value(4);
+
+  scalarValue f_int = Gc0 * n * Gx * 3.0 / 8.0 / ell;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      f_int += Gc0 * Gx * 0.5 * ell * nx[i] * nx[i];
+    }
+
+  dealii::Tensor<2, CIJ_tensor_size, scalarValue> CIJ;
+  for (unsigned int i = 0; i < CIJ_tensor_size; i++)
+    {
+      for (unsigned int j = 0; j < CIJ_tensor_size; j++)
+        {
+          CIJ[i][j] = CIJ_base[i][j] * Ex * (1.0 - 2.0 * n + n * n);
+        }
+    }
+  vectorGrad stress;
+  compute_stress<dim, scalarValue>(CIJ, ux, stress);
+
+  scalarValue f_el = 0.0;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      for (unsigned int j = 0; j < dim; j++)
+        {
+          f_el += 0.5 * stress[i][j] * ux[i][j];
+        }
+    }
+
+  scalarValue f_tot = f_el + f_int;
+  scalarValue s11   = stress[0][0];
+  scalarValue s12   = stress[0][1];
+  scalarValue s22   = stress[1][1];
+  scalarValue e22   = ux[1][1];
+
+  variable_list.set_scalar_value_term(5, f_tot);
+  variable_list.set_scalar_value_term(6, s11);
+  variable_list.set_scalar_value_term(7, s12);
+  variable_list.set_scalar_value_term(8, s22);
+  variable_list.set_scalar_value_term(9, e22);
+  variable_list.set_scalar_value_term(10, f_int);
+  variable_list.set_scalar_value_term(11, f_el);
+}
 
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
