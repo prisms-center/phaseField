@@ -633,57 +633,58 @@ constraintHandler<dim>::set_pinned_point(const dealii::DoFHandler<dim>     &dof_
                                          bool is_change_term) const
 {
   const number tolerance = 1.0e-2;
-
-  const auto &value_point_pair =
+  const auto &[value, target_point] =
     user_inputs->boundary_parameters.pinned_point_list.at(index);
+
+  // Helper function to set inhomogeneity for a single DOF
+  auto set_inhomogeneity = [&](unsigned int dof_index, number value)
+  {
+    constraints.add_line(dof_index);
+    constraints.set_inhomogeneity(dof_index, is_change_term ? value : 0.0);
+  };
+
+  // Helper function to handle vector values
+  auto set_vector_inhomogeneity =
+    [&](unsigned int base_dof_index, const std::vector<double> &values)
+  {
+    for (unsigned int dimension = 0; dimension < dim; ++dimension)
+      {
+        set_inhomogeneity(base_dof_index + dimension, values[dimension]);
+      }
+  };
 
   for (const auto &cell : dof_handler.active_cell_iterators())
     {
-      if (cell->is_locally_owned())
+      if (!cell->is_locally_owned())
         {
-          for (unsigned int i = 0; i < dealii::GeometryInfo<dim>::vertices_per_cell; ++i)
-            {
-              // Check if the vertex is the target vertex
-              if (value_point_pair.second.distance(cell->vertex(i)) <
-                  tolerance * cell->diameter())
-                {
-                  const unsigned int nodeID = cell->vertex_dof_index(i, 0);
-                  constraints.add_line(nodeID);
+          continue;
+        }
 
-                  // Handle both scalar and vector values
-                  std::visit(
-                    [&](const auto &value)
-                    {
-                      if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
-                        {
-                          if (is_change_term)
-                            {
-                              constraints.set_inhomogeneity(nodeID, value);
-                            }
-                          else
-                            {
-                              constraints.set_inhomogeneity(nodeID, 0.0);
-                            }
-                        }
-                      else
-                        {
-                          // For vector fields, set each component
-                          for (unsigned int d = 0; d < dim; ++d)
-                            {
-                              if (is_change_term)
-                                {
-                                  constraints.set_inhomogeneity(nodeID + d, value[d]);
-                                }
-                              else
-                                {
-                                  constraints.set_inhomogeneity(nodeID + d, 0.0);
-                                }
-                            }
-                        }
-                    },
-                    value_point_pair.first);
-                }
+      for (unsigned int vertex = 0; vertex < dealii::GeometryInfo<dim>::vertices_per_cell;
+           ++vertex)
+        {
+          const auto vertex_point = cell->vertex(vertex);
+          if (target_point.distance(vertex_point) >= tolerance * cell->diameter())
+            {
+              continue;
             }
+
+          const unsigned int dof_index = cell->vertex_dof_index(vertex, 0);
+
+          // Handle both scalar and vector values
+          std::visit(
+            [&](const auto &val)
+            {
+              if constexpr (std::is_same_v<std::decay_t<decltype(val)>, double>)
+                {
+                  set_inhomogeneity(dof_index, val);
+                }
+              else
+                {
+                  set_vector_inhomogeneity(dof_index, val);
+                }
+            },
+            value);
         }
     }
 }
