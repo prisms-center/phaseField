@@ -392,20 +392,26 @@ constraintHandler<dim>::make_mg_constraint(const dealii::Mapping<dim>    &mappin
               if (user_inputs->var_attributes->at(global_index).field_type !=
                   fieldType::VECTOR)
                 {
-                  apply_mg_constraints<float, 1>(mapping,
-                                                 dof_handler,
-                                                 local_constraint,
-                                                 boundary_type,
-                                                 boundary_id,
-                                                 component);
+                  apply_constraints<float, 1>(mapping,
+                                              dof_handler,
+                                              local_constraint,
+                                              condition,
+                                              boundary_type,
+                                              boundary_id,
+                                              component,
+                                              global_index,
+                                              true);
                   continue;
                 }
-              apply_mg_constraints<float, dim>(mapping,
-                                               dof_handler,
-                                               local_constraint,
-                                               boundary_type,
-                                               boundary_id,
-                                               component);
+              apply_constraints<float, dim>(mapping,
+                                            dof_handler,
+                                            local_constraint,
+                                            condition,
+                                            boundary_type,
+                                            boundary_id,
+                                            component,
+                                            global_index,
+                                            true);
             }
         }
 
@@ -554,20 +560,26 @@ constraintHandler<dim>::make_time_dependent_mg_constraint(
               if (user_inputs->var_attributes->at(global_index).field_type !=
                   fieldType::VECTOR)
                 {
-                  apply_mg_constraints<float, 1>(mapping,
-                                                 dof_handler,
-                                                 local_constraint,
-                                                 boundary_type,
-                                                 boundary_id,
-                                                 component);
+                  apply_constraints<float, 1>(mapping,
+                                              dof_handler,
+                                              local_constraint,
+                                              condition,
+                                              boundary_type,
+                                              boundary_id,
+                                              component,
+                                              global_index,
+                                              true);
                   continue;
                 }
-              apply_mg_constraints<float, dim>(mapping,
-                                               dof_handler,
-                                               local_constraint,
-                                               boundary_type,
-                                               boundary_id,
-                                               component);
+              apply_constraints<float, dim>(mapping,
+                                            dof_handler,
+                                            local_constraint,
+                                            condition,
+                                            boundary_type,
+                                            boundary_id,
+                                            component,
+                                            global_index,
+                                            true);
             }
         }
 
@@ -717,7 +729,8 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
                                           boundaryCondition::type  boundary_type,
                                           unsigned int             boundary_id,
                                           unsigned int             component,
-                                          unsigned int             index) const
+                                          unsigned int             index,
+                                          bool                     is_change_term) const
 {
   constexpr bool        is_vector_field = spacedim != 1;
   dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
@@ -732,14 +745,14 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
         }
       case boundaryCondition::type::DIRICHLET:
         {
-          apply_dirichlet_constraints<number>(mapping,
-                                              dof_handler,
-                                              boundary_id,
-                                              is_vector_field,
-                                              boundary_condition.get_dirichlet_value(
-                                                boundary_id),
-                                              constraints,
-                                              mask);
+          apply_dirichlet_constraints<number>(
+            mapping,
+            dof_handler,
+            boundary_id,
+            is_vector_field,
+            is_change_term ? 0.0 : boundary_condition.get_dirichlet_value(boundary_id),
+            constraints,
+            mask);
           break;
         }
       case boundaryCondition::type::PERIODIC:
@@ -767,87 +780,7 @@ constraintHandler<dim>::apply_constraints(const dealii::Mapping<dim>        &map
                                                          is_vector_field,
                                                          constraints,
                                                          mask,
-                                                         false);
-          break;
-        }
-      case boundaryCondition::type::NON_UNIFORM_NEUMANN:
-        {
-          Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
-          break;
-        }
-      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
-        {
-          Assert(false,
-                 FeatureNotImplemented(
-                   "Time dependent nonuniform neumann boundary conditions"));
-          break;
-        }
-      default:
-        {
-          AssertThrow(false, UnreachableCode());
-        }
-    }
-}
-
-template <unsigned int dim>
-template <typename number, int spacedim>
-void
-constraintHandler<dim>::apply_mg_constraints(
-  const dealii::Mapping<dim>        &mapping,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  dealii::AffineConstraints<number> &constraints,
-  boundaryCondition::type            boundary_type,
-  unsigned int                       boundary_id,
-  unsigned int                       component) const
-{
-  constexpr bool        is_vector_field = spacedim != 1;
-  dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
-
-  // Apply the boundary conditions
-  switch (boundary_type)
-    {
-      case boundaryCondition::type::NATURAL:
-        {
-          apply_natural_constraints();
-          break;
-        }
-      case boundaryCondition::type::DIRICHLET:
-        {
-          apply_dirichlet_constraints<number>(mapping,
-                                              dof_handler,
-                                              boundary_id,
-                                              is_vector_field,
-                                              0.0,
-                                              constraints,
-                                              mask);
-          break;
-        }
-      case boundaryCondition::type::PERIODIC:
-        {
-          // Skip boundary ids that are odd since those map to the even faces
-          if (boundary_id % 2 != 0)
-            {
-              break;
-            }
-          apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
-          break;
-        }
-      case boundaryCondition::type::NEUMANN:
-        {
-          Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
-          break;
-        }
-      case boundaryCondition::type::NON_UNIFORM_DIRICHLET:
-      case boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
-        {
-          apply_nonuniform_dirichlet_constraints<number>(mapping,
-                                                         dof_handler,
-                                                         boundary_id,
-                                                         0,
-                                                         is_vector_field,
-                                                         constraints,
-                                                         mask,
-                                                         true);
+                                                         is_change_term);
           break;
         }
       case boundaryCondition::type::NON_UNIFORM_NEUMANN:

@@ -210,7 +210,8 @@ private:
                     boundaryCondition::type            boundary_type,
                     unsigned int                       boundary_id,
                     unsigned int                       component,
-                    unsigned int                       index) const;
+                    unsigned int                       index,
+                    bool                               is_change_term = false) const;
 
   /**
    * \brief Apply multigrid constraints for common boundary conditions. The only
