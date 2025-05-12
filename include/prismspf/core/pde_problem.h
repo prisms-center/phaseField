@@ -108,7 +108,7 @@ private:
   /**
    * \brief Constraint handler.
    */
-  constraintHandler<dim> constraint_handler;
+  constraintHandler<dim, degree> constraint_handler;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.

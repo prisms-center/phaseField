@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class userInputParameters;
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 class constraintHandler;
 
 template <unsigned int dim>
@@ -56,7 +56,7 @@ public:
     const matrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const triangulationHandler<dim>                        &_triangulation_handler,
     const invmHandler<dim, degree, double>                 &_invm_handler,
-    const constraintHandler<dim>                           &_constraint_handler,
+    const constraintHandler<dim, degree>                   &_constraint_handler,
     const dofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
     dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
@@ -135,7 +135,7 @@ protected:
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim> *constraint_handler;
+  const constraintHandler<dim, degree> *constraint_handler;
 
   /**
    * \brief DoF handler.

@@ -7,6 +7,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
@@ -17,25 +18,20 @@ template <unsigned int dim>
 class userInputParameters;
 
 /**
- * \brief Forward declaration of user-facing implementation
- */
-template <unsigned int dim, typename number>
-class customNonuniformDirichlet;
-
-/**
  * \brief Function for user-implemented nonuniform dirichlet boundary condition.
  */
-template <unsigned int dim, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class nonuniformDirichlet : public dealii::Function<dim, number>
 {
 public:
   /**
    * \brief Constructor.
    */
-  nonuniformDirichlet(unsigned int                    _index,
-                      unsigned int                    _boundary_id,
-                      const userInputParameters<dim> &_user_inputs,
-                      unsigned int                    spacedim);
+  nonuniformDirichlet(
+    unsigned int                                                   _index,
+    unsigned int                                                   _boundary_id,
+    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
+    unsigned int                                                   spacedim);
 
   // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
 
@@ -58,35 +54,7 @@ private:
 
   unsigned int boundary_id;
 
-  const userInputParameters<dim> *user_inputs;
-
-  customNonuniformDirichlet<dim, number> custom_nonuniform_dirichlet;
-};
-
-/**
- * \brief User-facing implementation of nonuniform boundary conditions
- */
-template <unsigned int dim, typename number>
-class customNonuniformDirichlet
-{
-public:
-  /**
-   * \brief Constructor.
-   */
-  customNonuniformDirichlet() = default;
-
-  /**
-   * \brief Function that passes the value/vector and point that are set in the nonuniform
-   * dirichlet.
-   */
-  void
-  set_nonuniform_dirichlet(const unsigned int             &index,
-                           const unsigned int             &boundary_id,
-                           const unsigned int             &component,
-                           const dealii::Point<dim>       &point,
-                           number                         &scalar_value,
-                           number                         &vector_component_value,
-                           const userInputParameters<dim> &user_inputs) const;
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

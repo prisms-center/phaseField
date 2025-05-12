@@ -73,24 +73,16 @@ customPDE<dim, degree, number>::set_initial_condition(
     }
 }
 
-template <unsigned int dim, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const unsigned int             &index,
-  [[maybe_unused]] const unsigned int             &boundary_id,
-  [[maybe_unused]] const unsigned int             &component,
-  [[maybe_unused]] const dealii::Point<dim>       &point,
-  [[maybe_unused]] number                         &scalar_value,
-  [[maybe_unused]] number                         &vector_component_value,
-  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
+customPDE<dim, degree, number>::set_nonuniform_dirichlet(
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &boundary_id,
+  [[maybe_unused]] const unsigned int       &component,
+  [[maybe_unused]] const dealii::Point<dim> &point,
+  [[maybe_unused]] number                   &scalar_value,
+  [[maybe_unused]] number                   &vector_component_value) const
 {}
-
-template class customNonuniformDirichlet<1, double>;
-template class customNonuniformDirichlet<2, double>;
-template class customNonuniformDirichlet<3, double>;
-template class customNonuniformDirichlet<1, float>;
-template class customNonuniformDirichlet<2, float>;
-template class customNonuniformDirichlet<3, float>;
 
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
