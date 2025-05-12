@@ -7,7 +7,6 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
@@ -50,30 +49,5 @@ private:
 
   std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 };
-
-///**
-// * \brief User-facing implementation of initial conditions
-// */
-// template <unsigned int dim>
-// class customInitialCondition
-//{
-// public:
-//  /**
-//   * \brief Constructor.
-//   */
-//  customInitialCondition() = default;
-//
-//  /**
-//   * \brief Function that passes the value/vector and point that are set in the initial
-//   * condition.
-//   */
-//  void
-//  set_initial_condition(const unsigned int             &index,
-//                        const unsigned int             &component,
-//                        const dealii::Point<dim>       &point,
-//                        double                         &scalar_value,
-//                        double                         &vector_component_value,
-//                        const userInputParameters<dim> &user_inputs) const;
-//};
 
 PRISMS_PF_END_NAMESPACE

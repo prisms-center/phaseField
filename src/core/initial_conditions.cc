@@ -37,7 +37,7 @@ initialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
   // Pass variables to user-facing function to evaluate
   for (unsigned int i = 0; i < dim; i++)
     {
-      pde_operator->set_initial_condition(index, i, p, vector_value(0), vector_value(i));
+      pde_operator->set_initial_condition(index, i, p, vector_value[0], vector_value[i]);
     }
 
   value = vector_value;
