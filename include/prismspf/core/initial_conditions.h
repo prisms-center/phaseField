@@ -7,6 +7,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
@@ -17,26 +18,21 @@ template <unsigned int dim>
 class userInputParameters;
 
 /**
- * \brief Forward declaration of user-facing implementation
- */
-template <unsigned int dim>
-class customInitialCondition;
-
-/**
  * \brief Function for user-implemented initial conditions. These are only ever calculated
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 class initialCondition : public dealii::Function<dim, double>
 {
 public:
   /**
    * \brief Constructor.
    */
-  initialCondition(const unsigned int             &_index,
-                   const fieldType                &field_type,
-                   const userInputParameters<dim> &_user_inputs);
+  initialCondition(
+    const unsigned int                                            &_index,
+    const fieldType                                               &field_type,
+    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
 
@@ -51,34 +47,7 @@ public:
 private:
   unsigned int index;
 
-  const userInputParameters<dim> *user_inputs;
-
-  customInitialCondition<dim> custom_initial_condition;
-};
-
-/**
- * \brief User-facing implementation of initial conditions
- */
-template <unsigned int dim>
-class customInitialCondition
-{
-public:
-  /**
-   * \brief Constructor.
-   */
-  customInitialCondition() = default;
-
-  /**
-   * \brief Function that passes the value/vector and point that are set in the initial
-   * condition.
-   */
-  void
-  set_initial_condition(const unsigned int             &index,
-                        const unsigned int             &component,
-                        const dealii::Point<dim>       &point,
-                        double                         &scalar_value,
-                        double                         &vector_component_value,
-                        const userInputParameters<dim> &user_inputs) const;
+  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE
