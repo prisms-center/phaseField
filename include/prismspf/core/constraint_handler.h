@@ -9,6 +9,7 @@
 #include <deal.II/lac/affine_constraints.h>
 
 #include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/pde_operator.h>
 
 #include <prismspf/config.h>
 
@@ -21,15 +22,18 @@ class userInputParameters;
  * \brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 class constraintHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  constraintHandler(const userInputParameters<dim> &_user_inputs,
-                    const MGInfo<dim>              &_mg_info);
+  constraintHandler(
+    const userInputParameters<dim>                                &_user_inputs,
+    const MGInfo<dim>                                             &_mg_info,
+    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+    const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
    * \brief Getter function for the constraints.
@@ -217,6 +221,16 @@ private:
    * \brief Multigrid info
    */
   const MGInfo<dim> *mg_info;
+
+  /**
+   * \brief PDE operator double.
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+
+  /**
+   * \brief PDE operator float.
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 
   /**
    * \brief Whether we have multigrid.

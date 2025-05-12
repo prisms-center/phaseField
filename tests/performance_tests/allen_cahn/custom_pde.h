@@ -71,6 +71,17 @@ private:
                         double                   &vector_component_value) const override;
 
   /**
+   * \brief User-implemented class for nonuniform boundary conditions.
+   */
+  virtual void
+  set_nonuniform_dirichlet(const unsigned int       &index,
+                           const unsigned int       &boundary_id,
+                           const unsigned int       &component,
+                           const dealii::Point<dim> &point,
+                           number                   &scalar_value,
+                           number &vector_component_value) const override;
+
+  /**
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
@@ -160,16 +171,15 @@ customInitialCondition<dim>::set_initial_condition(
   scalar_value = std::min(scalar_value, 1.0);
 }
 
-template <unsigned int dim>
-inline void
-customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const unsigned int             &index,
-  [[maybe_unused]] const unsigned int             &boundary_id,
-  [[maybe_unused]] const unsigned int             &component,
-  [[maybe_unused]] const dealii::Point<dim>       &point,
-  [[maybe_unused]] double                         &scalar_value,
-  [[maybe_unused]] double                         &vector_component_value,
-  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
+template <unsigned int dim, unsigned int degree, typename number>
+void
+customPDE<dim, degree, number>::set_nonuniform_dirichlet(
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &boundary_id,
+  [[maybe_unused]] const unsigned int       &component,
+  [[maybe_unused]] const dealii::Point<dim> &point,
+  [[maybe_unused]] number                   &scalar_value,
+  [[maybe_unused]] number                   &vector_component_value) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -217,8 +227,6 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
   const
 {}
 
-INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
-INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
 PRISMS_PF_END_NAMESPACE

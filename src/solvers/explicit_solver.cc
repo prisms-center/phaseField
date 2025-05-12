@@ -28,7 +28,7 @@ explicitSolver<dim, degree>::explicitSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
   const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim>                           &_constraint_handler,
+  const constraintHandler<dim, degree>                   &_constraint_handler,
   const dofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
   solutionHandler<dim>                                   &_solution_handler,

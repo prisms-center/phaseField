@@ -33,6 +33,27 @@ public:
   virtual ~PDEOperator() = default;
 
   /**
+   * \brief User-implemented class for the setting initial conditions.
+   */
+  virtual void
+  set_initial_condition(const unsigned int       &index,
+                        const unsigned int       &component,
+                        const dealii::Point<dim> &point,
+                        double                   &scalar_value,
+                        double                   &vector_component_value) const = 0;
+
+  /**
+   * \brief User-implemented class for the setting nonuniform boundary conditions.
+   */
+  virtual void
+  set_nonuniform_dirichlet(const unsigned int       &index,
+                           const unsigned int       &boundary_id,
+                           const unsigned int       &component,
+                           const dealii::Point<dim> &point,
+                           number                   &scalar_value,
+                           number                   &vector_component_value) const = 0;
+
+  /**
    * \brief User-implemented class for the RHS of explicit equations.
    */
   virtual void
@@ -62,16 +83,6 @@ public:
   compute_postprocess_explicit_RHS(
     variableContainer<dim, degree, number> &variable_list,
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
-
-  /**
-   * \brief User-implemented class for the setting initial conditions.
-   */
-  virtual void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const = 0;
 
   /**
    * \brief Get the user inputs (constant reference).

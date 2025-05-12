@@ -27,7 +27,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim>                           &_constraint_handler,
+  const constraintHandler<dim, degree>                   &_constraint_handler,
   solutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
