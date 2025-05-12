@@ -252,6 +252,7 @@ PDEProblem<dim, degree>::init_system()
   nonexplicit_auxiliary_solver.init();
   nonexplicit_linear_solver.init();
   nonexplicit_self_nonlinear_solver.init();
+  nonexplicit_co_nonlinear_solver.init();
 
   // Update ghosts
   solution_handler.update_ghosts();
@@ -274,6 +275,13 @@ PDEProblem<dim, degree>::init_system()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_self_nonlinear_solver.solve();
+  solution_handler.update_ghosts();
+
+  // Solve the co-nonlinear time-independent fields at the 0th step
+  conditionalOStreams::pout_base()
+    << "solving co-nonlinear time-independent variables in 0th timestep...\n"
+    << std::flush;
+  nonexplicit_co_nonlinear_solver.solve();
   solution_handler.update_ghosts();
 
   // Solve the postprocessed fields at the 0th step

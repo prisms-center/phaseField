@@ -64,7 +64,7 @@ GMGSolver<dim, degree>::GMGSolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 GMGSolver<dim, degree>::init()
 {
   // Basic intialization that is the same as the identity solve.
@@ -186,12 +186,12 @@ GMGSolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 GMGSolver<dim, degree>::reinit()
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 GMGSolver<dim, degree>::solve(const double &step_length)
 {
   const auto *current_dof_handler =

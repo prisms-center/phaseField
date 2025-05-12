@@ -185,7 +185,7 @@ private:
   NonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
 
   /**
-   * \brief Nonexplicit self nonlinear field solver class.
+   * \brief Nonexplicit self-nonlinear field solver class.
    */
   NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
 };
