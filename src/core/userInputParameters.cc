@@ -769,11 +769,20 @@ userInputParameters<dim>::assign_nucleation_parameters(
         2.0 * (*(max_element(nucleation_parameters_list[0].semiaxes.begin(),
                              nucleation_parameters_list[0].semiaxes.end())));
     }
+  // Only used if multiple_nuclei_per_order_parameter is true
+  if (parameter_handler.get("Minimum allowed distance between nuclei OP") != "-1")
+    {
+      min_distance_between_nuclei_OP = parameter_handler.get_double("Minimum allowed distance between nuclei OP");
+    }
+  else if (nucleation_parameters_list.size() > 1)
+    {
+      min_distance_between_nuclei_OP = min_distance_between_nuclei;
+    }
+  
   evolution_before_nucleation =
     parameter_handler.get_bool("Enable evolution before nucleation");
-  // Implement multiple order parameter nucleation later
-  // multiple_nuclei_per_order_parameter = parameter_handler.get_bool("Allow
-  // multiple nuclei per order parameter");
+  multiple_nuclei_per_order_parameter = parameter_handler.get_bool("Allow
+    multiple nuclei per order parameter");
   nucleation_order_parameter_cutoff =
     parameter_handler.get_double("Order parameter cutoff value");
   steps_between_nucleation_attempts =

@@ -97,6 +97,11 @@ MatrixFreePDE<dim, degree>::solve()
           // Update the list of nuclei (if relevant)
           updateNucleiList();
 
+          if (currentTime == userInputs.nucleation_end_time)
+            {
+              pcout << "Total number of nuclei = " << nuclei.size() << std::endl;
+            }
+
           // If grain reassignment is activated, reassign grains
           if (userInputs.grain_remapping_activated and
               (currentIncrement % userInputs.skip_grain_reassignment_steps == 0 or

@@ -19,6 +19,7 @@ parallelNucleationList<dim>::parallelNucleationList(std::vector<nucleus<dim>> _n
 template <int dim>
 std::vector<nucleus<dim>>
 parallelNucleationList<dim>::buildGlobalNucleiList(double       min_dist_between_nuclei,
+                                                   double       min_dist_between_OP,
                                                    unsigned int old_num_nuclei)
 {
   // MPI INITIALIZATON
@@ -44,7 +45,7 @@ parallelNucleationList<dim>::buildGlobalNucleiList(double       min_dist_between
       // Check for conflicts on the final processor before broadcasting the list
       if (thisProc == numProcs - 1)
         {
-          resolveNucleationConflicts(min_dist_between_nuclei, old_num_nuclei);
+          resolveNucleationConflicts(min_dist_between_nuclei, min_dist_between_OP, old_num_nuclei);
         }
 
       // The final processor now has the final list of the new nuclei, broadcast
@@ -54,7 +55,7 @@ parallelNucleationList<dim>::buildGlobalNucleiList(double       min_dist_between
   else
     {
       // Check for conflicts between nucleation attempts this time step
-      resolveNucleationConflicts(min_dist_between_nuclei, old_num_nuclei);
+      resolveNucleationConflicts(min_dist_between_nuclei, min_dist_bewteen_OP, old_num_nuclei);
     }
 
   return newnuclei;
@@ -447,6 +448,7 @@ parallelNucleationList<dim>::broadcastUpdate(int broadcastProc, int thisProc)
 template <int dim>
 void
 parallelNucleationList<dim>::resolveNucleationConflicts(double min_dist_between_nuclei,
+                                                        double min_dist_between_OP,
                                                         unsigned int old_num_nuclei)
 {
   std::vector<nucleus<dim>> newnuclei_cleaned;
@@ -464,6 +466,21 @@ parallelNucleationList<dim>::resolveNucleationConflicts(double min_dist_between_
             {
               isClose = true;
               std::cout << "Conflict between nuclei! Distance is: "
+                        << newnuclei[nuc_index].center.distance(
+                             newnuclei[prev_nuc_index].center)
+                        << " Conflict removed." << std::endl;
+              break;
+            }
+          
+          // If two nuclei have the same order parameter, they may need to be
+          // further apart
+          if (newnuclei[nuc_index].orderParameterIndex ==
+              new_nuclei[prev_nuc_index].orderParameterIndex &&
+              newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center <
+              min_dist_between_OP))
+            {
+              isClose = True;
+              std::cout << "Conflict between nuclei of same O.P.! Distance is: "
                         << newnuclei[nuc_index].center.distance(
                              newnuclei[prev_nuc_index].center)
                         << " Conflict removed." << std::endl;

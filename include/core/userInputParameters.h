@@ -302,10 +302,13 @@ public:
   std::vector<unsigned int> nucleating_variable_indices;
   std::vector<unsigned int> nucleation_need_value;
   bool                      evolution_before_nucleation;
-  // Declare later
-  // bool multiple_nuclei_per_order_parameter;
+  
+  bool   multiple_nuclei_per_order_parameter;
   double min_distance_between_nuclei; // Only enforced for nuclei placed during
                                       // the same time step
+  double min_distance_between_nuclei_OP; // For when multiple_nuclei_per_order_parameter
+                                         // is turned on, so nuclei of the same O.P.
+                                         // can have a larger min distance.
   double       nucleation_order_parameter_cutoff;
   unsigned int steps_between_nucleation_attempts;
   double       nucleation_start_time;

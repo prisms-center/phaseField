@@ -668,15 +668,20 @@ inputFileReader::declare_nucleation_parameters()
     "false",
     dealii::Patterns::Bool(),
     "Whether variable fields evolve before the first nucleus appears.");
-  // Implement later
-  // parameter_handler.declare_entry("Allow multiple nuclei per order
-  // parameter","true",dealii::Patterns::Bool(),"Whether multiple nucleation
-  // events can occur within an order parameter.");
+  parameter_handler.declare_entry("Allow multiple nuclei per order "
+    "parameter","true",dealii::Patterns::Bool(),"Whether multiple nucleation "
+    "events can occur within an order parameter.");
   parameter_handler.declare_entry("Minimum allowed distance between nuclei",
                                   "-1",
                                   dealii::Patterns::Double(),
                                   "The minimum allowed distance between nuclei "
                                   "placed during the same time step.");
+  parameter_handler.declere_entry("Minimum allowed distance between nuclei OP",
+                                  "-1",
+                                  dealii::Patterns::Double(),
+                                  "The minimum allowed distance between nuclei of "
+                                  "the same order parameter placed during the same "
+                                  "time step.");
   parameter_handler.declare_entry(
     "Order parameter cutoff value",
     "0.01",

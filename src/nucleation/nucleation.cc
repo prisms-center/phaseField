@@ -96,6 +96,7 @@ MatrixFreePDE<dim, degree>::getNewNuclei()
   parallelNucleationList<dim> new_nuclei_parallel(newnuclei);
   newnuclei =
     new_nuclei_parallel.buildGlobalNucleiList(userInputs.min_distance_between_nuclei,
+                                              usedInputs.min_distance_between_nuclei_OP,
                                               nuclei.size());
 
   // Final check to resolve overlap conflicts with existing precipitates
