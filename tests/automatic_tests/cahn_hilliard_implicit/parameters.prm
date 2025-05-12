@@ -16,7 +16,7 @@ set number steps = 15000
 
 subsection output
     set condition = EQUAL_SPACING
-    set number = 5
+    set number = 50
 end
 
 set boundary condition for c = NATURAL
@@ -28,6 +28,11 @@ set Model constant KcV = 1.5, DOUBLE
 subsection linear solver parameters: c
     set tolerance type = ABSOLUTE_RESIDUAL
     set tolerance value = 1e-10
-    set max iterations = 1000
+    set max iterations = 100
     set preconditioner type = NONE
+end
+
+subsection nonlinear solver parameters: c
+    set max iterations = 1
+    set step size = 0.01
 end

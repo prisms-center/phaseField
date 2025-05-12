@@ -71,41 +71,94 @@ nonexplicitCoNonlinearSolver<dim, degree>::init()
       return;
     }
 
-  // this->set_initial_condition();
+  this->set_initial_condition();
 
-  // for (const auto &[index, variable] : this->subset_attributes)
-  //   {
-  //     if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
-  //           .preconditioner == preconditionerType::GMG)
-  //       {
-  //         gmg_solvers.emplace(
-  //           index,
-  //           std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
-  //                                                    variable,
-  //                                                    *this->matrix_free_handler,
-  //                                                    *this->constraint_handler,
-  //                                                    *this->triangulation_handler,
-  //                                                    *this->dof_handler,
-  //                                                    *this->mg_matrix_free_handler,
-  //                                                    *this->solution_handler,
-  //                                                    this->pde_operator,
-  //                                                    pde_operator_float,
-  //                                                    *mg_info));
-  //         gmg_solvers.at(index)->init();
-  //       }
-  //     else
-  //       {
-  //         identity_solvers.emplace(
-  //           index,
-  //           std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
-  //                                                         variable,
-  //                                                         *this->matrix_free_handler,
-  //                                                         *this->constraint_handler,
-  //                                                         *this->solution_handler,
-  //                                                         this->pde_operator));
-  //         identity_solvers.at(index)->init();
-  //       }
-  //   }
+  for (const auto &[index, variable] : this->subset_attributes)
+    {
+      if (variable.pde_type == PDEType::AUXILIARY)
+        {
+          // Creating temporary map to match types
+          std::map<unsigned int, variableAttributes> temp;
+          temp.emplace(index, variable);
+          subset_attributes_list.push_back(temp);
+
+          // Create the implementation of matrixFreeOperator with the subset of variable
+          // attributes
+          this->system_matrix[index] =
+            std::make_unique<SystemMatrixType>(subset_attributes_list.back(),
+                                               this->pde_operator,
+                                               index);
+
+          // Set up the user-implemented equations and create the residual vectors
+          this->system_matrix.at(index)->clear();
+          this->system_matrix.at(index)->initialize(
+            this->matrix_free_handler->get_matrix_free());
+
+          // Create the subset of solution vectors and add the mapping to
+          // matrixFreeOperator
+          new_solution_subset[index].push_back(
+            this->solution_handler->get_new_solution_vector(index));
+          solution_subset[index].push_back(
+            this->solution_handler->get_solution_vector(index, dependencyType::NORMAL));
+          global_to_local_solution[index].emplace(std::make_pair(index,
+                                                                 dependencyType::NORMAL),
+                                                  0);
+          for (const auto &[variable_index, map] :
+               subset_attributes_list.back().begin()->second.dependency_set_RHS)
+            {
+              for (const auto &[dependency_type, field_type] : map)
+                {
+                  const auto pair = std::make_pair(variable_index, dependency_type);
+
+                  solution_subset[index].push_back(
+                    this->solution_handler->get_solution_vector(variable_index,
+                                                                dependency_type));
+                  global_to_local_solution[index]
+                    .emplace(pair, solution_subset.at(index).size() - 1);
+                }
+            }
+          this->system_matrix.at(index)->add_global_to_local_mapping(
+            global_to_local_solution.at(index));
+        }
+      else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
+               variable.pde_type == PDEType::TIME_INDEPENDENT)
+        {
+          if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
+                .preconditioner == preconditionerType::GMG)
+            {
+              gmg_solvers.emplace(
+                index,
+                std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
+                                                         variable,
+                                                         *this->matrix_free_handler,
+                                                         *this->constraint_handler,
+                                                         *this->triangulation_handler,
+                                                         *this->dof_handler,
+                                                         *this->mg_matrix_free_handler,
+                                                         *this->solution_handler,
+                                                         this->pde_operator,
+                                                         pde_operator_float,
+                                                         *mg_info));
+              gmg_solvers.at(index)->init();
+            }
+          else
+            {
+              identity_solvers.emplace(
+                index,
+                std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
+                                                              variable,
+                                                              *this->matrix_free_handler,
+                                                              *this->constraint_handler,
+                                                              *this->solution_handler,
+                                                              this->pde_operator));
+              identity_solvers.at(index)->init();
+            }
+        }
+      else
+        {
+          AssertThrow(false, UnreachableCode());
+        }
+    }
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -118,46 +171,74 @@ nonexplicitCoNonlinearSolver<dim, degree>::solve()
       return;
     }
 
-  // for (const auto &[index, variable] : this->subset_attributes)
-  //   {
-  //     // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is
-  //     0. if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-  //         this->user_inputs->temporal_discretization.get_current_increment() == 0)
-  //       {
-  //         continue;
-  //       }
+  for (const auto &[index, variable] : this->subset_attributes)
+    {
+      // Update the auxiliary fields
+      if (variable.pde_type == PDEType::AUXILIARY)
+        {
+          // Compute the update
+          this->system_matrix.at(index)->compute_nonexplicit_auxiliary_update(
+            new_solution_subset.at(index),
+            solution_subset.at(index));
 
-  // bool         is_converged = true;
-  // unsigned int iteration    = 0;
-  // const auto  &step_length =
-  //   this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
-  //     .step_length;
+          // Scale the update by the respective (SCALAR/VECTOR) invm.
+          new_solution_subset.at(index).at(0)->scale(this->invm_handler->get_invm(index));
 
-  // while (is_converged)
-  //   {
-  //     is_converged = false;
+          // Update the solutions
+          this->solution_handler->update(fieldSolveType::NONEXPLICIT_CO_NONLINEAR, index);
 
-  // // Perform the linear solve with the step length
-  // if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
-  //       .preconditioner == preconditionerType::GMG)
-  //   {
-  //     gmg_solvers.at(index)->solve(step_length);
-  //   }
-  // else
-  //   {
-  //     identity_solvers.at(index)->solve(step_length);
-  //   }
+          // Apply constraints
+          this->constraint_handler->get_constraint(index).distribute(*(
+            this->solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+        }
+      else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
+               variable.pde_type == PDEType::TIME_INDEPENDENT)
+        {
+          // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
+          // is 0.
+          if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
+              this->user_inputs->temporal_discretization.get_current_increment() == 0)
+            {
+              continue;
+            }
 
-  // iteration++;
+          bool         is_converged = true;
+          unsigned int iteration    = 0;
+          const auto  &step_length =
+            this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
+              .step_length;
 
-  // if (iteration <
-  //     this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
-  //       .max_iterations)
-  //   {
-  //     is_converged = true;
-  //   }
-  // }
-  // }
+          while (is_converged)
+            {
+              is_converged = false;
+
+              // Perform the linear solve with the step length
+              if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
+                    .preconditioner == preconditionerType::GMG)
+                {
+                  gmg_solvers.at(index)->solve(step_length);
+                }
+              else
+                {
+                  identity_solvers.at(index)->solve(step_length);
+                }
+
+              iteration++;
+
+              // TODO (landinjm): Check the convergence of the nonlinear solve somehow
+              if (iteration <
+                  this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
+                    .max_iterations)
+                {
+                  is_converged = true;
+                }
+            }
+        }
+      else
+        {
+          AssertThrow(false, UnreachableCode());
+        }
+    }
 }
 
 INSTANTIATE_BI_TEMPLATE(nonexplicitCoNonlinearSolver)
