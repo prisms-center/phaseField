@@ -20,7 +20,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class userInputParameters;
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 class constraintHandler;
 
 template <unsigned int dim, typename number>
@@ -50,7 +50,7 @@ public:
   linearSolverBase(const userInputParameters<dim>       &_user_inputs,
                    const variableAttributes             &_variable_attributes,
                    const matrixfreeHandler<dim, double> &_matrix_free_handler,
-                   const constraintHandler<dim>         &_constraint_handler,
+                   const constraintHandler<dim, degree> &_constraint_handler,
                    solutionHandler<dim>                 &_solution_handler,
                    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
@@ -102,7 +102,7 @@ protected:
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim> *constraint_handler;
+  const constraintHandler<dim, degree> *constraint_handler;
 
   /**
    * \brief Solution handler.

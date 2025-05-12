@@ -51,7 +51,7 @@ PDEProblem<dim, degree>::PDEProblem(
   : user_inputs(&_user_inputs)
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
-  , constraint_handler(_user_inputs, mg_info)
+  , constraint_handler(_user_inputs, mg_info, _pde_operator, _pde_operator_float)
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
   , invm_handler(*_user_inputs.var_attributes)

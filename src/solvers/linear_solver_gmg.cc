@@ -42,7 +42,7 @@ GMGSolver<dim, degree>::GMGSolver(
   const userInputParameters<dim>                         &_user_inputs,
   const variableAttributes                               &_variable_attributes,
   const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim>                           &_constraint_handler,
+  const constraintHandler<dim, degree>                   &_constraint_handler,
   const triangulationHandler<dim>                        &_triangulation_handler,
   const dofHandler<dim>                                  &_dof_handler,
   dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,

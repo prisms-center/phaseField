@@ -26,12 +26,6 @@ customPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] double                   &vector_component_value) const
 {
   const double center[3] = {10.0, 12.0, 0.0};
-  const double dx =
-    this->get_user_inputs().spatial_discretization.size[0] /
-    double(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
-    std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
-  const double clength =
-    this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
 
   double dist = 0.0;
   for (unsigned int dir = 0; dir < dim; dir++)
@@ -59,38 +53,25 @@ customPDE<dim, degree, number>::set_initial_condition(
     }
 }
 
-template <unsigned int dim, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
-  [[maybe_unused]] const unsigned int             &index,
-  [[maybe_unused]] const unsigned int             &boundary_id,
-  [[maybe_unused]] const unsigned int             &component,
-  [[maybe_unused]] const dealii::Point<dim>       &point,
-  [[maybe_unused]] number                         &scalar_value,
-  [[maybe_unused]] number                         &vector_component_value,
-  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
+customPDE<dim, degree, number>::set_nonuniform_dirichlet(
+  [[maybe_unused]] const unsigned int       &index,
+  [[maybe_unused]] const unsigned int       &boundary_id,
+  [[maybe_unused]] const unsigned int       &component,
+  [[maybe_unused]] const dealii::Point<dim> &point,
+  [[maybe_unused]] number                   &scalar_value,
+  [[maybe_unused]] number                   &vector_component_value) const
 {
   if (index == 1)
     {
-      const number time = user_inputs.temporal_discretization.get_current_time();
-
-      const number dx =
-        user_inputs.spatial_discretization.size[0] /
-        number(user_inputs.spatial_discretization.subdivisions[0]) /
-        std::pow(2.0, user_inputs.spatial_discretization.global_refinement);
-
-      const number clength =
-        user_inputs.user_constants.get_model_constant_double("cracklength");
-      const dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
-        user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_base");
-      const number KI_nom =
-        user_inputs.user_constants.get_model_constant_double("KI_nom");
-      const number vel_nom =
-        user_inputs.user_constants.get_model_constant_double("vel_nom");
+      const number time =
+        this->get_user_inputs().temporal_discretization.get_current_time();
 
       number x = (point[0] - (vel_nom * time) - clength);
-      number y =
-        point[1] - (user_inputs.spatial_discretization.size[1] / 2.0) + (dx * 0.5);
+      number y = point[1] -
+                 (this->get_user_inputs().spatial_discretization.size[1] / 2.0) +
+                 (dx * 0.5);
       number r      = std::sqrt((x * x) + (y * y));
       number theta  = std::atan2(y, x);
       number mu     = CIJ_base[dim][dim];
@@ -111,13 +92,6 @@ customNonuniformDirichlet<dim, number>::set_nonuniform_dirichlet(
         }
     }
 }
-
-template class customNonuniformDirichlet<1, double>;
-template class customNonuniformDirichlet<2, double>;
-template class customNonuniformDirichlet<3, double>;
-template class customNonuniformDirichlet<1, float>;
-template class customNonuniformDirichlet<2, float>;
-template class customNonuniformDirichlet<3, float>;
 
 INSTANTIATE_TRI_TEMPLATE(customPDE)
 
