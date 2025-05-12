@@ -107,6 +107,10 @@ private:
     this->get_user_inputs().user_constants.get_model_constant_double("KI_nom");
   number vel_nom =
     this->get_user_inputs().user_constants.get_model_constant_double("vel_nom");
+  number dx =
+    this->get_user_inputs().spatial_discretization.size[0] /
+    double(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
+    std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
 };
 
 PRISMS_PF_END_NAMESPACE

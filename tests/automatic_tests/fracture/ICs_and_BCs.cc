@@ -26,12 +26,6 @@ customPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] double                   &vector_component_value) const
 {
   const double center[3] = {10.0, 12.0, 0.0};
-  const double dx =
-    this->get_user_inputs().spatial_discretization.size[0] /
-    double(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
-    std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
-  const double clength =
-    this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
 
   double dist = 0.0;
   for (unsigned int dir = 0; dir < dim; dir++)
@@ -73,21 +67,6 @@ customPDE<dim, degree, number>::set_nonuniform_dirichlet(
     {
       const number time =
         this->get_user_inputs().temporal_discretization.get_current_time();
-
-      const number dx =
-        this->get_user_inputs().spatial_discretization.size[0] /
-        number(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
-        std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
-
-      const number clength =
-        this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
-      const dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
-        this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
-          "CIJ_base");
-      const number KI_nom =
-        this->get_user_inputs().user_constants.get_model_constant_double("KI_nom");
-      const number vel_nom =
-        this->get_user_inputs().user_constants.get_model_constant_double("vel_nom");
 
       number x = (point[0] - (vel_nom * time) - clength);
       number y = point[1] -
