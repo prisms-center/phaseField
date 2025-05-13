@@ -173,45 +173,48 @@ nonexplicitCoNonlinearSolver<dim, degree>::solve()
 
   for (const auto &[index, variable] : this->subset_attributes)
     {
-      // Update the auxiliary fields
-      if (variable.pde_type == PDEType::AUXILIARY)
+      // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
+      // is 0.
+      if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
+          this->user_inputs->temporal_discretization.get_current_increment() == 0)
         {
-          // Compute the update
-          this->system_matrix.at(index)->compute_nonexplicit_auxiliary_update(
-            new_solution_subset.at(index),
-            solution_subset.at(index));
-
-          // Scale the update by the respective (SCALAR/VECTOR) invm.
-          new_solution_subset.at(index).at(0)->scale(this->invm_handler->get_invm(index));
-
-          // Update the solutions
-          this->solution_handler->update(fieldSolveType::NONEXPLICIT_CO_NONLINEAR, index);
-
-          // Apply constraints
-          this->constraint_handler->get_constraint(index).distribute(*(
-            this->solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+          continue;
         }
-      else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
-               variable.pde_type == PDEType::TIME_INDEPENDENT)
+
+      bool         is_converged = true;
+      unsigned int iteration    = 0;
+      const auto  &step_length =
+        this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
+          .step_length;
+
+      while (is_converged)
         {
-          // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
-          // is 0.
-          if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-              this->user_inputs->temporal_discretization.get_current_increment() == 0)
+          is_converged = false;
+
+          // Update the auxiliary fields
+          if (variable.pde_type == PDEType::AUXILIARY)
             {
-              continue;
+              // Compute the update
+              this->system_matrix.at(index)->compute_nonexplicit_auxiliary_update(
+                new_solution_subset.at(index),
+                solution_subset.at(index));
+
+              // Scale the update by the respective (SCALAR/VECTOR) invm.
+              new_solution_subset.at(index).at(0)->scale(
+                this->invm_handler->get_invm(index));
+
+              // Update the solutions
+              this->solution_handler->update(fieldSolveType::NONEXPLICIT_CO_NONLINEAR,
+                                             index);
+
+              // Apply constraints
+              this->constraint_handler->get_constraint(index).distribute(
+                *(this->solution_handler->get_solution_vector(index,
+                                                              dependencyType::NORMAL)));
             }
-
-          bool         is_converged = true;
-          unsigned int iteration    = 0;
-          const auto  &step_length =
-            this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
-              .step_length;
-
-          while (is_converged)
+          else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
+                   variable.pde_type == PDEType::TIME_INDEPENDENT)
             {
-              is_converged = false;
-
               // Perform the linear solve with the step length
               if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
                     .preconditioner == preconditionerType::GMG)
@@ -233,10 +236,10 @@ nonexplicitCoNonlinearSolver<dim, degree>::solve()
                   is_converged = true;
                 }
             }
-        }
-      else
-        {
-          AssertThrow(false, UnreachableCode());
+          else
+            {
+              AssertThrow(false, UnreachableCode());
+            }
         }
     }
 }
