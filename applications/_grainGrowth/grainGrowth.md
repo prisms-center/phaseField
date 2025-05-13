@@ -28,7 +28,7 @@ The order parameter for each grain is unconserved, and thus their evolution can 
 
 $$
 \begin{equation}
-\frac{\partial \eta_i}{\partial t} = -L \mu = \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
+\frac{\partial \eta_i}{\partial t} = -L \mu = -L \left( -\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 - \kappa \nabla^2 \eta_i \right)
 \end{equation}
 $$
 
