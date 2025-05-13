@@ -781,8 +781,8 @@ userInputParameters<dim>::assign_nucleation_parameters(
   
   evolution_before_nucleation =
     parameter_handler.get_bool("Enable evolution before nucleation");
-  multiple_nuclei_per_order_parameter = parameter_handler.get_bool("Allow
-    multiple nuclei per order parameter");
+  multiple_nuclei_per_order_parameter = parameter_handler.get_bool(
+    "Allow multiple nuclei per order parameter");
   nucleation_order_parameter_cutoff =
     parameter_handler.get_double("Order parameter cutoff value");
   steps_between_nucleation_attempts =

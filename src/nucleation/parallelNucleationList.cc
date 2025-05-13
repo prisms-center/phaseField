@@ -55,7 +55,7 @@ parallelNucleationList<dim>::buildGlobalNucleiList(double       min_dist_between
   else
     {
       // Check for conflicts between nucleation attempts this time step
-      resolveNucleationConflicts(min_dist_between_nuclei, min_dist_bewteen_OP, old_num_nuclei);
+      resolveNucleationConflicts(min_dist_between_nuclei, min_dist_between_OP, old_num_nuclei);
     }
 
   return newnuclei;
@@ -475,11 +475,11 @@ parallelNucleationList<dim>::resolveNucleationConflicts(double min_dist_between_
           // If two nuclei have the same order parameter, they may need to be
           // further apart
           if (newnuclei[nuc_index].orderParameterIndex ==
-              new_nuclei[prev_nuc_index].orderParameterIndex &&
-              newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center <
-              min_dist_between_OP))
+              newnuclei[prev_nuc_index].orderParameterIndex &&
+              newnuclei[nuc_index].center.distance(newnuclei[prev_nuc_index].center) <
+              min_dist_between_OP)
             {
-              isClose = True;
+              isClose = true;
               std::cout << "Conflict between nuclei of same O.P.! Distance is: "
                         << newnuclei[nuc_index].center.distance(
                              newnuclei[prev_nuc_index].center)

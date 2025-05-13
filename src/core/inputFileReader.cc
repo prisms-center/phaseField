@@ -676,7 +676,7 @@ inputFileReader::declare_nucleation_parameters()
                                   dealii::Patterns::Double(),
                                   "The minimum allowed distance between nuclei "
                                   "placed during the same time step.");
-  parameter_handler.declere_entry("Minimum allowed distance between nuclei OP",
+  parameter_handler.declare_entry("Minimum allowed distance between nuclei OP",
                                   "-1",
                                   dealii::Patterns::Double(),
                                   "The minimum allowed distance between nuclei of "
