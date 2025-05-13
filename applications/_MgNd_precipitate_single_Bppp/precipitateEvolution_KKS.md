@@ -217,7 +217,7 @@ $$
 \end{align}
 $$
 
-The expression of $\frac{1}{f_{,cc}} \mu_c$ can be written as:
+The expression of $\frac{1}{f_{,cc}} \nabla \mu_c$ can be written as:
 
 $$
 \begin{align}
