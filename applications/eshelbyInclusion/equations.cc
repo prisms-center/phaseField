@@ -100,8 +100,11 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
               //sfts[i][j] =
               //  0.01 * (0.5 + 0.5 * (constV(1.0) - std::exp(-20.0 * (dist - a))) /
               //                  (constV(1.0) + std::exp(-20.0 * (dist - a))));
-              sfts[i][j] = 
-                0.01 * (0.5 + 0.5 * (-1.0 * std::tanh(-20.0 * (dist - a))));
+              for (unsigned int lane =0 ; lane< dist.size(); lane++){
+                sfts[i][j][lane] = 
+                0.01 * (0.5 + 0.5 * (-1.0 * std::tanh(-20.0 * (dist[lane] - a[lane]))));
+              }
+         
             }
           else
             {
