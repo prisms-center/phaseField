@@ -131,7 +131,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
       unsigned int iteration    = 0;
       const auto  &step_length  = this->get_user_inputs()
                                   .get_nonlinear_solve_parameters()
-                                  .nonlinear_solve.at(index)
+                                  .get_nonlinear_solve_parameters(index)
                                   .step_length;
 
       while (is_converged)
@@ -155,7 +155,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 
           if (iteration < this->get_user_inputs()
                             .get_nonlinear_solve_parameters()
-                            .nonlinear_solve.at(index)
+                            .get_nonlinear_solve_parameters(index)
                             .max_iterations)
             {
               is_converged = true;

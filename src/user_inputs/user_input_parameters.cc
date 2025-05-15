@@ -353,10 +353,13 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
 
-          nonlinear_solve_parameters.nonlinear_solve[index].max_iterations =
+          nonlinearSolverParameters nonlinear_solver_parameters;
+          nonlinear_solver_parameters.max_iterations =
             parameter_handler.get_integer("max iterations");
-          nonlinear_solve_parameters.nonlinear_solve[index].step_length =
+          nonlinear_solver_parameters.step_length =
             parameter_handler.get_double("step size");
+          nonlinear_solve_parameters
+            .set_nonlinear_solve_parameters(index, nonlinear_solver_parameters);
 
           // TODO (landinjm): Implement backtracking line search
 

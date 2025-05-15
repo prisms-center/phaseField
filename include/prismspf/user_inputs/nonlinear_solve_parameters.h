@@ -42,8 +42,28 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Set the nonlinear solve parameters for a field index.
+   */
+  void
+  set_nonlinear_solve_parameters(const types::index              &index,
+                                 const nonlinearSolverParameters &parameters)
+  {
+    nonlinear_solve[index] = parameters;
+  }
+
+  /**
+   * \brief Get the nonlinear solve parameters for a field index.
+   */
+  [[nodiscard]] const nonlinearSolverParameters &
+  get_nonlinear_solve_parameters(const types::index &index) const
+  {
+    return nonlinear_solve.at(index);
+  }
+
+private:
   // Map of nonlinear solve parameters for fields that require them
-  std::map<unsigned int, nonlinearSolverParameters> nonlinear_solve;
+  std::map<types::index, nonlinearSolverParameters> nonlinear_solve;
 };
 
 inline void
