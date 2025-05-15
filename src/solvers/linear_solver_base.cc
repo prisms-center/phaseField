@@ -35,7 +35,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , matrix_free_handler(&_matrix_free_handler)
   , constraint_handler(&_constraint_handler)
   , solution_handler(&_solution_handler)
-  , field_index(_variable_attributes.field_index)
+  , field_index(_variable_attributes.get_field_index())
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
       _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
@@ -61,7 +61,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
                                                            dependencyType::NORMAL),
                                             0);
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_RHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_RHS())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
@@ -81,7 +81,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_LHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_LHS())
     {
       for (const auto &[dependency_type, field_type] : map)
         {

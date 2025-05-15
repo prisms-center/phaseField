@@ -31,13 +31,14 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
 #ifdef ADDITIONAL_OPTIMIZATIONS
       // TODO (landinjm): This relies on the fact the entry has already been created. Add
       // an assertion
-      if (user_inputs->get_variable_attributes().at(index).duplicate_field_index !=
+      if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
           numbers::invalid_index)
         {
-          const_dof_handlers.push_back(
-            dof_handlers
-              .at(user_inputs->get_variable_attributes().at(index).duplicate_field_index)
-              .get());
+          const_dof_handlers.push_back(dof_handlers
+                                         .at(user_inputs->get_variable_attributes()
+                                               .at(index)
+                                               .get_duplicate_field_index())
+                                         .get());
           continue;
         }
 #endif
@@ -105,18 +106,19 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      if (user_inputs->get_variable_attributes().at(index).duplicate_field_index !=
+      if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
           numbers::invalid_index)
         {
-          n_dofs +=
-            dof_handlers
-              .at(user_inputs->get_variable_attributes().at(index).duplicate_field_index)
-              ->n_dofs();
+          n_dofs += dof_handlers
+                      .at(user_inputs->get_variable_attributes()
+                            .at(index)
+                            .get_duplicate_field_index())
+                      ->n_dofs();
           continue;
         }
 #endif
       dof_handlers.at(index)->reinit(triangulation_handler.get_triangulation());
-      dof_handlers.at(index)->distribute_dofs(fe_system.at(variable.field_type));
+      dof_handlers.at(index)->distribute_dofs(fe_system.at(variable.get_field_type()));
 
       n_dofs += dof_handlers.at(index)->n_dofs();
     }
@@ -143,8 +145,8 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
         {
           mg_dof_handlers.at(index)[level]->reinit(
             triangulation_handler.get_mg_triangulation(level));
-          mg_dof_handlers.at(index)[level]->distribute_dofs(
-            fe_system.at(user_inputs->get_variable_attributes().at(index).field_type));
+          mg_dof_handlers.at(index)[level]->distribute_dofs(fe_system.at(
+            user_inputs->get_variable_attributes().at(index).get_field_type()));
           n_dofs_with_mg += mg_dof_handlers.at(index)[level]->n_dofs();
         }
     }

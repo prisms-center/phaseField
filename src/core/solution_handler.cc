@@ -169,11 +169,11 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
 
       // Add dependencies if they don't exist
-      for (const auto &[pair, flags] : variable.eval_flag_set_RHS)
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_RHS())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
-      for (const auto &[pair, flags] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_LHS())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
@@ -288,7 +288,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
   // Loop through the solutions and swap them
   for (auto &[index, new_vector] : new_solution_set)
     {
-      const auto &attr_field_type = attributes_list->at(index).field_solve_type;
+      const auto &attr_field_type = attributes_list->at(index).get_field_solve_type();
 
       // Skip if field solve types don't match
       if (attr_field_type != field_solve_type)

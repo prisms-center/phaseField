@@ -71,7 +71,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.field_solve_type == field_solve_type)
+      if (variable.get_field_solve_type() == field_solve_type)
         {
           subset_attributes.emplace(index, variable);
         }
@@ -82,18 +82,18 @@ template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
-  Assert(subset_attributes.begin()->second.field_solve_type ==
+  Assert(subset_attributes.begin()->second.get_field_solve_type() ==
            fieldSolveType::NONEXPLICIT_CO_NONLINEAR,
          dealii::ExcMessage("compute_shared_dependencies() should only be used for "
                             "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
 
   // Compute the shared dependency flags
-  auto &dependency_flag_set = subset_attributes.begin()->second.eval_flag_set_RHS;
+  auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_RHS();
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (!variable.eval_flag_set_RHS.empty())
+      if (!variable.get_eval_flag_set_RHS().empty())
         {
-          for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
+          for (const auto &[pair, flag] : variable.get_eval_flag_set_RHS())
             {
               dependency_flag_set[pair] |= flag;
             }
@@ -103,15 +103,15 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     {
       for (const auto &[pair, flag] : dependency_flag_set)
         {
-          variable.eval_flag_set_RHS[pair] |= flag;
+          variable.get_eval_flag_set_RHS()[pair] |= flag;
         }
     }
 
   // Compute the shared dependency set
-  auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_RHS();
   for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.get_dependency_set_RHS())
         {
           for (const auto &[dependency_type, field_type] : map)
             {
@@ -121,7 +121,7 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     }
   for (auto &[index, variable] : subset_attributes)
     {
-      variable.dependency_set_RHS = dependency_set;
+      variable.set_dependency_set_RHS(dependency_set);
     }
 
 #ifdef DEBUG
@@ -135,8 +135,8 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (variable.pde_type != PDEType::IMPLICIT_TIME_DEPENDENT &&
-          variable.pde_type != PDEType::TIME_INDEPENDENT)
+      if (variable.get_pde_type() != PDEType::IMPLICIT_TIME_DEPENDENT &&
+          variable.get_pde_type() != PDEType::TIME_INDEPENDENT)
         {
           continue;
         }
@@ -154,7 +154,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
         *mapping,
         *(dof_handler->get_dof_handlers().at(index)),
         initialCondition<dim, degree>(index,
-                                      subset_attributes.at(index).field_type,
+                                      subset_attributes.at(index).get_field_type(),
                                       pde_operator),
         *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
 
@@ -172,7 +172,7 @@ nonexplicitBase<dim, degree>::print()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
-  const auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_RHS();
   for (const auto &[index, map] : dependency_set)
     {
       for (const auto &[dependency_type, field_type] : map)

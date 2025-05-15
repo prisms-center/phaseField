@@ -149,12 +149,12 @@ temporalDiscretization::postprocess_and_validate(
   bool only_time_independent_pdes = true;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
-          variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::EXPLICIT_TIME_DEPENDENT ||
+          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
         {
           only_time_independent_pdes = false;
           break;

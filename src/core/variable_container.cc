@@ -88,7 +88,7 @@ variableContainer<dim, degree, number>::variableContainer(
   // For explicit solves we have already flattened the dependencies
   if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
     {
-      construct_map(subset_attributes->begin()->second.dependency_set_RHS);
+      construct_map(subset_attributes->begin()->second.get_dependency_set_RHS());
       return;
     }
 
@@ -101,11 +101,11 @@ variableContainer<dim, degree, number>::variableContainer(
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      construct_map(subset_attributes->begin()->second.dependency_set_LHS);
+      construct_map(subset_attributes->begin()->second.get_dependency_set_LHS());
     }
   else
     {
-      construct_map(subset_attributes->begin()->second.dependency_set_RHS);
+      construct_map(subset_attributes->begin()->second.get_dependency_set_RHS());
     }
 }
 
@@ -218,7 +218,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   const auto &global_var_index = subset_attributes->begin()->first;
-  const auto &field_type       = subset_attributes->begin()->second.field_type;
+  const auto &field_type       = subset_attributes->begin()->second.get_field_type();
   FEEval_exists(global_var_index, dependencyType::CHANGE);
   auto &feeval_variant = feeval_map.at(global_var_index).at(dependencyType::CHANGE);
 
@@ -433,13 +433,13 @@ variableContainer<dim, degree, number>::access_valid(
     {
       if (solve_type == solveType::NONEXPLICIT_LHS)
         {
-          Assert(variable.eval_flag_set_LHS.contains(
+          Assert(variable.get_eval_flag_set_LHS().contains(
                    std::make_pair(dependency_index, dependency_type)),
                  DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
       else
         {
-          Assert(variable.eval_flag_set_RHS.contains(
+          Assert(variable.get_eval_flag_set_RHS().contains(
                    std::make_pair(dependency_index, dependency_type)),
                  DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
@@ -597,7 +597,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
   if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
     {
       const auto &attrs = subset_attributes->begin()->second;
-      reinit_and_eval_map(attrs.eval_flag_set_RHS, attrs.dependency_set_RHS);
+      reinit_and_eval_map(attrs.get_eval_flag_set_RHS(), attrs.get_dependency_set_RHS());
       return;
     }
   if (src.empty())
@@ -611,11 +611,11 @@ variableContainer<dim, degree, number>::reinit_and_eval(
   const auto &attrs = subset_attributes->begin()->second;
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
+      reinit_and_eval_map(attrs.get_eval_flag_set_LHS(), attrs.get_dependency_set_LHS());
     }
   else
     {
-      reinit_and_eval_map(attrs.eval_flag_set_RHS, attrs.dependency_set_RHS);
+      reinit_and_eval_map(attrs.get_eval_flag_set_RHS(), attrs.get_dependency_set_RHS());
     }
 }
 
@@ -686,7 +686,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   const auto &attrs = subset_attributes->begin()->second;
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
+      reinit_and_eval_map(attrs.get_eval_flag_set_LHS(), attrs.get_dependency_set_LHS());
       return;
     }
   Assert(false,
@@ -742,11 +742,11 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
   const auto &attrs = subset_attributes->at(global_variable_index);
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      reinit_map(attrs.eval_flag_set_LHS);
+      reinit_map(attrs.get_eval_flag_set_LHS());
     }
   else
     {
-      reinit_map(attrs.eval_flag_set_RHS);
+      reinit_map(attrs.get_eval_flag_set_RHS());
     }
 }
 
@@ -829,7 +829,7 @@ variableContainer<dim, degree, number>::read_dof_values(
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
   const auto &attrs = subset_attributes->begin()->second;
-  reinit_and_eval_map(attrs.eval_flag_set_LHS, attrs.dependency_set_LHS);
+  reinit_and_eval_map(attrs.get_eval_flag_set_LHS(), attrs.get_dependency_set_LHS());
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -879,11 +879,11 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
   const auto &attrs = subset_attributes->at(global_variable_index);
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
-      eval_map(attrs.eval_flag_set_LHS);
+      eval_map(attrs.get_eval_flag_set_LHS());
     }
   else
     {
-      eval_map(attrs.eval_flag_set_RHS);
+      eval_map(attrs.get_eval_flag_set_RHS());
     }
 }
 
@@ -906,7 +906,7 @@ variableContainer<dim, degree, number>::integrate(
 
       auto process_feeval = [&](auto &feeval_ptr)
       {
-        feeval_ptr->integrate(variable.eval_flags_residual_LHS);
+        feeval_ptr->integrate(variable.get_eval_flags_residual_LHS());
       };
 
       if constexpr (dim == 1)
@@ -992,13 +992,13 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
     {
       if (solve_type == solveType::NONEXPLICIT_LHS)
         {
-          integrate_and_distribute_map(variable.eval_flags_residual_LHS,
+          integrate_and_distribute_map(variable.get_eval_flags_residual_LHS(),
                                        dependencyType::CHANGE,
                                        index);
         }
       else
         {
-          integrate_and_distribute_map(variable.eval_flags_residual_RHS,
+          integrate_and_distribute_map(variable.get_eval_flags_residual_RHS(),
                                        dependencyType::NORMAL,
                                        index);
         }
@@ -1052,14 +1052,14 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
       integrate_and_distribute_map(
-        subset_attributes->begin()->second.eval_flags_residual_LHS,
+        subset_attributes->begin()->second.get_eval_flags_residual_LHS(),
         dependencyType::CHANGE,
         subset_attributes->begin()->first);
     }
   else
     {
       integrate_and_distribute_map(
-        subset_attributes->begin()->second.eval_flags_residual_RHS,
+        subset_attributes->begin()->second.get_eval_flags_residual_RHS(),
         dependencyType::NORMAL,
         subset_attributes->begin()->first);
     }

@@ -120,7 +120,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is 0.
-      if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
+      if (variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT &&
           this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
             0)
         {

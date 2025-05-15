@@ -297,7 +297,7 @@ inputFileReader::declare_mesh()
   for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
-      subsection_text.append(variable.name);
+      subsection_text.append(variable.get_name());
       parameter_handler.enter_subsection(subsection_text);
       {
         parameter_handler.declare_entry(
@@ -352,11 +352,11 @@ inputFileReader::declare_solver_parameters()
   // For linear solves
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.pde_type == TIME_INDEPENDENT ||
-          variable.pde_type == IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
+          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
         {
           std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry(
@@ -405,11 +405,11 @@ inputFileReader::declare_solver_parameters()
   // For nonlinear solves
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
+          variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry("max iterations",
@@ -568,14 +568,14 @@ inputFileReader::declare_BC_parameters()
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.field_type == SCALAR)
+      if (variable.get_field_type() == SCALAR)
         {
           std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           parameter_handler.declare_entry(
             bc_text,
             "",
@@ -585,7 +585,7 @@ inputFileReader::declare_BC_parameters()
       else
         {
           std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", x component");
           parameter_handler.declare_entry(
             bc_text,
@@ -594,7 +594,7 @@ inputFileReader::declare_BC_parameters()
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", y component");
           parameter_handler.declare_entry(
             bc_text,
@@ -603,7 +603,7 @@ inputFileReader::declare_BC_parameters()
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", z component");
           parameter_handler.declare_entry(
             bc_text,
@@ -619,15 +619,15 @@ inputFileReader::declare_pinning_parameters()
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
       std::string pinning_text = "pinning point for ";
-      pinning_text.append(variable.name);
+      pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
       {
-        if (variable.field_type == SCALAR)
+        if (variable.get_field_type() == SCALAR)
           {
             parameter_handler.declare_entry("value",
                                             "2147483647",

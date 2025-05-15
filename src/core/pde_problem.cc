@@ -140,7 +140,7 @@ PDEProblem<dim, degree>::init_system()
   conditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.field_type == fieldType::SCALAR &&
+      if (variable.get_field_type() == fieldType::SCALAR &&
           fe_system.find(fieldType::SCALAR) == fe_system.end())
         {
           fe_system.emplace(fieldType::SCALAR,
@@ -150,7 +150,7 @@ PDEProblem<dim, degree>::init_system()
           conditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
                                               << std::flush;
         }
-      else if (variable.field_type == fieldType::VECTOR &&
+      else if (variable.get_field_type() == fieldType::VECTOR &&
                fe_system.find(fieldType::VECTOR) == fe_system.end())
         {
           fe_system.emplace(fieldType::VECTOR,
@@ -399,7 +399,7 @@ PDEProblem<dim, degree>::solve()
                 << " integrated value: ";
 
               const auto local_field_type =
-                user_inputs->get_variable_attributes().at(index).field_type;
+                user_inputs->get_variable_attributes().at(index).get_field_type();
 
               if (local_field_type == fieldType::VECTOR)
                 {

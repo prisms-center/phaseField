@@ -361,7 +361,7 @@ constraintHandler<dim, degree>::make_constraint(
       for (const auto &[boundary_id, boundary_type] :
            condition.get_boundary_condition_map())
         {
-          if (user_inputs->get_variable_attributes().at(index).field_type !=
+          if (user_inputs->get_variable_attributes().at(index).get_field_type() !=
               fieldType::VECTOR)
             {
               apply_constraints<double, 1>(mapping,
@@ -429,8 +429,9 @@ constraintHandler<dim, degree>::make_mg_constraint(
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (user_inputs->get_variable_attributes().at(global_index).field_type !=
-                  fieldType::VECTOR)
+              if (user_inputs->get_variable_attributes()
+                    .at(global_index)
+                    .get_field_type() != fieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,
@@ -471,8 +472,9 @@ constraintHandler<dim, degree>::make_mg_constraint(
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (user_inputs->get_variable_attributes().at(global_index).field_type !=
-                  fieldType::VECTOR)
+              if (user_inputs->get_variable_attributes()
+                    .at(global_index)
+                    .get_field_type() != fieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,

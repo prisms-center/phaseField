@@ -103,7 +103,7 @@ void
 variableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
-  var_attributes[index].is_postprocess = is_postprocess;
+  var_attributes[index].is_postprocessed_variable = is_postprocess;
 }
 
 void
@@ -218,7 +218,7 @@ variableAttributeLoader::populate_dependencies(
   std::map<unsigned int, std::set<std::string>>       &change_possible_deps)
 {
   // If we are dealing with a postprocessed variable, no dependencies are valid
-  if (var_attributes.at(index).is_postprocess)
+  if (var_attributes.at(index).is_postprocessed_variable)
     {
       return;
     }
@@ -277,9 +277,10 @@ variableAttributeLoader::validate_attributes()
   for (const auto &[index, variable] : var_attributes)
     {
       // Check that postprocessed variables are only explicit
-      AssertThrow(
-        !variable.is_postprocess || variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
-        dealii::ExcMessage("Currently, postprocessing only allows explicit equations."));
+      AssertThrow(!variable.is_postprocessed_variable ||
+                    variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
+                  dealii::ExcMessage(
+                    "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
                     (variable.dependencies_RHS.empty() &&

@@ -92,7 +92,7 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
                                                              dependencyType::NORMAL),
                                               0);
       for (const auto &[variable_index, map] :
-           this->get_subset_attributes().begin()->second.dependency_set_RHS)
+           this->get_subset_attributes().begin()->second.get_dependency_set_RHS())
         {
           for (const auto &[dependency_type, field_type] : map)
             {

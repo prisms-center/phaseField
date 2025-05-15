@@ -285,49 +285,49 @@ boundaryParameters<dim>::postprocess_and_validate(
     {
       // Ensure that boundary conditions are specified for all variables and their
       // components
-      if (variable.field_type == fieldType::VECTOR)
+      if (variable.get_field_type() == fieldType::VECTOR)
         {
           for (unsigned int i = 0; i < dim; i++)
             {
-              if (variable.is_postprocess)
+              if (variable.is_postprocess())
                 {
-                  set_boundary("NATURAL", variable.field_index, i);
+                  set_boundary("NATURAL", variable.get_field_index(), i);
                 }
               else
                 {
-                  AssertThrow(BC_list.contains(variable.field_index),
+                  AssertThrow(BC_list.contains(variable.get_field_index()),
                               dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(BC_list.at(variable.field_index).contains(i),
+                  AssertThrow(BC_list.at(variable.get_field_index()).contains(i),
                               dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(!BC_list.at(variable.field_index).at(i).empty(),
+                  AssertThrow(!BC_list.at(variable.get_field_index()).at(i).empty(),
                               dealii::ExcMessage(
                                 "Boundary conditions must be specified "
                                 "for all components in all vector field."));
 
-                  set_boundary(BC_list.at(variable.field_index).at(i),
-                               variable.field_index,
+                  set_boundary(BC_list.at(variable.get_field_index()).at(i),
+                               variable.get_field_index(),
                                i);
                 }
             }
         }
       else
         {
-          if (variable.is_postprocess)
+          if (variable.is_postprocess())
             {
-              set_boundary("NATURAL", variable.field_index, 0);
+              set_boundary("NATURAL", variable.get_field_index(), 0);
             }
           else
             {
-              AssertThrow(BC_list.contains(variable.field_index),
+              AssertThrow(BC_list.contains(variable.get_field_index()),
                           dealii::ExcMessage("Invalid entry"));
-              AssertThrow(BC_list.at(variable.field_index).contains(0),
+              AssertThrow(BC_list.at(variable.get_field_index()).contains(0),
                           dealii::ExcMessage("Invalid entry"));
-              AssertThrow(!BC_list.at(variable.field_index).at(0).empty(),
+              AssertThrow(!BC_list.at(variable.get_field_index()).at(0).empty(),
                           dealii::ExcMessage("Boundary conditions must be specified "
                                              "for all scalar fields."));
 
-              set_boundary(BC_list.at(variable.field_index).at(0),
-                           variable.field_index,
+              set_boundary(BC_list.at(variable.get_field_index()).at(0),
+                           variable.get_field_index(),
                            0);
             }
         }
@@ -345,27 +345,27 @@ boundaryParameters<dim>::postprocess_and_validate(
   for (const auto &[index_1, variable_1] : var_attributes)
     {
       // Skip is the duplicate index has already been assigned
-      if (variable_1.duplicate_field_index != numbers::invalid_index)
+      if (variable_1.get_duplicate_field_index() != numbers::invalid_index)
         {
           continue;
         }
-      if (variable_1.is_postprocess)
+      if (variable_1.is_postprocess())
         {
           continue;
         }
 
-      const auto field_type_1 = variable_1.field_type;
+      const auto field_type_1 = variable_1.get_field_type();
 
       for (const auto &[index_2, variable_2] : var_attributes)
         {
-          if (variable_2.is_postprocess)
+          if (variable_2.is_postprocess())
             {
               continue;
             }
 
           bool is_duplicate = false;
 
-          const auto field_type_2 = variable_2.field_type;
+          const auto field_type_2 = variable_2.get_field_type();
 
           is_duplicate = field_type_1 == field_type_2 &&
                          check_duplicate_boundary_conditions(index_1, index_2);
@@ -373,9 +373,10 @@ boundaryParameters<dim>::postprocess_and_validate(
           if (is_duplicate)
             {
               conditionalOStreams::pout_verbose()
-                << "Field " << variable_1.name << " has the same boundary conditions as "
-                << variable_2.name << ". Using optimizations...\n";
-              variable_2.duplicate_field_index = index_1;
+                << "Field " << variable_1.get_name()
+                << " has the same boundary conditions as " << variable_2.get_name()
+                << ". Using optimizations...\n";
+              variable_2.set_duplicate_field_index(index_1);
             }
         }
     }

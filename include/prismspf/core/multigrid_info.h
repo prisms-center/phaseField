@@ -219,7 +219,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
       // the duplicates that have the same variable but different min multigrid levels.
-      for (const auto &[pair, eval_flag] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, eval_flag] : variable.get_eval_flag_set_LHS())
         {
           // Skip if the eval flags is not set (e.i., nothing)
           if (eval_flag == 0U)

@@ -98,7 +98,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
   for (const auto &[index, variable] : *var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
-      subsection_text.append(variable.name);
+      subsection_text.append(variable.get_name());
       parameter_handler.enter_subsection(subsection_text);
       {
         const std::string crit_type_string = parameter_handler.get("type");
@@ -196,14 +196,14 @@ userInputParameters<dim>::assign_boundary_parameters(
     {
       // TODO (landinjm): We Should still add the ability to assign boundary conditions
       // for postprocessed fields
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.field_type == SCALAR)
+      if (variable.get_field_type() == SCALAR)
         {
           std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           boundary_parameters
             .set_boundary_condition_string(parameter_handler.get(bc_text), index, 0);
         }
@@ -213,7 +213,7 @@ userInputParameters<dim>::assign_boundary_parameters(
           for (unsigned int i = 0; i < dim; i++)
             {
               std::string bc_text = "boundary condition for ";
-              bc_text.append(variable.name + ", " + axis_labels[i] + " component");
+              bc_text.append(variable.get_name() + ", " + axis_labels[i] + " component");
               boundary_parameters
                 .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
             }
@@ -223,14 +223,14 @@ userInputParameters<dim>::assign_boundary_parameters(
   // Assign any pinning points
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
       std::string pinning_text = "pinning point for ";
-      pinning_text.append(variable.name);
+      pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
-      if (variable.field_type == SCALAR)
+      if (variable.get_field_type() == SCALAR)
         {
           // Skip if the value is the default INT_MAX
           if (parameter_handler.get_double("value") == INT_MAX)
@@ -279,11 +279,11 @@ userInputParameters<dim>::assign_linear_solve_parameters(
 {
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.pde_type == TIME_INDEPENDENT ||
-          variable.pde_type == IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
+          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
         {
           std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
 
           linearSolverParameters linear_solver_parameters;
@@ -346,11 +346,11 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 {
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
+          variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
 
           nonlinearSolverParameters nonlinear_solver_parameters;
