@@ -202,8 +202,8 @@ GMGSolver<dim, degree>::solve(const double &step_length)
 
   // Compute the residual
   this->get_system_matrix()->compute_residual(*this->get_residual(), *solution);
-  if (this->get_user_inputs().output_parameters.should_output(
-        this->get_user_inputs().temporal_discretization.get_current_increment()))
+  if (this->get_user_inputs().get_output_parameters().should_output(
+        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << "  field: " << this->get_field_index()
@@ -265,15 +265,18 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     {
       smoother_data[level].smoothing_range =
         this->get_user_inputs()
-          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(this->get_field_index())
           .smoothing_range;
       smoother_data[level].degree =
         this->get_user_inputs()
-          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(this->get_field_index())
           .smoother_degree;
       smoother_data[level].eig_cg_n_iterations =
         this->get_user_inputs()
-          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(this->get_field_index())
           .eig_cg_n_iterations;
       (*mg_operators)[level].compute_diagonal(change_index);
       smoother_data[level].preconditioner =
@@ -320,8 +323,8 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     .get_constraint(this->get_field_index())
     .set_zero(*this->get_newton_update());
 
-  if (this->get_user_inputs().output_parameters.should_output(
-        this->get_user_inputs().temporal_discretization.get_current_increment()))
+  if (this->get_user_inputs().get_output_parameters().should_output(
+        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
       conditionalOStreams::pout_summary()
         << " Final residual: " << this->get_solver_control().last_value()

@@ -73,7 +73,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       if (this->get_user_inputs()
-            .linear_solve_parameters.get_linear_solve_parameters(index)
+            .get_linear_solve_parameters()
+            .get_linear_solve_parameters(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
@@ -120,7 +121,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
     {
       // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is 0.
       if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-          this->get_user_inputs().temporal_discretization.get_current_increment() == 0)
+          this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
+            0)
         {
           continue;
         }
@@ -128,7 +130,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
       bool         is_converged = true;
       unsigned int iteration    = 0;
       const auto  &step_length  = this->get_user_inputs()
-                                  .nonlinear_solve_parameters.nonlinear_solve.at(index)
+                                  .get_nonlinear_solve_parameters()
+                                  .nonlinear_solve.at(index)
                                   .step_length;
 
       while (is_converged)
@@ -137,7 +140,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 
           // Perform the linear solve with the step length
           if (this->get_user_inputs()
-                .linear_solve_parameters.get_linear_solve_parameters(index)
+                .get_linear_solve_parameters()
+                .get_linear_solve_parameters(index)
                 .preconditioner == preconditionerType::GMG)
             {
               gmg_solvers.at(index)->solve(step_length);
@@ -150,7 +154,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
           iteration++;
 
           if (iteration < this->get_user_inputs()
-                            .nonlinear_solve_parameters.nonlinear_solve.at(index)
+                            .get_nonlinear_solve_parameters()
+                            .nonlinear_solve.at(index)
                             .max_iterations)
             {
               is_converged = true;

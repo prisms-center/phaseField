@@ -98,7 +98,8 @@ private:
     const override;
 
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ");
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+      "CIJ");
 };
 
 PRISMS_PF_END_NAMESPACE

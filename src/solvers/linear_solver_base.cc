@@ -40,9 +40,9 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , newton_update(
       _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
   , pde_operator(std::move(_pde_operator))
-  , solver_control(
-      _user_inputs.linear_solve_parameters.get_linear_solve_parameters(field_index)
-        .max_iterations)
+  , solver_control(_user_inputs.get_linear_solve_parameters()
+                     .get_linear_solve_parameters(field_index)
+                     .max_iterations)
 {
   // Creating map to match types
   subset_attributes.emplace(field_index, *variable_attributes);
@@ -109,14 +109,16 @@ template <unsigned int dim, unsigned int degree>
 inline void
 linearSolverBase<dim, degree>::compute_solver_tolerance()
 {
-  tolerance =
-    user_inputs->linear_solve_parameters.get_linear_solve_parameters(field_index)
-          .tolerance_type == solverToleranceType::RELATIVE_RESIDUAL_CHANGE
-      ? user_inputs->linear_solve_parameters.get_linear_solve_parameters(field_index)
-            .tolerance *
-          residual->l2_norm()
-      : user_inputs->linear_solve_parameters.get_linear_solve_parameters(field_index)
-          .tolerance;
+  tolerance = user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance_type == solverToleranceType::RELATIVE_RESIDUAL_CHANGE
+                ? user_inputs->get_linear_solve_parameters()
+                      .get_linear_solve_parameters(field_index)
+                      .tolerance *
+                    residual->l2_norm()
+                : user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance;
 }
 
 INSTANTIATE_BI_TEMPLATE(linearSolverBase)

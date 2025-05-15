@@ -96,21 +96,24 @@ private:
     const override;
 
   number clength =
-    this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
-  number Mn  = this->get_user_inputs().user_constants.get_model_constant_double("Mn");
-  number ell = this->get_user_inputs().user_constants.get_model_constant_double("ell");
-  number Gc0 = this->get_user_inputs().user_constants.get_model_constant_double("Gc0");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("cracklength");
+  number Mn =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn");
+  number ell =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("ell");
+  number Gc0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Gc0");
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "CIJ_base");
   number KI_nom =
-    this->get_user_inputs().user_constants.get_model_constant_double("KI_nom");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("KI_nom");
   number vel_nom =
-    this->get_user_inputs().user_constants.get_model_constant_double("vel_nom");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("vel_nom");
   number dx =
-    this->get_user_inputs().spatial_discretization.size[0] /
-    double(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
-    std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
+    this->get_user_inputs().get_spatial_discretization().size[0] /
+    double(this->get_user_inputs().get_spatial_discretization().subdivisions[0]) /
+    std::pow(2.0, this->get_user_inputs().get_spatial_discretization().global_refinement);
 };
 
 PRISMS_PF_END_NAMESPACE

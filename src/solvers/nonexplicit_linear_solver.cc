@@ -73,7 +73,8 @@ nonexplicitLinearSolver<dim, degree>::init()
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       if (this->get_user_inputs()
-            .linear_solve_parameters.get_linear_solve_parameters(index)
+            .get_linear_solve_parameters()
+            .get_linear_solve_parameters(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
@@ -120,13 +121,15 @@ nonexplicitLinearSolver<dim, degree>::solve()
     {
       // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is 0.
       if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-          this->get_user_inputs().temporal_discretization.get_current_increment() == 0)
+          this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
+            0)
         {
           continue;
         }
 
       if (this->get_user_inputs()
-            .linear_solve_parameters.get_linear_solve_parameters(index)
+            .get_linear_solve_parameters()
+            .get_linear_solve_parameters(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.at(index)->solve();

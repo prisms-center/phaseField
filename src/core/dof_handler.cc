@@ -26,16 +26,17 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
                             const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
       // TODO (landinjm): This relies on the fact the entry has already been created. Add
       // an assertion
-      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
+      if (user_inputs->get_variable_attributes().at(index).duplicate_field_index !=
           numbers::invalid_index)
         {
           const_dof_handlers.push_back(
-            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
+            dof_handlers
+              .at(user_inputs->get_variable_attributes().at(index).duplicate_field_index)
               .get());
           continue;
         }
@@ -101,14 +102,15 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
                       const MGInfo<dim>                                &mg_info)
 {
   unsigned int n_dofs = 0;
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
+      if (user_inputs->get_variable_attributes().at(index).duplicate_field_index !=
           numbers::invalid_index)
         {
           n_dofs +=
-            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
+            dof_handlers
+              .at(user_inputs->get_variable_attributes().at(index).duplicate_field_index)
               ->n_dofs();
           continue;
         }
@@ -142,7 +144,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
           mg_dof_handlers.at(index)[level]->reinit(
             triangulation_handler.get_mg_triangulation(level));
           mg_dof_handlers.at(index)[level]->distribute_dofs(
-            fe_system.at(user_inputs->var_attributes->at(index).field_type));
+            fe_system.at(user_inputs->get_variable_attributes().at(index).field_type));
           n_dofs_with_mg += mg_dof_handlers.at(index)[level]->n_dofs();
         }
     }
@@ -158,7 +160,7 @@ template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 dofHandler<dim>::get_dof_handlers() const
 {
-  Assert(const_dof_handlers.size() == user_inputs->var_attributes->size(),
+  Assert(const_dof_handlers.size() == user_inputs->get_variable_attributes().size(),
          dealii::ExcNotInitialized());
   return const_dof_handlers;
 }

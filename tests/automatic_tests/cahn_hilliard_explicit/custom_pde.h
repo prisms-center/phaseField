@@ -97,8 +97,10 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  number McV = this->get_user_inputs().user_constants.get_model_constant_double("McV");
-  number KcV = this->get_user_inputs().user_constants.get_model_constant_double("KcV");
+  number McV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  number KcV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("KcV");
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -69,7 +69,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       if (variable.field_solve_type == field_solve_type)
         {

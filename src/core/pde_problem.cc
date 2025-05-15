@@ -54,8 +54,8 @@ PDEProblem<dim, degree>::PDEProblem(
   , constraint_handler(_user_inputs, mg_info, _pde_operator, _pde_operator_float)
   , matrix_free_handler()
   , multigrid_matrix_free_handler(0, 0)
-  , invm_handler(*_user_inputs.var_attributes)
-  , solution_handler(*_user_inputs.var_attributes, mg_info)
+  , invm_handler(_user_inputs.get_variable_attributes())
+  , solution_handler(_user_inputs.get_variable_attributes(), mg_info)
   , dof_handler(_user_inputs, mg_info)
   , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
@@ -138,7 +138,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Create the SCALAR/VECTOR FESystem's, if applicable
   conditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       if (variable.field_type == fieldType::SCALAR &&
           fe_system.find(fieldType::SCALAR) == fe_system.end())
@@ -297,7 +297,7 @@ PDEProblem<dim, degree>::solve_increment()
   timer::serial_timer().enter_subsection("Solve Increment");
 
   // Update the time-dependent constraints
-  if (!user_inputs->boundary_parameters.time_dependent_BC_list.empty())
+  if (!user_inputs->get_boundary_parameters().time_dependent_BC_list.empty())
     {
       constraint_handler
         .update_time_dependent_constraints(mapping, dof_handler.get_dof_handlers());
@@ -359,18 +359,18 @@ PDEProblem<dim, degree>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->temporal_discretization.get_current_increment() <
-         user_inputs->temporal_discretization.get_total_increments())
+  while (user_inputs->get_temporal_discretization().get_current_increment() <
+         user_inputs->get_temporal_discretization().get_total_increments())
     {
-      user_inputs->temporal_discretization.update_current_increment();
-      user_inputs->temporal_discretization.update_current_time();
+      user_inputs->get_temporal_discretization().update_current_increment();
+      user_inputs->get_temporal_discretization().update_current_time();
 
       CALI_MARK_BEGIN("Solve Increment");
       solve_increment();
       CALI_MARK_END("Solve Increment");
 
-      if (user_inputs->output_parameters.should_output(
-            user_inputs->temporal_discretization.get_current_increment()))
+      if (user_inputs->get_output_parameters().should_output(
+            user_inputs->get_temporal_discretization().get_current_increment()))
         {
           // Ideally just update ghosts that need to be here.
           solution_handler.update_ghosts();
@@ -391,7 +391,7 @@ PDEProblem<dim, degree>::solve()
           // Print the l2-norms and integrals of each solution
           conditionalOStreams::pout_base()
             << "Iteration: "
-            << user_inputs->temporal_discretization.get_current_increment() << "\n";
+            << user_inputs->get_temporal_discretization().get_current_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               conditionalOStreams::pout_base()
@@ -399,7 +399,7 @@ PDEProblem<dim, degree>::solve()
                 << " integrated value: ";
 
               const auto local_field_type =
-                user_inputs->var_attributes->at(index).field_type;
+                user_inputs->get_variable_attributes().at(index).field_type;
 
               if (local_field_type == fieldType::VECTOR)
                 {
