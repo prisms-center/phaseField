@@ -18,10 +18,10 @@ fi
 
 if [ -x "$(command -v run-clang-tidy)" ]; then
     CLANG_TIDY=run-clang-tidy
-elif [ -x "$(command -v run-clang-tidy-18)" ]; then
-    CLANG_TIDY=run-clang-tidy-18
+elif [ -x "$(command -v run-clang-tidy-20)" ]; then
+    CLANG_TIDY=run-clang-tidy-20    
 else
-    echo "Neither run-clang-tidy and clang++ nor run-clang-tidy-18 and clang++-18 are in path."
+    echo "Neither run-clang-tidy nor run-clang-tidy-20 are in path."
     exit 1
 fi
 
