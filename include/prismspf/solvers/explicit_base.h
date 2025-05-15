@@ -104,6 +104,97 @@ protected:
   print();
 
   /**
+   * \brief Get the user-inputs.
+   */
+  [[nodiscard]] const userInputParameters<dim> &
+  get_user_inputs() const
+  {
+    return *user_inputs;
+  }
+
+  /**
+   * \brief Get the matrix-free object handler for non-multigrid data.
+   */
+  [[nodiscard]] const matrixfreeHandler<dim, double> &
+  get_matrix_free_handler() const
+  {
+    return *matrix_free_handler;
+  }
+
+  /**
+   * \brief Get the invm handler.
+   */
+  [[nodiscard]] const invmHandler<dim, degree, double> &
+  get_invm_handler() const
+  {
+    return *invm_handler;
+  }
+
+  /**
+   * \brief Get the constraint handler.
+   */
+  [[nodiscard]] const constraintHandler<dim, degree> &
+  get_constraint_handler() const
+  {
+    return *constraint_handler;
+  }
+
+  /**
+   * \brief Get the dof handler.
+   */
+  [[nodiscard]] const dofHandler<dim> &
+  get_dof_handler() const
+  {
+    return *dof_handler;
+  }
+
+  /**
+   * \brief Get the mapping.
+   */
+  [[nodiscard]] const dealii::MappingQ1<dim> &
+  get_mapping() const
+  {
+    return *mapping;
+  }
+
+  /**
+   * \brief Get the solution handler.
+   */
+  [[nodiscard]] solutionHandler<dim> &
+  get_solution_handler() const
+  {
+    return *solution_handler;
+  }
+
+  /**
+   * \brief Get the subset attributes.
+   */
+  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  get_subset_attributes() const
+  {
+    return subset_attributes;
+  }
+
+  /**
+   * \brief Get the pde operator.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>>
+  get_pde_operator() const
+  {
+    return pde_operator;
+  }
+
+  /**
+   * \brief Get the system matrix.
+   */
+  [[nodiscard]] std::unique_ptr<SystemMatrixType> &
+  get_system_matrix()
+  {
+    return system_matrix;
+  }
+
+private:
+  /**
    * \brief User-inputs.
    */
   const userInputParameters<dim> *user_inputs;

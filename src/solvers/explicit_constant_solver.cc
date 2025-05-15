@@ -50,7 +50,7 @@ explicitConstantSolver<dim, degree>::init()
   this->compute_subset_attributes(fieldSolveType::EXPLICIT_CONSTANT);
 
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
