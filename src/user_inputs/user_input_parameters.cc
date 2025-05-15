@@ -204,7 +204,8 @@ userInputParameters<dim>::assign_boundary_parameters(
         {
           std::string bc_text = "boundary condition for ";
           bc_text.append(variable.name);
-          boundary_parameters.BC_list[index].emplace(0, parameter_handler.get(bc_text));
+          boundary_parameters
+            .set_boundary_condition_string(parameter_handler.get(bc_text), index, 0);
         }
       else
         {
@@ -213,8 +214,8 @@ userInputParameters<dim>::assign_boundary_parameters(
             {
               std::string bc_text = "boundary condition for ";
               bc_text.append(variable.name + ", " + axis_labels[i] + " component");
-              boundary_parameters.BC_list[index].emplace(i,
-                                                         parameter_handler.get(bc_text));
+              boundary_parameters
+                .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
             }
         }
     }
@@ -244,8 +245,9 @@ userInputParameters<dim>::assign_boundary_parameters(
             {
               point[i] = parameter_handler.get_double(axis_labels[i]);
             }
-          boundary_parameters.pinned_point_list
-            .emplace(index, std::make_pair(parameter_handler.get_double("value"), point));
+          boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
+                                               point,
+                                               index);
         }
       else
         {
@@ -264,8 +266,7 @@ userInputParameters<dim>::assign_boundary_parameters(
               point[i] = parameter_handler.get_double(axis_labels[i]);
               value[i] = parameter_handler.get_double(axis_labels[i] + " value");
             }
-          boundary_parameters.pinned_point_list.emplace(index,
-                                                        std::make_pair(value, point));
+          boundary_parameters.set_pinned_point(value, point, index);
         }
       parameter_handler.leave_subsection();
     }

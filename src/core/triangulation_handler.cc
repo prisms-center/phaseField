@@ -230,7 +230,7 @@ triangulationHandler<dim>::mark_periodic()
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.
   for (const auto &[index, boundary_condition] :
-       user_inputs->get_boundary_parameters().boundary_condition_list)
+       user_inputs->get_boundary_parameters().get_boundary_condition_list())
     {
       for (const auto &[component, condition] : boundary_condition)
         {

@@ -177,7 +177,7 @@ constraintHandler<dim, degree>::update_time_dependent_constraints(
     {
       // Check that we have time-dependent constraints before recreating the whole
       // constraint set.
-      if (user_inputs->get_boundary_parameters().time_dependent_BC_list.contains(index))
+      if (user_inputs->get_boundary_parameters().is_time_dependent(index))
         {
           // TODO (landinjm): Is there a way to update the constraint set without
           // recreating
@@ -198,7 +198,7 @@ constraintHandler<dim, degree>::update_time_dependent_mg_constraints(
 
   for (unsigned int index = 0; index < dof_handlers.size(); index++)
     {
-      if (user_inputs->get_boundary_parameters().time_dependent_BC_list.contains(index))
+      if (user_inputs->get_boundary_parameters().is_time_dependent(index))
         {
           // TODO (landinjm): Fix this so we can actually apply constraints to the LHS
           // fields baseded on whether it is normal or change. For now, I know this will
@@ -355,7 +355,7 @@ constraintHandler<dim, degree>::make_constraint(
 
   // First check the normal boundary conditions
   const auto &boundary_condition =
-    user_inputs->get_boundary_parameters().boundary_condition_list.at(index);
+    user_inputs->get_boundary_parameters().get_boundary_condition_list().at(index);
   for (const auto &[component, condition] : boundary_condition)
     {
       for (const auto &[boundary_id, boundary_type] :
@@ -386,7 +386,7 @@ constraintHandler<dim, degree>::make_constraint(
     }
 
   // Second check for pinned points, if they exist
-  if (user_inputs->get_boundary_parameters().pinned_point_list.contains(index))
+  if (user_inputs->get_boundary_parameters().has_pinned_point(index))
     {
       set_pinned_point<double>(dof_handler, local_constraint, index, false);
     }
@@ -422,7 +422,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
   if (dependency_type == dependencyType::CHANGE)
     {
       const auto &boundary_condition =
-        this->user_inputs->get_boundary_parameters().boundary_condition_list.at(
+        this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
           global_index);
       for (const auto &[component, condition] : boundary_condition)
         {
@@ -456,7 +456,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
         }
 
       // Second check for pinned points, if they exist
-      if (user_inputs->get_boundary_parameters().pinned_point_list.contains(global_index))
+      if (user_inputs->get_boundary_parameters().has_pinned_point(global_index))
         {
           set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
         }
@@ -464,7 +464,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
   else if (dependency_type == dependencyType::NORMAL)
     {
       const auto &boundary_condition =
-        this->user_inputs->get_boundary_parameters().boundary_condition_list.at(
+        this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
           global_index);
       for (const auto &[component, condition] : boundary_condition)
         {
@@ -496,7 +496,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
         }
 
       // Second check for pinned points, if they exist
-      if (user_inputs->get_boundary_parameters().pinned_point_list.contains(global_index))
+      if (user_inputs->get_boundary_parameters().has_pinned_point(global_index))
         {
           set_pinned_point<float>(dof_handler, local_constraint, global_index, false);
         }
@@ -520,7 +520,7 @@ constraintHandler<dim, degree>::set_pinned_point(
 {
   const number tolerance = 1.0e-2;
   const auto &[value, target_point] =
-    user_inputs->get_boundary_parameters().pinned_point_list.at(index);
+    user_inputs->get_boundary_parameters().get_pinned_point(index);
 
   // Helper function to set inhomogeneity for a single DOF
   auto set_inhomogeneity = [&](unsigned int dof_index, number value)

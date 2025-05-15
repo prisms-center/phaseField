@@ -176,21 +176,73 @@ public:
   void
   print_parameter_summary() const;
 
-  // Map of unfiltered boundary conditions strings. The first key is the global index. The
-  // second key is the number of dimensions.
-  BCList BC_list;
+  /**
+   * \brief Set the boundary condition string for a field index and component.
+   */
+  void
+  set_boundary_condition_string(const std::string  &BC_string,
+                                const types::index &index,
+                                const unsigned int &component)
+  {
+    BC_list[index][component] = BC_string;
+  }
 
-  // Map of time-dependent boundary conditions strings. The first key is the global index.
-  // The second key is the number of dimensions.
-  std::set<types::index> time_dependent_BC_list;
+  /**
+   * \brief Whether there are time-dependent boundary conditions.
+   */
+  [[nodiscard]] bool
+  has_time_dependent_BCs() const
+  {
+    return !time_dependent_BC_list.empty();
+  }
 
-  // Map of pinned points. The first key is the global index. The pair is the pinned
-  // value and point.
-  PinnedPointMap pinned_point_list = {};
+  /**
+   * \brief Whether the boundary condition is time-dependent.
+   */
+  [[nodiscard]] bool
+  is_time_dependent(const types::index &index) const
+  {
+    return time_dependent_BC_list.contains(index);
+  }
 
-  // Map of boundary conditions. The first key is the global index. The second key is the
-  // number of dimensions.
-  BoundaryConditionMap boundary_condition_list;
+  /**
+   * \brief Set a pinned point.
+   */
+  void
+  set_pinned_point(const std::variant<double, std::vector<double>> &value,
+                   const dealii::Point<dim>                        &point,
+                   const types::index                              &index)
+  {
+    pinned_point_list[index] = std::make_pair(value, point);
+  }
+
+  /**
+   * \brief Whether there is a pinned point for a field index.
+   */
+  [[nodiscard]] bool
+  has_pinned_point(const types::index &index) const
+  {
+    return pinned_point_list.contains(index);
+  }
+
+  /**
+   * \brief Get the pinned point for a field index.
+   */
+  [[nodiscard]] const std::pair<std::variant<double, std::vector<double>>,
+                                dealii::Point<dim>> &
+  get_pinned_point(const types::index &index) const
+  {
+    return pinned_point_list.at(index);
+  }
+
+  /**
+   * \brief Get the boundary conditions list.
+   */
+  [[nodiscard]] const BoundaryConditionMap &
+  get_boundary_condition_list() const
+  {
+    return boundary_condition_list;
+  }
 
 private:
   /**
@@ -206,6 +258,22 @@ private:
    */
   void
   validate_boundary_conditions() const;
+
+  // Map of unfiltered boundary conditions strings. The first key is the global index. The
+  // second key is the number of dimensions.
+  BCList BC_list;
+
+  // Map of time-dependent boundary conditions strings. The first key is the global index.
+  // The second key is the number of dimensions.
+  std::set<types::index> time_dependent_BC_list;
+
+  // Map of pinned points. The first key is the global index. The pair is the pinned value
+  // and point.
+  PinnedPointMap pinned_point_list = {};
+
+  // Map of boundary conditions. The first key is the global index. The second key is the
+  // number of dimensions.
+  BoundaryConditionMap boundary_condition_list;
 };
 
 template <unsigned int dim>
