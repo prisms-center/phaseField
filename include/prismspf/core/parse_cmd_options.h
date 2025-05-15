@@ -97,7 +97,7 @@ public:
   get_caliper_configuration()
   {
     // Allowed number of arguments
-    int n_args = 5;
+    const int n_args = 5;
 
     // Check that there aren't too many arguments
     if (argc > n_args)
