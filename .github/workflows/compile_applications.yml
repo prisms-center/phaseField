@@ -43,7 +43,7 @@ jobs:
           ninja -j $(nproc)
 
 
-      - name: Run PRISMS-PF automatic tests in serial
+      - name: Compile PRISMS-PF applications
         timeout-minutes: 30
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
