@@ -34,6 +34,11 @@ MatrixFreePDE<dim, degree>::updateNucleiList()
                 }
 
               std::vector<nucleus<dim>> new_nuclei;
+
+              // Disable skipping steps
+              // Phil NB: This was commented out in Supriyo's code, see
+              //  github.com/david-montiel-t/phaseField/blob/nir_dealii_94_compatible/src/matrixfree/nucleation.cc
+              /*
               if (currentIncrement == 1 && !userInputs.evolution_before_nucleation)
                 {
                   while (new_nuclei.size() == 0)
@@ -64,6 +69,8 @@ MatrixFreePDE<dim, degree>::updateNucleiList()
                 {
                   new_nuclei = getNewNuclei();
                 }
+              */
+              new_nuclei = getNewNuclei();
               nuclei.insert(nuclei.end(), new_nuclei.begin(), new_nuclei.end());
 
               if (new_nuclei.size() > 0 && userInputs.h_adaptivity == true)
@@ -191,139 +198,151 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
             {
               unsigned int variable_index = userInputs.nucleating_variable_indices.at(i);
 
-              // Compute random no. between 0 and 1 (new method)
-              rand_val = distr(gen);
-              // Nucleation probability
-              double Prob = getNucleationProbability(variable_values,
-                                                     element_volume,
-                                                     ele_center,
-                                                     variable_index);
-
-              // ----------------------------
-
-              if (rand_val <= Prob)
+              // NEW SECTION: Loop through each existing nuclei to verify if any of them
+              // correspond to the current order parameter
+              unsigned int numbercurrnuclei = 0;
+              for (unsigned int nucind = 0; nucind < nuclei.size(); nucind++) {
+                if (nuclei[nucind].orderParameterIndex == variable_index) {
+                  numbercurrnuclei++;
+                }
+              }
+              // If only one nucleus per order parameter is allowed, skip the next section
+              if ((numbercurrnuclei == 0) || userInputs.multiple_nuclei_per_order_parameter)
                 {
-                  // Initializing random vector in "dim" dimensions
-                  std::vector<double> randvec(dim, 0.0);
-                  dealii::Point<dim>  nuc_ele_pos;
+                  // Compute random no. between 0 and 1 (new method)
+                  rand_val = distr(gen);
+                  // Nucleation probability
+                  double Prob = getNucleationProbability(variable_values,
+                                                        element_volume,
+                                                        ele_center,
+                                                        variable_index);
 
-                  // Finding coordinates of quadrature point closest to and
-                  // furthest away from the origin
-                  std::vector<double> ele_origin(dim);
-                  for (unsigned int i = 0; i < dim; i++)
+                  // ----------------------------
+
+                  if (rand_val <= Prob)
                     {
-                      ele_origin[i] = q_point_list[0](i);
-                    }
-                  std::vector<double> ele_max(dim);
-                  for (unsigned int i = 0; i < dim; i++)
-                    {
-                      ele_max[i] = q_point_list[0](i);
-                    }
-                  for (unsigned int i = 0; i < dim; i++)
-                    {
-                      for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                      // Initializing random vector in "dim" dimensions
+                      std::vector<double> randvec(dim, 0.0);
+                      dealii::Point<dim>  nuc_ele_pos;
+
+                      // Finding coordinates of quadrature point closest to and
+                      // furthest away from the origin
+                      std::vector<double> ele_origin(dim);
+                      for (unsigned int i = 0; i < dim; i++)
                         {
-                          for (unsigned int i = 0; i < dim; i++)
-                            {
-                              if (q_point_list[q_point](i) < ele_origin[i])
-                                {
-                                  ele_origin[i] = q_point_list[q_point](i);
-                                }
-                              if (q_point_list[q_point](i) > ele_max[i])
-                                {
-                                  ele_max[i] = q_point_list[q_point](i);
-                                }
-                            }
+                          ele_origin[i] = q_point_list[0](i);
                         }
-                    }
-
-                  // Find a random point within the element
-                  for (unsigned int j = 0; j < dim; j++)
-                    {
-                      randvec[j] = distr(gen);
-                      nuc_ele_pos[j] =
-                        ele_origin[j] + (ele_max[j] - ele_origin[j]) * randvec[j];
-                    }
-
-                  // Make sure point is in safety zone
-                  bool insafetyzone = true;
-                  for (unsigned int j = 0; j < dim; j++)
-                    {
-                      bool periodic_j =
-                        (userInputs.BC_list[1].var_BC_type[2 * j] == PERIODIC);
-                      bool insafetyzone_j =
-                        (periodic_j ||
-                         ((nuc_ele_pos[j] > userInputs.get_no_nucleation_border_thickness(
-                                              variable_index)) &&
-                          (nuc_ele_pos[j] <
-                           userInputs.domain_size[j] -
-                             userInputs.get_no_nucleation_border_thickness(
-                               variable_index))));
-                      insafetyzone = insafetyzone && insafetyzone_j;
-                    }
-
-                  if (insafetyzone)
-                    {
-                      // Check to see if the order parameter anywhere within the
-                      // element is above the threshold
-                      bool anyqp_OK = false;
-                      for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                      std::vector<double> ele_max(dim);
+                      for (unsigned int i = 0; i < dim; i++)
                         {
-                          double sum_op = 0.0;
-                          for (unsigned int var = 0;
-                               var < userInputs.nucleation_need_value.size();
-                               var++)
+                          ele_max[i] = q_point_list[0](i);
+                        }
+                      for (unsigned int i = 0; i < dim; i++)
+                        {
+                          for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                             {
-                              for (unsigned int op = 0;
-                                   op < userInputs.nucleating_variable_indices.size();
-                                   op++)
+                              for (unsigned int i = 0; i < dim; i++)
                                 {
-                                  if (userInputs.nucleation_need_value[var] ==
-                                      userInputs.nucleating_variable_indices[op])
+                                  if (q_point_list[q_point](i) < ele_origin[i])
                                     {
-                                      sum_op += var_values[var][q_point];
+                                      ele_origin[i] = q_point_list[q_point](i);
+                                    }
+                                  if (q_point_list[q_point](i) > ele_max[i])
+                                    {
+                                      ele_max[i] = q_point_list[q_point](i);
                                     }
                                 }
                             }
-                          if (sum_op < userInputs.nucleation_order_parameter_cutoff)
-                            {
-                              anyqp_OK = true;
-                            }
                         }
 
-                      if (anyqp_OK)
+                      // Find a random point within the element
+                      for (unsigned int j = 0; j < dim; j++)
                         {
-                          // Pick the order parameter (not needed anymore since
-                          // the probability is now calculated on a per OP
-                          // basis)
-                          /*
-                          std::random_device rd2;
-                          std::mt19937 gen2(rd2());
-                          std::uniform_int_distribution<unsigned int>
-                          int_distr(0,userInputs.nucleating_variable_indices.size()-1);
-                          unsigned int op_for_nucleus =
-                          userInputs.nucleating_variable_indices[int_distr(gen2)];
-                          std::cout << "Nucleation order parameter: " <<
-                          op_for_nucleus << " " << rand_val << std::endl;
-                          */
+                          randvec[j] = distr(gen);
+                          nuc_ele_pos[j] =
+                            ele_origin[j] + (ele_max[j] - ele_origin[j]) * randvec[j];
+                        }
 
-                          // Add nucleus to prospective list
-                          std::cout << "Prospective nucleation event. Nucleus no. "
-                                    << nuclei.size() + 1 << "\n";
-                          std::cout << "Nucleus center: " << nuc_ele_pos << "\n";
-                          std::cout << "Nucleus order parameter: " << variable_index
-                                    << "\n";
-                          auto *temp   = new nucleus<dim>;
-                          temp->index  = nuclei.size();
-                          temp->center = nuc_ele_pos;
-                          temp->semiaxes =
-                            userInputs.get_nucleus_semiaxes(variable_index);
-                          temp->seededTime = t;
-                          temp->seedingTime =
-                            userInputs.get_nucleus_hold_time(variable_index);
-                          temp->seedingTimestep     = inc;
-                          temp->orderParameterIndex = variable_index;
-                          newnuclei.push_back(*temp);
+                      // Make sure point is in safety zone
+                      bool insafetyzone = true;
+                      for (unsigned int j = 0; j < dim; j++)
+                        {
+                          bool periodic_j =
+                            (userInputs.BC_list[1].var_BC_type[2 * j] == PERIODIC);
+                          bool insafetyzone_j =
+                            (periodic_j ||
+                            ((nuc_ele_pos[j] > userInputs.get_no_nucleation_border_thickness(
+                                                  variable_index)) &&
+                              (nuc_ele_pos[j] <
+                              userInputs.domain_size[j] -
+                                userInputs.get_no_nucleation_border_thickness(
+                                  variable_index))));
+                          insafetyzone = insafetyzone && insafetyzone_j;
+                        }
+
+                      if (insafetyzone)
+                        {
+                          // Check to see if the order parameter anywhere within the
+                          // element is above the threshold
+                          bool anyqp_OK = false;
+                          for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                            {
+                              double sum_op = 0.0;
+                              for (unsigned int var = 0;
+                                  var < userInputs.nucleation_need_value.size();
+                                  var++)
+                                {
+                                  for (unsigned int op = 0;
+                                      op < userInputs.nucleating_variable_indices.size();
+                                      op++)
+                                    {
+                                      if (userInputs.nucleation_need_value[var] ==
+                                          userInputs.nucleating_variable_indices[op])
+                                        {
+                                          sum_op += var_values[var][q_point];
+                                        }
+                                    }
+                                }
+                              if (sum_op < userInputs.nucleation_order_parameter_cutoff)
+                                {
+                                  anyqp_OK = true;
+                                }
+                            }
+
+                          if (anyqp_OK)
+                            {
+                              // Pick the order parameter (not needed anymore since
+                              // the probability is now calculated on a per OP
+                              // basis)
+                              /*
+                              std::random_device rd2;
+                              std::mt19937 gen2(rd2());
+                              std::uniform_int_distribution<unsigned int>
+                              int_distr(0,userInputs.nucleating_variable_indices.size()-1);
+                              unsigned int op_for_nucleus =
+                              userInputs.nucleating_variable_indices[int_distr(gen2)];
+                              std::cout << "Nucleation order parameter: " <<
+                              op_for_nucleus << " " << rand_val << std::endl;
+                              */
+
+                              // Add nucleus to prospective list
+                              std::cout << "Prospective nucleation event. Nucleus no. "
+                                        << nuclei.size() + 1 << "\n";
+                              std::cout << "Nucleus center: " << nuc_ele_pos << "\n";
+                              std::cout << "Nucleus order parameter: " << variable_index
+                                        << "\n";
+                              auto *temp   = new nucleus<dim>;
+                              temp->index  = nuclei.size();
+                              temp->center = nuc_ele_pos;
+                              temp->semiaxes =
+                                userInputs.get_nucleus_semiaxes(variable_index);
+                              temp->seededTime = t;
+                              temp->seedingTime =
+                                userInputs.get_nucleus_hold_time(variable_index);
+                              temp->seedingTimestep     = inc;
+                              temp->orderParameterIndex = variable_index;
+                              newnuclei.push_back(*temp);
+                            }
                         }
                     }
                 }
@@ -351,6 +370,24 @@ MatrixFreePDE<dim, degree>::safetyCheckNewNuclei(std::vector<nucleus<dim>>  newn
     userInputs.nucleating_variable_indices.size(),
     std::vector<double>(num_quad_points));
   std::vector<dealii::Point<dim>> q_point_list(num_quad_points);
+
+  // NEW SECTION: Check if order parameters from prospective nuclei overlap with
+  // those from existing nuclei
+  if (!userInputs.multiple_nuclei_per_order_parameter)
+    {
+      for (const auto &this_nucleus1 : newnuclei)
+        {
+          for (const auto &this_nucleus2 : newnuclei)
+            {
+              if (this_nucleus1.orderParameterIndex == this_nucleus2.orderParameterIndex)
+                {
+                  pcout << "Attempted nucleation failed due to overlap with existing order parameter!\n";
+                  conflict_ids.push_back(this_nucleus1.index);
+                  break;
+                }
+            }
+        }
+    }
 
   // Nucleus cycle
   for (const auto &thisNucleus : newnuclei)
