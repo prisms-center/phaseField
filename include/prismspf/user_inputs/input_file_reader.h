@@ -36,6 +36,42 @@ public:
   get_model_constant_names();
 
   /**
+   * \brief Get the variable attributes.
+   */
+  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  get_var_attributes() const
+  {
+    return var_attributes;
+  }
+
+  /**
+   * \brief Get the parameter handler.
+   */
+  [[nodiscard]] dealii::ParameterHandler &
+  get_parameter_handler()
+  {
+    return parameter_handler;
+  }
+
+  /**
+   * \brief Get the model constant names.
+   */
+  [[nodiscard]] const std::set<std::string> &
+  get_model_constant_names() const
+  {
+    return model_constant_names;
+  }
+
+  /**
+   * \brief Get the number of dimensions.
+   */
+  [[nodiscard]] unsigned int
+  get_dim() const
+  {
+    return number_of_dimensions;
+  };
+
+  /**
    * \brief Method to declare the parameters to be read from an input file.
    */
   void
@@ -135,6 +171,7 @@ public:
   void
   declare_model_constants();
 
+private:
   std::string                                       parameters_file_name;
   const std::map<unsigned int, variableAttributes> &var_attributes;
   dealii::ParameterHandler                          parameter_handler;

@@ -26,7 +26,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
-  : var_attributes(&input_file_reader.var_attributes)
+  : var_attributes(&input_file_reader.get_var_attributes())
 {
   // Assign the parameters to the appropriate data structures
   assign_spatial_discretization_parameters(parameter_handler);
@@ -374,7 +374,7 @@ userInputParameters<dim>::load_model_constants(
   const inputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const std::string &constant_name : input_file_reader.model_constant_names)
+  for (const std::string &constant_name : input_file_reader.get_model_constant_names())
     {
       std::string constants_text = "Model constant ";
       constants_text.append(constant_name);
