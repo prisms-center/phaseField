@@ -82,9 +82,9 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
 
   scalarValue analytic =
     std::sin(M_PI * q_point_loc[0] /
-             this->get_user_inputs().spatial_discretization.size[0]) *
-    q_point_loc[1] / this->get_user_inputs().spatial_discretization.size[1] *
-    (1.0 - q_point_loc[1] / this->get_user_inputs().spatial_discretization.size[1]);
+             this->get_user_inputs().get_spatial_discretization().size[0]) *
+    q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().size[1] *
+    (1.0 - q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().size[1]);
 
   scalarValue error = (T - analytic) * (T - analytic);
 
