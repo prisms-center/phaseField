@@ -39,9 +39,10 @@ customPDE<dim, degree, number>::set_initial_condition(
 
   if (index == 0)
     {
-      if ((std::abs(point[1] -
-                    (this->get_user_inputs().get_spatial_discretization().size[1] / 2.0) +
-                    (0.5 * dx)) < dx) &&
+      if ((std::abs(
+             point[1] -
+             (this->get_user_inputs().get_spatial_discretization().get_size()[1] / 2.0) +
+             (0.5 * dx)) < dx) &&
           (point[0] < clength))
         {
           scalar_value = 1.0;
@@ -69,9 +70,10 @@ customPDE<dim, degree, number>::set_nonuniform_dirichlet(
         this->get_user_inputs().get_temporal_discretization().get_current_time();
 
       number x = (point[0] - (vel_nom * time) - clength);
-      number y = point[1] -
-                 (this->get_user_inputs().get_spatial_discretization().size[1] / 2.0) +
-                 (dx * 0.5);
+      number y =
+        point[1] -
+        (this->get_user_inputs().get_spatial_discretization().get_size()[1] / 2.0) +
+        (dx * 0.5);
       number r      = std::sqrt((x * x) + (y * y));
       number theta  = std::atan2(y, x);
       number mu     = CIJ_base[dim][dim];

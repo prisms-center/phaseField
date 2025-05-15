@@ -124,16 +124,17 @@ void
 triangulationHandler<dim>::generate_mesh()
 {
   // TODO (landinjm): Add more generality in selecting mesh types
-  if (user_inputs->get_spatial_discretization().radius != 0.0)
+  if (user_inputs->get_spatial_discretization().get_radius() != 0.0)
     {
       // TODO (landinjm): Adding assertion about periodic boundary conditions for spheres
       // Generate a sphere
 
       // TODO (landinjm): Add assertion that the user cannot specify multiple boundary
       // conditions for a hyper_ball geometry
-      dealii::GridGenerator::hyper_ball(*triangulation,
-                                        dealii::Point<dim>(),
-                                        user_inputs->get_spatial_discretization().radius);
+      dealii::GridGenerator::hyper_ball(
+        *triangulation,
+        dealii::Point<dim>(),
+        user_inputs->get_spatial_discretization().get_radius());
     }
   else
     {
@@ -144,9 +145,9 @@ triangulationHandler<dim>::generate_mesh()
       // Generate rectangle
       dealii::GridGenerator::subdivided_hyper_rectangle(
         *triangulation,
-        user_inputs->get_spatial_discretization().subdivisions,
+        user_inputs->get_spatial_discretization().get_subdivisions(),
         dealii::Point<dim>(),
-        dealii::Point<dim>(user_inputs->get_spatial_discretization().size));
+        dealii::Point<dim>(user_inputs->get_spatial_discretization().get_size()));
 
       // Mark boundaries. This is done before global refinement to reduce the number of
       // cells we have to loop through.
@@ -164,7 +165,7 @@ triangulationHandler<dim>::generate_mesh()
 
   // Global refinement
   triangulation->refine_global(
-    user_inputs->get_spatial_discretization().global_refinement);
+    user_inputs->get_spatial_discretization().get_global_refinement());
 
   // Create the triangulations for the coarser levels if we have at least one instance of
   // multigrid for any of the fields
@@ -213,8 +214,9 @@ triangulationHandler<dim>::mark_boundaries() const
 
           // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
           if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance ||
-              std::fabs(cell->face(face_number)->center()(direction) -
-                        (user_inputs->get_spatial_discretization().size[direction])) <
+              std::fabs(
+                cell->face(face_number)->center()(direction) -
+                (user_inputs->get_spatial_discretization().get_size()[direction])) <
                 tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);

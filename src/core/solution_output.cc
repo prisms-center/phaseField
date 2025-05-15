@@ -52,9 +52,9 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   // output. This does not make subdivisions and element degree equivalent in the
   // simulation!
   const unsigned int n_divisions =
-    user_inputs.get_output_parameters().patch_subdivisions == 0
+    user_inputs.get_output_parameters().get_patch_subdivisions() == 0
       ? degree
-      : user_inputs.get_output_parameters().patch_subdivisions;
+      : user_inputs.get_output_parameters().get_patch_subdivisions();
   data_out.build_patches(n_divisions);
 
   // Set some flags for data output
@@ -74,7 +74,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
   const unsigned int increment =
     user_inputs.get_temporal_discretization().get_current_increment();
 
-  if (user_inputs.get_output_parameters().file_type == "vtu")
+  if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {
       std::ostringstream increment_stream;
       increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
@@ -82,7 +82,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
         directory + name + "_" + increment_stream.str() + ".vtu";
       data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
     }
-  else if (user_inputs.get_output_parameters().file_type == "pvtu")
+  else if (user_inputs.get_output_parameters().get_file_type() == "pvtu")
     {
       data_out.write_vtu_with_pvtu_record(directory,
                                           name,
@@ -90,7 +90,7 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
                                           MPI_COMM_WORLD,
                                           n_trailing_digits);
     }
-  else if (user_inputs.get_output_parameters().file_type == "vtk")
+  else if (user_inputs.get_output_parameters().get_file_type() == "vtk")
     {
       std::ostringstream increment_stream;
       increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
@@ -150,9 +150,9 @@ solutionOutput<dim, number>::solutionOutput(
   // output. This does not make subdivisions and element degree equivalent in the
   // simulation!
   const unsigned int n_divisions =
-    user_inputs.get_output_parameters().patch_subdivisions == 0
+    user_inputs.get_output_parameters().get_patch_subdivisions() == 0
       ? degree
-      : user_inputs.get_output_parameters().patch_subdivisions;
+      : user_inputs.get_output_parameters().get_patch_subdivisions();
   data_out.build_patches(n_divisions);
 
   // Set some flags for data output
@@ -170,7 +170,7 @@ solutionOutput<dim, number>::solutionOutput(
   const unsigned int increment =
     user_inputs.get_temporal_discretization().get_current_increment();
 
-  if (user_inputs.get_output_parameters().file_type == "vtu")
+  if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {
       std::ostringstream increment_stream;
       increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
@@ -178,7 +178,7 @@ solutionOutput<dim, number>::solutionOutput(
         directory + name + "_" + increment_stream.str() + ".vtu";
       data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
     }
-  else if (user_inputs.get_output_parameters().file_type == "pvtu")
+  else if (user_inputs.get_output_parameters().get_file_type() == "pvtu")
     {
       data_out.write_vtu_with_pvtu_record(directory,
                                           name,
@@ -186,7 +186,7 @@ solutionOutput<dim, number>::solutionOutput(
                                           MPI_COMM_WORLD,
                                           n_trailing_digits);
     }
-  else if (user_inputs.get_output_parameters().file_type == "vtk")
+  else if (user_inputs.get_output_parameters().get_file_type() == "vtk")
     {
       std::ostringstream increment_stream;
       increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;

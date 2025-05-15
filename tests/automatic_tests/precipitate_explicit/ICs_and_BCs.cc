@@ -25,9 +25,10 @@ customPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] double                   &scalar_value,
   [[maybe_unused]] double                   &vector_component_value) const
 {
-  const double x_length = this->get_user_inputs().get_spatial_discretization().size[0];
+  const double x_length =
+    this->get_user_inputs().get_spatial_discretization().get_size()[0];
   const double refinement =
-    this->get_user_inputs().get_spatial_discretization().global_refinement;
+    this->get_user_inputs().get_spatial_discretization().get_global_refinement();
   const double radius_size_factor = 16.0;
   const double concentration      = 0.04;
 

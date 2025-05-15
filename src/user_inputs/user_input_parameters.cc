@@ -68,32 +68,37 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
     std::vector<std::string> axis_labels = {"x", "y", "z"};
     for (unsigned int i = 0; i < dim; ++i)
       {
-        spatial_discretization.size[i] =
-          parameter_handler.get_double(axis_labels[i] + " size");
-        spatial_discretization.subdivisions[i] =
-          parameter_handler.get_integer(axis_labels[i] + " subdivisions");
+        spatial_discretization.set_size(i,
+                                        parameter_handler.get_double(axis_labels[i] +
+                                                                     " size"));
+        spatial_discretization.set_subdivisions(i,
+                                                parameter_handler.get_integer(
+                                                  axis_labels[i] + " subdivisions"));
       }
   }
   parameter_handler.leave_subsection();
 
   parameter_handler.enter_subsection("spherical mesh");
   {
-    spatial_discretization.radius = parameter_handler.get_double("radius");
+    spatial_discretization.set_radius(parameter_handler.get_double("radius"));
   }
   parameter_handler.leave_subsection();
 
-  spatial_discretization.global_refinement =
-    parameter_handler.get_integer("global refinement");
+  spatial_discretization.set_global_refinement(
+    parameter_handler.get_integer("global refinement"));
 
-  spatial_discretization.degree = parameter_handler.get_integer("degree");
+  spatial_discretization.set_degree(parameter_handler.get_integer("degree"));
 
-  spatial_discretization.has_adaptivity = parameter_handler.get_bool("mesh adaptivity");
+  spatial_discretization.set_has_adaptivity(
+    parameter_handler.get_bool("mesh adaptivity"));
 
-  spatial_discretization.remeshing_period =
-    parameter_handler.get_integer("remeshing period");
+  spatial_discretization.set_remeshing_period(
+    parameter_handler.get_integer("remeshing period"));
 
-  spatial_discretization.max_refinement = parameter_handler.get_integer("max refinement");
-  spatial_discretization.min_refinement = parameter_handler.get_integer("min refinement");
+  spatial_discretization.set_max_refinement(
+    parameter_handler.get_integer("max refinement"));
+  spatial_discretization.set_min_refinement(
+    parameter_handler.get_integer("min refinement"));
 
   for (const auto &[index, variable] : *var_attributes)
     {
@@ -127,7 +132,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
               {
                 AssertThrow(false, UnreachableCode());
               }
-            spatial_discretization.refinement_criteria.push_back(new_criterion);
+            spatial_discretization.add_refinement_criteria(new_criterion);
           }
       }
       parameter_handler.leave_subsection();
@@ -152,18 +157,19 @@ userInputParameters<dim>::assign_output_parameters(
 {
   parameter_handler.enter_subsection("output");
   {
-    output_parameters.file_name          = parameter_handler.get("file name");
-    output_parameters.file_type          = parameter_handler.get("file type");
-    output_parameters.patch_subdivisions = parameter_handler.get_integer("subdivisions");
-    output_parameters.condition          = parameter_handler.get("condition");
-    output_parameters.user_output_list   = dealii::Utilities::string_to_int(
-      dealii::Utilities::split_string_list(parameter_handler.get("list")));
-    output_parameters.n_outputs =
-      static_cast<unsigned int>(parameter_handler.get_integer("number"));
-    output_parameters.print_output_period =
-      parameter_handler.get_integer("print step period");
-    output_parameters.print_timing_with_output =
-      parameter_handler.get_bool("timing information with output");
+    output_parameters.set_file_name(parameter_handler.get("file name"));
+    output_parameters.set_file_type(parameter_handler.get("file type"));
+    output_parameters.set_patch_subdivisions(
+      parameter_handler.get_integer("subdivisions"));
+    output_parameters.set_output_condition(parameter_handler.get("condition"));
+    output_parameters.set_user_output_list(dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list"))));
+    output_parameters.set_n_outputs(
+      static_cast<unsigned int>(parameter_handler.get_integer("number")));
+    output_parameters.set_print_output_period(
+      parameter_handler.get_integer("print step period"));
+    output_parameters.set_print_timing_with_output(
+      parameter_handler.get_bool("timing information with output"));
   }
   parameter_handler.leave_subsection();
 }

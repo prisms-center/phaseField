@@ -73,7 +73,7 @@ main(int argc, char *argv[])
               prisms::userInputParameters<1> user_inputs(
                 input_file_reader,
                 input_file_reader.get_parameter_handler());
-              switch (user_inputs.get_spatial_discretization().degree)
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -126,8 +126,8 @@ main(int argc, char *argv[])
             {
               prisms::userInputParameters<2> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.get_spatial_discretization().degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -180,8 +180,8 @@ main(int argc, char *argv[])
             {
               prisms::userInputParameters<3> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.get_spatial_discretization().degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {

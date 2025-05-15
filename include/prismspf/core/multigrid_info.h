@@ -177,9 +177,9 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
   const max max_mg_level =
-    user_inputs->get_spatial_discretization().has_adaptivity
-      ? user_inputs->get_spatial_discretization().max_refinement
-      : user_inputs->get_spatial_discretization().global_refinement;
+    user_inputs->get_spatial_discretization().get_has_adaptivity()
+      ? user_inputs->get_spatial_discretization().get_max_refinement()
+      : user_inputs->get_spatial_discretization().get_global_refinement();
   min min_mg_level = UINT_MAX;
 
   std::set<types::index>      fields_with_multigrid;

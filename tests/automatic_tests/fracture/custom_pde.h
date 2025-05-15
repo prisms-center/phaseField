@@ -111,9 +111,11 @@ private:
   number vel_nom =
     this->get_user_inputs().get_user_constants().get_model_constant_double("vel_nom");
   number dx =
-    this->get_user_inputs().get_spatial_discretization().size[0] /
-    double(this->get_user_inputs().get_spatial_discretization().subdivisions[0]) /
-    std::pow(2.0, this->get_user_inputs().get_spatial_discretization().global_refinement);
+    this->get_user_inputs().get_spatial_discretization().get_size()[0] /
+    double(this->get_user_inputs().get_spatial_discretization().get_subdivisions()[0]) /
+    std::pow(
+      2.0,
+      this->get_user_inputs().get_spatial_discretization().get_global_refinement());
 };
 
 PRISMS_PF_END_NAMESPACE
