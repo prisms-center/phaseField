@@ -16,6 +16,7 @@
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
@@ -26,7 +27,9 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <memory>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -600,8 +603,8 @@ constraintHandler<dim, degree>::apply_constraints(
   unsigned int                       index,
   bool                               is_change_term) const
 {
-  constexpr bool        is_vector_field = spacedim != 1;
-  dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
+  constexpr bool              is_vector_field = spacedim != 1;
+  const dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
 
   // Apply the boundary conditions
   switch (boundary_type)

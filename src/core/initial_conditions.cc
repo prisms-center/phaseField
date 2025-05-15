@@ -6,11 +6,12 @@
 #include <deal.II/lac/vector.h>
 
 #include <prismspf/core/initial_conditions.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
