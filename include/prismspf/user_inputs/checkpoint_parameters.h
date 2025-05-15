@@ -42,6 +42,43 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Set whether to load from a checkpoint.
+   */
+  void
+  set_load_from_checkpoint(bool _load_from_checkpoint)
+  {
+    load_from_checkpoint = _load_from_checkpoint;
+  }
+
+  /**
+   * \brief Set the checkpoint condition.
+   */
+  void
+  set_condition(const std::string &_condition)
+  {
+    condition = _condition;
+  }
+
+  /**
+   * \brief Set the number of checkpoints.
+   */
+  void
+  set_n_checkpoints(unsigned int _n_checkpoints)
+  {
+    n_checkpoints = _n_checkpoints;
+  }
+
+  /**
+   * \brief Set the user checkpoint list.
+   */
+  void
+  set_user_checkpoint_list(const std::vector<int> &_user_checkpoint_list)
+  {
+    user_checkpoint_list = _user_checkpoint_list;
+  }
+
+private:
   // Whether to load from a checkpoint
   bool load_from_checkpoint = false;
 

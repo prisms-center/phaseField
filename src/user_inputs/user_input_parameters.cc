@@ -175,13 +175,13 @@ userInputParameters<dim>::assign_checkpoint_parameters(
 {
   parameter_handler.enter_subsection("checkpoints");
   {
-    checkpoint_parameters.load_from_checkpoint =
-      parameter_handler.get_bool("load from checkpoint");
-    checkpoint_parameters.condition            = parameter_handler.get("condition");
-    checkpoint_parameters.user_checkpoint_list = dealii::Utilities::string_to_int(
-      dealii::Utilities::split_string_list(parameter_handler.get("list")));
-    checkpoint_parameters.n_checkpoints =
-      static_cast<unsigned int>(parameter_handler.get_integer("number"));
+    checkpoint_parameters.set_load_from_checkpoint(
+      parameter_handler.get_bool("load from checkpoint"));
+    checkpoint_parameters.set_condition(parameter_handler.get("condition"));
+    checkpoint_parameters.set_user_checkpoint_list(dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list"))));
+    checkpoint_parameters.set_n_checkpoints(
+      static_cast<unsigned int>(parameter_handler.get_integer("number")));
   }
   parameter_handler.leave_subsection();
 }
