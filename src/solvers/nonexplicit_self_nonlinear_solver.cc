@@ -73,7 +73,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       if (this->get_user_inputs()
-            .linear_solve_parameters.linear_solve.at(index)
+            .linear_solve_parameters.get_linear_solve_parameters(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
@@ -137,7 +137,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 
           // Perform the linear solve with the step length
           if (this->get_user_inputs()
-                .linear_solve_parameters.linear_solve.at(index)
+                .linear_solve_parameters.get_linear_solve_parameters(index)
                 .preconditioner == preconditionerType::GMG)
             {
               gmg_solvers.at(index)->solve(step_length);

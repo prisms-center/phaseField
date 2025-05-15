@@ -184,7 +184,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   std::set<types::index>      fields_with_multigrid;
   std::map<types::index, min> min_levels;
   for (const auto &[index, linear_solver] :
-       user_inputs->linear_solve_parameters.linear_solve)
+       user_inputs->linear_solve_parameters.get_linear_solve_parameters())
     {
       if (linear_solver.preconditioner == preconditionerType::GMG)
         {

@@ -265,15 +265,15 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     {
       smoother_data[level].smoothing_range =
         this->get_user_inputs()
-          .linear_solve_parameters.linear_solve.at(this->get_field_index())
+          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
           .smoothing_range;
       smoother_data[level].degree =
         this->get_user_inputs()
-          .linear_solve_parameters.linear_solve.at(this->get_field_index())
+          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
           .smoother_degree;
       smoother_data[level].eig_cg_n_iterations =
         this->get_user_inputs()
-          .linear_solve_parameters.linear_solve.at(this->get_field_index())
+          .linear_solve_parameters.get_linear_solve_parameters(this->get_field_index())
           .eig_cg_n_iterations;
       (*mg_operators)[level].compute_diagonal(change_index);
       smoother_data[level].preconditioner =

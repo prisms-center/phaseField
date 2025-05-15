@@ -285,16 +285,18 @@ userInputParameters<dim>::assign_linear_solve_parameters(
           subsection_text.append(variable.name);
           parameter_handler.enter_subsection(subsection_text);
 
+          linearSolverParameters linear_solver_parameters;
+
           // Set the tolerance type
           const std::string type_string = parameter_handler.get("tolerance type");
           if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
             {
-              linear_solve_parameters.linear_solve[index].tolerance_type =
+              linear_solver_parameters.tolerance_type =
                 solverToleranceType::ABSOLUTE_RESIDUAL;
             }
           else if (boost::iequals(type_string, "RELATIVE_RESIDUAL_CHANGE"))
             {
-              linear_solve_parameters.linear_solve[index].tolerance_type =
+              linear_solver_parameters.tolerance_type =
                 solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
             }
           else
@@ -303,30 +305,33 @@ userInputParameters<dim>::assign_linear_solve_parameters(
             }
 
           // Set the tolerance value
-          linear_solve_parameters.linear_solve[index].tolerance =
+          linear_solver_parameters.tolerance =
             parameter_handler.get_double("tolerance value");
 
           // Set the maximum number of iterations
-          linear_solve_parameters.linear_solve[index].max_iterations =
+          linear_solver_parameters.max_iterations =
             parameter_handler.get_integer("max iterations");
 
           // Set preconditioner type and related parameters
-          linear_solve_parameters.linear_solve[index].preconditioner =
+          linear_solver_parameters.preconditioner =
             boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
               ? preconditionerType::GMG
               : preconditionerType::NONE;
 
-          linear_solve_parameters.linear_solve[index].smoothing_range =
+          linear_solver_parameters.smoothing_range =
             parameter_handler.get_double("smoothing range");
 
-          linear_solve_parameters.linear_solve[index].smoother_degree =
+          linear_solver_parameters.smoother_degree =
             parameter_handler.get_integer("smoother degree");
 
-          linear_solve_parameters.linear_solve[index].eig_cg_n_iterations =
+          linear_solver_parameters.eig_cg_n_iterations =
             parameter_handler.get_integer("eigenvalue cg iterations");
 
-          linear_solve_parameters.linear_solve[index].min_mg_level =
+          linear_solver_parameters.min_mg_level =
             parameter_handler.get_integer("min mg level");
+
+          linear_solve_parameters.set_linear_solve_parameters(index,
+                                                              linear_solver_parameters);
 
           parameter_handler.leave_subsection();
         }
