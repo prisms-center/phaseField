@@ -113,6 +113,124 @@ protected:
   print();
 
   /**
+   * \brief Get the user-inputs.
+   */
+  [[nodiscard]] const userInputParameters<dim> &
+  get_user_inputs() const
+  {
+    return *user_inputs;
+  }
+
+  /**
+   * \brief Get the matrix-free object handler for non-multigrid data.
+   */
+  [[nodiscard]] const matrixfreeHandler<dim, double> &
+  get_matrix_free_handler() const
+  {
+    return *matrix_free_handler;
+  }
+
+  /**
+   * \brief Get the triangulation handler.
+   */
+  [[nodiscard]] const triangulationHandler<dim> &
+  get_triangulation_handler() const
+  {
+    return *triangulation_handler;
+  }
+
+  /**
+   * \brief Get the invm handler.
+   */
+  [[nodiscard]] const invmHandler<dim, degree, double> &
+  get_invm_handler() const
+  {
+    return *invm_handler;
+  }
+
+  /**
+   * \brief Get the constraint handler.
+   */
+  [[nodiscard]] const constraintHandler<dim, degree> &
+  get_constraint_handler() const
+  {
+    return *constraint_handler;
+  }
+
+  /**
+   * \brief Get the dof handler.
+   */
+  [[nodiscard]] const dofHandler<dim> &
+  get_dof_handler() const
+  {
+    return *dof_handler;
+  }
+
+  /**
+   * \brief Get the mapping.
+   */
+  [[nodiscard]] const dealii::MappingQ1<dim> &
+  get_mapping() const
+  {
+    return *mapping;
+  }
+
+  /**
+   * \brief Get the mg matrix-free handler.
+   */
+  [[nodiscard]] dealii::MGLevelObject<matrixfreeHandler<dim, float>> &
+  get_mg_matrix_free_handler()
+  {
+    return *mg_matrix_free_handler;
+  }
+
+  /**
+   * \brief Get the solution handler.
+   */
+  [[nodiscard]] solutionHandler<dim> &
+  get_solution_handler() const
+  {
+    return *solution_handler;
+  }
+
+  /**
+   * \brief Get the subset attributes.
+   */
+  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  get_subset_attributes() const
+  {
+    return subset_attributes;
+  }
+
+  /**
+   * \brief Get the pde operator.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
+  get_pde_operator() const
+  {
+    return pde_operator;
+  }
+
+  /**
+   * \brief Get the matrix-free operator for the residual side.
+   */
+  [[nodiscard]] std::map<unsigned int, std::unique_ptr<SystemMatrixType>> &
+  get_system_matrix()
+  {
+    return system_matrix;
+  }
+
+  /**
+   * \brief Get the matrix-free operator for the newton update side.
+   */
+  [[nodiscard]] std::map<unsigned int, std::unique_ptr<SystemMatrixType>> &
+  get_update_system_matrix()
+  {
+    return update_system_matrix;
+  }
+
+private:
+  /**
    * \brief User-inputs.
    */
   const userInputParameters<dim> *user_inputs;
@@ -173,7 +291,7 @@ protected:
   std::map<unsigned int, std::unique_ptr<SystemMatrixType>> system_matrix;
 
   /**
-   * \brief Matrix-free for the newton update side.
+   * \brief Matrix-free operator for the newton update side.
    */
   std::map<unsigned int, std::unique_ptr<SystemMatrixType>> update_system_matrix;
 };

@@ -178,7 +178,7 @@ protected:
   /**
    * \brief Get the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>>
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
   {
     return pde_operator;

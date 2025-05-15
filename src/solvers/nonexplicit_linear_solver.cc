@@ -63,29 +63,30 @@ nonexplicitLinearSolver<dim, degree>::init()
   this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_LINEAR);
 
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
   this->set_initial_condition();
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
-      if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
+      if (this->get_user_inputs()
+            .linear_solve_parameters.linear_solve.at(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.emplace(
             index,
-            std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
+            std::make_unique<GMGSolver<dim, degree>>(this->get_user_inputs(),
                                                      variable,
-                                                     *this->matrix_free_handler,
-                                                     *this->constraint_handler,
-                                                     *this->triangulation_handler,
-                                                     *this->dof_handler,
-                                                     *this->mg_matrix_free_handler,
-                                                     *this->solution_handler,
-                                                     this->pde_operator,
+                                                     this->get_matrix_free_handler(),
+                                                     this->get_constraint_handler(),
+                                                     this->get_triangulation_handler(),
+                                                     this->get_dof_handler(),
+                                                     this->get_mg_matrix_free_handler(),
+                                                     this->get_solution_handler(),
+                                                     this->get_pde_operator(),
                                                      pde_operator_float,
                                                      *mg_info));
           gmg_solvers.at(index)->init();
@@ -94,12 +95,12 @@ nonexplicitLinearSolver<dim, degree>::init()
         {
           identity_solvers.emplace(
             index,
-            std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
+            std::make_unique<identitySolver<dim, degree>>(this->get_user_inputs(),
                                                           variable,
-                                                          *this->matrix_free_handler,
-                                                          *this->constraint_handler,
-                                                          *this->solution_handler,
-                                                          this->pde_operator));
+                                                          this->get_matrix_free_handler(),
+                                                          this->get_constraint_handler(),
+                                                          this->get_solution_handler(),
+                                                          this->get_pde_operator()));
           identity_solvers.at(index)->init();
         }
     }
@@ -110,21 +111,22 @@ inline void
 nonexplicitLinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is 0.
       if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-          this->user_inputs->temporal_discretization.get_current_increment() == 0)
+          this->get_user_inputs().temporal_discretization.get_current_increment() == 0)
         {
           continue;
         }
 
-      if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
+      if (this->get_user_inputs()
+            .linear_solve_parameters.linear_solve.at(index)
             .preconditioner == preconditionerType::GMG)
         {
           gmg_solvers.at(index)->solve();
