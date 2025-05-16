@@ -38,10 +38,10 @@ public:
   /**
    * \brief Get the variable attributes.
    */
-  [[nodiscard]] std::map<unsigned int, variableAttributes>
+  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
   get_var_attributes() const
   {
-    return var_attributes;
+    return *var_attributes;
   }
 
   /**
@@ -173,7 +173,7 @@ public:
 
 private:
   std::string                                       parameters_file_name;
-  const std::map<unsigned int, variableAttributes> &var_attributes;
+  const std::map<unsigned int, variableAttributes> *var_attributes;
   dealii::ParameterHandler                          parameter_handler;
   std::set<std::string>                             model_constant_names;
   unsigned int                                      number_of_dimensions = 0;

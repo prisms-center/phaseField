@@ -21,6 +21,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 class parseCMDOptions
 {
 public:
+  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
   parseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {
@@ -29,6 +31,8 @@ public:
         tokens.emplace_back(argv[i]);
       }
   }
+
+  // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   std::string
   get_parameters_filename()

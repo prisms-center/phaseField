@@ -27,14 +27,14 @@ inputFileReader::inputFileReader(
   std::string                                       input_file_name,
   const std::map<unsigned int, variableAttributes> &_var_attributes)
   : parameters_file_name(std::move(input_file_name))
-  , var_attributes(_var_attributes)
+  , var_attributes(&_var_attributes)
 {
   model_constant_names             = get_model_constant_names();
   const unsigned int num_constants = model_constant_names.size();
 
   conditionalOStreams::pout_base()
     << "Number of constants: " << num_constants << "\n"
-    << "Number of variables: " << var_attributes.size() << "\n";
+    << "Number of variables: " << var_attributes->size() << "\n";
 
   // Read in all of the parameters now
   declare_parameters();
@@ -294,7 +294,7 @@ inputFileReader::declare_mesh()
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
       subsection_text.append(variable.get_name());
@@ -350,7 +350,7 @@ void
 inputFileReader::declare_solver_parameters()
 {
   // For linear solves
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
           variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
@@ -403,7 +403,7 @@ inputFileReader::declare_solver_parameters()
     }
 
   // For nonlinear solves
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       if (variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
           variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
@@ -566,7 +566,7 @@ inputFileReader::declare_checkpoint_parameters()
 void
 inputFileReader::declare_BC_parameters()
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       if (variable.is_postprocess())
         {
@@ -617,7 +617,7 @@ inputFileReader::declare_BC_parameters()
 void
 inputFileReader::declare_pinning_parameters()
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       if (variable.is_postprocess())
         {
@@ -703,7 +703,7 @@ inputFileReader::declare_nucleation_parameters()
   //                                 dealii::Patterns::Double(),
   //                                 "The time after which no nucleation occurs.");
 
-  // for (const auto &[index, variable] : var_attributes)
+  // for (const auto &[index, variable] : *var_attributes)
   //   {
   //     if (variable.nucleating_variable)
   //       {

@@ -199,32 +199,25 @@ void
 userInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
+  std::vector<std::string> axis_labels = {"x", "y", "z"};
+
   // Assign the normal boundary parameters
   for (const auto &[index, variable] : var_attributes)
     {
-      // TODO (landinjm): We Should still add the ability to assign boundary conditions
-      // for postprocessed fields
       if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.get_field_type() == SCALAR)
+
+      const unsigned int n_components =
+        (variable.get_field_type() == fieldType::SCALAR) ? 1 : dim;
+      for (unsigned int i = 0; i < n_components; i++)
         {
-          std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.get_name());
+          std::string bc_text = "boundary condition for " + variable.get_name();
+          if (variable.get_field_type() != fieldType::SCALAR)
+            bc_text += ", " + axis_labels[i] + " component";
           boundary_parameters
-            .set_boundary_condition_string(parameter_handler.get(bc_text), index, 0);
-        }
-      else
-        {
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          for (unsigned int i = 0; i < dim; i++)
-            {
-              std::string bc_text = "boundary condition for ";
-              bc_text.append(variable.get_name() + ", " + axis_labels[i] + " component");
-              boundary_parameters
-                .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
-            }
+            .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
         }
     }
 
@@ -238,40 +231,35 @@ userInputParameters<dim>::assign_boundary_parameters(
       std::string pinning_text = "pinning point for ";
       pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
-      if (variable.get_field_type() == SCALAR)
+
+      const std::string value_key =
+        (variable.get_field_type() == fieldType::SCALAR) ? "value" : "x value";
+
+      // Skip if the value is the default INT_MAX
+      if (parameter_handler.get_double(value_key) == INT_MAX)
         {
-          // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("value") == INT_MAX)
-            {
-              parameter_handler.leave_subsection();
-              continue;
-            }
-          // Otherwise, fill out point and value
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          dealii::Point<dim>       point;
-          for (unsigned int i = 0; i < dim; ++i)
-            {
-              point[i] = parameter_handler.get_double(axis_labels[i]);
-            }
+          parameter_handler.leave_subsection();
+          continue;
+        }
+
+      // Fill out the point and value
+      dealii::Point<dim> point;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          point[i] = parameter_handler.get_double(axis_labels[i]);
+        }
+
+      if (variable.get_field_type() == fieldType::SCALAR)
+        {
           boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
                                                point,
                                                index);
         }
       else
         {
-          // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("x value") == INT_MAX)
-            {
-              parameter_handler.leave_subsection();
-              continue;
-            }
-          // Otherwise, fill out point and value
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          dealii::Point<dim>       point;
-          std::vector<double>      value(dim);
+          std::vector<double> value(dim);
           for (unsigned int i = 0; i < dim; ++i)
             {
-              point[i] = parameter_handler.get_double(axis_labels[i]);
               value[i] = parameter_handler.get_double(axis_labels[i] + " value");
             }
           boundary_parameters.set_pinned_point(value, point, index);
