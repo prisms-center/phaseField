@@ -38,7 +38,7 @@ public:
   /**
    * \brief Get the variable attributes.
    */
-  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  [[nodiscard]] std::map<unsigned int, variableAttributes>
   get_var_attributes() const
   {
     return var_attributes;

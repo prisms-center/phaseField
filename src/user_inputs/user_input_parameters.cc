@@ -13,6 +13,8 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
+#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
@@ -26,7 +28,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
-  : var_attributes(&input_file_reader.get_var_attributes())
+  : var_attributes(input_file_reader.get_var_attributes())
 {
   // Assign the parameters to the appropriate data structures
   assign_spatial_discretization_parameters(parameter_handler);
@@ -40,12 +42,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Perform and postprocessing of user inputs and run checks
   spatial_discretization.postprocess_and_validate();
-  temporal_discretization.postprocess_and_validate(*var_attributes);
+  temporal_discretization.postprocess_and_validate(var_attributes);
   linear_solve_parameters.postprocess_and_validate();
   nonlinear_solve_parameters.postprocess_and_validate();
   output_parameters.postprocess_and_validate(temporal_discretization);
   checkpoint_parameters.postprocess_and_validate(temporal_discretization);
-  boundary_parameters.postprocess_and_validate(*var_attributes);
+  boundary_parameters.postprocess_and_validate(var_attributes);
 
   // Print all the parameters to summary.log
   spatial_discretization.print_parameter_summary();
@@ -100,7 +102,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
   spatial_discretization.set_min_refinement(
     parameter_handler.get_integer("min refinement"));
 
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
       subsection_text.append(variable.get_name());
@@ -198,7 +200,7 @@ userInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   // Assign the normal boundary parameters
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       // TODO (landinjm): We Should still add the ability to assign boundary conditions
       // for postprocessed fields
@@ -227,7 +229,7 @@ userInputParameters<dim>::assign_boundary_parameters(
     }
 
   // Assign any pinning points
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.is_postprocess())
         {
@@ -283,7 +285,7 @@ void
 userInputParameters<dim>::assign_linear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
           variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
@@ -350,7 +352,7 @@ void
 userInputParameters<dim>::assign_nonlinear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       if (variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
           variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)

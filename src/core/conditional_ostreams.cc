@@ -16,16 +16,19 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-std::ofstream &
-get_summary_log_file()
+namespace
 {
-  static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
-  if (!file.is_open())
-    {
-      throw std::runtime_error("Unable to open summary.log for writing.");
-    }
-  return file;
-}
+  std::ofstream &
+  get_summary_log_file()
+  {
+    static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
+    if (!file.is_open())
+      {
+        throw std::runtime_error("Unable to open summary.log for writing.");
+      }
+    return file;
+  }
+} // namespace
 
 dealii::ConditionalOStream &
 conditionalOStreams::pout_summary()

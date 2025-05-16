@@ -39,7 +39,7 @@ public:
   [[nodiscard]] const std::map<unsigned int, variableAttributes> &
   get_variable_attributes() const
   {
-    return *var_attributes;
+    return var_attributes;
   }
 
   /**
@@ -193,7 +193,7 @@ private:
                        dealii::ParameterHandler &parameter_handler);
 
   // Variable attributes
-  const std::map<unsigned int, variableAttributes> *var_attributes;
+  std::map<unsigned int, variableAttributes> var_attributes;
 
   // Spatial discretization parameters
   spatialDiscretization<dim> spatial_discretization;
