@@ -66,14 +66,14 @@ main(int argc, char *argv[])
       prisms::inputFileReader input_file_reader(parameters_filename, var_attributes);
 
       // Run problem based on the number of dimensions and element degree
-      switch (input_file_reader.number_of_dimensions)
+      switch (input_file_reader.get_dim())
         {
           case 1:
             {
               prisms::userInputParameters<1> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -126,8 +126,8 @@ main(int argc, char *argv[])
             {
               prisms::userInputParameters<2> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -180,8 +180,8 @@ main(int argc, char *argv[])
             {
               prisms::userInputParameters<3> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {

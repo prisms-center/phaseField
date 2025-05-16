@@ -35,13 +35,14 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , matrix_free_handler(&_matrix_free_handler)
   , constraint_handler(&_constraint_handler)
   , solution_handler(&_solution_handler)
-  , field_index(_variable_attributes.field_index)
+  , field_index(_variable_attributes.get_field_index())
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
       _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
   , pde_operator(std::move(_pde_operator))
-  , solver_control(
-      _user_inputs.linear_solve_parameters.linear_solve.at(field_index).max_iterations)
+  , solver_control(_user_inputs.get_linear_solve_parameters()
+                     .get_linear_solve_parameters(field_index)
+                     .max_iterations)
 {
   // Creating map to match types
   subset_attributes.emplace(field_index, *variable_attributes);
@@ -60,7 +61,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
                                                            dependencyType::NORMAL),
                                             0);
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_RHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_RHS())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
@@ -80,7 +81,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_LHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_LHS())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
@@ -108,12 +109,16 @@ template <unsigned int dim, unsigned int degree>
 inline void
 linearSolverBase<dim, degree>::compute_solver_tolerance()
 {
-  tolerance =
-    user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance_type ==
-        solverToleranceType::RELATIVE_RESIDUAL_CHANGE
-      ? user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance *
-          residual->l2_norm()
-      : user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance;
+  tolerance = user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance_type == solverToleranceType::RELATIVE_RESIDUAL_CHANGE
+                ? user_inputs->get_linear_solve_parameters()
+                      .get_linear_solve_parameters(field_index)
+                      .tolerance *
+                    residual->l2_norm()
+                : user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance;
 }
 
 INSTANTIATE_BI_TEMPLATE(linearSolverBase)

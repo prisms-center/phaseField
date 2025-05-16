@@ -176,15 +176,16 @@ template <unsigned int dim>
 inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
-  const max max_mg_level = user_inputs->spatial_discretization.has_adaptivity
-                             ? user_inputs->spatial_discretization.max_refinement
-                             : user_inputs->spatial_discretization.global_refinement;
-  min       min_mg_level = UINT_MAX;
+  const max max_mg_level =
+    user_inputs->get_spatial_discretization().get_has_adaptivity()
+      ? user_inputs->get_spatial_discretization().get_max_refinement()
+      : user_inputs->get_spatial_discretization().get_global_refinement();
+  min min_mg_level = UINT_MAX;
 
   std::set<types::index>      fields_with_multigrid;
   std::map<types::index, min> min_levels;
   for (const auto &[index, linear_solver] :
-       user_inputs->linear_solve_parameters.linear_solve)
+       user_inputs->get_linear_solve_parameters().get_linear_solve_parameters())
     {
       if (linear_solver.preconditioner == preconditionerType::GMG)
         {
@@ -210,7 +211,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   std::set<std::tuple<types::index, dependencyType, min>> all_lhs_fields;
   for (const auto &index : fields_with_multigrid)
     {
-      const auto &variable = user_inputs->var_attributes->at(index);
+      const auto &variable = user_inputs->get_variable_attributes().at(index);
 
       // First add the dependencyType::CHANGE
       all_lhs_fields.insert(
@@ -218,7 +219,7 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
       // the duplicates that have the same variable but different min multigrid levels.
-      for (const auto &[pair, eval_flag] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, eval_flag] : variable.get_eval_flag_set_LHS())
         {
           // Skip if the eval flags is not set (e.i., nothing)
           if (eval_flag == 0U)

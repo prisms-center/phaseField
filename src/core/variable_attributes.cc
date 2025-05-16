@@ -213,8 +213,8 @@ variableAttributes::determine_field_solve_type(
   // Early return for explicit solve types
   if (pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
     {
-      is_postprocess ? field_solve_type = fieldSolveType::EXPLICIT_POSTPROCESS
-                     : field_solve_type = fieldSolveType::EXPLICIT;
+      is_postprocessed_variable ? field_solve_type = fieldSolveType::EXPLICIT_POSTPROCESS
+                                : field_solve_type = fieldSolveType::EXPLICIT;
       return;
     }
 
@@ -268,7 +268,7 @@ variableAttributes::print() const
     << "Index: " << field_index << "\n"
     << "Variable type: " << to_string(field_type) << "\n"
     << "Equation type: " << to_string(pde_type) << "\n"
-    << "Postprocessed field: " << bool_to_string(is_postprocess) << "\n"
+    << "Postprocessed field: " << bool_to_string(is_postprocessed_variable) << "\n"
     << "Field solve type: " << to_string(field_solve_type) << "\n";
 
   conditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";

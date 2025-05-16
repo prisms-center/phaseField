@@ -97,7 +97,8 @@ private:
 
   constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
   dealii::Tensor<2, CIJ_tensor_size, number> CIJ =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ");
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+      "CIJ");
 };
 
 PRISMS_PF_END_NAMESPACE

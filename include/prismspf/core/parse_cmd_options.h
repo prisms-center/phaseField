@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 class parseCMDOptions
 {
 public:
-  // NOLINTBEGIN (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   parseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
@@ -32,7 +32,7 @@ public:
       }
   }
 
-  // NOLINTEND (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+  // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   std::string
   get_parameters_filename()
@@ -97,7 +97,7 @@ public:
   get_caliper_configuration()
   {
     // Allowed number of arguments
-    int n_args = 5;
+    const int n_args = 5;
 
     // Check that there aren't too many arguments
     if (argc > n_args)

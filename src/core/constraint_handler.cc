@@ -16,6 +16,7 @@
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
@@ -26,7 +27,9 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <memory>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -41,7 +44,8 @@ constraintHandler<dim, degree>::constraintHandler(
   , mg_info(&_mg_info)
   , pde_operator(_pde_operator)
   , pde_operator_float(_pde_operator_float)
-  , constraints(_user_inputs.var_attributes->size(), dealii::AffineConstraints<double>())
+  , constraints(_user_inputs.get_variable_attributes().size(),
+                dealii::AffineConstraints<double>())
 {
   // If we don't have multigrid, we can return early
   if (!_mg_info.has_multigrid())
@@ -135,7 +139,7 @@ constraintHandler<dim, degree>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       make_constraint(mapping, *dof_handlers.at(index), index);
     }
@@ -169,11 +173,11 @@ constraintHandler<dim, degree>::update_time_dependent_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       // Check that we have time-dependent constraints before recreating the whole
       // constraint set.
-      if (user_inputs->boundary_parameters.time_dependent_BC_list.contains(index))
+      if (user_inputs->get_boundary_parameters().is_time_dependent(index))
         {
           // TODO (landinjm): Is there a way to update the constraint set without
           // recreating
@@ -194,7 +198,7 @@ constraintHandler<dim, degree>::update_time_dependent_mg_constraints(
 
   for (unsigned int index = 0; index < dof_handlers.size(); index++)
     {
-      if (user_inputs->boundary_parameters.time_dependent_BC_list.contains(index))
+      if (user_inputs->get_boundary_parameters().is_time_dependent(index))
         {
           // TODO (landinjm): Fix this so we can actually apply constraints to the LHS
           // fields baseded on whether it is normal or change. For now, I know this will
@@ -351,13 +355,14 @@ constraintHandler<dim, degree>::make_constraint(
 
   // First check the normal boundary conditions
   const auto &boundary_condition =
-    user_inputs->boundary_parameters.boundary_condition_list.at(index);
+    user_inputs->get_boundary_parameters().get_boundary_condition_list().at(index);
   for (const auto &[component, condition] : boundary_condition)
     {
       for (const auto &[boundary_id, boundary_type] :
            condition.get_boundary_condition_map())
         {
-          if (user_inputs->var_attributes->at(index).field_type != fieldType::VECTOR)
+          if (user_inputs->get_variable_attributes().at(index).get_field_type() !=
+              fieldType::VECTOR)
             {
               apply_constraints<double, 1>(mapping,
                                            dof_handler,
@@ -381,7 +386,7 @@ constraintHandler<dim, degree>::make_constraint(
     }
 
   // Second check for pinned points, if they exist
-  if (user_inputs->boundary_parameters.pinned_point_list.contains(index))
+  if (user_inputs->get_boundary_parameters().has_pinned_point(index))
     {
       set_pinned_point<double>(dof_handler, local_constraint, index, false);
     }
@@ -417,14 +422,16 @@ constraintHandler<dim, degree>::make_mg_constraint(
   if (dependency_type == dependencyType::CHANGE)
     {
       const auto &boundary_condition =
-        this->user_inputs->boundary_parameters.boundary_condition_list.at(global_index);
+        this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
+          global_index);
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (user_inputs->var_attributes->at(global_index).field_type !=
-                  fieldType::VECTOR)
+              if (user_inputs->get_variable_attributes()
+                    .at(global_index)
+                    .get_field_type() != fieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,
@@ -450,7 +457,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
         }
 
       // Second check for pinned points, if they exist
-      if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
+      if (user_inputs->get_boundary_parameters().has_pinned_point(global_index))
         {
           set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
         }
@@ -458,14 +465,16 @@ constraintHandler<dim, degree>::make_mg_constraint(
   else if (dependency_type == dependencyType::NORMAL)
     {
       const auto &boundary_condition =
-        this->user_inputs->boundary_parameters.boundary_condition_list.at(global_index);
+        this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
+          global_index);
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (user_inputs->var_attributes->at(global_index).field_type !=
-                  fieldType::VECTOR)
+              if (user_inputs->get_variable_attributes()
+                    .at(global_index)
+                    .get_field_type() != fieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,
@@ -489,7 +498,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
         }
 
       // Second check for pinned points, if they exist
-      if (user_inputs->boundary_parameters.pinned_point_list.contains(global_index))
+      if (user_inputs->get_boundary_parameters().has_pinned_point(global_index))
         {
           set_pinned_point<float>(dof_handler, local_constraint, global_index, false);
         }
@@ -513,7 +522,7 @@ constraintHandler<dim, degree>::set_pinned_point(
 {
   const number tolerance = 1.0e-2;
   const auto &[value, target_point] =
-    user_inputs->boundary_parameters.pinned_point_list.at(index);
+    user_inputs->get_boundary_parameters().get_pinned_point(index);
 
   // Helper function to set inhomogeneity for a single DOF
   auto set_inhomogeneity = [&](unsigned int dof_index, number value)
@@ -600,8 +609,8 @@ constraintHandler<dim, degree>::apply_constraints(
   unsigned int                       index,
   bool                               is_change_term) const
 {
-  constexpr bool        is_vector_field = spacedim != 1;
-  dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
+  constexpr bool              is_vector_field = spacedim != 1;
+  const dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
 
   // Apply the boundary conditions
   switch (boundary_type)
