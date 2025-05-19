@@ -62,17 +62,17 @@ variableAttributes::parse_dependencies(
   std::map<unsigned int, variableAttributes> &other_var_attributes)
 {
   const std::map<std::string,
-                 std::pair<dependencyType, dealii::EvaluationFlags::EvaluationFlags>>
+                 std::pair<DependencyType, dealii::EvaluationFlags::EvaluationFlags>>
     relevant_flag = []()
   {
     // Modifiers for the dependency types
-    const std::vector<std::pair<std::string, dependencyType>> dependency_types = {
-      {"",        dependencyType::NORMAL},
-      {"_change", dependencyType::CHANGE},
-      {"_old_1",  dependencyType::OLD_1 },
-      {"_old_2",  dependencyType::OLD_2 },
-      {"_old_3",  dependencyType::OLD_3 },
-      {"_old_4",  dependencyType::OLD_4 },
+    const std::vector<std::pair<std::string, DependencyType>> dependency_types = {
+      {"",        DependencyType::NORMAL},
+      {"_change", DependencyType::CHANGE},
+      {"_old_1",  DependencyType::OLD_1 },
+      {"_old_2",  DependencyType::OLD_2 },
+      {"_old_3",  DependencyType::OLD_3 },
+      {"_old_4",  DependencyType::OLD_4 },
     };
 
     // Dependency evaluation types & their corresponding evaluation flag
@@ -89,7 +89,7 @@ variableAttributes::parse_dependencies(
     };
 
     std::map<std::string,
-             std::pair<dependencyType, dealii::EvaluationFlags::EvaluationFlags>>
+             std::pair<DependencyType, dealii::EvaluationFlags::EvaluationFlags>>
       map;
     for (const auto &dep : dependency_types)
       {
@@ -145,7 +145,7 @@ variableAttributes::parse_dependencies(
   // Helper lambda to validate and fill in dependency sets
   auto set_dependencies =
     [&](const std::set<std::string>                        &dependencies,
-        std::map<std::pair<unsigned int, dependencyType>,
+        std::map<std::pair<unsigned int, DependencyType>,
                  dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set,
         const std::string                                  &context)
   {
@@ -164,13 +164,13 @@ variableAttributes::parse_dependencies(
             // Populate the dependencies
             if (dependencies.contains(possible_dependency))
               {
-                const dependencyType dep_type = relevant_flag.at(variation).first;
+                const DependencyType dep_type = relevant_flag.at(variation).first;
                 const dealii::EvaluationFlags::EvaluationFlags flags =
                   relevant_flag.at(variation).second;
 
                 validate_dependency(variation, dep_type, other_index, context);
 
-                const std::pair<unsigned int, dependencyType> key = {other_index,
+                const std::pair<unsigned int, DependencyType> key = {other_index,
                                                                      dep_type};
 
                 if (eval_flag_set.contains(key))
@@ -201,7 +201,7 @@ variableAttributes::determine_field_solve_type(
   // Early return for constant fields
   if (pde_type == PDEType::CONSTANT)
     {
-      field_solve_type = fieldSolveType::EXPLICIT_CONSTANT;
+      field_solve_type = FieldSolveType::EXPLICIT_CONSTANT;
       return;
     }
 
@@ -213,8 +213,8 @@ variableAttributes::determine_field_solve_type(
   // Early return for explicit solve types
   if (pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
     {
-      is_postprocessed_variable ? field_solve_type = fieldSolveType::EXPLICIT_POSTPROCESS
-                                : field_solve_type = fieldSolveType::EXPLICIT;
+      is_postprocessed_variable ? field_solve_type = FieldSolveType::EXPLICIT_POSTPROCESS
+                                : field_solve_type = FieldSolveType::EXPLICIT;
       return;
     }
 
@@ -227,34 +227,34 @@ variableAttributes::determine_field_solve_type(
   // all co-nonlinear fields are lumped together and solved. When dealing with two sets of
   // co-nonlinear fields performance may suffer greatly.
   find_circular_dependencies(other_var_attributes);
-  if (field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+  if (field_solve_type == FieldSolveType::NONEXPLICIT_CO_NONLINEAR)
     {
       return;
     }
 
   // Check for self-nonlinear solves.
-  if (eval_flag_set_lhs.contains({field_index, dependencyType::CHANGE}) &&
-      eval_flag_set_lhs.contains({field_index, dependencyType::NORMAL}))
+  if (eval_flag_set_lhs.contains({field_index, DependencyType::CHANGE}) &&
+      eval_flag_set_lhs.contains({field_index, DependencyType::NORMAL}))
     {
-      field_solve_type = fieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
+      field_solve_type = FieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
       return;
     }
 
   // Lastly, assign plain linear & auxiliary solves
   if (pde_type == PDEType::AUXILIARY)
     {
-      field_solve_type = fieldSolveType::NONEXPLICIT_AUXILIARY;
+      field_solve_type = FieldSolveType::NONEXPLICIT_AUXILIARY;
       return;
     }
   if (pde_type == PDEType::TIME_INDEPENDENT ||
       pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
     {
-      field_solve_type = fieldSolveType::NONEXPLICIT_LINEAR;
+      field_solve_type = FieldSolveType::NONEXPLICIT_LINEAR;
       return;
     }
 
   // Set undefined is anything falls through our criteria.
-  field_solve_type = fieldSolveType::UNDEFINED_SOLVE;
+  field_solve_type = FieldSolveType::UNDEFINED_SOLVE;
 }
 
 void
@@ -298,11 +298,11 @@ variableAttributes::print() const
 
 void
 variableAttributes::validate_dependency([[maybe_unused]] const std::string  &variation,
-                                        [[maybe_unused]] dependencyType      dep_type,
+                                        [[maybe_unused]] DependencyType      dep_type,
                                         [[maybe_unused]] const unsigned int &other_index,
                                         [[maybe_unused]] const std::string &context) const
 {
-  AssertThrow(context != "RHS" || dep_type != dependencyType::CHANGE,
+  AssertThrow(context != "RHS" || dep_type != DependencyType::CHANGE,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
                                  "not allowed on the RHS of any PDE."));
   AssertThrow(context != "LHS" || pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
@@ -310,20 +310,20 @@ variableAttributes::validate_dependency([[maybe_unused]] const std::string  &var
               dealii::ExcMessage(
                 "Only `TIME_INDEPENDENT` and `IMPLICIT_TIME_DEPENDENT` fields may "
                 "have dependencies on the LHS."));
-  AssertThrow(dep_type != dependencyType::CHANGE || other_index == field_index,
+  AssertThrow(dep_type != DependencyType::CHANGE || other_index == field_index,
               dealii::ExcMessage(
                 "Dependencies with the delimiter change(var) are only allowed as "
                 "dependencies for the same field (e.g, change(phi) is only "
                 "allowed as a dependency for phi)."));
-  AssertThrow(field_type == fieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::VECTOR ||
                 variation.find("divergence") == std::string::npos,
               dealii::ExcMessage("Dependencies with the divergence delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == fieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::VECTOR ||
                 variation.find("symmetric_gradient") == std::string::npos,
               dealii::ExcMessage("Dependencies with the symmetric gradient delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == fieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::VECTOR ||
                 variation.find("curl") == std::string::npos,
               dealii::ExcMessage("Dependencies with the curl delimiter are "
                                  "only allowed on vector fields."));
@@ -339,7 +339,7 @@ variableAttributes::compute_dependency_set(
   // FEEvaluation objects should be made.
   for (const auto &[pair, flag] : eval_flag_set_rhs)
     {
-      if (pair.second == dependencyType::CHANGE ||
+      if (pair.second == DependencyType::CHANGE ||
           flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
         {
           continue;
@@ -353,7 +353,7 @@ variableAttributes::compute_dependency_set(
       dependency_set_rhs[pair.first]
         .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
     }
-  dependency_set_rhs[field_index].emplace(dependencyType::NORMAL, field_type);
+  dependency_set_rhs[field_index].emplace(DependencyType::NORMAL, field_type);
 
   for (const auto &[pair, flag] : eval_flag_set_lhs)
     {
@@ -384,7 +384,7 @@ variableAttributes::compute_simplified_dependency_set(
   {
     for (const auto &[pair, flag] : eval_flag_set)
       {
-        if (pair.second != dependencyType::NORMAL ||
+        if (pair.second != DependencyType::NORMAL ||
             flag == dealii::EvaluationFlags::EvaluationFlags::nothing ||
             other_var_attributes.at(pair.first).pde_type ==
               PDEType::EXPLICIT_TIME_DEPENDENT ||
@@ -434,7 +434,7 @@ variableAttributes::recursive_DFS(
       // If the current recursion stack already has the dependency, we have a cycle
       if (current_stack.contains(dependency))
         {
-          field_solve_type = fieldSolveType::NONEXPLICIT_CO_NONLINEAR;
+          field_solve_type = FieldSolveType::NONEXPLICIT_CO_NONLINEAR;
           return;
         }
       // Otherwise, if we haven't already visited this node continue down the graph

@@ -405,8 +405,8 @@ inputFileReader::declare_solver_parameters()
   // For nonlinear solves
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.get_field_solve_type() == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
+          variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_CO_NONLINEAR)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
           subsection_text.append(variable.get_name());

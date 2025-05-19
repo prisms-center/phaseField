@@ -42,9 +42,9 @@ public:
   variableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<unsigned int, variableAttributes> &_subset_attributes,
-    const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
                     &_global_to_local_solution,
-    const solveType &_solve_type,
+    const SolveType &_solve_type,
     bool             use_local_mapping = false);
 
   /**
@@ -52,21 +52,21 @@ public:
    */
   [[nodiscard]] size_type
   get_scalar_value(unsigned int   global_variable_index,
-                   dependencyType dependency_type = dependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_gradient(unsigned int   global_variable_index,
-                      dependencyType dependency_type = dependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_scalar_hessian(unsigned int   global_variable_index,
-                     dependencyType dependency_type = dependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
@@ -74,35 +74,35 @@ public:
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
   [[nodiscard]] size_type
   get_scalar_laplacian(unsigned int   global_variable_index,
-                       dependencyType dependency_type = dependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_value(unsigned int   global_variable_index,
-                   dependencyType dependency_type = dependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_gradient(unsigned int   global_variable_index,
-                      dependencyType dependency_type = dependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<3, dim, size_type>
   get_vector_hessian(unsigned int   global_variable_index,
-                     dependencyType dependency_type = dependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
@@ -110,21 +110,21 @@ public:
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the laplacian of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_laplacian(unsigned int   global_variable_index,
-                       dependencyType dependency_type = dependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
   [[nodiscard]] size_type
   get_vector_divergence(unsigned int   global_variable_index,
-                        dependencyType dependency_type = dependencyType::NORMAL) const;
+                        DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
@@ -132,7 +132,7 @@ public:
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Return the curl of the specified vector field. Note that this is
@@ -141,7 +141,7 @@ public:
    */
   [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
   get_vector_curl(unsigned int   global_variable_index,
-                  dependencyType dependency_type = dependencyType::NORMAL) const;
+                  DependencyType dependency_type = DependencyType::NORMAL) const;
 
   /**
    * \brief Set the residual value of the specified scalar field.
@@ -149,7 +149,7 @@ public:
   void
   set_scalar_value_term(const unsigned int   &global_variable_index,
                         const size_type      &val,
-                        const dependencyType &dependency_type = dependencyType::NORMAL);
+                        const DependencyType &dependency_type = DependencyType::NORMAL);
 
   /**
    * \brief Set the residual gradient of the specified scalar field.
@@ -158,7 +158,7 @@ public:
   set_scalar_gradient_term(
     const unsigned int                      &global_variable_index,
     const dealii::Tensor<1, dim, size_type> &grad,
-    const dependencyType                    &dependency_type = dependencyType::NORMAL);
+    const DependencyType                    &dependency_type = DependencyType::NORMAL);
 
   /**
    * \brief Set the residual value of the specified vector field.
@@ -166,7 +166,7 @@ public:
   void
   set_vector_value_term(const unsigned int                      &global_variable_index,
                         const dealii::Tensor<1, dim, size_type> &val,
-                        const dependencyType &dependency_type = dependencyType::NORMAL);
+                        const DependencyType &dependency_type = DependencyType::NORMAL);
 
   /**
    * \brief Set the residual gradient of the specified vector field.
@@ -175,7 +175,7 @@ public:
   set_vector_gradient_term(
     const unsigned int                      &global_variable_index,
     const dealii::Tensor<2, dim, size_type> &grad,
-    const dependencyType                    &dependency_type = dependencyType::NORMAL);
+    const DependencyType                    &dependency_type = DependencyType::NORMAL);
 
   /**
    * \brief Apply some operator function for a given cell range and source vector to
@@ -268,7 +268,7 @@ private:
    */
   void
   FEEval_exists(const unsigned int   &dependency_index,
-                const dependencyType &dependency_type) const;
+                const DependencyType &dependency_type) const;
 
   /**
    * \brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -276,14 +276,14 @@ private:
    */
   void
   access_valid(const unsigned int                             &dependency_index,
-               const dependencyType                           &dependency_type,
+               const DependencyType                           &dependency_type,
                const dealii::EvaluationFlags::EvaluationFlags &flag) const;
 
   /**
    * \brief Check that a value is valid for submission.
    */
   void
-  submission_valid(const dependencyType &dependency_type) const;
+  submission_valid(const DependencyType &dependency_type) const;
 
   /**
    * \brief Return the number of quadrature points.
@@ -348,10 +348,10 @@ private:
 
   /**
    * \brief Map of FEEvaluation objects for each active variable. The first mapping is
-   * for the global variable, the second is for the dependencyType, and the value is
+   * for the global variable, the second is for the DependencyType, and the value is
    * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<dependencyType, variant_FEEval>> feeval_map;
+  std::map<unsigned int, std::map<DependencyType, variant_FEEval>> feeval_map;
 
   /**
    * \brief The attribute list of the relevant subset of variables.
@@ -361,7 +361,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     *global_to_local_solution;
 
   /**
@@ -369,7 +369,7 @@ private:
    * solve types, there is only a single unique instance of the eval flags, so we can
    * simply store it here when the constructor is called.
    */
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     src_eval_flags;
 
@@ -384,7 +384,7 @@ private:
   /**
    * \brief The solve type
    */
-  solveType solve_type;
+  SolveType solve_type;
 
   /**
    * \brief The quadrature point index.

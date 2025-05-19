@@ -31,7 +31,7 @@ public:
    */
   initialCondition(
     const unsigned int                                            &_index,
-    const fieldType                                               &field_type,
+    const FieldType                                               &field_type,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)

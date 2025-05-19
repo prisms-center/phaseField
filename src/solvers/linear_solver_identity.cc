@@ -64,7 +64,7 @@ identitySolver<dim, degree>::init()
     .get_constraint(this->get_field_index())
     .distribute(
       *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         dependencyType::NORMAL)));
+                                                         DependencyType::NORMAL)));
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -78,7 +78,7 @@ identitySolver<dim, degree>::solve(const double &step_length)
 {
   auto *solution =
     this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                     dependencyType::NORMAL);
+                                                     DependencyType::NORMAL);
 
   // Compute the residual
   this->get_system_matrix()->compute_residual(*this->get_residual(), *solution);
@@ -125,7 +125,7 @@ identitySolver<dim, degree>::solve(const double &step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->get_newton_update());
-  this->get_solution_handler().update(fieldSolveType::NONEXPLICIT_LINEAR,
+  this->get_solution_handler().update(FieldSolveType::NONEXPLICIT_LINEAR,
                                       this->get_field_index());
 
   // Apply constraints

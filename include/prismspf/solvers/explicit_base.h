@@ -77,11 +77,11 @@ public:
 protected:
   /**
    * \brief Compute the subset of variableAttributes that belongs to a given
-   * fieldSolveType. This function should only be used for concurrent fieldSolveTypes,
+   * FieldSolveType. This function should only be used for concurrent fieldSolveTypes,
    * such as EXPLICIT, NONEXPLICIT_CO_NONLINEAR, and EXPLICIT_POSTPROCESS.
    */
   void
-  compute_subset_attributes(const fieldSolveType &field_solve_type);
+  compute_subset_attributes(const FieldSolveType &field_solve_type);
 
   /**
    * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also

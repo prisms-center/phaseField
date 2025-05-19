@@ -47,7 +47,7 @@ template <unsigned int dim, unsigned int degree>
 void
 explicitPostprocessSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::EXPLICIT_POSTPROCESS);
+  this->compute_subset_attributes(FieldSolveType::EXPLICIT_POSTPROCESS);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -113,7 +113,7 @@ explicitPostprocessSolver<dim, degree>::solve()
     }
 
   // Update the solutions
-  this->get_solution_handler().update(fieldSolveType::EXPLICIT_POSTPROCESS);
+  this->get_solution_handler().update(FieldSolveType::EXPLICIT_POSTPROCESS);
 }
 
 INSTANTIATE_BI_TEMPLATE(explicitPostprocessSolver)

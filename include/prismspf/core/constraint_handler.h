@@ -163,7 +163,7 @@ private:
                      const dealii::DoFHandler<dim> &dof_handler,
                      unsigned int                   index,
                      unsigned int                   level,
-                     dependencyType                 dependency_type);
+                     DependencyType                 dependency_type);
 
   /**
    * \brief Set the dirichlet constraint for the pinned point.

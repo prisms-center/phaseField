@@ -72,7 +72,7 @@ protected:
    * \param field_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
    */
   void
-  set_variable_type(const unsigned int &index, const fieldType &field_type);
+  set_variable_type(const unsigned int &index, const FieldType &field_type);
 
   /**
    * \brief Set the PDE type of the variable at `index` to `pde_type` where

@@ -52,7 +52,7 @@ solutionHandler<dim>::get_solution_vector() const
   std::map<unsigned int, VectorType *> temp;
   for (const auto &[pair, vector] : solution_set)
     {
-      if (pair.second != dependencyType::NORMAL)
+      if (pair.second != DependencyType::NORMAL)
         {
           continue;
         }
@@ -68,7 +68,7 @@ solutionHandler<dim>::get_solution_vector() const
 template <unsigned int dim>
 typename solutionHandler<dim>::VectorType *
 solutionHandler<dim>::get_solution_vector(unsigned int   index,
-                                          dependencyType dependency_type) const
+                                          DependencyType dependency_type) const
 {
   const auto pair = std::make_pair(index, dependency_type);
 
@@ -159,9 +159,9 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
   for (const auto &[index, variable] : *attributes_list)
     {
       // Add the current variable if it doesn't already exist
-      if (!solution_set.contains(std::make_pair(index, dependencyType::NORMAL)))
+      if (!solution_set.contains(std::make_pair(index, DependencyType::NORMAL)))
         {
-          solution_set[std::make_pair(index, dependencyType::NORMAL)] =
+          solution_set[std::make_pair(index, DependencyType::NORMAL)] =
             std::make_unique<VectorType>();
 
           new_solution_set[index] = std::make_unique<VectorType>();
@@ -250,31 +250,31 @@ solutionHandler<dim>::apply_initial_condition_for_old_fields()
 {
   for (auto &[pair, vector] : solution_set)
     {
-      if (pair.second == dependencyType::NORMAL)
+      if (pair.second == DependencyType::NORMAL)
         {
           continue;
         }
       *(get_solution_vector(pair.first, pair.second)) =
-        *(get_solution_vector(pair.first, dependencyType::NORMAL));
+        *(get_solution_vector(pair.first, DependencyType::NORMAL));
     }
 }
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
+solutionHandler<dim>::update(const FieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)
 {
   // Helper function to swap vectors for all dependency types
   auto swap_all_dependency_vectors = [this](unsigned int index, auto &new_vector)
   {
     // Always swap the NORMAL dependency
-    new_vector->swap(*(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+    new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::NORMAL))));
 
     // Swap old dependency types if they exist
-    const std::array<dependencyType, 4> old_types = {dependencyType::OLD_1,
-                                                     dependencyType::OLD_2,
-                                                     dependencyType::OLD_3,
-                                                     dependencyType::OLD_4};
+    const std::array<DependencyType, 4> old_types = {DependencyType::OLD_1,
+                                                     DependencyType::OLD_2,
+                                                     DependencyType::OLD_3,
+                                                     DependencyType::OLD_4};
 
     for (const auto &dep_type : old_types)
       {
@@ -298,36 +298,36 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
 
       switch (field_solve_type)
         {
-          case fieldSolveType::EXPLICIT_CONSTANT:
+          case FieldSolveType::EXPLICIT_CONSTANT:
             break;
-          case fieldSolveType::EXPLICIT:
-          case fieldSolveType::EXPLICIT_POSTPROCESS:
+          case FieldSolveType::EXPLICIT:
+          case FieldSolveType::EXPLICIT_POSTPROCESS:
             // For EXPLICIT_POSTPROCESS we only swap NORMAL, but the helper function will
             // do that first and ignore the rest since they should exist
             swap_all_dependency_vectors(index, new_vector);
             break;
-          case fieldSolveType::NONEXPLICIT_LINEAR:
+          case FieldSolveType::NONEXPLICIT_LINEAR:
             if (variable_index == index)
               {
                 swap_all_dependency_vectors(index, new_vector);
                 // Additional swap for NONEXPLICIT_LINEAR since the change term is the NEW
                 // vector and the NORMAL vector is the old one
                 new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                  *(solution_set.at(std::make_pair(index, DependencyType::NORMAL))));
               }
             break;
-          case fieldSolveType::NONEXPLICIT_AUXILIARY:
+          case FieldSolveType::NONEXPLICIT_AUXILIARY:
             if (variable_index == index)
               {
                 swap_all_dependency_vectors(index, new_vector);
               }
             break;
-          case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
-          case fieldSolveType::NONEXPLICIT_CO_NONLINEAR:
+          case FieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
+          case FieldSolveType::NONEXPLICIT_CO_NONLINEAR:
             Assert(false, dealii::ExcNotImplemented());
             break;
           default:
-            AssertThrow(false, dealii::ExcMessage("Invalid fieldSolveType"));
+            AssertThrow(false, dealii::ExcMessage("Invalid FieldSolveType"));
         }
     }
 }

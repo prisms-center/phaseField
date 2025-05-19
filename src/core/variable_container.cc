@@ -29,22 +29,22 @@ template <unsigned int dim, unsigned int degree, typename number>
 variableContainer<dim, degree, number>::variableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<unsigned int, variableAttributes> &_subset_attributes,
-  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
                   &_global_to_local_solution,
-  const solveType &_solve_type,
+  const SolveType &_solve_type,
   bool             use_local_mapping)
   : subset_attributes(&_subset_attributes)
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
 {
   auto construct_map =
-    [&](const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
+    [&](const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
       {
         for (const auto &[dependency_type, field_type] : map)
           {
-            if (field_type == fieldType::SCALAR)
+            if (field_type == FieldType::SCALAR)
               {
                 if (!use_local_mapping)
                   {
@@ -85,12 +85,12 @@ variableContainer<dim, degree, number>::variableContainer(
       }
   };
 
-  Assert(subset_attributes->size() == 1 || (solve_type == solveType::EXPLICIT_rhs ||
-                                            solve_type == solveType::POSTPROCESS),
+  Assert(subset_attributes->size() == 1 || (solve_type == SolveType::EXPLICIT_rhs ||
+                                            solve_type == SolveType::POSTPROCESS),
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       construct_map(subset_attributes->begin()->second.get_dependency_set_lhs());
       return;
@@ -208,8 +208,8 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
   const auto &global_var_index = subset_attributes->begin()->first;
   const auto &field_type       = subset_attributes->begin()->second.get_field_type();
-  FEEval_exists(global_var_index, dependencyType::CHANGE);
-  auto &feeval_variant = feeval_map.at(global_var_index).at(dependencyType::CHANGE);
+  FEEval_exists(global_var_index, DependencyType::CHANGE);
+  auto &feeval_variant = feeval_map.at(global_var_index).at(DependencyType::CHANGE);
 
   auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
   {
@@ -296,7 +296,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
       }
   };
 
-  if (field_type == fieldType::SCALAR)
+  if (field_type == FieldType::SCALAR)
     {
       scalar_FEEval *scalar_feeval_ptr = nullptr;
 
@@ -343,7 +343,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
       process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
     }
-  else if (field_type == fieldType::VECTOR)
+  else if (field_type == FieldType::VECTOR)
     {
       vector_FEEval *vector_feeval_ptr = nullptr;
 
@@ -400,7 +400,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::FEEval_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
-  [[maybe_unused]] const dependencyType &dependency_type) const
+  [[maybe_unused]] const DependencyType &dependency_type) const
 {
   Assert(feeval_map.contains(dependency_index),
          dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
@@ -415,12 +415,12 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::access_valid(
   [[maybe_unused]] const unsigned int                             &dependency_index,
-  [[maybe_unused]] const dependencyType                           &dependency_type,
+  [[maybe_unused]] const DependencyType                           &dependency_type,
   [[maybe_unused]] const dealii::EvaluationFlags::EvaluationFlags &flag) const
 {
   for ([[maybe_unused]] const auto &[index, variable] : *subset_attributes)
     {
-      if (solve_type == solveType::NONEXPLICIT_lhs)
+      if (solve_type == SolveType::NONEXPLICIT_lhs)
         {
           Assert(variable.get_eval_flag_set_lhs().contains(
                    std::make_pair(dependency_index, dependency_type)),
@@ -438,12 +438,12 @@ variableContainer<dim, degree, number>::access_valid(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 variableContainer<dim, degree, number>::submission_valid(
-  [[maybe_unused]] const dependencyType &dependency_type) const
+  [[maybe_unused]] const DependencyType &dependency_type) const
 {
-  Assert(dependency_type == NORMAL || solve_type == solveType::NONEXPLICIT_lhs,
+  Assert(dependency_type == NORMAL || solve_type == SolveType::NONEXPLICIT_lhs,
          dealii::ExcMessage(
            "RHS residuals are only allowed to submit normal gradient terms."));
-  Assert(dependency_type == CHANGE || solve_type != solveType::NONEXPLICIT_lhs,
+  Assert(dependency_type == CHANGE || solve_type != SolveType::NONEXPLICIT_lhs,
          dealii::ExcMessage(
            "LHS residuals are only allowed to submit change gradient terms."));
 }
@@ -521,15 +521,15 @@ variableContainer<dim, degree, number>::reinit_and_eval(
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, dependencyType>,
+    [&](const std::map<std::pair<unsigned int, DependencyType>,
                        dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
-        const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
+        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
       {
         for (const auto &[dependency_type, field_type] : map)
           {
-            if (dependency_type == dependencyType::CHANGE)
+            if (dependency_type == DependencyType::CHANGE)
               {
                 continue;
               }
@@ -583,7 +583,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
       }
   };
 
-  if (solve_type == solveType::EXPLICIT_rhs || solve_type == solveType::POSTPROCESS)
+  if (solve_type == SolveType::EXPLICIT_rhs || solve_type == SolveType::POSTPROCESS)
     {
       const auto &attrs = subset_attributes->begin()->second;
       reinit_and_eval_map(attrs.get_eval_flag_set_rhs(), attrs.get_dependency_set_rhs());
@@ -598,7 +598,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
   const auto &attrs = subset_attributes->begin()->second;
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       reinit_and_eval_map(attrs.get_eval_flag_set_lhs(), attrs.get_dependency_set_lhs());
     }
@@ -617,9 +617,9 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, dependencyType>,
+    [&](const std::map<std::pair<unsigned int, DependencyType>,
                        dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
-        const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
+        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
       {
@@ -627,7 +627,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
           {
             // TODO (landinjm): This can be drastically simplified because all we're doing
             // in reinit-ing and eval-ing the change solution.
-            if (dependency_type != dependencyType::CHANGE)
+            if (dependency_type != DependencyType::CHANGE)
               {
                 continue;
               }
@@ -673,7 +673,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
   const auto &attrs = subset_attributes->begin()->second;
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       reinit_and_eval_map(attrs.get_eval_flag_set_lhs(), attrs.get_dependency_set_lhs());
       return;
@@ -689,13 +689,13 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
                                                const unsigned int &global_variable_index)
 {
   auto reinit_map =
-    [&](const std::map<std::pair<unsigned int, dependencyType>,
+    [&](const std::map<std::pair<unsigned int, DependencyType>,
                        dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
   {
     for (const auto &[pair, flags] : eval_flag_set)
       {
         const unsigned int   &dependency_index = pair.first;
-        const dependencyType &dependency_type  = pair.second;
+        const DependencyType &dependency_type  = pair.second;
         FEEval_exists(dependency_index, dependency_type);
         auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
@@ -729,7 +729,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
            "The subset attribute entry does not exists for global index = " +
            std::to_string(global_variable_index)));
   const auto &attrs = subset_attributes->at(global_variable_index);
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       reinit_map(attrs.get_eval_flag_set_lhs());
     }
@@ -745,15 +745,15 @@ variableContainer<dim, degree, number>::read_dof_values(
   const std::vector<VectorType *> &src)
 {
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, dependencyType>,
+    [&](const std::map<std::pair<unsigned int, DependencyType>,
                        dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
-        const std::map<unsigned int, std::map<dependencyType, fieldType>> &dependency_set)
+        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
       {
         for (const auto &[dependency_type, field_type] : map)
           {
-            if (dependency_type == dependencyType::CHANGE)
+            if (dependency_type == DependencyType::CHANGE)
               {
                 continue;
               }
@@ -804,7 +804,7 @@ variableContainer<dim, degree, number>::read_dof_values(
       }
   };
 
-  if (solve_type != solveType::NONEXPLICIT_lhs)
+  if (solve_type != SolveType::NONEXPLICIT_lhs)
     {
       Assert(false, UnreachableCode());
       return;
@@ -826,13 +826,13 @@ void
 variableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
 {
   auto eval_map =
-    [&](const std::map<std::pair<unsigned int, dependencyType>,
+    [&](const std::map<std::pair<unsigned int, DependencyType>,
                        dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
   {
     for (const auto &[pair, flags] : eval_flag_set)
       {
         const unsigned int   &dependency_index = pair.first;
-        const dependencyType &dependency_type  = pair.second;
+        const DependencyType &dependency_type  = pair.second;
         FEEval_exists(dependency_index, dependency_type);
         auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 
@@ -866,7 +866,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
            "The subset attribute entry does not exists for global index = " +
            std::to_string(global_variable_index)));
   const auto &attrs = subset_attributes->at(global_variable_index);
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       eval_map(attrs.get_eval_flag_set_lhs());
     }
@@ -887,11 +887,11 @@ variableContainer<dim, degree, number>::integrate(
            std::to_string(global_variable_index)));
   const auto &variable = subset_attributes->at(global_variable_index);
 
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
-      FEEval_exists(global_variable_index, dependencyType::CHANGE);
+      FEEval_exists(global_variable_index, DependencyType::CHANGE);
       auto &feeval_variant =
-        feeval_map.at(global_variable_index).at(dependencyType::CHANGE);
+        feeval_map.at(global_variable_index).at(DependencyType::CHANGE);
 
       auto process_feeval = [&](auto &feeval_ptr)
       {
@@ -930,7 +930,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
 {
   auto integrate_and_distribute_map =
     [&](const dealii::EvaluationFlags::EvaluationFlags &residual_flag_set,
-        const dependencyType                           &dependency_type,
+        const DependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
     Assert(
@@ -979,16 +979,16 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
 
   for (const auto &[index, variable] : *subset_attributes)
     {
-      if (solve_type == solveType::NONEXPLICIT_lhs)
+      if (solve_type == SolveType::NONEXPLICIT_lhs)
         {
           integrate_and_distribute_map(variable.get_eval_flags_residual_lhs(),
-                                       dependencyType::CHANGE,
+                                       DependencyType::CHANGE,
                                        index);
         }
       else
         {
           integrate_and_distribute_map(variable.get_eval_flags_residual_rhs(),
-                                       dependencyType::NORMAL,
+                                       DependencyType::NORMAL,
                                        index);
         }
     }
@@ -1000,7 +1000,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
 {
   auto integrate_and_distribute_map =
     [&](const dealii::EvaluationFlags::EvaluationFlags &residual_flag_set,
-        const dependencyType                           &dependency_type,
+        const DependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
     Assert(subset_attributes->contains(residual_index),
@@ -1038,18 +1038,18 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
-  if (solve_type == solveType::NONEXPLICIT_lhs)
+  if (solve_type == SolveType::NONEXPLICIT_lhs)
     {
       integrate_and_distribute_map(
         subset_attributes->begin()->second.get_eval_flags_residual_lhs(),
-        dependencyType::CHANGE,
+        DependencyType::CHANGE,
         subset_attributes->begin()->first);
     }
   else
     {
       integrate_and_distribute_map(
         subset_attributes->begin()->second.get_eval_flags_residual_rhs(),
-        dependencyType::NORMAL,
+        DependencyType::NORMAL,
         subset_attributes->begin()->first);
     }
 }
@@ -1058,7 +1058,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_scalar_value(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1096,7 +1096,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_gradient(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1136,7 +1136,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_hessian(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1176,7 +1176,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1216,7 +1216,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_scalar_laplacian(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1256,7 +1256,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_value(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1297,7 +1297,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_gradient(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1338,7 +1338,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<3, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_hessian(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1379,7 +1379,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1421,7 +1421,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_laplacian(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1462,7 +1462,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 typename variableContainer<dim, degree, number>::size_type
 variableContainer<dim, degree, number>::get_vector_divergence(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1502,7 +1502,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1544,7 +1544,7 @@ dealii::Tensor<1,
                typename variableContainer<dim, degree, number>::size_type>
 variableContainer<dim, degree, number>::get_vector_curl(
   unsigned int   global_variable_index,
-  dependencyType dependency_type) const
+  DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1585,7 +1585,7 @@ void
 variableContainer<dim, degree, number>::set_scalar_value_term(
   const unsigned int   &global_variable_index,
   const size_type      &val,
-  const dependencyType &dependency_type)
+  const DependencyType &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
@@ -1623,7 +1623,7 @@ void
 variableContainer<dim, degree, number>::set_scalar_gradient_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<1, dim, size_type> &grad,
-  const dependencyType                    &dependency_type)
+  const DependencyType                    &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
@@ -1661,7 +1661,7 @@ void
 variableContainer<dim, degree, number>::set_vector_value_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<1, dim, size_type> &val,
-  const dependencyType                    &dependency_type)
+  const DependencyType                    &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
@@ -1699,7 +1699,7 @@ void
 variableContainer<dim, degree, number>::set_vector_gradient_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<2, dim, size_type> &grad,
-  const dependencyType                    &dependency_type)
+  const DependencyType                    &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);

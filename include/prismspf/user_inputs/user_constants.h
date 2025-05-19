@@ -149,7 +149,7 @@ private:
                  const std::string  &elastic_const_symmetry) const;
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  getCIJMatrix(const elasticityModel &model, const std::vector<double> &constants) const;
+  getCIJMatrix(const ElasticityModel &model, const std::vector<double> &constants) const;
 
   /**
    * \brief List of user-defined constants.
@@ -495,22 +495,22 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
-  elasticityModel mat_model = ISOTROPIC;
+  ElasticityModel mat_model = ISOTROPIC;
   if (elastic_const_symmetry == "isotropic")
     {
-      mat_model = elasticityModel::ISOTROPIC;
+      mat_model = ElasticityModel::ISOTROPIC;
     }
   else if (elastic_const_symmetry == "transverse")
     {
-      mat_model = elasticityModel::TRANSVERSE;
+      mat_model = ElasticityModel::TRANSVERSE;
     }
   else if (elastic_const_symmetry == "orthotropic")
     {
-      mat_model = elasticityModel::ORTHOTROPIC;
+      mat_model = ElasticityModel::ORTHOTROPIC;
     }
   else if (elastic_const_symmetry == "anisotropic")
     {
-      mat_model = elasticityModel::ANISOTROPIC;
+      mat_model = ElasticityModel::ANISOTROPIC;
     }
   else
     {
@@ -540,7 +540,7 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
+userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                                  const std::vector<double> &constants) const
 {
   // Initialize tensor

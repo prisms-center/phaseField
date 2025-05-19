@@ -60,7 +60,7 @@ template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitLinearSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_LINEAR);
+  this->compute_subset_attributes(FieldSolveType::NONEXPLICIT_LINEAR);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -75,7 +75,7 @@ nonexplicitLinearSolver<dim, degree>::init()
       if (this->get_user_inputs()
             .get_linear_solve_parameters()
             .get_linear_solve_parameters(index)
-            .preconditioner == preconditionerType::GMG)
+            .preconditioner == PreconditionerType::GMG)
         {
           gmg_solvers.emplace(
             index,
@@ -130,7 +130,7 @@ nonexplicitLinearSolver<dim, degree>::solve()
       if (this->get_user_inputs()
             .get_linear_solve_parameters()
             .get_linear_solve_parameters(index)
-            .preconditioner == preconditionerType::GMG)
+            .preconditioner == PreconditionerType::GMG)
         {
           gmg_solvers.at(index)->solve();
         }

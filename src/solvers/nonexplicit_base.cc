@@ -56,12 +56,12 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
 template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitBase<dim, degree>::compute_subset_attributes(
-  const fieldSolveType &field_solve_type)
+  const FieldSolveType &field_solve_type)
 {
-  Assert((field_solve_type == fieldSolveType::NONEXPLICIT_LINEAR ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_AUXILIARY ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR),
+  Assert((field_solve_type == FieldSolveType::NONEXPLICIT_LINEAR ||
+          field_solve_type == FieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
+          field_solve_type == FieldSolveType::NONEXPLICIT_AUXILIARY ||
+          field_solve_type == FieldSolveType::NONEXPLICIT_CO_NONLINEAR),
          dealii::ExcMessage(
            "compute_subset_attributes() should only be used for "
            "NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR, NONEXPLICIT_AUXILIARY, and "
@@ -83,7 +83,7 @@ inline void
 nonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
   Assert(subset_attributes.begin()->second.get_field_solve_type() ==
-           fieldSolveType::NONEXPLICIT_CO_NONLINEAR,
+           FieldSolveType::NONEXPLICIT_CO_NONLINEAR,
          dealii::ExcMessage("compute_shared_dependencies() should only be used for "
                             "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
 
@@ -156,7 +156,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
         initialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
                                       pde_operator),
-        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+        *(solution_handler->get_solution_vector(index, DependencyType::NORMAL)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.

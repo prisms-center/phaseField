@@ -23,13 +23,13 @@ public:
   double tolerance = defaults::tolerance;
 
   // Solver tolerance type
-  solverToleranceType tolerance_type = solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
+  SolverToleranceType tolerance_type = SolverToleranceType::RELATIVE_RESIDUAL_CHANGE;
 
   // Max number of iterations for the linear solve
   unsigned int max_iterations = defaults::iterations;
 
   // Preconditioner
-  preconditionerType preconditioner = preconditionerType::GMG;
+  PreconditionerType preconditioner = PreconditionerType::GMG;
 
   // Smoothing range for eigenvalues. This denotes the lower bound of eigenvalues that are
   // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated
@@ -145,7 +145,7 @@ linearSolveParameters::print_parameter_summary() const
             << "  Preconditioner: " << to_string(linear_solver_parameters.preconditioner)
             << "\n";
 
-          if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
+          if (linear_solver_parameters.preconditioner == PreconditionerType::GMG)
             {
               ConditionalOStreams::pout_summary()
                 << "  Smoothing range: " << linear_solver_parameters.smoothing_range

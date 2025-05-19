@@ -51,7 +51,7 @@ struct variableAttributes
   /**
    * \brief Get the field type
    */
-  [[nodiscard]] const fieldType &
+  [[nodiscard]] const FieldType &
   get_field_type() const
   {
     return field_type;
@@ -98,7 +98,7 @@ struct variableAttributes
   /**
    * \brief Get the field solve type.
    */
-  [[nodiscard]] fieldSolveType
+  [[nodiscard]] FieldSolveType
   get_field_solve_type() const
   {
     return field_solve_type;
@@ -107,7 +107,7 @@ struct variableAttributes
   /**
    * \brief Get the RHS evaluation flags.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>,
+  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>,
                                dealii::EvaluationFlags::EvaluationFlags> &
   get_eval_flag_set_rhs() const
   {
@@ -117,7 +117,7 @@ struct variableAttributes
   /**
    * \brief Get the RHS evaluation flags.
    */
-  [[nodiscard]] std::map<std::pair<unsigned int, dependencyType>,
+  [[nodiscard]] std::map<std::pair<unsigned int, DependencyType>,
                          dealii::EvaluationFlags::EvaluationFlags> &
   get_eval_flag_set_rhs()
   {
@@ -127,7 +127,7 @@ struct variableAttributes
   /**
    * \brief Get the LHS evaluation flags.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>,
+  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>,
                                dealii::EvaluationFlags::EvaluationFlags> &
   get_eval_flag_set_lhs() const
   {
@@ -155,7 +155,7 @@ struct variableAttributes
   /**
    * \brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] const std::map<unsigned int, std::map<dependencyType, fieldType>> &
+  [[nodiscard]] const std::map<unsigned int, std::map<DependencyType, FieldType>> &
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
@@ -164,7 +164,7 @@ struct variableAttributes
   /**
    * \brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] std::map<unsigned int, std::map<dependencyType, fieldType>> &
+  [[nodiscard]] std::map<unsigned int, std::map<DependencyType, FieldType>> &
   get_dependency_set_rhs()
   {
     return dependency_set_rhs;
@@ -174,7 +174,7 @@ struct variableAttributes
    * \brief Set the dependency set for the RHS.
    */
   void
-  set_dependency_set_rhs(const std::map<unsigned int, std::map<dependencyType, fieldType>>
+  set_dependency_set_rhs(const std::map<unsigned int, std::map<DependencyType, FieldType>>
                            &_dependency_set_rhs)
   {
     dependency_set_rhs = _dependency_set_rhs;
@@ -183,7 +183,7 @@ struct variableAttributes
   /**
    * \brief Get the dependency set for the LHS.
    */
-  [[nodiscard]] const std::map<unsigned int, std::map<dependencyType, fieldType>> &
+  [[nodiscard]] const std::map<unsigned int, std::map<DependencyType, FieldType>> &
   get_dependency_set_lhs() const
   {
     return dependency_set_lhs;
@@ -230,7 +230,7 @@ private:
    */
   void
   validate_dependency(const std::string  &variation,
-                      dependencyType      dep_type,
+                      DependencyType      dep_type,
                       const unsigned int &other_index,
                       const std::string  &context) const;
 
@@ -279,7 +279,7 @@ private:
   /**
    * \brief Field type (SCALAR/VECTOR). \remark User-set
    */
-  fieldType field_type = fieldType::UNDEFINED_FIELD;
+  FieldType field_type = FieldType::UNDEFINED_FIELD;
 
   /**
    * \brief PDE type (EXPLICIT/NONEXPLICIT). \remark User-set
@@ -302,14 +302,14 @@ private:
    * \brief Internal classification for the field solve type. \remark Internally
    * determined
    */
-  fieldSolveType field_solve_type = fieldSolveType::UNDEFINED_SOLVE;
+  FieldSolveType field_solve_type = FieldSolveType::UNDEFINED_SOLVE;
 
   /**
    * \brief A map of evaluation flags for the dependencies of the current variable's RHS.
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field. \remark Internally determined
    */
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     eval_flag_set_rhs;
 
@@ -318,7 +318,7 @@ private:
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field. \remark Internally determined
    */
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     eval_flag_set_lhs;
 
@@ -341,14 +341,14 @@ private:
    * are included. This is used to determine what FEEvaluatiob objects are necessary in
    * variable container. \remark Internally determined
    */
-  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_rhs;
+  std::map<unsigned int, std::map<DependencyType, FieldType>> dependency_set_rhs;
 
   /**
    * \brief A dependency set where the LHS evaluation flags that are not 0 (not nothing)
    * are included. This is used to determine what FEEvaluatiob objects are necessary in
    * variable container. \remark Internally determined
    */
-  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_lhs;
+  std::map<unsigned int, std::map<DependencyType, FieldType>> dependency_set_lhs;
 
   /**
    * \brief The user-inputted dependencies for the RHS value term. \remark User-set
@@ -384,7 +384,7 @@ private:
 
   /**
    * \brief A simplified set of evaluation flags for the dependencies of the current
-   * variable's LHS & RHS. This will help determine the fieldSolveType of the field.
+   * variable's LHS & RHS. This will help determine the FieldSolveType of the field.
    * Fields indices where the evaluation flags are not 0 (not nothing) are included.
    * Additionally, explicit fields are excluded to speed up the graph search. \remark
    * Internally determined

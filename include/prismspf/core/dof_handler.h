@@ -37,7 +37,7 @@ public:
    */
   void
   init(const triangulationHandler<dim>                  &triangulation_handler,
-       const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+       const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
        const MGInfo<dim>                                &mg_info);
 
   /**

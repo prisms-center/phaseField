@@ -142,7 +142,7 @@ protected:
    * \brief Get the mapping from global solution vectors to the local ones for the
    * residual solve.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>, unsigned int> &
+  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, unsigned int> &
   get_residual_global_to_local_solution() const
   {
     return residual_global_to_local_solution;
@@ -171,7 +171,7 @@ protected:
    * \brief Get the mapping from global solution vectors to the local ones for the
    * newton update.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>, unsigned int> &
+  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, unsigned int> &
   get_newton_update_global_to_local_solution() const
   {
     return newton_update_global_to_local_solution;
@@ -284,7 +284,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones for the residual solve.
    */
-  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     residual_global_to_local_solution;
 
   /**
@@ -300,7 +300,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones for the newton update.
    */
-  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     newton_update_global_to_local_solution;
 
   /**

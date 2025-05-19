@@ -99,7 +99,7 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
 template <unsigned int dim>
 void
 dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
-                      const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+                      const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
                       const MGInfo<dim>                                &mg_info)
 {
   unsigned int n_dofs = 0;

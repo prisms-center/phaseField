@@ -56,7 +56,7 @@ template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitAuxiliarySolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_AUXILIARY);
+  this->compute_subset_attributes(FieldSolveType::NONEXPLICIT_AUXILIARY);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -87,9 +87,9 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
       new_solution_subset[index].push_back(
         this->get_solution_handler().get_new_solution_vector(index));
       solution_subset[index].push_back(
-        this->get_solution_handler().get_solution_vector(index, dependencyType::NORMAL));
+        this->get_solution_handler().get_solution_vector(index, DependencyType::NORMAL));
       global_to_local_solution[index].emplace(std::make_pair(index,
-                                                             dependencyType::NORMAL),
+                                                             DependencyType::NORMAL),
                                               0);
       for (const auto &[variable_index, map] :
            this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
@@ -133,11 +133,11 @@ nonexplicitAuxiliarySolver<dim, degree>::solve()
         this->get_invm_handler().get_invm(index));
 
       // Update the solutions
-      this->get_solution_handler().update(fieldSolveType::NONEXPLICIT_AUXILIARY, index);
+      this->get_solution_handler().update(FieldSolveType::NONEXPLICIT_AUXILIARY, index);
 
       // Apply constraints
       this->get_constraint_handler().get_constraint(index).distribute(*(
-        this->get_solution_handler().get_solution_vector(index, dependencyType::NORMAL)));
+        this->get_solution_handler().get_solution_vector(index, DependencyType::NORMAL)));
     }
 }
 

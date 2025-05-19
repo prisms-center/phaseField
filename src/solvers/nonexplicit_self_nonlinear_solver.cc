@@ -60,7 +60,7 @@ template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitSelfNonlinearSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
+  this->compute_subset_attributes(FieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -75,7 +75,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
       if (this->get_user_inputs()
             .get_linear_solve_parameters()
             .get_linear_solve_parameters(index)
-            .preconditioner == preconditionerType::GMG)
+            .preconditioner == PreconditionerType::GMG)
         {
           gmg_solvers.emplace(
             index,
@@ -142,7 +142,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
           if (this->get_user_inputs()
                 .get_linear_solve_parameters()
                 .get_linear_solve_parameters(index)
-                .preconditioner == preconditionerType::GMG)
+                .preconditioner == PreconditionerType::GMG)
             {
               gmg_solvers.at(index)->solve(step_length);
             }

@@ -285,7 +285,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
     {
       // Ensure that boundary conditions are specified for all variables and their
       // components
-      if (variable.get_field_type() == fieldType::VECTOR)
+      if (variable.get_field_type() == FieldType::VECTOR)
         {
           for (unsigned int i = 0; i < dim; i++)
             {

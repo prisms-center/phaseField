@@ -51,7 +51,7 @@ public:
    * TODO (landinjm): Make const ptr?
    */
   [[nodiscard]] VectorType *
-  get_solution_vector(unsigned int index, dependencyType dependency_type) const;
+  get_solution_vector(unsigned int index, DependencyType dependency_type) const;
 
   /**
    * \brief Get the "new" solution vector set.
@@ -123,10 +123,10 @@ public:
 
   /**
    * \brief Update the `solution_set` with the `new_solution_set`. This has different
-   * variants on which solutions to swap based on the fieldSolveType.
+   * variants on which solutions to swap based on the FieldSolveType.
    */
   void
-  update(const fieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
+  update(const FieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
 
 private:
   /**
@@ -153,7 +153,7 @@ private:
    * \brief The collection of solution vector at the current timestep. This includes
    * current values and old values.
    */
-  std::map<std::pair<unsigned int, dependencyType>, std::unique_ptr<VectorType>>
+  std::map<std::pair<unsigned int, DependencyType>, std::unique_ptr<VectorType>>
     solution_set;
 
   /**

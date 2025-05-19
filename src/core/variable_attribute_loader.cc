@@ -66,17 +66,17 @@ variableAttributeLoader::set_variable_name(const unsigned int &index,
 
 void
 variableAttributeLoader::set_variable_type(const unsigned int &index,
-                                           const fieldType    &field_type)
+                                           const FieldType    &field_type)
 {
   switch (field_type)
     {
-      case fieldType::SCALAR:
-      case fieldType::VECTOR:
+      case FieldType::SCALAR:
+      case FieldType::VECTOR:
         var_attributes[index].field_type = field_type;
         break;
       default:
         throw std::invalid_argument(
-          "Invalid fieldType value provided in set_variable_type().");
+          "Invalid FieldType value provided in set_variable_type().");
     }
 }
 
@@ -369,7 +369,7 @@ void
 variableAttributeLoader::validate_old_solution_dependencies()
 {
   // First create a combined dependency set for all fields
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
@@ -390,7 +390,7 @@ variableAttributeLoader::validate_old_solution_dependencies()
       if (var_attributes.at(pair.first).pde_type == PDEType::CONSTANT)
         {
           AssertThrow(
-            pair.second == dependencyType::NORMAL,
+            pair.second == DependencyType::NORMAL,
             dealii::ExcMessage(
               "Constant fields cannot be specified as old() or change() dependencies"));
         }
@@ -399,10 +399,10 @@ variableAttributeLoader::validate_old_solution_dependencies()
   // Check that old fields dependencies are sequential
   for (const auto &[index, variable] : var_attributes)
     {
-      std::vector<dependencyType> old_types = {dependencyType::OLD_1,
-                                               dependencyType::OLD_2,
-                                               dependencyType::OLD_3,
-                                               dependencyType::OLD_4};
+      std::vector<DependencyType> old_types = {DependencyType::OLD_1,
+                                               DependencyType::OLD_2,
+                                               DependencyType::OLD_3,
+                                               DependencyType::OLD_4};
 
       // Find first gap in sequence
       unsigned int gap_index = 0;

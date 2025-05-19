@@ -69,7 +69,7 @@ TEST_CASE("Field solve types")
     for (unsigned int index : {0, 1})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                fieldSolveType::NONEXPLICIT_CO_NONLINEAR);
+                FieldSolveType::NONEXPLICIT_CO_NONLINEAR);
       }
   }
 
@@ -148,12 +148,12 @@ TEST_CASE("Field solve types")
     for (unsigned int index : {0, 1})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                fieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
+                FieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                fieldSolveType::NONEXPLICIT_LINEAR);
+                FieldSolveType::NONEXPLICIT_LINEAR);
       }
   }
 
@@ -191,7 +191,7 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1, 2, 3})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == fieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
       }
   }
 
@@ -240,12 +240,12 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == fieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                fieldSolveType::NONEXPLICIT_AUXILIARY);
+                FieldSolveType::NONEXPLICIT_AUXILIARY);
       }
   }
 
@@ -305,12 +305,12 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == fieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                fieldSolveType::NONEXPLICIT_LINEAR);
+                FieldSolveType::NONEXPLICIT_LINEAR);
       }
   }
 }

@@ -47,7 +47,7 @@ template <unsigned int dim, unsigned int degree>
 void
 explicitSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::EXPLICIT);
+  this->compute_subset_attributes(FieldSolveType::EXPLICIT);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -122,7 +122,7 @@ explicitSolver<dim, degree>::solve()
     }
 
   // Update the solutions
-  this->get_solution_handler().update(fieldSolveType::EXPLICIT);
+  this->get_solution_handler().update(FieldSolveType::EXPLICIT);
 
   // Apply constraints
   // TODO (landinjm): This applies the constraints even to the old fields, which is

@@ -50,11 +50,11 @@ explicitBase<dim, degree>::explicitBase(
 template <unsigned int dim, unsigned int degree>
 void
 explicitBase<dim, degree>::compute_subset_attributes(
-  const fieldSolveType &field_solve_type)
+  const FieldSolveType &field_solve_type)
 {
-  Assert((field_solve_type == fieldSolveType::EXPLICIT ||
-          field_solve_type == fieldSolveType::EXPLICIT_POSTPROCESS ||
-          field_solve_type == fieldSolveType::EXPLICIT_CONSTANT),
+  Assert((field_solve_type == FieldSolveType::EXPLICIT ||
+          field_solve_type == FieldSolveType::EXPLICIT_POSTPROCESS ||
+          field_solve_type == FieldSolveType::EXPLICIT_CONSTANT),
          dealii::ExcMessage(
            "compute_subset_attributes() should only be used for "
            "EXPLICIT, EXPLICIT_POSTPROCESS, and EXPLICIT_CONSTANT fieldSolveTypes"));
@@ -137,7 +137,7 @@ explicitBase<dim, degree>::set_initial_condition()
         initialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
                                       pde_operator),
-        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+        *(solution_handler->get_solution_vector(index, DependencyType::NORMAL)));
     }
 }
 

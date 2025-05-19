@@ -140,7 +140,7 @@ private:
    * FESystem's: one for scalar fields and one for vector fields. For now they both use
    * FE_Q finite elements.
    */
-  std::map<fieldType, dealii::FESystem<dim>> fe_system;
+  std::map<FieldType, dealii::FESystem<dim>> fe_system;
 
   /**
    * \brief Mappings to and from reference cell.

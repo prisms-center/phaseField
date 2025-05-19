@@ -163,7 +163,7 @@ constraintHandler<dim, degree>::make_mg_constraints(
                          *dof_handlers[index],
                          index,
                          level,
-                         dependencyType::CHANGE);
+                         DependencyType::CHANGE);
     }
 }
 
@@ -210,7 +210,7 @@ constraintHandler<dim, degree>::update_time_dependent_mg_constraints(
                              *dof_handlers[index],
                              index,
                              level,
-                             dependencyType::CHANGE);
+                             DependencyType::CHANGE);
         }
     }
 }
@@ -362,7 +362,7 @@ constraintHandler<dim, degree>::make_constraint(
            condition.get_boundary_condition_map())
         {
           if (user_inputs->get_variable_attributes().at(index).get_field_type() !=
-              fieldType::VECTOR)
+              FieldType::VECTOR)
             {
               apply_constraints<double, 1>(mapping,
                                            dof_handler,
@@ -402,7 +402,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
   const dealii::DoFHandler<dim> &dof_handler,
   unsigned int                   index,
   unsigned int                   level,
-  dependencyType                 dependency_type)
+  DependencyType                 dependency_type)
 {
   // Convert the global index and absolute level to a local index and relative level.
   const unsigned int relative_level = level - global_min_level;
@@ -419,7 +419,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
 
   apply_generic_constraints<float>(dof_handler, local_constraint);
 
-  if (dependency_type == dependencyType::CHANGE)
+  if (dependency_type == DependencyType::CHANGE)
     {
       const auto &boundary_condition =
         this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
@@ -431,7 +431,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
             {
               if (user_inputs->get_variable_attributes()
                     .at(global_index)
-                    .get_field_type() != fieldType::VECTOR)
+                    .get_field_type() != FieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,
@@ -462,7 +462,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
           set_pinned_point<float>(dof_handler, local_constraint, global_index, true);
         }
     }
-  else if (dependency_type == dependencyType::NORMAL)
+  else if (dependency_type == DependencyType::NORMAL)
     {
       const auto &boundary_condition =
         this->user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
@@ -474,7 +474,7 @@ constraintHandler<dim, degree>::make_mg_constraint(
             {
               if (user_inputs->get_variable_attributes()
                     .at(global_index)
-                    .get_field_type() != fieldType::VECTOR)
+                    .get_field_type() != FieldType::VECTOR)
                 {
                   apply_constraints<float, 1>(mapping,
                                               dof_handler,

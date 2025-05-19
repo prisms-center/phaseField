@@ -57,7 +57,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     global_to_local_solution;
 
   /**

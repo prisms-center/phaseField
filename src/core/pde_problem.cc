@@ -144,20 +144,20 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.get_field_type() == fieldType::SCALAR &&
-          fe_system.find(fieldType::SCALAR) == fe_system.end())
+      if (variable.get_field_type() == FieldType::SCALAR &&
+          fe_system.find(FieldType::SCALAR) == fe_system.end())
         {
-          fe_system.emplace(fieldType::SCALAR,
+          fe_system.emplace(FieldType::SCALAR,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   1));
           ConditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
                                               << std::flush;
         }
-      else if (variable.get_field_type() == fieldType::VECTOR &&
-               fe_system.find(fieldType::VECTOR) == fe_system.end())
+      else if (variable.get_field_type() == FieldType::VECTOR &&
+               fe_system.find(FieldType::VECTOR) == fe_system.end())
         {
-          fe_system.emplace(fieldType::VECTOR,
+          fe_system.emplace(FieldType::VECTOR,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   dim));
@@ -405,7 +405,7 @@ PDEProblem<dim, degree>::solve()
               const auto local_field_type =
                 user_inputs->get_variable_attributes().at(index).get_field_type();
 
-              if (local_field_type == fieldType::VECTOR)
+              if (local_field_type == FieldType::VECTOR)
                 {
                   std::vector<double> integrated_values(dim, 0.0);
                   integral_computer.compute_integral(
