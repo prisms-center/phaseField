@@ -85,28 +85,17 @@ variableContainer<dim, degree, number>::variableContainer(
       }
   };
 
-  // For explicit solves we have already flattened the dependencies
-  if (solve_type == solveType::EXPLICIT_RHS || solve_type == solveType::POSTPROCESS)
-    {
-      construct_map(subset_attributes->begin()->second.get_dependency_set_RHS());
-      return;
-    }
-
-  // TODO (landinjm): Add stuff for cononlinear solves
-
-  // Loop through the variable attributes for nonexplicit solves
-  Assert(subset_attributes->size() == 1,
+  Assert(subset_attributes->size() == 1 || (solve_type == solveType::EXPLICIT_RHS ||
+                                            solve_type == solveType::POSTPROCESS),
          dealii::ExcMessage(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   if (solve_type == solveType::NONEXPLICIT_LHS)
     {
       construct_map(subset_attributes->begin()->second.get_dependency_set_LHS());
+      return;
     }
-  else
-    {
-      construct_map(subset_attributes->begin()->second.get_dependency_set_RHS());
-    }
+  construct_map(subset_attributes->begin()->second.get_dependency_set_RHS());
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

@@ -41,6 +41,10 @@
 #include <ostream>
 #include <vector>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali_macros.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>

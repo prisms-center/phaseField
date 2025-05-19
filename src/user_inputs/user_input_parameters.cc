@@ -215,7 +215,9 @@ userInputParameters<dim>::assign_boundary_parameters(
         {
           std::string bc_text = "boundary condition for " + variable.get_name();
           if (variable.get_field_type() != fieldType::SCALAR)
-            bc_text += ", " + axis_labels[i] + " component";
+            {
+              bc_text += ", " + axis_labels[i] + " component";
+            }
           boundary_parameters
             .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
         }
