@@ -31,9 +31,9 @@ CheckOptions:
   - key:             readability-identifier-naming.ConstexprVariableCase
     value:           lower_case
   - key:             readability-identifier-naming.EnumCase
-    value:           UPPER_CASE
+    value:           CamelCase
   - key:             readability-identifier-naming.EnumConstantCase
-    value:           UPPER_CASE
+    value:           CamelCase
   - key:             readability-identifier-naming.FunctionCase
     value:           lower_case
   - key:             readability-identifier-naming.GlobalConstantCase
@@ -43,7 +43,7 @@ CheckOptions:
   - key:             readability-identifier-naming.StaticVariableCase
     value:           lower_case
   - key:             readability-identifier-naming.MacroDefinitionCase
-    value:           UPPER_CASE
+    value:           CamelCase
   - key:             readability-identifier-naming.MacroDefinitionIgnoredRegexp
     value:           '^[A-Z]+(_[A-Z]+)*_$'
   - key:             readability-identifier-naming.MemberCase
