@@ -206,16 +206,16 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
   multigrid_on = true;
 
   // Create the set of tuples that let us know which fields have what multigrid levels.
-  // Note that we don't have to do this if the DependencyType is CHANGE, although we must
-  // always include DependencyType::NORMAL.
+  // Note that we don't have to do this if the DependencyType is Change, although we must
+  // always include DependencyType::Normal.
   std::set<std::tuple<types::index, DependencyType, min>> all_lhs_fields;
   for (const auto &index : fields_with_multigrid)
     {
       const auto &variable = user_inputs->get_variable_attributes().at(index);
 
-      // First add the DependencyType::CHANGE
+      // First add the DependencyType::Change
       all_lhs_fields.insert(
-        std::make_tuple(index, DependencyType::CHANGE, min_levels.at(index)));
+        std::make_tuple(index, DependencyType::Change, min_levels.at(index)));
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
       // the duplicates that have the same variable but different min multigrid levels.
@@ -227,8 +227,8 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
               continue;
             }
 
-          AssertThrow(pair.second == DependencyType::NORMAL ||
-                        pair.second == DependencyType::CHANGE,
+          AssertThrow(pair.second == DependencyType::Normal ||
+                        pair.second == DependencyType::Change,
                       dealii::ExcNotImplemented());
 
           all_lhs_fields.insert(

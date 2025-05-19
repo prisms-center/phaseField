@@ -47,7 +47,7 @@ template <unsigned int dim, unsigned int degree>
 void
 explicitPostprocessSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(FieldSolveType::EXPLICIT_POSTPROCESS);
+  this->compute_subset_attributes(FieldSolveType::ExplicitPostprocess);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -101,7 +101,7 @@ explicitPostprocessSolver<dim, degree>::solve()
   this->get_system_matrix()->compute_postprocess_explicit_update(new_solution_subset,
                                                                  solution_subset);
 
-  // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
+  // Scale the update by the respective (Scalar/Vector) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
   for (auto [index, vector] : this->get_solution_handler().get_new_solution_vector())
     {
@@ -113,7 +113,7 @@ explicitPostprocessSolver<dim, degree>::solve()
     }
 
   // Update the solutions
-  this->get_solution_handler().update(FieldSolveType::EXPLICIT_POSTPROCESS);
+  this->get_solution_handler().update(FieldSolveType::ExplicitPostprocess);
 }
 
 INSTANTIATE_BI_TEMPLATE(explicitPostprocessSolver)

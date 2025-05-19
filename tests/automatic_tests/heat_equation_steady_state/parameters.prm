@@ -13,7 +13,7 @@ set boundary condition for T = DIRICHLET: 0.0
 set boundary condition for q = NATURAL
 
 subsection linear solver parameters: T
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 1000 
     set preconditioner type = GMG

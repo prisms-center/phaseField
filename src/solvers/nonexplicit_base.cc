@@ -58,14 +58,14 @@ inline void
 nonexplicitBase<dim, degree>::compute_subset_attributes(
   const FieldSolveType &field_solve_type)
 {
-  Assert((field_solve_type == FieldSolveType::NONEXPLICIT_LINEAR ||
-          field_solve_type == FieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          field_solve_type == FieldSolveType::NONEXPLICIT_AUXILIARY ||
-          field_solve_type == FieldSolveType::NONEXPLICIT_CO_NONLINEAR),
+  Assert((field_solve_type == FieldSolveType::NonexplicitLinear ||
+          field_solve_type == FieldSolveType::NonexplicitSelfnonlinear ||
+          field_solve_type == FieldSolveType::NonexplicitAuxiliary ||
+          field_solve_type == FieldSolveType::NonexplicitCononlinear),
          dealii::ExcMessage(
            "compute_subset_attributes() should only be used for "
-           "NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR, NONEXPLICIT_AUXILIARY, and "
-           "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
+           "NonexplicitLinear, NonexplicitSelfnonlinear, NonexplicitAuxiliary, and "
+           "NonexplicitCononlinear fieldSolveTypes"));
 
   subset_attributes.clear();
 
@@ -83,9 +83,9 @@ inline void
 nonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
   Assert(subset_attributes.begin()->second.get_field_solve_type() ==
-           FieldSolveType::NONEXPLICIT_CO_NONLINEAR,
+           FieldSolveType::NonexplicitCononlinear,
          dealii::ExcMessage("compute_shared_dependencies() should only be used for "
-                            "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
+                            "NonexplicitCononlinear fieldSolveTypes"));
 
   // Compute the shared dependency flags
   auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
@@ -135,8 +135,8 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (variable.get_pde_type() != PDEType::IMPLICIT_TIME_DEPENDENT &&
-          variable.get_pde_type() != PDEType::TIME_INDEPENDENT)
+      if (variable.get_pde_type() != PDEType::ImplicitTimeDependent &&
+          variable.get_pde_type() != PDEType::TimeIndependent)
         {
           continue;
         }
@@ -156,7 +156,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
         InitialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
                                       pde_operator),
-        *(solution_handler->get_solution_vector(index, DependencyType::NORMAL)));
+        *(solution_handler->get_solution_vector(index, DependencyType::Normal)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.

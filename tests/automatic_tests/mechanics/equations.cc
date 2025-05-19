@@ -14,8 +14,8 @@ void
 CustomAttributeLoader::loadVariableAttributes()
 {
   set_variable_name(0, "u");
-  set_variable_type(0, VECTOR);
-  set_variable_equation_type(0, TIME_INDEPENDENT);
+  set_variable_type(0, Vector);
+  set_variable_equation_type(0, TimeIndependent);
   set_dependencies_gradient_term_rhs(0, "grad(u)");
   set_dependencies_gradient_term_lhs(0, "grad(change(u))");
 }
@@ -53,10 +53,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, CHANGE);
+      vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
       vectorGrad stress;
       compute_stress<dim, scalarValue>(CIJ, change_ux, stress);
-      variable_list.set_vector_gradient_term(0, stress, CHANGE);
+      variable_list.set_vector_gradient_term(0, stress, Change);
     }
 }
 

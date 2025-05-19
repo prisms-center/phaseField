@@ -32,16 +32,16 @@ InvmHandler<dim, degree, number>::InvmHandler(
 {
   for (const auto &[index, variable] : *variable_attributes)
     {
-      if (variable.get_field_type() == FieldType::SCALAR && !scalar_needed &&
-          (variable.get_pde_type() == PDEType::EXPLICIT_TIME_DEPENDENT ||
-           variable.get_pde_type() == PDEType::AUXILIARY))
+      if (variable.get_field_type() == FieldType::Scalar && !scalar_needed &&
+          (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+           variable.get_pde_type() == PDEType::Auxiliary))
         {
           scalar_needed = true;
           scalar_index  = index;
         }
-      if (variable.get_field_type() == FieldType::VECTOR && !vector_needed &&
-          (variable.get_pde_type() == PDEType::EXPLICIT_TIME_DEPENDENT ||
-           variable.get_pde_type() == PDEType::AUXILIARY))
+      if (variable.get_field_type() == FieldType::Vector && !vector_needed &&
+          (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+           variable.get_pde_type() == PDEType::Auxiliary))
         {
           vector_needed = true;
           vector_index  = index;
@@ -95,7 +95,7 @@ InvmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
            "Invalid index. The provided index does not have an entry in the variable "
            "attributes that were provided to the constructor."));
 
-  if (variable_attributes->at(index).get_field_type() == FieldType::SCALAR)
+  if (variable_attributes->at(index).get_field_type() == FieldType::Scalar)
     {
       Assert(scalar_needed,
              dealii::ExcMessage(
@@ -108,7 +108,7 @@ InvmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 
       return invm_scalar;
     }
-  if (variable_attributes->at(index).get_field_type() == FieldType::VECTOR)
+  if (variable_attributes->at(index).get_field_type() == FieldType::Vector)
     {
       Assert(vector_needed,
              dealii::ExcMessage(

@@ -16,7 +16,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "feature_ids");
-  set_variable_type(0, SCALAR);
+  set_variable_type(0, Scalar);
 
   // For the input file 'parameters.in'
   set_dependencies_value_term_rhs(0, "n0, n1, n2, n3, n4, n5, n6, n7");
@@ -31,7 +31,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
   // Variable 1
   set_variable_name(1, "op_ids");
-  set_variable_type(1, SCALAR);
+  set_variable_type(1, Scalar);
 
   // For the input file 'parameters.in'
   set_dependencies_value_term_rhs(1, "n0, n1, n2, n3, n4, n5, n6, n7");

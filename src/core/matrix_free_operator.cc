@@ -295,7 +295,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::EXPLICIT_rhs);
+                                                       SolveType::ExplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
@@ -321,7 +321,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::POSTPROCESS);
+                                                       SolveType::Postprocess);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
@@ -347,7 +347,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::NONEXPLICIT_rhs);
+                                                       SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
@@ -373,7 +373,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::NONEXPLICIT_rhs);
+                                                       SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
@@ -399,7 +399,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::NONEXPLICIT_lhs,
+                                                       SolveType::NonexplicitLHS,
                                                        use_local_mapping);
 
   // Initialize, evaluate, and submit based on user function. Note that the src solution
@@ -452,7 +452,7 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       SolveType::NONEXPLICIT_lhs,
+                                                       SolveType::NonexplicitLHS,
                                                        use_local_mapping);
 
   // Initialize, evaluate, and submit diagonal based on user function.

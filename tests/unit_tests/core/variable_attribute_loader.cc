@@ -31,8 +31,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, CONSTANT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, Constant);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "");
@@ -55,8 +55,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_lhs(0, "phi");
         set_dependencies_gradient_term_lhs(0, "grad(phi)");
@@ -81,8 +81,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ExplicitTimeDependent);
       }
     };
 
@@ -102,8 +102,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, UNDEFINED_FIELD);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, UndefinedField);
+        set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
@@ -126,8 +126,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, VECTOR);
-        set_variable_equation_type(0, UNDEFINED_PDE);
+        set_variable_type(0, Vector);
+        set_variable_equation_type(0, UndefinedPDE);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
@@ -150,8 +150,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "fi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
@@ -162,7 +162,7 @@ TEST_CASE("Invalid dependencies")
     REQUIRE_THROWS(attributes.init_variable_attributes());
   }
 
-  SECTION("TIME_INDEPENDENT postprocess variable")
+  SECTION("TimeIndependent postprocess variable")
   {
     // Create test class for variable attribute loader
     class testVariableAttributeLoader : public VariableAttributeLoader
@@ -174,8 +174,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, TIME_INDEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, TimeIndependent);
         set_is_postprocessed_field(0, true);
 
         set_dependencies_value_term_lhs(0, "phi");
@@ -189,7 +189,7 @@ TEST_CASE("Invalid dependencies")
     REQUIRE_THROWS(attributes.init_variable_attributes());
   }
 
-  SECTION("AUXILIARY postprocess variable")
+  SECTION("Auxiliary postprocess variable")
   {
     // Create test class for variable attribute loader
     class testVariableAttributeLoader : public VariableAttributeLoader
@@ -201,8 +201,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, AUXILIARY);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, Auxiliary);
         set_is_postprocessed_field(0, true);
 
         set_dependencies_value_term_rhs(0, "phi");
@@ -214,7 +214,7 @@ TEST_CASE("Invalid dependencies")
     REQUIRE_THROWS(attributes.init_variable_attributes());
   }
 
-  SECTION("CONSTANT postprocess variable")
+  SECTION("Constant postprocess variable")
   {
     // Create test class for variable attribute loader
     class testVariableAttributeLoader : public VariableAttributeLoader
@@ -226,8 +226,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, CONSTANT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, Constant);
         set_is_postprocessed_field(0, true);
       }
     };
@@ -236,7 +236,7 @@ TEST_CASE("Invalid dependencies")
     REQUIRE_THROWS(attributes.init_variable_attributes());
   }
 
-  SECTION("IMPLICIT_TIME_DEPENDENT postprocess variable")
+  SECTION("ImplicitTimeDependent postprocess variable")
   {
     // Create test class for variable attribute loader
     class testVariableAttributeLoader : public VariableAttributeLoader
@@ -248,8 +248,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ImplicitTimeDependent);
         set_is_postprocessed_field(0, true);
 
         set_dependencies_value_term_lhs(0, "phi");
@@ -275,8 +275,8 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ImplicitTimeDependent);
 
         set_dependencies_value_term_lhs(0, "phi");
         set_dependencies_gradient_term_lhs(0, "grad(phi)");
@@ -301,15 +301,15 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi, free_energy");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
-        set_variable_type(1, SCALAR);
-        set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(1, Scalar);
+        set_variable_equation_type(1, ExplicitTimeDependent);
         set_is_postprocessed_field(1, true);
 
         set_dependencies_value_term_rhs(1, "phi");
@@ -333,23 +333,23 @@ TEST_CASE("Invalid dependencies")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
-        set_variable_type(1, SCALAR);
-        set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(1, Scalar);
+        set_variable_equation_type(1, ExplicitTimeDependent);
         set_is_postprocessed_field(1, true);
 
         set_dependencies_value_term_rhs(1, "phi");
         set_dependencies_gradient_term_rhs(1, "grad(phi)");
 
         set_variable_name(2, "unavailable_energy");
-        set_variable_type(2, SCALAR);
-        set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+        set_variable_type(2, Scalar);
+        set_variable_equation_type(2, ExplicitTimeDependent);
         set_is_postprocessed_field(2, true);
 
         set_dependencies_value_term_rhs(2, "free_energy");

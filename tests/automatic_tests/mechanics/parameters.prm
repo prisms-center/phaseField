@@ -16,7 +16,7 @@ set boundary condition for u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATU
 set boundary condition for u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
 
 subsection linear solver parameters: u
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 1000 
     set preconditioner type = GMG

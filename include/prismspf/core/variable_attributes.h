@@ -277,14 +277,14 @@ private:
   types::index field_index = numbers::invalid_index;
 
   /**
-   * \brief Field type (SCALAR/VECTOR). \remark User-set
+   * \brief Field type (Scalar/Vector). \remark User-set
    */
-  FieldType field_type = FieldType::UNDEFINED_FIELD;
+  FieldType field_type = FieldType::UndefinedField;
 
   /**
-   * \brief PDE type (EXPLICIT/NONEXPLICIT). \remark User-set
+   * \brief PDE type (Explicit/NONEXPLICIT). \remark User-set
    */
-  PDEType pde_type = PDEType::UNDEFINED_PDE;
+  PDEType pde_type = PDEType::UndefinedPDE;
 
   /**
    * \brief Postprocess variable. \remark User-set
@@ -302,7 +302,7 @@ private:
    * \brief Internal classification for the field solve type. \remark Internally
    * determined
    */
-  FieldSolveType field_solve_type = FieldSolveType::UNDEFINED_SOLVE;
+  FieldSolveType field_solve_type = FieldSolveType::UndefinedSolve;
 
   /**
    * \brief A map of evaluation flags for the dependencies of the current variable's RHS.
@@ -331,7 +331,7 @@ private:
 
   /**
    * \brief Evaluation flags for the types of residual the user is expected to submit to
-   * on the LHS. This is empty for EXPLICIT fields. \remark Internally determined
+   * on the LHS. This is empty for Explicit fields. \remark Internally determined
    */
   dealii::EvaluationFlags::EvaluationFlags eval_flags_residual_lhs =
     dealii::EvaluationFlags::nothing;

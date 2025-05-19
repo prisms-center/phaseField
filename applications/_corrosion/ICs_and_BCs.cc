@@ -13,7 +13,7 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
                                             [[maybe_unused]] Vector<double>    &vector_IC)
 {
   // ---------------------------------------------------------------------
-  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+  // ENTER THE INITIAL CONDITIONS HERE FOR Scalar FIELDS
   // ---------------------------------------------------------------------
   // Enter the function describing conditions for the fields at point "p".
   // Use "if" statements to set the initial condition for each variable

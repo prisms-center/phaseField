@@ -16,7 +16,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "f_tot");
-  set_variable_type(0, SCALAR);
+  set_variable_type(0, Scalar);
 
   set_dependencies_value_term_rhs(0, "c,n,grad(n)");
   set_dependencies_gradient_term_rhs(0, "");

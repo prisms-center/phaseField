@@ -12,7 +12,7 @@ subsection rectangular mesh
 end
 
 subsection linear solver parameters: u
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 1000
     set preconditioner type = GMG

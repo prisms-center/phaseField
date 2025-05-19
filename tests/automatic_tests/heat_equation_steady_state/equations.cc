@@ -14,19 +14,19 @@ void
 CustomAttributeLoader::loadVariableAttributes()
 {
   set_variable_name(0, "T");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, TIME_INDEPENDENT);
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, TimeIndependent);
   set_dependencies_value_term_rhs(0, "q");
   set_dependencies_gradient_term_rhs(0, "grad(T)");
   set_dependencies_gradient_term_lhs(0, "grad(change(T))");
 
   set_variable_name(1, "q");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, CONSTANT);
+  set_variable_type(1, Scalar);
+  set_variable_equation_type(1, Constant);
 
   set_variable_name(2, "error");
-  set_variable_type(2, SCALAR);
-  set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, ExplicitTimeDependent);
   set_is_postprocessed_field(2, true);
   set_dependencies_value_term_rhs(2, "T");
 }
@@ -65,9 +65,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      scalarGrad change_Tx = variable_list.get_scalar_gradient(0, CHANGE);
+      scalarGrad change_Tx = variable_list.get_scalar_gradient(0, Change);
 
-      variable_list.set_scalar_gradient_term(0, change_Tx, CHANGE);
+      variable_list.set_scalar_gradient_term(0, change_Tx, Change);
     }
 }
 

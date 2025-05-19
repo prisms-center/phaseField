@@ -47,7 +47,7 @@ template <unsigned int dim, unsigned int degree>
 void
 explicitSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(FieldSolveType::EXPLICIT);
+  this->compute_subset_attributes(FieldSolveType::Explicit);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -110,7 +110,7 @@ explicitSolver<dim, degree>::solve()
   this->get_system_matrix()->compute_explicit_update(new_solution_subset,
                                                      solution_subset);
 
-  // Scale the update by the respective (SCALAR/VECTOR) invm. Note that we do this with
+  // Scale the update by the respective (Scalar/Vector) invm. Note that we do this with
   // the original solution set to avoid some messy mapping.
   for (auto [index, vector] : this->get_solution_handler().get_new_solution_vector())
     {
@@ -122,7 +122,7 @@ explicitSolver<dim, degree>::solve()
     }
 
   // Update the solutions
-  this->get_solution_handler().update(FieldSolveType::EXPLICIT);
+  this->get_solution_handler().update(FieldSolveType::Explicit);
 
   // Apply constraints
   // TODO (landinjm): This applies the constraints even to the old fields, which is

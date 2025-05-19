@@ -70,8 +70,8 @@ VariableAttributeLoader::set_variable_type(const unsigned int &index,
 {
   switch (field_type)
     {
-      case FieldType::SCALAR:
-      case FieldType::VECTOR:
+      case FieldType::Scalar:
+      case FieldType::Vector:
         var_attributes[index].field_type = field_type;
         break;
       default:
@@ -86,11 +86,11 @@ VariableAttributeLoader::set_variable_equation_type(const unsigned int &index,
 {
   switch (pde_type)
     {
-      case PDEType::EXPLICIT_TIME_DEPENDENT:
-      case PDEType::IMPLICIT_TIME_DEPENDENT:
-      case PDEType::TIME_INDEPENDENT:
-      case PDEType::AUXILIARY:
-      case PDEType::CONSTANT:
+      case PDEType::ExplicitTimeDependent:
+      case PDEType::ImplicitTimeDependent:
+      case PDEType::TimeIndependent:
+      case PDEType::Auxiliary:
+      case PDEType::Constant:
         var_attributes[index].pde_type = pde_type;
         break;
       default:
@@ -278,11 +278,11 @@ VariableAttributeLoader::validate_attributes()
     {
       // Check that postprocessed variables are only explicit
       AssertThrow(!variable.is_postprocessed_variable ||
-                    variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
+                    variable.pde_type == PDEType::ExplicitTimeDependent,
                   dealii::ExcMessage(
                     "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
-      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
+      AssertThrow(!(variable.pde_type == PDEType::Constant) ||
                     (variable.dependencies_rhs.empty() &&
                      variable.dependencies_lhs.empty()),
                   dealii::ExcMessage("Constant fields are determined by the initial "
@@ -387,10 +387,10 @@ VariableAttributeLoader::validate_old_solution_dependencies()
   // Check that constant equations do not have old dependencies
   for (const auto &[pair, flag] : dependency_set)
     {
-      if (var_attributes.at(pair.first).pde_type == PDEType::CONSTANT)
+      if (var_attributes.at(pair.first).pde_type == PDEType::Constant)
         {
           AssertThrow(
-            pair.second == DependencyType::NORMAL,
+            pair.second == DependencyType::Normal,
             dealii::ExcMessage(
               "Constant fields cannot be specified as old() or change() dependencies"));
         }
@@ -399,10 +399,10 @@ VariableAttributeLoader::validate_old_solution_dependencies()
   // Check that old fields dependencies are sequential
   for (const auto &[index, variable] : var_attributes)
     {
-      std::vector<DependencyType> old_types = {DependencyType::OLD_1,
-                                               DependencyType::OLD_2,
-                                               DependencyType::OLD_3,
-                                               DependencyType::OLD_4};
+      std::vector<DependencyType> old_types = {DependencyType::OldOne,
+                                               DependencyType::OldTwo,
+                                               DependencyType::OldThree,
+                                               DependencyType::OldFour};
 
       // Find first gap in sequence
       unsigned int gap_index = 0;

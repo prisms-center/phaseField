@@ -142,7 +142,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
       this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
       // Parabolic (first order derivatives in time) fields
-      if (this->fields[fieldIndex].pdetype == EXPLICIT_TIME_DEPENDENT &&
+      if (this->fields[fieldIndex].pdetype == ExplicitTimeDependent &&
           !skip_time_dependent)
         {
           this->updateExplicitSolution(fieldIndex);
@@ -202,9 +202,9 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
             {
               this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-              if ((this->fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT &&
+              if ((this->fields[fieldIndex].pdetype == ImplicitTimeDependent &&
                    !skip_time_dependent) ||
-                  this->fields[fieldIndex].pdetype == TIME_INDEPENDENT)
+                  this->fields[fieldIndex].pdetype == TimeIndependent)
                 {
                   if (this->currentIncrement % userInputs.skip_print_steps == 0 &&
                       this->var_attributes.at(fieldIndex).is_nonlinear)
@@ -225,7 +225,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   // Apply Boundary conditions
                   this->applyBCs(fieldIndex);
                 }
-              else if (this->fields[fieldIndex].pdetype == AUXILIARY)
+              else if (this->fields[fieldIndex].pdetype == Auxiliary)
                 {
                   if (this->var_attributes.at(fieldIndex).is_nonlinear ||
                       nonlinear_iteration_index == 0)
@@ -234,7 +234,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       // old solution
                       if (this->var_attributes.at(fieldIndex).is_nonlinear)
                         {
-                          if (this->fields[fieldIndex].type == SCALAR)
+                          if (this->fields[fieldIndex].type == Scalar)
                             {
                               this->dU_scalar = *this->solutionSet[fieldIndex];
                             }
@@ -271,7 +271,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             {
                               double diff;
 
-                              if (this->fields[fieldIndex].type == SCALAR)
+                              if (this->fields[fieldIndex].type == Scalar)
                                 {
                                   this->dU_scalar -= *this->solutionSet[fieldIndex];
                                   diff = this->dU_scalar.l2_norm();

@@ -31,7 +31,7 @@ set Number of time steps = 20000
 
 
 subsection Linear solver parameters: u
-    set Tolerance type = ABSOLUTE_RESIDUAL
+    set Tolerance type = AbsoluteResidual
 
     set Tolerance value = 5e-3
 

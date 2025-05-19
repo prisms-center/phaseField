@@ -18,7 +18,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "error_squared");
-  set_variable_type(0, SCALAR);
+  set_variable_type(0, Scalar);
 
   set_dependencies_value_term_rhs(0, "n, grad(n)");
   set_dependencies_gradient_term_rhs(0, "");
@@ -27,7 +27,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
   // Variable 1
   set_variable_name(1, "f_tot");
-  set_variable_type(1, SCALAR);
+  set_variable_type(1, Scalar);
 
   set_dependencies_value_term_rhs(1, "n, grad(n)");
   set_dependencies_gradient_term_rhs(1, "");
@@ -36,7 +36,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
   // Variable 1
   set_variable_name(2, "src");
-  set_variable_type(2, SCALAR);
+  set_variable_type(2, Scalar);
 
   set_dependencies_value_term_rhs(2, "n, grad(n)");
   set_dependencies_gradient_term_rhs(2, "");
@@ -45,7 +45,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
   // Variable 1
   set_variable_name(3, "n_sol");
-  set_variable_type(3, SCALAR);
+  set_variable_type(3, Scalar);
 
   set_dependencies_value_term_rhs(3, "n, grad(n)");
   set_dependencies_gradient_term_rhs(3, "");

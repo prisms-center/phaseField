@@ -15,9 +15,9 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 enum FieldType : std::uint8_t
 {
-  UNDEFINED_FIELD,
-  SCALAR,
-  VECTOR
+  UndefinedField,
+  Scalar,
+  Vector
 };
 
 /**
@@ -25,12 +25,12 @@ enum FieldType : std::uint8_t
  */
 enum PDEType : std::uint8_t
 {
-  UNDEFINED_PDE,
-  EXPLICIT_TIME_DEPENDENT,
-  IMPLICIT_TIME_DEPENDENT,
-  TIME_INDEPENDENT,
-  AUXILIARY,
-  CONSTANT
+  UndefinedPDE,
+  ExplicitTimeDependent,
+  ImplicitTimeDependent,
+  TimeIndependent,
+  Auxiliary,
+  Constant
 };
 
 /**
@@ -38,10 +38,10 @@ enum PDEType : std::uint8_t
  */
 enum SolveType : std::uint8_t
 {
-  EXPLICIT_rhs,
-  NONEXPLICIT_rhs,
-  NONEXPLICIT_lhs,
-  POSTPROCESS
+  ExplicitRHS,
+  NonexplicitRHS,
+  NonexplicitLHS,
+  Postprocess
 };
 
 /**
@@ -49,33 +49,33 @@ enum SolveType : std::uint8_t
  */
 enum ElasticityModel : std::uint8_t
 {
-  ISOTROPIC,
-  TRANSVERSE,
-  ORTHOTROPIC,
-  ANISOTROPIC
+  Isotropic,
+  Transverse,
+  Orthotropic,
+  Anisotropic
 };
 
 /**
  * \brief Internal classification of combined field and solve types. There are six
- * different types of solve that are possible. For EXPLICIT solves, all fields of that
- * type can be solved concurrently. For NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR,
- * and NONEXPLICIT_AUXILIARY, these must be solved sequentially and wrapped in
- * conditionals in the user implmentation. For NONEXPLICIT_CO_NONLINEAR, there are at
- * least 2 fields that are nonlinear together, as opposed to NONEXPLICIT_SELF_NONLINEAR,
+ * different types of solve that are possible. For Explicit solves, all fields of that
+ * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
+ * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
+ * conditionals in the user implmentation. For NonexplicitCononlinear, there are at
+ * least 2 fields that are nonlinear together, as opposed to NonexplicitSelfnonlinear,
  * which must be solved at the same time. A simply case for this is the steady-state
- * Cahn-Hilliard equation. Finally, for EXPLICIT_POSTPROCESS and EXPLICIT_CONSTANT, they
- * are more or less the same as EXPLICIT.
+ * Cahn-Hilliard equation. Finally, for ExplicitPostprocess and ExplicitConstant, they
+ * are more or less the same as Explicit.
  */
 enum FieldSolveType : std::uint8_t
 {
-  UNDEFINED_SOLVE,
-  EXPLICIT_CONSTANT,
-  EXPLICIT,
-  NONEXPLICIT_LINEAR,
-  NONEXPLICIT_SELF_NONLINEAR,
-  NONEXPLICIT_AUXILIARY,
-  NONEXPLICIT_CO_NONLINEAR,
-  EXPLICIT_POSTPROCESS,
+  UndefinedSolve,
+  ExplicitConstant,
+  Explicit,
+  NonexplicitLinear,
+  NonexplicitSelfnonlinear,
+  NonexplicitAuxiliary,
+  NonexplicitCononlinear,
+  ExplicitPostprocess,
 };
 
 /**
@@ -83,12 +83,12 @@ enum FieldSolveType : std::uint8_t
  */
 enum DependencyType : std::uint8_t
 {
-  NORMAL,
-  CHANGE,
-  OLD_1,
-  OLD_2,
-  OLD_3,
-  OLD_4
+  Normal,
+  Change,
+  OldOne,
+  OldTwo,
+  OldThree,
+  OldFour
 };
 
 /**
@@ -96,8 +96,8 @@ enum DependencyType : std::uint8_t
  */
 enum SolverToleranceType : std::uint8_t
 {
-  ABSOLUTE_RESIDUAL,
-  RELATIVE_RESIDUAL_CHANGE
+  AbsoluteResidual,
+  RelativeResidualChange
 };
 
 /**
@@ -105,7 +105,7 @@ enum SolverToleranceType : std::uint8_t
  */
 enum PreconditionerType : std::uint8_t
 {
-  NONE,
+  None,
   GMG
 };
 
@@ -118,11 +118,11 @@ to_string(FieldType type)
 {
   switch (type)
     {
-      case FieldType::UNDEFINED_FIELD:
-        return "UNDEFINED_FIELD";
-      case FieldType::SCALAR:
+      case FieldType::UndefinedField:
+        return "UndefinedField";
+      case FieldType::Scalar:
         return "SCALAR_FIELD";
-      case FieldType::VECTOR:
+      case FieldType::Vector:
         return "VECTOR_FIELD";
       default:
         return "UNKNOWN";
@@ -137,18 +137,18 @@ to_string(PDEType type)
 {
   switch (type)
     {
-      case PDEType::UNDEFINED_PDE:
-        return "UNDEFINED_PDE";
-      case PDEType::EXPLICIT_TIME_DEPENDENT:
-        return "EXPLICIT_TIME_DEPENDENT";
-      case PDEType::IMPLICIT_TIME_DEPENDENT:
-        return "IMPLICIT_TIME_DEPENDENT";
-      case PDEType::TIME_INDEPENDENT:
-        return "TIME_INDEPENDENT";
-      case PDEType::AUXILIARY:
-        return "AUXILIARY";
-      case PDEType::CONSTANT:
-        return "CONSTANT";
+      case PDEType::UndefinedPDE:
+        return "UndefinedPDE";
+      case PDEType::ExplicitTimeDependent:
+        return "ExplicitTimeDependent";
+      case PDEType::ImplicitTimeDependent:
+        return "ImplicitTimeDependent";
+      case PDEType::TimeIndependent:
+        return "TimeIndependent";
+      case PDEType::Auxiliary:
+        return "Auxiliary";
+      case PDEType::Constant:
+        return "Constant";
       default:
         return "UNKNOWN";
     }
@@ -162,14 +162,14 @@ to_string(SolveType type)
 {
   switch (type)
     {
-      case SolveType::EXPLICIT_rhs:
-        return "EXPLICIT_rhs";
-      case SolveType::NONEXPLICIT_rhs:
-        return "NONEXPLICIT_rhs";
-      case SolveType::NONEXPLICIT_lhs:
-        return "NONEXPLICIT_lhs";
-      case SolveType::POSTPROCESS:
-        return "POSTPROCESS";
+      case SolveType::ExplicitRHS:
+        return "ExplicitRHS";
+      case SolveType::NonexplicitRHS:
+        return "NonexplicitRHS";
+      case SolveType::NonexplicitLHS:
+        return "NonexplicitLHS";
+      case SolveType::Postprocess:
+        return "Postprocess";
       default:
         return "UNKNOWN";
     }
@@ -183,14 +183,14 @@ to_string(ElasticityModel type)
 {
   switch (type)
     {
-      case ElasticityModel::ISOTROPIC:
-        return "ISOTROPIC";
-      case ElasticityModel::TRANSVERSE:
-        return "TRANSVERSE";
-      case ElasticityModel::ORTHOTROPIC:
-        return "ORTHOTROPIC";
-      case ElasticityModel::ANISOTROPIC:
-        return "ANISOTROPIC";
+      case ElasticityModel::Isotropic:
+        return "Isotropic";
+      case ElasticityModel::Transverse:
+        return "Transverse";
+      case ElasticityModel::Orthotropic:
+        return "Orthotropic";
+      case ElasticityModel::Anisotropic:
+        return "Anisotropic";
       default:
         return "UNKNOWN";
     }
@@ -204,22 +204,22 @@ to_string(FieldSolveType type)
 {
   switch (type)
     {
-      case FieldSolveType::UNDEFINED_SOLVE:
-        return "UNDEFINED_SOLVE";
-      case FieldSolveType::EXPLICIT:
-        return "EXPLICIT";
-      case FieldSolveType::NONEXPLICIT_LINEAR:
-        return "NONEXPLICIT_LINEAR";
-      case FieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
-        return "NONEXPLICIT_SELF_NONLINEAR";
-      case FieldSolveType::NONEXPLICIT_AUXILIARY:
-        return "NONEXPLICIT_AUXILIARY";
-      case FieldSolveType::NONEXPLICIT_CO_NONLINEAR:
-        return "NONEXPLICIT_CO_NONLINEAR";
-      case FieldSolveType::EXPLICIT_POSTPROCESS:
-        return "EXPLICIT_POSTPROCESS";
-      case FieldSolveType::EXPLICIT_CONSTANT:
-        return "EXPLICIT_CONSTANT";
+      case FieldSolveType::UndefinedSolve:
+        return "UndefinedSolve";
+      case FieldSolveType::Explicit:
+        return "Explicit";
+      case FieldSolveType::NonexplicitLinear:
+        return "NonexplicitLinear";
+      case FieldSolveType::NonexplicitSelfnonlinear:
+        return "NonexplicitSelfnonlinear";
+      case FieldSolveType::NonexplicitAuxiliary:
+        return "NonexplicitAuxiliary";
+      case FieldSolveType::NonexplicitCononlinear:
+        return "NonexplicitCononlinear";
+      case FieldSolveType::ExplicitPostprocess:
+        return "ExplicitPostprocess";
+      case FieldSolveType::ExplicitConstant:
+        return "ExplicitConstant";
       default:
         return "UNKNOWN";
     }
@@ -233,18 +233,18 @@ to_string(DependencyType type)
 {
   switch (type)
     {
-      case DependencyType::NORMAL:
-        return "NORMAL";
-      case DependencyType::CHANGE:
-        return "CHANGE";
-      case DependencyType::OLD_1:
-        return "OLD_1";
-      case DependencyType::OLD_2:
-        return "OLD_2";
-      case DependencyType::OLD_3:
-        return "OLD_3";
-      case DependencyType::OLD_4:
-        return "OLD_4";
+      case DependencyType::Normal:
+        return "Normal";
+      case DependencyType::Change:
+        return "Change";
+      case DependencyType::OldOne:
+        return "OldOne";
+      case DependencyType::OldTwo:
+        return "OldTwo";
+      case DependencyType::OldThree:
+        return "OldThree";
+      case DependencyType::OldFour:
+        return "OldFour";
       default:
         return "UNKNOWN";
     }
@@ -258,10 +258,10 @@ to_string(SolverToleranceType type)
 {
   switch (type)
     {
-      case SolverToleranceType::ABSOLUTE_RESIDUAL:
-        return "ABSOLUTE_RESIDUAL";
-      case SolverToleranceType::RELATIVE_RESIDUAL_CHANGE:
-        return "RELATIVE_RESIDUAL_CHANGE";
+      case SolverToleranceType::AbsoluteResidual:
+        return "AbsoluteResidual";
+      case SolverToleranceType::RelativeResidualChange:
+        return "RelativeResidualChange";
       default:
         return "UNKNOWN";
     }
@@ -275,8 +275,8 @@ to_string(PreconditionerType type)
 {
   switch (type)
     {
-      case PreconditionerType::NONE:
-        return "NONE";
+      case PreconditionerType::None:
+        return "None";
       case PreconditionerType::GMG:
         return "GMG";
       default:

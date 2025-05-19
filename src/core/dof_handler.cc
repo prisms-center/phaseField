@@ -73,7 +73,7 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
 #endif
       if (mg_dof_handlers.contains(index))
         {
-          // TODO (landinjm): Small edge case where the CHANGE and NORMAL term have
+          // TODO (landinjm): Small edge case where the Change and Normal term have
           // different min levels.
           Assert(mg_dof_handlers.at(index).min_level() == min_level,
                  dealii::ExcMessage("The minimum multigrid level for index " +

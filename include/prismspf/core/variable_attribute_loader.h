@@ -66,18 +66,18 @@ protected:
 
   /**
    * \brief Set the field type of the variable at `index` to `field_type` where
-   * `field_type` can be `SCALAR` or `VECTOR`.
+   * `field_type` can be `Scalar` or `Vector`.
    *
    * \param index Index of variable
-   * \param field_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
+   * \param field_type Field type of variable at `index` (`Scalar` or `Vector`).
    */
   void
   set_variable_type(const unsigned int &index, const FieldType &field_type);
 
   /**
    * \brief Set the PDE type of the variable at `index` to `pde_type` where
-   *`pde_type`can be `EXPLICIT_TIME_DEPENDENT`, `IMPLICIT_TIME_DEPENDENT`,
-   *`TIME_INDEPENDENT`, `AUXILIARY`.
+   *`pde_type`can be `ExplicitTimeDependent`, `ImplicitTimeDependent`,
+   *`TimeIndependent`, `Auxiliary`.
    *
    * \param index Index of variable
    * \param pde_type PDE type of variable at `index`.

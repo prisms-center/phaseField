@@ -45,7 +45,7 @@ set Number of time steps = 500000
 
 
 subsection Linear solver parameters: Phi
-	set Tolerance type = ABSOLUTE_RESIDUAL
+	set Tolerance type = AbsoluteResidual
 
 	set Tolerance value = 1.0e-6
 

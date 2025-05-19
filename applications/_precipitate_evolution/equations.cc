@@ -14,32 +14,32 @@ void
 CustomAttributeLoader::loadVariableAttributes()
 {
   set_variable_name(0, "c");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "c");
   set_dependencies_gradient_term_rhs(0, "");
 
   set_variable_name(1, "n1");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(1, Scalar);
+  set_variable_equation_type(1, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(1, "n1");
   set_dependencies_gradient_term_rhs(1, "");
 
   set_variable_name(2, "n2");
-  set_variable_type(2, SCALAR);
-  set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(2, "n2");
   set_dependencies_gradient_term_rhs(2, "");
 
   set_variable_name(3, "n3");
-  set_variable_type(3, SCALAR);
-  set_variable_equation_type(3, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(3, Scalar);
+  set_variable_equation_type(3, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(3, "n3");
   set_dependencies_gradient_term_rhs(3, "");
 
   set_variable_name(4, "u");
-  set_variable_type(4, VECTOR);
-  set_variable_equation_type(4, TIME_INDEPENDENT);
+  set_variable_type(4, Vector);
+  set_variable_equation_type(4, TimeIndependent);
   set_dependencies_value_term_rhs(4, "");
   set_dependencies_gradient_term_rhs(4, "grad(u)");
   set_dependencies_value_term_lhs(4, "");
@@ -88,9 +88,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (this->current_index == 4)
     {
-      vectorGrad change_grad_u = variable_list.get_vector_gradient(4, CHANGE);
+      vectorGrad change_grad_u = variable_list.get_vector_gradient(4, Change);
 
-      variable_list.set_vector_gradient_term(4, change_grad_u, CHANGE);
+      variable_list.set_vector_gradient_term(4, change_grad_u, Change);
     }
 }
 

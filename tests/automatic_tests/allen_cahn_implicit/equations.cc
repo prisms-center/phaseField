@@ -14,22 +14,22 @@ void
 CustomAttributeLoader::loadVariableAttributes()
 {
   set_variable_name(0, "n");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, ImplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "n, old_1(n)");
   set_dependencies_gradient_term_rhs(0, "grad(n)");
   set_dependencies_value_term_lhs(0, "change(n)");
   set_dependencies_gradient_term_lhs(0, "grad(change(n))");
 
   set_variable_name(1, "mg_n");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(1, Scalar);
+  set_variable_equation_type(1, ExplicitTimeDependent);
   set_is_postprocessed_field(1, true);
   set_dependencies_value_term_rhs(1, "grad(n)");
 
   set_variable_name(2, "f_tot");
-  set_variable_type(2, SCALAR);
-  set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, ExplicitTimeDependent);
   set_is_postprocessed_field(2, true);
   set_dependencies_value_term_rhs(2, "n, grad(n)");
 }
@@ -52,7 +52,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   if (current_index == 0)
     {
       scalarValue n     = variable_list.get_scalar_value(0);
-      scalarValue old_n = variable_list.get_scalar_value(0, OLD_1);
+      scalarValue old_n = variable_list.get_scalar_value(0, OldOne);
       scalarGrad  nx    = variable_list.get_scalar_gradient(0);
 
       scalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
@@ -73,15 +73,15 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      scalarValue change_n  = variable_list.get_scalar_value(0, CHANGE);
-      scalarGrad  change_nx = variable_list.get_scalar_gradient(0, CHANGE);
+      scalarValue change_n  = variable_list.get_scalar_value(0, Change);
+      scalarGrad  change_nx = variable_list.get_scalar_gradient(0, Change);
 
       scalarValue fnV          = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
       scalarValue eq_change_n  = change_n + this->get_timestep() * MnV * fnV;
       scalarGrad  eqx_change_n = this->get_timestep() * KnV * MnV * change_nx;
 
-      variable_list.set_scalar_value_term(0, eq_change_n, CHANGE);
-      variable_list.set_scalar_gradient_term(0, eqx_change_n, CHANGE);
+      variable_list.set_scalar_value_term(0, eq_change_n, Change);
+      variable_list.set_scalar_gradient_term(0, eqx_change_n, Change);
     }
 }
 

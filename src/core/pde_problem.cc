@@ -140,24 +140,24 @@ PDEProblem<dim, degree>::init_system()
     << "\n"
     << std::flush;
 
-  // Create the SCALAR/VECTOR FESystem's, if applicable
+  // Create the Scalar/Vector FESystem's, if applicable
   ConditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.get_field_type() == FieldType::SCALAR &&
-          fe_system.find(FieldType::SCALAR) == fe_system.end())
+      if (variable.get_field_type() == FieldType::Scalar &&
+          fe_system.find(FieldType::Scalar) == fe_system.end())
         {
-          fe_system.emplace(FieldType::SCALAR,
+          fe_system.emplace(FieldType::Scalar,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   1));
           ConditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
                                               << std::flush;
         }
-      else if (variable.get_field_type() == FieldType::VECTOR &&
-               fe_system.find(FieldType::VECTOR) == fe_system.end())
+      else if (variable.get_field_type() == FieldType::Vector &&
+               fe_system.find(FieldType::Vector) == fe_system.end())
         {
-          fe_system.emplace(FieldType::VECTOR,
+          fe_system.emplace(FieldType::Vector,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   dim));
@@ -405,7 +405,7 @@ PDEProblem<dim, degree>::solve()
               const auto local_field_type =
                 user_inputs->get_variable_attributes().at(index).get_field_type();
 
-              if (local_field_type == FieldType::VECTOR)
+              if (local_field_type == FieldType::Vector)
                 {
                   std::vector<double> integrated_values(dim, 0.0);
                   integral_computer.compute_integral(

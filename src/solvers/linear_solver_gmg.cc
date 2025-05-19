@@ -89,7 +89,7 @@ GMGSolver<dim, degree>::init()
     .get_constraint(this->get_field_index())
     .distribute(
       *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         DependencyType::NORMAL)));
+                                                         DependencyType::Normal)));
 
   // We solve the system with a global coarsening approach. There are two options when
   // doing this: geometric coarsening and polynomial coarsening. We only support geometric
@@ -106,7 +106,7 @@ GMGSolver<dim, degree>::init()
   for (const auto &[pair, local_index] :
        this->get_newton_update_global_to_local_solution())
     {
-      if (pair.second == DependencyType::CHANGE)
+      if (pair.second == DependencyType::Change)
         {
           change_index = local_index;
         }
@@ -198,7 +198,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     dof_handler->get_dof_handlers().at(this->get_field_index());
   auto *solution =
     this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                     DependencyType::NORMAL);
+                                                     DependencyType::Normal);
 
   // Compute the residual
   this->get_system_matrix()->compute_residual(*this->get_residual(), *solution);
@@ -222,7 +222,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   for (const auto &[pair, local_index] :
        this->get_newton_update_global_to_local_solution())
     {
-      if (pair.second == DependencyType::CHANGE)
+      if (pair.second == DependencyType::Change)
         {
           change_index = local_index;
         }
@@ -334,7 +334,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->get_newton_update());
-  this->get_solution_handler().update(FieldSolveType::NONEXPLICIT_LINEAR,
+  this->get_solution_handler().update(FieldSolveType::NonexplicitLinear,
                                       this->get_field_index());
 
   // Apply constraints

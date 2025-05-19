@@ -52,21 +52,21 @@ public:
    */
   [[nodiscard]] size_type
   get_scalar_value(unsigned int   global_variable_index,
-                   DependencyType dependency_type = DependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_gradient(unsigned int   global_variable_index,
-                      DependencyType dependency_type = DependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_scalar_hessian(unsigned int   global_variable_index,
-                     DependencyType dependency_type = DependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
@@ -74,35 +74,35 @@ public:
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
-    DependencyType dependency_type = DependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
   [[nodiscard]] size_type
   get_scalar_laplacian(unsigned int   global_variable_index,
-                       DependencyType dependency_type = DependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_value(unsigned int   global_variable_index,
-                   DependencyType dependency_type = DependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_gradient(unsigned int   global_variable_index,
-                      DependencyType dependency_type = DependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<3, dim, size_type>
   get_vector_hessian(unsigned int   global_variable_index,
-                     DependencyType dependency_type = DependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
@@ -110,21 +110,21 @@ public:
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
-    DependencyType dependency_type = DependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the laplacian of the specified vector field.
    */
   [[nodiscard]] dealii::Tensor<1, dim, size_type>
   get_vector_laplacian(unsigned int   global_variable_index,
-                       DependencyType dependency_type = DependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
   [[nodiscard]] size_type
   get_vector_divergence(unsigned int   global_variable_index,
-                        DependencyType dependency_type = DependencyType::NORMAL) const;
+                        DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
@@ -132,7 +132,7 @@ public:
   [[nodiscard]] dealii::Tensor<2, dim, size_type>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
-    DependencyType dependency_type = DependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the curl of the specified vector field. Note that this is
@@ -141,7 +141,7 @@ public:
    */
   [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
   get_vector_curl(unsigned int   global_variable_index,
-                  DependencyType dependency_type = DependencyType::NORMAL) const;
+                  DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Set the residual value of the specified scalar field.
@@ -149,7 +149,7 @@ public:
   void
   set_scalar_value_term(const unsigned int   &global_variable_index,
                         const size_type      &val,
-                        const DependencyType &dependency_type = DependencyType::NORMAL);
+                        const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual gradient of the specified scalar field.
@@ -158,7 +158,7 @@ public:
   set_scalar_gradient_term(
     const unsigned int                      &global_variable_index,
     const dealii::Tensor<1, dim, size_type> &grad,
-    const DependencyType                    &dependency_type = DependencyType::NORMAL);
+    const DependencyType                    &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual value of the specified vector field.
@@ -166,7 +166,7 @@ public:
   void
   set_vector_value_term(const unsigned int                      &global_variable_index,
                         const dealii::Tensor<1, dim, size_type> &val,
-                        const DependencyType &dependency_type = DependencyType::NORMAL);
+                        const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual gradient of the specified vector field.
@@ -175,7 +175,7 @@ public:
   set_vector_gradient_term(
     const unsigned int                      &global_variable_index,
     const dealii::Tensor<2, dim, size_type> &grad,
-    const DependencyType                    &dependency_type = DependencyType::NORMAL);
+    const DependencyType                    &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Apply some operator function for a given cell range and source vector to

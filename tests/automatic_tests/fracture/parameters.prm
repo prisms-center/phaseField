@@ -27,7 +27,7 @@ set boundary condition for u, x component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET
 set boundary condition for u, y component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET 
 
 subsection linear solver parameters: u
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-5
     set max iterations = 1000
     set preconditioner type = GMG

@@ -12,8 +12,8 @@ CustomAttributeLoader::loadVariableAttributes()
 {
   // Variable 2
   set_variable_name(0, "u");
-  set_variable_type(0, VECTOR);
-  set_variable_equation_type(0, TIME_INDEPENDENT);
+  set_variable_type(0, Vector);
+  set_variable_equation_type(0, TimeIndependent);
 
   set_dependencies_value_term_rhs(0, "");
   set_dependencies_gradient_term_rhs(0, "grad(u)");

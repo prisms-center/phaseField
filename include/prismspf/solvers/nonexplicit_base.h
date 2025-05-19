@@ -84,8 +84,8 @@ protected:
   /**
    * \brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType. This function should only be used for nonexplicit fieldSolveTypes,
-   * such as NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR, NONEXPLICIT_AUXILIARY, and
-   * NONEXPLICIT_CO_NONLINEAR.
+   * such as NonexplicitLinear, NonexplicitSelfnonlinear, NonexplicitAuxiliary, and
+   * NonexplicitCononlinear.
    */
   void
   compute_subset_attributes(const FieldSolveType &field_solve_type);
@@ -94,14 +94,14 @@ protected:
    * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
    * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
    * initialized. This should only be called for concurrent nonexplicit fieldSolveTypes
-   * like NONEXPLICIT_CO_NONLINEAR.
+   * like NonexplicitCononlinear.
    */
   void
   compute_shared_dependencies();
 
   /**
    * \brief Set the initial condition according to subset_attributes. This only applies
-   * for PDEType IMPLICIT_TIME_DEPENDENT fields.
+   * for PDEType ImplicitTimeDependent fields.
    */
   void
   set_initial_condition();

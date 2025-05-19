@@ -210,11 +210,11 @@ UserInputParameters<dim>::assign_boundary_parameters(
         }
 
       const unsigned int n_components =
-        (variable.get_field_type() == FieldType::SCALAR) ? 1 : dim;
+        (variable.get_field_type() == FieldType::Scalar) ? 1 : dim;
       for (unsigned int i = 0; i < n_components; i++)
         {
           std::string bc_text = "boundary condition for " + variable.get_name();
-          if (variable.get_field_type() != FieldType::SCALAR)
+          if (variable.get_field_type() != FieldType::Scalar)
             {
               bc_text += ", " + axis_labels[i] + " component";
             }
@@ -235,7 +235,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
       parameter_handler.enter_subsection(pinning_text);
 
       const std::string value_key =
-        (variable.get_field_type() == FieldType::SCALAR) ? "value" : "x value";
+        (variable.get_field_type() == FieldType::Scalar) ? "value" : "x value";
 
       // Skip if the value is the default INT_MAX
       if (parameter_handler.get_double(value_key) == INT_MAX)
@@ -251,7 +251,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
           point[i] = parameter_handler.get_double(axis_labels[i]);
         }
 
-      if (variable.get_field_type() == FieldType::SCALAR)
+      if (variable.get_field_type() == FieldType::Scalar)
         {
           boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
                                                point,
@@ -277,8 +277,8 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
-          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TimeIndependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           std::string subsection_text = "linear solver parameters: ";
           subsection_text.append(variable.get_name());
@@ -288,15 +288,15 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
 
           // Set the tolerance type
           const std::string type_string = parameter_handler.get("tolerance type");
-          if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
+          if (boost::iequals(type_string, "AbsoluteResidual"))
             {
               linear_solver_parameters.tolerance_type =
-                SolverToleranceType::ABSOLUTE_RESIDUAL;
+                SolverToleranceType::AbsoluteResidual;
             }
-          else if (boost::iequals(type_string, "RELATIVE_RESIDUAL_CHANGE"))
+          else if (boost::iequals(type_string, "RelativeResidualChange"))
             {
               linear_solver_parameters.tolerance_type =
-                SolverToleranceType::RELATIVE_RESIDUAL_CHANGE;
+                SolverToleranceType::RelativeResidualChange;
             }
           else
             {
@@ -315,7 +315,7 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           linear_solver_parameters.preconditioner =
             boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
               ? PreconditionerType::GMG
-              : PreconditionerType::NONE;
+              : PreconditionerType::None;
 
           linear_solver_parameters.smoothing_range =
             parameter_handler.get_double("smoothing range");
@@ -344,8 +344,8 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
 {
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
+          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
           subsection_text.append(variable.get_name());

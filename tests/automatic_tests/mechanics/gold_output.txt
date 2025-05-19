@@ -6,7 +6,7 @@ Number of variables: 1
 ================================================
   Global min = 0 and max = 4
   LHS dependency fields:
-    Index 0 Type CHANGE Min 0
+    Index 0 Type Change Min 0
 number of processes: 1
 vectorization over 2 doubles = 128 bits (SSE2)
 creating FESystem...

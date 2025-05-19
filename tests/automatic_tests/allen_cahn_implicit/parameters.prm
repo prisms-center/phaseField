@@ -25,8 +25,8 @@ set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE
 
 subsection linear solver parameters: n
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 1000 
-    set preconditioner type = NONE
+    set preconditioner type = None
 end

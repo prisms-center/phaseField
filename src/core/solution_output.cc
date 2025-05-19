@@ -128,8 +128,8 @@ SolutionOutput<dim, number>::SolutionOutput(
       auto *solution = solution_set.at(index);
       solution->update_ghost_values();
 
-      // Mark field as SCALAR/VECTOR
-      const bool         is_scalar    = variable.get_field_type() == FieldType::SCALAR;
+      // Mark field as Scalar/Vector
+      const bool         is_scalar    = variable.get_field_type() == FieldType::Scalar;
       const unsigned int n_components = is_scalar ? 1 : dim;
 
       const std::vector<dealii::DataComponentInterpretation::DataComponentInterpretation>

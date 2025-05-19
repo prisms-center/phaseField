@@ -67,12 +67,12 @@ VariableAttributes::parse_dependencies(
   {
     // Modifiers for the dependency types
     const std::vector<std::pair<std::string, DependencyType>> dependency_types = {
-      {"",        DependencyType::NORMAL},
-      {"_change", DependencyType::CHANGE},
-      {"_old_1",  DependencyType::OLD_1 },
-      {"_old_2",  DependencyType::OLD_2 },
-      {"_old_3",  DependencyType::OLD_3 },
-      {"_old_4",  DependencyType::OLD_4 },
+      {"",        DependencyType::Normal  },
+      {"_change", DependencyType::Change  },
+      {"_old_1",  DependencyType::OldOne  },
+      {"_old_2",  DependencyType::OldTwo  },
+      {"_old_3",  DependencyType::OldThree},
+      {"_old_4",  DependencyType::OldFour },
     };
 
     // Dependency evaluation types & their corresponding evaluation flag
@@ -199,9 +199,9 @@ VariableAttributes::determine_field_solve_type(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Early return for constant fields
-  if (pde_type == PDEType::CONSTANT)
+  if (pde_type == PDEType::Constant)
     {
-      field_solve_type = FieldSolveType::EXPLICIT_CONSTANT;
+      field_solve_type = FieldSolveType::ExplicitConstant;
       return;
     }
 
@@ -211,10 +211,10 @@ VariableAttributes::determine_field_solve_type(
                 "eval_flag_set_rhs must be populated."));
 
   // Early return for explicit solve types
-  if (pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
+  if (pde_type == PDEType::ExplicitTimeDependent)
     {
-      is_postprocessed_variable ? field_solve_type = FieldSolveType::EXPLICIT_POSTPROCESS
-                                : field_solve_type = FieldSolveType::EXPLICIT;
+      is_postprocessed_variable ? field_solve_type = FieldSolveType::ExplicitPostprocess
+                                : field_solve_type = FieldSolveType::Explicit;
       return;
     }
 
@@ -227,34 +227,33 @@ VariableAttributes::determine_field_solve_type(
   // all co-nonlinear fields are lumped together and solved. When dealing with two sets of
   // co-nonlinear fields performance may suffer greatly.
   find_circular_dependencies(other_var_attributes);
-  if (field_solve_type == FieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+  if (field_solve_type == FieldSolveType::NonexplicitCononlinear)
     {
       return;
     }
 
   // Check for self-nonlinear solves.
-  if (eval_flag_set_lhs.contains({field_index, DependencyType::CHANGE}) &&
-      eval_flag_set_lhs.contains({field_index, DependencyType::NORMAL}))
+  if (eval_flag_set_lhs.contains({field_index, DependencyType::Change}) &&
+      eval_flag_set_lhs.contains({field_index, DependencyType::Normal}))
     {
-      field_solve_type = FieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
+      field_solve_type = FieldSolveType::NonexplicitSelfnonlinear;
       return;
     }
 
   // Lastly, assign plain linear & auxiliary solves
-  if (pde_type == PDEType::AUXILIARY)
+  if (pde_type == PDEType::Auxiliary)
     {
-      field_solve_type = FieldSolveType::NONEXPLICIT_AUXILIARY;
+      field_solve_type = FieldSolveType::NonexplicitAuxiliary;
       return;
     }
-  if (pde_type == PDEType::TIME_INDEPENDENT ||
-      pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
+  if (pde_type == PDEType::TimeIndependent || pde_type == PDEType::ImplicitTimeDependent)
     {
-      field_solve_type = FieldSolveType::NONEXPLICIT_LINEAR;
+      field_solve_type = FieldSolveType::NonexplicitLinear;
       return;
     }
 
   // Set undefined is anything falls through our criteria.
-  field_solve_type = FieldSolveType::UNDEFINED_SOLVE;
+  field_solve_type = FieldSolveType::UndefinedSolve;
 }
 
 void
@@ -302,28 +301,28 @@ VariableAttributes::validate_dependency([[maybe_unused]] const std::string  &var
                                         [[maybe_unused]] const unsigned int &other_index,
                                         [[maybe_unused]] const std::string &context) const
 {
-  AssertThrow(context != "RHS" || dep_type != DependencyType::CHANGE,
+  AssertThrow(context != "RHS" || dep_type != DependencyType::Change,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
                                  "not allowed on the RHS of any PDE."));
-  AssertThrow(context != "LHS" || pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
-                pde_type == PDEType::TIME_INDEPENDENT,
+  AssertThrow(context != "LHS" || pde_type == PDEType::ImplicitTimeDependent ||
+                pde_type == PDEType::TimeIndependent,
               dealii::ExcMessage(
-                "Only `TIME_INDEPENDENT` and `IMPLICIT_TIME_DEPENDENT` fields may "
+                "Only `TimeIndependent` and `ImplicitTimeDependent` fields may "
                 "have dependencies on the LHS."));
-  AssertThrow(dep_type != DependencyType::CHANGE || other_index == field_index,
+  AssertThrow(dep_type != DependencyType::Change || other_index == field_index,
               dealii::ExcMessage(
                 "Dependencies with the delimiter change(var) are only allowed as "
                 "dependencies for the same field (e.g, change(phi) is only "
                 "allowed as a dependency for phi)."));
-  AssertThrow(field_type == FieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::Vector ||
                 variation.find("divergence") == std::string::npos,
               dealii::ExcMessage("Dependencies with the divergence delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == FieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::Vector ||
                 variation.find("symmetric_gradient") == std::string::npos,
               dealii::ExcMessage("Dependencies with the symmetric gradient delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == FieldType::VECTOR ||
+  AssertThrow(field_type == FieldType::Vector ||
                 variation.find("curl") == std::string::npos,
               dealii::ExcMessage("Dependencies with the curl delimiter are "
                                  "only allowed on vector fields."));
@@ -339,7 +338,7 @@ VariableAttributes::compute_dependency_set(
   // FEEvaluation objects should be made.
   for (const auto &[pair, flag] : eval_flag_set_rhs)
     {
-      if (pair.second == DependencyType::CHANGE ||
+      if (pair.second == DependencyType::Change ||
           flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
         {
           continue;
@@ -353,7 +352,7 @@ VariableAttributes::compute_dependency_set(
       dependency_set_rhs[pair.first]
         .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
     }
-  dependency_set_rhs[field_index].emplace(DependencyType::NORMAL, field_type);
+  dependency_set_rhs[field_index].emplace(DependencyType::Normal, field_type);
 
   for (const auto &[pair, flag] : eval_flag_set_lhs)
     {
@@ -384,11 +383,11 @@ VariableAttributes::compute_simplified_dependency_set(
   {
     for (const auto &[pair, flag] : eval_flag_set)
       {
-        if (pair.second != DependencyType::NORMAL ||
+        if (pair.second != DependencyType::Normal ||
             flag == dealii::EvaluationFlags::EvaluationFlags::nothing ||
             other_var_attributes.at(pair.first).pde_type ==
-              PDEType::EXPLICIT_TIME_DEPENDENT ||
-            other_var_attributes.at(pair.first).pde_type == PDEType::CONSTANT ||
+              PDEType::ExplicitTimeDependent ||
+            other_var_attributes.at(pair.first).pde_type == PDEType::Constant ||
             pair.first == field_index)
           {
             continue;
@@ -434,7 +433,7 @@ VariableAttributes::recursive_DFS(
       // If the current recursion stack already has the dependency, we have a cycle
       if (current_stack.contains(dependency))
         {
-          field_solve_type = FieldSolveType::NONEXPLICIT_CO_NONLINEAR;
+          field_solve_type = FieldSolveType::NonexplicitCononlinear;
           return;
         }
       // Otherwise, if we haven't already visited this node continue down the graph

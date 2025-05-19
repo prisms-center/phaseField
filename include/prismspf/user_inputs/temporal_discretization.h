@@ -144,7 +144,7 @@ inline void
 temporalDiscretization::postprocess_and_validate(
   const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
-  // If all of the variables are `TIME_INDEPENDENT`, `AUXILIARY`, or `CONSTANT` then
+  // If all of the variables are `TimeIndependent`, `Auxiliary`, or `Constant` then
   // total_increments should be 1 and final_time should be 0
   bool only_time_independent_pdes = true;
   for (const auto &[index, variable] : var_attributes)
@@ -153,8 +153,8 @@ temporalDiscretization::postprocess_and_validate(
         {
           continue;
         }
-      if (variable.get_pde_type() == PDEType::EXPLICIT_TIME_DEPENDENT ||
-          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           only_time_independent_pdes = false;
           break;

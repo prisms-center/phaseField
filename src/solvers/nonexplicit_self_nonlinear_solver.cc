@@ -60,7 +60,7 @@ template <unsigned int dim, unsigned int degree>
 inline void
 nonexplicitSelfNonlinearSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(FieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
+  this->compute_subset_attributes(FieldSolveType::NonexplicitSelfnonlinear);
 
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -119,8 +119,8 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
 
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
-      // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment is 0.
-      if (variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT &&
+      // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+      if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
           this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
             0)
         {

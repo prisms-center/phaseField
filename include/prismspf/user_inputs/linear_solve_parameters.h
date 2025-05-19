@@ -23,7 +23,7 @@ public:
   double tolerance = defaults::tolerance;
 
   // Solver tolerance type
-  SolverToleranceType tolerance_type = SolverToleranceType::RELATIVE_RESIDUAL_CHANGE;
+  SolverToleranceType tolerance_type = SolverToleranceType::RelativeResidualChange;
 
   // Max number of iterations for the linear solve
   unsigned int max_iterations = defaults::iterations;

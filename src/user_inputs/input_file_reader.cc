@@ -352,18 +352,18 @@ inputFileReader::declare_solver_parameters()
   // For linear solves
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.get_pde_type() == PDEType::TIME_INDEPENDENT ||
-          variable.get_pde_type() == PDEType::IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TimeIndependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           std::string subsection_text = "linear solver parameters: ";
           subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
           {
-            parameter_handler.declare_entry(
-              "tolerance type",
-              "ABSOLUTE_RESIDUAL",
-              dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
-              "The tolerance type for the linear solver.");
+            parameter_handler.declare_entry("tolerance type",
+                                            "AbsoluteResidual",
+                                            dealii::Patterns::Selection(
+                                              "AbsoluteResidual|RelativeResidualChange"),
+                                            "The tolerance type for the linear solver.");
             parameter_handler.declare_entry(
               "tolerance value",
               "1.0e-10",
@@ -378,7 +378,7 @@ inputFileReader::declare_solver_parameters()
             parameter_handler.declare_entry(
               "preconditioner type",
               "GMG",
-              dealii::Patterns::Selection("NONE|GMG"),
+              dealii::Patterns::Selection("None|GMG"),
               "The preconditioner type for the linear solver.");
             parameter_handler.declare_entry("smoothing range",
                                             "15.0",
@@ -405,8 +405,8 @@ inputFileReader::declare_solver_parameters()
   // For nonlinear solves
   for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.get_field_solve_type() == FieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
+          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
           subsection_text.append(variable.get_name());
@@ -419,8 +419,8 @@ inputFileReader::declare_solver_parameters()
                                             "iterations before the loop is stopped.");
             parameter_handler.declare_entry(
               "tolerance type",
-              "ABSOLUTE_RESIDUAL",
-              dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
+              "AbsoluteResidual",
+              dealii::Patterns::Selection("AbsoluteResidual|RelativeResidualChange"),
               "The tolerance type for the nonlinear solver.");
             parameter_handler.declare_entry(
               "tolerance value",
@@ -572,7 +572,7 @@ inputFileReader::declare_BC_parameters()
         {
           continue;
         }
-      if (variable.get_field_type() == SCALAR)
+      if (variable.get_field_type() == Scalar)
         {
           std::string bc_text = "boundary condition for ";
           bc_text.append(variable.get_name());
@@ -627,7 +627,7 @@ inputFileReader::declare_pinning_parameters()
       pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
       {
-        if (variable.get_field_type() == SCALAR)
+        if (variable.get_field_type() == Scalar)
           {
             parameter_handler.declare_entry("value",
                                             "2147483647",

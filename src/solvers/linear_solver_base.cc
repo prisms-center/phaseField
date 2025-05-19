@@ -38,7 +38,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   , field_index(_variable_attributes.get_field_index())
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
-      _solution_handler.get_solution_vector(field_index, DependencyType::CHANGE))
+      _solution_handler.get_solution_vector(field_index, DependencyType::Change))
   , pde_operator(std::move(_pde_operator))
   , solver_control(_user_inputs.get_linear_solve_parameters()
                      .get_linear_solve_parameters(field_index)
@@ -57,9 +57,9 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // Create the residual subset of solution vectors and add the mapping to
   // MatrixFreeOperator
   residual_src.push_back(
-    solution_handler->get_solution_vector(field_index, DependencyType::NORMAL));
+    solution_handler->get_solution_vector(field_index, DependencyType::Normal));
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
-                                                           DependencyType::NORMAL),
+                                                           DependencyType::Normal),
                                             0);
   for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_rhs())
     {
@@ -87,7 +87,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
         {
           const auto pair = std::make_pair(variable_index, dependency_type);
 
-          if (dependency_type == DependencyType::CHANGE)
+          if (dependency_type == DependencyType::Change)
             {
               Assert(field_index == variable_index,
                      dealii::ExcMessage("The change type should have the same type as "
@@ -111,7 +111,7 @@ linearSolverBase<dim, degree>::compute_solver_tolerance()
 {
   tolerance = user_inputs->get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
-                    .tolerance_type == SolverToleranceType::RELATIVE_RESIDUAL_CHANGE
+                    .tolerance_type == SolverToleranceType::RelativeResidualChange
                 ? user_inputs->get_linear_solve_parameters()
                       .get_linear_solve_parameters(field_index)
                       .tolerance *

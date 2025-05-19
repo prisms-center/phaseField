@@ -20,7 +20,7 @@ InitialCondition<dim, degree>::InitialCondition(
   const unsigned int                                            &_index,
   const FieldType                                               &field_type,
   const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator)
-  : dealii::Function<dim>((field_type == FieldType::VECTOR) ? dim : 1)
+  : dealii::Function<dim>((field_type == FieldType::Vector) ? dim : 1)
   , index(_index)
   , pde_operator(_pde_operator)
 {}

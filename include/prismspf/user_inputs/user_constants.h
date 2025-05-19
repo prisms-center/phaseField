@@ -495,22 +495,22 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
-  ElasticityModel mat_model = ISOTROPIC;
+  ElasticityModel mat_model = Isotropic;
   if (elastic_const_symmetry == "isotropic")
     {
-      mat_model = ElasticityModel::ISOTROPIC;
+      mat_model = ElasticityModel::Isotropic;
     }
   else if (elastic_const_symmetry == "transverse")
     {
-      mat_model = ElasticityModel::TRANSVERSE;
+      mat_model = ElasticityModel::Transverse;
     }
   else if (elastic_const_symmetry == "orthotropic")
     {
-      mat_model = ElasticityModel::ORTHOTROPIC;
+      mat_model = ElasticityModel::Orthotropic;
     }
   else if (elastic_const_symmetry == "anisotropic")
     {
-      mat_model = ElasticityModel::ANISOTROPIC;
+      mat_model = ElasticityModel::Anisotropic;
     }
   else
     {
@@ -521,7 +521,7 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
   // constants are given for a 3D calculation, change the elastic constant
   // vector to the 2D form
   constexpr unsigned int max_number = 21;
-  if ((mat_model == ANISOTROPIC) && (dim == 2) && elastic_constants.size() == max_number)
+  if ((mat_model == Anisotropic) && (dim == 2) && elastic_constants.size() == max_number)
     {
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
@@ -557,7 +557,7 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
               // TODO (landinjm): Should we both fixing this for the other cases and just
               // selecting the x index. It would allow the user to switch from 2D to 1D to
               // 3D, but would produce unexpected behavior.
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   const double modulus = constants.at(0);
 
@@ -580,7 +580,7 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
 
           switch (model)
             {
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   // TODO (landinjm): Document this
                   const double modulus = constants.at(0);
@@ -595,7 +595,7 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                   CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = lambda;
                   break;
                 }
-              case ANISOTROPIC:
+              case Anisotropic:
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
@@ -612,7 +612,7 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
 
           switch (model)
             {
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   // TODO (landinjm): Document this
                   const double modulus = constants.at(0);
@@ -631,9 +631,9 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                       lambda;
                   break;
                 }
-              case TRANSVERSE:
-              case ORTHOTROPIC:
-              case ANISOTROPIC:
+              case Transverse:
+              case Orthotropic:
+              case Anisotropic:
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }

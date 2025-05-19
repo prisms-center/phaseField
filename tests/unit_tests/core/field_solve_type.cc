@@ -41,8 +41,8 @@ TEST_CASE("Field solve types")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, SCALAR);
-        set_variable_equation_type(0, TIME_INDEPENDENT);
+        set_variable_type(0, Scalar);
+        set_variable_equation_type(0, TimeIndependent);
 
         set_dependencies_value_term_lhs(0, "");
         set_dependencies_gradient_term_lhs(0, "");
@@ -50,8 +50,8 @@ TEST_CASE("Field solve types")
         set_dependencies_gradient_term_rhs(0, "");
 
         set_variable_name(1, "eta");
-        set_variable_type(1, SCALAR);
-        set_variable_equation_type(1, AUXILIARY);
+        set_variable_type(1, Scalar);
+        set_variable_equation_type(1, Auxiliary);
 
         set_dependencies_value_term_lhs(1, "");
         set_dependencies_gradient_term_lhs(1, "");
@@ -69,7 +69,7 @@ TEST_CASE("Field solve types")
     for (unsigned int index : {0, 1})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                FieldSolveType::NONEXPLICIT_CO_NONLINEAR);
+                FieldSolveType::NonexplicitCononlinear);
       }
   }
 
@@ -101,8 +101,8 @@ TEST_CASE("Field solve types")
       loadVariableAttributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, VECTOR);
-        set_variable_equation_type(0, TIME_INDEPENDENT);
+        set_variable_type(0, Vector);
+        set_variable_equation_type(0, TimeIndependent);
 
         set_dependencies_value_term_lhs(0,
                                         "change(phi), grad(change(phi)), phi, grad(phi)");
@@ -111,8 +111,8 @@ TEST_CASE("Field solve types")
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "eta");
-        set_variable_type(1, SCALAR);
-        set_variable_equation_type(1, TIME_INDEPENDENT);
+        set_variable_type(1, Scalar);
+        set_variable_equation_type(1, TimeIndependent);
 
         set_dependencies_value_term_lhs(1, "");
         set_dependencies_gradient_term_lhs(1, "grad(change(eta)), grad(eta)");
@@ -120,8 +120,8 @@ TEST_CASE("Field solve types")
         set_dependencies_gradient_term_rhs(1, "grad(eta)");
 
         set_variable_name(2, "beta");
-        set_variable_type(2, VECTOR);
-        set_variable_equation_type(2, TIME_INDEPENDENT);
+        set_variable_type(2, Vector);
+        set_variable_equation_type(2, TimeIndependent);
 
         set_dependencies_value_term_lhs(2, "");
         set_dependencies_gradient_term_lhs(2, "grad(change(beta))");
@@ -129,8 +129,8 @@ TEST_CASE("Field solve types")
         set_dependencies_gradient_term_rhs(2, "grad(beta)");
 
         set_variable_name(3, "alpha");
-        set_variable_type(3, SCALAR);
-        set_variable_equation_type(3, TIME_INDEPENDENT);
+        set_variable_type(3, Scalar);
+        set_variable_equation_type(3, TimeIndependent);
 
         set_dependencies_value_term_lhs(3, "change(alpha)");
         set_dependencies_gradient_term_lhs(3, "grad(change(alpha))");
@@ -148,12 +148,12 @@ TEST_CASE("Field solve types")
     for (unsigned int index : {0, 1})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                FieldSolveType::NONEXPLICIT_SELF_NONLINEAR);
+                FieldSolveType::NonexplicitSelfnonlinear);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                FieldSolveType::NONEXPLICIT_LINEAR);
+                FieldSolveType::NonexplicitLinear);
       }
   }
 
@@ -174,8 +174,8 @@ TEST_CASE("Field solve types")
         for (unsigned int index : {0, 1, 2, 3})
           {
             set_variable_name(index, "n" + std::to_string(index));
-            set_variable_type(index, SCALAR);
-            set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
+            set_variable_type(index, Scalar);
+            set_variable_equation_type(index, ExplicitTimeDependent);
             set_dependencies_value_term_rhs(index, "n" + std::to_string(index));
             set_dependencies_gradient_term_rhs(index,
                                                "grad(n" + std::to_string(index) + ")");
@@ -191,7 +191,7 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1, 2, 3})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::Explicit);
       }
   }
 
@@ -213,8 +213,8 @@ TEST_CASE("Field solve types")
         for (unsigned int index : {0, 1})
           {
             set_variable_name(index, "n" + std::to_string(index));
-            set_variable_type(index, SCALAR);
-            set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
+            set_variable_type(index, Scalar);
+            set_variable_equation_type(index, ExplicitTimeDependent);
             set_dependencies_value_term_rhs(index, "n" + std::to_string(index));
             set_dependencies_gradient_term_rhs(index,
                                                "grad(xi" + std::to_string(index) + ")");
@@ -222,8 +222,8 @@ TEST_CASE("Field solve types")
         for (unsigned int index : {2, 3})
           {
             set_variable_name(index, "xi" + std::to_string(index - 2));
-            set_variable_type(index, SCALAR);
-            set_variable_equation_type(index, AUXILIARY);
+            set_variable_type(index, Scalar);
+            set_variable_equation_type(index, Auxiliary);
             set_dependencies_value_term_rhs(index, "n" + std::to_string(index - 2));
             set_dependencies_gradient_term_rhs(index,
                                                "grad(n" + std::to_string(index - 2) +
@@ -240,12 +240,12 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::Explicit);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                FieldSolveType::NONEXPLICIT_AUXILIARY);
+                FieldSolveType::NonexplicitAuxiliary);
       }
   }
 
@@ -269,8 +269,8 @@ TEST_CASE("Field solve types")
         for (unsigned int index : {0, 1})
           {
             set_variable_name(index, "n" + std::to_string(index));
-            set_variable_type(index, VECTOR);
-            set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
+            set_variable_type(index, Vector);
+            set_variable_equation_type(index, ExplicitTimeDependent);
             set_dependencies_value_term_rhs(index,
                                             "grad(phi), eta, n" + std::to_string(index));
             set_dependencies_gradient_term_rhs(index,
@@ -278,8 +278,8 @@ TEST_CASE("Field solve types")
           }
 
         set_variable_name(2, "phi");
-        set_variable_type(2, SCALAR);
-        set_variable_equation_type(2, TIME_INDEPENDENT);
+        set_variable_type(2, Scalar);
+        set_variable_equation_type(2, TimeIndependent);
 
         set_dependencies_value_term_lhs(2, "");
         set_dependencies_gradient_term_lhs(2, "grad(change(phi))");
@@ -287,8 +287,8 @@ TEST_CASE("Field solve types")
         set_dependencies_gradient_term_rhs(2, "grad(phi)");
 
         set_variable_name(3, "eta");
-        set_variable_type(3, SCALAR);
-        set_variable_equation_type(3, TIME_INDEPENDENT);
+        set_variable_type(3, Scalar);
+        set_variable_equation_type(3, TimeIndependent);
 
         set_dependencies_value_term_lhs(3, "");
         set_dependencies_gradient_term_lhs(3, "grad(change(eta))");
@@ -305,12 +305,12 @@ TEST_CASE("Field solve types")
     REQUIRE(variables.size() == 4);
     for (unsigned int index : {0, 1})
       {
-        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::EXPLICIT);
+        REQUIRE(variables.at(index).get_field_solve_type() == FieldSolveType::Explicit);
       }
     for (unsigned int index : {2, 3})
       {
         REQUIRE(variables.at(index).get_field_solve_type() ==
-                FieldSolveType::NONEXPLICIT_LINEAR);
+                FieldSolveType::NonexplicitLinear);
       }
   }
 }

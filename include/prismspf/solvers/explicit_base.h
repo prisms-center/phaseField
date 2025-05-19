@@ -78,7 +78,7 @@ protected:
   /**
    * \brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType. This function should only be used for concurrent fieldSolveTypes,
-   * such as EXPLICIT, NONEXPLICIT_CO_NONLINEAR, and EXPLICIT_POSTPROCESS.
+   * such as Explicit, NonexplicitCononlinear, and ExplicitPostprocess.
    */
   void
   compute_subset_attributes(const FieldSolveType &field_solve_type);
