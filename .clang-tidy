@@ -29,7 +29,7 @@ CheckOptions:
   - key:             readability-identifier-naming.ClassMemberCase
     value:           lower_case
   - key:             readability-identifier-naming.ConstexprVariableCase
-    value:           CamelCase
+    value:           lower_case
   - key:             readability-identifier-naming.EnumCase
     value:           UPPER_CASE
   - key:             readability-identifier-naming.EnumConstantCase
@@ -37,9 +37,9 @@ CheckOptions:
   - key:             readability-identifier-naming.FunctionCase
     value:           lower_case
   - key:             readability-identifier-naming.GlobalConstantCase
-    value:           CamelCase
+    value:           lower_case
   - key:             readability-identifier-naming.StaticConstantCase
-    value:           CamelCase
+    value:           lower_case
   - key:             readability-identifier-naming.StaticVariableCase
     value:           lower_case
   - key:             readability-identifier-naming.MacroDefinitionCase
@@ -52,6 +52,8 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.ParameterCase
     value:           lower_case
+  - key:             readability-identifier-naming.ParameterIgnoredRegexp
+    value:           '^_[a-z]+(_[a-z]+)*$'
   - key:             readability-identifier-naming.TypeAliasCase
     value:           CamelCase
   - key:             readability-identifier-naming.TypedefCase
