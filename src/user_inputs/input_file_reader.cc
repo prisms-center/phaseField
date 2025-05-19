@@ -235,7 +235,7 @@ InputFileReader::declare_mesh()
                                   "The number of initial refinements of the coarse mesh.",
                                   true);
 
-  parameter_handler.enter_subsection("rectangular mesh");
+  parameter_handler.enter_subsection("Rectangular mesh");
   {
     parameter_handler.declare_entry("x size",
                                     "0.0",
@@ -267,7 +267,7 @@ InputFileReader::declare_mesh()
   }
   parameter_handler.leave_subsection();
 
-  parameter_handler.enter_subsection("spherical mesh");
+  parameter_handler.enter_subsection("Spherical mesh");
   {
     parameter_handler.declare_entry("radius",
                                     "0",

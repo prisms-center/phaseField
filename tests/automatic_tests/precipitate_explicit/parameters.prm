@@ -2,7 +2,7 @@ set dim = 2
 set global refinement = 5
 set degree = 2
 
-subsection rectangular mesh
+subsection Rectangular mesh
   set x size = 40.0
   set y size = 40.0
   set z size = 40.0

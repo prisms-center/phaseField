@@ -139,7 +139,7 @@ TriangulationHandler<dim>::generate_mesh()
   else
     {
       // TODO (landinjm): Add assertions about periodic boundary conditions for
-      // rectangular domains here. Not sure whether it is better to check for assertions
+      // Rectangular domains here. Not sure whether it is better to check for assertions
       // here or when we parse user inputs.
 
       // Generate rectangle

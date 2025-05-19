@@ -25,8 +25,8 @@ public:
    */
   enum TriangulationType : std::uint8_t
   {
-    rectangular,
-    spherical
+    Rectangular,
+    Spherical
   };
 
   /**
@@ -65,7 +65,7 @@ public:
   }
 
   /**
-   * \brief Get the radius of the spherical domain
+   * \brief Get the radius of the Spherical domain
    */
   [[nodiscard]] double
   get_radius() const
@@ -74,7 +74,7 @@ public:
   }
 
   /**
-   * \brief Set the radius of the spherical domain
+   * \brief Set the radius of the Spherical domain
    */
   void
   set_radius(const double &_radius)
@@ -229,12 +229,12 @@ public:
 
 private:
   // Triangulation type
-  TriangulationType type = TriangulationType::rectangular;
+  TriangulationType type = TriangulationType::Rectangular;
 
   // Domain extents in each cartesian direction
   dealii::Tensor<1, dim, double> size;
 
-  // Radius of the spherical domain
+  // Radius of the Spherical domain
   double radius = 0.0;
 
   // Mesh subdivisions in each cartesian direction
@@ -269,11 +269,11 @@ SpatialDiscretization<dim>::postprocess_and_validate()
   // Assign the triangulation type
   if (radius != 0.0 && size.norm() == 0.0)
     {
-      type = TriangulationType::spherical;
+      type = TriangulationType::Spherical;
     }
   else if (radius == 0.0 && size.norm() != 0.0)
     {
-      type = TriangulationType::rectangular;
+      type = TriangulationType::Rectangular;
     }
   else
     {
@@ -324,11 +324,11 @@ SpatialDiscretization<dim>::print_parameter_summary() const
     << "  Spatial Discretization\n"
     << "================================================\n";
 
-  if (type == TriangulationType::spherical)
+  if (type == TriangulationType::Spherical)
     {
       ConditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
     }
-  else if (type == TriangulationType::rectangular)
+  else if (type == TriangulationType::Rectangular)
     {
       if constexpr (dim == 1)
         {

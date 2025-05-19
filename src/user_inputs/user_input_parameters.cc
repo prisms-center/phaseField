@@ -65,7 +65,7 @@ void
 UserInputParameters<dim>::assign_spatial_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  parameter_handler.enter_subsection("rectangular mesh");
+  parameter_handler.enter_subsection("Rectangular mesh");
   {
     std::vector<std::string> axis_labels = {"x", "y", "z"};
     for (unsigned int i = 0; i < dim; ++i)
@@ -80,7 +80,7 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
   }
   parameter_handler.leave_subsection();
 
-  parameter_handler.enter_subsection("spherical mesh");
+  parameter_handler.enter_subsection("Spherical mesh");
   {
     spatial_discretization.set_radius(parameter_handler.get_double("radius"));
   }
