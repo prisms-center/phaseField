@@ -82,7 +82,7 @@ customPDE<dim, degree, number>::set_nonuniform_dirichlet(
       number kappa  = 3.0 - (4.0 * nu);
 
       vector_component_value = 0.5 * (KI_nom / mu) *
-                               std::sqrt(0.5 * r / std::Numbers::pi) *
+                               std::sqrt(0.5 * r / std::numbers::pi) *
                                (kappa - std::cos(theta));
       if (component == 0)
         {
