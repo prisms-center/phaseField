@@ -96,6 +96,15 @@ private:
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
+
+  /**
+   * \brief User-implemented class for the RHS of nucleation probability equations.
+   */
+  void
+  compute_nucleation_probability_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
+    const override;
 };
 
 PRISMS_PF_END_NAMESPACE

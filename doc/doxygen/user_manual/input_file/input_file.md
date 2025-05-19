@@ -87,7 +87,7 @@ set Boundary condition for variable n = NATURAL
 # Set the model constants
 # =================================================================================
 # Set the user-defined model constants, which must have a counter-part given in
-# customPDE.h. These are most often used in the residual equations in equations.h,
+# CustomPDE.h. These are most often used in the residual equations in equations.h,
 # but may also be used for initial conditions and nucleation calculations. The type
 # options currently are DOUBLE, INT, BOOL, TENSOR, and [symmetry] ELASTIC CONSTANTS
 # where [symmetry] is ISOTROPIC, TRANSVERSE, ORTHOTROPIC, or ANISOTROPIC.
@@ -413,6 +413,6 @@ The number and order of the entries for the elastic constants are (where \f$C_{i
 - ORTHOTROPIC (3D): 9 constants (\f$C_{11}\f$, \f$C_{22}\f$, \f$C_{33}\f$, \f$C_{44}\f$, \f$C_{55}\f$, \f$C_{66}\f$, \f$C_{12}\f$, \f$C_{13}\f$, \f$C_{23}\f$)
 - ANISOTROPIC (2D/3D): 21 constants (\f$C_{11}\f$, \f$C_{22}\f$, \f$C_{33}\f$, \f$C_{44}\f$, \f$C_{55}\f$, \f$C_{66}\f$, \f$C_{12}\f$, \f$C_{13}\f$, \f$C_{14}\f$, \f$C_{15}\f$, \f$C_{16}\f$, \f$C_{23}\f$, \f$C_{24}\f$, \f$C_{25}\f$, \f$C_{26}\f$, \f$C_{34}\f$, \f$C_{35}\f$, \f$C_{36}\f$, \f$C_{45}\f$, \f$C_{46}\f$, \f$C_{56}\f$)
 
-Each model constant in `parameters.in' must have a counterpart in the appropriate section of the `customPDE.h' file.
+Each model constant in `parameters.in' must have a counterpart in the appropriate section of the `CustomPDE.h' file.
 
 All of the example apps use model constants.

@@ -12,7 +12,7 @@ improved testing and continuous integration, code auto-formatting, and bug fixes
 ## Bug fixes
 * Fixed explicit solves for problems with both scalar and vector explicit fields by @landinjm in https://github.com/prisms-center/phaseField/pull/208
 * Fixed multiple linear/nonlinear solves by @landinjm in https://github.com/prisms-center/phaseField/pull/241
-* Fixed incomplete refactoring of methods in customPDE override by @landinjm in https://github.com/prisms-center/phaseField/pull/256
+* Fixed incomplete refactoring of methods in CustomPDE override by @landinjm in https://github.com/prisms-center/phaseField/pull/256
 * Fixed FloodFiller unit test and fixed grainGrowth bug by @zachcroft in https://github.com/prisms-center/phaseField/pull/224
 * Optimized vtk file read-in behavior by @fractalsbyx in https://github.com/prisms-center/phaseField/pull/222
 * Better error handling for boundary conditions by @zachcroft in https://github.com/prisms-center/phaseField/pull/225
@@ -80,7 +80,7 @@ Bug Fixes:
 - Removed elasticity terms from nucleation application documentation.
 - Updated input file parameters.prm for grainGrowth_dream3d application
 - Removed some commented lines in the equations.cc file of the alloySolidification app
-- Updated application nucleationModel_preferential. Function adaptiveRefineCriterion in customPDE.h was outdated (Issues #144, #159 and #161).
+- Updated application nucleationModel_preferential. Function adaptiveRefineCriterion in CustomPDE.h was outdated (Issues #144, #159 and #161).
 
 Other Changes:
 - The default parameters file name was changed to parameters.prm for compatibility with the newest recent deal.II versions.
@@ -143,7 +143,7 @@ Bug fixes:
 Other changes:
 - The pdf user guide has been removed as well as the Doxygen files. A Doxygen-based user guide is now hosted on [a separate site](https://prisms-center.github.io/phaseField/doxygen_files/manual.html) to provide a more interactive experience. The repo for the new user guide can be found [here](https://github.com/prisms-center/prismspf-manual).
 - Changed how the equation dependencies are input, making them more specific and more intuitive.
-- Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h.
+- Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of CustomPDE and have direct access to the model parameters declared in CustomPDE.h.
 - Renamed the functions in the equation file, removing references to 'residuals'. Instead, everything is referred to as a term in the governing equation.
 - The source file names in the app folders have been changed to .cc extensions instead of .h extensions.
 - The deal.II headers in the core library have been pruned so there aren't unneeded ones in many of the classes.
@@ -261,7 +261,7 @@ Bug fixes:
 
 Other changes:
 - Restructured much of the core library. Model files were completely eliminated, pushing many of those functions into MatrixFreePDE.
-  Each application now has a subclass of MatrixFreePDE called customPDE where member variables and methods can be implemented for
+  Each application now has a subclass of MatrixFreePDE called CustomPDE where member variables and methods can be implemented for
   specific applications.
 - A wall was put in place between the define macros in the input files and the core solver code. The inputs are now housed in the
   new "userInputParameters" class.

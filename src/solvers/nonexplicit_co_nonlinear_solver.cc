@@ -54,7 +54,7 @@ NonexplicitCononlinearSolver<dim, degree>::init()
           temp.emplace(index, variable);
           subset_attributes_list.push_back(temp);
 
-          // Create the implementation of matrixFreeOperator with the subset of variable
+          // Create the implementation of MatrixFreeOperator with the subset of variable
           // attributes
           this->get_system_matrix()[index] =
             std::make_unique<SystemMatrixType>(subset_attributes_list.back(),
@@ -67,7 +67,7 @@ NonexplicitCononlinearSolver<dim, degree>::init()
             this->get_matrix_free_handler().get_matrix_free());
 
           // Create the subset of solution vectors and add the mapping to
-          // matrixFreeOperator
+          // MatrixFreeOperator
           new_solution_subset[index].push_back(
             this->get_solution_handler().get_new_solution_vector(index));
           solution_subset[index].push_back(
@@ -191,7 +191,7 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                 new_solution_subset.at(index),
                 solution_subset.at(index));
 
-              // Scale the update by the respective (SCALAR/VECTOR) invm.
+              // Scale the update by the respective (Scalar/VECTOR) invm.
               new_solution_subset.at(index).at(0)->scale(
                 this->get_invm_handler().get_invm(index));
 

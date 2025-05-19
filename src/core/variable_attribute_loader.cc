@@ -100,6 +100,28 @@ VariableAttributeLoader::set_variable_equation_type(const unsigned int &index,
 }
 
 void
+VariableAttributeLoader::set_allowed_to_nucleate(
+  const unsigned int &index,
+  const bool         &allowed_to_nucleate,
+  const std::string  &nucleation_probability_field_name)
+{
+  var_attributes[index].can_nucleate = allowed_to_nucleate;
+  if (allowed_to_nucleate)
+    {
+      var_attributes[index].nucleation_probability_field_name =
+        nucleation_probability_field_name;
+    }
+}
+
+void
+VariableAttributeLoader::set_is_nucleation_probability(
+  const unsigned int &index,
+  const bool         &is_nucleation_probability)
+{
+  var_attributes[index].is_nucleation_probability = is_nucleation_probability;
+}
+
+void
 VariableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
@@ -277,10 +299,16 @@ VariableAttributeLoader::validate_attributes()
   for (const auto &[index, variable] : var_attributes)
     {
       // Check that postprocessed variables are only explicit
-      AssertThrow(!variable.is_postprocessed_variable ||
-                    variable.pde_type == PDEType::ExplicitTimeDependent,
+      AssertThrow(!(variable.is_postprocessed_variable &&
+                    variable.pde_type != PDEType::ExplicitTimeDependent),
                   dealii::ExcMessage(
                     "Currently, postprocessing only allows explicit equations."));
+      // Check that nucleation probability variables are only explicit scalars
+      AssertThrow(!(variable.is_nucleation_probability &&
+                    (variable.field_type != FieldType::Scalar ||
+                     variable.pde_type != PDEType::ExplicitTimeDependent)),
+                  dealii::ExcMessage("Nucleation probability must be a Scalar and "
+                                     "currently only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::Constant) ||
                     (variable.dependencies_rhs.empty() &&

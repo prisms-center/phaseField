@@ -147,6 +147,13 @@ public:
                           const std::vector<VectorType *> &src) const;
 
   /**
+   * \brief Compute the explicit update for nucleation probability fields.
+   */
+  void
+  compute_nucleation_explicit_update(std::vector<VectorType *>       &dst,
+                                     const std::vector<VectorType *> &src) const;
+
+  /**
    * \brief Compute the explicit update for postprocessed fields.
    */
   void
@@ -178,6 +185,16 @@ private:
    */
   void
   compute_local_explicit_update(
+    const dealii::MatrixFree<dim, number, SizeType> &data,
+    std::vector<VectorType *>                       &dst,
+    const std::vector<VectorType *>                 &src,
+    const std::pair<unsigned int, unsigned int>     &cell_range) const;
+
+  /**
+   * \brief Local computation of the explicit update of nucleation probability fields.
+   */
+  void
+  compute_local_nucleation_explicit_update(
     const dealii::MatrixFree<dim, number, SizeType> &data,
     std::vector<VectorType *>                       &dst,
     const std::vector<VectorType *>                 &src,

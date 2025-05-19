@@ -92,6 +92,14 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   variable_list.set_scalar_value_term(2, f_tot);
 }
 
+template <unsigned int dim, unsigned int degree, typename number>
+void
+CustomPDE<dim, degree, number>::compute_nucleation_probability_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
+  const
+{}
+
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE
