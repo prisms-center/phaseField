@@ -49,7 +49,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 PDEProblem<dim, degree>::PDEProblem(
-  const userInputParameters<dim>                                &_user_inputs,
+  const UserInputParameters<dim>                                &_user_inputs,
   const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
@@ -125,7 +125,7 @@ template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::init_system()
 {
-  timer::serial_timer().enter_subsection("Initialization");
+  Timer::serial_timer().enter_subsection("Initialization");
 
   const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
   ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
@@ -285,20 +285,20 @@ PDEProblem<dim, degree>::init_system()
 
   // Output initial condition
   ConditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
-  solutionOutput<dim>(solution_handler.get_solution_vector(),
+  SolutionOutput<dim>(solution_handler.get_solution_vector(),
                       dof_handler.get_dof_handlers(),
                       degree,
                       "solution",
                       *user_inputs);
 
-  timer::serial_timer().leave_subsection();
+  Timer::serial_timer().leave_subsection();
 }
 
 template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve_increment()
 {
-  timer::serial_timer().enter_subsection("Solve Increment");
+  Timer::serial_timer().enter_subsection("Solve Increment");
 
   // Update the time-dependent constraints
   if (!user_inputs->get_boundary_parameters().has_time_dependent_bcs())
@@ -339,7 +339,7 @@ PDEProblem<dim, degree>::solve_increment()
   nonexplicit_self_nonlinear_solver.solve();
   solution_handler.update_ghosts();
 
-  timer::serial_timer().leave_subsection();
+  Timer::serial_timer().leave_subsection();
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -382,7 +382,7 @@ PDEProblem<dim, degree>::solve()
 
           // TODO (landinjm): Do I need to zero out the ghost values when outputting the
           // solution?
-          solutionOutput<dim>(solution_handler.get_solution_vector(),
+          SolutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),
                               degree,
                               "solution",
@@ -444,7 +444,7 @@ PDEProblem<dim, degree>::run()
   solve();
 
 #ifndef PRISMS_PF_WITH_CALIPER
-  timer::print_summary();
+  Timer::print_summary();
 #endif
 }
 

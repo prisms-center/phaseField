@@ -11,23 +11,23 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Class to manage the variable attributes that the user specifies.
  */
-class variableAttributeLoader
+class VariableAttributeLoader
 {
 public:
   /**
    * \brief Constructor.
    */
-  variableAttributeLoader() = default;
+  VariableAttributeLoader() = default;
 
   /**
    * \brief Destructor.
    */
-  virtual ~variableAttributeLoader() = default;
+  virtual ~VariableAttributeLoader() = default;
 
   /**
    * \brief Initialize the variable attributes from the two user-facing methods
@@ -42,7 +42,7 @@ public:
   /**
    * \brief getter function for variable attributes list (copy).
    */
-  [[nodiscard]] std::map<unsigned int, variableAttributes>
+  [[nodiscard]] std::map<unsigned int, VariableAttributes>
   get_var_attributes() const;
 
   // cppcheck-suppress-end returnByReference
@@ -198,7 +198,7 @@ private:
   /**
    * \brief The solutions variable & postprocessing variable attributes
    */
-  std::map<unsigned int, variableAttributes> var_attributes;
+  std::map<unsigned int, VariableAttributes> var_attributes;
 
   /**
    * \brief Perform a suite of assertions on the attributes to ensure that
@@ -250,13 +250,13 @@ private:
   validate_old_solution_dependencies();
 };
 
-// Template derived class for variableAttributeLoader for applications.
+// Template derived class for VariableAttributeLoader for applications.
 // `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()` are should be
 // filled out in all the applications.
-class customAttributeLoader : public variableAttributeLoader
+class CustomAttributeLoader : public VariableAttributeLoader
 {
 public:
-  ~customAttributeLoader() override = default;
+  ~CustomAttributeLoader() override = default;
 
   void
   loadVariableAttributes() override;

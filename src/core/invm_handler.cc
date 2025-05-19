@@ -23,8 +23,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-invmHandler<dim, degree, number>::invmHandler(
-  const std::map<unsigned int, variableAttributes> &_variable_attributes)
+InvmHandler<dim, degree, number>::InvmHandler(
+  const std::map<unsigned int, VariableAttributes> &_variable_attributes)
   : variable_attributes(&_variable_attributes)
   , data(nullptr)
   , invm_scalar(VectorType())
@@ -51,7 +51,7 @@ invmHandler<dim, degree, number>::invmHandler(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::initialize(
+InvmHandler<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data)
 {
   Assert(data == nullptr,
@@ -64,7 +64,7 @@ invmHandler<dim, degree, number>::initialize(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_invm()
+InvmHandler<dim, degree, number>::compute_invm()
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
 
@@ -80,14 +80,14 @@ invmHandler<dim, degree, number>::compute_invm()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::recompute_invm()
+InvmHandler<dim, degree, number>::recompute_invm()
 {
   this->compute_invm();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const typename invmHandler<dim, degree, number>::VectorType &
-invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
+const typename InvmHandler<dim, degree, number>::VectorType &
+InvmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
   Assert(variable_attributes->contains(index),
@@ -127,7 +127,7 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::clear()
+InvmHandler<dim, degree, number>::clear()
 {
   data          = nullptr;
   invm_scalar   = VectorType();
@@ -140,7 +140,7 @@ invmHandler<dim, degree, number>::clear()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_scalar_invm()
+InvmHandler<dim, degree, number>::compute_scalar_invm()
 {
   data->initialize_dof_vector(invm_scalar, scalar_index);
 
@@ -174,7 +174,7 @@ invmHandler<dim, degree, number>::compute_scalar_invm()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_vector_invm()
+InvmHandler<dim, degree, number>::compute_vector_invm()
 {
   data->initialize_dof_vector(invm_vector, vector_index);
 
@@ -212,6 +212,6 @@ invmHandler<dim, degree, number>::compute_vector_invm()
     }
 }
 
-INSTANTIATE_TRI_TEMPLATE(invmHandler)
+INSTANTIATE_TRI_TEMPLATE(InvmHandler)
 
 PRISMS_PF_END_NAMESPACE

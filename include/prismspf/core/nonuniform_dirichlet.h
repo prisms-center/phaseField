@@ -15,19 +15,19 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief Function for user-implemented nonuniform dirichlet boundary condition.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class nonuniformDirichlet : public dealii::Function<dim, number>
+class NonuniformDirichlet : public dealii::Function<dim, number>
 {
 public:
   /**
    * \brief Constructor.
    */
-  nonuniformDirichlet(
+  NonuniformDirichlet(
     unsigned int                                                   _index,
     unsigned int                                                   _boundary_id,
     const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,

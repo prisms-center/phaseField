@@ -12,13 +12,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Timer class for PRISMS-PF
  */
-class timer
+class Timer
 {
 public:
   /**
    * \brief Constructor.
    */
-  timer();
+  Timer();
 
   /**
    * \brief deal.II timer for the 0th MPI process

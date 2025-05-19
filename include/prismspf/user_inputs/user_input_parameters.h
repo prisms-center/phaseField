@@ -18,25 +18,25 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 class inputFileReader;
 
 template <unsigned int dim>
-class userInputParameters
+class UserInputParameters
 {
 public:
   /**
    * \brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
-  userInputParameters(inputFileReader          &input_file_reader,
+  UserInputParameters(inputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
 
   /**
    * \brief Return the variable attributes.
    */
-  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_variable_attributes() const
   {
     return var_attributes;
@@ -193,7 +193,7 @@ private:
                        dealii::ParameterHandler &parameter_handler);
 
   // Variable attributes
-  std::map<unsigned int, variableAttributes> var_attributes;
+  std::map<unsigned int, VariableAttributes> var_attributes;
 
   // Spatial discretization parameters
   spatialDiscretization<dim> spatial_discretization;

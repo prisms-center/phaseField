@@ -15,7 +15,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief Function for user-implemented initial conditions. These are only ever calculated
@@ -23,13 +23,13 @@ class userInputParameters;
  * calculated at runtime.
  */
 template <unsigned int dim, unsigned int degree>
-class initialCondition : public dealii::Function<dim, double>
+class InitialCondition : public dealii::Function<dim, double>
 {
 public:
   /**
    * \brief Constructor.
    */
-  initialCondition(
+  InitialCondition(
     const unsigned int                                            &_index,
     const FieldType                                               &field_type,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator);

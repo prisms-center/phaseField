@@ -13,7 +13,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `matrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -34,7 +34,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit customPDE(const userInputParameters<dim> &_user_inputs)
+  explicit customPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
@@ -64,7 +64,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_rhs(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -73,7 +73,7 @@ private:
    */
   void
   compute_nonexplicit_rhs(
-    variableContainer<dim, degree, number>                    &variable_list,
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     types::index current_index = numbers::invalid_index) const override;
 
@@ -82,7 +82,7 @@ private:
    */
   void
   compute_nonexplicit_lhs(
-    variableContainer<dim, degree, number>                    &variable_list,
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     types::index current_index = numbers::invalid_index) const override;
 
@@ -91,7 +91,7 @@ private:
    */
   void
   compute_postprocess_explicit_rhs(
-    variableContainer<dim, degree, number>                    &variable_list,
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 

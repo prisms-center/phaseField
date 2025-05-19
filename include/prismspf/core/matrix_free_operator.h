@@ -17,12 +17,12 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class variableContainer;
+class VariableContainer;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
@@ -37,7 +37,7 @@ class PDEOperator;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class matrixFreeOperator : public dealii::Subscriptor
+class MatrixFreeOperator : public dealii::Subscriptor
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
@@ -50,8 +50,8 @@ public:
    * TODO (landinjm): Should we have a default constructor and pass everything through
    * initialize? Need to pick one.
    */
-  matrixFreeOperator(
-    const std::map<unsigned int, variableAttributes>       &_attributes_list,
+  MatrixFreeOperator(
+    const std::map<unsigned int, VariableAttributes>       &_attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
     types::index _current_index     = numbers::invalid_index,
     bool         _use_local_mapping = false);
@@ -231,7 +231,7 @@ private:
   /**
    * \brief The attribute list of the relevant variables.
    */
-  const std::map<unsigned int, variableAttributes> *attributes_list = nullptr;
+  const std::map<unsigned int, VariableAttributes> *attributes_list = nullptr;
 
   /**
    * \brief PDE operator object for user defined PDEs.
@@ -244,7 +244,7 @@ private:
   types::index current_index = numbers::invalid_index;
 
   /**
-   * \brief Whether to use local mapping for the variableContainer object.
+   * \brief Whether to use local mapping for the VariableContainer object.
    */
   bool use_local_mapping = false;
 

@@ -25,7 +25,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit PDEOperator(const userInputParameters<dim> &_user_inputs);
+  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs);
 
   /**
    * \brief Destructor.
@@ -57,14 +57,14 @@ public:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   virtual void
-  compute_explicit_rhs(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_rhs(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, size_type>    &q_point_loc,
                           types::index current_index = numbers::invalid_index) const = 0;
 
@@ -72,7 +72,7 @@ public:
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_lhs(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, size_type>    &q_point_loc,
                           types::index current_index = numbers::invalid_index) const = 0;
 
@@ -81,13 +81,13 @@ public:
    */
   virtual void
   compute_postprocess_explicit_rhs(
-    variableContainer<dim, degree, number> &variable_list,
+    VariableContainer<dim, degree, number> &variable_list,
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
   /**
    * \brief Get the user inputs (constant reference).
    */
-  [[nodiscard]] const userInputParameters<dim> &
+  [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const;
 
   /**
@@ -100,7 +100,7 @@ private:
   /**
    * \brief The user-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 };
 
 PRISMS_PF_END_NAMESPACE

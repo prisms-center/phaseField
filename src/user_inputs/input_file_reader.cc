@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 inputFileReader::inputFileReader(
   std::string                                       input_file_name,
-  const std::map<unsigned int, variableAttributes> &_var_attributes)
+  const std::map<unsigned int, VariableAttributes> &_var_attributes)
   : parameters_file_name(std::move(input_file_name))
   , var_attributes(&_var_attributes)
 {

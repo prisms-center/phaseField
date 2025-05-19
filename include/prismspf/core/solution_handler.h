@@ -16,15 +16,15 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
-class matrixfreeHandler;
+class MatrixfreeHandler;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Class that manages solution initialization and swapping with old solutions.
  */
 template <unsigned int dim>
-class solutionHandler
+class SolutionHandler
 {
 public:
   using VectorType   = dealii::LinearAlgebra::distributed::Vector<double>;
@@ -33,7 +33,7 @@ public:
   /**
    * \brief Constructor.
    */
-  solutionHandler(const std::map<unsigned int, variableAttributes> &_attributes_list,
+  SolutionHandler(const std::map<unsigned int, VariableAttributes> &_attributes_list,
                   const MGInfo<dim>                                &_mg_info);
 
   /**
@@ -85,14 +85,14 @@ public:
    * \brief Initialize the solution set.
    */
   void
-  init(matrixfreeHandler<dim, double> &matrix_free_handler);
+  init(MatrixfreeHandler<dim, double> &matrix_free_handler);
 
   /**
    * \brief Initialize the multigrid solution set.
    */
   void
   mg_init(
-    const dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler);
+    const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler);
 
   /**
    * \brief Update the ghost values.
@@ -132,7 +132,7 @@ private:
   /**
    * \brief The attribute list of the relevant variables.
    */
-  const std::map<unsigned int, variableAttributes> *attributes_list;
+  const std::map<unsigned int, VariableAttributes> *attributes_list;
 
   /**
    * \brief Whether multigrid has been enabled.

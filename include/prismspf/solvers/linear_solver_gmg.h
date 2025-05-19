@@ -30,7 +30,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class dofHandler;
+class DofHandler;
 
 /**
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
@@ -39,22 +39,22 @@ template <unsigned int dim, unsigned int degree>
 class GMGSolver : public linearSolverBase<dim, degree>
 {
 public:
-  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
-  using LevelMatrixType  = matrixFreeOperator<dim, degree, float>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
+  using LevelMatrixType  = MatrixFreeOperator<dim, degree, float>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
    * \brief Constructor.
    */
-  GMGSolver(const userInputParameters<dim>                       &_user_inputs,
-            const variableAttributes                             &_variable_attributes,
-            const matrixfreeHandler<dim, double>                 &_matrix_free_handler,
-            const constraintHandler<dim, degree>                 &_constraint_handler,
-            const triangulationHandler<dim>                      &_triangulation_handler,
-            const dofHandler<dim>                                &_dof_handler,
-            dealii::MGLevelObject<matrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-            solutionHandler<dim>                                 &_solution_handler,
+  GMGSolver(const UserInputParameters<dim>                       &_user_inputs,
+            const VariableAttributes                             &_variable_attributes,
+            const MatrixfreeHandler<dim, double>                 &_matrix_free_handler,
+            const ConstraintHandler<dim, degree>                 &_constraint_handler,
+            const TriangulationHandler<dim>                      &_triangulation_handler,
+            const DofHandler<dim>                                &_dof_handler,
+            dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
+            SolutionHandler<dim>                                 &_solution_handler,
             std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
             std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
             const MGInfo<dim>                                      &_mg_info);
@@ -86,17 +86,17 @@ private:
   /**
    * \brief Triangulation handler.
    */
-  const triangulationHandler<dim> *triangulation_handler;
+  const TriangulationHandler<dim> *triangulation_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> *dof_handler;
+  const DofHandler<dim> *dof_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> *mg_matrix_free_handler;
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * \brief Minimum multigrid level

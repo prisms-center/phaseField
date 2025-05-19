@@ -39,14 +39,14 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 GMGSolver<dim, degree>::GMGSolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const variableAttributes                               &_variable_attributes,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const triangulationHandler<dim>                        &_triangulation_handler,
-  const dofHandler<dim>                                  &_dof_handler,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  const UserInputParameters<dim>                         &_user_inputs,
+  const VariableAttributes                               &_variable_attributes,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const TriangulationHandler<dim>                        &_triangulation_handler,
+  const DofHandler<dim>                                  &_dof_handler,
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)

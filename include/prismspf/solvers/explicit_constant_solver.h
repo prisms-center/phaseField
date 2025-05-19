@@ -24,13 +24,13 @@ public:
    * \brief Constructor.
    */
   explicitConstantSolver(
-    const userInputParameters<dim>                         &_user_inputs,
-    const matrixfreeHandler<dim, double>                   &_matrix_free_handler,
-    const invmHandler<dim, degree, double>                 &_invm_handler,
-    const constraintHandler<dim, degree>                   &_constraint_handler,
-    const dofHandler<dim>                                  &_dof_handler,
+    const UserInputParameters<dim>                         &_user_inputs,
+    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
+    const InvmHandler<dim, degree, double>                 &_invm_handler,
+    const ConstraintHandler<dim, degree>                   &_constraint_handler,
+    const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
-    solutionHandler<dim>                                   &_solution_handler,
+    SolutionHandler<dim>                                   &_solution_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**

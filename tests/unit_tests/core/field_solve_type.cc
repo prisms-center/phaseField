@@ -32,7 +32,7 @@ TEST_CASE("Field solve types")
   SECTION("One time-independent and one auxiliary")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -62,7 +62,7 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    std::map<unsigned int, variableAttributes> variables =
+    std::map<unsigned int, VariableAttributes> variables =
       attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 2);
@@ -92,7 +92,7 @@ TEST_CASE("Field solve types")
   SECTION("Four time-independent")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -141,7 +141,7 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    std::map<unsigned int, variableAttributes> variables =
+    std::map<unsigned int, VariableAttributes> variables =
       attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
@@ -163,7 +163,7 @@ TEST_CASE("Field solve types")
   SECTION("Four explicit")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -185,7 +185,7 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    std::map<unsigned int, variableAttributes> variables =
+    std::map<unsigned int, VariableAttributes> variables =
       attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
@@ -202,7 +202,7 @@ TEST_CASE("Field solve types")
   SECTION("Two explicit two auxiliary")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -234,7 +234,7 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    std::map<unsigned int, variableAttributes> variables =
+    std::map<unsigned int, VariableAttributes> variables =
       attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);
@@ -258,7 +258,7 @@ TEST_CASE("Field solve types")
   SECTION("Two explicit two time-independent")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -299,7 +299,7 @@ TEST_CASE("Field solve types")
 
     testVariableAttributeLoader attributes;
     attributes.init_variable_attributes();
-    std::map<unsigned int, variableAttributes> variables =
+    std::map<unsigned int, VariableAttributes> variables =
       attributes.get_var_attributes();
 
     REQUIRE(variables.size() == 4);

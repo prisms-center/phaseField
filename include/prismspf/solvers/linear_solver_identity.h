@@ -25,17 +25,17 @@ template <unsigned int dim, unsigned int degree>
 class identitySolver : public linearSolverBase<dim, degree>
 {
 public:
-  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
    */
-  identitySolver(const userInputParameters<dim>       &_user_inputs,
-                 const variableAttributes             &_variable_attributes,
-                 const matrixfreeHandler<dim, double> &_matrix_free_handler,
-                 const constraintHandler<dim, degree> &_constraint_handler,
-                 solutionHandler<dim>                 &_solution_handler,
+  identitySolver(const UserInputParameters<dim>       &_user_inputs,
+                 const VariableAttributes             &_variable_attributes,
+                 const MatrixfreeHandler<dim, double> &_matrix_free_handler,
+                 const ConstraintHandler<dim, degree> &_constraint_handler,
+                 SolutionHandler<dim>                 &_solution_handler,
                  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**

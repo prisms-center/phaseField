@@ -11,13 +11,13 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::loadVariableAttributes()
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_explicit_rhs(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}
@@ -25,7 +25,7 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_rhs(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
 {}
@@ -33,7 +33,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_nonexplicit_lhs(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
 {}
@@ -41,7 +41,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}

@@ -18,21 +18,21 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 template <unsigned int dim, unsigned int degree>
-class constraintHandler;
+class ConstraintHandler;
 
 template <unsigned int dim, typename number>
-class matrixfreeHandler;
+class MatrixfreeHandler;
 
 template <unsigned int dim>
-class solutionHandler;
+class SolutionHandler;
 
 template <unsigned int dim>
-class triangulationHandler;
+class TriangulationHandler;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Base class that handles the assembly and linear solving of a field.
@@ -41,17 +41,17 @@ template <unsigned int dim, unsigned int degree>
 class linearSolverBase
 {
 public:
-  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
    * \brief Constructor.
    */
-  linearSolverBase(const userInputParameters<dim>       &_user_inputs,
-                   const variableAttributes             &_variable_attributes,
-                   const matrixfreeHandler<dim, double> &_matrix_free_handler,
-                   const constraintHandler<dim, degree> &_constraint_handler,
-                   solutionHandler<dim>                 &_solution_handler,
+  linearSolverBase(const UserInputParameters<dim>       &_user_inputs,
+                   const VariableAttributes             &_variable_attributes,
+                   const MatrixfreeHandler<dim, double> &_matrix_free_handler,
+                   const ConstraintHandler<dim, degree> &_constraint_handler,
+                   SolutionHandler<dim>                 &_solution_handler,
                    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
@@ -87,7 +87,7 @@ protected:
   /**
    * \brief Get the user-inputs.
    */
-  [[nodiscard]] const userInputParameters<dim> &
+  [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
     return *user_inputs;
@@ -96,7 +96,7 @@ protected:
   /**
    * \brief Get the variable attributes.
    */
-  [[nodiscard]] const variableAttributes &
+  [[nodiscard]] const VariableAttributes &
   get_variable_attributes() const
   {
     return *variable_attributes;
@@ -105,7 +105,7 @@ protected:
   /**
    * \brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const matrixfreeHandler<dim, double> &
+  [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
   {
     return *matrix_free_handler;
@@ -114,7 +114,7 @@ protected:
   /**
    * \brief Get the constraint handler.
    */
-  [[nodiscard]] const constraintHandler<dim, degree> &
+  [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
   {
     return *constraint_handler;
@@ -123,7 +123,7 @@ protected:
   /**
    * \brief Get the solution handler.
    */
-  [[nodiscard]] solutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
   {
     return *solution_handler;
@@ -226,7 +226,7 @@ protected:
   /**
    * \brief Get the subset attributes.
    */
-  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_subset_attributes() const
   {
     return subset_attributes;
@@ -254,27 +254,27 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Variable attributes for field.
    */
-  const variableAttributes *variable_attributes;
+  const VariableAttributes *variable_attributes;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim, double> *matrix_free_handler;
+  const MatrixfreeHandler<dim, double> *matrix_free_handler;
 
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim, degree> *constraint_handler;
+  const ConstraintHandler<dim, degree> *constraint_handler;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> *solution_handler;
+  SolutionHandler<dim> *solution_handler;
 
   /**
    * \brief The field index we are solving.
@@ -331,7 +331,7 @@ private:
   /**
    * \brief Subset attributes.
    */
-  std::map<unsigned int, variableAttributes> subset_attributes;
+  std::map<unsigned int, VariableAttributes> subset_attributes;
 
   /**
    * \brief Solver control.

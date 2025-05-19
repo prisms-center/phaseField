@@ -22,7 +22,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-variableAttributes::format_dependencies()
+VariableAttributes::format_dependencies()
 {
   dependencies_rhs.insert(dependencies_value_rhs.begin(), dependencies_value_rhs.end());
   dependencies_rhs.insert(dependencies_gradient_rhs.begin(),
@@ -34,7 +34,7 @@ variableAttributes::format_dependencies()
 }
 
 void
-variableAttributes::parse_residual_dependencies()
+VariableAttributes::parse_residual_dependencies()
 {
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately. Note that this relies on the fact that only valid
@@ -58,8 +58,8 @@ variableAttributes::parse_residual_dependencies()
 }
 
 void
-variableAttributes::parse_dependencies(
-  std::map<unsigned int, variableAttributes> &other_var_attributes)
+VariableAttributes::parse_dependencies(
+  std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   const std::map<std::string,
                  std::pair<DependencyType, dealii::EvaluationFlags::EvaluationFlags>>
@@ -152,7 +152,7 @@ variableAttributes::parse_dependencies(
     // Loop through the available delimiters
     for (const auto &[variation, delimiter] : delimiters)
       {
-        // Loop through all known variableAttributes
+        // Loop through all known VariableAttributes
         for (auto &[other_index, other_variable] : other_var_attributes)
           {
             // Grab the potential dependency for the current variable. For example, if we
@@ -195,8 +195,8 @@ variableAttributes::parse_dependencies(
 }
 
 void
-variableAttributes::determine_field_solve_type(
-  const std::map<unsigned int, variableAttributes> &other_var_attributes)
+VariableAttributes::determine_field_solve_type(
+  const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Early return for constant fields
   if (pde_type == PDEType::CONSTANT)
@@ -258,7 +258,7 @@ variableAttributes::determine_field_solve_type(
 }
 
 void
-variableAttributes::print() const
+VariableAttributes::print() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"
@@ -297,7 +297,7 @@ variableAttributes::print() const
 }
 
 void
-variableAttributes::validate_dependency([[maybe_unused]] const std::string  &variation,
+VariableAttributes::validate_dependency([[maybe_unused]] const std::string  &variation,
                                         [[maybe_unused]] DependencyType      dep_type,
                                         [[maybe_unused]] const unsigned int &other_index,
                                         [[maybe_unused]] const std::string &context) const
@@ -330,8 +330,8 @@ variableAttributes::validate_dependency([[maybe_unused]] const std::string  &var
 }
 
 void
-variableAttributes::compute_dependency_set(
-  const std::map<unsigned int, variableAttributes> &other_var_attributes)
+VariableAttributes::compute_dependency_set(
+  const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change flags are irrelevant for RHS,
   // so ignore those. If we have dealii::EvaluationFlags::EvaluationFlags::nothing ignore
@@ -373,8 +373,8 @@ variableAttributes::compute_dependency_set(
 }
 
 void
-variableAttributes::compute_simplified_dependency_set(
-  const std::map<unsigned int, variableAttributes> &other_var_attributes)
+VariableAttributes::compute_simplified_dependency_set(
+  const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change and old flags are irrelevant,
   // so ignore those. If we have dealii::EvaluationFlags::EvaluationFlags::nothing ignore
@@ -403,8 +403,8 @@ variableAttributes::compute_simplified_dependency_set(
 }
 
 void
-variableAttributes::find_circular_dependencies(
-  const std::map<unsigned int, variableAttributes> &other_var_attributes)
+VariableAttributes::find_circular_dependencies(
+  const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Set for visited nodes
   std::set<unsigned int> visited;
@@ -418,8 +418,8 @@ variableAttributes::find_circular_dependencies(
 // NOLINTBEGIN(misc-no-recursion)
 
 void
-variableAttributes::recursive_DFS(
-  const std::map<unsigned int, variableAttributes> &other_var_attributes,
+VariableAttributes::recursive_DFS(
+  const std::map<unsigned int, VariableAttributes> &other_var_attributes,
   std::set<unsigned int>                           &visited,
   std::set<unsigned int>                           &current_stack,
   const unsigned int                               &vertex)

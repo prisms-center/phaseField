@@ -14,19 +14,19 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief This class handlers the management and access of the matrix-free objects.
  */
 template <unsigned int dim, typename number = double>
-class matrixfreeHandler
+class MatrixfreeHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  matrixfreeHandler();
+  MatrixfreeHandler();
 
   /**
    * \brief Reinitialize the matrix-free object with the same quad rule.

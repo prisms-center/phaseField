@@ -13,12 +13,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 PDEOperator<dim, degree, number>::PDEOperator(
-  const userInputParameters<dim> &_user_inputs)
+  const UserInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
-const userInputParameters<dim> &
+const UserInputParameters<dim> &
 PDEOperator<dim, degree, number>::get_user_inputs() const
 {
   Assert(user_inputs != nullptr, dealii::ExcNotInitialized());

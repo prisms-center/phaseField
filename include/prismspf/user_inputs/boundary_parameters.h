@@ -161,7 +161,7 @@ public:
    */
   void
   postprocess_and_validate(
-    const std::map<unsigned int, variableAttributes> &var_attributes);
+    const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
    * \brief Check whether the boundary conditions for two fields are the same.
@@ -279,7 +279,7 @@ private:
 template <unsigned int dim>
 inline void
 BoundaryParameters<dim>::postprocess_and_validate(
-  const std::map<unsigned int, variableAttributes> &var_attributes)
+  const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   for (const auto &[index, variable] : var_attributes)
     {

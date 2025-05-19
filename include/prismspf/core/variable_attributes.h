@@ -23,12 +23,12 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Structure to hold the variable attributes of a field. This includes things like
  * the name, equation type, whether it's nonlinear, and its dependence on other variables.
  */
-struct variableAttributes
+struct VariableAttributes
 {
   /**
-   * \brief Allow variableAttributeLoader to access private members.
+   * \brief Allow VariableAttributeLoader to access private members.
    */
-  friend class variableAttributeLoader;
+  friend class VariableAttributeLoader;
 
   /**
    * \brief Get the field name
@@ -208,7 +208,7 @@ struct variableAttributes
    * variable.
    */
   void
-  parse_dependencies(std::map<unsigned int, variableAttributes> &other_var_attributes);
+  parse_dependencies(std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
   /**
    * \brief Using the assigned evaluation flags determine the solve type for this
@@ -216,7 +216,7 @@ struct variableAttributes
    */
   void
   determine_field_solve_type(
-    const std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
   /**
    * \brief Print variable attributes to summary.log
@@ -240,7 +240,7 @@ private:
    */
   void
   compute_dependency_set(
-    const std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
   /**
    * \brief Compute the simplified dependency set from eval_flag_set_rhs &
@@ -248,20 +248,20 @@ private:
    */
   void
   compute_simplified_dependency_set(
-    const std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
   /**
    * \brief Find the circular dependencies based on simple DFS algorithm.
    */
   void
   find_circular_dependencies(
-    const std::map<unsigned int, variableAttributes> &other_var_attributes);
+    const std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
   /**
    * \brief Recursive DFS
    */
   void
-  recursive_DFS(const std::map<unsigned int, variableAttributes> &other_var_attributes,
+  recursive_DFS(const std::map<unsigned int, VariableAttributes> &other_var_attributes,
                 std::set<unsigned int>                           &visited,
                 std::set<unsigned int>                           &current_stack,
                 const unsigned int                               &vertex);

@@ -13,16 +13,16 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
 template <unsigned int dim, unsigned int degree, typename number = double>
-class invmHandler
+class InvmHandler
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
@@ -31,8 +31,8 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit invmHandler(
-    const std::map<unsigned int, variableAttributes> &_variable_attributes);
+  explicit InvmHandler(
+    const std::map<unsigned int, VariableAttributes> &_variable_attributes);
 
   /**
    * \brief Initialize.
@@ -83,7 +83,7 @@ private:
    * \brief Variable attributes. This is used to determine the proper return type for the
    * invm when given a field index.
    */
-  const std::map<unsigned int, variableAttributes> *variable_attributes;
+  const std::map<unsigned int, VariableAttributes> *variable_attributes;
 
   /**
    * \brief Matrix-free object.

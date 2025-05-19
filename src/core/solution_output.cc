@@ -25,11 +25,11 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
-solutionOutput<dim, number>::solutionOutput(const VectorType               &solution,
+SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solution,
                                             const dealii::DoFHandler<dim>  &dof_handler,
                                             const unsigned int             &degree,
                                             const std::string              &name,
-                                            const userInputParameters<dim> &user_inputs)
+                                            const UserInputParameters<dim> &user_inputs)
 {
   // Some stuff to determine the actual name of the output file.
   const auto n_trailing_digits = static_cast<unsigned int>(
@@ -106,12 +106,12 @@ solutionOutput<dim, number>::solutionOutput(const VectorType               &solu
 }
 
 template <unsigned int dim, typename number>
-solutionOutput<dim, number>::solutionOutput(
+SolutionOutput<dim, number>::SolutionOutput(
   const std::map<unsigned int, VectorType *>         &solution_set,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   const unsigned int                                 &degree,
   const std::string                                  &name,
-  const userInputParameters<dim>                     &user_inputs)
+  const UserInputParameters<dim>                     &user_inputs)
 {
   // Some stuff to determine the actual name of the output file.
   const auto n_trailing_digits = static_cast<unsigned int>(
@@ -201,11 +201,11 @@ solutionOutput<dim, number>::solutionOutput(
     }
 }
 
-template class solutionOutput<1, float>;
-template class solutionOutput<1, double>;
-template class solutionOutput<2, float>;
-template class solutionOutput<2, double>;
-template class solutionOutput<3, float>;
-template class solutionOutput<3, double>;
+template class SolutionOutput<1, float>;
+template class SolutionOutput<1, double>;
+template class SolutionOutput<2, float>;
+template class SolutionOutput<2, double>;
+template class SolutionOutput<3, float>;
+template class SolutionOutput<3, double>;
 
 PRISMS_PF_END_NAMESPACE

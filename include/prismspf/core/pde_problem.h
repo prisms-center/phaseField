@@ -54,7 +54,7 @@ public:
    * \brief Constructor.
    */
   PDEProblem(
-    const userInputParameters<dim>                                &_user_inputs,
+    const UserInputParameters<dim>                                &_user_inputs,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
@@ -93,7 +93,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Multigrid info class.
@@ -103,37 +103,37 @@ private:
   /**
    * \brief Triangulation handler.
    */
-  triangulationHandler<dim> triangulation_handler;
+  TriangulationHandler<dim> triangulation_handler;
 
   /**
    * \brief Constraint handler.
    */
-  constraintHandler<dim, degree> constraint_handler;
+  ConstraintHandler<dim, degree> constraint_handler;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  matrixfreeHandler<dim, double> matrix_free_handler;
+  MatrixfreeHandler<dim, double> matrix_free_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
 
   /**
    * \brief invm handler.
    */
-  invmHandler<dim, degree, double> invm_handler;
+  InvmHandler<dim, degree, double> invm_handler;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> solution_handler;
+  SolutionHandler<dim> solution_handler;
 
   /**
    * \brief DoF handler.
    */
-  dofHandler<dim> dof_handler;
+  DofHandler<dim> dof_handler;
 
   /**
    * \brief Collection of finite element systems. This is just a collection of two

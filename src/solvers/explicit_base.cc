@@ -29,13 +29,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 explicitBase<dim, degree>::explicitBase(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  solutionHandler<dim>                                   &_solution_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , matrix_free_handler(&_matrix_free_handler)
@@ -134,7 +134,7 @@ explicitBase<dim, degree>::set_initial_condition()
       dealii::VectorTools::interpolate(
         *mapping,
         *(dof_handler->get_dof_handlers().at(index)),
-        initialCondition<dim, degree>(index,
+        InitialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
                                       pde_operator),
         *(solution_handler->get_solution_vector(index, DependencyType::NORMAL)));

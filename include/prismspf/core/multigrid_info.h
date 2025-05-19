@@ -35,7 +35,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit MGInfo(const userInputParameters<dim> &_user_inputs);
+  explicit MGInfo(const UserInputParameters<dim> &_user_inputs);
 
   /**
    * \brief If multigrid is enabled.
@@ -148,7 +148,7 @@ private:
   /**
    * \brief User inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Whether multigrid is enabled.
@@ -173,7 +173,7 @@ private:
 };
 
 template <unsigned int dim>
-inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
+inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
   const max max_mg_level =

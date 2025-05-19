@@ -16,21 +16,21 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
 template <unsigned int dim, unsigned int degree>
-class constraintHandler
+class ConstraintHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  constraintHandler(
-    const userInputParameters<dim>                                &_user_inputs,
+  ConstraintHandler(
+    const UserInputParameters<dim>                                &_user_inputs,
     const MGInfo<dim>                                             &_mg_info,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
@@ -215,7 +215,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Multigrid info

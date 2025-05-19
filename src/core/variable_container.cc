@@ -26,9 +26,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-variableContainer<dim, degree, number>::variableContainer(
+VariableContainer<dim, degree, number>::VariableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-  const std::map<unsigned int, variableAttributes> &_subset_attributes,
+  const std::map<unsigned int, VariableAttributes> &_subset_attributes,
   const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
                   &_global_to_local_solution,
   const SolveType &_solve_type,
@@ -100,8 +100,8 @@ variableContainer<dim, degree, number>::variableContainer(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+VariableContainer<dim, degree, number>::eval_local_operator(
+  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                               &func,
   std::vector<VectorType *>                   &dst,
   const std::vector<VectorType *>             &src,
@@ -131,8 +131,8 @@ variableContainer<dim, degree, number>::eval_local_operator(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+VariableContainer<dim, degree, number>::eval_local_operator(
+  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                               &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src,
@@ -162,8 +162,8 @@ variableContainer<dim, degree, number>::eval_local_operator(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+VariableContainer<dim, degree, number>::eval_local_operator(
+  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                               &func,
   VectorType                                  &dst,
   const VectorType                            &src,
@@ -195,8 +195,8 @@ variableContainer<dim, degree, number>::eval_local_operator(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::eval_local_diagonal(
-  const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+VariableContainer<dim, degree, number>::eval_local_diagonal(
+  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                               &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src_subset,
@@ -398,7 +398,7 @@ variableContainer<dim, degree, number>::eval_local_diagonal(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::FEEval_exists(
+VariableContainer<dim, degree, number>::FEEval_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
   [[maybe_unused]] const DependencyType &dependency_type) const
 {
@@ -413,7 +413,7 @@ variableContainer<dim, degree, number>::FEEval_exists(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::access_valid(
+VariableContainer<dim, degree, number>::access_valid(
   [[maybe_unused]] const unsigned int                             &dependency_index,
   [[maybe_unused]] const DependencyType                           &dependency_type,
   [[maybe_unused]] const dealii::EvaluationFlags::EvaluationFlags &flag) const
@@ -437,7 +437,7 @@ variableContainer<dim, degree, number>::access_valid(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::submission_valid(
+VariableContainer<dim, degree, number>::submission_valid(
   [[maybe_unused]] const DependencyType &dependency_type) const
 {
   Assert(dependency_type == NORMAL || solve_type == SolveType::NONEXPLICIT_lhs,
@@ -450,7 +450,7 @@ variableContainer<dim, degree, number>::submission_valid(
 
 template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
-variableContainer<dim, degree, number>::get_n_q_points() const
+VariableContainer<dim, degree, number>::get_n_q_points() const
 {
   for (const auto &[dependency_index, dependency_map] : feeval_map)
     {
@@ -480,8 +480,8 @@ variableContainer<dim, degree, number>::get_n_q_points() const
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Point<dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_q_point_location() const
+dealii::Point<dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_q_point_location() const
 {
   for (const auto &[dependency_index, dependency_map] : feeval_map)
     {
@@ -513,7 +513,7 @@ variableContainer<dim, degree, number>::get_q_point_location() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::reinit_and_eval(
+VariableContainer<dim, degree, number>::reinit_and_eval(
   const std::vector<VectorType *> &src,
   unsigned int                     cell)
 {
@@ -610,7 +610,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
+VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
                                                         unsigned int      cell)
 {
   // Reinit and eval values for the given dependency set. Note the dependency set includes
@@ -685,7 +685,7 @@ variableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::reinit(unsigned int        cell,
+VariableContainer<dim, degree, number>::reinit(unsigned int        cell,
                                                const unsigned int &global_variable_index)
 {
   auto reinit_map =
@@ -741,7 +741,7 @@ variableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::read_dof_values(
+VariableContainer<dim, degree, number>::read_dof_values(
   const std::vector<VectorType *> &src)
 {
   auto reinit_and_eval_map =
@@ -823,7 +823,7 @@ variableContainer<dim, degree, number>::read_dof_values(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
+VariableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
 {
   auto eval_map =
     [&](const std::map<std::pair<unsigned int, DependencyType>,
@@ -878,7 +878,7 @@ variableContainer<dim, degree, number>::eval(const unsigned int &global_variable
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::integrate(
+VariableContainer<dim, degree, number>::integrate(
   const unsigned int &global_variable_index)
 {
   Assert(subset_attributes->contains(global_variable_index),
@@ -925,7 +925,7 @@ variableContainer<dim, degree, number>::integrate(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::integrate_and_distribute(
+VariableContainer<dim, degree, number>::integrate_and_distribute(
   std::vector<VectorType *> &dst)
 {
   auto integrate_and_distribute_map =
@@ -996,7 +996,7 @@ variableContainer<dim, degree, number>::integrate_and_distribute(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst)
+VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst)
 {
   auto integrate_and_distribute_map =
     [&](const dealii::EvaluationFlags::EvaluationFlags &residual_flag_set,
@@ -1055,8 +1055,8 @@ variableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename variableContainer<dim, degree, number>::size_type
-variableContainer<dim, degree, number>::get_scalar_value(
+typename VariableContainer<dim, degree, number>::size_type
+VariableContainer<dim, degree, number>::get_scalar_value(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1093,8 +1093,8 @@ variableContainer<dim, degree, number>::get_scalar_value(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_scalar_gradient(
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_scalar_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1133,8 +1133,8 @@ variableContainer<dim, degree, number>::get_scalar_gradient(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_scalar_hessian(
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_scalar_hessian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1173,8 +1173,8 @@ variableContainer<dim, degree, number>::get_scalar_hessian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1213,8 +1213,8 @@ variableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename variableContainer<dim, degree, number>::size_type
-variableContainer<dim, degree, number>::get_scalar_laplacian(
+typename VariableContainer<dim, degree, number>::size_type
+VariableContainer<dim, degree, number>::get_scalar_laplacian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1253,8 +1253,8 @@ variableContainer<dim, degree, number>::get_scalar_laplacian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_value(
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_value(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1294,8 +1294,8 @@ variableContainer<dim, degree, number>::get_vector_value(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_gradient(
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1335,8 +1335,8 @@ variableContainer<dim, degree, number>::get_vector_gradient(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<3, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_hessian(
+dealii::Tensor<3, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_hessian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1376,8 +1376,8 @@ variableContainer<dim, degree, number>::get_vector_hessian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1418,8 +1418,8 @@ variableContainer<dim, degree, number>::get_vector_hessian_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_laplacian(
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_laplacian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1459,8 +1459,8 @@ variableContainer<dim, degree, number>::get_vector_laplacian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename variableContainer<dim, degree, number>::size_type
-variableContainer<dim, degree, number>::get_vector_divergence(
+typename VariableContainer<dim, degree, number>::size_type
+VariableContainer<dim, degree, number>::get_vector_divergence(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1499,8 +1499,8 @@ variableContainer<dim, degree, number>::get_vector_divergence(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1541,8 +1541,8 @@ variableContainer<dim, degree, number>::get_vector_symmetric_gradient(
 template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1,
                (dim == 2 ? 1 : dim),
-               typename variableContainer<dim, degree, number>::size_type>
-variableContainer<dim, degree, number>::get_vector_curl(
+               typename VariableContainer<dim, degree, number>::size_type>
+VariableContainer<dim, degree, number>::get_vector_curl(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
 {
@@ -1582,7 +1582,7 @@ variableContainer<dim, degree, number>::get_vector_curl(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::set_scalar_value_term(
+VariableContainer<dim, degree, number>::set_scalar_value_term(
   const unsigned int   &global_variable_index,
   const size_type      &val,
   const DependencyType &dependency_type)
@@ -1620,7 +1620,7 @@ variableContainer<dim, degree, number>::set_scalar_value_term(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::set_scalar_gradient_term(
+VariableContainer<dim, degree, number>::set_scalar_gradient_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<1, dim, size_type> &grad,
   const DependencyType                    &dependency_type)
@@ -1658,7 +1658,7 @@ variableContainer<dim, degree, number>::set_scalar_gradient_term(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::set_vector_value_term(
+VariableContainer<dim, degree, number>::set_vector_value_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<1, dim, size_type> &val,
   const DependencyType                    &dependency_type)
@@ -1696,7 +1696,7 @@ variableContainer<dim, degree, number>::set_vector_value_term(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-variableContainer<dim, degree, number>::set_vector_gradient_term(
+VariableContainer<dim, degree, number>::set_vector_gradient_term(
   const unsigned int                      &global_variable_index,
   const dealii::Tensor<2, dim, size_type> &grad,
   const DependencyType                    &dependency_type)
@@ -1732,6 +1732,6 @@ variableContainer<dim, degree, number>::set_vector_gradient_term(
     }
 }
 
-INSTANTIATE_TRI_TEMPLATE(variableContainer)
+INSTANTIATE_TRI_TEMPLATE(VariableContainer)
 
 PRISMS_PF_END_NAMESPACE

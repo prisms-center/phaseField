@@ -23,7 +23,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-variableAttributeLoader::init_variable_attributes()
+VariableAttributeLoader::init_variable_attributes()
 {
   loadVariableAttributes();
 
@@ -50,14 +50,14 @@ variableAttributeLoader::init_variable_attributes()
     }
 }
 
-std::map<unsigned int, variableAttributes>
-variableAttributeLoader::get_var_attributes() const
+std::map<unsigned int, VariableAttributes>
+VariableAttributeLoader::get_var_attributes() const
 {
   return var_attributes;
 }
 
 void
-variableAttributeLoader::set_variable_name(const unsigned int &index,
+VariableAttributeLoader::set_variable_name(const unsigned int &index,
                                            const std::string  &name)
 {
   var_attributes[index].field_index = index;
@@ -65,7 +65,7 @@ variableAttributeLoader::set_variable_name(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_variable_type(const unsigned int &index,
+VariableAttributeLoader::set_variable_type(const unsigned int &index,
                                            const FieldType    &field_type)
 {
   switch (field_type)
@@ -81,7 +81,7 @@ variableAttributeLoader::set_variable_type(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
+VariableAttributeLoader::set_variable_equation_type(const unsigned int &index,
                                                     const PDEType      &pde_type)
 {
   switch (pde_type)
@@ -100,14 +100,14 @@ variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
+VariableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
   var_attributes[index].is_postprocessed_variable = is_postprocess;
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &index,
+VariableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
@@ -116,7 +116,7 @@ variableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &ind
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_rhs(
+VariableAttributeLoader::set_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {
@@ -126,7 +126,7 @@ variableAttributeLoader::set_dependencies_gradient_term_rhs(
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &index,
+VariableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
@@ -135,7 +135,7 @@ variableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &ind
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_lhs(
+VariableAttributeLoader::set_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {
@@ -146,7 +146,7 @@ variableAttributeLoader::set_dependencies_gradient_term_lhs(
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
+VariableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
   var_attributes[index].dependencies_value_rhs.insert(dependencies.begin(),
@@ -155,7 +155,7 @@ variableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_rhs(
+VariableAttributeLoader::insert_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
@@ -165,7 +165,7 @@ variableAttributeLoader::insert_dependencies_gradient_term_rhs(
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
+VariableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
   var_attributes[index].dependencies_value_lhs.insert(dependencies.begin(),
@@ -174,7 +174,7 @@ variableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_lhs(
+VariableAttributeLoader::insert_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
@@ -183,7 +183,7 @@ variableAttributeLoader::insert_dependencies_gradient_term_lhs(
 }
 
 void
-variableAttributeLoader::validate_variable_name(
+VariableAttributeLoader::validate_variable_name(
   const std::string           &name,
   const std::set<std::string> &forbidden_names,
   const std::string           &context,
@@ -209,7 +209,7 @@ variableAttributeLoader::validate_variable_name(
 }
 
 void
-variableAttributeLoader::populate_dependencies(
+VariableAttributeLoader::populate_dependencies(
   const std::set<std::pair<std::string, std::string>> &reg_delimiters,
   const std::set<std::pair<std::string, std::string>> &dep_type_delimiters,
   const std::string                                   &variable_name,
@@ -245,7 +245,7 @@ variableAttributeLoader::populate_dependencies(
 }
 
 void
-variableAttributeLoader::validate_dependencies(
+VariableAttributeLoader::validate_dependencies(
   const std::set<std::string>                  &dependencies,
   const std::string                            &context,
   unsigned int                                  index,
@@ -272,7 +272,7 @@ variableAttributeLoader::validate_dependencies(
 }
 
 void
-variableAttributeLoader::validate_attributes()
+VariableAttributeLoader::validate_attributes()
 {
   for (const auto &[index, variable] : var_attributes)
     {
@@ -292,7 +292,7 @@ variableAttributeLoader::validate_attributes()
   // Make sure dependencies are all variable names. If there are change() dependencies
   // make sure they are of the same field. Note that this does not enforce them to be on
   // the LHS. It also does not enforce the fact div(), symgrad(), or curl() dependencies
-  // must belong to a vector field. Both of these are done later in variableAttributes.
+  // must belong to a vector field. Both of these are done later in VariableAttributes.
   const std::set<std::pair<std::string, std::string>> reg_delimiters = {
     {"",          "" },
     {"grad(",     ")"},
@@ -366,7 +366,7 @@ variableAttributeLoader::validate_attributes()
 }
 
 void
-variableAttributeLoader::validate_old_solution_dependencies()
+VariableAttributeLoader::validate_old_solution_dependencies()
 {
   // First create a combined dependency set for all fields
   std::map<std::pair<unsigned int, DependencyType>,

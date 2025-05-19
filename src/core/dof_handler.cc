@@ -22,7 +22,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
+DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
                             const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
@@ -98,7 +98,7 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
 
 template <unsigned int dim>
 void
-dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
+DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
                       const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
                       const MGInfo<dim>                                &mg_info)
 {
@@ -160,7 +160,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
 
 template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
-dofHandler<dim>::get_dof_handlers() const
+DofHandler<dim>::get_dof_handlers() const
 {
   Assert(const_dof_handlers.size() == user_inputs->get_variable_attributes().size(),
          dealii::ExcNotInitialized());
@@ -169,7 +169,7 @@ dofHandler<dim>::get_dof_handlers() const
 
 template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
-dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
+DofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!const_mg_dof_handlers.empty(), dealii::ExcNotInitialized());
@@ -178,6 +178,6 @@ dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
   return const_mg_dof_handlers[level - global_min_level];
 }
 
-INSTANTIATE_UNI_TEMPLATE(dofHandler)
+INSTANTIATE_UNI_TEMPLATE(DofHandler)
 
 PRISMS_PF_END_NAMESPACE

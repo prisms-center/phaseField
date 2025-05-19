@@ -21,7 +21,7 @@ public:
    */
   void
   postprocess_and_validate(
-    const std::map<unsigned int, variableAttributes> &var_attributes);
+    const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
    * \brief Print parameters to summary.log
@@ -142,7 +142,7 @@ private:
 
 inline void
 temporalDiscretization::postprocess_and_validate(
-  const std::map<unsigned int, variableAttributes> &var_attributes)
+  const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   // If all of the variables are `TIME_INDEPENDENT`, `AUXILIARY`, or `CONSTANT` then
   // total_increments should be 1 and final_time should be 0

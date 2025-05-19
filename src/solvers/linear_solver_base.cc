@@ -24,11 +24,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 linearSolverBase<dim, degree>::linearSolverBase(
-  const userInputParameters<dim>                         &_user_inputs,
-  const variableAttributes                               &_variable_attributes,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  const UserInputParameters<dim>                         &_user_inputs,
+  const VariableAttributes                               &_variable_attributes,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , variable_attributes(&_variable_attributes)
@@ -47,7 +47,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // Creating map to match types
   subset_attributes.emplace(field_index, *variable_attributes);
 
-  // Create the implementation of matrixFreeOperator with the subset of variable
+  // Create the implementation of MatrixFreeOperator with the subset of variable
   // attributes
   system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
@@ -55,7 +55,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
 
   // Create the residual subset of solution vectors and add the mapping to
-  // matrixFreeOperator
+  // MatrixFreeOperator
   residual_src.push_back(
     solution_handler->get_solution_vector(field_index, DependencyType::NORMAL));
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
@@ -74,7 +74,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
     }
 
   // Create the newton update subset of solution vectors and add the mapping to
-  // matrixFreeOperator. For this one we consider the singular src vector as the residual
+  // MatrixFreeOperator. For this one we consider the singular src vector as the residual
   // vector above and the src subset all other dependencies vectors. This is
   // complicated, but has to do with the way deal.II's solvers (like CG) handle
   // iterative updates. For this reason, we have to pass the residual vector as

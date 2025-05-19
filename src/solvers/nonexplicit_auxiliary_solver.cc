@@ -30,15 +30,15 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const triangulationHandler<dim>                        &_triangulation_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const TriangulationHandler<dim>                        &_triangulation_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : nonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
@@ -67,11 +67,11 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Creating temporary map to match types
-      std::map<unsigned int, variableAttributes> temp;
+      std::map<unsigned int, VariableAttributes> temp;
       temp.emplace(index, variable);
       subset_attributes_list.push_back(temp);
 
-      // Create the implementation of matrixFreeOperator with the subset of variable
+      // Create the implementation of MatrixFreeOperator with the subset of variable
       // attributes
       this->get_system_matrix()[index] =
         std::make_unique<SystemMatrixType>(this->get_subset_attributes(),
@@ -83,7 +83,7 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
       this->get_system_matrix()[index]->initialize(
         this->get_matrix_free_handler().get_matrix_free());
 
-      // Create the subset of solution vectors and add the mapping to matrixFreeOperator
+      // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
       new_solution_subset[index].push_back(
         this->get_solution_handler().get_new_solution_vector(index));
       solution_subset[index].push_back(

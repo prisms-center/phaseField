@@ -22,7 +22,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Dependencies on a constant explicit variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -46,7 +46,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("LHS dependencies on an explicit variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -72,7 +72,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Empty variable name")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -93,7 +93,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Invalid field type")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -117,7 +117,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Invalid pde type")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -141,7 +141,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Invalid dependency name")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -165,7 +165,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("TIME_INDEPENDENT postprocess variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -192,7 +192,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("AUXILIARY postprocess variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -217,7 +217,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("CONSTANT postprocess variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -239,7 +239,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("IMPLICIT_TIME_DEPENDENT postprocess variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -266,7 +266,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Sequential old solution dependencies")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -292,7 +292,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Postprocess dependencies for main variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;
@@ -324,7 +324,7 @@ TEST_CASE("Invalid dependencies")
   SECTION("Postprocess dependencies for postprocess variable")
   {
     // Create test class for variable attribute loader
-    class testVariableAttributeLoader : public variableAttributeLoader
+    class testVariableAttributeLoader : public VariableAttributeLoader
     {
     public:
       ~testVariableAttributeLoader() override = default;

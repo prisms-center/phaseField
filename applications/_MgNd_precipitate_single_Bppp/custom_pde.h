@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `matrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \tparam number Datatype to use. Either double or float.
  */
 template <int dim, int degree, typename number>
-class customPDE : public matrixFreeOperator<dim, degree, number>
+class customPDE : public MatrixFreeOperator<dim, degree, number>
 {
 public:
   using scalarValue = dealii::VectorizedArray<number>;
@@ -32,18 +32,18 @@ public:
   /**
    * \brief Constructor for concurrent solves.
    */
-  customPDE(const userInputParameters<dim>                   &_user_inputs,
-            const std::map<unsigned int, variableAttributes> &subset_attributes)
-    : matrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
+  customPDE(const UserInputParameters<dim>                   &_user_inputs,
+            const std::map<unsigned int, VariableAttributes> &subset_attributes)
+    : MatrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
   {}
 
   /**
    * \brief Constructor for single solves.
    */
-  customPDE(const userInputParameters<dim>                   &_user_inputs,
+  customPDE(const UserInputParameters<dim>                   &_user_inputs,
             const unsigned int                               &_current_index,
-            const std::map<unsigned int, variableAttributes> &subset_attributes)
-    : matrixFreeOperator<dim, degree, number>(_user_inputs,
+            const std::map<unsigned int, VariableAttributes> &subset_attributes)
+    : MatrixFreeOperator<dim, degree, number>(_user_inputs,
                                               _current_index,
                                               subset_attributes)
   {}
@@ -63,7 +63,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_rhs(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -71,7 +71,7 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_rhs(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, dealii::VectorizedArray<number>>
                             &q_point_loc) const override;
 
@@ -79,7 +79,7 @@ private:
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_lhs(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, dealii::VectorizedArray<number>>
                             &q_point_loc) const override;
 
@@ -88,7 +88,7 @@ private:
    */
   void
   compute_postprocess_explicit_rhs(
-    variableContainer<dim, degree, number>                    &variable_list,
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 

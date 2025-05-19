@@ -12,7 +12,7 @@
 // postprocessed quantity over the entire domain.
 
 void
-customAttributeLoader::loadPostProcessorVariableAttributes()
+CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "f_tot");
@@ -39,9 +39,9 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                             &pp_variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
   [[maybe_unused]] const VectorizedArray<double>             element_volume) const

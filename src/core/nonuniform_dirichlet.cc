@@ -15,7 +15,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-nonuniformDirichlet<dim, degree, number>::nonuniformDirichlet(
+NonuniformDirichlet<dim, degree, number>::NonuniformDirichlet(
   unsigned int                                                   _index,
   unsigned int                                                   _boundary_id,
   const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
@@ -30,7 +30,7 @@ nonuniformDirichlet<dim, degree, number>::nonuniformDirichlet(
 
 template <unsigned int dim, unsigned int degree, typename number>
 number
-nonuniformDirichlet<dim, degree, number>::value(
+NonuniformDirichlet<dim, degree, number>::value(
   const dealii::Point<dim>           &p,
   [[maybe_unused]] const unsigned int component) const
 {
@@ -51,7 +51,7 @@ nonuniformDirichlet<dim, degree, number>::value(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-nonuniformDirichlet<dim, degree, number>::vector_value(
+NonuniformDirichlet<dim, degree, number>::vector_value(
   const dealii::Point<dim> &p,
   dealii::Vector<number>   &value) const
 {
@@ -78,6 +78,6 @@ nonuniformDirichlet<dim, degree, number>::vector_value(
 
 // NOLINTEND(readability-identifier-length)
 
-INSTANTIATE_TRI_TEMPLATE(nonuniformDirichlet)
+INSTANTIATE_TRI_TEMPLATE(NonuniformDirichlet)
 
 PRISMS_PF_END_NAMESPACE

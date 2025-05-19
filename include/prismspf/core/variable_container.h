@@ -17,7 +17,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief This class permits the access of a subset of indexed fields and gives an error
@@ -29,7 +29,7 @@ struct variableAttributes;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class variableContainer
+class VariableContainer
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
@@ -39,9 +39,9 @@ public:
   /**
    * \brief Constructor.
    */
-  variableContainer(
+  VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const std::map<unsigned int, variableAttributes> &_subset_attributes,
+    const std::map<unsigned int, VariableAttributes> &_subset_attributes,
     const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
                     &_global_to_local_solution,
     const SolveType &_solve_type,
@@ -183,7 +183,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                                 &func,
     std::vector<VectorType *>                   &dst,
     const std::vector<VectorType *>             &src,
@@ -195,7 +195,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src,
@@ -207,7 +207,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                                 &func,
     VectorType                                  &dst,
     const VectorType                            &src,
@@ -219,7 +219,7 @@ public:
    */
   void
   eval_local_diagonal(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src_subset,
@@ -356,7 +356,7 @@ private:
   /**
    * \brief The attribute list of the relevant subset of variables.
    */
-  const std::map<unsigned int, variableAttributes> *subset_attributes;
+  const std::map<unsigned int, VariableAttributes> *subset_attributes;
 
   /**
    * \brief Mapping from global solution vectors to the local ones

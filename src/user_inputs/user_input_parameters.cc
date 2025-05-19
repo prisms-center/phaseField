@@ -26,7 +26,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
+UserInputParameters<dim>::UserInputParameters(inputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
   : var_attributes(input_file_reader.get_var_attributes())
 {
@@ -62,7 +62,7 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_spatial_discretization_parameters(
+UserInputParameters<dim>::assign_spatial_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("rectangular mesh");
@@ -112,23 +112,23 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
         if (!boost::iequals(crit_type_string, "none"))
           {
             GridRefinement::RefinementCriterion new_criterion(
-              GridRefinement::RefinementFlags::nothing,
+              GridRefinement::RefinementFlags::Nothing,
               parameter_handler.get_double("value lower bound"),
               parameter_handler.get_double("value upper bound"),
               parameter_handler.get_double("gradient magnitude lower bound"));
 
             if (boost::iequals(crit_type_string, "value"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::value);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Value);
               }
             else if (boost::iequals(crit_type_string, "gradient"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::gradient);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Gradient);
               }
             else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::value |
-                                            GridRefinement::RefinementFlags::gradient);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Value |
+                                            GridRefinement::RefinementFlags::Gradient);
               }
             else
               {
@@ -143,7 +143,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_temporal_discretization_parameters(
+UserInputParameters<dim>::assign_temporal_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   temporal_discretization.set_timestep(parameter_handler.get_double("time step"));
@@ -154,7 +154,7 @@ userInputParameters<dim>::assign_temporal_discretization_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_output_parameters(
+UserInputParameters<dim>::assign_output_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("output");
@@ -178,7 +178,7 @@ userInputParameters<dim>::assign_output_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_checkpoint_parameters(
+UserInputParameters<dim>::assign_checkpoint_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("checkpoints");
@@ -196,7 +196,7 @@ userInputParameters<dim>::assign_checkpoint_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_boundary_parameters(
+UserInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   std::vector<std::string> axis_labels = {"x", "y", "z"};
@@ -272,7 +272,7 @@ userInputParameters<dim>::assign_boundary_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_linear_solve_parameters(
+UserInputParameters<dim>::assign_linear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   for (const auto &[index, variable] : var_attributes)
@@ -339,7 +339,7 @@ userInputParameters<dim>::assign_linear_solve_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_nonlinear_solve_parameters(
+UserInputParameters<dim>::assign_nonlinear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   for (const auto &[index, variable] : var_attributes)
@@ -368,7 +368,7 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::load_model_constants(
+UserInputParameters<dim>::load_model_constants(
   const inputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
@@ -384,6 +384,6 @@ userInputParameters<dim>::load_model_constants(
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(userInputParameters)
+INSTANTIATE_UNI_TEMPLATE(UserInputParameters)
 
 PRISMS_PF_END_NAMESPACE

@@ -24,8 +24,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-solutionHandler<dim>::solutionHandler(
-  const std::map<unsigned int, variableAttributes> &_attributes_list,
+SolutionHandler<dim>::SolutionHandler(
+  const std::map<unsigned int, VariableAttributes> &_attributes_list,
   const MGInfo<dim>                                &_mg_info)
   : attributes_list(&_attributes_list)
   , mg_info(&_mg_info)
@@ -46,8 +46,8 @@ solutionHandler<dim>::solutionHandler(
 }
 
 template <unsigned int dim>
-std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
-solutionHandler<dim>::get_solution_vector() const
+std::map<unsigned int, typename SolutionHandler<dim>::VectorType *>
+SolutionHandler<dim>::get_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
   for (const auto &[pair, vector] : solution_set)
@@ -66,8 +66,8 @@ solutionHandler<dim>::get_solution_vector() const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::VectorType *
-solutionHandler<dim>::get_solution_vector(unsigned int   index,
+typename SolutionHandler<dim>::VectorType *
+SolutionHandler<dim>::get_solution_vector(unsigned int   index,
                                           DependencyType dependency_type) const
 {
   const auto pair = std::make_pair(index, dependency_type);
@@ -82,8 +82,8 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
 }
 
 template <unsigned int dim>
-std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
-solutionHandler<dim>::get_new_solution_vector() const
+std::map<unsigned int, typename SolutionHandler<dim>::VectorType *>
+SolutionHandler<dim>::get_new_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
   for (const auto &[index, vector] : new_solution_set)
@@ -97,8 +97,8 @@ solutionHandler<dim>::get_new_solution_vector() const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::VectorType *
-solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
+typename SolutionHandler<dim>::VectorType *
+SolutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 {
   Assert(new_solution_set.contains(index),
          dealii::ExcMessage("There is no new solution vector for the given index = " +
@@ -109,8 +109,8 @@ solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 }
 
 template <unsigned int dim>
-std::vector<typename solutionHandler<dim>::MGVectorType *>
-solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
+std::vector<typename SolutionHandler<dim>::MGVectorType *>
+SolutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 
@@ -133,8 +133,8 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::MGVectorType *
-solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int index) const
+typename SolutionHandler<dim>::MGVectorType *
+SolutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int index) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 
@@ -153,7 +153,7 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int in
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
+SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
 {
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
@@ -194,8 +194,8 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::mg_init(
-  const dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler)
+SolutionHandler<dim>::mg_init(
+  const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler)
 {
   // Create all entries and initialize them
   for (unsigned int level = 0; level < mg_solution_set.size(); level++)
@@ -213,7 +213,7 @@ solutionHandler<dim>::mg_init(
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::update_ghosts() const
+SolutionHandler<dim>::update_ghosts() const
 {
   for (const auto &[pair, solution] : solution_set)
     {
@@ -230,7 +230,7 @@ solutionHandler<dim>::update_ghosts() const
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::apply_constraints(
+SolutionHandler<dim>::apply_constraints(
   unsigned int                             index,
   const dealii::AffineConstraints<double> &constraints)
 {
@@ -246,7 +246,7 @@ solutionHandler<dim>::apply_constraints(
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::apply_initial_condition_for_old_fields()
+SolutionHandler<dim>::apply_initial_condition_for_old_fields()
 {
   for (auto &[pair, vector] : solution_set)
     {
@@ -261,7 +261,7 @@ solutionHandler<dim>::apply_initial_condition_for_old_fields()
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::update(const FieldSolveType &field_solve_type,
+SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)
 {
   // Helper function to swap vectors for all dependency types
@@ -332,6 +332,6 @@ solutionHandler<dim>::update(const FieldSolveType &field_solve_type,
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(solutionHandler)
+INSTANTIATE_UNI_TEMPLATE(SolutionHandler)
 
 PRISMS_PF_END_NAMESPACE

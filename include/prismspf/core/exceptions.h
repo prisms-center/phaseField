@@ -52,7 +52,7 @@ DeclException1(
 DeclExceptionMsg(UnreachableCode, "This code should not have been reached.");
 
 /**
- * Exception for a user trying to access a variable in from variableContainer that has not
+ * Exception for a user trying to access a variable in from VariableContainer that has not
  * been specified as a dependency.
  */
 DeclException2(DependencyNotFound,
@@ -60,7 +60,7 @@ DeclException2(DependencyNotFound,
                std::string,
                << "Attemped access of the variable with index " << arg1
                << " and dependency type " << arg2
-               << " that was not marked as needed. Please check customAttributeLoader.");
+               << " that was not marked as needed. Please check CustomAttributeLoader.");
 
 // NOLINTEND
 

@@ -35,7 +35,7 @@ struct is_std_pair<std::pair<T, U>> : std::true_type
  * For many places in the PRISMS-PF is makes sense to represented certain features with
  * maps. A great example is solution vectors. We have the field index and time the
  * solution field belongs too. This can either be repsented with a nested map or a map
- * between the vector and a pair. Of course, in places like variableContainer we end up
+ * between the vector and a pair. Of course, in places like VariableContainer we end up
  * doing lots of lookups to the solution on every processor and over many points. This is
  * very computationally costly, albeit easy to read. For this reason, it is better to use
  * a vector.

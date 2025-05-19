@@ -14,27 +14,27 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 template <unsigned int dim, unsigned int degree>
-class constraintHandler;
+class ConstraintHandler;
 
 template <unsigned int dim>
-class dofHandler;
+class DofHandler;
 
 template <unsigned int dim, unsigned int degree>
-class initialCondition;
+class InitialCondition;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class invmHandler;
+class InvmHandler;
 
 template <unsigned int dim, typename number>
-class matrixfreeHandler;
+class MatrixfreeHandler;
 
 template <unsigned int dim>
-class solutionHandler;
+class SolutionHandler;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Base class for explicit solves.
@@ -43,18 +43,18 @@ template <unsigned int dim, unsigned int degree>
 class explicitBase
 {
 public:
-  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
 
   /**
    * \brief Constructor.
    */
-  explicitBase(const userInputParameters<dim>         &_user_inputs,
-               const matrixfreeHandler<dim, double>   &_matrix_free_handler,
-               const invmHandler<dim, degree, double> &_invm_handler,
-               const constraintHandler<dim, degree>   &_constraint_handler,
-               const dofHandler<dim>                  &_dof_handler,
+  explicitBase(const UserInputParameters<dim>         &_user_inputs,
+               const MatrixfreeHandler<dim, double>   &_matrix_free_handler,
+               const InvmHandler<dim, degree, double> &_invm_handler,
+               const ConstraintHandler<dim, degree>   &_constraint_handler,
+               const DofHandler<dim>                  &_dof_handler,
                const dealii::MappingQ1<dim>           &_mapping,
-               solutionHandler<dim>                   &_solution_handler,
+               SolutionHandler<dim>                   &_solution_handler,
                std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
@@ -76,7 +76,7 @@ public:
 
 protected:
   /**
-   * \brief Compute the subset of variableAttributes that belongs to a given
+   * \brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType. This function should only be used for concurrent fieldSolveTypes,
    * such as EXPLICIT, NONEXPLICIT_CO_NONLINEAR, and EXPLICIT_POSTPROCESS.
    */
@@ -106,7 +106,7 @@ protected:
   /**
    * \brief Get the user-inputs.
    */
-  [[nodiscard]] const userInputParameters<dim> &
+  [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
     return *user_inputs;
@@ -115,7 +115,7 @@ protected:
   /**
    * \brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const matrixfreeHandler<dim, double> &
+  [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
   {
     return *matrix_free_handler;
@@ -124,7 +124,7 @@ protected:
   /**
    * \brief Get the invm handler.
    */
-  [[nodiscard]] const invmHandler<dim, degree, double> &
+  [[nodiscard]] const InvmHandler<dim, degree, double> &
   get_invm_handler() const
   {
     return *invm_handler;
@@ -133,7 +133,7 @@ protected:
   /**
    * \brief Get the constraint handler.
    */
-  [[nodiscard]] const constraintHandler<dim, degree> &
+  [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
   {
     return *constraint_handler;
@@ -142,7 +142,7 @@ protected:
   /**
    * \brief Get the dof handler.
    */
-  [[nodiscard]] const dofHandler<dim> &
+  [[nodiscard]] const DofHandler<dim> &
   get_dof_handler() const
   {
     return *dof_handler;
@@ -160,7 +160,7 @@ protected:
   /**
    * \brief Get the solution handler.
    */
-  [[nodiscard]] solutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
   {
     return *solution_handler;
@@ -169,7 +169,7 @@ protected:
   /**
    * \brief Get the subset attributes.
    */
-  [[nodiscard]] const std::map<unsigned int, variableAttributes> &
+  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_subset_attributes() const
   {
     return subset_attributes;
@@ -197,27 +197,27 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  const matrixfreeHandler<dim, double> *matrix_free_handler;
+  const MatrixfreeHandler<dim, double> *matrix_free_handler;
 
   /**
    * \brief invm handler.
    */
-  const invmHandler<dim, degree, double> *invm_handler;
+  const InvmHandler<dim, degree, double> *invm_handler;
 
   /**
    * \brief Constraint handler.
    */
-  const constraintHandler<dim, degree> *constraint_handler;
+  const ConstraintHandler<dim, degree> *constraint_handler;
 
   /**
    * \brief DoF handler.
    */
-  const dofHandler<dim> *dof_handler;
+  const DofHandler<dim> *dof_handler;
 
   /**
    * \brief Mappings to and from reference cell.
@@ -227,12 +227,12 @@ private:
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> *solution_handler;
+  SolutionHandler<dim> *solution_handler;
 
   /**
    * \brief Subset of variable attributes.
    */
-  std::map<unsigned int, variableAttributes> subset_attributes;
+  std::map<unsigned int, VariableAttributes> subset_attributes;
 
   /**
    * \brief PDE operator.

@@ -31,8 +31,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-triangulationHandler<dim>::triangulationHandler(
-  const userInputParameters<dim> &_user_inputs,
+TriangulationHandler<dim>::TriangulationHandler(
+  const UserInputParameters<dim> &_user_inputs,
   const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
@@ -58,8 +58,8 @@ triangulationHandler<dim>::triangulationHandler(
 }
 
 template <unsigned int dim>
-const typename triangulationHandler<dim>::Triangulation &
-triangulationHandler<dim>::get_triangulation() const
+const typename TriangulationHandler<dim>::Triangulation &
+TriangulationHandler<dim>::get_triangulation() const
 {
   Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return *triangulation;
@@ -67,7 +67,7 @@ triangulationHandler<dim>::get_triangulation() const
 
 template <unsigned int dim>
 const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
-triangulationHandler<dim>::get_mg_triangulation() const
+TriangulationHandler<dim>::get_mg_triangulation() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -76,7 +76,7 @@ triangulationHandler<dim>::get_mg_triangulation() const
 
 template <unsigned int dim>
 const dealii::Triangulation<dim> &
-triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
+TriangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -88,7 +88,7 @@ triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_n_global_levels() const
+TriangulationHandler<dim>::get_n_global_levels() const
 {
   Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return triangulation->n_global_levels();
@@ -96,7 +96,7 @@ triangulationHandler<dim>::get_n_global_levels() const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_mg_min_level() const
+TriangulationHandler<dim>::get_mg_min_level() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -105,7 +105,7 @@ triangulationHandler<dim>::get_mg_min_level() const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_mg_max_level() const
+TriangulationHandler<dim>::get_mg_max_level() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -114,14 +114,14 @@ triangulationHandler<dim>::get_mg_max_level() const
 
 template <unsigned int dim>
 bool
-triangulationHandler<dim>::has_setup_multigrid() const
+TriangulationHandler<dim>::has_setup_multigrid() const
 {
   return has_multigrid;
 }
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::generate_mesh()
+TriangulationHandler<dim>::generate_mesh()
 {
   // TODO (landinjm): Add more generality in selecting mesh types
   if (user_inputs->get_spatial_discretization().get_radius() != 0.0)
@@ -187,7 +187,7 @@ triangulationHandler<dim>::generate_mesh()
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
+TriangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
   const dealii::GridOut grid_out;
   std::ofstream         out(filename + ".vtk");
@@ -197,7 +197,7 @@ triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filena
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::mark_boundaries() const
+TriangulationHandler<dim>::mark_boundaries() const
 {
   const double tolerance = 1e-12;
 
@@ -227,7 +227,7 @@ triangulationHandler<dim>::mark_boundaries() const
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::mark_periodic()
+TriangulationHandler<dim>::mark_periodic()
 {
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.
@@ -272,6 +272,6 @@ triangulationHandler<dim>::mark_periodic()
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(triangulationHandler)
+INSTANTIATE_UNI_TEMPLATE(TriangulationHandler)
 
 PRISMS_PF_END_NAMESPACE
