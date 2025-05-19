@@ -26,7 +26,7 @@ else
 fi
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "$@")
 
 # Compile
 if [ -f CMakeCache.txt ]; then

@@ -18,12 +18,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Class to parse command line options.
  */
-class parseCMDOptions
+class ParseCMDOptions
 {
 public:
   // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-  parseCMDOptions(int &_argc, char **argv)
+  ParseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {
     for (int i = 1; i < argc; ++i)

@@ -126,7 +126,8 @@ ConstraintHandler<dim, degree>::get_mg_constraint(unsigned int level,
   Assert(relative_level < mg_constraints.size(),
          dealii::ExcMessage("The mg constraint set does not contain level = " +
                             std::to_string(level)));
-  const unsigned int global_index = mg_info->get_global_index(index, relative_level);
+  [[maybe_unused]] const unsigned int global_index =
+    mg_info->get_global_index(index, relative_level);
   Assert(index < mg_constraints[relative_level].size(),
          dealii::ExcMessage("The mg constraint set does not contain index = " +
                             std::to_string(global_index)));

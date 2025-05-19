@@ -112,16 +112,11 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
+      // Evaluate at each quadrature point
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
-          // Set the quadrature point
           q_point = quad;
-
-          // Grab the quadrature point location
-          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
-
-          // Calculate the residuals
-          func(*this, q_point_loc);
+          func(*this, get_q_point_location());
         }
 
       // Integrate and add to global vector dst
@@ -143,16 +138,11 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
+      // Evaluate at each quadrature point
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
-          // Set the quadrature point
           q_point = quad;
-
-          // Grab the quadrature point location
-          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
-
-          // Calculate the residuals
-          func(*this, q_point_loc);
+          func(*this, get_q_point_location());
         }
 
       // Integrate and add to global vector dst
@@ -176,16 +166,11 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       reinit_and_eval(src, cell);
       reinit_and_eval(src_subset, cell);
 
+      // Evaluate at each quadrature point
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
-          // Set the quadrature point
           q_point = quad;
-
-          // Grab the quadrature point location
-          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
-
-          // Calculate the residuals
-          func(*this, q_point_loc);
+          func(*this, get_q_point_location());
         }
 
       // Integrate and add to global vector dst
@@ -212,7 +197,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
   auto &feeval_variant = feeval_map.at(global_var_index).at(DependencyType::Change);
 
   // Helper function to submit the identity matrix
-  auto submit_identity = [&](auto &feeval_ptr, auto &diag_ptr, unsigned int i)
+  auto submit_identity = [&](auto &feeval_ptr, const auto &diag_ptr, unsigned int i)
   {
     using DiagonalType      = std::decay_t<decltype(*diag_ptr)>;
     using DiagonalValueType = typename DiagonalType::value_type;
@@ -267,16 +252,11 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
             // Evaluate the dependencies based on the flags
             eval(global_var_index);
 
+            // Evaluate at each quadrature point
             for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
               {
-                // Set the quadrature point
                 q_point = quad;
-
-                // Grab the quadrature point location
-                const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
-
-                // Calculate the residuals
-                func(*this, q_point_loc);
+                func(*this, get_q_point_location());
               }
 
             // Integrate the diagonal
@@ -287,17 +267,13 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
         // Submit calculated diagonal values and distribute
         for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
           {
-            if constexpr (std::is_same_v<DiagonalValueType, SizeType>)
+            if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim != 1)
               {
                 feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
-              }
-            else if constexpr (dim == 1)
-              {
-                feeval_ptr->submit_dof_value((*diag_ptr)[i][0], i);
               }
             else
               {
-                feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
+                feeval_ptr->submit_dof_value((*diag_ptr)[i][0], i);
               }
           }
         feeval_ptr->distribute_local_to_global(dst);

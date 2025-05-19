@@ -143,7 +143,8 @@ SolutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int in
   Assert(relative_level < mg_solution_set.size(),
          dealii::ExcMessage("The mg solution set does not contain level = " +
                             std::to_string(level)));
-  const unsigned int global_index = mg_info->get_global_index(index, relative_level);
+  [[maybe_unused]] const unsigned int global_index =
+    mg_info->get_global_index(index, relative_level);
   Assert(index < mg_solution_set[relative_level].size(),
          dealii::ExcMessage(
            "The mg solution at the given level does not contain index = " +
@@ -271,10 +272,12 @@ SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
     new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::Normal))));
 
     // Swap old dependency types if they exist
-    const std::array<DependencyType, 4> old_types = {DependencyType::OldOne,
-                                                     DependencyType::OldTwo,
-                                                     DependencyType::OldThree,
-                                                     DependencyType::OldFour};
+    const std::array<DependencyType, 4> old_types = {
+      {DependencyType::OldOne,
+       DependencyType::OldTwo,
+       DependencyType::OldThree,
+       DependencyType::OldFour}
+    };
 
     for (const auto &dep_type : old_types)
       {

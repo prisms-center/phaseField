@@ -22,7 +22,7 @@ if ! [ -x "$(command -v cppcheck)" ]; then
 fi
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "$@")
 
 # Compile
 if [ -f CMakeCache.txt ]; then

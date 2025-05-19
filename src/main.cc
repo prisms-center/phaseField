@@ -29,7 +29,7 @@ main(int argc, char *argv[])
 
       // Parse the command line options (if there are any) to get the name of the input
       // file
-      prisms::parseCMDOptions cli_options(argc, argv);
+      prisms::ParseCMDOptions cli_options(argc, argv);
       std::string             parameters_filename = cli_options.get_parameters_filename();
 
       // Caliper config manager initialization
