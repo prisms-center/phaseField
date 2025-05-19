@@ -40,7 +40,7 @@ struct VariableAttributes;
  * \brief Base class for explicit solves.
  */
 template <unsigned int dim, unsigned int degree>
-class explicitBase
+class ExplicitBase
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -48,7 +48,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicitBase(const UserInputParameters<dim>         &_user_inputs,
+  ExplicitBase(const UserInputParameters<dim>         &_user_inputs,
                const MatrixfreeHandler<dim, double>   &_matrix_free_handler,
                const InvmHandler<dim, degree, double> &_invm_handler,
                const ConstraintHandler<dim, degree>   &_constraint_handler,
@@ -60,7 +60,7 @@ public:
   /**
    * \brief Destructor.
    */
-  virtual ~explicitBase() = default;
+  virtual ~ExplicitBase() = default;
 
   /**
    * \brief Initialize system.

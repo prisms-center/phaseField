@@ -23,7 +23,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-inputFileReader::inputFileReader(
+InputFileReader::InputFileReader(
   std::string                                       input_file_name,
   const std::map<unsigned int, VariableAttributes> &_var_attributes)
   : parameters_file_name(std::move(input_file_name))
@@ -43,7 +43,7 @@ inputFileReader::inputFileReader(
 }
 
 void
-inputFileReader::strip_spaces(std::string &line)
+InputFileReader::strip_spaces(std::string &line)
 {
   while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
@@ -57,7 +57,7 @@ inputFileReader::strip_spaces(std::string &line)
 }
 
 bool
-inputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
+InputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
 {
   // Early return if the line is less than the keyword size
   if (line.size() < keyword.size())
@@ -78,7 +78,7 @@ inputFileReader::check_keyword_match(const std::string &line, const std::string 
 }
 
 bool
-inputFileReader::parse_line(std::string        line,
+InputFileReader::parse_line(std::string        line,
                             const std::string &keyword,
                             const std::string &entry_name,
                             std::string       &out_string,
@@ -144,7 +144,7 @@ inputFileReader::parse_line(std::string        line,
 }
 
 std::set<std::string>
-inputFileReader::get_model_constant_names()
+InputFileReader::get_model_constant_names()
 {
   const std::string keyword             = "set";
   const std::string entry_name_begining = "Model constant";
@@ -198,7 +198,7 @@ inputFileReader::get_model_constant_names()
 }
 
 void
-inputFileReader::declare_parameters()
+InputFileReader::declare_parameters()
 {
   // Declare all of the entries
   declare_mesh();
@@ -216,7 +216,7 @@ inputFileReader::declare_parameters()
 }
 
 void
-inputFileReader::declare_mesh()
+InputFileReader::declare_mesh()
 {
   parameter_handler.declare_entry("dim",
                                   "1",
@@ -329,7 +329,7 @@ inputFileReader::declare_mesh()
 }
 
 void
-inputFileReader::declare_time_discretization()
+InputFileReader::declare_time_discretization()
 {
   parameter_handler.declare_entry("number steps",
                                   "1",
@@ -347,7 +347,7 @@ inputFileReader::declare_time_discretization()
 }
 
 void
-inputFileReader::declare_solver_parameters()
+InputFileReader::declare_solver_parameters()
 {
   // For linear solves
   for (const auto &[index, variable] : *var_attributes)
@@ -458,7 +458,7 @@ inputFileReader::declare_solver_parameters()
 }
 
 void
-inputFileReader::declare_output_parameters()
+InputFileReader::declare_output_parameters()
 {
   parameter_handler.enter_subsection("output");
   {
@@ -508,7 +508,7 @@ inputFileReader::declare_output_parameters()
 }
 
 void
-inputFileReader::declare_load_IC_parameters()
+InputFileReader::declare_load_IC_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Load initial conditions",
@@ -533,7 +533,7 @@ inputFileReader::declare_load_IC_parameters()
 }
 
 void
-inputFileReader::declare_checkpoint_parameters()
+InputFileReader::declare_checkpoint_parameters()
 {
   parameter_handler.enter_subsection("checkpoints");
   {
@@ -564,7 +564,7 @@ inputFileReader::declare_checkpoint_parameters()
 }
 
 void
-inputFileReader::declare_BC_parameters()
+InputFileReader::declare_BC_parameters()
 {
   for (const auto &[index, variable] : *var_attributes)
     {
@@ -615,7 +615,7 @@ inputFileReader::declare_BC_parameters()
 }
 
 void
-inputFileReader::declare_pinning_parameters()
+InputFileReader::declare_pinning_parameters()
 {
   for (const auto &[index, variable] : *var_attributes)
     {
@@ -667,7 +667,7 @@ inputFileReader::declare_pinning_parameters()
 }
 
 void
-inputFileReader::declare_nucleation_parameters()
+InputFileReader::declare_nucleation_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Enable evolution before nucleation",
@@ -748,7 +748,7 @@ inputFileReader::declare_nucleation_parameters()
 }
 
 void
-inputFileReader::declare_grain_remapping_parameters()
+InputFileReader::declare_grain_remapping_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Activate grain reassignment",
@@ -787,7 +787,7 @@ inputFileReader::declare_grain_remapping_parameters()
 }
 
 void
-inputFileReader::declare_grain_loading_parameters()
+InputFileReader::declare_grain_loading_parameters()
 {
   // parameter_handler.declare_entry("Load grain structure",
   //                                 "false",
@@ -840,7 +840,7 @@ inputFileReader::declare_grain_loading_parameters()
 }
 
 void
-inputFileReader::declare_model_constants()
+InputFileReader::declare_model_constants()
 {
   for (const std::string &constant_name : model_constant_names)
     {

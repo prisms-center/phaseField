@@ -29,7 +29,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitLinearSolver<dim, degree>::nonexplicitLinearSolver(
+NonexplicitLinearSolver<dim, degree>::NonexplicitLinearSolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -42,7 +42,7 @@ nonexplicitLinearSolver<dim, degree>::nonexplicitLinearSolver(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)
-  : nonexplicitBase<dim, degree>(_user_inputs,
+  : NonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
                                  _invm_handler,
@@ -58,7 +58,7 @@ nonexplicitLinearSolver<dim, degree>::nonexplicitLinearSolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitLinearSolver<dim, degree>::init()
+NonexplicitLinearSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitLinear);
 
@@ -96,7 +96,7 @@ nonexplicitLinearSolver<dim, degree>::init()
         {
           identity_solvers.emplace(
             index,
-            std::make_unique<identitySolver<dim, degree>>(this->get_user_inputs(),
+            std::make_unique<IdentitySolver<dim, degree>>(this->get_user_inputs(),
                                                           variable,
                                                           this->get_matrix_free_handler(),
                                                           this->get_constraint_handler(),
@@ -109,7 +109,7 @@ nonexplicitLinearSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitLinearSolver<dim, degree>::solve()
+NonexplicitLinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -141,6 +141,6 @@ nonexplicitLinearSolver<dim, degree>::solve()
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitLinearSolver)
+INSTANTIATE_BI_TEMPLATE(NonexplicitLinearSolver)
 
 PRISMS_PF_END_NAMESPACE

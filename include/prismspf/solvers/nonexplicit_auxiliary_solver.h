@@ -17,7 +17,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles all auxiliary solves.
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitAuxiliarySolver : public nonexplicitBase<dim, degree>
+class NonexplicitAuxiliarySolver : public NonexplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -26,7 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  nonexplicitAuxiliarySolver(
+  NonexplicitAuxiliarySolver(
     const UserInputParameters<dim>                         &_user_inputs,
     const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -41,7 +41,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitAuxiliarySolver() override = default;
+  ~NonexplicitAuxiliarySolver() override = default;
 
   /**
    * \brief Initialize system.

@@ -63,7 +63,7 @@ main(int argc, char *argv[])
         attribute_loader.get_var_attributes();
 
       // Load in parameters
-      prisms::inputFileReader input_file_reader(parameters_filename, var_attributes);
+      prisms::InputFileReader input_file_reader(parameters_filename, var_attributes);
 
       // Run problem based on the number of dimensions and element degree
       switch (input_file_reader.get_dim())

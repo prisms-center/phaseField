@@ -38,7 +38,7 @@ struct VariableAttributes;
  * \brief Base class that handles the assembly and linear solving of a field.
  */
 template <unsigned int dim, unsigned int degree>
-class linearSolverBase
+class LinearSolverBase
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -47,7 +47,7 @@ public:
   /**
    * \brief Constructor.
    */
-  linearSolverBase(const UserInputParameters<dim>       &_user_inputs,
+  LinearSolverBase(const UserInputParameters<dim>       &_user_inputs,
                    const VariableAttributes             &_variable_attributes,
                    const MatrixfreeHandler<dim, double> &_matrix_free_handler,
                    const ConstraintHandler<dim, degree> &_constraint_handler,
@@ -57,7 +57,7 @@ public:
   /**
    * \brief Destructor.
    */
-  virtual ~linearSolverBase() = default;
+  virtual ~LinearSolverBase() = default;
 
   /**
    * \brief Initialize the system.

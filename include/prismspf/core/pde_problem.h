@@ -150,39 +150,39 @@ private:
   /**
    * \brief Element volumes.
    */
-  elementVolume<dim, degree, double> element_volume;
+  ElementVolume<dim, degree, double> element_volume;
 
   /**
    * \brief Integral utility.
    *
    * TODO (landinjm): Rename this class.
    */
-  computeIntegral<dim, degree, double> integral_computer;
+  ComputeIntegral<dim, degree, double> integral_computer;
 
   /**
    * \brief Explicit constant field solver class.
    */
-  explicitConstantSolver<dim, degree> explicit_constant_solver;
+  ExplicitConstantSolver<dim, degree> explicit_constant_solver;
 
   /**
    * \brief Explicit field solver class.
    */
-  explicitSolver<dim, degree> explicit_solver;
+  ExplicitSolver<dim, degree> explicit_solver;
 
   /**
    * \brief Postprocessed explicit field solver class.
    */
-  explicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
+  ExplicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
 
   /**
    * \brief Nonexplicit auxiliary field solver class.
    */
-  nonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
+  NonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
 
   /**
    * \brief Nonexplicit linear field solver class.
    */
-  nonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
+  NonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
 
   /**
    * \brief Nonexplicit self nonlinear field solver class.

@@ -43,7 +43,7 @@ struct VariableAttributes;
  * \brief Base class for nonexplicit solves.
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitBase
+class NonexplicitBase
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -51,7 +51,7 @@ public:
   /**
    * \brief Constructor.
    */
-  nonexplicitBase(
+  NonexplicitBase(
     const UserInputParameters<dim>                         &_user_inputs,
     const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -66,7 +66,7 @@ public:
   /**
    * \brief Destructor.
    */
-  virtual ~nonexplicitBase() = default;
+  virtual ~NonexplicitBase() = default;
 
   /**
    * \brief Initialize system.

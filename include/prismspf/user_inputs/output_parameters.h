@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds output parameters.
  */
-struct outputParameters
+struct OutputParameters
 {
 public:
   /**
@@ -34,7 +34,7 @@ public:
    * \brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(const temporalDiscretization &temporal_discretization);
+  postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
    * \brief Print parameters to summary.log
@@ -173,14 +173,14 @@ private:
 };
 
 inline bool
-outputParameters::should_output(unsigned int increment) const
+OutputParameters::should_output(unsigned int increment) const
 {
   return output_list.contains(increment);
 }
 
 inline void
-outputParameters::postprocess_and_validate(
-  const temporalDiscretization &temporal_discretization)
+OutputParameters::postprocess_and_validate(
+  const TemporalDiscretization &temporal_discretization)
 {
   // If the user has specified a list and we have list output use that and return early
   if (condition == "LIST")
@@ -250,7 +250,7 @@ outputParameters::postprocess_and_validate(
 }
 
 inline void
-outputParameters::print_parameter_summary() const
+OutputParameters::print_parameter_summary() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"

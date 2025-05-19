@@ -191,8 +191,8 @@ private:
   apply_constraints(const dealii::Mapping<dim>        &mapping,
                     const dealii::DoFHandler<dim>     &dof_handler,
                     dealii::AffineConstraints<number> &constraints,
-                    const boundaryCondition           &boundary_condition,
-                    boundaryCondition::type            boundary_type,
+                    const BoundaryCondition           &boundary_condition,
+                    BoundaryCondition::type            boundary_type,
                     unsigned int                       boundary_id,
                     unsigned int                       component,
                     unsigned int                       index,
@@ -208,7 +208,7 @@ private:
   apply_mg_constraints(const dealii::Mapping<dim>        &mapping,
                        const dealii::DoFHandler<dim>     &dof_handler,
                        dealii::AffineConstraints<number> &constraints,
-                       boundaryCondition::type            boundary_type,
+                       BoundaryCondition::type            boundary_type,
                        unsigned int                       boundary_id,
                        unsigned int                       component) const;
 

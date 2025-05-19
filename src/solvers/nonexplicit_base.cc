@@ -30,7 +30,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitBase<dim, degree>::nonexplicitBase(
+NonexplicitBase<dim, degree>::NonexplicitBase(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -55,7 +55,7 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::compute_subset_attributes(
+NonexplicitBase<dim, degree>::compute_subset_attributes(
   const FieldSolveType &field_solve_type)
 {
   Assert((field_solve_type == FieldSolveType::NonexplicitLinear ||
@@ -80,7 +80,7 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::compute_shared_dependencies()
+NonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
   Assert(subset_attributes.begin()->second.get_field_solve_type() ==
            FieldSolveType::NonexplicitCononlinear,
@@ -131,7 +131,7 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::set_initial_condition()
+NonexplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
@@ -166,7 +166,7 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::print()
+NonexplicitBase<dim, degree>::print()
 {
   ConditionalOStreams::pout_summary()
     << "  ==============================================\n"
@@ -185,6 +185,6 @@ nonexplicitBase<dim, degree>::print()
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitBase)
+INSTANTIATE_BI_TEMPLATE(NonexplicitBase)
 
 PRISMS_PF_END_NAMESPACE

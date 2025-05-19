@@ -42,7 +42,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)
-  : nonexplicitBase<dim, degree>(_user_inputs,
+  : NonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
                                  _invm_handler,
@@ -96,7 +96,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
         {
           identity_solvers.emplace(
             index,
-            std::make_unique<identitySolver<dim, degree>>(this->get_user_inputs(),
+            std::make_unique<IdentitySolver<dim, degree>>(this->get_user_inputs(),
                                                           variable,
                                                           this->get_matrix_free_handler(),
                                                           this->get_constraint_handler(),

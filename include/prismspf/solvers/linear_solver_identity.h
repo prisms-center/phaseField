@@ -22,7 +22,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * preconditioner (no preconditioner)
  */
 template <unsigned int dim, unsigned int degree>
-class identitySolver : public linearSolverBase<dim, degree>
+class IdentitySolver : public LinearSolverBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -31,7 +31,7 @@ public:
   /**
    * \brief Constructor.
    */
-  identitySolver(const UserInputParameters<dim>       &_user_inputs,
+  IdentitySolver(const UserInputParameters<dim>       &_user_inputs,
                  const VariableAttributes             &_variable_attributes,
                  const MatrixfreeHandler<dim, double> &_matrix_free_handler,
                  const ConstraintHandler<dim, degree> &_constraint_handler,
@@ -41,7 +41,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~identitySolver() override = default;
+  ~IdentitySolver() override = default;
 
   /**
    * \brief Initialize the system.

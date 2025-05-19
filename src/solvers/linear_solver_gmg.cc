@@ -50,7 +50,7 @@ GMGSolver<dim, degree>::GMGSolver(
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)
-  : linearSolverBase<dim, degree>(_user_inputs,
+  : LinearSolverBase<dim, degree>(_user_inputs,
                                   _variable_attributes,
                                   _matrix_free_handler,
                                   _constraint_handler,

@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles the self-nonlinear solves of a single nonexplicit field
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitSelfNonlinearSolver : public nonexplicitBase<dim, degree>
+class nonexplicitSelfNonlinearSolver : public NonexplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -62,7 +62,7 @@ private:
   /**
    * \brief Map of identity linear solvers
    */
-  std::map<unsigned int, std::unique_ptr<identitySolver<dim, degree>>> identity_solvers;
+  std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
    * \brief Map of geometric multigrid linear solvers

@@ -20,7 +20,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 struct VariableAttributes;
 
-class inputFileReader;
+class InputFileReader;
 
 template <unsigned int dim>
 class UserInputParameters
@@ -30,7 +30,7 @@ public:
    * \brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
-  UserInputParameters(inputFileReader          &input_file_reader,
+  UserInputParameters(InputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
 
   /**
@@ -45,7 +45,7 @@ public:
   /**
    * \brief Return the spatial discretization parameters.
    */
-  [[nodiscard]] const spatialDiscretization<dim> &
+  [[nodiscard]] const SpatialDiscretization<dim> &
   get_spatial_discretization() const
   {
     return spatial_discretization;
@@ -54,7 +54,7 @@ public:
   /**
    * \brief Return the temporal discretization parameters.
    */
-  [[nodiscard]] const temporalDiscretization &
+  [[nodiscard]] const TemporalDiscretization &
   get_temporal_discretization() const
   {
     return temporal_discretization;
@@ -63,7 +63,7 @@ public:
   /**
    * \brief Return the linear solve parameters.
    */
-  [[nodiscard]] const linearSolveParameters &
+  [[nodiscard]] const LinearSolveParameters &
   get_linear_solve_parameters() const
   {
     return linear_solve_parameters;
@@ -72,7 +72,7 @@ public:
   /**
    * \brief Return the nonlinear solve parameters.
    */
-  [[nodiscard]] const nonlinearSolveParameters &
+  [[nodiscard]] const NonlinearSolveParameters &
   get_nonlinear_solve_parameters() const
   {
     return nonlinear_solve_parameters;
@@ -81,7 +81,7 @@ public:
   /**
    * \brief Return the output parameters.
    */
-  [[nodiscard]] const outputParameters &
+  [[nodiscard]] const OutputParameters &
   get_output_parameters() const
   {
     return output_parameters;
@@ -90,7 +90,7 @@ public:
   /**
    * \brief Return the checkpoint parameters.
    */
-  [[nodiscard]] const checkpointParameters &
+  [[nodiscard]] const CheckpointParameters &
   get_checkpoint_parameters() const
   {
     return checkpoint_parameters;
@@ -108,7 +108,7 @@ public:
   /**
    * \brief Return the user constants.
    */
-  [[nodiscard]] const userConstants<dim> &
+  [[nodiscard]] const UserConstants<dim> &
   get_user_constants() const
   {
     return user_constants;
@@ -189,35 +189,35 @@ private:
    * \brief Assign the provided user constants.
    */
   void
-  load_model_constants(const inputFileReader    &input_file_reader,
+  load_model_constants(const InputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
 
   // Variable attributes
   std::map<unsigned int, VariableAttributes> var_attributes;
 
   // Spatial discretization parameters
-  spatialDiscretization<dim> spatial_discretization;
+  SpatialDiscretization<dim> spatial_discretization;
 
   // Temporal discretization parameters
-  temporalDiscretization temporal_discretization;
+  TemporalDiscretization temporal_discretization;
 
   // Linear solve paramters
-  linearSolveParameters linear_solve_parameters;
+  LinearSolveParameters linear_solve_parameters;
 
   // Nonlinear solve parameters
-  nonlinearSolveParameters nonlinear_solve_parameters;
+  NonlinearSolveParameters nonlinear_solve_parameters;
 
   // Output parameters
-  outputParameters output_parameters;
+  OutputParameters output_parameters;
 
   // Checkpoint parameters
-  checkpointParameters checkpoint_parameters;
+  CheckpointParameters checkpoint_parameters;
 
   // Boundary parameters
   BoundaryParameters<dim> boundary_parameters;
 
   // User constants
-  userConstants<dim> user_constants;
+  UserConstants<dim> user_constants;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -17,7 +17,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles the explicit solves of all explicit fields
  */
 template <unsigned int dim, unsigned int degree>
-class explicitSolver : public explicitBase<dim, degree>
+class ExplicitSolver : public ExplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -26,7 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicitSolver(const UserInputParameters<dim>         &_user_inputs,
+  ExplicitSolver(const UserInputParameters<dim>         &_user_inputs,
                  const MatrixfreeHandler<dim, double>   &_matrix_free_handler,
                  const InvmHandler<dim, degree, double> &_invm_handler,
                  const ConstraintHandler<dim, degree>   &_constraint_handler,
@@ -38,7 +38,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~explicitSolver() override = default;
+  ~ExplicitSolver() override = default;
 
   /**
    * \brief Initialize system.

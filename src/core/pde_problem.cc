@@ -389,7 +389,7 @@ PDEProblem<dim, degree>::solve()
                               *user_inputs);
 
           // Update the ghost again so we can call compute integral. May as well wrap this
-          // into computeIntegral.
+          // into ComputeIntegral.
           solution_handler.update_ghosts();
 
           // Print the l2-norms and integrals of each solution

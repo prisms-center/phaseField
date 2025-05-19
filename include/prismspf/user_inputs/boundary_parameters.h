@@ -29,7 +29,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Struct that stores relevant information for boundary conditions of a certain
  * field.
  */
-struct boundaryCondition
+struct BoundaryCondition
 {
 public:
   /**
@@ -52,7 +52,7 @@ public:
    * \brief Test for equality of two boundary conditions.
    */
   bool
-  operator==(const boundaryCondition &other) const
+  operator==(const BoundaryCondition &other) const
   {
     return boundary_condition_map == other.boundary_condition_map &&
            dirichlet_value_map == other.dirichlet_value_map;
@@ -150,7 +150,7 @@ struct BoundaryParameters
 {
 public:
   using BoundaryConditionMap =
-    std::map<types::index, std::map<unsigned int, boundaryCondition>>;
+    std::map<types::index, std::map<unsigned int, BoundaryCondition>>;
   using BCList = std::map<types::index, std::map<unsigned int, std::string>>;
   using PinnedPointMap =
     std::map<types::index,
@@ -439,7 +439,7 @@ BoundaryParameters<dim>::print_parameter_summary() const
               ConditionalOStreams::pout_summary()
                 << "    Boundary id: " << domain_id << "    "
                 << "Condition: " << boundary_condition.to_string(boundary_type);
-              if (boundary_type == boundaryCondition::type::DIRICHLET)
+              if (boundary_type == BoundaryCondition::type::DIRICHLET)
                 {
                   ConditionalOStreams::pout_summary()
                     << " = " << boundary_condition.get_dirichlet_value(domain_id);
@@ -506,7 +506,7 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
     }
 
   // Assign boundary condition
-  boundaryCondition condition;
+  BoundaryCondition condition;
   for (unsigned int i = 0; i < (2 * dim); i++)
     {
       const std::string dirichlet = "DIRICHLET";
@@ -514,11 +514,11 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
 
       if (boost::iequals(bc_string_list[i], "NATURAL"))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::NATURAL);
+          condition.add_boundary_condition(i, BoundaryCondition::type::NATURAL);
         }
       else if (boost::iequals(bc_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::DIRICHLET);
+          condition.add_boundary_condition(i, BoundaryCondition::type::DIRICHLET);
           std::string dirichlet_value =
             bc_string_list[i].substr(dirichlet.size() + 1, bc_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
@@ -528,7 +528,7 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
         }
       else if (boost::iequals(bc_string_list[i], "PERIODIC"))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::PERIODIC);
+          condition.add_boundary_condition(i, BoundaryCondition::type::PERIODIC);
         }
       else if (boost::iequals(bc_string_list[i].substr(0, neumann.size()), neumann))
         {
@@ -537,7 +537,7 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
       else if (boost::iequals(bc_string_list[i], "NON_UNIFORM_DIRICHLET"))
         {
           condition
-            .add_boundary_condition(i, boundaryCondition::type::NON_UNIFORM_DIRICHLET);
+            .add_boundary_condition(i, BoundaryCondition::type::NON_UNIFORM_DIRICHLET);
         }
       else if (boost::iequals(bc_string_list[i], "NON_UNIFORM_NEUMANN"))
         {
@@ -548,7 +548,7 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
         {
           condition.add_boundary_condition(
             i,
-            boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
+            BoundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
           time_dependent_bc_list.insert(index);
         }
       else if (boost::iequals(bc_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
@@ -612,7 +612,7 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type == boundaryCondition::type::PERIODIC)
+              if (boundary_type == BoundaryCondition::type::PERIODIC)
                 {
                   periodic_ids[domain_id] = true;
                 }
@@ -626,7 +626,7 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type != boundaryCondition::type::PERIODIC &&
+              if (boundary_type != BoundaryCondition::type::PERIODIC &&
                   periodic_ids[domain_id])
                 {
                   AssertThrow(

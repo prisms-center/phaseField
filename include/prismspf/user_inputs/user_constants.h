@@ -24,7 +24,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Class the stores and manages user-defined constants.
  */
 template <unsigned int dim>
-class userConstants
+class UserConstants
 {
 public:
   using InputVariant = boost::variant<double,
@@ -223,7 +223,7 @@ private:
 
 template <unsigned int dim>
 inline double
-userConstants<dim>::get_model_constant_double(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_double(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -236,7 +236,7 @@ userConstants<dim>::get_model_constant_double(const std::string &constant_name) 
 
 template <unsigned int dim>
 inline int
-userConstants<dim>::get_model_constant_int(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_int(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -249,7 +249,7 @@ userConstants<dim>::get_model_constant_int(const std::string &constant_name) con
 
 template <unsigned int dim>
 inline bool
-userConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -262,7 +262,7 @@ userConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
 
 template <unsigned int dim>
 inline dealii::Tensor<1, dim>
-userConstants<dim>::get_model_constant_rank_1_tensor(
+UserConstants<dim>::get_model_constant_rank_1_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -276,7 +276,7 @@ userConstants<dim>::get_model_constant_rank_1_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, dim>
-userConstants<dim>::get_model_constant_rank_2_tensor(
+UserConstants<dim>::get_model_constant_rank_2_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -290,7 +290,7 @@ userConstants<dim>::get_model_constant_rank_2_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::get_model_constant_elasticity_tensor(
+UserConstants<dim>::get_model_constant_elasticity_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -305,7 +305,7 @@ userConstants<dim>::get_model_constant_elasticity_tensor(
 
 template <unsigned int dim>
 inline unsigned int
-userConstants<dim>::compute_tensor_parentheses(
+UserConstants<dim>::compute_tensor_parentheses(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -339,7 +339,7 @@ userConstants<dim>::compute_tensor_parentheses(
 
 template <unsigned int dim>
 inline void
-userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements)
+UserConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements)
 {
   for (std::string &element : tensor_elements)
     {
@@ -350,7 +350,7 @@ userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements
 
 template <unsigned int dim>
 inline dealii::Tensor<1, dim>
-userConstants<dim>::compute_rank_1_tensor_constant(
+UserConstants<dim>::compute_rank_1_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -369,7 +369,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, dim>
-userConstants<dim>::compute_rank_2_tensor_constant(
+UserConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -393,8 +393,8 @@ userConstants<dim>::compute_rank_2_tensor_constant(
 }
 
 template <unsigned int dim>
-inline typename userConstants<dim>::InputVariant
-userConstants<dim>::construct_user_constant(
+inline typename UserConstants<dim>::InputVariant
+UserConstants<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   // Ensure that the input includes a value and a type
@@ -460,8 +460,8 @@ userConstants<dim>::construct_user_constant(
 }
 
 template <unsigned int dim>
-inline typename userConstants<dim>::InputVariant
-userConstants<dim>::primitive_model_constant(
+inline typename UserConstants<dim>::InputVariant
+UserConstants<dim>::primitive_model_constant(
   std::vector<std::string> &model_constants_strings)
 {
   std::vector<std::string> model_constants_type_strings =
@@ -491,7 +491,7 @@ userConstants<dim>::primitive_model_constant(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
+UserConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
@@ -540,7 +540,7 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
+UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                                  const std::vector<double> &constants) const
 {
   // Initialize tensor
@@ -650,7 +650,7 @@ userConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
 
 template <unsigned int dim>
 void
-userConstants<dim>::print() const
+UserConstants<dim>::print() const
 {
   if (!model_constants.empty())
     {

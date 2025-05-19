@@ -19,13 +19,13 @@ struct VariableAttributes;
  * \brief Parameters file reader. Declares parameter names in a dealii parameter_handler
  * and parses the file for the values. Variable assignment occurs in UserInputParameters.
  */
-class inputFileReader
+class InputFileReader
 {
 public:
   /**
    * \brief Constructor.
    */
-  inputFileReader(std::string                                       input_file_name,
+  InputFileReader(std::string                                       input_file_name,
                   const std::map<unsigned int, VariableAttributes> &_var_attributes);
 
   /**

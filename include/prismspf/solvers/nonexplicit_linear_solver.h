@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles all linear solves.
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitLinearSolver : public nonexplicitBase<dim, degree>
+class NonexplicitLinearSolver : public NonexplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -27,7 +27,7 @@ public:
   /**
    * \brief Constructor.
    */
-  nonexplicitLinearSolver(
+  NonexplicitLinearSolver(
     const UserInputParameters<dim>                         &_user_inputs,
     const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -44,7 +44,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitLinearSolver() override = default;
+  ~NonexplicitLinearSolver() override = default;
 
   /**
    * \brief Initialize system.
@@ -62,7 +62,7 @@ private:
   /**
    * \brief Map of identity linear solvers
    */
-  std::map<unsigned int, std::unique_ptr<identitySolver<dim, degree>>> identity_solvers;
+  std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
    * \brief Map of geometric multigrid linear solvers

@@ -24,14 +24,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-identitySolver<dim, degree>::identitySolver(
+IdentitySolver<dim, degree>::IdentitySolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const ConstraintHandler<dim, degree>                   &_constraint_handler,
   SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : linearSolverBase<dim, degree>(_user_inputs,
+  : LinearSolverBase<dim, degree>(_user_inputs,
                                   _variable_attributes,
                                   _matrix_free_handler,
                                   _constraint_handler,
@@ -41,7 +41,7 @@ identitySolver<dim, degree>::identitySolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::init()
+IdentitySolver<dim, degree>::init()
 {
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
@@ -69,12 +69,12 @@ identitySolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::reinit()
+IdentitySolver<dim, degree>::reinit()
 {}
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::solve(const double &step_length)
+IdentitySolver<dim, degree>::solve(const double &step_length)
 {
   auto *solution =
     this->get_solution_handler().get_solution_vector(this->get_field_index(),
@@ -135,6 +135,6 @@ identitySolver<dim, degree>::solve(const double &step_length)
     .distribute(*solution);
 }
 
-INSTANTIATE_BI_TEMPLATE(identitySolver)
+INSTANTIATE_BI_TEMPLATE(IdentitySolver)
 
 PRISMS_PF_END_NAMESPACE

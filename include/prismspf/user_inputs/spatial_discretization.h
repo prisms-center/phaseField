@@ -17,7 +17,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Struct that holds spatial discretization parameters.
  */
 template <unsigned int dim>
-struct spatialDiscretization
+struct SpatialDiscretization
 {
 public:
   /**
@@ -32,7 +32,7 @@ public:
   /**
    * \brief Constructor.
    */
-  spatialDiscretization() = default;
+  SpatialDiscretization() = default;
 
   /**
    * \brief Postprocess and validate parameters.
@@ -264,7 +264,7 @@ private:
 
 template <unsigned int dim>
 inline void
-spatialDiscretization<dim>::postprocess_and_validate()
+SpatialDiscretization<dim>::postprocess_and_validate()
 {
   // Assign the triangulation type
   if (radius != 0.0 && size.norm() == 0.0)
@@ -317,7 +317,7 @@ spatialDiscretization<dim>::postprocess_and_validate()
 
 template <unsigned int dim>
 inline void
-spatialDiscretization<dim>::print_parameter_summary() const
+SpatialDiscretization<dim>::print_parameter_summary() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"

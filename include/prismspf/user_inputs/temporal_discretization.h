@@ -13,7 +13,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds temporal discretization parameters.
  */
-struct temporalDiscretization
+struct TemporalDiscretization
 {
 public:
   /**
@@ -141,7 +141,7 @@ private:
 };
 
 inline void
-temporalDiscretization::postprocess_and_validate(
+TemporalDiscretization::postprocess_and_validate(
   const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   // If all of the variables are `TimeIndependent`, `Auxiliary`, or `Constant` then
@@ -177,7 +177,7 @@ temporalDiscretization::postprocess_and_validate(
 }
 
 inline void
-temporalDiscretization::print_parameter_summary() const
+TemporalDiscretization::print_parameter_summary() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"

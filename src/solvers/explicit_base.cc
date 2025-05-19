@@ -28,7 +28,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-explicitBase<dim, degree>::explicitBase(
+ExplicitBase<dim, degree>::ExplicitBase(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const InvmHandler<dim, degree>                         &_invm_handler,
@@ -49,7 +49,7 @@ explicitBase<dim, degree>::explicitBase(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::compute_subset_attributes(
+ExplicitBase<dim, degree>::compute_subset_attributes(
   const FieldSolveType &field_solve_type)
 {
   Assert((field_solve_type == FieldSolveType::Explicit ||
@@ -72,7 +72,7 @@ explicitBase<dim, degree>::compute_subset_attributes(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::compute_shared_dependencies()
+ExplicitBase<dim, degree>::compute_shared_dependencies()
 {
   // Compute the shared dependency flags
   auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
@@ -118,7 +118,7 @@ explicitBase<dim, degree>::compute_shared_dependencies()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::set_initial_condition()
+ExplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
@@ -143,7 +143,7 @@ explicitBase<dim, degree>::set_initial_condition()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::print()
+ExplicitBase<dim, degree>::print()
 {
   ConditionalOStreams::pout_summary()
     << "  ==============================================\n"
@@ -162,6 +162,6 @@ explicitBase<dim, degree>::print()
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-INSTANTIATE_BI_TEMPLATE(explicitBase)
+INSTANTIATE_BI_TEMPLATE(ExplicitBase)
 
 PRISMS_PF_END_NAMESPACE

@@ -24,7 +24,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
+ExplicitPostprocessSolver<dim, degree>::ExplicitPostprocessSolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const InvmHandler<dim, degree>                         &_invm_handler,
@@ -33,7 +33,7 @@ explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
   const dealii::MappingQ1<dim>                           &_mapping,
   SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : explicitBase<dim, degree>(_user_inputs,
+  : ExplicitBase<dim, degree>(_user_inputs,
                               _matrix_free_handler,
                               _invm_handler,
                               _constraint_handler,
@@ -45,7 +45,7 @@ explicitPostprocessSolver<dim, degree>::explicitPostprocessSolver(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitPostprocessSolver<dim, degree>::init()
+ExplicitPostprocessSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::ExplicitPostprocess);
 
@@ -89,7 +89,7 @@ explicitPostprocessSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitPostprocessSolver<dim, degree>::solve()
+ExplicitPostprocessSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -116,6 +116,6 @@ explicitPostprocessSolver<dim, degree>::solve()
   this->get_solution_handler().update(FieldSolveType::ExplicitPostprocess);
 }
 
-INSTANTIATE_BI_TEMPLATE(explicitPostprocessSolver)
+INSTANTIATE_BI_TEMPLATE(ExplicitPostprocessSolver)
 
 PRISMS_PF_END_NAMESPACE

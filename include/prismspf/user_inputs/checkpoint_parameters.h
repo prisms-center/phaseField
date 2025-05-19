@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds checkpoint parameters.
  */
-struct checkpointParameters
+struct CheckpointParameters
 {
 public:
   /**
@@ -34,7 +34,7 @@ public:
    * \brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(const temporalDiscretization &temporal_discretization);
+  postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
    * \brief Print parameters to summary.log
@@ -96,14 +96,14 @@ private:
 };
 
 inline bool
-checkpointParameters::should_checkpoint(unsigned int increment) const
+CheckpointParameters::should_checkpoint(unsigned int increment) const
 {
   return checkpoint_list.contains(increment);
 }
 
 inline void
-checkpointParameters::postprocess_and_validate(
-  const temporalDiscretization &temporal_discretization)
+CheckpointParameters::postprocess_and_validate(
+  const TemporalDiscretization &temporal_discretization)
 {
   // If the user has specified a list and we have list checkpoint use that and return
   // early
@@ -174,7 +174,7 @@ checkpointParameters::postprocess_and_validate(
 }
 
 inline void
-checkpointParameters::print_parameter_summary() const
+CheckpointParameters::print_parameter_summary() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"

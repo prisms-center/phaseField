@@ -29,7 +29,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
+NonexplicitAuxiliarySolver<dim, degree>::NonexplicitAuxiliarySolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -40,7 +40,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
   dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
   SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : nonexplicitBase<dim, degree>(_user_inputs,
+  : NonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
                                  _invm_handler,
@@ -54,7 +54,7 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitAuxiliarySolver<dim, degree>::init()
+NonexplicitAuxiliarySolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitAuxiliary);
 
@@ -113,7 +113,7 @@ nonexplicitAuxiliarySolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitAuxiliarySolver<dim, degree>::solve()
+NonexplicitAuxiliarySolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -141,6 +141,6 @@ nonexplicitAuxiliarySolver<dim, degree>::solve()
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitAuxiliarySolver)
+INSTANTIATE_BI_TEMPLATE(NonexplicitAuxiliarySolver)
 
 PRISMS_PF_END_NAMESPACE

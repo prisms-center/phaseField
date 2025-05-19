@@ -26,7 +26,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-UserInputParameters<dim>::UserInputParameters(inputFileReader          &input_file_reader,
+UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
   : var_attributes(input_file_reader.get_var_attributes())
 {
@@ -284,7 +284,7 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
 
-          linearSolverParameters linear_solver_parameters;
+          LinearSolverParameters linear_solver_parameters;
 
           // Set the tolerance type
           const std::string type_string = parameter_handler.get("tolerance type");
@@ -351,7 +351,7 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
           subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
 
-          nonlinearSolverParameters nonlinear_solver_parameters;
+          NonlinearSolverParameters nonlinear_solver_parameters;
           nonlinear_solver_parameters.max_iterations =
             parameter_handler.get_integer("max iterations");
           nonlinear_solver_parameters.step_length =
@@ -369,7 +369,7 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
 template <unsigned int dim>
 void
 UserInputParameters<dim>::load_model_constants(
-  const inputFileReader    &input_file_reader,
+  const InputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
   for (const std::string &constant_name : input_file_reader.get_model_constant_names())

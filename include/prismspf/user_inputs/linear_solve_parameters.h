@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that stores relevant linear solve information of a certain field
  */
-struct linearSolverParameters
+struct LinearSolverParameters
 {
 public:
   // Solver tolerance
@@ -50,7 +50,7 @@ public:
 /**
  * \brief Struct that holds linear solver parameters.
  */
-struct linearSolveParameters
+struct LinearSolveParameters
 {
 public:
   /**
@@ -88,7 +88,7 @@ public:
    */
   void
   set_linear_solve_parameters(unsigned int                  field_index,
-                              const linearSolverParameters &linear_solver_parameters)
+                              const LinearSolverParameters &linear_solver_parameters)
   {
     linear_solve[field_index] = linear_solver_parameters;
   }
@@ -96,7 +96,7 @@ public:
   /**
    * \brief Return the linear solve parameters for a given field.
    */
-  [[nodiscard]] const linearSolverParameters &
+  [[nodiscard]] const LinearSolverParameters &
   get_linear_solve_parameters(unsigned int field_index) const
   {
     AssertThrow(has_linear_solve_parameters(field_index),
@@ -108,7 +108,7 @@ public:
   /**
    * \brief Return the linear solve parameters for a given field.
    */
-  [[nodiscard]] const std::map<unsigned int, linearSolverParameters> &
+  [[nodiscard]] const std::map<unsigned int, LinearSolverParameters> &
   get_linear_solve_parameters() const
   {
     return linear_solve;
@@ -116,17 +116,17 @@ public:
 
 private:
   // Map of linear solve parameters for fields that require them
-  std::map<unsigned int, linearSolverParameters> linear_solve;
+  std::map<unsigned int, LinearSolverParameters> linear_solve;
 };
 
 inline void
-linearSolveParameters::postprocess_and_validate()
+LinearSolveParameters::postprocess_and_validate()
 {
   // Nothing to do here for now
 }
 
 inline void
-linearSolveParameters::print_parameter_summary() const
+LinearSolveParameters::print_parameter_summary() const
 {
   if (!linear_solve.empty())
     {

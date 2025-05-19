@@ -24,7 +24,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-explicitSolver<dim, degree>::explicitSolver(
+ExplicitSolver<dim, degree>::ExplicitSolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const InvmHandler<dim, degree>                         &_invm_handler,
@@ -33,7 +33,7 @@ explicitSolver<dim, degree>::explicitSolver(
   const dealii::MappingQ1<dim>                           &_mapping,
   SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : explicitBase<dim, degree>(_user_inputs,
+  : ExplicitBase<dim, degree>(_user_inputs,
                               _matrix_free_handler,
                               _invm_handler,
                               _constraint_handler,
@@ -45,7 +45,7 @@ explicitSolver<dim, degree>::explicitSolver(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitSolver<dim, degree>::init()
+ExplicitSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::Explicit);
 
@@ -98,7 +98,7 @@ explicitSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitSolver<dim, degree>::solve()
+ExplicitSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -134,6 +134,6 @@ explicitSolver<dim, degree>::solve()
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(explicitSolver)
+INSTANTIATE_BI_TEMPLATE(ExplicitSolver)
 
 PRISMS_PF_END_NAMESPACE

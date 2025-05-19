@@ -14,7 +14,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that stores relevant nonlinear solve information of a certain field
  */
-struct nonlinearSolverParameters
+struct NonlinearSolverParameters
 {
 public:
   // Nonlinear step length
@@ -27,7 +27,7 @@ public:
 /**
  * \brief Struct that holds nonlinear solver parameters.
  */
-struct nonlinearSolveParameters
+struct NonlinearSolveParameters
 {
 public:
   /**
@@ -47,7 +47,7 @@ public:
    */
   void
   set_nonlinear_solve_parameters(const types::index              &index,
-                                 const nonlinearSolverParameters &parameters)
+                                 const NonlinearSolverParameters &parameters)
   {
     nonlinear_solve[index] = parameters;
   }
@@ -55,7 +55,7 @@ public:
   /**
    * \brief Get the nonlinear solve parameters for a field index.
    */
-  [[nodiscard]] const nonlinearSolverParameters &
+  [[nodiscard]] const NonlinearSolverParameters &
   get_nonlinear_solve_parameters(const types::index &index) const
   {
     return nonlinear_solve.at(index);
@@ -63,17 +63,17 @@ public:
 
 private:
   // Map of nonlinear solve parameters for fields that require them
-  std::map<types::index, nonlinearSolverParameters> nonlinear_solve;
+  std::map<types::index, NonlinearSolverParameters> nonlinear_solve;
 };
 
 inline void
-nonlinearSolveParameters::postprocess_and_validate()
+NonlinearSolveParameters::postprocess_and_validate()
 {
   // Nothing to do here for now
 }
 
 inline void
-nonlinearSolveParameters::print_parameter_summary() const
+NonlinearSolveParameters::print_parameter_summary() const
 {
   if (!nonlinear_solve.empty())
     {

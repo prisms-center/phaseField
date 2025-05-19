@@ -23,7 +23,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-linearSolverBase<dim, degree>::linearSolverBase(
+LinearSolverBase<dim, degree>::LinearSolverBase(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
@@ -107,7 +107,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-linearSolverBase<dim, degree>::compute_solver_tolerance()
+LinearSolverBase<dim, degree>::compute_solver_tolerance()
 {
   tolerance = user_inputs->get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
@@ -121,6 +121,6 @@ linearSolverBase<dim, degree>::compute_solver_tolerance()
                     .tolerance;
 }
 
-INSTANTIATE_BI_TEMPLATE(linearSolverBase)
+INSTANTIATE_BI_TEMPLATE(LinearSolverBase)
 
 PRISMS_PF_END_NAMESPACE

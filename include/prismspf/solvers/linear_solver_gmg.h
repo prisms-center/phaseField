@@ -36,7 +36,7 @@ class DofHandler;
  * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
  */
 template <unsigned int dim, unsigned int degree>
-class GMGSolver : public linearSolverBase<dim, degree>
+class GMGSolver : public LinearSolverBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
