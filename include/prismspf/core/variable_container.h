@@ -229,46 +229,47 @@ private:
   /**
    * \brief Typedef for scalar evaluation objects.
    */
-  using scalar_FEEval = dealii::
+  using ScalarFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, 1, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for vector evaluation objects.
    */
-  using vector_FEEval = dealii::
+  using VectorFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for the varaint evaluation objects. Note that the states become
    * degenerate at dim = 1, hence the use of std::conditional_t.
    */
-  using variant_FEEval = std::conditional_t<
-    std::is_same_v<scalar_FEEval, vector_FEEval>,
-    std::unique_ptr<scalar_FEEval>,
-    std::variant<std::unique_ptr<scalar_FEEval>, std::unique_ptr<vector_FEEval>>>;
+  using VariantFEEvaluation =
+    std::conditional_t<std::is_same_v<ScalarFEEvaluation, VectorFEEvaluation>,
+                       std::unique_ptr<ScalarFEEvaluation>,
+                       std::variant<std::unique_ptr<ScalarFEEvaluation>,
+                                    std::unique_ptr<VectorFEEvaluation>>>;
 
   /**
    * \brief Typedef for scalar diagonal matrix objects.
    */
-  using scalar_diag = dealii::AlignedVector<size_type>;
+  using ScalarDiagonal = dealii::AlignedVector<size_type>;
 
   /**
    * \brief Typedef for vector diagonal matrix objects.
    */
-  using vector_diag = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
+  using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
 
   /**
    * \brief Typedef for the varaint diagonal matrix objects.
    */
-  using variant_diag =
-    std::variant<std::unique_ptr<scalar_diag>, std::unique_ptr<vector_diag>>;
+  using VariantDiagonal =
+    std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;
 
   /**
    * \brief Check whether the map entry for the  FEEvaluation exists.
    */
   void
-  FEEval_exists(const unsigned int   &dependency_index,
-                const DependencyType &dependency_type) const;
+  feevaluation_exists(const unsigned int   &dependency_index,
+                      const DependencyType &dependency_type) const;
 
   /**
    * \brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -351,7 +352,7 @@ private:
    * for the global variable, the second is for the DependencyType, and the value is
    * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<DependencyType, variant_FEEval>> feeval_map;
+  std::map<unsigned int, std::map<DependencyType, VariantFEEvaluation>> feeval_map;
 
   /**
    * \brief The attribute list of the relevant subset of variables.
@@ -399,7 +400,7 @@ private:
   /**
    * \brief Diagonal matrix that is used for preconditioning of fields.
    */
-  variant_diag diagonal;
+  VariantDiagonal diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE

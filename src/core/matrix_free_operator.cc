@@ -275,6 +275,8 @@ MatrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
                         true);
 }
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
@@ -282,6 +284,8 @@ MatrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
 {
   this->vmult(dst, src);
 }
+
+// NOLINTEND(readability-identifier-naming)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void

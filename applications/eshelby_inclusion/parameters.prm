@@ -22,8 +22,8 @@ subsection linear solver parameters: u
     set min mg level = 0
 end
 
-set boundary condition for u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set boundary condition for u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set boundary condition for u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set boundary condition for u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set boundary condition for u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
 
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants

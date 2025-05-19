@@ -615,12 +615,12 @@ ConstraintHandler<dim, degree>::apply_constraints(
   // Apply the boundary conditions
   switch (boundary_type)
     {
-      case BoundaryCondition::type::NATURAL:
+      case BoundaryCondition::type::Natural:
         {
           apply_natural_constraints();
           break;
         }
-      case BoundaryCondition::type::DIRICHLET:
+      case BoundaryCondition::type::Dirichlet:
         {
           apply_dirichlet_constraints<number>(
             mapping,
@@ -632,7 +632,7 @@ ConstraintHandler<dim, degree>::apply_constraints(
             mask);
           break;
         }
-      case BoundaryCondition::type::PERIODIC:
+      case BoundaryCondition::type::Periodic:
         {
           // Skip boundary ids that are odd since those map to the even faces
           if (boundary_id % 2 != 0)
@@ -642,13 +642,13 @@ ConstraintHandler<dim, degree>::apply_constraints(
           apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
           break;
         }
-      case BoundaryCondition::type::NEUMANN:
+      case BoundaryCondition::type::Neumann:
         {
           Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
           break;
         }
-      case BoundaryCondition::type::NON_UNIFORM_DIRICHLET:
-      case BoundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
+      case BoundaryCondition::type::NonuniformDirichlet:
+      case BoundaryCondition::type::TimeDependentNonuniformDirichlet:
         {
           apply_nonuniform_dirichlet_constraints<number>(mapping,
                                                          dof_handler,
@@ -660,12 +660,12 @@ ConstraintHandler<dim, degree>::apply_constraints(
                                                          is_change_term);
           break;
         }
-      case BoundaryCondition::type::NON_UNIFORM_NEUMANN:
+      case BoundaryCondition::type::NonuniformNeumann:
         {
           Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
           break;
         }
-      case BoundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
+      case BoundaryCondition::type::TimeDependentNonuniformNeumann:
         {
           Assert(false,
                  FeatureNotImplemented(

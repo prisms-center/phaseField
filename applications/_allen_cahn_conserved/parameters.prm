@@ -25,8 +25,8 @@ set Print timing information with output = true
 set Skip print steps = 1000
 
 
-set Boundary condition for variable n = NATURAL
-set Boundary condition for variable mu = NATURAL
+set Boundary condition for variable n = Natural
+set Boundary condition for variable mu = Natural
 
 
 set Model constant MnV = 1.0, DOUBLE

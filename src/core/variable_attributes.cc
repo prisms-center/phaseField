@@ -411,13 +411,13 @@ VariableAttributes::find_circular_dependencies(
   // Set of nodes in the current recursion stack
   std::set<unsigned int> current_stack;
 
-  recursive_DFS(other_var_attributes, visited, current_stack, field_index);
+  recursive_depth_first_search(other_var_attributes, visited, current_stack, field_index);
 }
 
 // NOLINTBEGIN(misc-no-recursion)
 
 void
-VariableAttributes::recursive_DFS(
+VariableAttributes::recursive_depth_first_search(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes,
   std::set<unsigned int>                           &visited,
   std::set<unsigned int>                           &current_stack,
@@ -439,7 +439,10 @@ VariableAttributes::recursive_DFS(
       // Otherwise, if we haven't already visited this node continue down the graph
       if (!visited.contains(dependency))
         {
-          recursive_DFS(other_var_attributes, visited, current_stack, dependency);
+          recursive_depth_first_search(other_var_attributes,
+                                       visited,
+                                       current_stack,
+                                       dependency);
         }
     }
 

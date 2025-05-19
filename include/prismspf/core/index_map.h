@@ -13,19 +13,19 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <template <typename...> class T>
-struct is_std_map : std::false_type
+struct IsStdMap : std::false_type
 {};
 
 template <>
-struct is_std_map<std::map> : std::true_type
+struct IsStdMap<std::map> : std::true_type
 {};
 
 template <typename T>
-struct is_std_pair : std::false_type
+struct IsStdPair : std::false_type
 {};
 
 template <typename T, typename U>
-struct is_std_pair<std::pair<T, U>> : std::true_type
+struct IsStdPair<std::pair<T, U>> : std::true_type
 {};
 
 /**
@@ -42,46 +42,46 @@ struct is_std_pair<std::pair<T, U>> : std::true_type
  *
  * Passing some map to this class will construct some local indexing to use instead.
  */
-template <template <typename...> class mapType,
+template <template <typename...> class MapType,
           typename value,
           typename key1,
           typename key2 = key1>
-class indexMap
+class IndexMap
 {
 public:
-  using simpleMap = mapType<key1, value>;
-  using nestedMap = mapType<key1, mapType<key2, value>>;
+  using SimpleMap = MapType<key1, value>;
+  using NestedMap = MapType<key1, MapType<key2, value>>;
 
   /**
    * \brief Constructor.
    */
-  explicit indexMap(const simpleMap &_map);
+  explicit IndexMap(const SimpleMap &_map);
 
   /**
    * \brief Constructor with nested maps.
    */
-  explicit indexMap(const nestedMap &_map);
+  explicit IndexMap(const NestedMap &_map);
 
 private:
   /**
-   * \brief Whether the mapType is a std::map.
+   * \brief Whether the MapType is a std::map.
    *
    * This is important because we want the same ordering regardless of whether a std::map
    * or std::unordered_map is passed. If a std::map is passed we don't have to spend time
    * creating a temp map to make sure the ordering is the same.
    */
-  bool mapType_is_std_map = is_std_map<mapType>::value;
+  bool template_map_is_std_map = IsStdMap<MapType>::value;
 
   /**
    * \brief Whether key1 is a pair.
    */
-  bool key1_is_pair = is_std_pair<key1>::value;
+  bool key1_is_pair = IsStdPair<key1>::value;
 
   /**
    * \brief Whether key2 is a pair. This is unsupported and will immediately throw an
    * error.
    */
-  bool key2_is_pair = is_std_pair<key2>::value;
+  bool key2_is_pair = IsStdPair<key2>::value;
 
   /**
    * \brief Vector of the keys.

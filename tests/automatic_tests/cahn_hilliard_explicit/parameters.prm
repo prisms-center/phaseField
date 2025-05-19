@@ -19,8 +19,8 @@ subsection output
     set number = 5
 end
 
-set boundary condition for c = NATURAL
-set boundary condition for mu = NATURAL
+set boundary condition for c = Natural
+set boundary condition for mu = Natural
 
 set Model constant McV = 1.0, DOUBLE
 set Model constant KcV = 1.5, DOUBLE

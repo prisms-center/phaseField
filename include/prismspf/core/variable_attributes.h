@@ -261,10 +261,11 @@ private:
    * \brief Recursive DFS
    */
   void
-  recursive_DFS(const std::map<unsigned int, VariableAttributes> &other_var_attributes,
-                std::set<unsigned int>                           &visited,
-                std::set<unsigned int>                           &current_stack,
-                const unsigned int                               &vertex);
+  recursive_depth_first_search(
+    const std::map<unsigned int, VariableAttributes> &other_var_attributes,
+    std::set<unsigned int>                           &visited,
+    std::set<unsigned int>                           &current_stack,
+    const unsigned int                               &vertex);
 
   /**
    * \brief Field name. \remark User-set

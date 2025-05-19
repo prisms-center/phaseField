@@ -52,7 +52,7 @@ InvmHandler<dim, degree, number>::InvmHandler(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 InvmHandler<dim, degree, number>::initialize(
-  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data)
+  std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> _data)
 {
   Assert(data == nullptr,
          dealii::ExcMessage("A ptr to a matrix-free object has already been assigned. "

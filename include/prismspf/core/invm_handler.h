@@ -26,7 +26,7 @@ class InvmHandler
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
-  using size_type  = dealii::VectorizedArray<number>;
+  using SizeType   = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
@@ -38,7 +38,7 @@ public:
    * \brief Initialize.
    */
   void
-  initialize(std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data);
+  initialize(std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> _data);
 
   /**
    * \brief Compute the mass matrix for scalar/vector fields.
@@ -88,7 +88,7 @@ private:
   /**
    * \brief Matrix-free object.
    */
-  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> data;
+  std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> data;
 
   /**
    * \brief Inverse of the mass matrix for scalar fields.

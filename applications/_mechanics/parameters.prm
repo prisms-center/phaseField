@@ -26,9 +26,9 @@ set Output condition =  EQUAL_SPACING
 set Number of outputs = 1
 
 
-set Boundary condition for variable u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set Boundary condition for variable u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set Boundary condition for variable u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable u, x component = Dirichlet: -1.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
+set Boundary condition for variable u, y component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
+set Boundary condition for variable u, z component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 
 
 set Model constant CIJ = (2.0,0.3), isotropic elastic constants

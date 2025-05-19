@@ -31,8 +31,8 @@ set Time step = 1.0e-4
 set Simulation end time = 5.0
 
 
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n = NATURAL
+set Boundary condition for variable c = Natural
+set Boundary condition for variable n = Natural
 
 
 set Model constant Mc = 1.0, DOUBLE

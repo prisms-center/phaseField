@@ -62,12 +62,12 @@ set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 10
 
 
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable mu = NATURAL
-set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set Boundary condition for variable c = Natural
+set Boundary condition for variable mu = Natural
+set Boundary condition for variable n1 = Natural
+set Boundary condition for variable u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set Boundary condition for variable u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set Boundary condition for variable u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
 
 
 

@@ -90,7 +90,7 @@ customPDE<dim, degree>::setInitialCondition(
 }
 
 // ===========================================================================
-// FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
+// FUNCTION FOR NON-UNIFORM Dirichlet BOUNDARY CONDITIONS
 // ===========================================================================
 
 template <int dim, int degree>
@@ -104,7 +104,7 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
   [[maybe_unused]] dealii::Vector<double>   &vector_BC)
 {
   // --------------------------------------------------------------------------
-  // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
+  // ENTER THE NON-UNIFORM Dirichlet BOUNDARY CONDITIONS HERE
   // --------------------------------------------------------------------------
   // Enter the function describing conditions for the fields at point "p".
   // Use "if" statements to set the boundary condition for each variable

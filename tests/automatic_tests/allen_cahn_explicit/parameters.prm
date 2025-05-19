@@ -19,7 +19,7 @@ subsection output
     set number = 5
 end
 
-set boundary condition for n = NATURAL
+set boundary condition for n = Natural
 
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE

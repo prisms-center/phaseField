@@ -30,9 +30,9 @@ set Time step = 0.002
 set Number of time steps = 200000
 
 
-set Boundary condition for variable U =  NATURAL
-set Boundary condition for variable phi =  NATURAL
-set Boundary condition for variable xi =  NATURAL
+set Boundary condition for variable U =  Natural
+set Boundary condition for variable phi =  Natural
+set Boundary condition for variable xi =  Natural
 
 
 

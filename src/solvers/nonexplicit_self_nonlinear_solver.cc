@@ -29,7 +29,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
+NonexplicitSelfnonlinearSolver<dim, degree>::NonexplicitSelfnonlinearSolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const MatrixfreeHandler<dim>                           &_matrix_free_handler,
   const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -58,7 +58,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::nonexplicitSelfNonlinearSolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitSelfNonlinearSolver<dim, degree>::init()
+NonexplicitSelfnonlinearSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitSelfnonlinear);
 
@@ -109,7 +109,7 @@ nonexplicitSelfNonlinearSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitSelfNonlinearSolver<dim, degree>::solve()
+NonexplicitSelfnonlinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
   if (this->get_subset_attributes().empty())
@@ -164,6 +164,6 @@ nonexplicitSelfNonlinearSolver<dim, degree>::solve()
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitSelfNonlinearSolver)
+INSTANTIATE_BI_TEMPLATE(NonexplicitSelfnonlinearSolver)
 
 PRISMS_PF_END_NAMESPACE

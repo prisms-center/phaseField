@@ -19,12 +19,12 @@ subsection output
   set number = 5
 end
 
-set boundary condition for n = NATURAL
-set boundary condition for Ex = NATURAL
-set boundary condition for Gx = NATURAL
-set boundary condition for dndt = NATURAL
-set boundary condition for u, x component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET
-set boundary condition for u, y component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET 
+set boundary condition for n = Natural
+set boundary condition for Ex = Natural
+set boundary condition for Gx = Natural
+set boundary condition for dndt = Natural
+set boundary condition for u, x component = TimeDependentNonuniformDirichlet
+set boundary condition for u, y component = TimeDependentNonuniformDirichlet 
 
 subsection linear solver parameters: u
     set tolerance type = AbsoluteResidual

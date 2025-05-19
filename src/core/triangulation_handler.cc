@@ -239,7 +239,7 @@ TriangulationHandler<dim>::mark_periodic()
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (boundary_type == BoundaryCondition::type::PERIODIC)
+              if (boundary_type == BoundaryCondition::type::Periodic)
                 {
                   // Skip boundary ids that are odd since those map to the even faces
                   if (boundary_id % 2 != 0)

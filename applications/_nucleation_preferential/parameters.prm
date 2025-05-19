@@ -42,8 +42,8 @@ set Checkpoint condition = EQUAL_SPACING
 set Number of checkpoints = 2
 
 
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n = NATURAL
+set Boundary condition for variable c = Natural
+set Boundary condition for variable n = Natural
 
 
 set Time steps between nucleation attempts = 30

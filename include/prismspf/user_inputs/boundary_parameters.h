@@ -37,15 +37,15 @@ public:
    */
   enum type : std::uint8_t
   {
-    UNDEFINED_BOUNDARY,
-    NATURAL,
-    DIRICHLET,
-    PERIODIC,
-    NEUMANN,
-    NON_UNIFORM_DIRICHLET,
-    NON_UNIFORM_NEUMANN,
-    TIME_DEPENDENT_NON_UNIFORM_DIRICHLET,
-    TIME_DEPENDENT_NON_UNIFORM_NEUMANN,
+    UndefinedBoundary,
+    Natural,
+    Dirichlet,
+    Periodic,
+    Neumann,
+    NonuniformDirichlet,
+    NonuniformNeumann,
+    TimeDependentNonuniformDirichlet,
+    TimeDependentNonuniformNeumann,
   };
 
   /**
@@ -82,7 +82,7 @@ public:
   [[nodiscard]] double
   get_dirichlet_value(dealii::types::boundary_id boundary_id) const
   {
-    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+    Assert(boundary_condition_map.at(boundary_id) == type::Dirichlet,
            dealii::ExcMessage("Boundary condition is not dirichlet"));
     Assert(dirichlet_value_map.contains(boundary_id),
            dealii::ExcMessage("Value does not exist in the map."));
@@ -95,7 +95,7 @@ public:
   void
   add_boundary_condition(dealii::types::boundary_id boundary_id, double boundary_value)
   {
-    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+    Assert(boundary_condition_map.at(boundary_id) == type::Dirichlet,
            dealii::ExcMessage("Boundary condition is not dirichlet"));
     dirichlet_value_map.emplace(boundary_id, boundary_value);
   }
@@ -108,24 +108,24 @@ public:
   {
     switch (boundary_type)
       {
-        case type::UNDEFINED_BOUNDARY:
-          return "UNDEFINED_BOUNDARY";
-        case type::NATURAL:
-          return "NATURAL";
-        case type::DIRICHLET:
-          return "DIRICHLET";
-        case type::PERIODIC:
-          return "PERIODIC";
-        case type::NEUMANN:
-          return "NEUMANN";
-        case type::NON_UNIFORM_DIRICHLET:
-          return "NON_UNIFORM_DIRICHLET";
-        case type::NON_UNIFORM_NEUMANN:
-          return "NON_UNIFORM_NEUMANN";
-        case type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
-          return "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET";
-        case type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
-          return "TIME_DEPENDENT_NON_UNIFORM_NEUMANN";
+        case type::UndefinedBoundary:
+          return "UndefinedBoundary";
+        case type::Natural:
+          return "Natural";
+        case type::Dirichlet:
+          return "Dirichlet";
+        case type::Periodic:
+          return "Periodic";
+        case type::Neumann:
+          return "Neumann";
+        case type::NonuniformDirichlet:
+          return "NonuniformDirichlet";
+        case type::NonuniformNeumann:
+          return "NonuniformNeumann";
+        case type::TimeDependentNonuniformDirichlet:
+          return "TimeDependentNonuniformDirichlet";
+        case type::TimeDependentNonuniformNeumann:
+          return "TimeDependentNonuniformNeumann";
         default:
           return "UNKNOWN";
       }
@@ -291,7 +291,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
             {
               if (variable.is_postprocess())
                 {
-                  set_boundary("NATURAL", variable.get_field_index(), i);
+                  set_boundary("Natural", variable.get_field_index(), i);
                 }
               else
                 {
@@ -314,7 +314,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
         {
           if (variable.is_postprocess())
             {
-              set_boundary("NATURAL", variable.get_field_index(), 0);
+              set_boundary("Natural", variable.get_field_index(), 0);
             }
           else
             {
@@ -439,7 +439,7 @@ BoundaryParameters<dim>::print_parameter_summary() const
               ConditionalOStreams::pout_summary()
                 << "    Boundary id: " << domain_id << "    "
                 << "Condition: " << boundary_condition.to_string(boundary_type);
-              if (boundary_type == BoundaryCondition::type::DIRICHLET)
+              if (boundary_type == BoundaryCondition::type::Dirichlet)
                 {
                   ConditionalOStreams::pout_summary()
                     << " = " << boundary_condition.get_dirichlet_value(domain_id);
@@ -509,16 +509,16 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
   BoundaryCondition condition;
   for (unsigned int i = 0; i < (2 * dim); i++)
     {
-      const std::string dirichlet = "DIRICHLET";
-      const std::string neumann   = "NEUMANN";
+      const std::string dirichlet = "Dirichlet";
+      const std::string neumann   = "Neumann";
 
-      if (boost::iequals(bc_string_list[i], "NATURAL"))
+      if (boost::iequals(bc_string_list[i], "Natural"))
         {
-          condition.add_boundary_condition(i, BoundaryCondition::type::NATURAL);
+          condition.add_boundary_condition(i, BoundaryCondition::type::Natural);
         }
       else if (boost::iequals(bc_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
-          condition.add_boundary_condition(i, BoundaryCondition::type::DIRICHLET);
+          condition.add_boundary_condition(i, BoundaryCondition::type::Dirichlet);
           std::string dirichlet_value =
             bc_string_list[i].substr(dirichlet.size() + 1, bc_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
@@ -526,32 +526,32 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
                                            dealii::Utilities::string_to_double(
                                              dirichlet_value));
         }
-      else if (boost::iequals(bc_string_list[i], "PERIODIC"))
+      else if (boost::iequals(bc_string_list[i], "Periodic"))
         {
-          condition.add_boundary_condition(i, BoundaryCondition::type::PERIODIC);
+          condition.add_boundary_condition(i, BoundaryCondition::type::Periodic);
         }
       else if (boost::iequals(bc_string_list[i].substr(0, neumann.size()), neumann))
         {
           AssertThrow(false, FeatureNotImplemented("Neumann boundary conditions"));
         }
-      else if (boost::iequals(bc_string_list[i], "NON_UNIFORM_DIRICHLET"))
+      else if (boost::iequals(bc_string_list[i], "NonuniformDirichlet"))
         {
-          condition
-            .add_boundary_condition(i, BoundaryCondition::type::NON_UNIFORM_DIRICHLET);
+          condition.add_boundary_condition(i,
+                                           BoundaryCondition::type::NonuniformDirichlet);
         }
-      else if (boost::iequals(bc_string_list[i], "NON_UNIFORM_NEUMANN"))
+      else if (boost::iequals(bc_string_list[i], "NonuniformNeumann"))
         {
           AssertThrow(false,
                       FeatureNotImplemented("Nonuniform neumann boundary conditions"));
         }
-      else if (boost::iequals(bc_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET"))
+      else if (boost::iequals(bc_string_list[i], "TimeDependentNonuniformDirichlet"))
         {
           condition.add_boundary_condition(
             i,
-            BoundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
+            BoundaryCondition::type::TimeDependentNonuniformDirichlet);
           time_dependent_bc_list.insert(index);
         }
-      else if (boost::iequals(bc_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
+      else if (boost::iequals(bc_string_list[i], "TimeDependentNonuniformNeumann"))
         {
           AssertThrow(false,
                       FeatureNotImplemented(
@@ -568,8 +568,8 @@ BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
       // both sides of the domain.
       if (i % 2 == 0)
         {
-          AssertThrow(boost::iequals(bc_string_list[i], "PERIODIC") ==
-                        boost::iequals(bc_string_list[i + 1], "PERIODIC"),
+          AssertThrow(boost::iequals(bc_string_list[i], "Periodic") ==
+                        boost::iequals(bc_string_list[i + 1], "Periodic"),
                       dealii::ExcMessage("Periodic boundary condition must be "
                                          "specified on both sides of domain"));
         }
@@ -612,7 +612,7 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type == BoundaryCondition::type::PERIODIC)
+              if (boundary_type == BoundaryCondition::type::Periodic)
                 {
                   periodic_ids[domain_id] = true;
                 }
@@ -626,7 +626,7 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type != BoundaryCondition::type::PERIODIC &&
+              if (boundary_type != BoundaryCondition::type::Periodic &&
                   periodic_ids[domain_id])
                 {
                   AssertThrow(

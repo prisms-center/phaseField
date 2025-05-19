@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles the self-nonlinear solves of a single nonexplicit field
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitSelfNonlinearSolver : public NonexplicitBase<dim, degree>
+class NonexplicitSelfnonlinearSolver : public NonexplicitBase<dim, degree>
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
@@ -27,7 +27,7 @@ public:
   /**
    * \brief Constructor.
    */
-  nonexplicitSelfNonlinearSolver(
+  NonexplicitSelfnonlinearSolver(
     const UserInputParameters<dim>                         &_user_inputs,
     const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
     const TriangulationHandler<dim>                        &_triangulation_handler,
@@ -44,7 +44,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitSelfNonlinearSolver() override = default;
+  ~NonexplicitSelfnonlinearSolver() override = default;
 
   /**
    * \brief Initialize system.

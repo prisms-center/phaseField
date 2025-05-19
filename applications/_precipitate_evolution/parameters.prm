@@ -19,13 +19,13 @@ subsection output
   set number = 10
 end
 
-set boundary condition for c = NATURAL
-set boundary condition for n1 = NATURAL
-set boundary condition for n2 = NATURAL
-set boundary condition for n3 = NATURAL
-set boundary condition for u, x component = DIRICHLET: 0.0
-set boundary condition for u, y component = DIRICHLET: 0.0
-set boundary condition for u, z component = DIRICHLET: 0.0
+set boundary condition for c = Natural
+set boundary condition for n1 = Natural
+set boundary condition for n2 = Natural
+set boundary condition for n3 = Natural
+set boundary condition for u, x component = Dirichlet: 0.0
+set boundary condition for u, y component = Dirichlet: 0.0
+set boundary condition for u, z component = Dirichlet: 0.0
 
 subsection linear solver parameters: u
     set tolerance type = AbsoluteResidual

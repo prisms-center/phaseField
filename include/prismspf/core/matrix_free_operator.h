@@ -130,11 +130,15 @@ public:
   void
   vmult(VectorType &dst, const VectorType &src) const;
 
+  // NOLINTBEGIN(readability-identifier-naming)
+
   /**
    * \brief Transpose matrix-vector multiplication.
    */
   void
   Tvmult(VectorType &dst, const VectorType &src) const;
+
+  // NOLINTEND(readability-identifier-naming)
 
   /**
    * \brief Compute the explicit update.

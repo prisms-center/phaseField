@@ -187,7 +187,7 @@ private:
   /**
    * \brief Nonexplicit self nonlinear field solver class.
    */
-  nonexplicitSelfNonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
+  NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
 };
 
 PRISMS_PF_END_NAMESPACE

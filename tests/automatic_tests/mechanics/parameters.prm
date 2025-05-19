@@ -11,9 +11,9 @@ subsection Rectangular mesh
     set z subdivisions = 1
 end
 
-set boundary condition for u, x component = DIRICHLET: -1.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set boundary condition for u, y component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
-set boundary condition for u, z component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, NATURAL, NATURAL, NATURAL
+set boundary condition for u, x component = Dirichlet: -1.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
+set boundary condition for u, y component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
+set boundary condition for u, z component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 
 subsection linear solver parameters: u
     set tolerance type = AbsoluteResidual
