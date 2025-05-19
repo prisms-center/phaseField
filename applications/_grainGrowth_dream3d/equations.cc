@@ -17,7 +17,7 @@
 // rate calculations.
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   // For the input file 'parameters.in'
   for (unsigned int var_index = 0; var_index < 8; var_index++)

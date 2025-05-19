@@ -30,7 +30,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
   const std::map<unsigned int, VariableAttributes>       &_attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  types::index                                            _current_index,
+  Types::Index                                            _current_index,
   bool                                                    _use_local_mapping)
   : Subscriptor()
   , attributes_list(&_attributes_list)
@@ -42,8 +42,8 @@ MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::initialize(
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-  const std::vector<unsigned int> &selected_field_indexes)
+  std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
+  const std::vector<unsigned int>                                 &selected_field_indexes)
 {
   data = std::move(_data);
 
@@ -304,7 +304,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_explicit_rhs(var_list, q_point_loc);
     },
@@ -330,7 +330,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_postprocess_explicit_rhs(var_list, q_point_loc);
     },
@@ -356,7 +356,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
@@ -382,7 +382,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
@@ -410,7 +410,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   // subset must not include the src vector.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },
@@ -462,7 +462,7 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   // Initialize, evaluate, and submit diagonal based on user function.
   variable_list.eval_local_diagonal(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
       this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },

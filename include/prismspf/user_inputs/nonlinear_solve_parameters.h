@@ -21,7 +21,7 @@ public:
   mutable double step_length = 1.0;
 
   // Max number of iterations for the nonlinear solve
-  unsigned int max_iterations = defaults::iterations;
+  unsigned int max_iterations = Defaults::iterations;
 };
 
 /**
@@ -46,7 +46,7 @@ public:
    * \brief Set the nonlinear solve parameters for a field index.
    */
   void
-  set_nonlinear_solve_parameters(const types::index              &index,
+  set_nonlinear_solve_parameters(const Types::Index              &index,
                                  const NonlinearSolverParameters &parameters)
   {
     nonlinear_solve[index] = parameters;
@@ -56,14 +56,14 @@ public:
    * \brief Get the nonlinear solve parameters for a field index.
    */
   [[nodiscard]] const NonlinearSolverParameters &
-  get_nonlinear_solve_parameters(const types::index &index) const
+  get_nonlinear_solve_parameters(const Types::Index &index) const
   {
     return nonlinear_solve.at(index);
   }
 
 private:
   // Map of nonlinear solve parameters for fields that require them
-  std::map<types::index, NonlinearSolverParameters> nonlinear_solve;
+  std::map<Types::Index, NonlinearSolverParameters> nonlinear_solve;
 };
 
 inline void

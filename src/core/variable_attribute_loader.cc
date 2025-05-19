@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 VariableAttributeLoader::init_variable_attributes()
 {
-  loadVariableAttributes();
+  load_variable_attributes();
 
   for (auto &[index, variable] : var_attributes)
     {

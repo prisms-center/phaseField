@@ -116,7 +116,7 @@ private:
 };
 
 inline void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {

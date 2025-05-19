@@ -31,4 +31,4 @@ set Boundary condition for variable u, y component = Dirichlet: 0.0, Dirichlet: 
 set Boundary condition for variable u, z component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 
 
-set Model constant CIJ = (2.0,0.3), isotropic elastic constants
+set Model constant compliance = (2.0,0.3), isotropic elastic constants

@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "u");
   set_variable_type(0, Vector);
@@ -33,7 +33,7 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
@@ -68,7 +68,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
             }
         }
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux - transformation_strain, stress);
+      compute_stress<dim, scalarValue>(compliance, ux - transformation_strain, stress);
       variable_list.set_vector_gradient_term(0, -stress);
     }
 }
@@ -78,13 +78,13 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
       vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, change_ux, stress);
+      compute_stress<dim, scalarValue>(compliance, change_ux, stress);
       variable_list.set_vector_gradient_term(0, stress, Change);
     }
 }

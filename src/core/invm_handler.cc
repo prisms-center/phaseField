@@ -134,8 +134,8 @@ InvmHandler<dim, degree, number>::clear()
   invm_vector   = VectorType();
   scalar_needed = false;
   vector_needed = false;
-  scalar_index  = numbers::invalid_index;
-  vector_index  = numbers::invalid_index;
+  scalar_index  = Numbers::invalid_index;
+  vector_index  = Numbers::invalid_index;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

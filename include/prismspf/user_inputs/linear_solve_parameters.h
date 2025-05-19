@@ -20,13 +20,13 @@ struct LinearSolverParameters
 {
 public:
   // Solver tolerance
-  double tolerance = defaults::tolerance;
+  double tolerance = Defaults::tolerance;
 
   // Solver tolerance type
   SolverToleranceType tolerance_type = SolverToleranceType::RelativeResidualChange;
 
   // Max number of iterations for the linear solve
-  unsigned int max_iterations = defaults::iterations;
+  unsigned int max_iterations = Defaults::iterations;
 
   // Preconditioner
   PreconditionerType preconditioner = PreconditionerType::GMG;
@@ -35,13 +35,13 @@ public:
   // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated
   // maximum eigenvalue. A choice between 5 and 20 is usually useful when the
   // preconditioner is used as a smoother in multigrid.
-  double smoothing_range = defaults::smoothing_range;
+  double smoothing_range = Defaults::smoothing_range;
 
   // Polynomial degree for the Chebyshev smoother
-  unsigned int smoother_degree = defaults::smoother_degree;
+  unsigned int smoother_degree = Defaults::smoother_degree;
 
   // Maximum number of CG iterations used to find the maximum eigenvalue
-  unsigned int eig_cg_n_iterations = defaults::eig_cg_n_iterations;
+  unsigned int eig_cg_n_iterations = Defaults::eig_cg_n_iterations;
 
   // The minimum multigrid level
   unsigned int min_mg_level = 0;

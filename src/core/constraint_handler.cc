@@ -603,7 +603,7 @@ ConstraintHandler<dim, degree>::apply_constraints(
   const dealii::DoFHandler<dim>     &dof_handler,
   dealii::AffineConstraints<number> &constraints,
   const BoundaryCondition           &boundary_condition,
-  BoundaryCondition::type            boundary_type,
+  BoundaryCondition::Type            boundary_type,
   unsigned int                       boundary_id,
   unsigned int                       component,
   unsigned int                       index,
@@ -615,12 +615,12 @@ ConstraintHandler<dim, degree>::apply_constraints(
   // Apply the boundary conditions
   switch (boundary_type)
     {
-      case BoundaryCondition::type::Natural:
+      case BoundaryCondition::Type::Natural:
         {
           apply_natural_constraints();
           break;
         }
-      case BoundaryCondition::type::Dirichlet:
+      case BoundaryCondition::Type::Dirichlet:
         {
           apply_dirichlet_constraints<number>(
             mapping,
@@ -632,7 +632,7 @@ ConstraintHandler<dim, degree>::apply_constraints(
             mask);
           break;
         }
-      case BoundaryCondition::type::Periodic:
+      case BoundaryCondition::Type::Periodic:
         {
           // Skip boundary ids that are odd since those map to the even faces
           if (boundary_id % 2 != 0)
@@ -642,13 +642,13 @@ ConstraintHandler<dim, degree>::apply_constraints(
           apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
           break;
         }
-      case BoundaryCondition::type::Neumann:
+      case BoundaryCondition::Type::Neumann:
         {
           Assert(false, FeatureNotImplemented("Neumann boundary conditions"));
           break;
         }
-      case BoundaryCondition::type::NonuniformDirichlet:
-      case BoundaryCondition::type::TimeDependentNonuniformDirichlet:
+      case BoundaryCondition::Type::NonuniformDirichlet:
+      case BoundaryCondition::Type::TimeDependentNonuniformDirichlet:
         {
           apply_nonuniform_dirichlet_constraints<number>(mapping,
                                                          dof_handler,
@@ -660,12 +660,12 @@ ConstraintHandler<dim, degree>::apply_constraints(
                                                          is_change_term);
           break;
         }
-      case BoundaryCondition::type::NonuniformNeumann:
+      case BoundaryCondition::Type::NonuniformNeumann:
         {
           Assert(false, FeatureNotImplemented("Nonuniform neumann boundary conditions"));
           break;
         }
-      case BoundaryCondition::type::TimeDependentNonuniformNeumann:
+      case BoundaryCondition::Type::TimeDependentNonuniformNeumann:
         {
           Assert(false,
                  FeatureNotImplemented(

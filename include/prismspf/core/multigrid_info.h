@@ -29,8 +29,8 @@ template <unsigned int dim>
 class MGInfo
 {
 public:
-  using min = unsigned int;
-  using max = unsigned int;
+  using Min = unsigned int;
+  using Max = unsigned int;
 
   /**
    * \brief Constructor.
@@ -49,7 +49,7 @@ public:
   /**
    * \brief Get the minimum multigrid level.
    */
-  [[nodiscard]] min
+  [[nodiscard]] Min
   get_mg_min_level() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -59,7 +59,7 @@ public:
   /**
    * \brief Get the maximum multigrid level.
    */
-  [[nodiscard]] max
+  [[nodiscard]] Max
   get_mg_max_level() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -69,7 +69,7 @@ public:
   /**
    * \brief Get the collection of minimum multigrid levels for the LHS fields.
    */
-  [[nodiscard]] std::set<std::tuple<types::index, DependencyType, min>>
+  [[nodiscard]] std::set<std::tuple<Types::Index, DependencyType, Min>>
   get_lhs_fields() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -156,15 +156,15 @@ private:
   bool multigrid_on = false;
 
   /**
-   * \brief Global min and max multigrid levels.
+   * \brief Global Min and Max multigrid levels.
    */
-  std::pair<min, max> global_mg_level;
+  std::pair<Min, Max> global_mg_level;
 
   /**
    * \brief The collection of LHS fields and their minimum multigrid level that need to be
    * initialized for the LHS of gmg fields.
    */
-  std::set<std::tuple<types::index, DependencyType, min>> lhs_fields;
+  std::set<std::tuple<Types::Index, DependencyType, Min>> lhs_fields;
 
   /**
    * \brief Vector hierarchy of required multigrid levels.
@@ -176,20 +176,20 @@ template <unsigned int dim>
 inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
-  const max max_mg_level =
+  const Max max_mg_level =
     user_inputs->get_spatial_discretization().get_has_adaptivity()
       ? user_inputs->get_spatial_discretization().get_max_refinement()
       : user_inputs->get_spatial_discretization().get_global_refinement();
-  min min_mg_level = UINT_MAX;
+  Min min_mg_level = UINT_MAX;
 
-  std::set<types::index>      fields_with_multigrid;
-  std::map<types::index, min> min_levels;
+  std::set<Types::Index>      fields_with_multigrid;
+  std::map<Types::Index, Min> min_levels;
   for (const auto &[index, linear_solver] :
        user_inputs->get_linear_solve_parameters().get_linear_solve_parameters())
     {
       if (linear_solver.preconditioner == PreconditionerType::GMG)
         {
-          const min min_level = linear_solver.min_mg_level;
+          const Min min_level = linear_solver.min_mg_level;
           fields_with_multigrid.insert(index);
           min_levels.emplace(index, min_level);
           min_mg_level = std::min(min_mg_level, min_level);
@@ -208,7 +208,7 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
   // Create the set of tuples that let us know which fields have what multigrid levels.
   // Note that we don't have to do this if the DependencyType is Change, although we must
   // always include DependencyType::Normal.
-  std::set<std::tuple<types::index, DependencyType, min>> all_lhs_fields;
+  std::set<std::tuple<Types::Index, DependencyType, Min>> all_lhs_fields;
   for (const auto &index : fields_with_multigrid)
     {
       const auto &variable = user_inputs->get_variable_attributes().at(index);
@@ -218,7 +218,7 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
         std::make_tuple(index, DependencyType::Change, min_levels.at(index)));
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
-      // the duplicates that have the same variable but different min multigrid levels.
+      // the duplicates that have the same variable but different Min multigrid levels.
       for (const auto &[pair, eval_flag] : variable.get_eval_flag_set_lhs())
         {
           // Skip if the eval flags is not set (e.i., nothing)
@@ -236,11 +236,11 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
         }
     }
   // Trim fields that have the same first and second entry of the tuple.
-  std::map<std::pair<types::index, DependencyType>, min> lowest_mg_level;
+  std::map<std::pair<Types::Index, DependencyType>, Min> lowest_mg_level;
   for (const auto &tuple : all_lhs_fields)
     {
       auto      key       = std::make_pair(std::get<0>(tuple), std::get<1>(tuple));
-      const min min_level = std::get<2>(tuple);
+      const Min min_level = std::get<2>(tuple);
 
       auto iterator = lowest_mg_level.find(key);
       if (iterator == lowest_mg_level.end() || min_level < iterator->second)

@@ -75,7 +75,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
@@ -84,7 +84,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -96,9 +96,9 @@ private:
     const override;
 
   constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-  dealii::Tensor<2, CIJ_tensor_size, number> CIJ =
+  dealii::Tensor<2, CIJ_tensor_size, number> compliance =
     this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
-      "CIJ");
+      "compliance");
 };
 
 PRISMS_PF_END_NAMESPACE

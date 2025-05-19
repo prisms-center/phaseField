@@ -19,7 +19,7 @@
 // rate calculations.
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   // Variable 0
   set_variable_name(0, "c");

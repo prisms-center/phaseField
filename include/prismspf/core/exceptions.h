@@ -56,7 +56,7 @@ DeclExceptionMsg(UnreachableCode, "This code should not have been reached.");
  * been specified as a dependency.
  */
 DeclException2(DependencyNotFound,
-               types::index,
+               Types::Index,
                std::string,
                << "Attemped access of the variable with index " << arg1
                << " and dependency type " << arg2

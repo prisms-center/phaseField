@@ -101,7 +101,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                               &func,
   std::vector<VectorType *>                   &dst,
   const std::vector<VectorType *>             &src,
@@ -118,7 +118,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
           q_point = quad;
 
           // Grab the quadrature point location
-          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -132,7 +132,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                               &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src,
@@ -149,7 +149,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
           q_point = quad;
 
           // Grab the quadrature point location
-          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -163,7 +163,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                               &func,
   VectorType                                  &dst,
   const VectorType                            &src,
@@ -182,7 +182,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
           q_point = quad;
 
           // Grab the quadrature point location
-          const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+          const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
 
           // Calculate the residuals
           func(*this, q_point_loc);
@@ -196,7 +196,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_diagonal(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                               &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src_subset,
@@ -227,9 +227,9 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
             // Submit an identity matrix for the change term
             for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
               {
-                if constexpr (std::is_same_v<local_value_type, size_type> || dim == 1)
+                if constexpr (std::is_same_v<local_value_type, SizeType> || dim == 1)
                   {
-                    feeval_ptr->submit_dof_value(size_type(), j);
+                    feeval_ptr->submit_dof_value(SizeType(), j);
                   }
                 else
                   {
@@ -238,7 +238,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
               }
 
             // Set the i-th value to 1.0
-            if constexpr (std::is_same_v<local_value_type, size_type> || dim == 1)
+            if constexpr (std::is_same_v<local_value_type, SizeType> || dim == 1)
               {
                 feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
                                              i);
@@ -265,7 +265,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
                 q_point = quad;
 
                 // Grab the quadrature point location
-                const dealii::Point<dim, size_type> q_point_loc = get_q_point_location();
+                const dealii::Point<dim, SizeType> q_point_loc = get_q_point_location();
 
                 // Calculate the residuals
                 func(*this, q_point_loc);
@@ -279,7 +279,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
         // Submit calculated diagonal values and distribute
         for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
           {
-            if constexpr (std::is_same_v<local_value_type, size_type>)
+            if constexpr (std::is_same_v<local_value_type, SizeType>)
               {
                 feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
               }
@@ -480,7 +480,7 @@ VariableContainer<dim, degree, number>::get_n_q_points() const
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Point<dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Point<dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_q_point_location() const
 {
   for (const auto &[dependency_index, dependency_map] : feeval_map)
@@ -494,7 +494,7 @@ VariableContainer<dim, degree, number>::get_q_point_location() const
           else
             {
               return std::visit(
-                [&](const auto &feeval_ptr) -> dealii::Point<dim, size_type>
+                [&](const auto &feeval_ptr) -> dealii::Point<dim, SizeType>
                 {
                   Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
                   return feeval_ptr->quadrature_point(q_point);
@@ -508,7 +508,7 @@ VariableContainer<dim, degree, number>::get_q_point_location() const
          dealii::ExcMessage("When trying to access the quadrature point location, all "
                             "FEEvaluation object containers were empty."));
 
-  return dealii::Point<dim, size_type>();
+  return dealii::Point<dim, SizeType>();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1058,7 +1058,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename VariableContainer<dim, degree, number>::size_type
+typename VariableContainer<dim, degree, number>::SizeType
 VariableContainer<dim, degree, number>::get_scalar_value(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1077,7 +1077,7 @@ VariableContainer<dim, degree, number>::get_scalar_value(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> size_type
+        [&](const auto &feeval_ptr) -> SizeType
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
@@ -1089,7 +1089,7 @@ VariableContainer<dim, degree, number>::get_scalar_value(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              return size_type();
+              return SizeType();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1097,7 +1097,7 @@ VariableContainer<dim, degree, number>::get_scalar_value(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_scalar_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1118,7 +1118,7 @@ VariableContainer<dim, degree, number>::get_scalar_gradient(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
@@ -1130,7 +1130,7 @@ VariableContainer<dim, degree, number>::get_scalar_gradient(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              return dealii::Tensor<1, dim, size_type>();
+              return dealii::Tensor<1, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1138,7 +1138,7 @@ VariableContainer<dim, degree, number>::get_scalar_gradient(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_scalar_hessian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1159,7 +1159,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
@@ -1171,7 +1171,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              return dealii::Tensor<2, dim, size_type>();
+              return dealii::Tensor<2, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1179,7 +1179,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1200,7 +1200,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
@@ -1212,7 +1212,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              return dealii::Tensor<1, dim, size_type>();
+              return dealii::Tensor<1, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1220,7 +1220,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename VariableContainer<dim, degree, number>::size_type
+typename VariableContainer<dim, degree, number>::SizeType
 VariableContainer<dim, degree, number>::get_scalar_laplacian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1241,7 +1241,7 @@ VariableContainer<dim, degree, number>::get_scalar_laplacian(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> size_type
+        [&](const auto &feeval_ptr) -> SizeType
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
@@ -1253,7 +1253,7 @@ VariableContainer<dim, degree, number>::get_scalar_laplacian(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              return size_type();
+              return SizeType();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1261,7 +1261,7 @@ VariableContainer<dim, degree, number>::get_scalar_laplacian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_value(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1275,7 +1275,7 @@ VariableContainer<dim, degree, number>::get_vector_value(
 
   if constexpr (dim == 1)
     {
-      dealii::Tensor<1, dim, size_type> wrapper;
+      dealii::Tensor<1, dim, SizeType> wrapper;
       wrapper[0] =
         feeval_map.at(global_variable_index).at(dependency_type)->get_value(q_point);
       return wrapper;
@@ -1283,7 +1283,7 @@ VariableContainer<dim, degree, number>::get_vector_value(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1295,7 +1295,7 @@ VariableContainer<dim, degree, number>::get_vector_value(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<1, dim, size_type>();
+              return dealii::Tensor<1, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1303,7 +1303,7 @@ VariableContainer<dim, degree, number>::get_vector_value(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1317,7 +1317,7 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
 
   if constexpr (dim == 1)
     {
-      dealii::Tensor<2, dim, size_type> wrapper;
+      dealii::Tensor<2, dim, SizeType> wrapper;
       wrapper[0] =
         feeval_map.at(global_variable_index).at(dependency_type)->get_gradient(q_point);
       return wrapper;
@@ -1325,7 +1325,7 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1337,7 +1337,7 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<2, dim, size_type>();
+              return dealii::Tensor<2, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1345,7 +1345,7 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<3, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<3, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_hessian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1359,7 +1359,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
 
   if constexpr (dim == 1)
     {
-      dealii::Tensor<3, dim, size_type> wrapper;
+      dealii::Tensor<3, dim, SizeType> wrapper;
       wrapper[0] =
         feeval_map.at(global_variable_index).at(dependency_type)->get_hessian(q_point);
       return wrapper;
@@ -1367,7 +1367,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<3, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<3, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1379,7 +1379,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<3, dim, size_type>();
+              return dealii::Tensor<3, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1387,7 +1387,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1401,7 +1401,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
 
   if constexpr (dim == 1)
     {
-      dealii::Tensor<2, dim, size_type> wrapper;
+      dealii::Tensor<2, dim, SizeType> wrapper;
       wrapper[0] = feeval_map.at(global_variable_index)
                      .at(dependency_type)
                      ->get_hessian_diagonal(q_point);
@@ -1410,7 +1410,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1422,7 +1422,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<2, dim, size_type>();
+              return dealii::Tensor<2, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1430,7 +1430,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<1, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_laplacian(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1444,7 +1444,7 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
 
   if constexpr (dim == 1)
     {
-      dealii::Tensor<1, dim, size_type> wrapper;
+      dealii::Tensor<1, dim, SizeType> wrapper;
       wrapper[0] =
         feeval_map.at(global_variable_index).at(dependency_type)->get_laplacian(q_point);
       return wrapper;
@@ -1452,7 +1452,7 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1464,7 +1464,7 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<1, dim, size_type>();
+              return dealii::Tensor<1, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1472,7 +1472,7 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename VariableContainer<dim, degree, number>::size_type
+typename VariableContainer<dim, degree, number>::SizeType
 VariableContainer<dim, degree, number>::get_vector_divergence(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1493,7 +1493,7 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> size_type
+        [&](const auto &feeval_ptr) -> SizeType
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1505,7 +1505,7 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return size_type();
+              return SizeType();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1513,7 +1513,7 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::size_type>
+dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1534,7 +1534,7 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
   else
     {
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<2, dim, SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1546,7 +1546,7 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<2, dim, size_type>();
+              return dealii::Tensor<2, dim, SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1556,7 +1556,7 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
 template <unsigned int dim, unsigned int degree, typename number>
 dealii::Tensor<1,
                (dim == 2 ? 1 : dim),
-               typename VariableContainer<dim, degree, number>::size_type>
+               typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_curl(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1571,13 +1571,13 @@ VariableContainer<dim, degree, number>::get_vector_curl(
   if constexpr (dim == 1)
     {
       Assert(false, dealii::ExcMessage("Curl is nonsensical for 1D."));
-      return dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type> {};
+      return dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType> {};
     }
   else
     {
       // Return the value directly for dim > 1
       return std::visit(
-        [&](const auto &feeval_ptr) -> dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+        [&](const auto &feeval_ptr) -> dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>
         {
           using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
           if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
@@ -1589,7 +1589,7 @@ VariableContainer<dim, degree, number>::get_vector_curl(
               Assert(false,
                      dealii::ExcMessage(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              return dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>();
+              return dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>();
             }
         },
         feeval_map.at(global_variable_index).at(dependency_type));
@@ -1600,7 +1600,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::set_scalar_value_term(
   const unsigned int   &global_variable_index,
-  const size_type      &val,
+  const SizeType       &val,
   const DependencyType &dependency_type)
 {
 #ifdef DEBUG
@@ -1638,9 +1638,9 @@ VariableContainer<dim, degree, number>::set_scalar_value_term(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::set_scalar_gradient_term(
-  const unsigned int                      &global_variable_index,
-  const dealii::Tensor<1, dim, size_type> &grad,
-  const DependencyType                    &dependency_type)
+  const unsigned int                     &global_variable_index,
+  const dealii::Tensor<1, dim, SizeType> &grad,
+  const DependencyType                   &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
@@ -1677,9 +1677,9 @@ VariableContainer<dim, degree, number>::set_scalar_gradient_term(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::set_vector_value_term(
-  const unsigned int                      &global_variable_index,
-  const dealii::Tensor<1, dim, size_type> &val,
-  const DependencyType                    &dependency_type)
+  const unsigned int                     &global_variable_index,
+  const dealii::Tensor<1, dim, SizeType> &val,
+  const DependencyType                   &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);
@@ -1716,9 +1716,9 @@ VariableContainer<dim, degree, number>::set_vector_value_term(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::set_vector_gradient_term(
-  const unsigned int                      &global_variable_index,
-  const dealii::Tensor<2, dim, size_type> &grad,
-  const DependencyType                    &dependency_type)
+  const unsigned int                     &global_variable_index,
+  const dealii::Tensor<2, dim, SizeType> &grad,
+  const DependencyType                   &dependency_type)
 {
 #ifdef DEBUG
   submission_valid(dependency_type);

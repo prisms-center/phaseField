@@ -20,7 +20,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator
 {
 public:
-  using size_type = dealii::VectorizedArray<number>;
+  using SizeType = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
@@ -58,23 +58,23 @@ public:
    */
   virtual void
   compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
+                       const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   virtual void
   compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc,
-                          types::index current_index = numbers::invalid_index) const = 0;
+                          const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index current_index = Numbers::invalid_index) const = 0;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   virtual void
   compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc,
-                          types::index current_index = numbers::invalid_index) const = 0;
+                          const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index current_index = Numbers::invalid_index) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -82,7 +82,7 @@ public:
   virtual void
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number> &variable_list,
-    const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
+    const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
 
   /**
    * \brief Get the user inputs (constant reference).

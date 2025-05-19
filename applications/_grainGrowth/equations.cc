@@ -17,7 +17,7 @@
 // rate calculations.
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   for (unsigned int var_index = 0; var_index < 6; var_index++)
     {

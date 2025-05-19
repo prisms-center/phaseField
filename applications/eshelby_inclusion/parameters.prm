@@ -26,4 +26,4 @@ set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natu
 set boundary condition for u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
 set boundary condition for u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
 
-set Model constant CIJ = (22.5,0.3), isotropic elastic constants
+set Model constant compliance = (22.5,0.3), isotropic elastic constants

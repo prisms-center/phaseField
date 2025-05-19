@@ -31,8 +31,8 @@ public:
 
   /**
    * \brief Initialize the variable attributes from the two user-facing methods
-   * `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()`. This must be
-   * called after the default constructor for derived classes.
+   * `load_variable_attributes()` and `loadPostProcessorVariableAttributes()`. This must
+   * be called after the default constructor for derived classes.
    */
   void
   init_variable_attributes();
@@ -53,7 +53,7 @@ protected:
    * and postprocess fields.
    */
   virtual void
-  loadVariableAttributes() = 0;
+  load_variable_attributes() = 0;
 
   /**
    * \brief Set the name of the variable at `index` to `name`.
@@ -251,7 +251,7 @@ private:
 };
 
 // Template derived class for VariableAttributeLoader for applications.
-// `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()` are should be
+// `load_variable_attributes()` and `loadPostProcessorVariableAttributes()` are should be
 // filled out in all the applications.
 class CustomAttributeLoader : public VariableAttributeLoader
 {
@@ -259,7 +259,7 @@ public:
   ~CustomAttributeLoader() override = default;
 
   void
-  loadVariableAttributes() override;
+  load_variable_attributes() override;
 };
 
 PRISMS_PF_END_NAMESPACE

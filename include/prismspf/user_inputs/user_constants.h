@@ -145,11 +145,12 @@ private:
   primitive_model_constant(std::vector<std::string> &model_constants_strings);
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  get_Cij_tensor(std::vector<double> elastic_constants,
+  get_cij_tensor(std::vector<double> elastic_constants,
                  const std::string  &elastic_const_symmetry) const;
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  getCIJMatrix(const ElasticityModel &model, const std::vector<double> &constants) const;
+  get_cij_matrix(const ElasticityModel     &model,
+                 const std::vector<double> &constants) const;
 
   /**
    * \brief List of user-defined constants.
@@ -449,7 +450,7 @@ UserConstants<dim>::construct_user_constant(
         }
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
-        get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
+        get_cij_tensor(temp_elastic_constants, elastic_const_symmetry);
       return temp;
     }
 
@@ -491,7 +492,7 @@ UserConstants<dim>::primitive_model_constant(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-UserConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
+UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
@@ -525,9 +526,9 @@ UserConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
     {
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
-      const std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
-      std::transform(indices_2D.begin(),
-                     indices_2D.end(),
+      const std::vector<unsigned int> indices_2d = {0, 1, 5, 6, 10, 14};
+      std::transform(indices_2d.begin(),
+                     indices_2d.end(),
                      std::back_inserter(elastic_constants),
                      [&elastic_constants_temp](unsigned int index)
                      {
@@ -535,16 +536,16 @@ UserConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                      });
     }
 
-  return getCIJMatrix(mat_model, elastic_constants);
+  return get_cij_matrix(mat_model, elastic_constants);
 }
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
-                                 const std::vector<double> &constants) const
+UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
+                                   const std::vector<double> &constants) const
 {
   // Initialize tensor
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> CIJ;
+  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> compliance;
 
   switch (dim)
     {
@@ -561,7 +562,7 @@ UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                 {
                   const double modulus = constants.at(0);
 
-                  CIJ[xx_dir][xx_dir] = modulus;
+                  compliance[xx_dir][xx_dir] = modulus;
                   break;
                 }
               default:
@@ -590,9 +591,10 @@ UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = lambda + 2 * shear_modulus;
-                  CIJ[xy_dir][xy_dir]                       = shear_modulus;
-                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = lambda;
+                  compliance[xx_dir][xx_dir] = compliance[yy_dir][yy_dir] =
+                    lambda + 2 * shear_modulus;
+                  compliance[xy_dir][xy_dir] = shear_modulus;
+                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;
                   break;
                 }
               case Anisotropic:
@@ -622,13 +624,13 @@ UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = CIJ[zz_dir][zz_dir] =
-                    lambda + 2 * shear_modulus;
-                  CIJ[yz_dir][yz_dir] = CIJ[xz_dir][xz_dir] = CIJ[xy_dir][xy_dir] =
-                    shear_modulus;
-                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = CIJ[xx_dir][zz_dir] =
-                    CIJ[zz_dir][xx_dir] = CIJ[yy_dir][zz_dir] = CIJ[zz_dir][yy_dir] =
-                      lambda;
+                  compliance[xx_dir][xx_dir]     = compliance[yy_dir][yy_dir] =
+                    compliance[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;
+                  compliance[yz_dir][yz_dir]     = compliance[xz_dir][xz_dir] =
+                    compliance[xy_dir][xy_dir]   = shear_modulus;
+                  compliance[xx_dir][yy_dir]     = compliance[yy_dir][xx_dir] =
+                    compliance[xx_dir][zz_dir]   = compliance[zz_dir][xx_dir] =
+                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;
                   break;
                 }
               case Transverse:
@@ -645,7 +647,7 @@ UserConstants<dim>::getCIJMatrix(const ElasticityModel     &model,
         }
     }
 
-  return CIJ;
+  return compliance;
 }
 
 template <unsigned int dim>

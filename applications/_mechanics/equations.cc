@@ -8,7 +8,7 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   // Variable 2
   set_variable_name(0, "u");
@@ -82,7 +82,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
     }
 
   // compute stress tensor
-  computeStress<dim>(CIJ, E, S);
+  computeStress<dim>(compliance, E, S);
 
   // compute the term in the equation
   for (unsigned int i = 0; i < dim; i++)
@@ -140,7 +140,7 @@ customPDE<dim, degree>::equationLHS(
     }
 
   // compute stress tensor
-  computeStress<dim>(CIJ, E, S);
+  computeStress<dim>(compliance, E, S);
 
   // compute the term in the governing equation
   for (unsigned int i = 0; i < dim; i++)

@@ -133,14 +133,14 @@ SolutionOutput<dim, number>::SolutionOutput(
       const unsigned int n_components = is_scalar ? 1 : dim;
 
       const std::vector<dealii::DataComponentInterpretation::DataComponentInterpretation>
-        dataType(n_components,
-                 is_scalar
-                   ? dealii::DataComponentInterpretation::component_is_scalar
-                   : dealii::DataComponentInterpretation::component_is_part_of_vector);
+        data_type(n_components,
+                  is_scalar
+                    ? dealii::DataComponentInterpretation::component_is_scalar
+                    : dealii::DataComponentInterpretation::component_is_part_of_vector);
 
       const std::vector<std::string> names(n_components, variable.get_name());
 
-      data_out.add_data_vector(*(dof_handlers.at(index)), *solution, names, dataType);
+      data_out.add_data_vector(*(dof_handlers.at(index)), *solution, names, data_type);
 
       solution->zero_out_ghost_values();
     }

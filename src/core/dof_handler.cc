@@ -32,7 +32,7 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
       // TODO (landinjm): This relies on the fact the entry has already been created. Add
       // an assertion
       if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
-          numbers::invalid_index)
+          Numbers::invalid_index)
         {
           const_dof_handlers.push_back(dof_handlers
                                          .at(user_inputs->get_variable_attributes()
@@ -107,7 +107,7 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
       if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
-          numbers::invalid_index)
+          Numbers::invalid_index)
         {
           n_dofs += dof_handlers
                       .at(user_inputs->get_variable_attributes()

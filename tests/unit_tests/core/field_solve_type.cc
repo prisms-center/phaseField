@@ -38,7 +38,7 @@ TEST_CASE("Field solve types")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -98,7 +98,7 @@ TEST_CASE("Field solve types")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Vector);
@@ -169,7 +169,7 @@ TEST_CASE("Field solve types")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         for (unsigned int index : {0, 1, 2, 3})
           {
@@ -208,7 +208,7 @@ TEST_CASE("Field solve types")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         for (unsigned int index : {0, 1})
           {
@@ -264,7 +264,7 @@ TEST_CASE("Field solve types")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         for (unsigned int index : {0, 1})
           {

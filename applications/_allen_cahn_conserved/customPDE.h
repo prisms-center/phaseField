@@ -164,7 +164,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                        this->residualSet[fieldIndex]->l2_norm());
               this->pcout << buffer;
 
-              if (!numbers::is_finite(solution_L2_norm))
+              if (!Numbers::is_finite(solution_L2_norm))
                 {
                   snprintf(buffer,
                            sizeof(buffer),
@@ -313,7 +313,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
 
               // check if solution is nan
-              if (!numbers::is_finite(this->solutionSet[fieldIndex]->l2_norm()))
+              if (!Numbers::is_finite(this->solutionSet[fieldIndex]->l2_norm()))
                 {
                   snprintf(buffer,
                            sizeof(buffer),

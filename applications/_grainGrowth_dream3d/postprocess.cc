@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the attributes of the postprocessing variables
 // =================================================================================
-// This function is analogous to 'loadVariableAttributes' in 'equations.h', but
+// This function is analogous to 'load_variable_attributes' in 'equations.h', but
 // for the postprocessing expressions. It sets the attributes for each
 // postprocessing expression, including its name, whether it is a vector or
 // scalar (only scalars are supported at present), its dependencies on other

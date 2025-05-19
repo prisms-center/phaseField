@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "n");
   set_variable_type(0, Scalar);
@@ -125,7 +125,7 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 1)
     {
@@ -133,10 +133,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
       vectorGrad  ux = variable_list.get_vector_symmetric_gradient(1);
       scalarValue Ex = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
         CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux, stress);
+      compute_stress<dim, scalarValue>(compliance, ux, stress);
 
       variable_list.set_vector_gradient_term(1, -stress);
     }
@@ -148,9 +148,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
       scalarValue Ex = variable_list.get_scalar_value(3);
       scalarValue Gx = variable_list.get_scalar_value(4);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ = CIJ_base * Ex;
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance = CIJ_base * Ex;
       vectorGrad                                             stress;
-      compute_stress<dim, scalarValue>(CIJ, ux, stress);
+      compute_stress<dim, scalarValue>(compliance, ux, stress);
       scalarValue elastic_energy = 0.0;
       for (unsigned int i = 0; i < dim; i++)
         {
@@ -173,7 +173,7 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 1)
     {
@@ -181,10 +181,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
       vectorGrad  ux_change = variable_list.get_vector_symmetric_gradient(1, Change);
       scalarValue Ex        = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
         CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux_change, stress);
+      compute_stress<dim, scalarValue>(compliance, ux_change, stress);
 
       variable_list.set_vector_gradient_term(1, stress, Change);
     }
@@ -205,10 +205,10 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   scalarValue f_int = Gc0 * n * Gx * 3.0 / 8.0 / ell + Gc0 * Gx * 0.5 * ell * nx * nx;
 
-  dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+  dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
     CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
   vectorGrad stress;
-  compute_stress<dim, scalarValue>(CIJ, ux, stress);
+  compute_stress<dim, scalarValue>(compliance, ux, stress);
 
   scalarValue f_el = 0.0;
   for (unsigned int i = 0; i < dim; i++)

@@ -33,8 +33,7 @@ class VariableContainer
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
-  using value_type = number;
-  using size_type  = dealii::VectorizedArray<number>;
+  using SizeType   = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
@@ -50,28 +49,28 @@ public:
   /**
    * \brief Return the value of the specified scalar field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_scalar_value(unsigned int   global_variable_index,
                    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_scalar_gradient(unsigned int   global_variable_index,
                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_scalar_hessian(unsigned int   global_variable_index,
                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
     DependencyType dependency_type = DependencyType::Normal) const;
@@ -79,35 +78,35 @@ public:
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_scalar_laplacian(unsigned int   global_variable_index,
                        DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_vector_value(unsigned int   global_variable_index,
                    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_gradient(unsigned int   global_variable_index,
                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<3, dim, size_type>
+  [[nodiscard]] dealii::Tensor<3, dim, SizeType>
   get_vector_hessian(unsigned int   global_variable_index,
                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
     DependencyType dependency_type = DependencyType::Normal) const;
@@ -115,21 +114,21 @@ public:
   /**
    * \brief Return the laplacian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_vector_laplacian(unsigned int   global_variable_index,
                        DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_vector_divergence(unsigned int   global_variable_index,
                         DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
     DependencyType dependency_type = DependencyType::Normal) const;
@@ -139,7 +138,7 @@ public:
    * dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1, dim,
    * dealii::VectorizedArray<number>> type for 3D.
    */
-  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>
   get_vector_curl(unsigned int   global_variable_index,
                   DependencyType dependency_type = DependencyType::Normal) const;
 
@@ -148,7 +147,7 @@ public:
    */
   void
   set_scalar_value_term(const unsigned int   &global_variable_index,
-                        const size_type      &val,
+                        const SizeType       &val,
                         const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
@@ -156,16 +155,16 @@ public:
    */
   void
   set_scalar_gradient_term(
-    const unsigned int                      &global_variable_index,
-    const dealii::Tensor<1, dim, size_type> &grad,
-    const DependencyType                    &dependency_type = DependencyType::Normal);
+    const unsigned int                     &global_variable_index,
+    const dealii::Tensor<1, dim, SizeType> &grad,
+    const DependencyType                   &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual value of the specified vector field.
    */
   void
-  set_vector_value_term(const unsigned int                      &global_variable_index,
-                        const dealii::Tensor<1, dim, size_type> &val,
+  set_vector_value_term(const unsigned int                     &global_variable_index,
+                        const dealii::Tensor<1, dim, SizeType> &val,
                         const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
@@ -173,9 +172,9 @@ public:
    */
   void
   set_vector_gradient_term(
-    const unsigned int                      &global_variable_index,
-    const dealii::Tensor<2, dim, size_type> &grad,
-    const DependencyType                    &dependency_type = DependencyType::Normal);
+    const unsigned int                     &global_variable_index,
+    const dealii::Tensor<2, dim, SizeType> &grad,
+    const DependencyType                   &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Apply some operator function for a given cell range and source vector to
@@ -183,7 +182,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     std::vector<VectorType *>                   &dst,
     const std::vector<VectorType *>             &src,
@@ -195,7 +194,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src,
@@ -207,7 +206,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const VectorType                            &src,
@@ -219,7 +218,7 @@ public:
    */
   void
   eval_local_diagonal(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src_subset,
@@ -251,12 +250,12 @@ private:
   /**
    * \brief Typedef for scalar diagonal matrix objects.
    */
-  using ScalarDiagonal = dealii::AlignedVector<size_type>;
+  using ScalarDiagonal = dealii::AlignedVector<SizeType>;
 
   /**
    * \brief Typedef for vector diagonal matrix objects.
    */
-  using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
+  using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, SizeType>>;
 
   /**
    * \brief Typedef for the varaint diagonal matrix objects.
@@ -295,7 +294,7 @@ private:
   /**
    * \brief Return the quadrate point location.
    */
-  [[nodiscard]] dealii::Point<dim, size_type>
+  [[nodiscard]] dealii::Point<dim, SizeType>
   get_q_point_location() const;
 
   /**

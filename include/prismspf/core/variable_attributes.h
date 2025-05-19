@@ -42,7 +42,7 @@ struct VariableAttributes
   /**
    * \brief Get the field index
    */
-  [[nodiscard]] const types::index &
+  [[nodiscard]] const Types::Index &
   get_field_index() const
   {
     return field_index;
@@ -80,7 +80,7 @@ struct VariableAttributes
    * \brief Set the duplicate field index.
    */
   void
-  set_duplicate_field_index(const types::index &_duplicate_field_index)
+  set_duplicate_field_index(const Types::Index &_duplicate_field_index)
   {
     duplicate_field_index = _duplicate_field_index;
   }
@@ -88,7 +88,7 @@ struct VariableAttributes
   /**
    * \brief Get the duplicate field index.
    */
-  [[nodiscard]] types::index
+  [[nodiscard]] Types::Index
   get_duplicate_field_index() const
   {
     return duplicate_field_index;
@@ -275,7 +275,7 @@ private:
   /**
    * \brief Field index. \remark User-set
    */
-  types::index field_index = numbers::invalid_index;
+  Types::Index field_index = Numbers::invalid_index;
 
   /**
    * \brief Field type (Scalar/Vector). \remark User-set
@@ -296,7 +296,7 @@ private:
   /**
    * \brief Duplicate field index. \remark Internally determined
    */
-  mutable types::index duplicate_field_index = numbers::invalid_index;
+  mutable Types::Index duplicate_field_index = Numbers::invalid_index;
 #endif
 
   /**

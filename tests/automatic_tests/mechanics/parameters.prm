@@ -26,4 +26,4 @@ subsection linear solver parameters: u
     set min mg level = 1
 end
 
-set Model constant CIJ = (2.0,0.3), isotropic elastic constants
+set Model constant compliance = (2.0,0.3), isotropic elastic constants

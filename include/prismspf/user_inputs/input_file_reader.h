@@ -127,7 +127,7 @@ public:
    * \brief Declare parameters for loading ICs from files.
    */
   void
-  declare_load_IC_parameters();
+  declare_load_ic_parameters();
 
   /**
    * \brief Declare parameters for checkpoints.
@@ -139,7 +139,7 @@ public:
    * \brief Declare parameters for boundary conditions.
    */
   void
-  declare_BC_parameters();
+  declare_bc_parameters();
 
   /**
    * \brief Declare parameters for pinned points.

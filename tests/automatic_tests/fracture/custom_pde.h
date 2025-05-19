@@ -75,7 +75,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
@@ -84,7 +84,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.

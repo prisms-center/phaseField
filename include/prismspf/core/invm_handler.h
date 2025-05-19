@@ -114,18 +114,18 @@ private:
    * \brief Field index of the first occuring scalar field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int scalar_index = numbers::invalid_index;
+  unsigned int scalar_index = Numbers::invalid_index;
 
   /**
    * \brief Field index of the first occuring vector field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int vector_index = numbers::invalid_index;
+  unsigned int vector_index = Numbers::invalid_index;
 
   /**
    * \brief Tolerance for minimum value of the mass matrix when inverting.
    */
-  number tolerance = defaults::mesh_tolerance;
+  number tolerance = Defaults::mesh_tolerance;
 };
 
 PRISMS_PF_END_NAMESPACE

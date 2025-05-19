@@ -205,9 +205,9 @@ InputFileReader::declare_parameters()
   declare_time_discretization();
   declare_solver_parameters();
   declare_output_parameters();
-  declare_load_IC_parameters();
+  declare_load_ic_parameters();
   declare_checkpoint_parameters();
-  declare_BC_parameters();
+  declare_bc_parameters();
   declare_pinning_parameters();
   declare_nucleation_parameters();
   declare_grain_remapping_parameters();
@@ -226,7 +226,7 @@ InputFileReader::declare_mesh()
   parameter_handler.declare_entry("degree",
                                   "1",
                                   dealii::Patterns::Integer(1,
-                                                            numbers::max_element_degree),
+                                                            Numbers::max_element_degree),
                                   "The polynomial order of the finite element.",
                                   true);
   parameter_handler.declare_entry("global refinement",
@@ -508,7 +508,7 @@ InputFileReader::declare_output_parameters()
 }
 
 void
-InputFileReader::declare_load_IC_parameters()
+InputFileReader::declare_load_ic_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Load initial conditions",
@@ -564,7 +564,7 @@ InputFileReader::declare_checkpoint_parameters()
 }
 
 void
-InputFileReader::declare_BC_parameters()
+InputFileReader::declare_bc_parameters()
 {
   for (const auto &[index, variable] : *var_attributes)
     {

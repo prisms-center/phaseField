@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "n");
   set_variable_type(0, Scalar);
@@ -47,7 +47,7 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
@@ -69,7 +69,7 @@ void
 customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {

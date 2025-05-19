@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-CustomAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "c");
   set_variable_type(0, Scalar);

@@ -90,7 +90,8 @@ private:
   // ================================================================
 
   const static unsigned int  CIJ_tensor_size = 2 * dim - 1 + dim / 3;
-  Tensor<2, CIJ_tensor_size> CIJ = userInputs.get_model_constant_elasticity_tensor("CIJ");
+  Tensor<2, CIJ_tensor_size> compliance =
+    userInputs.get_model_constant_elasticity_tensor("compliance");
 
   // ================================================================
 };

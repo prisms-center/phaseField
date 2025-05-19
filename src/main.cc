@@ -25,7 +25,7 @@ main(int argc, char *argv[])
     {
       // Initialize MPI
       dealii::Utilities::MPI::MPI_InitFinalize
-        mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
+        mpi_init(argc, argv, dealii::Numbers::invalid_unsigned_int);
 
       // Parse the command line options (if there are any) to get the name of the input
       // file

@@ -28,7 +28,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -52,7 +52,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -78,7 +78,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "");
         set_variable_type(0, Scalar);
@@ -99,7 +99,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, UndefinedField);
@@ -123,7 +123,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Vector);
@@ -147,7 +147,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -171,7 +171,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -198,7 +198,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -223,7 +223,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -245,7 +245,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -272,7 +272,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -298,7 +298,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
@@ -330,7 +330,7 @@ TEST_CASE("Invalid dependencies")
       ~testVariableAttributeLoader() override = default;
 
       void
-      loadVariableAttributes() override
+      load_variable_attributes() override
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Scalar);
