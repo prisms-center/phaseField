@@ -32,15 +32,15 @@ customAttributeLoader::loadVariableAttributes()
       set_variable_equation_type(var_index, EXPLICIT_TIME_DEPENDENT);
 
       // For the input file 'parameters.in'
-      set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5, n6, n7");
-      set_dependencies_gradient_term_RHS(
+      set_dependencies_value_term_rhs(var_index, "n0, n1, n2, n3, n4, n5, n6, n7");
+      set_dependencies_gradient_term_rhs(
         var_index,
         "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6), "
         "grad(n7)");
 
       // For the input file 'parameters_large_2D.in'
-      // set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5, n6,
-      // n7 , n8, n9, n10, n11"); set_dependencies_gradient_term_RHS(var_index,
+      // set_dependencies_value_term_rhs(var_index, "n0, n1, n2, n3, n4, n5, n6,
+      // n7 , n8, n9, n10, n11"); set_dependencies_gradient_term_rhs(var_index,
       // "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5), grad(n6),
       // grad(n7), grad(n8), grad(n9), grad(n10), grad(n11)");
     }

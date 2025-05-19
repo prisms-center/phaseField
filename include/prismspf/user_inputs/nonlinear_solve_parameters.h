@@ -77,20 +77,20 @@ nonlinearSolveParameters::print_parameter_summary() const
 {
   if (!nonlinear_solve.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Nonlinear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Max iterations: " << nonlinear_solver_parameters.max_iterations << "\n"
             << "  Step length: " << nonlinear_solver_parameters.step_length << "\n";
         }
 
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

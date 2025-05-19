@@ -107,7 +107,7 @@ variableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &index,
+variableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
@@ -116,7 +116,7 @@ variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &ind
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_RHS(
+variableAttributeLoader::set_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {
@@ -126,7 +126,7 @@ variableAttributeLoader::set_dependencies_gradient_term_RHS(
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &index,
+variableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
@@ -135,7 +135,7 @@ variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &ind
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_LHS(
+variableAttributeLoader::set_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {

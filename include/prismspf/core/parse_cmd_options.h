@@ -86,7 +86,7 @@ public:
       }
 
     // Log the filename being used
-    conditionalOStreams::pout_base()
+    ConditionalOStreams::pout_base()
       << "Using the input parameter file: " << parameters_filename << "\n";
 
     return parameters_filename;
@@ -125,7 +125,7 @@ public:
       }
 
     // Log the filename being used
-    conditionalOStreams::pout_base()
+    ConditionalOStreams::pout_base()
       << "Using the caliper configuration: " << config << "\n";
 
     return config;

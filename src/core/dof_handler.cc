@@ -127,7 +127,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
   if (!has_multigrid)
     {
       // TODO (landinjm): Print other useful information in debug mode
-      conditionalOStreams::pout_base()
+      ConditionalOStreams::pout_base()
         << "  number of degrees of freedom: " << n_dofs << "\n"
         << std::flush;
       return;
@@ -152,7 +152,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
     }
 
   // TODO (landinjm): Print other useful information in debug mode
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "  number of degrees of freedom: " << n_dofs << "\n"
     << "    with multigrid levels: " << n_dofs_with_mg << "\n"
     << std::flush;

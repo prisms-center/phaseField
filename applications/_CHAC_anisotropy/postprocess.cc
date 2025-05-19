@@ -20,8 +20,8 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
   set_variable_name(0, "f_tot");
   set_variable_type(0, SCALAR);
 
-  set_dependencies_value_term_RHS(0, "c, n, grad(n)");
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_value_term_rhs(0, "c, n, grad(n)");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_output_integral(0, true);
 }

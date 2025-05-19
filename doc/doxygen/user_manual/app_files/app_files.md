@@ -39,16 +39,16 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_type				(0,SCALAR);
 	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-    set_dependencies_value_term_RHS(0, "c");
-    set_dependencies_gradient_term_RHS(0, "n,grad(c)");
+    set_dependencies_value_term_rhs(0, "c");
+    set_dependencies_gradient_term_rhs(0, "n,grad(c)");
 
     // Variable 1
 	set_variable_name				(1,"n");
 	set_variable_type				(1,SCALAR);
 	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
 
-    set_dependencies_value_term_RHS(1, "c,n");
-    set_dependencies_gradient_term_RHS(1, "grad(n)");
+    set_dependencies_value_term_rhs(1, "c,n");
+    set_dependencies_gradient_term_rhs(1, "grad(n)");
 }
 ```
 
@@ -59,10 +59,10 @@ This function specifies the model variables and their attributes. In this case, 
 set_variable_name | [String] | no | var  | Sets the name of the variable. This name is used in 'parameters.in' as well as during output.
 set_variable_type | SCALAR, VECTOR | no | SCALAR  | Sets whether the variable is a scalar or a vector.
 set_variable_equation_type | EXPLICIT_TIME_DEPENDENT, AUXILIARY, TIME_INDEPENDENT | no | EXPLICIT_TIME_DEPENDENT  | Sets whether the governing equation for the variable is a time-dependent PDE (EXPLICIT_TIME_DEPENDENT), a time-independent PDE that does not require a linear solve (AUXILIARY) or a time independent PDE that does require a (non)linear solve (TIME_INDEPENDENT).
-set_dependencies_value_term_RHS | String | yes | N/A| Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_gradient_term_RHS | String | yes | N/A | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_value_term_LHS | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
-set_dependencies_gradient_term_LHS | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
+set_dependencies_value_term_rhs | String | yes | N/A| Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_gradient_term_rhs | String | yes | N/A | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_value_term_lhs | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
+set_dependencies_gradient_term_lhs | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
 set_allowed_to_nucleate | Boolean | no | false | Sets whether the nucleation algorithms should be activated for this variable. (Only needed when nucleation is desired).
 set_need_value_nucleation | Boolean | no | false | Sets whether the value of the variable is needed to calculate the nucleation probability in the 'nucleation.cc' file. (Only needed when nucleation is desired).
 
@@ -348,8 +348,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-    set_dependencies_value_term_RHS(0, "c,n,grad(n)");
-    set_dependencies_gradient_term_RHS(0, "");
+    set_dependencies_value_term_rhs(0, "c,n,grad(n)");
+    set_dependencies_gradient_term_rhs(0, "");
 
     set_output_integral         	(0,true);
 
@@ -360,8 +360,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 | --------------|---------|----------|---------|----------------------------------------------------|
 set_variable_name | String | no | var  | Sets the name of the variable.
 set_variable_type | SCALAR | no | SCALAR  | Sets whether the variable is a scalar or a vector. Only SCALAR is currently allowed.
-set_dependencies_value_term_RHS | String | yes | | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_gradient_term_RHS | String | yes | | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_value_term_rhs | String | yes | | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_gradient_term_rhs | String | yes | | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
 set_output_integral | Boolean | no | false | Sets whether the integral of the variable should be calculated and written to a file named 'integratedFields.txt'.
 
 ### postProcessedFields

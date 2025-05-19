@@ -31,7 +31,7 @@ namespace
 } // namespace
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_summary()
+ConditionalOStreams::pout_summary()
 {
   static dealii::ConditionalOStream instance(get_summary_log_file(),
                                              dealii::Utilities::MPI::this_mpi_process(
@@ -40,7 +40,7 @@ conditionalOStreams::pout_summary()
 }
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_base()
+ConditionalOStreams::pout_base()
 {
   static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,
@@ -50,7 +50,7 @@ conditionalOStreams::pout_base()
 }
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_verbose()
+ConditionalOStreams::pout_verbose()
 {
   static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,

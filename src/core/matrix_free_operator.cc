@@ -302,7 +302,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_explicit_rhs(var_list, q_point_loc);
     },
     dst,
     src,
@@ -328,7 +328,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_postprocess_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_postprocess_explicit_rhs(var_list, q_point_loc);
     },
     dst,
     src,
@@ -354,7 +354,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -380,7 +380,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_residual(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,
@@ -408,7 +408,7 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -460,7 +460,7 @@ matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
     [this](variableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,

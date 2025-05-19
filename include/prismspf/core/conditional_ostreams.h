@@ -14,18 +14,18 @@ PRISMS_PF_BEGIN_NAMESPACE
  * based on their verbosity. For now, this consists of two stream the release and debug.
  * The debug stream provides more information that may be useful when debugging.
  */
-class conditionalOStreams
+class ConditionalOStreams
 {
 public:
   /**
    * \brief Constructor.
    */
-  conditionalOStreams() = default;
+  ConditionalOStreams() = default;
 
   /**
    * \brief Destructor.
    */
-  ~conditionalOStreams() = default;
+  ~ConditionalOStreams() = default;
 
   /**
    * \brief Generic parallel output stream. Used for essential information in release and

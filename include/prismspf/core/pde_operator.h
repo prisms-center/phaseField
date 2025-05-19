@@ -57,14 +57,14 @@ public:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   virtual void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(variableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_rhs(variableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, size_type>    &q_point_loc,
                           types::index current_index = numbers::invalid_index) const = 0;
 
@@ -72,7 +72,7 @@ public:
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_LHS(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_lhs(variableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, size_type>    &q_point_loc,
                           types::index current_index = numbers::invalid_index) const = 0;
 
@@ -80,7 +80,7 @@ public:
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   virtual void
-  compute_postprocess_explicit_RHS(
+  compute_postprocess_explicit_rhs(
     variableContainer<dim, degree, number> &variable_list,
     const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
 

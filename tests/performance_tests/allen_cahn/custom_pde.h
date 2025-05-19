@@ -85,7 +85,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(variableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -93,7 +93,7 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_rhs(variableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, dealii::VectorizedArray<number>>
                             &q_point_loc) const override;
 
@@ -101,7 +101,7 @@ private:
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_LHS(variableContainer<dim, degree, number> &variable_list,
+  compute_nonexplicit_lhs(variableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, dealii::VectorizedArray<number>>
                             &q_point_loc) const override;
 
@@ -109,7 +109,7 @@ private:
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   void
-  compute_postprocess_explicit_RHS(
+  compute_postprocess_explicit_rhs(
     variableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
@@ -126,8 +126,8 @@ customAttributeLoader::loadVariableAttributes()
       set_variable_type(i, SCALAR);
       set_variable_equation_type(i, EXPLICIT_TIME_DEPENDENT);
 
-      set_dependencies_value_term_RHS(i, field_name);
-      set_dependencies_gradient_term_RHS(i, "grad(" + field_name + ")");
+      set_dependencies_value_term_rhs(i, field_name);
+      set_dependencies_gradient_term_rhs(i, "grad(" + field_name + ")");
     }
 }
 
@@ -184,7 +184,7 @@ customPDE<dim, degree, number>::set_nonuniform_dirichlet(
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
-customPDE<dim, degree, number>::compute_explicit_RHS(
+customPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -205,7 +205,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -213,7 +213,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -221,7 +221,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const

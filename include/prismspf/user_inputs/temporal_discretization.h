@@ -179,7 +179,7 @@ temporalDiscretization::postprocess_and_validate(
 inline void
 temporalDiscretization::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Temporal Discretization\n"
     << "================================================\n"

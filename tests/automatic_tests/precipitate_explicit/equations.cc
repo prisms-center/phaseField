@@ -17,8 +17,8 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "c");
-  set_dependencies_gradient_term_RHS(
+  set_dependencies_value_term_rhs(0, "c");
+  set_dependencies_gradient_term_rhs(
     0,
     "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u)");
 
@@ -26,40 +26,40 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(1, "c, n1, n2, n3, grad(u)");
-  set_dependencies_gradient_term_RHS(1, "grad(n1)");
+  set_dependencies_value_term_rhs(1, "c, n1, n2, n3, grad(u)");
+  set_dependencies_gradient_term_rhs(1, "grad(n1)");
 
   set_variable_name(2, "n2");
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(2, "c, n1, n2, n3, grad(u)");
-  set_dependencies_gradient_term_RHS(2, "grad(n2)");
+  set_dependencies_value_term_rhs(2, "c, n1, n2, n3, grad(u)");
+  set_dependencies_gradient_term_rhs(2, "grad(n2)");
 
   set_variable_name(3, "n3");
   set_variable_type(3, SCALAR);
   set_variable_equation_type(3, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(3, "c, n1, n2, n3, grad(u)");
-  set_dependencies_gradient_term_RHS(3, "grad(n3)");
+  set_dependencies_value_term_rhs(3, "c, n1, n2, n3, grad(u)");
+  set_dependencies_gradient_term_rhs(3, "grad(n3)");
 
   set_variable_name(4, "u");
   set_variable_type(4, VECTOR);
   set_variable_equation_type(4, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_RHS(4, "");
-  set_dependencies_gradient_term_RHS(4, "n1, n2, n3, grad(u)");
-  set_dependencies_value_term_LHS(4, "");
-  set_dependencies_gradient_term_LHS(4, "n1, n2, n3, grad(change(u))");
+  set_dependencies_value_term_rhs(4, "");
+  set_dependencies_gradient_term_rhs(4, "n1, n2, n3, grad(u)");
+  set_dependencies_value_term_lhs(4, "");
+  set_dependencies_gradient_term_lhs(4, "n1, n2, n3, grad(change(u))");
 
   set_variable_name(5, "f_tot");
   set_variable_type(5, SCALAR);
   set_variable_equation_type(5, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(
+  set_dependencies_value_term_rhs(
     5,
     "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u)");
-  set_dependencies_gradient_term_RHS(5, "");
+  set_dependencies_gradient_term_rhs(5, "");
   set_is_postprocessed_field(5, true);
 }
 
@@ -68,7 +68,7 @@ customAttributeLoader::loadVariableAttributes()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
+customPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -201,7 +201,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -242,7 +242,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -282,7 +282,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const

@@ -319,32 +319,32 @@ template <unsigned int dim>
 inline void
 spatialDiscretization<dim>::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Spatial Discretization\n"
     << "================================================\n";
 
   if (type == TriangulationType::spherical)
     {
-      conditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
+      ConditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
     }
   else if (type == TriangulationType::rectangular)
     {
       if constexpr (dim == 1)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << "\n";
         }
       else if constexpr (dim == 2)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << ", y=" << size[1] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1] << "\n";
         }
       else if constexpr (dim == 3)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << ", y=" << size[1] << ", z=" << size[2]
             << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1]
@@ -356,7 +356,7 @@ spatialDiscretization<dim>::print_parameter_summary() const
       AssertThrow(false, UnreachableCode());
     }
 
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "Global refinement: " << global_refinement << "\n"
     << "Degree: " << degree << "\n"
     << "Adaptivity enabled: " << bool_to_string(has_adaptivity) << "\n"
@@ -366,17 +366,17 @@ spatialDiscretization<dim>::print_parameter_summary() const
 
   if (!refinement_criteria.empty())
     {
-      conditionalOStreams::pout_summary() << "Refinement criteria:\n";
+      ConditionalOStreams::pout_summary() << "Refinement criteria:\n";
     }
   for (const auto &criterion : refinement_criteria)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  Criterion type: " << criterion.criterion_to_string() << "\n"
         << "  Value lower bound: " << criterion.get_value_lower_bound() << "\n"
         << "  Value upper bound: " << criterion.get_value_upper_bound() << "\n"
         << "  Gradient lower bound: " << criterion.get_gradient_lower_bound() << "\n\n";
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

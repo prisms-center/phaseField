@@ -128,20 +128,20 @@ PDEProblem<dim, degree>::init_system()
   timer::serial_timer().enter_subsection("Initialization");
 
   const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
-  conditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
+  ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
                                    << std::flush;
 
   const unsigned int n_vect_doubles = dealii::VectorizedArray<double>::size();
   const unsigned int n_vect_bits    = 8 * sizeof(double) * n_vect_doubles;
 
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "vectorization over " << n_vect_doubles << " doubles = " << n_vect_bits
     << " bits (" << dealii::Utilities::System::get_current_vectorization_level() << ')'
     << "\n"
     << std::flush;
 
   // Create the SCALAR/VECTOR FESystem's, if applicable
-  conditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       if (variable.get_field_type() == fieldType::SCALAR &&
@@ -151,7 +151,7 @@ PDEProblem<dim, degree>::init_system()
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   1));
-          conditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
+          ConditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
                                               << std::flush;
         }
       else if (variable.get_field_type() == fieldType::VECTOR &&
@@ -161,24 +161,24 @@ PDEProblem<dim, degree>::init_system()
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   dim));
-          conditionalOStreams::pout_summary() << "  made FESystem for vector fields\n"
+          ConditionalOStreams::pout_summary() << "  made FESystem for vector fields\n"
                                               << std::flush;
         }
     }
 
   // Create the mesh
-  conditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   triangulation_handler.generate_mesh();
 
   // Print multigrid info
   mg_info.print();
 
   // Create the dof handlers.
-  conditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
   dof_handler.init(triangulation_handler, fe_system, mg_info);
 
   // Create the constraints
-  conditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
   if (mg_info.has_multigrid())
     {
@@ -186,7 +186,7 @@ PDEProblem<dim, degree>::init_system()
       const unsigned int max_level = mg_info.get_mg_max_level();
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
-          conditionalOStreams::pout_base()
+          ConditionalOStreams::pout_base()
             << "creating multigrid constraints at level " << level << "...\n"
             << std::flush;
           constraint_handler.make_mg_constraints(mapping,
@@ -196,7 +196,7 @@ PDEProblem<dim, degree>::init_system()
     }
 
   // Reinit the matrix-free objects
-  conditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
+  ConditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
                                    << std::flush;
   matrix_free_handler.reinit(mapping,
                              dof_handler.get_dof_handlers(),
@@ -209,7 +209,7 @@ PDEProblem<dim, degree>::init_system()
       multigrid_matrix_free_handler.resize(min_level, max_level);
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
-          conditionalOStreams::pout_base()
+          ConditionalOStreams::pout_base()
             << "initializing multgrid matrix-free object at level " << level << "...\n"
             << std::flush;
           multigrid_matrix_free_handler[level].reinit(
@@ -221,7 +221,7 @@ PDEProblem<dim, degree>::init_system()
     }
 
   // Initialize the solution set
-  conditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
   solution_handler.init(matrix_free_handler);
   if (mg_info.has_multigrid())
     {
@@ -231,7 +231,7 @@ PDEProblem<dim, degree>::init_system()
   // Initialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
   // the output directory so we should create a separate flag and/or directory for this.
-  conditionalOStreams::pout_base() << "initializing invm...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "initializing invm...\n" << std::flush;
   invm_handler.initialize(matrix_free_handler.get_matrix_free());
   invm_handler.compute_invm();
 
@@ -239,12 +239,12 @@ PDEProblem<dim, degree>::init_system()
   // TODO (landinjm): Output the element volumes for debug mode. This will create a lot of
   // bloat in the output directory so we should create a separate flag and/or directory
   // for this.
-  conditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
   element_volume.initialize(matrix_free_handler.get_matrix_free());
   element_volume.compute_element_volume(fe_system.begin()->second);
 
   // Initialize the solver types
-  conditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
 
   explicit_constant_solver.init();
   explicit_solver.init();
@@ -257,34 +257,34 @@ PDEProblem<dim, degree>::init_system()
   solution_handler.update_ghosts();
 
   // Solve the auxiliary fields at the 0th step
-  conditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
+  ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
   nonexplicit_auxiliary_solver.solve();
   solution_handler.update_ghosts();
 
   // Solve the linear time-independent fields at the 0th step
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_linear_solver.solve();
   solution_handler.update_ghosts();
 
   // Solve the self-nonlinear time-independent fields at the 0th step
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_self_nonlinear_solver.solve();
   solution_handler.update_ghosts();
 
   // Solve the postprocessed fields at the 0th step
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   postprocess_explicit_solver.solve();
   solution_handler.update_ghosts();
 
   // Output initial condition
-  conditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
   solutionOutput<dim>(solution_handler.get_solution_vector(),
                       dof_handler.get_dof_handlers(),
                       degree,
@@ -301,7 +301,7 @@ PDEProblem<dim, degree>::solve_increment()
   timer::serial_timer().enter_subsection("Solve Increment");
 
   // Update the time-dependent constraints
-  if (!user_inputs->get_boundary_parameters().has_time_dependent_BCs())
+  if (!user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
       constraint_handler
         .update_time_dependent_constraints(mapping, dof_handler.get_dof_handlers());
@@ -346,7 +346,7 @@ template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
        "  Initialization\n"
     << "================================================\n"
@@ -356,9 +356,9 @@ PDEProblem<dim, degree>::solve()
   init_system();
   CALI_MARK_END("Initialization");
 
-  conditionalOStreams::pout_base() << "\n";
+  ConditionalOStreams::pout_base() << "\n";
 
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
        "  Solve\n"
     << "================================================\n"
@@ -393,12 +393,12 @@ PDEProblem<dim, degree>::solve()
           solution_handler.update_ghosts();
 
           // Print the l2-norms and integrals of each solution
-          conditionalOStreams::pout_base()
+          ConditionalOStreams::pout_base()
             << "Iteration: "
             << user_inputs->get_temporal_discretization().get_current_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
-              conditionalOStreams::pout_base()
+              ConditionalOStreams::pout_base()
                 << "  Solution index " << index << " l2-norm: " << vector->l2_norm()
                 << " integrated value: ";
 
@@ -415,7 +415,7 @@ PDEProblem<dim, degree>::solve()
 
                   for (unsigned int dimension = 0; dimension < dim; dimension++)
                     {
-                      conditionalOStreams::pout_base()
+                      ConditionalOStreams::pout_base()
                         << integrated_values[dimension] << " ";
                     }
                 }
@@ -427,12 +427,12 @@ PDEProblem<dim, degree>::solve()
                     *dof_handler.get_dof_handlers()[index],
                     *vector);
 
-                  conditionalOStreams::pout_base() << integrated_value;
+                  ConditionalOStreams::pout_base() << integrated_value;
                 }
 
-              conditionalOStreams::pout_base() << "\n";
+              ConditionalOStreams::pout_base() << "\n";
             }
-          conditionalOStreams::pout_base() << "\n" << std::flush;
+          ConditionalOStreams::pout_base() << "\n" << std::flush;
         }
     }
 }

@@ -103,7 +103,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_value_term_RHS(const unsigned int &index,
+  set_dependencies_value_term_rhs(const unsigned int &index,
                                   const std::string  &dependencies);
 
   /**
@@ -115,7 +115,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_gradient_term_RHS(const unsigned int &index,
+  set_dependencies_gradient_term_rhs(const unsigned int &index,
                                      const std::string  &dependencies);
 
   /**
@@ -127,7 +127,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_value_term_LHS(const unsigned int &index,
+  set_dependencies_value_term_lhs(const unsigned int &index,
                                   const std::string  &dependencies);
 
   /**
@@ -139,7 +139,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_gradient_term_LHS(const unsigned int &index,
+  set_dependencies_gradient_term_lhs(const unsigned int &index,
                                      const std::string  &dependencies);
 
   /**

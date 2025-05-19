@@ -99,7 +99,7 @@ public:
   /**
    * \brief Return the boundary parameters.
    */
-  [[nodiscard]] const boundaryParameters<dim> &
+  [[nodiscard]] const BoundaryParameters<dim> &
   get_boundary_parameters() const
   {
     return boundary_parameters;
@@ -214,7 +214,7 @@ private:
   checkpointParameters checkpoint_parameters;
 
   // Boundary parameters
-  boundaryParameters<dim> boundary_parameters;
+  BoundaryParameters<dim> boundary_parameters;
 
   // User constants
   userConstants<dim> user_constants;

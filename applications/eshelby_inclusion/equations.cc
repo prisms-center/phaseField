@@ -16,13 +16,13 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_name(0, "u");
   set_variable_type(0, VECTOR);
   set_variable_equation_type(0, TIME_INDEPENDENT);
-  set_dependencies_gradient_term_RHS(0, "grad(u)");
-  set_dependencies_gradient_term_LHS(0, "grad(change(u))");
+  set_dependencies_gradient_term_rhs(0, "grad(u)");
+  set_dependencies_gradient_term_lhs(0, "grad(change(u))");
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
+customPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -30,7 +30,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -75,7 +75,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -91,7 +91,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const

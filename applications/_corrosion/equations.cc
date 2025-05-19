@@ -24,68 +24,68 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "n, grad(psi), irxn");
-  set_dependencies_gradient_term_RHS(0, "psi, grad(mu), irxn");
+  set_dependencies_value_term_rhs(0, "n, grad(psi), irxn");
+  set_dependencies_gradient_term_rhs(0, "psi, grad(mu), irxn");
 
   // Variable 1
   set_variable_name(1, "mu");
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, AUXILIARY);
 
-  set_dependencies_value_term_RHS(1, "n, psi");
-  set_dependencies_gradient_term_RHS(1, "grad(n)");
+  set_dependencies_value_term_rhs(1, "n, psi");
+  set_dependencies_gradient_term_rhs(1, "grad(n)");
 
   // Variable 2
   set_variable_name(2, "psi");
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(2, "psi, grad(psi), irxn");
-  set_dependencies_gradient_term_RHS(2, "psi, grad(mupsi), irxn");
+  set_dependencies_value_term_rhs(2, "psi, grad(psi), irxn");
+  set_dependencies_gradient_term_rhs(2, "psi, grad(mupsi), irxn");
 
   // Variable 3
   set_variable_name(3, "mupsi");
   set_variable_type(3, SCALAR);
   set_variable_equation_type(3, AUXILIARY);
 
-  set_dependencies_value_term_RHS(3, "n, psi");
-  set_dependencies_gradient_term_RHS(3, "grad(psi)");
+  set_dependencies_value_term_rhs(3, "n, psi");
+  set_dependencies_gradient_term_rhs(3, "grad(psi)");
 
   // Variable 4
   set_variable_name(4, "cM");
   set_variable_type(4, SCALAR);
   set_variable_equation_type(4, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(4, "cM, grad(cM), psi, grad(psi), irxn");
-  set_dependencies_gradient_term_RHS(4, "cM, grad(cM), grad(Phi)");
+  set_dependencies_value_term_rhs(4, "cM, grad(cM), psi, grad(psi), irxn");
+  set_dependencies_gradient_term_rhs(4, "cM, grad(cM), grad(Phi)");
 
   // Variable 5
   set_variable_name(5, "cP");
   set_variable_type(5, SCALAR);
   set_variable_equation_type(5, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(5, "cP, grad(cP), psi, grad(psi)");
-  set_dependencies_gradient_term_RHS(5, "cP, grad(cP), grad(Phi)");
+  set_dependencies_value_term_rhs(5, "cP, grad(cP), psi, grad(psi)");
+  set_dependencies_gradient_term_rhs(5, "cP, grad(cP), grad(Phi)");
 
   // Variable 6
   set_variable_name(6, "Phi");
   set_variable_type(6, SCALAR);
   set_variable_equation_type(6, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_LHS(
+  set_dependencies_value_term_lhs(
     6,
     "n, psi, grad(psi), cM, grad(cM), cP, Phi, grad(Phi), change(Phi), irxn");
-  set_dependencies_gradient_term_LHS(6, "n, psi, cM, cP, grad(change(Phi))");
-  set_dependencies_value_term_RHS(6, "grad(psi), irxn");
-  set_dependencies_gradient_term_RHS(6, "psi, grad(Phi), grad(cM), grad(cP)");
+  set_dependencies_gradient_term_lhs(6, "n, psi, cM, cP, grad(change(Phi))");
+  set_dependencies_value_term_rhs(6, "grad(psi), irxn");
+  set_dependencies_gradient_term_rhs(6, "psi, grad(Phi), grad(cM), grad(cP)");
 
   // Variable 7
   set_variable_name(7, "irxn");
   set_variable_type(7, SCALAR);
   set_variable_equation_type(7, AUXILIARY);
 
-  set_dependencies_value_term_RHS(7, "cM, cP, Phi");
-  set_dependencies_gradient_term_RHS(7, "");
+  set_dependencies_value_term_rhs(7, "cM, cP, Phi");
+  set_dependencies_gradient_term_rhs(7, "");
 }
 
 // =============================================================================================

@@ -38,75 +38,75 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "nAnodic, irxn, grad(psi), Phi, xiAnodic");
-  set_dependencies_gradient_term_RHS(0, "nAnodic, grad(muAnodic), irxn, Phi, xiAnodic");
+  set_dependencies_value_term_rhs(0, "nAnodic, irxn, grad(psi), Phi, xiAnodic");
+  set_dependencies_gradient_term_rhs(0, "nAnodic, grad(muAnodic), irxn, Phi, xiAnodic");
 
   // Variable 1
   set_variable_name(1, "muAnodic");
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, AUXILIARY);
 
-  set_dependencies_value_term_RHS(1, "nAnodic, nCathodic, psi");
-  set_dependencies_gradient_term_RHS(1, "grad(nAnodic)");
+  set_dependencies_value_term_rhs(1, "nAnodic, nCathodic, psi");
+  set_dependencies_gradient_term_rhs(1, "grad(nAnodic)");
 
   // Variable 2
   set_variable_name(2, "nCathodic");
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(2, "nCathodic");
-  set_dependencies_gradient_term_RHS(2, "nCathodic, grad(muCathodic), irxn, Phi");
+  set_dependencies_value_term_rhs(2, "nCathodic");
+  set_dependencies_gradient_term_rhs(2, "nCathodic, grad(muCathodic), irxn, Phi");
 
   // Variable 3
   set_variable_name(3, "muCathodic");
   set_variable_type(3, SCALAR);
   set_variable_equation_type(3, AUXILIARY);
 
-  set_dependencies_value_term_RHS(3, "nCathodic, nAnodic, psi");
-  set_dependencies_gradient_term_RHS(3, "grad(nCathodic)");
+  set_dependencies_value_term_rhs(3, "nCathodic, nAnodic, psi");
+  set_dependencies_gradient_term_rhs(3, "grad(nCathodic)");
 
   // Variable 4
   set_variable_name(4, "psi");
   set_variable_type(4, SCALAR);
   set_variable_equation_type(4, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(4, "psi, irxn, grad(psi), Phi, xiAnodic");
-  set_dependencies_gradient_term_RHS(4, "psi, grad(mupsi), irxn, Phi, xiAnodic");
+  set_dependencies_value_term_rhs(4, "psi, irxn, grad(psi), Phi, xiAnodic");
+  set_dependencies_gradient_term_rhs(4, "psi, grad(mupsi), irxn, Phi, xiAnodic");
 
   // Variable 5
   set_variable_name(5, "mupsi");
   set_variable_type(5, SCALAR);
   set_variable_equation_type(5, AUXILIARY);
 
-  set_dependencies_value_term_RHS(5, "nAnodic, nCathodic, psi");
-  set_dependencies_gradient_term_RHS(5, "grad(psi)");
+  set_dependencies_value_term_rhs(5, "nAnodic, nCathodic, psi");
+  set_dependencies_gradient_term_rhs(5, "grad(psi)");
 
   // Variable 6
   set_variable_name(6, "Phi");
   set_variable_type(6, SCALAR);
   set_variable_equation_type(6, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_LHS(
+  set_dependencies_value_term_lhs(
     6,
     "nAnodic, nCathodic, grad(psi), change(Phi), Phi, xiAnodic");
-  set_dependencies_gradient_term_LHS(6, "psi, grad(change(Phi))");
-  set_dependencies_value_term_RHS(6, "grad(psi), irxn, xiAnodic");
-  set_dependencies_gradient_term_RHS(6, "psi, grad(Phi)");
+  set_dependencies_gradient_term_lhs(6, "psi, grad(change(Phi))");
+  set_dependencies_value_term_rhs(6, "grad(psi), irxn, xiAnodic");
+  set_dependencies_gradient_term_rhs(6, "psi, grad(Phi)");
 
   // Variable 7
   set_variable_name(7, "irxn");
   set_variable_type(7, SCALAR);
   set_variable_equation_type(7, AUXILIARY);
 
-  set_dependencies_value_term_RHS(7, "nCathodic, nAnodic, Phi, xiAnodic");
-  set_dependencies_gradient_term_RHS(7, "");
+  set_dependencies_value_term_rhs(7, "nCathodic, nAnodic, Phi, xiAnodic");
+  set_dependencies_gradient_term_rhs(7, "");
 
   // Variable 8
   set_variable_name(8, "xiAnodic");
   set_variable_type(8, SCALAR);
   set_variable_equation_type(8, AUXILIARY);
 
-  set_dependencies_value_term_RHS(8, "nAnodic, nCathodic");
+  set_dependencies_value_term_rhs(8, "nAnodic, nCathodic");
 }
 
 // =============================================================================================

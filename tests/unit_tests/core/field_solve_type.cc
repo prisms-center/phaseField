@@ -44,19 +44,19 @@ TEST_CASE("Field solve types")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(0, "");
-        set_dependencies_gradient_term_LHS(0, "");
-        set_dependencies_value_term_RHS(0, "grad(eta)");
-        set_dependencies_gradient_term_RHS(0, "");
+        set_dependencies_value_term_lhs(0, "");
+        set_dependencies_gradient_term_lhs(0, "");
+        set_dependencies_value_term_rhs(0, "grad(eta)");
+        set_dependencies_gradient_term_rhs(0, "");
 
         set_variable_name(1, "eta");
         set_variable_type(1, SCALAR);
         set_variable_equation_type(1, AUXILIARY);
 
-        set_dependencies_value_term_LHS(1, "");
-        set_dependencies_gradient_term_LHS(1, "");
-        set_dependencies_value_term_RHS(1, "phi");
-        set_dependencies_gradient_term_RHS(1, "grad(phi)");
+        set_dependencies_value_term_lhs(1, "");
+        set_dependencies_gradient_term_lhs(1, "");
+        set_dependencies_value_term_rhs(1, "phi");
+        set_dependencies_gradient_term_rhs(1, "grad(phi)");
       }
     };
 
@@ -104,38 +104,38 @@ TEST_CASE("Field solve types")
         set_variable_type(0, VECTOR);
         set_variable_equation_type(0, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(0,
+        set_dependencies_value_term_lhs(0,
                                         "change(phi), grad(change(phi)), phi, grad(phi)");
-        set_dependencies_gradient_term_LHS(0, "grad(change(phi))");
-        set_dependencies_value_term_RHS(0, "phi, grad(phi)");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_gradient_term_lhs(0, "grad(change(phi))");
+        set_dependencies_value_term_rhs(0, "phi, grad(phi)");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "eta");
         set_variable_type(1, SCALAR);
         set_variable_equation_type(1, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(1, "");
-        set_dependencies_gradient_term_LHS(1, "grad(change(eta)), grad(eta)");
-        set_dependencies_value_term_RHS(1, "");
-        set_dependencies_gradient_term_RHS(1, "grad(eta)");
+        set_dependencies_value_term_lhs(1, "");
+        set_dependencies_gradient_term_lhs(1, "grad(change(eta)), grad(eta)");
+        set_dependencies_value_term_rhs(1, "");
+        set_dependencies_gradient_term_rhs(1, "grad(eta)");
 
         set_variable_name(2, "beta");
         set_variable_type(2, VECTOR);
         set_variable_equation_type(2, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(2, "");
-        set_dependencies_gradient_term_LHS(2, "grad(change(beta))");
-        set_dependencies_value_term_RHS(2, "");
-        set_dependencies_gradient_term_RHS(2, "grad(beta)");
+        set_dependencies_value_term_lhs(2, "");
+        set_dependencies_gradient_term_lhs(2, "grad(change(beta))");
+        set_dependencies_value_term_rhs(2, "");
+        set_dependencies_gradient_term_rhs(2, "grad(beta)");
 
         set_variable_name(3, "alpha");
         set_variable_type(3, SCALAR);
         set_variable_equation_type(3, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(3, "change(alpha)");
-        set_dependencies_gradient_term_LHS(3, "grad(change(alpha))");
-        set_dependencies_value_term_RHS(3, "alpha");
-        set_dependencies_gradient_term_RHS(3, "grad(alpha)");
+        set_dependencies_value_term_lhs(3, "change(alpha)");
+        set_dependencies_gradient_term_lhs(3, "grad(change(alpha))");
+        set_dependencies_value_term_rhs(3, "alpha");
+        set_dependencies_gradient_term_rhs(3, "grad(alpha)");
       }
     };
 
@@ -176,8 +176,8 @@ TEST_CASE("Field solve types")
             set_variable_name(index, "n" + std::to_string(index));
             set_variable_type(index, SCALAR);
             set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
-            set_dependencies_value_term_RHS(index, "n" + std::to_string(index));
-            set_dependencies_gradient_term_RHS(index,
+            set_dependencies_value_term_rhs(index, "n" + std::to_string(index));
+            set_dependencies_gradient_term_rhs(index,
                                                "grad(n" + std::to_string(index) + ")");
           }
       }
@@ -215,8 +215,8 @@ TEST_CASE("Field solve types")
             set_variable_name(index, "n" + std::to_string(index));
             set_variable_type(index, SCALAR);
             set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
-            set_dependencies_value_term_RHS(index, "n" + std::to_string(index));
-            set_dependencies_gradient_term_RHS(index,
+            set_dependencies_value_term_rhs(index, "n" + std::to_string(index));
+            set_dependencies_gradient_term_rhs(index,
                                                "grad(xi" + std::to_string(index) + ")");
           }
         for (unsigned int index : {2, 3})
@@ -224,8 +224,8 @@ TEST_CASE("Field solve types")
             set_variable_name(index, "xi" + std::to_string(index - 2));
             set_variable_type(index, SCALAR);
             set_variable_equation_type(index, AUXILIARY);
-            set_dependencies_value_term_RHS(index, "n" + std::to_string(index - 2));
-            set_dependencies_gradient_term_RHS(index,
+            set_dependencies_value_term_rhs(index, "n" + std::to_string(index - 2));
+            set_dependencies_gradient_term_rhs(index,
                                                "grad(n" + std::to_string(index - 2) +
                                                  ")");
           }
@@ -271,9 +271,9 @@ TEST_CASE("Field solve types")
             set_variable_name(index, "n" + std::to_string(index));
             set_variable_type(index, VECTOR);
             set_variable_equation_type(index, EXPLICIT_TIME_DEPENDENT);
-            set_dependencies_value_term_RHS(index,
+            set_dependencies_value_term_rhs(index,
                                             "grad(phi), eta, n" + std::to_string(index));
-            set_dependencies_gradient_term_RHS(index,
+            set_dependencies_gradient_term_rhs(index,
                                                "grad(n" + std::to_string(index) + ")");
           }
 
@@ -281,19 +281,19 @@ TEST_CASE("Field solve types")
         set_variable_type(2, SCALAR);
         set_variable_equation_type(2, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(2, "");
-        set_dependencies_gradient_term_LHS(2, "grad(change(phi))");
-        set_dependencies_value_term_RHS(2, "");
-        set_dependencies_gradient_term_RHS(2, "grad(phi)");
+        set_dependencies_value_term_lhs(2, "");
+        set_dependencies_gradient_term_lhs(2, "grad(change(phi))");
+        set_dependencies_value_term_rhs(2, "");
+        set_dependencies_gradient_term_rhs(2, "grad(phi)");
 
         set_variable_name(3, "eta");
         set_variable_type(3, SCALAR);
         set_variable_equation_type(3, TIME_INDEPENDENT);
 
-        set_dependencies_value_term_LHS(3, "");
-        set_dependencies_gradient_term_LHS(3, "grad(change(eta))");
-        set_dependencies_value_term_RHS(3, "grad(phi)");
-        set_dependencies_gradient_term_RHS(3, "grad(eta)");
+        set_dependencies_value_term_lhs(3, "");
+        set_dependencies_gradient_term_lhs(3, "grad(change(eta))");
+        set_dependencies_value_term_rhs(3, "grad(phi)");
+        set_dependencies_gradient_term_rhs(3, "grad(eta)");
       }
     };
 

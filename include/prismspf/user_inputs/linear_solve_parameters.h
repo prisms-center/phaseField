@@ -130,14 +130,14 @@ linearSolveParameters::print_parameter_summary() const
 {
   if (!linear_solve.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Linear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, linear_solver_parameters] : linear_solve)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Tolerance: " << linear_solver_parameters.tolerance << "\n"
             << "  Type: " << to_string(linear_solver_parameters.tolerance_type) << "\n"
@@ -147,7 +147,7 @@ linearSolveParameters::print_parameter_summary() const
 
           if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
             {
-              conditionalOStreams::pout_summary()
+              ConditionalOStreams::pout_summary()
                 << "  Smoothing range: " << linear_solver_parameters.smoothing_range
                 << "\n"
                 << "  Smoother degree: " << linear_solver_parameters.smoother_degree
@@ -159,7 +159,7 @@ linearSolveParameters::print_parameter_summary() const
             }
         }
 
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

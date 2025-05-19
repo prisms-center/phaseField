@@ -24,8 +24,8 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "c");
-  set_dependencies_gradient_term_RHS(0, "c, grad(c), n, grad(n)");
+  set_dependencies_value_term_rhs(0, "c");
+  set_dependencies_gradient_term_rhs(0, "c, grad(c), n, grad(n)");
 
   set_allowed_to_nucleate(0, false);
   set_need_value_nucleation(0, true);
@@ -35,8 +35,8 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(1, "c, n");
-  set_dependencies_gradient_term_RHS(1, "grad(n)");
+  set_dependencies_value_term_rhs(1, "c, n");
+  set_dependencies_gradient_term_rhs(1, "grad(n)");
 
   set_allowed_to_nucleate(1, true);
   set_need_value_nucleation(1, true);

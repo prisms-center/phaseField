@@ -19,13 +19,13 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
   set_variable_type(0, SCALAR);
 
   // For the input file 'parameters.in'
-  set_dependencies_value_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7");
+  set_dependencies_value_term_rhs(0, "n0, n1, n2, n3, n4, n5, n6, n7");
 
   // For the input file 'parameters_large_2D.in'
-  // set_dependencies_value_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+  // set_dependencies_value_term_rhs(0, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
   // n10, n11");
 
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_output_integral(0, false);
 
@@ -34,13 +34,13 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
   set_variable_type(1, SCALAR);
 
   // For the input file 'parameters.in'
-  set_dependencies_value_term_RHS(1, "n0, n1, n2, n3, n4, n5, n6, n7");
+  set_dependencies_value_term_rhs(1, "n0, n1, n2, n3, n4, n5, n6, n7");
 
   // For the input file 'parameters_large_2D.in'
-  // set_dependencies_value_term_RHS(1, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+  // set_dependencies_value_term_rhs(1, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
   // n10, n11");
 
-  set_dependencies_gradient_term_RHS(1, "");
+  set_dependencies_gradient_term_rhs(1, "");
 
   set_output_integral(1, false);
 }

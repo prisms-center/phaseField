@@ -191,7 +191,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                                 // false if any variable isn't converged
 
           // Update residualSet for the non-explicitly updated variables
-          // compute_nonexplicit_RHS()
+          // compute_nonexplicit_rhs()
           // Ideally, I'd just do this for the non-explicit variables, but for
           // now I'll do all of them this is a little redundant, but hopefully
           // not too terrible

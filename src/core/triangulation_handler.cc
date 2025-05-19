@@ -192,7 +192,7 @@ triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filena
   const dealii::GridOut grid_out;
   std::ofstream         out(filename + ".vtk");
   grid_out.write_vtk(*triangulation, out);
-  conditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
+  ConditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
 
 template <unsigned int dim>

@@ -165,40 +165,40 @@ private:
     void
     operator()(double value) const
     {
-      conditionalOStreams::pout_summary() << value;
+      ConditionalOStreams::pout_summary() << value;
     }
 
     void
     operator()(int value) const
     {
-      conditionalOStreams::pout_summary() << value;
+      ConditionalOStreams::pout_summary() << value;
     }
 
     void
     operator()(bool value) const
     {
-      conditionalOStreams::pout_summary() << std::boolalpha << value;
+      ConditionalOStreams::pout_summary() << std::boolalpha << value;
     }
 
     void
     operator()(const dealii::Tensor<1, dim> &value) const
     {
-      conditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
       for (unsigned int i = 0; i < dim; ++i)
         {
-          conditionalOStreams::pout_summary() << value[i] << ' ';
+          ConditionalOStreams::pout_summary() << value[i] << ' ';
         }
     }
 
     void
     operator()(const dealii::Tensor<2, dim> &value) const
     {
-      conditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
       for (unsigned int i = 0; i < dim; ++i)
         {
           for (unsigned int j = 0; j < dim; ++j)
             {
-              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
@@ -209,12 +209,12 @@ private:
     requires((D != ((2 * D) - 1 + (D / 3))))
     {
       constexpr unsigned int dimension = (2 * D) - 1 + (D / 3);
-      conditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
       for (unsigned int i = 0; i < dimension; ++i)
         {
           for (unsigned int j = 0; j < dimension; ++j)
             {
-              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
@@ -654,18 +654,18 @@ userConstants<dim>::print() const
 {
   if (!model_constants.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  User Constants\n"
         << "================================================\n";
 
       for (const auto &[constant_name, variant] : model_constants)
         {
-          conditionalOStreams::pout_summary() << constant_name << ": ";
+          ConditionalOStreams::pout_summary() << constant_name << ": ";
           boost::apply_visitor(VariantPrinter(), variant);
-          conditionalOStreams::pout_summary() << "\n";
+          ConditionalOStreams::pout_summary() << "\n";
         }
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

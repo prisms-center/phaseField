@@ -145,7 +145,7 @@ template <unsigned int dim, unsigned int degree>
 void
 explicitBase<dim, degree>::print()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
@@ -154,12 +154,12 @@ explicitBase<dim, degree>::print()
     {
       for (const auto &[dependency_type, field_type] : map)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "  Index: " << index << " Dependency: " << to_string(dependency_type)
             << " Field: " << to_string(field_type) << "\n";
         }
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 INSTANTIATE_BI_TEMPLATE(explicitBase)

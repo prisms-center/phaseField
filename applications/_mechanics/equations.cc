@@ -15,10 +15,10 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, VECTOR);
   set_variable_equation_type(0, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "");
-  set_dependencies_gradient_term_RHS(0, "grad(u)");
-  set_dependencies_value_term_LHS(0, "");
-  set_dependencies_gradient_term_LHS(0, "grad(change(u))");
+  set_dependencies_value_term_rhs(0, "");
+  set_dependencies_gradient_term_rhs(0, "grad(u)");
+  set_dependencies_value_term_lhs(0, "");
+  set_dependencies_gradient_term_lhs(0, "grad(change(u))");
 }
 
 // =============================================================================================

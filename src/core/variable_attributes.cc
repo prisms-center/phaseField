@@ -260,7 +260,7 @@ variableAttributes::determine_field_solve_type(
 void
 variableAttributes::print() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Variable attribute for " << name << "\n"
     << "================================================\n"
@@ -271,25 +271,25 @@ variableAttributes::print() const
     << "Postprocessed field: " << bool_to_string(is_postprocessed_variable) << "\n"
     << "Field solve type: " << to_string(field_solve_type) << "\n";
 
-  conditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
+  ConditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
   for (const auto &[key, value] : eval_flag_set_RHS)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
         << "  Dependency type: " << to_string(key.second) << "\n"
         << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
     }
 
-  conditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
+  ConditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
   for (const auto &[key, value] : eval_flag_set_LHS)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
         << "  Dependency type: " << to_string(key.second) << "\n"
         << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
     }
 
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "Residual flags RHS: " << eval_flags_to_string(eval_flags_residual_RHS) << "\n"
     << "Residual flags LHS: " << eval_flags_to_string(eval_flags_residual_LHS) << "\n"
     << "\n"

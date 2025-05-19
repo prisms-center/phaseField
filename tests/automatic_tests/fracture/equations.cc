@@ -17,24 +17,24 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "n, dndt");
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_value_term_rhs(0, "n, dndt");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_variable_name(1, "u");
   set_variable_type(1, VECTOR);
   set_variable_equation_type(1, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_RHS(1, "");
-  set_dependencies_gradient_term_RHS(1, "n, grad(u), Ex");
-  set_dependencies_value_term_LHS(1, "");
-  set_dependencies_gradient_term_LHS(1, "n, grad(change(u)), Ex");
+  set_dependencies_value_term_rhs(1, "");
+  set_dependencies_gradient_term_rhs(1, "n, grad(u), Ex");
+  set_dependencies_value_term_lhs(1, "");
+  set_dependencies_gradient_term_lhs(1, "n, grad(change(u)), Ex");
 
   set_variable_name(2, "dndt");
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, AUXILIARY);
 
-  set_dependencies_value_term_RHS(2, "n, grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(2, "grad(n), Gx");
+  set_dependencies_value_term_rhs(2, "n, grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(2, "grad(n), Gx");
 
   set_variable_name(3, "Ex");
   set_variable_type(3, SCALAR);
@@ -47,56 +47,56 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_name(5, "f_tot");
   set_variable_type(5, SCALAR);
   set_variable_equation_type(5, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(5, "n, grad(n), grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(5, "");
+  set_dependencies_value_term_rhs(5, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(5, "");
   set_is_postprocessed_field(5, true);
 
   set_variable_name(6, "s11");
   set_variable_type(6, SCALAR);
   set_variable_equation_type(6, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(6, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(6, "");
+  set_dependencies_value_term_rhs(6, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(6, "");
   set_is_postprocessed_field(6, true);
 
   set_variable_name(7, "s12");
   set_variable_type(7, SCALAR);
   set_variable_equation_type(7, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(7, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(7, "");
+  set_dependencies_value_term_rhs(7, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(7, "");
   set_is_postprocessed_field(7, true);
 
   set_variable_name(8, "s22");
   set_variable_type(8, SCALAR);
   set_variable_equation_type(8, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(8, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(8, "");
+  set_dependencies_value_term_rhs(8, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(8, "");
   set_is_postprocessed_field(8, true);
 
   set_variable_name(9, "e22");
   set_variable_type(9, SCALAR);
   set_variable_equation_type(9, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(9, "grad(u), Ex");
-  set_dependencies_gradient_term_RHS(9, "");
+  set_dependencies_value_term_rhs(9, "grad(u), Ex");
+  set_dependencies_gradient_term_rhs(9, "");
   set_is_postprocessed_field(9, true);
 
   set_variable_name(10, "f_int");
   set_variable_type(10, SCALAR);
   set_variable_equation_type(10, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(10, "n, grad(n), grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(10, "");
+  set_dependencies_value_term_rhs(10, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(10, "");
   set_is_postprocessed_field(10, true);
 
   set_variable_name(11, "f_el");
   set_variable_type(11, SCALAR);
   set_variable_equation_type(11, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(11, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(11, "");
+  set_dependencies_value_term_rhs(11, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(11, "");
   set_is_postprocessed_field(11, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
+customPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -122,7 +122,7 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -170,7 +170,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] types::index current_index) const
@@ -192,7 +192,7 @@ customPDE<dim, degree, number>::compute_nonexplicit_LHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const

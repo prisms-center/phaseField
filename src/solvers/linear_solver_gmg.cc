@@ -170,7 +170,7 @@ GMGSolver<dim, degree>::init()
     }
 
 #ifdef DEBUG
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->get_field_index() << ":\n"
     << "  Min level: " << min_level << "\n"
     << "  Max level: " << max_level << "\n"
@@ -205,7 +205,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   if (this->get_user_inputs().get_output_parameters().should_output(
         this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  field: " << this->get_field_index()
         << " Initial residual: " << this->get_residual()->l2_norm() << std::flush;
     }
@@ -316,7 +316,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     }
   catch (...)
     {
-      conditionalOStreams::pout_base()
+      ConditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
   this->get_constraint_handler()
@@ -326,7 +326,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   if (this->get_user_inputs().get_output_parameters().should_output(
         this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << " Final residual: " << this->get_solver_control().last_value()
         << " Steps: " << this->get_solver_control().last_step() << "\n"
         << std::flush;

@@ -24,26 +24,26 @@ customAttributeLoader::loadVariableAttributes()
   set_variable_type(0, SCALAR);
   set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-  set_dependencies_value_term_RHS(0, "c");
-  set_dependencies_gradient_term_RHS(0, "grad(mu)");
+  set_dependencies_value_term_rhs(0, "c");
+  set_dependencies_gradient_term_rhs(0, "grad(mu)");
 
   // Variable 1
   set_variable_name(1, "mu");
   set_variable_type(1, SCALAR);
   set_variable_equation_type(1, AUXILIARY);
 
-  set_dependencies_value_term_RHS(1, "c, phi");
-  set_dependencies_gradient_term_RHS(1, "grad(c)");
+  set_dependencies_value_term_rhs(1, "c, phi");
+  set_dependencies_gradient_term_rhs(1, "grad(c)");
 
   // Variable 2
   set_variable_name(2, "phi");
   set_variable_type(2, SCALAR);
   set_variable_equation_type(2, TIME_INDEPENDENT);
 
-  set_dependencies_value_term_RHS(2, "c");
-  set_dependencies_gradient_term_RHS(2, "grad(phi)");
-  set_dependencies_value_term_LHS(2, "");
-  set_dependencies_gradient_term_LHS(2, "grad(change(phi))");
+  set_dependencies_value_term_rhs(2, "c");
+  set_dependencies_gradient_term_rhs(2, "grad(phi)");
+  set_dependencies_value_term_lhs(2, "");
+  set_dependencies_gradient_term_lhs(2, "grad(change(phi))");
 }
 
 // =============================================================================================

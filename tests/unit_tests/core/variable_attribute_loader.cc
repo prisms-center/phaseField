@@ -34,8 +34,8 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, CONSTANT);
 
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "");
       }
     };
 
@@ -58,10 +58,10 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_LHS(0, "phi");
-        set_dependencies_gradient_term_LHS(0, "grad(phi)");
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_lhs(0, "phi");
+        set_dependencies_gradient_term_lhs(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -105,8 +105,8 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, UNDEFINED_FIELD);
         set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -129,8 +129,8 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, VECTOR);
         set_variable_equation_type(0, UNDEFINED_PDE);
 
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -153,8 +153,8 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_RHS(0, "fi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "fi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -178,10 +178,10 @@ TEST_CASE("Invalid dependencies")
         set_variable_equation_type(0, TIME_INDEPENDENT);
         set_is_postprocessed_field(0, true);
 
-        set_dependencies_value_term_LHS(0, "phi");
-        set_dependencies_gradient_term_LHS(0, "grad(phi)");
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_lhs(0, "phi");
+        set_dependencies_gradient_term_lhs(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -205,8 +205,8 @@ TEST_CASE("Invalid dependencies")
         set_variable_equation_type(0, AUXILIARY);
         set_is_postprocessed_field(0, true);
 
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -252,10 +252,10 @@ TEST_CASE("Invalid dependencies")
         set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
         set_is_postprocessed_field(0, true);
 
-        set_dependencies_value_term_LHS(0, "phi");
-        set_dependencies_gradient_term_LHS(0, "grad(phi)");
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_lhs(0, "phi");
+        set_dependencies_gradient_term_lhs(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -278,10 +278,10 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, IMPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_LHS(0, "phi");
-        set_dependencies_gradient_term_LHS(0, "grad(phi)");
-        set_dependencies_value_term_RHS(0, "phi, old_4(phi)");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_lhs(0, "phi");
+        set_dependencies_gradient_term_lhs(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi, old_4(phi)");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
       }
     };
 
@@ -304,16 +304,16 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_RHS(0, "phi, free_energy");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi, free_energy");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
         set_variable_type(1, SCALAR);
         set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
         set_is_postprocessed_field(1, true);
 
-        set_dependencies_value_term_RHS(1, "phi");
-        set_dependencies_gradient_term_RHS(1, "grad(phi)");
+        set_dependencies_value_term_rhs(1, "phi");
+        set_dependencies_gradient_term_rhs(1, "grad(phi)");
       }
     };
 
@@ -336,24 +336,24 @@ TEST_CASE("Invalid dependencies")
         set_variable_type(0, SCALAR);
         set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
 
-        set_dependencies_value_term_RHS(0, "phi");
-        set_dependencies_gradient_term_RHS(0, "grad(phi)");
+        set_dependencies_value_term_rhs(0, "phi");
+        set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
         set_variable_type(1, SCALAR);
         set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
         set_is_postprocessed_field(1, true);
 
-        set_dependencies_value_term_RHS(1, "phi");
-        set_dependencies_gradient_term_RHS(1, "grad(phi)");
+        set_dependencies_value_term_rhs(1, "phi");
+        set_dependencies_gradient_term_rhs(1, "grad(phi)");
 
         set_variable_name(2, "unavailable_energy");
         set_variable_type(2, SCALAR);
         set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
         set_is_postprocessed_field(2, true);
 
-        set_dependencies_value_term_RHS(2, "free_energy");
-        set_dependencies_gradient_term_RHS(2, "grad(free_energy)");
+        set_dependencies_value_term_rhs(2, "free_energy");
+        set_dependencies_gradient_term_rhs(2, "grad(free_energy)");
       }
     };
 

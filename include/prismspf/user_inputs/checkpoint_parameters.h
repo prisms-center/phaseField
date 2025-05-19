@@ -176,19 +176,19 @@ checkpointParameters::postprocess_and_validate(
 inline void
 checkpointParameters::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Checkpoint Parameters\n"
     << "================================================\n"
     << "Checkpoint condition: " << condition << "\n"
     << "Number of checkpoints: " << n_checkpoints << "\n";
 
-  conditionalOStreams::pout_summary() << "Checkpoint iteration list: ";
+  ConditionalOStreams::pout_summary() << "Checkpoint iteration list: ";
   for (const auto &iteration : checkpoint_list)
     {
-      conditionalOStreams::pout_summary() << iteration << " ";
+      ConditionalOStreams::pout_summary() << iteration << " ";
     }
-  conditionalOStreams::pout_summary() << "\n\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

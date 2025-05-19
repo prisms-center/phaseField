@@ -252,7 +252,7 @@ outputParameters::postprocess_and_validate(
 inline void
 outputParameters::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Output Parameters\n"
     << "================================================\n"
@@ -264,12 +264,12 @@ outputParameters::print_parameter_summary() const
     << "Number of outputs: " << n_outputs << "\n"
     << "Print timing info: " << bool_to_string(print_timing_with_output) << "\n";
 
-  conditionalOStreams::pout_summary() << "Output iteration list: ";
+  ConditionalOStreams::pout_summary() << "Output iteration list: ";
   for (const auto &iteration : output_list)
     {
-      conditionalOStreams::pout_summary() << iteration << " ";
+      ConditionalOStreams::pout_summary() << iteration << " ";
     }
-  conditionalOStreams::pout_summary() << "\n\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -28,8 +28,8 @@ customAttributeLoader::loadVariableAttributes()
       set_variable_type(var_index, SCALAR);
       set_variable_equation_type(var_index, EXPLICIT_TIME_DEPENDENT);
 
-      set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5");
-      set_dependencies_gradient_term_RHS(
+      set_dependencies_value_term_rhs(var_index, "n0, n1, n2, n3, n4, n5");
+      set_dependencies_gradient_term_rhs(
         var_index,
         "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5)");
     }

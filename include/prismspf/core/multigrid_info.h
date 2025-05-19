@@ -268,41 +268,41 @@ template <unsigned int dim>
 void
 MGInfo<dim>::print()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  MGInfo\n"
     << "================================================\n";
   if (!multigrid_on)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  There are no fields with multigrid enabled\n\n"
         << std::flush;
       return;
     }
-  conditionalOStreams::pout_summary() << "  Global min = " << global_mg_level.first
+  ConditionalOStreams::pout_summary() << "  Global min = " << global_mg_level.first
                                       << " and max = " << global_mg_level.second << "\n"
                                       << "  LHS dependency fields:\n";
   for (const auto &[field, dependency, minimum] : lhs_fields)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "    Index " << field << " Type " << to_string(dependency) << " Min "
         << minimum << "\n";
     }
   unsigned int outer_index = 0;
-  conditionalOStreams::pout_summary() << "  LHS index hierarchy:\n";
+  ConditionalOStreams::pout_summary() << "  LHS index hierarchy:\n";
   for (const auto &vector : mg_levels)
     {
-      conditionalOStreams::pout_summary() << "    Outer index " << outer_index << "\n";
+      ConditionalOStreams::pout_summary() << "    Outer index " << outer_index << "\n";
       unsigned int inner_index = 0;
       for (const auto &index : vector)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "      Inner index " << inner_index << " Field index: " << index << "\n";
           inner_index++;
         }
       outer_index++;
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -32,7 +32,7 @@ inputFileReader::inputFileReader(
   model_constant_names             = get_model_constant_names();
   const unsigned int num_constants = model_constant_names.size();
 
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "Number of constants: " << num_constants << "\n"
     << "Number of variables: " << var_attributes->size() << "\n";
 
