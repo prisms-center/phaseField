@@ -88,8 +88,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_value_term_RHS(0, eq_n + userInputs.dtValue * source_term);
-  variable_list.set_scalar_gradient_term_RHS(0, eqx_n);
+  variable_list.set_scalar_value_term_rhs(0, eq_n + userInputs.dtValue * source_term);
+  variable_list.set_scalar_gradient_term_rhs(0, eqx_n);
 }
 
 // =============================================================================================

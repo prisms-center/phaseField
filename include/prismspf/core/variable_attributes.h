@@ -109,9 +109,9 @@ struct variableAttributes
    */
   [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>,
                                dealii::EvaluationFlags::EvaluationFlags> &
-  get_eval_flag_set_RHS() const
+  get_eval_flag_set_rhs() const
   {
-    return eval_flag_set_RHS;
+    return eval_flag_set_rhs;
   }
 
   /**
@@ -119,9 +119,9 @@ struct variableAttributes
    */
   [[nodiscard]] std::map<std::pair<unsigned int, dependencyType>,
                          dealii::EvaluationFlags::EvaluationFlags> &
-  get_eval_flag_set_RHS()
+  get_eval_flag_set_rhs()
   {
-    return eval_flag_set_RHS;
+    return eval_flag_set_rhs;
   }
 
   /**
@@ -129,69 +129,69 @@ struct variableAttributes
    */
   [[nodiscard]] const std::map<std::pair<unsigned int, dependencyType>,
                                dealii::EvaluationFlags::EvaluationFlags> &
-  get_eval_flag_set_LHS() const
+  get_eval_flag_set_lhs() const
   {
-    return eval_flag_set_LHS;
+    return eval_flag_set_lhs;
   }
 
   /**
    * \brief Get the RHS evaluation flags.
    */
   [[nodiscard]] const dealii::EvaluationFlags::EvaluationFlags &
-  get_eval_flags_residual_RHS() const
+  get_eval_flags_residual_rhs() const
   {
-    return eval_flags_residual_RHS;
+    return eval_flags_residual_rhs;
   }
 
   /**
    * \brief Get the LHS evaluation flags.
    */
   [[nodiscard]] const dealii::EvaluationFlags::EvaluationFlags &
-  get_eval_flags_residual_LHS() const
+  get_eval_flags_residual_lhs() const
   {
-    return eval_flags_residual_LHS;
+    return eval_flags_residual_lhs;
   }
 
   /**
    * \brief Get the dependency set for the RHS.
    */
   [[nodiscard]] const std::map<unsigned int, std::map<dependencyType, fieldType>> &
-  get_dependency_set_RHS() const
+  get_dependency_set_rhs() const
   {
-    return dependency_set_RHS;
+    return dependency_set_rhs;
   }
 
   /**
    * \brief Get the dependency set for the RHS.
    */
   [[nodiscard]] std::map<unsigned int, std::map<dependencyType, fieldType>> &
-  get_dependency_set_RHS()
+  get_dependency_set_rhs()
   {
-    return dependency_set_RHS;
+    return dependency_set_rhs;
   }
 
   /**
    * \brief Set the dependency set for the RHS.
    */
   void
-  set_dependency_set_RHS(const std::map<unsigned int, std::map<dependencyType, fieldType>>
-                           &_dependency_set_RHS)
+  set_dependency_set_rhs(const std::map<unsigned int, std::map<dependencyType, fieldType>>
+                           &_dependency_set_rhs)
   {
-    dependency_set_RHS = _dependency_set_RHS;
+    dependency_set_rhs = _dependency_set_rhs;
   }
 
   /**
    * \brief Get the dependency set for the LHS.
    */
   [[nodiscard]] const std::map<unsigned int, std::map<dependencyType, fieldType>> &
-  get_dependency_set_LHS() const
+  get_dependency_set_lhs() const
   {
-    return dependency_set_LHS;
+    return dependency_set_lhs;
   }
 
   /**
    * \brief Combine 'value' and 'gradient' residual dependencies to one dependency set per
-   * RHS and LHS. This will populate `dependencies_RHS` and `dependencies_LHS`.
+   * RHS and LHS. This will populate `dependencies_rhs` and `dependencies_lhs`.
    */
   void
   format_dependencies();
@@ -235,16 +235,16 @@ private:
                       const std::string  &context) const;
 
   /**
-   * \brief Compute the dependency sets from eval_flag_set_RHS &
-   * eval_flag_set_LHS
+   * \brief Compute the dependency sets from eval_flag_set_rhs &
+   * eval_flag_set_lhs
    */
   void
   compute_dependency_set(
     const std::map<unsigned int, variableAttributes> &other_var_attributes);
 
   /**
-   * \brief Compute the simplified dependency set from eval_flag_set_RHS &
-   * eval_flag_set_LHS
+   * \brief Compute the simplified dependency set from eval_flag_set_rhs &
+   * eval_flag_set_lhs
    */
   void
   compute_simplified_dependency_set(
@@ -311,7 +311,7 @@ private:
    */
   std::map<std::pair<unsigned int, dependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
-    eval_flag_set_RHS;
+    eval_flag_set_rhs;
 
   /**
    * \brief A map of evaluation flags for the dependencies of the current variable's LHS.
@@ -320,20 +320,20 @@ private:
    */
   std::map<std::pair<unsigned int, dependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
-    eval_flag_set_LHS;
+    eval_flag_set_lhs;
 
   /**
    * \brief Evaluation flags for the types of residual the user is expected to submit to
    * on the RHS. \remark Internally determined
    */
-  dealii::EvaluationFlags::EvaluationFlags eval_flags_residual_RHS =
+  dealii::EvaluationFlags::EvaluationFlags eval_flags_residual_rhs =
     dealii::EvaluationFlags::nothing;
 
   /**
    * \brief Evaluation flags for the types of residual the user is expected to submit to
    * on the LHS. This is empty for EXPLICIT fields. \remark Internally determined
    */
-  dealii::EvaluationFlags::EvaluationFlags eval_flags_residual_LHS =
+  dealii::EvaluationFlags::EvaluationFlags eval_flags_residual_lhs =
     dealii::EvaluationFlags::nothing;
 
   /**
@@ -341,46 +341,46 @@ private:
    * are included. This is used to determine what FEEvaluatiob objects are necessary in
    * variable container. \remark Internally determined
    */
-  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_RHS;
+  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_rhs;
 
   /**
    * \brief A dependency set where the LHS evaluation flags that are not 0 (not nothing)
    * are included. This is used to determine what FEEvaluatiob objects are necessary in
    * variable container. \remark Internally determined
    */
-  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_LHS;
+  std::map<unsigned int, std::map<dependencyType, fieldType>> dependency_set_lhs;
 
   /**
    * \brief The user-inputted dependencies for the RHS value term. \remark User-set
    */
-  std::set<std::string> dependencies_value_RHS;
+  std::set<std::string> dependencies_value_rhs;
 
   /**
    * \brief The user-inputted dependencies for the RHS gradient term. \remark User-set
    */
-  std::set<std::string> dependencies_gradient_RHS;
+  std::set<std::string> dependencies_gradient_rhs;
 
   /**
    * \brief The collection of value and gradient dependencies for the RHS. \remark
    * Internally determined
    */
-  std::set<std::string> dependencies_RHS;
+  std::set<std::string> dependencies_rhs;
 
   /**
    * \brief The user-inputted dependencies for the LHS value term. \remark User-set
    */
-  std::set<std::string> dependencies_value_LHS;
+  std::set<std::string> dependencies_value_lhs;
 
   /**
    * \brief The user-inputted dependencies for the LHS gradient term. \remark User-set
    */
-  std::set<std::string> dependencies_gradient_LHS;
+  std::set<std::string> dependencies_gradient_lhs;
 
   /**
    * \brief The collection of value and gradient dependencies for the LHS. \remark
    * Internally determined
    */
-  std::set<std::string> dependencies_LHS;
+  std::set<std::string> dependencies_lhs;
 
   /**
    * \brief A simplified set of evaluation flags for the dependencies of the current

@@ -115,12 +115,12 @@ customPDE<dim, degree>::explicitEquationRHS(
   // --- Submitting the terms for the governing equations ---
 
   // Terms for the equation to evolve the concentration
-  variable_list.set_scalar_value_term_RHS(0, eq_c);
-  variable_list.set_scalar_gradient_term_RHS(0, eqx_c);
+  variable_list.set_scalar_value_term_rhs(0, eq_c);
+  variable_list.set_scalar_gradient_term_rhs(0, eqx_c);
 
   // Terms for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_RHS(1, eq_n + source_term);
-  variable_list.set_scalar_gradient_term_RHS(1, eqx_n);
+  variable_list.set_scalar_value_term_rhs(1, eq_n + source_term);
+  variable_list.set_scalar_gradient_term_rhs(1, eqx_n);
 }
 
 // =================================================================================

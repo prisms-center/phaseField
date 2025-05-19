@@ -62,5 +62,5 @@ customPDE<dim, degree>::postProcessedFields(
                       (constV(1.0) + constV(1.0 - k) * U);
 
   // --- Submitting the terms for the postprocessing expressions ---
-  pp_variable_list.set_scalar_value_term_RHS(0, c);
+  pp_variable_list.set_scalar_value_term_rhs(0, c);
 }

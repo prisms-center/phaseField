@@ -91,8 +91,8 @@ protected:
   compute_subset_attributes(const fieldSolveType &field_solve_type);
 
   /**
-   * \brief Compute the shared dependency set and copy it to all eval_flag_set_RHS. Also
-   * do something similar with dependency_set_RHS so that all the FEEvaluation objects are
+   * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
+   * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
    * initialized. This should only be called for concurrent nonexplicit fieldSolveTypes
    * like NONEXPLICIT_CO_NONLINEAR.
    */
@@ -107,7 +107,7 @@ protected:
   set_initial_condition();
 
   /**
-   * \brief Print dependency_set_RHS to summary.log
+   * \brief Print dependency_set_rhs to summary.log
    */
   void
   print();

@@ -169,11 +169,11 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
 
       // Add dependencies if they don't exist
-      for (const auto &[pair, flags] : variable.get_eval_flag_set_RHS())
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_rhs())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
-      for (const auto &[pair, flags] : variable.get_eval_flag_set_LHS())
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_lhs())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }

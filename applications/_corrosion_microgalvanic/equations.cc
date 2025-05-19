@@ -230,16 +230,16 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
   // Residuals terms for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_RHS(0, rnAnodic);
-  variable_list.set_scalar_gradient_term_RHS(0, rnAnodicx);
+  variable_list.set_scalar_value_term_rhs(0, rnAnodic);
+  variable_list.set_scalar_gradient_term_rhs(0, rnAnodicx);
 
   // Residuals terms for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_RHS(2, rnCathodic);
-  variable_list.set_scalar_gradient_term_RHS(2, rnCathodicx);
+  variable_list.set_scalar_value_term_rhs(2, rnCathodic);
+  variable_list.set_scalar_gradient_term_rhs(2, rnCathodicx);
 
   // Residuals terms for the equation to evolve the domain parameter
-  variable_list.set_scalar_value_term_RHS(4, rpsi);
-  variable_list.set_scalar_gradient_term_RHS(4, rpsix);
+  variable_list.set_scalar_value_term_rhs(4, rpsi);
+  variable_list.set_scalar_gradient_term_rhs(4, rpsix);
 }
 
 // =============================================================================================
@@ -359,26 +359,26 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
   // Residuals for the equation to calculate muAnodic
-  variable_list.set_scalar_value_term_RHS(1, rmuAnodic);
-  variable_list.set_scalar_gradient_term_RHS(1, rmuAnodicx);
+  variable_list.set_scalar_value_term_rhs(1, rmuAnodic);
+  variable_list.set_scalar_gradient_term_rhs(1, rmuAnodicx);
 
   // Residuals for the equation to calculate muCathodic
-  variable_list.set_scalar_value_term_RHS(3, rmuCathodic);
-  variable_list.set_scalar_gradient_term_RHS(3, rmuCathodicx);
+  variable_list.set_scalar_value_term_rhs(3, rmuCathodic);
+  variable_list.set_scalar_gradient_term_rhs(3, rmuCathodicx);
 
   // Residuals for the equation to calculate mupsi
-  variable_list.set_scalar_value_term_RHS(5, rmupsi);
-  variable_list.set_scalar_gradient_term_RHS(5, rmupsix);
+  variable_list.set_scalar_value_term_rhs(5, rmupsi);
+  variable_list.set_scalar_gradient_term_rhs(5, rmupsix);
 
   // Residuals for the equation to evolve the Potential
-  variable_list.set_scalar_value_term_RHS(6, rPhi);
-  variable_list.set_scalar_gradient_term_RHS(6, rPhix);
+  variable_list.set_scalar_value_term_rhs(6, rPhi);
+  variable_list.set_scalar_gradient_term_rhs(6, rPhix);
 
   // irxn for the equation to evolve irxn
-  variable_list.set_scalar_value_term_RHS(7, rirxn);
+  variable_list.set_scalar_value_term_rhs(7, rirxn);
 
   // Equation to solve for xiAnodic
-  variable_list.set_scalar_value_term_RHS(8, xiAnodic);
+  variable_list.set_scalar_value_term_rhs(8, xiAnodic);
 }
 
 // =============================================================================================
@@ -468,6 +468,6 @@ customPDE<dim, degree>::equationLHS(
   scalargradType  rDPhix = -psi * kappa * DPhix;
 
   // Residuals for the equation to evolve the potential(Phi)
-  variable_list.set_scalar_value_term_LHS(6, rDPhi);
-  variable_list.set_scalar_gradient_term_LHS(6, rDPhix);
+  variable_list.set_scalar_value_term_lhs(6, rDPhi);
+  variable_list.set_scalar_gradient_term_lhs(6, rDPhix);
 }

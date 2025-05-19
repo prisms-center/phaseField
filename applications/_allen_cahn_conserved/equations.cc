@@ -72,7 +72,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_value_term_RHS(0, eq_n);
+  variable_list.set_scalar_value_term_rhs(0, eq_n);
 }
 
 // =============================================================================================
@@ -110,8 +110,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   scalargradType  eqx_mu = constV(KnV) * nx;
 
   // --- Submitting the terms for the governing equations ---
-  variable_list.set_scalar_value_term_RHS(1, eq_mu);
-  variable_list.set_scalar_gradient_term_RHS(1, eqx_mu);
+  variable_list.set_scalar_value_term_rhs(1, eq_mu);
+  variable_list.set_scalar_gradient_term_rhs(1, eqx_mu);
 }
 
 // =============================================================================================

@@ -88,12 +88,12 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
                             "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
 
   // Compute the shared dependency flags
-  auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_RHS();
+  auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (!variable.get_eval_flag_set_RHS().empty())
+      if (!variable.get_eval_flag_set_rhs().empty())
         {
-          for (const auto &[pair, flag] : variable.get_eval_flag_set_RHS())
+          for (const auto &[pair, flag] : variable.get_eval_flag_set_rhs())
             {
               dependency_flag_set[pair] |= flag;
             }
@@ -103,15 +103,15 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     {
       for (const auto &[pair, flag] : dependency_flag_set)
         {
-          variable.get_eval_flag_set_RHS()[pair] |= flag;
+          variable.get_eval_flag_set_rhs()[pair] |= flag;
         }
     }
 
   // Compute the shared dependency set
-  auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_RHS();
+  auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[dependency_index, map] : variable.get_dependency_set_RHS())
+      for (const auto &[dependency_index, map] : variable.get_dependency_set_rhs())
         {
           for (const auto &[dependency_type, field_type] : map)
             {
@@ -121,7 +121,7 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     }
   for (auto &[index, variable] : subset_attributes)
     {
-      variable.set_dependency_set_RHS(dependency_set);
+      variable.set_dependency_set_rhs(dependency_set);
     }
 
 #ifdef DEBUG
@@ -172,7 +172,7 @@ nonexplicitBase<dim, degree>::print()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
-  const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_RHS();
+  const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[index, map] : dependency_set)
     {
       for (const auto &[dependency_type, field_type] : map)

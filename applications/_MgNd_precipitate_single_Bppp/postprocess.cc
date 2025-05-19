@@ -270,6 +270,6 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, total_energy_density);
-  pp_variable_list.set_scalar_value_term_RHS(1, vm_stress);
+  pp_variable_list.set_scalar_value_term_rhs(0, total_energy_density);
+  pp_variable_list.set_scalar_value_term_rhs(1, vm_stress);
 }

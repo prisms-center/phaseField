@@ -140,6 +140,6 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, feature_ids);
-  pp_variable_list.set_scalar_value_term_RHS(1, max_op);
+  pp_variable_list.set_scalar_value_term_rhs(0, feature_ids);
+  pp_variable_list.set_scalar_value_term_rhs(1, max_op);
 }

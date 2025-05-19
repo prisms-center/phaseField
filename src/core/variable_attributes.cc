@@ -24,13 +24,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 variableAttributes::format_dependencies()
 {
-  dependencies_RHS.insert(dependencies_value_RHS.begin(), dependencies_value_RHS.end());
-  dependencies_RHS.insert(dependencies_gradient_RHS.begin(),
-                          dependencies_gradient_RHS.end());
+  dependencies_rhs.insert(dependencies_value_rhs.begin(), dependencies_value_rhs.end());
+  dependencies_rhs.insert(dependencies_gradient_rhs.begin(),
+                          dependencies_gradient_rhs.end());
 
-  dependencies_LHS.insert(dependencies_value_LHS.begin(), dependencies_value_LHS.end());
-  dependencies_LHS.insert(dependencies_gradient_LHS.begin(),
-                          dependencies_gradient_LHS.end());
+  dependencies_lhs.insert(dependencies_value_lhs.begin(), dependencies_value_lhs.end());
+  dependencies_lhs.insert(dependencies_gradient_lhs.begin(),
+                          dependencies_gradient_lhs.end());
 }
 
 void
@@ -39,21 +39,21 @@ variableAttributes::parse_residual_dependencies()
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately. Note that this relies on the fact that only valid
   // dependencies are part of the set.
-  if (!dependencies_value_RHS.empty())
+  if (!dependencies_value_rhs.empty())
     {
-      eval_flags_residual_RHS |= dealii::EvaluationFlags::values;
+      eval_flags_residual_rhs |= dealii::EvaluationFlags::values;
     }
-  if (!dependencies_gradient_RHS.empty())
+  if (!dependencies_gradient_rhs.empty())
     {
-      eval_flags_residual_RHS |= dealii::EvaluationFlags::gradients;
+      eval_flags_residual_rhs |= dealii::EvaluationFlags::gradients;
     }
-  if (!dependencies_value_LHS.empty())
+  if (!dependencies_value_lhs.empty())
     {
-      eval_flags_residual_LHS |= dealii::EvaluationFlags::values;
+      eval_flags_residual_lhs |= dealii::EvaluationFlags::values;
     }
-  if (!dependencies_gradient_LHS.empty())
+  if (!dependencies_gradient_lhs.empty())
     {
-      eval_flags_residual_LHS |= dealii::EvaluationFlags::gradients;
+      eval_flags_residual_lhs |= dealii::EvaluationFlags::gradients;
     }
 }
 
@@ -186,8 +186,8 @@ variableAttributes::parse_dependencies(
       }
   };
 
-  set_dependencies(dependencies_RHS, eval_flag_set_RHS, "RHS");
-  set_dependencies(dependencies_LHS, eval_flag_set_LHS, "LHS");
+  set_dependencies(dependencies_rhs, eval_flag_set_rhs, "RHS");
+  set_dependencies(dependencies_lhs, eval_flag_set_lhs, "LHS");
 
   // Compute the dependency_set and simplified_dependency_set
   compute_dependency_set(other_var_attributes);
@@ -205,10 +205,10 @@ variableAttributes::determine_field_solve_type(
       return;
     }
 
-  AssertThrow(!eval_flag_set_RHS.empty(),
+  AssertThrow(!eval_flag_set_rhs.empty(),
               dealii::ExcMessage(
                 "To begin determining the field solve type that is not constant, the "
-                "eval_flag_set_RHS must be populated."));
+                "eval_flag_set_rhs must be populated."));
 
   // Early return for explicit solve types
   if (pde_type == PDEType::EXPLICIT_TIME_DEPENDENT)
@@ -233,8 +233,8 @@ variableAttributes::determine_field_solve_type(
     }
 
   // Check for self-nonlinear solves.
-  if (eval_flag_set_LHS.contains({field_index, dependencyType::CHANGE}) &&
-      eval_flag_set_LHS.contains({field_index, dependencyType::NORMAL}))
+  if (eval_flag_set_lhs.contains({field_index, dependencyType::CHANGE}) &&
+      eval_flag_set_lhs.contains({field_index, dependencyType::NORMAL}))
     {
       field_solve_type = fieldSolveType::NONEXPLICIT_SELF_NONLINEAR;
       return;
@@ -272,7 +272,7 @@ variableAttributes::print() const
     << "Field solve type: " << to_string(field_solve_type) << "\n";
 
   ConditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
-  for (const auto &[key, value] : eval_flag_set_RHS)
+  for (const auto &[key, value] : eval_flag_set_rhs)
     {
       ConditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
@@ -281,7 +281,7 @@ variableAttributes::print() const
     }
 
   ConditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
-  for (const auto &[key, value] : eval_flag_set_LHS)
+  for (const auto &[key, value] : eval_flag_set_lhs)
     {
       ConditionalOStreams::pout_summary()
         << "  Index: " << key.first << "\n"
@@ -290,8 +290,8 @@ variableAttributes::print() const
     }
 
   ConditionalOStreams::pout_summary()
-    << "Residual flags RHS: " << eval_flags_to_string(eval_flags_residual_RHS) << "\n"
-    << "Residual flags LHS: " << eval_flags_to_string(eval_flags_residual_LHS) << "\n"
+    << "Residual flags RHS: " << eval_flags_to_string(eval_flags_residual_rhs) << "\n"
+    << "Residual flags LHS: " << eval_flags_to_string(eval_flags_residual_lhs) << "\n"
     << "\n"
     << std::flush;
 }
@@ -337,7 +337,7 @@ variableAttributes::compute_dependency_set(
   // so ignore those. If we have dealii::EvaluationFlags::EvaluationFlags::nothing ignore
   // it. Always add itself as a dependency for RHS since this is used for determining what
   // FEEvaluation objects should be made.
-  for (const auto &[pair, flag] : eval_flag_set_RHS)
+  for (const auto &[pair, flag] : eval_flag_set_rhs)
     {
       if (pair.second == dependencyType::CHANGE ||
           flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
@@ -350,12 +350,12 @@ variableAttributes::compute_dependency_set(
                "The provided attributes does not have an entry for the index = " +
                std::to_string(pair.first)));
 
-      dependency_set_RHS[pair.first]
+      dependency_set_rhs[pair.first]
         .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
     }
-  dependency_set_RHS[field_index].emplace(dependencyType::NORMAL, field_type);
+  dependency_set_rhs[field_index].emplace(dependencyType::NORMAL, field_type);
 
-  for (const auto &[pair, flag] : eval_flag_set_LHS)
+  for (const auto &[pair, flag] : eval_flag_set_lhs)
     {
       if (flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
         {
@@ -367,7 +367,7 @@ variableAttributes::compute_dependency_set(
                "The provided attributes does not have an entry for the index = " +
                std::to_string(pair.first)));
 
-      dependency_set_LHS[pair.first]
+      dependency_set_lhs[pair.first]
         .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
     }
 }
@@ -398,8 +398,8 @@ variableAttributes::compute_simplified_dependency_set(
       }
   };
 
-  compute_dependencies(eval_flag_set_RHS);
-  compute_dependencies(eval_flag_set_LHS);
+  compute_dependencies(eval_flag_set_rhs);
+  compute_dependencies(eval_flag_set_lhs);
 }
 
 void

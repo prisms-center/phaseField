@@ -82,8 +82,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_value_term_RHS(0, eq_c);
-  variable_list.set_scalar_gradient_term_RHS(0, eqx_c);
+  variable_list.set_scalar_value_term_rhs(0, eq_c);
+  variable_list.set_scalar_gradient_term_rhs(0, eqx_c);
 }
 
 // =============================================================================================
@@ -131,11 +131,11 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_value_term_RHS(1, eq_mu);
-  variable_list.set_scalar_gradient_term_RHS(1, eqx_mu);
+  variable_list.set_scalar_value_term_rhs(1, eq_mu);
+  variable_list.set_scalar_gradient_term_rhs(1, eqx_mu);
 
-  variable_list.set_scalar_value_term_RHS(2, eq_phi);
-  variable_list.set_scalar_gradient_term_RHS(2, eqx_phi);
+  variable_list.set_scalar_value_term_rhs(2, eq_phi);
+  variable_list.set_scalar_gradient_term_rhs(2, eqx_phi);
 }
 
 // =============================================================================================
@@ -171,5 +171,5 @@ customPDE<dim, degree>::equationLHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_gradient_term_LHS(2, eqx_Dphi);
+  variable_list.set_scalar_gradient_term_lhs(2, eqx_Dphi);
 }

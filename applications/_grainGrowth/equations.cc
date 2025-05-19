@@ -94,8 +94,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
-      variable_list.set_scalar_value_term_RHS(i, value_terms[i]);
-      variable_list.set_scalar_gradient_term_RHS(i, gradient_terms[i]);
+      variable_list.set_scalar_value_term_rhs(i, value_terms[i]);
+      variable_list.set_scalar_gradient_term_rhs(i, gradient_terms[i]);
     }
 }
 

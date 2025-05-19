@@ -61,7 +61,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
                                                            dependencyType::NORMAL),
                                             0);
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_RHS())
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_rhs())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
@@ -81,7 +81,7 @@ linearSolverBase<dim, degree>::linearSolverBase(
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_LHS())
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_lhs())
     {
       for (const auto &[dependency_type, field_type] : map)
         {

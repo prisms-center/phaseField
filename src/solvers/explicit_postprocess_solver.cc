@@ -70,7 +70,7 @@ explicitPostprocessSolver<dim, degree>::init()
 
   // Create the subset of solution vectors and add the mapping to matrixFreeOperator
   for (const auto &[index, map] :
-       this->get_subset_attributes().begin()->second.get_dependency_set_RHS())
+       this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
     {
       for (const auto &[dependency_type, field_type] : map)
         {

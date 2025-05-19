@@ -137,8 +137,8 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, error);
-  pp_variable_list.set_scalar_value_term_RHS(1, f_tot);
-  pp_variable_list.set_scalar_value_term_RHS(2, source_term);
-  pp_variable_list.set_scalar_value_term_RHS(3, n_sol);
+  pp_variable_list.set_scalar_value_term_rhs(0, error);
+  pp_variable_list.set_scalar_value_term_rhs(1, f_tot);
+  pp_variable_list.set_scalar_value_term_rhs(2, source_term);
+  pp_variable_list.set_scalar_value_term_rhs(3, n_sol);
 }

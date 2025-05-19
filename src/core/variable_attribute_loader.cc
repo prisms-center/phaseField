@@ -112,7 +112,7 @@ variableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &ind
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_value_term_RHS(index, dependencies_set);
+  insert_dependencies_value_term_rhs(index, dependencies_set);
 }
 
 void
@@ -122,7 +122,7 @@ variableAttributeLoader::set_dependencies_gradient_term_rhs(
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_gradient_term_RHS(index, dependencies_set);
+  insert_dependencies_gradient_term_rhs(index, dependencies_set);
 }
 
 void
@@ -131,7 +131,7 @@ variableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &ind
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_value_term_LHS(index, dependencies_set);
+  insert_dependencies_value_term_lhs(index, dependencies_set);
 }
 
 void
@@ -141,44 +141,44 @@ variableAttributeLoader::set_dependencies_gradient_term_lhs(
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_gradient_term_LHS(index, dependencies_set);
+  insert_dependencies_gradient_term_lhs(index, dependencies_set);
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_RHS(const unsigned int &index,
+variableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_RHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_value_rhs.insert(dependencies.begin(),
                                                       dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_RHS(
+variableAttributeLoader::insert_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_RHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_gradient_rhs.insert(dependencies.begin(),
                                                          dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_LHS(const unsigned int &index,
+variableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_LHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_value_lhs.insert(dependencies.begin(),
                                                       dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_LHS(
+variableAttributeLoader::insert_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_LHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_gradient_lhs.insert(dependencies.begin(),
                                                          dependencies.end());
 }
 
@@ -283,8 +283,8 @@ variableAttributeLoader::validate_attributes()
                     "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-                    (variable.dependencies_RHS.empty() &&
-                     variable.dependencies_LHS.empty()),
+                    (variable.dependencies_rhs.empty() &&
+                     variable.dependencies_lhs.empty()),
                   dealii::ExcMessage("Constant fields are determined by the initial "
                                      "condition. They cannot have dependencies."));
     }
@@ -349,14 +349,14 @@ variableAttributeLoader::validate_attributes()
   // Check dependencies
   for (const auto &[index, variable] : var_attributes)
     {
-      validate_dependencies(variable.dependencies_RHS,
+      validate_dependencies(variable.dependencies_rhs,
                             "RHS",
                             index,
                             variable.name,
                             reg_possible_deps,
                             change_possible_deps);
 
-      validate_dependencies(variable.dependencies_LHS,
+      validate_dependencies(variable.dependencies_lhs,
                             "LHS",
                             index,
                             variable.name,
@@ -374,11 +374,11 @@ variableAttributeLoader::validate_old_solution_dependencies()
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {
-      for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
+      for (const auto &[pair, flag] : variable.eval_flag_set_rhs)
         {
           dependency_set[pair] |= flag;
         }
-      for (const auto &[pair, flag] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, flag] : variable.eval_flag_set_lhs)
         {
           dependency_set[pair] |= flag;
         }

@@ -82,5 +82,5 @@ customPDE<dim, degree>::postProcessedFields(
   f_tot = f_chem + f_elec + f_grad;
 
   // --- Submitting the terms for the postprocessing expressions ---
-  pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
+  pp_variable_list.set_scalar_value_term_rhs(0, f_tot);
 }

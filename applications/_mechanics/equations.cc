@@ -95,7 +95,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_vector_gradient_term_RHS(0, eqx_u);
+  variable_list.set_vector_gradient_term_rhs(0, eqx_u);
 }
 
 /// =============================================================================================
@@ -153,5 +153,5 @@ customPDE<dim, degree>::equationLHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_vector_gradient_term_LHS(0, eqx_Du);
+  variable_list.set_vector_gradient_term_lhs(0, eqx_Du);
 }

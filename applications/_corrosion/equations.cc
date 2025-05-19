@@ -200,20 +200,20 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
   // Residuals terms for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_RHS(0, rnV);
-  variable_list.set_scalar_gradient_term_RHS(0, rnxV);
+  variable_list.set_scalar_value_term_rhs(0, rnV);
+  variable_list.set_scalar_gradient_term_rhs(0, rnxV);
 
   // Residuals terms for the equation to evolve the domain parameter
-  variable_list.set_scalar_value_term_RHS(2, rpsiV);
-  variable_list.set_scalar_gradient_term_RHS(2, rpsixV);
+  variable_list.set_scalar_value_term_rhs(2, rpsiV);
+  variable_list.set_scalar_gradient_term_rhs(2, rpsixV);
 
   // Residuals for the equation to evolve the concentration of metal ion
-  variable_list.set_scalar_value_term_RHS(4, rcMV);
-  variable_list.set_scalar_gradient_term_RHS(4, rcMxV);
+  variable_list.set_scalar_value_term_rhs(4, rcMV);
+  variable_list.set_scalar_gradient_term_rhs(4, rcMxV);
 
   // Residuals for the equation to evolve the concentration of supporting cation
-  variable_list.set_scalar_value_term_RHS(5, rcPV);
-  variable_list.set_scalar_gradient_term_RHS(5, rcPxV);
+  variable_list.set_scalar_value_term_rhs(5, rcPV);
+  variable_list.set_scalar_gradient_term_rhs(5, rcPxV);
 }
 
 // =============================================================================================
@@ -342,19 +342,19 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
   // Residuals for the equation to calculate mu
-  variable_list.set_scalar_value_term_RHS(1, rmuV);
-  variable_list.set_scalar_gradient_term_RHS(1, rmuxV);
+  variable_list.set_scalar_value_term_rhs(1, rmuV);
+  variable_list.set_scalar_gradient_term_rhs(1, rmuxV);
 
   // Residuals for the equation to calculate mupsi
-  variable_list.set_scalar_value_term_RHS(3, rmupsiV);
-  variable_list.set_scalar_gradient_term_RHS(3, rmupsixV);
+  variable_list.set_scalar_value_term_rhs(3, rmupsiV);
+  variable_list.set_scalar_gradient_term_rhs(3, rmupsixV);
 
   // Residuals for the equation to evolve the Potential
-  variable_list.set_scalar_value_term_RHS(6, rPhiV);
-  variable_list.set_scalar_gradient_term_RHS(6, rPhixV);
+  variable_list.set_scalar_value_term_rhs(6, rPhiV);
+  variable_list.set_scalar_gradient_term_rhs(6, rPhixV);
 
   // Residuals for the equation to evolve irxn
-  variable_list.set_scalar_value_term_RHS(7, rirxnV);
+  variable_list.set_scalar_value_term_rhs(7, rirxnV);
 }
 
 // =============================================================================================
@@ -471,8 +471,8 @@ customPDE<dim, degree>::equationLHS(
   scalargradType  rDPhix = -psi * kappa * DPhix;
 
   // Residuals for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_LHS(6, rDPhi);
-  variable_list.set_scalar_gradient_term_LHS(6, rDPhix);
+  variable_list.set_scalar_value_term_lhs(6, rDPhi);
+  variable_list.set_scalar_gradient_term_lhs(6, rDPhix);
 }
 
 // =================================================================================

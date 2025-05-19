@@ -85,7 +85,7 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
+  pp_variable_list.set_scalar_value_term_rhs(0, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
 
-  pp_variable_list.set_scalar_value_term_RHS(1, f_tot);
+  pp_variable_list.set_scalar_value_term_rhs(1, f_tot);
 }

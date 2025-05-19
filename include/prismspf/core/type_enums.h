@@ -38,9 +38,9 @@ enum PDEType : std::uint8_t
  */
 enum solveType : std::uint8_t
 {
-  EXPLICIT_RHS,
-  NONEXPLICIT_RHS,
-  NONEXPLICIT_LHS,
+  EXPLICIT_rhs,
+  NONEXPLICIT_rhs,
+  NONEXPLICIT_lhs,
   POSTPROCESS
 };
 
@@ -162,12 +162,12 @@ to_string(solveType type)
 {
   switch (type)
     {
-      case solveType::EXPLICIT_RHS:
-        return "EXPLICIT_RHS";
-      case solveType::NONEXPLICIT_RHS:
-        return "NONEXPLICIT_RHS";
-      case solveType::NONEXPLICIT_LHS:
-        return "NONEXPLICIT_LHS";
+      case solveType::EXPLICIT_rhs:
+        return "EXPLICIT_rhs";
+      case solveType::NONEXPLICIT_rhs:
+        return "NONEXPLICIT_rhs";
+      case solveType::NONEXPLICIT_lhs:
+        return "NONEXPLICIT_lhs";
       case solveType::POSTPROCESS:
         return "POSTPROCESS";
       default:
