@@ -100,6 +100,28 @@ variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
 }
 
 void
+variableAttributeLoader::set_allowed_to_nucleate(
+  const unsigned int &index,
+  const bool         &allowed_to_nucleate,
+  const std::string  &nucleation_probability_field_name)
+{
+  var_attributes[index].can_nucleate = allowed_to_nucleate;
+  if (allowed_to_nucleate)
+    {
+      var_attributes[index].nucleation_probability_field_name =
+        nucleation_probability_field_name;
+    }
+}
+
+void
+variableAttributeLoader::set_is_nucleation_probability(
+  const unsigned int &index,
+  const bool         &is_nucleation_probability)
+{
+  var_attributes[index].is_nucleation_probability = is_nucleation_probability;
+}
+
+void
 variableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
@@ -277,9 +299,16 @@ variableAttributeLoader::validate_attributes()
   for (const auto &[index, variable] : var_attributes)
     {
       // Check that postprocessed variables are only explicit
-      AssertThrow(
-        !variable.is_postprocess || variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
-        dealii::ExcMessage("Currently, postprocessing only allows explicit equations."));
+      AssertThrow(!(variable.is_postprocess &&
+                    variable.pde_type != PDEType::EXPLICIT_TIME_DEPENDENT),
+                  dealii::ExcMessage(
+                    "Currently, postprocessing only allows explicit equations."));
+      // Check that nucleation probability variables are only explicit scalars
+      AssertThrow(!(variable.is_nucleation_probability &&
+                    (variable.field_type != fieldType::SCALAR ||
+                     variable.pde_type != PDEType::EXPLICIT_TIME_DEPENDENT)),
+                  dealii::ExcMessage("Nucleation probability must be a SCALAR and "
+                                     "currently only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
                     (variable.dependencies_RHS.empty() &&

@@ -77,6 +77,14 @@ public:
                           types::index current_index = numbers::invalid_index) const = 0;
 
   /**
+   * \brief User-implemented class for the RHS of nucleation probability equations.
+   */
+  virtual void
+  compute_nucleation_probability_explicit_RHS(
+    variableContainer<dim, degree, number> &variable_list,
+    const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
+
+  /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   virtual void

@@ -193,6 +193,26 @@ matrixFreeOperator<dim, degree, number>::compute_explicit_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
+matrixFreeOperator<dim, degree, number>::compute_nucleation_explicit_update(
+  std::vector<VectorType *>       &dst,
+  const std::vector<VectorType *> &src) const
+{
+  Assert(!global_to_local_solution.empty(),
+         dealii::ExcMessage(
+           "The global to local solution mapping must not be empty. Make sure to call "
+           "add_global_to_local_mapping() prior to any computations."));
+  Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
+  Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
+
+  this->data->cell_loop(&matrixFreeOperator::compute_local_nucleation_explicit_update,
+                        this,
+                        dst,
+                        src,
+                        true);
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
 matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
   std::vector<VectorType *>       &dst,
   const std::vector<VectorType *> &src) const
@@ -303,6 +323,33 @@ matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
            const dealii::Point<dim, size_type>    &q_point_loc)
     {
       this->pde_operator->compute_explicit_RHS(var_list, q_point_loc);
+    },
+    dst,
+    src,
+    cell_range);
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+matrixFreeOperator<dim, degree, number>::compute_local_nucleation_explicit_update(
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  std::vector<VectorType *>                                              &dst,
+  const std::vector<VectorType *>                                        &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
+{
+  // Constructor for FEEvaluation objects
+  variableContainer<dim, degree, number> variable_list(data,
+                                                       *attributes_list,
+                                                       global_to_local_solution,
+                                                       solveType::NUCLEATION);
+
+  // Initialize, evaluate, and submit based on user function.
+  variable_list.eval_local_operator(
+    [this](variableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, size_type>    &q_point_loc)
+    {
+      this->pde_operator->compute_nucleation_probability_explicit_RHS(var_list,
+                                                                      q_point_loc);
     },
     dst,
     src,

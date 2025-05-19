@@ -53,6 +53,7 @@ explicitBase<dim, degree>::compute_subset_attributes(
   const fieldSolveType &field_solve_type)
 {
   Assert((field_solve_type == fieldSolveType::EXPLICIT ||
+          field_solve_type == fieldSolveType::EXPLICIT_NUCLEATION ||
           field_solve_type == fieldSolveType::EXPLICIT_POSTPROCESS ||
           field_solve_type == fieldSolveType::EXPLICIT_CONSTANT),
          dealii::ExcMessage(
