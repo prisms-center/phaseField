@@ -361,9 +361,9 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
           scalar_feeval_ptr = extract_feeval_ptr<ScalarFEEvaluation>(feeval_variant);
         }
 
-      n_dofs_per_cell                 = scalar_feeval_ptr->dofs_per_cell;
-      diagonal                        = std::make_unique<ScalarDiagonal>(n_dofs_per_cell);
-      ScalarDiagonal *scalar_diag_ptr = extract_diagonal_ptr<ScalarDiagonal>(diagonal);
+      n_dofs_per_cell       = scalar_feeval_ptr->dofs_per_cell;
+      diagonal              = std::make_unique<ScalarDiagonal>(n_dofs_per_cell);
+      auto *scalar_diag_ptr = extract_diagonal_ptr<ScalarDiagonal>(diagonal);
       process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
     }
   else if (field_type == FieldType::Vector)
@@ -379,9 +379,9 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
           vector_feeval_ptr = extract_feeval_ptr<VectorFEEvaluation>(feeval_variant);
         }
 
-      n_dofs_per_cell                 = vector_feeval_ptr->dofs_per_component;
-      diagonal                        = std::make_unique<VectorDiagonal>(n_dofs_per_cell);
-      VectorDiagonal *vector_diag_ptr = extract_diagonal_ptr<VectorDiagonal>(diagonal);
+      n_dofs_per_cell       = vector_feeval_ptr->dofs_per_component;
+      diagonal              = std::make_unique<VectorDiagonal>(n_dofs_per_cell);
+      auto *vector_diag_ptr = extract_diagonal_ptr<VectorDiagonal>(diagonal);
       process_feeval(vector_feeval_ptr, vector_diag_ptr);
     }
   else
