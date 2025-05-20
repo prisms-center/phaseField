@@ -1,0 +1,53 @@
+set dim = 3
+set global refinement = 7
+set degree = 1
+
+# =================================================================================
+# Set the domain parameters
+# =================================================================================
+
+subsection rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+# =================================================================================
+# Set the linear solver parameters
+# =================================================================================
+
+subsection linear solver parameters: u
+    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance value = 1e-5
+    set max iterations = 1000
+    set preconditioner type = GMG
+end
+
+# =================================================================================
+# Set the output parameters
+# =================================================================================
+
+subsection output
+  set condition =  EQUAL_SPACING
+  set number = 1
+end
+
+# =================================================================================
+# Set the boundary conditions
+# =================================================================================
+
+set boundary condition for u, x component = NON_UNIFORM_DIRICHLET
+set boundary condition for u, y component = NON_UNIFORM_DIRICHLET
+set boundary condition for u, z component = NON_UNIFORM_DIRICHLET
+
+# =================================================================================
+# Set the model constants
+# =================================================================================
+
+set Model constant CIJ = (22.5,0.3), isotropic elastic constants
+set Model constant incRadius = 15.0, DOUBLE
+set Model constant poisson = 0.3, DOUBLE
+set Model constant center = (50.0,50.0,50.0), TENSOR
