@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds checkpoint parameters.
  */
-struct checkpointParameters
+struct CheckpointParameters
 {
 public:
   /**
@@ -34,7 +34,7 @@ public:
    * \brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(const temporalDiscretization &temporal_discretization);
+  postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
    * \brief Print parameters to summary.log
@@ -42,6 +42,43 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Set whether to load from a checkpoint.
+   */
+  void
+  set_load_from_checkpoint(bool _load_from_checkpoint)
+  {
+    load_from_checkpoint = _load_from_checkpoint;
+  }
+
+  /**
+   * \brief Set the checkpoint condition.
+   */
+  void
+  set_condition(const std::string &_condition)
+  {
+    condition = _condition;
+  }
+
+  /**
+   * \brief Set the number of checkpoints.
+   */
+  void
+  set_n_checkpoints(unsigned int _n_checkpoints)
+  {
+    n_checkpoints = _n_checkpoints;
+  }
+
+  /**
+   * \brief Set the user checkpoint list.
+   */
+  void
+  set_user_checkpoint_list(const std::vector<int> &_user_checkpoint_list)
+  {
+    user_checkpoint_list = _user_checkpoint_list;
+  }
+
+private:
   // Whether to load from a checkpoint
   bool load_from_checkpoint = false;
 
@@ -59,14 +96,14 @@ public:
 };
 
 inline bool
-checkpointParameters::should_checkpoint(unsigned int increment) const
+CheckpointParameters::should_checkpoint(unsigned int increment) const
 {
   return checkpoint_list.contains(increment);
 }
 
 inline void
-checkpointParameters::postprocess_and_validate(
-  const temporalDiscretization &temporal_discretization)
+CheckpointParameters::postprocess_and_validate(
+  const TemporalDiscretization &temporal_discretization)
 {
   // If the user has specified a list and we have list checkpoint use that and return
   // early
@@ -137,21 +174,21 @@ checkpointParameters::postprocess_and_validate(
 }
 
 inline void
-checkpointParameters::print_parameter_summary() const
+CheckpointParameters::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Checkpoint Parameters\n"
     << "================================================\n"
     << "Checkpoint condition: " << condition << "\n"
     << "Number of checkpoints: " << n_checkpoints << "\n";
 
-  conditionalOStreams::pout_summary() << "Checkpoint iteration list: ";
+  ConditionalOStreams::pout_summary() << "Checkpoint iteration list: ";
   for (const auto &iteration : checkpoint_list)
     {
-      conditionalOStreams::pout_summary() << iteration << " ";
+      ConditionalOStreams::pout_summary() << iteration << " ";
     }
-  conditionalOStreams::pout_summary() << "\n\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

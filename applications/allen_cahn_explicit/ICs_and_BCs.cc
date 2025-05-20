@@ -46,9 +46,11 @@ customPDE<dim, degree, number>::set_initial_condition(
         {
           dist +=
             (point[dir] -
-             center[i][dir] * this->get_user_inputs().spatial_discretization.size[dir]) *
+             center[i][dir] *
+               this->get_user_inputs().get_spatial_discretization().get_size()[dir]) *
             (point[dir] -
-             center[i][dir] * this->get_user_inputs().spatial_discretization.size[dir]);
+             center[i][dir] *
+               this->get_user_inputs().get_spatial_discretization().get_size()[dir]);
         }
       dist = std::sqrt(dist);
 

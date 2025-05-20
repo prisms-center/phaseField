@@ -13,7 +13,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `matrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -34,7 +34,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit customPDE(const userInputParameters<dim> &_user_inputs)
+  explicit customPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
@@ -64,7 +64,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -72,45 +72,50 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_LHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_lhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   void
-  compute_postprocess_explicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_postprocess_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
   number clength =
-    this->get_user_inputs().user_constants.get_model_constant_double("cracklength");
-  number Mn  = this->get_user_inputs().user_constants.get_model_constant_double("Mn");
-  number ell = this->get_user_inputs().user_constants.get_model_constant_double("ell");
-  number Gc0 = this->get_user_inputs().user_constants.get_model_constant_double("Gc0");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("cracklength");
+  number Mn =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn");
+  number ell =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("ell");
+  number Gc0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Gc0");
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_base =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "CIJ_base");
   number KI_nom =
-    this->get_user_inputs().user_constants.get_model_constant_double("KI_nom");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("KI_nom");
   number vel_nom =
-    this->get_user_inputs().user_constants.get_model_constant_double("vel_nom");
+    this->get_user_inputs().get_user_constants().get_model_constant_double("vel_nom");
   number dx =
-    this->get_user_inputs().spatial_discretization.size[0] /
-    double(this->get_user_inputs().spatial_discretization.subdivisions[0]) /
-    std::pow(2.0, this->get_user_inputs().spatial_discretization.global_refinement);
+    this->get_user_inputs().get_spatial_discretization().get_size()[0] /
+    double(this->get_user_inputs().get_spatial_discretization().get_subdivisions()[0]) /
+    std::pow(
+      2.0,
+      this->get_user_inputs().get_spatial_discretization().get_global_refinement());
 };
 
 PRISMS_PF_END_NAMESPACE

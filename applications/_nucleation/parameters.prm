@@ -30,8 +30,8 @@ set Time step = 0.011
 set Number of time steps = 50000
 
 
-set Boundary condition for variable c = PERIODIC
-set Boundary condition for variable n = PERIODIC
+set Boundary condition for variable c = Periodic
+set Boundary condition for variable n = Periodic
 
 
 set Time steps between nucleation attempts = 30

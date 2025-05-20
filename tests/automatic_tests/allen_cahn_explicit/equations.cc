@@ -11,31 +11,31 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "n");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(0, "n");
-  set_dependencies_gradient_term_RHS(0, "grad(n)");
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(0, "n");
+  set_dependencies_gradient_term_rhs(0, "grad(n)");
 
   set_variable_name(1, "mg_n");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(1, Scalar);
+  set_variable_equation_type(1, ExplicitTimeDependent);
   set_is_postprocessed_field(1, true);
-  set_dependencies_value_term_RHS(1, "grad(n)");
+  set_dependencies_value_term_rhs(1, "grad(n)");
 
   set_variable_name(2, "f_tot");
-  set_variable_type(2, SCALAR);
-  set_variable_equation_type(2, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, ExplicitTimeDependent);
   set_is_postprocessed_field(2, true);
-  set_dependencies_value_term_RHS(2, "n, grad(n)");
+  set_dependencies_value_term_rhs(2, "n, grad(n)");
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
@@ -52,24 +52,24 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {

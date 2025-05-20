@@ -16,21 +16,21 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
 template <unsigned int dim, unsigned int degree>
-class constraintHandler
+class ConstraintHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  constraintHandler(
-    const userInputParameters<dim>                                &_user_inputs,
+  ConstraintHandler(
+    const UserInputParameters<dim>                                &_user_inputs,
     const MGInfo<dim>                                             &_mg_info,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
@@ -163,7 +163,7 @@ private:
                      const dealii::DoFHandler<dim> &dof_handler,
                      unsigned int                   index,
                      unsigned int                   level,
-                     dependencyType                 dependency_type);
+                     DependencyType                 dependency_type);
 
   /**
    * \brief Set the dirichlet constraint for the pinned point.
@@ -191,8 +191,8 @@ private:
   apply_constraints(const dealii::Mapping<dim>        &mapping,
                     const dealii::DoFHandler<dim>     &dof_handler,
                     dealii::AffineConstraints<number> &constraints,
-                    const boundaryCondition           &boundary_condition,
-                    boundaryCondition::type            boundary_type,
+                    const BoundaryCondition           &boundary_condition,
+                    BoundaryCondition::Type            boundary_type,
                     unsigned int                       boundary_id,
                     unsigned int                       component,
                     unsigned int                       index,
@@ -208,14 +208,14 @@ private:
   apply_mg_constraints(const dealii::Mapping<dim>        &mapping,
                        const dealii::DoFHandler<dim>     &dof_handler,
                        dealii::AffineConstraints<number> &constraints,
-                       boundaryCondition::type            boundary_type,
+                       BoundaryCondition::Type            boundary_type,
                        unsigned int                       boundary_id,
                        unsigned int                       component) const;
 
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Multigrid info

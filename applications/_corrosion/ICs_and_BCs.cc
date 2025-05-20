@@ -13,7 +13,7 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
                                             [[maybe_unused]] Vector<double>    &vector_IC)
 {
   // ---------------------------------------------------------------------
-  // ENTER THE INITIAL CONDITIONS HERE FOR SCALAR FIELDS
+  // ENTER THE INITIAL CONDITIONS HERE FOR Scalar FIELDS
   // ---------------------------------------------------------------------
   // Enter the function describing conditions for the fields at point "p".
   // Use "if" statements to set the initial condition for each variable
@@ -60,7 +60,7 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 }
 
 // ===========================================================================
-// FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
+// FUNCTION FOR NON-UNIFORM Dirichlet BOUNDARY CONDITIONS
 // ===========================================================================
 
 template <int dim, int degree>
@@ -74,7 +74,7 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
   [[maybe_unused]] Vector<double>    &vector_BC)
 {
   // --------------------------------------------------------------------------
-  // ENTER THE NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS HERE
+  // ENTER THE NON-UNIFORM Dirichlet BOUNDARY CONDITIONS HERE
   // --------------------------------------------------------------------------
   // Enter the function describing conditions for the fields at point "p".
   // Use "if" statements to set the boundary condition for each variable

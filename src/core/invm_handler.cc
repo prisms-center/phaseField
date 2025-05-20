@@ -23,8 +23,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-invmHandler<dim, degree, number>::invmHandler(
-  const std::map<unsigned int, variableAttributes> &_variable_attributes)
+InvmHandler<dim, degree, number>::InvmHandler(
+  const std::map<unsigned int, VariableAttributes> &_variable_attributes)
   : variable_attributes(&_variable_attributes)
   , data(nullptr)
   , invm_scalar(VectorType())
@@ -32,16 +32,16 @@ invmHandler<dim, degree, number>::invmHandler(
 {
   for (const auto &[index, variable] : *variable_attributes)
     {
-      if (variable.field_type == fieldType::SCALAR && !scalar_needed &&
-          (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
-           variable.pde_type == PDEType::AUXILIARY))
+      if (variable.get_field_type() == FieldType::Scalar && !scalar_needed &&
+          (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+           variable.get_pde_type() == PDEType::Auxiliary))
         {
           scalar_needed = true;
           scalar_index  = index;
         }
-      if (variable.field_type == fieldType::VECTOR && !vector_needed &&
-          (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
-           variable.pde_type == PDEType::AUXILIARY))
+      if (variable.get_field_type() == FieldType::Vector && !vector_needed &&
+          (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+           variable.get_pde_type() == PDEType::Auxiliary))
         {
           vector_needed = true;
           vector_index  = index;
@@ -51,8 +51,8 @@ invmHandler<dim, degree, number>::invmHandler(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::initialize(
-  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data)
+InvmHandler<dim, degree, number>::initialize(
+  std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> _data)
 {
   Assert(data == nullptr,
          dealii::ExcMessage("A ptr to a matrix-free object has already been assigned. "
@@ -64,7 +64,7 @@ invmHandler<dim, degree, number>::initialize(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_invm()
+InvmHandler<dim, degree, number>::compute_invm()
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
 
@@ -80,14 +80,14 @@ invmHandler<dim, degree, number>::compute_invm()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::recompute_invm()
+InvmHandler<dim, degree, number>::recompute_invm()
 {
   this->compute_invm();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const typename invmHandler<dim, degree, number>::VectorType &
-invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
+const typename InvmHandler<dim, degree, number>::VectorType &
+InvmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
   Assert(variable_attributes->contains(index),
@@ -95,7 +95,7 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
            "Invalid index. The provided index does not have an entry in the variable "
            "attributes that were provided to the constructor."));
 
-  if (variable_attributes->at(index).field_type == fieldType::SCALAR)
+  if (variable_attributes->at(index).get_field_type() == FieldType::Scalar)
     {
       Assert(scalar_needed,
              dealii::ExcMessage(
@@ -108,7 +108,7 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 
       return invm_scalar;
     }
-  if (variable_attributes->at(index).field_type == fieldType::VECTOR)
+  if (variable_attributes->at(index).get_field_type() == FieldType::Vector)
     {
       Assert(vector_needed,
              dealii::ExcMessage(
@@ -127,20 +127,20 @@ invmHandler<dim, degree, number>::get_invm(const unsigned int &index) const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::clear()
+InvmHandler<dim, degree, number>::clear()
 {
   data          = nullptr;
   invm_scalar   = VectorType();
   invm_vector   = VectorType();
   scalar_needed = false;
   vector_needed = false;
-  scalar_index  = numbers::invalid_index;
-  vector_index  = numbers::invalid_index;
+  scalar_index  = Numbers::invalid_index;
+  vector_index  = Numbers::invalid_index;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_scalar_invm()
+InvmHandler<dim, degree, number>::compute_scalar_invm()
 {
   data->initialize_dof_vector(invm_scalar, scalar_index);
 
@@ -174,7 +174,7 @@ invmHandler<dim, degree, number>::compute_scalar_invm()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-invmHandler<dim, degree, number>::compute_vector_invm()
+InvmHandler<dim, degree, number>::compute_vector_invm()
 {
   data->initialize_dof_vector(invm_vector, vector_index);
 
@@ -212,6 +212,6 @@ invmHandler<dim, degree, number>::compute_vector_invm()
     }
 }
 
-INSTANTIATE_TRI_TEMPLATE(invmHandler)
+INSTANTIATE_TRI_TEMPLATE(InvmHandler)
 
 PRISMS_PF_END_NAMESPACE

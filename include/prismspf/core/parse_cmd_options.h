@@ -18,12 +18,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Class to parse command line options.
  */
-class parseCMDOptions
+class ParseCMDOptions
 {
 public:
-  // NOLINTBEGIN (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
-  parseCMDOptions(int &_argc, char **argv)
+  ParseCMDOptions(int &_argc, char **argv)
     : argc(_argc)
   {
     for (int i = 1; i < argc; ++i)
@@ -32,7 +32,7 @@ public:
       }
   }
 
-  // NOLINTEND (cppcoreguidelines-pro-bounds-pointer-arithmetic)
+  // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
   std::string
   get_parameters_filename()
@@ -86,7 +86,7 @@ public:
       }
 
     // Log the filename being used
-    conditionalOStreams::pout_base()
+    ConditionalOStreams::pout_base()
       << "Using the input parameter file: " << parameters_filename << "\n";
 
     return parameters_filename;
@@ -97,7 +97,7 @@ public:
   get_caliper_configuration()
   {
     // Allowed number of arguments
-    int n_args = 5;
+    const int n_args = 5;
 
     // Check that there aren't too many arguments
     if (argc > n_args)
@@ -125,7 +125,7 @@ public:
       }
 
     // Log the filename being used
-    conditionalOStreams::pout_base()
+    ConditionalOStreams::pout_base()
       << "Using the caliper configuration: " << config << "\n";
 
     return config;

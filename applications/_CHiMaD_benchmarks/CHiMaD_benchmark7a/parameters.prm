@@ -36,7 +36,7 @@ set Number of outputs = 4
 set Skip print steps = 1000
 
 
-set Boundary condition for variable n = PERIODIC, PERIODIC, DIRICHLET: 1, DIRICHLET: 0
+set Boundary condition for variable n = Periodic, Periodic, Dirichlet: 1, Dirichlet: 0
 
 
 set Model constant kappa = 0.0004, DOUBLE

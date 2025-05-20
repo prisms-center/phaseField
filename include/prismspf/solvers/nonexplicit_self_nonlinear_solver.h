@@ -19,24 +19,24 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class handles the self-nonlinear solves of a single nonexplicit field
  */
 template <unsigned int dim, unsigned int degree>
-class nonexplicitSelfNonlinearSolver : public nonexplicitBase<dim, degree>
+class NonexplicitSelfnonlinearSolver : public NonexplicitBase<dim, degree>
 {
 public:
-  using SystemMatrixType = matrixFreeOperator<dim, degree, double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
 
   /**
    * \brief Constructor.
    */
-  nonexplicitSelfNonlinearSolver(
-    const userInputParameters<dim>                         &_user_inputs,
-    const matrixfreeHandler<dim, double>                   &_matrix_free_handler,
-    const triangulationHandler<dim>                        &_triangulation_handler,
-    const invmHandler<dim, degree, double>                 &_invm_handler,
-    const constraintHandler<dim, degree>                   &_constraint_handler,
-    const dofHandler<dim>                                  &_dof_handler,
+  NonexplicitSelfnonlinearSolver(
+    const UserInputParameters<dim>                         &_user_inputs,
+    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
+    const TriangulationHandler<dim>                        &_triangulation_handler,
+    const InvmHandler<dim, degree, double>                 &_invm_handler,
+    const ConstraintHandler<dim, degree>                   &_constraint_handler,
+    const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
-    dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-    solutionHandler<dim>                                   &_solution_handler,
+    dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+    SolutionHandler<dim>                                   &_solution_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
     std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
     const MGInfo<dim>                                      &_mg_info);
@@ -44,7 +44,7 @@ public:
   /**
    * \brief Destructor.
    */
-  ~nonexplicitSelfNonlinearSolver() override = default;
+  ~NonexplicitSelfnonlinearSolver() override = default;
 
   /**
    * \brief Initialize system.
@@ -62,7 +62,7 @@ private:
   /**
    * \brief Map of identity linear solvers
    */
-  std::map<unsigned int, std::unique_ptr<identitySolver<dim, degree>>> identity_solvers;
+  std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
    * \brief Map of geometric multigrid linear solvers

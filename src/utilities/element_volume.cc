@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-elementVolume<dim, degree, number>::initialize(
+ElementVolume<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
 {
   data = std::move(_data);
@@ -27,7 +27,7 @@ elementVolume<dim, degree, number>::initialize(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-elementVolume<dim, degree, number>::compute_element_volume(
+ElementVolume<dim, degree, number>::compute_element_volume(
   const dealii::FESystem<dim> &fe_system)
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
@@ -75,7 +75,7 @@ elementVolume<dim, degree, number>::compute_element_volume(
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::AlignedVector<dealii::VectorizedArray<number>> &
-elementVolume<dim, degree, number>::get_element_volumes() const
+ElementVolume<dim, degree, number>::get_element_volumes() const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
   Assert(!element_volume.empty(),
@@ -84,6 +84,6 @@ elementVolume<dim, degree, number>::get_element_volumes() const
   return element_volume;
 };
 
-INSTANTIATE_TRI_TEMPLATE(elementVolume)
+INSTANTIATE_TRI_TEMPLATE(ElementVolume)
 
 PRISMS_PF_END_NAMESPACE

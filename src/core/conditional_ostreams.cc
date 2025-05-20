@@ -16,19 +16,22 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-std::ofstream &
-get_summary_log_file()
+namespace
 {
-  static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
-  if (!file.is_open())
-    {
-      throw std::runtime_error("Unable to open summary.log for writing.");
-    }
-  return file;
-}
+  std::ofstream &
+  get_summary_log_file()
+  {
+    static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
+    if (!file.is_open())
+      {
+        throw std::runtime_error("Unable to open summary.log for writing.");
+      }
+    return file;
+  }
+} // namespace
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_summary()
+ConditionalOStreams::pout_summary()
 {
   static dealii::ConditionalOStream instance(get_summary_log_file(),
                                              dealii::Utilities::MPI::this_mpi_process(
@@ -37,7 +40,7 @@ conditionalOStreams::pout_summary()
 }
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_base()
+ConditionalOStreams::pout_base()
 {
   static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,
@@ -47,7 +50,7 @@ conditionalOStreams::pout_base()
 }
 
 dealii::ConditionalOStream &
-conditionalOStreams::pout_verbose()
+ConditionalOStreams::pout_verbose()
 {
   static TeeStream                  tee_stream(std::cout, get_summary_log_file());
   static dealii::ConditionalOStream instance(tee_stream,

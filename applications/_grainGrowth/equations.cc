@@ -8,8 +8,8 @@
 // attributes are set via standardized function calls. The first parameter for
 // each function call is the variable index (starting at zero). The first set of
 // variable/equation attributes are the variable name (any string), the variable
-// type (SCALAR/VECTOR), and the equation type (EXPLICIT_TIME_DEPENDENT/
-// TIME_INDEPENDENT/AUXILIARY). The next set of attributes describe the
+// type (Scalar/Vector), and the equation type (ExplicitTimeDependent/
+// TimeIndependent/Auxiliary). The next set of attributes describe the
 // dependencies for the governing equation on the values and derivatives of the
 // other variables for the value term and gradient term of the RHS and the LHS.
 // The final pair of attributes determine whether a variable represents a field
@@ -17,7 +17,7 @@
 // rate calculations.
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   for (unsigned int var_index = 0; var_index < 6; var_index++)
     {
@@ -25,11 +25,11 @@ customAttributeLoader::loadVariableAttributes()
       var_name.append(std::to_string(var_index));
 
       set_variable_name(var_index, var_name);
-      set_variable_type(var_index, SCALAR);
-      set_variable_equation_type(var_index, EXPLICIT_TIME_DEPENDENT);
+      set_variable_type(var_index, Scalar);
+      set_variable_equation_type(var_index, ExplicitTimeDependent);
 
-      set_dependencies_value_term_RHS(var_index, "n0, n1, n2, n3, n4, n5");
-      set_dependencies_gradient_term_RHS(
+      set_dependencies_value_term_rhs(var_index, "n0, n1, n2, n3, n4, n5");
+      set_dependencies_gradient_term_rhs(
         var_index,
         "grad(n0), grad(n1), grad(n2), grad(n3), grad(n4), grad(n5)");
     }
@@ -51,7 +51,7 @@ customAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
@@ -94,8 +94,8 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
-      variable_list.set_scalar_value_term_RHS(i, value_terms[i]);
-      variable_list.set_scalar_gradient_term_RHS(i, gradient_terms[i]);
+      variable_list.set_scalar_value_term_rhs(i, value_terms[i]);
+      variable_list.set_scalar_gradient_term_rhs(i, gradient_terms[i]);
     }
 }
 
@@ -115,7 +115,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}
@@ -138,7 +138,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}

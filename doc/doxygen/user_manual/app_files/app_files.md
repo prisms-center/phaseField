@@ -39,16 +39,16 @@ void variableAttributeLoader::loadVariableAttributes(){
 	set_variable_type				(0,SCALAR);
 	set_variable_equation_type		(0,EXPLICIT_TIME_DEPENDENT);
 
-    set_dependencies_value_term_RHS(0, "c");
-    set_dependencies_gradient_term_RHS(0, "n,grad(c)");
+    set_dependencies_value_term_rhs(0, "c");
+    set_dependencies_gradient_term_rhs(0, "n,grad(c)");
 
     // Variable 1
 	set_variable_name				(1,"n");
 	set_variable_type				(1,SCALAR);
 	set_variable_equation_type		(1,EXPLICIT_TIME_DEPENDENT);
 
-    set_dependencies_value_term_RHS(1, "c,n");
-    set_dependencies_gradient_term_RHS(1, "grad(n)");
+    set_dependencies_value_term_rhs(1, "c,n");
+    set_dependencies_gradient_term_rhs(1, "grad(n)");
 }
 ```
 
@@ -59,10 +59,10 @@ This function specifies the model variables and their attributes. In this case, 
 set_variable_name | [String] | no | var  | Sets the name of the variable. This name is used in 'parameters.in' as well as during output.
 set_variable_type | SCALAR, VECTOR | no | SCALAR  | Sets whether the variable is a scalar or a vector.
 set_variable_equation_type | EXPLICIT_TIME_DEPENDENT, AUXILIARY, TIME_INDEPENDENT | no | EXPLICIT_TIME_DEPENDENT  | Sets whether the governing equation for the variable is a time-dependent PDE (EXPLICIT_TIME_DEPENDENT), a time-independent PDE that does not require a linear solve (AUXILIARY) or a time independent PDE that does require a (non)linear solve (TIME_INDEPENDENT).
-set_dependencies_value_term_RHS | String | yes | N/A| Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_gradient_term_RHS | String | yes | N/A | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_value_term_LHS | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
-set_dependencies_gradient_term_LHS | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
+set_dependencies_value_term_rhs | String | yes | N/A| Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_gradient_term_rhs | String | yes | N/A | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_value_term_lhs | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
+set_dependencies_gradient_term_lhs | String | no | [empty] | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses. (Only needed for TIME_INDEPENDENT equations.)
 set_allowed_to_nucleate | Boolean | no | false | Sets whether the nucleation algorithms should be activated for this variable. (Only needed when nucleation is desired).
 set_need_value_nucleation | Boolean | no | false | Sets whether the value of the variable is needed to calculate the nucleation probability in the 'nucleation.cc' file. (Only needed when nucleation is desired).
 
@@ -110,12 +110,12 @@ scalargradType eqx_n = (constV(-userInputs.dtValue*Kn*Mn)*nx);
 // --- Submitting the terms for the governing equations ---
 
 // Terms for the equation to evolve the concentration
-variable_list.set_scalar_value_term_RHS(0,eq_c);
-variable_list.set_scalar_gradient_term_RHS(0,eqx_c);
+variable_list.set_scalar_value_term_rhs(0,eq_c);
+variable_list.set_scalar_gradient_term_rhs(0,eqx_c);
 
 // Terms for the equation to evolve the order parameter
-variable_list.set_scalar_value_term_RHS(1,eq_n);
-variable_list.set_scalar_gradient_term_RHS(1,eqx_n);
+variable_list.set_scalar_value_term_rhs(1,eq_n);
+variable_list.set_scalar_gradient_term_rhs(1,eqx_n);
 
 }
 ```
@@ -124,9 +124,9 @@ In this function the equation terms at a particular quadrature point are calcula
 
 After the nicknames for the field variables are set, the equation terms are calculated (including some intermediate variables, such as the free energies and the interpolation functions in the example above). These use the same six data types discussed in the preceding paragraph. The model variables given in 'parameters.in' can be used to define the residual terms.
 
-Finally, the terms for the governing equations are submitted to variable_list, using the functions set_scalar_value_term_RHS, set_scalar_gradient_term_RHS, set_vector_value_term_RHS, and set_vector_gradient_term_RHS, once again referring the variables by their index.
+Finally, the terms for the governing equations are submitted to variable_list, using the functions set_scalar_value_term_rhs, set_scalar_gradient_term_rhs, set_vector_value_term_rhs, and set_vector_gradient_term_rhs, once again referring the variables by their index.
 
-The nickname step can be skipped, if desired, although the code is generally more readable with nicknames (and the performance is in some cases better using the nicknames). An example without nicknames for the fields can be found in the grainGrowth application, where loops over the ten variables are easier to construct when not declaring all of the variables at once. One word of caution, though: calling set_scalar_value_term_RHS and set_scalar_gradient_term_RHS overwrites the value and gradient of the variable, respectively (and same for the variants for vectors). Thus, either the equation terms need to be cached and then set after all the equation terms have been calculated (as is done in the grainGrowth application) or the values and gradients need to be cached before setting the equation terms (as is done with the standard nicknaming approach).
+The nickname step can be skipped, if desired, although the code is generally more readable with nicknames (and the performance is in some cases better using the nicknames). An example without nicknames for the fields can be found in the grainGrowth application, where loops over the ten variables are easier to construct when not declaring all of the variables at once. One word of caution, though: calling set_scalar_value_term_rhs and set_scalar_gradient_term_rhs overwrites the value and gradient of the variable, respectively (and same for the variants for vectors). Thus, either the equation terms need to be cached and then set after all the equation terms have been calculated (as is done in the grainGrowth application) or the values and gradients need to be cached before setting the equation terms (as is done with the standard nicknaming approach).
 
 #### A note on types
 The deal.II library uses a data structure called a VectorizedArray to store the variable values and their derivatives. This data structured in optimized for modern vectorized processors, giving a substantial speedup in some cases. However, this data structure can complicate things slightly. One complicating factor is that VectorizedArrays can't always be added, subtracted, multiplied, or divided with more standard data types like doubles. For this reason, you will see the ''constV(argument)'' function scattered throughout the code. This function turns a non-VectorizedArray into a VectorizedArray. To be safe, you can always encase non-VectorizedArrays with ''constV()'' when they share an operation with a VectorizedArray. A second complication is that not all of the standard mathematical operations are available for VectorizedArrays. The basic trigonometric functions are available, as are exponentials and square roots. However, hyperbolic tangents are not. If needed, they must be constructed from exponents (or by iterating through the VectorizedArray, see below). A third complication is that conditional statements involving VectorizedArrays are not allowed. To perform a conditional statement, you must iterate through the VectorizedArray. To do still, construct a for loop where the maximum index is [variable name].n_array_elements. For examples of this, refer to the postprocessing file for the grainGrowth app or the seedNucleus function in 'equations.cc' in the nucleationModel app. For more details on the deal.II implementation of VectorizedArrays (including a list of mathematical operations that are allowed), please visit [the relevant deal.II documentation page](https://www.dealii.org/8.4.0/doxygen/deal.II/classVectorizedArray.html).
@@ -213,7 +213,7 @@ else{
 
 // --- Submitting the terms for the governing equations ---
 
-variable_list.set_vector_gradient_term_LHS(4,eqx_Du);
+variable_list.set_vector_gradient_term_lhs(4,eqx_Du);
 
 }
 ```
@@ -348,8 +348,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 	set_variable_name				(0,"f_tot");
 	set_variable_type				(0,SCALAR);
 
-    set_dependencies_value_term_RHS(0, "c,n,grad(n)");
-    set_dependencies_gradient_term_RHS(0, "");
+    set_dependencies_value_term_rhs(0, "c,n,grad(n)");
+    set_dependencies_gradient_term_rhs(0, "");
 
     set_output_integral         	(0,true);
 
@@ -360,8 +360,8 @@ void variableAttributeLoader::loadPostProcessorVariableAttributes(){
 | --------------|---------|----------|---------|----------------------------------------------------|
 set_variable_name | String | no | var  | Sets the name of the variable.
 set_variable_type | SCALAR | no | SCALAR  | Sets whether the variable is a scalar or a vector. Only SCALAR is currently allowed.
-set_dependencies_value_term_RHS | String | yes | | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
-set_dependencies_gradient_term_RHS | String | yes | | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_value_term_rhs | String | yes | | Sets which variables and their derivatives are needed to calculate the value term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
+set_dependencies_gradient_term_rhs | String | yes | | Sets which variables and their derivatives are needed to calculate the gradient term for the RHS. Variables are referenced by their names. First derivatives are referenced by ```grad``` and then the variable name in parentheses. Second derivatives are referenced by ```hess``` and then the variable name in parentheses.
 set_output_integral | Boolean | no | false | Sets whether the integral of the variable should be calculated and written to a file named 'integratedFields.txt'.
 
 ### postProcessedFields
@@ -404,7 +404,7 @@ f_tot = f_chem + f_grad;
 
 // --- Submitting the terms for the postprocessing expressions ---
 
-pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
+pp_variable_list.set_scalar_value_term_rhs(0, f_tot);
 
 }
 ```

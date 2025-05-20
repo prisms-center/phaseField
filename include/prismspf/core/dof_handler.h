@@ -15,29 +15,29 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 template <unsigned int dim>
-class triangulationHandler;
+class TriangulationHandler;
 
 /**
  * \brief Class that manages the deal.II DoFHandlers
  */
 template <unsigned int dim>
-class dofHandler
+class DofHandler
 {
 public:
   /**
    * \brief Constructor.
    */
-  dofHandler(const userInputParameters<dim> &_user_inputs, const MGInfo<dim> &mg_info);
+  DofHandler(const UserInputParameters<dim> &_user_inputs, const MGInfo<dim> &mg_info);
 
   /**
    * \brief Initialize the DoFHandlers
    */
   void
-  init(const triangulationHandler<dim>                  &triangulation_handler,
-       const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+  init(const TriangulationHandler<dim>                  &triangulation_handler,
+       const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
        const MGInfo<dim>                                &mg_info);
 
   /**
@@ -57,7 +57,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Collection of the triangulation DoFs. The number of DoFHandlers should be

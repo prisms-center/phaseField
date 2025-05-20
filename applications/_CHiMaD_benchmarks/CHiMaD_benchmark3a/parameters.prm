@@ -30,9 +30,9 @@ set Time step = 0.005
 set Simulation end time = 1500.0
 
 
-set Boundary condition for variable u = NATURAL, DIRICHLET: -0.3, NATURAL, DIRICHLET: -0.3
-set Boundary condition for variable phi = NATURAL
-set Boundary condition for variable mu = NATURAL
+set Boundary condition for variable u = Natural, Dirichlet: -0.3, Natural, Dirichlet: -0.3
+set Boundary condition for variable phi = Natural
+set Boundary condition for variable mu = Natural
 
 
 set Model constant D = 10.0, DOUBLE

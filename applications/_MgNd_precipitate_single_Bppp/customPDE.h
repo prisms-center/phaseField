@@ -9,7 +9,7 @@ template <int dim, int degree>
 class customPDE : public MatrixFreePDE<dim, degree>
 {
 public:
-  customPDE(userInputParameters<dim> _userInputs)
+  customPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs)
   {
@@ -46,13 +46,13 @@ public:
 private:
 #include <core/typeDefs.h>
 
-  const userInputParameters<dim> userInputs;
+  const UserInputParameters<dim> userInputs;
 
   // Function to set the RHS of the governing equations for explicit time
   // dependent equations (in equations.h)
   void
   explicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -61,7 +61,7 @@ private:
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -69,7 +69,7 @@ private:
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -78,9 +78,9 @@ private:
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
       &variable_list,
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;

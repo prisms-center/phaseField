@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-computeIntegral<dim, degree, number>::compute_integral(
+ComputeIntegral<dim, degree, number>::compute_integral(
   number                        &integral_value,
   const dealii::DoFHandler<dim> &dof_handler,
   const VectorType              &vector) const
@@ -68,7 +68,7 @@ computeIntegral<dim, degree, number>::compute_integral(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-computeIntegral<dim, degree, number>::compute_integral(
+ComputeIntegral<dim, degree, number>::compute_integral(
   std::vector<number>           &integral_value,
   const dealii::DoFHandler<dim> &dof_handler,
   const VectorType              &vector) const
@@ -127,6 +127,6 @@ computeIntegral<dim, degree, number>::compute_integral(
   integral_value = value;
 }
 
-INSTANTIATE_TRI_TEMPLATE(computeIntegral)
+INSTANTIATE_TRI_TEMPLATE(ComputeIntegral)
 
 PRISMS_PF_END_NAMESPACE

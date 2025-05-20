@@ -8,8 +8,8 @@
 // attributes are set via standardized function calls. The first parameter for
 // each function call is the variable index (starting at zero). The first set of
 // variable/equation attributes are the variable name (any string), the variable
-// type (SCALAR/VECTOR), and the equation type (EXPLICIT_TIME_DEPENDENT/
-// TIME_INDEPENDENT/AUXILIARY). The next set of attributes describe the
+// type (Scalar/Vector), and the equation type (ExplicitTimeDependent/
+// TimeIndependent/Auxiliary). The next set of attributes describe the
 // dependencies for the governing equation on the values and derivatives of the
 // other variables for the value term and gradient term of the RHS and the LHS.
 // The final pair of attributes determine whether a variable represents a field
@@ -17,22 +17,22 @@
 // rate calculations.
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   // Variable 0
   set_variable_name(0, "n");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, ExplicitTimeDependent);
 
-  set_dependencies_value_term_RHS(0, "n, mu");
+  set_dependencies_value_term_rhs(0, "n, mu");
 
   // Variable 1
   set_variable_name(1, "mu");
-  set_variable_type(1, SCALAR);
-  set_variable_equation_type(1, AUXILIARY);
+  set_variable_type(1, Scalar);
+  set_variable_equation_type(1, Auxiliary);
 
-  set_dependencies_value_term_RHS(1, "n");
-  set_dependencies_gradient_term_RHS(1, "grad(n)");
+  set_dependencies_value_term_rhs(1, "n");
+  set_dependencies_gradient_term_rhs(1, "grad(n)");
 }
 
 // =============================================================================================
@@ -51,7 +51,7 @@ customAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
@@ -72,7 +72,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_scalar_value_term_RHS(0, eq_n);
+  variable_list.set_scalar_value_term_rhs(0, eq_n);
 }
 
 // =============================================================================================
@@ -91,7 +91,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
@@ -110,8 +110,8 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
   scalargradType  eqx_mu = constV(KnV) * nx;
 
   // --- Submitting the terms for the governing equations ---
-  variable_list.set_scalar_value_term_RHS(1, eq_mu);
-  variable_list.set_scalar_gradient_term_RHS(1, eqx_mu);
+  variable_list.set_scalar_value_term_rhs(1, eq_mu);
+  variable_list.set_scalar_gradient_term_rhs(1, eqx_mu);
 }
 
 // =============================================================================================
@@ -132,7 +132,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}

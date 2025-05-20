@@ -15,7 +15,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `matrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -36,7 +36,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit customPDE(const userInputParameters<dim> &_user_inputs)
+  explicit customPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
@@ -66,7 +66,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -74,68 +74,81 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_LHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_lhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   void
-  compute_postprocess_explicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_postprocess_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  number McV  = this->get_user_inputs().user_constants.get_model_constant_double("McV");
-  number Mn1V = this->get_user_inputs().user_constants.get_model_constant_double("Mn1V");
-  number Mn2V = this->get_user_inputs().user_constants.get_model_constant_double("Mn2V");
-  number Mn3V = this->get_user_inputs().user_constants.get_model_constant_double("Mn3V");
+  number McV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  number Mn1V =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn1V");
+  number Mn2V =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn2V");
+  number Mn3V =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn3V");
   dealii::Tensor<2, dim, number> Kn1 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor("Kn1");
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn1");
   dealii::Tensor<2, dim, number> Kn2 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor("Kn2");
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn2");
   dealii::Tensor<2, dim, number> Kn3 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor("Kn3");
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn3");
 
   bool n_dependent_stiffness =
-    this->get_user_inputs().user_constants.get_model_constant_bool(
+    this->get_user_inputs().get_user_constants().get_model_constant_bool(
       "n_dependent_stiffness");
 
   dealii::Tensor<2, dim, number> sfts_const1 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
       "sfts_const1");
   dealii::Tensor<2, dim, number> sfts_const2 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
       "sfts_const2");
   dealii::Tensor<2, dim, number> sfts_const3 =
-    this->get_user_inputs().user_constants.get_model_constant_rank_2_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
       "sfts_const3");
 
-  number A4 = this->get_user_inputs().user_constants.get_model_constant_double("A4");
-  number A3 = this->get_user_inputs().user_constants.get_model_constant_double("A3");
-  number A2 = this->get_user_inputs().user_constants.get_model_constant_double("A2");
-  number A1 = this->get_user_inputs().user_constants.get_model_constant_double("A1");
-  number A0 = this->get_user_inputs().user_constants.get_model_constant_double("A0");
+  number A4 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A4");
+  number A3 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A3");
+  number A2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A2");
+  number A1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A1");
+  number A0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A0");
 
-  number B2 = this->get_user_inputs().user_constants.get_model_constant_double("B2");
-  number B1 = this->get_user_inputs().user_constants.get_model_constant_double("B1");
-  number B0 = this->get_user_inputs().user_constants.get_model_constant_double("B0");
+  number B2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B2");
+  number B1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B1");
+  number B0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B0");
 
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Mg =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor("CIJ_Mg");
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+      "CIJ_Mg");
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Beta =
-    this->get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "CIJ_Beta");
 };
 

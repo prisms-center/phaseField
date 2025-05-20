@@ -17,7 +17,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Struct that holds spatial discretization parameters.
  */
 template <unsigned int dim>
-struct spatialDiscretization
+struct SpatialDiscretization
 {
 public:
   /**
@@ -25,14 +25,14 @@ public:
    */
   enum TriangulationType : std::uint8_t
   {
-    rectangular,
-    spherical
+    Rectangular,
+    Spherical
   };
 
   /**
    * \brief Constructor.
    */
-  spatialDiscretization() = default;
+  SpatialDiscretization() = default;
 
   /**
    * \brief Postprocess and validate parameters.
@@ -46,13 +46,195 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Get the domain extents in each cartesian direction
+   */
+  [[nodiscard]] const dealii::Tensor<1, dim, double> &
+  get_size() const
+  {
+    return size;
+  }
+
+  /**
+   * \brief Set the domain extents in each cartesian direction
+   */
+  void
+  set_size(const unsigned int &direction, const double &_size)
+  {
+    size[direction] = _size;
+  }
+
+  /**
+   * \brief Get the radius of the Spherical domain
+   */
+  [[nodiscard]] double
+  get_radius() const
+  {
+    return radius;
+  }
+
+  /**
+   * \brief Set the radius of the Spherical domain
+   */
+  void
+  set_radius(const double &_radius)
+  {
+    radius = _radius;
+  }
+
+  /**
+   * \brief Get the mesh subdivisions in each cartesian direction
+   */
+  [[nodiscard]] const std::vector<unsigned int> &
+  get_subdivisions() const
+  {
+    return subdivisions;
+  }
+
+  /**
+   * \brief Set the mesh subdivisions in each cartesian direction
+   */
+  void
+  set_subdivisions(const unsigned int &direction, const unsigned int &_subdivisions)
+  {
+    subdivisions[direction] = _subdivisions;
+  }
+
+  /**
+   * \brief Get the global refinement of mesh
+   */
+  [[nodiscard]] unsigned int
+  get_global_refinement() const
+  {
+    return global_refinement;
+  }
+
+  /**
+   * \brief Set the global refinement of mesh
+   */
+  void
+  set_global_refinement(const unsigned int &_global_refinement)
+  {
+    global_refinement = _global_refinement;
+  }
+
+  /**
+   * \brief Get the element polynomial degree
+   */
+  [[nodiscard]] unsigned int
+  get_degree() const
+  {
+    return degree;
+  }
+
+  /**
+   * \brief Set the element polynomial degree
+   */
+  void
+  set_degree(const unsigned int &_degree)
+  {
+    degree = _degree;
+  }
+
+  /**
+   * \brief Get whether adaptive meshing (AMR) is enabled
+   */
+  [[nodiscard]] bool
+  get_has_adaptivity() const
+  {
+    return has_adaptivity;
+  }
+
+  /**
+   * \brief Set whether adaptive meshing (AMR) is enabled
+   */
+  void
+  set_has_adaptivity(const bool &_has_adaptivity)
+  {
+    has_adaptivity = _has_adaptivity;
+  }
+
+  /**
+   * \brief Get the maximum global refinement for AMR
+   */
+  [[nodiscard]] unsigned int
+  get_max_refinement() const
+  {
+    return max_refinement;
+  }
+
+  /**
+   * \brief Set the maximum global refinement for AMR
+   */
+  void
+  set_max_refinement(const unsigned int &_max_refinement)
+  {
+    max_refinement = _max_refinement;
+  }
+
+  /**
+   * \brief Get the minimum global refinement for AMR
+   */
+  [[nodiscard]] unsigned int
+  get_min_refinement() const
+  {
+    return min_refinement;
+  }
+
+  /**
+   * \brief Set the minimum global refinement for AMR
+   */
+  void
+  set_min_refinement(const unsigned int &_min_refinement)
+  {
+    min_refinement = _min_refinement;
+  }
+
+  /**
+   * \brief Get the number of steps between remeshing
+   */
+  [[nodiscard]] unsigned int
+  get_remeshing_period() const
+  {
+    return remeshing_period;
+  }
+
+  /**
+   * \brief Set the number of steps between remeshing
+   */
+  void
+  set_remeshing_period(const unsigned int &_remeshing_period)
+  {
+    remeshing_period = _remeshing_period;
+  }
+
+  /**
+   * \brief Get the refinement criteria
+   */
+  [[nodiscard]] const std::vector<GridRefinement::RefinementCriterion> &
+  get_refinement_criteria() const
+  {
+    return refinement_criteria;
+  }
+
+  /**
+   * \brief Set the refinement criteria
+   */
+  void
+  add_refinement_criteria(
+    const GridRefinement::RefinementCriterion &_refinement_criterion)
+  {
+    refinement_criteria.push_back(_refinement_criterion);
+  }
+
+private:
   // Triangulation type
-  TriangulationType type = TriangulationType::rectangular;
+  TriangulationType type = TriangulationType::Rectangular;
 
   // Domain extents in each cartesian direction
   dealii::Tensor<1, dim, double> size;
 
-  // Radius of the spherical domain
+  // Radius of the Spherical domain
   double radius = 0.0;
 
   // Mesh subdivisions in each cartesian direction
@@ -82,16 +264,16 @@ public:
 
 template <unsigned int dim>
 inline void
-spatialDiscretization<dim>::postprocess_and_validate()
+SpatialDiscretization<dim>::postprocess_and_validate()
 {
   // Assign the triangulation type
   if (radius != 0.0 && size.norm() == 0.0)
     {
-      type = TriangulationType::spherical;
+      type = TriangulationType::Spherical;
     }
   else if (radius == 0.0 && size.norm() != 0.0)
     {
-      type = TriangulationType::rectangular;
+      type = TriangulationType::Rectangular;
     }
   else
     {
@@ -135,34 +317,34 @@ spatialDiscretization<dim>::postprocess_and_validate()
 
 template <unsigned int dim>
 inline void
-spatialDiscretization<dim>::print_parameter_summary() const
+SpatialDiscretization<dim>::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Spatial Discretization\n"
     << "================================================\n";
 
-  if (type == TriangulationType::spherical)
+  if (type == TriangulationType::Spherical)
     {
-      conditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
+      ConditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
     }
-  else if (type == TriangulationType::rectangular)
+  else if (type == TriangulationType::Rectangular)
     {
       if constexpr (dim == 1)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << "\n";
         }
       else if constexpr (dim == 2)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << ", y=" << size[1] << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1] << "\n";
         }
       else if constexpr (dim == 3)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Domain size: x=" << size[0] << ", y=" << size[1] << ", z=" << size[2]
             << "\n"
             << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1]
@@ -174,7 +356,7 @@ spatialDiscretization<dim>::print_parameter_summary() const
       AssertThrow(false, UnreachableCode());
     }
 
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "Global refinement: " << global_refinement << "\n"
     << "Degree: " << degree << "\n"
     << "Adaptivity enabled: " << bool_to_string(has_adaptivity) << "\n"
@@ -184,17 +366,17 @@ spatialDiscretization<dim>::print_parameter_summary() const
 
   if (!refinement_criteria.empty())
     {
-      conditionalOStreams::pout_summary() << "Refinement criteria:\n";
+      ConditionalOStreams::pout_summary() << "Refinement criteria:\n";
     }
   for (const auto &criterion : refinement_criteria)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  Criterion type: " << criterion.criterion_to_string() << "\n"
         << "  Value lower bound: " << criterion.get_value_lower_bound() << "\n"
         << "  Value upper bound: " << criterion.get_value_upper_bound() << "\n"
         << "  Gradient lower bound: " << criterion.get_gradient_lower_bound() << "\n\n";
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

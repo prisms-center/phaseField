@@ -29,7 +29,7 @@ main(int argc, char *argv[])
 
       // Parse the command line options (if there are any) to get the name of the input
       // file
-      prisms::parseCMDOptions cli_options(argc, argv);
+      prisms::ParseCMDOptions cli_options(argc, argv);
       std::string             parameters_filename = cli_options.get_parameters_filename();
 
       // Caliper config manager initialization
@@ -55,25 +55,25 @@ main(int argc, char *argv[])
       // postprocessing variables there are, how many sets of elastic constants
       // there are, and how many user-defined constants there are.
       //
-      // This is done with the derived class of `variableAttributeLoader`,
-      // `customAttributeLoader`.
-      prisms::customAttributeLoader attribute_loader;
+      // This is done with the derived class of `VariableAttributeLoader`,
+      // `CustomAttributeLoader`.
+      prisms::CustomAttributeLoader attribute_loader;
       attribute_loader.init_variable_attributes();
-      std::map<unsigned int, prisms::variableAttributes> var_attributes =
+      std::map<unsigned int, prisms::VariableAttributes> var_attributes =
         attribute_loader.get_var_attributes();
 
       // Load in parameters
-      prisms::inputFileReader input_file_reader(parameters_filename, var_attributes);
+      prisms::InputFileReader input_file_reader(parameters_filename, var_attributes);
 
       // Run problem based on the number of dimensions and element degree
-      switch (input_file_reader.number_of_dimensions)
+      switch (input_file_reader.get_dim())
         {
           case 1:
             {
-              prisms::userInputParameters<1> user_inputs(
+              prisms::UserInputParameters<1> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -124,10 +124,10 @@ main(int argc, char *argv[])
             }
           case 2:
             {
-              prisms::userInputParameters<2> user_inputs(
+              prisms::UserInputParameters<2> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
@@ -178,10 +178,10 @@ main(int argc, char *argv[])
             }
           case 3:
             {
-              prisms::userInputParameters<3> user_inputs(
+              prisms::UserInputParameters<3> user_inputs(
                 input_file_reader,
-                input_file_reader.parameter_handler);
-              switch (user_inputs.spatial_discretization.degree)
+                input_file_reader.get_parameter_handler());
+              switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {

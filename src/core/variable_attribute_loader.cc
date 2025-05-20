@@ -23,9 +23,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-variableAttributeLoader::init_variable_attributes()
+VariableAttributeLoader::init_variable_attributes()
 {
-  loadVariableAttributes();
+  load_variable_attributes();
 
   for (auto &[index, variable] : var_attributes)
     {
@@ -50,14 +50,14 @@ variableAttributeLoader::init_variable_attributes()
     }
 }
 
-std::map<unsigned int, variableAttributes>
-variableAttributeLoader::get_var_attributes() const
+std::map<unsigned int, VariableAttributes>
+VariableAttributeLoader::get_var_attributes() const
 {
   return var_attributes;
 }
 
 void
-variableAttributeLoader::set_variable_name(const unsigned int &index,
+VariableAttributeLoader::set_variable_name(const unsigned int &index,
                                            const std::string  &name)
 {
   var_attributes[index].field_index = index;
@@ -65,32 +65,32 @@ variableAttributeLoader::set_variable_name(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_variable_type(const unsigned int &index,
-                                           const fieldType    &field_type)
+VariableAttributeLoader::set_variable_type(const unsigned int &index,
+                                           const FieldType    &field_type)
 {
   switch (field_type)
     {
-      case fieldType::SCALAR:
-      case fieldType::VECTOR:
+      case FieldType::Scalar:
+      case FieldType::Vector:
         var_attributes[index].field_type = field_type;
         break;
       default:
         throw std::invalid_argument(
-          "Invalid fieldType value provided in set_variable_type().");
+          "Invalid FieldType value provided in set_variable_type().");
     }
 }
 
 void
-variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
+VariableAttributeLoader::set_variable_equation_type(const unsigned int &index,
                                                     const PDEType      &pde_type)
 {
   switch (pde_type)
     {
-      case PDEType::EXPLICIT_TIME_DEPENDENT:
-      case PDEType::IMPLICIT_TIME_DEPENDENT:
-      case PDEType::TIME_INDEPENDENT:
-      case PDEType::AUXILIARY:
-      case PDEType::CONSTANT:
+      case PDEType::ExplicitTimeDependent:
+      case PDEType::ImplicitTimeDependent:
+      case PDEType::TimeIndependent:
+      case PDEType::Auxiliary:
+      case PDEType::Constant:
         var_attributes[index].pde_type = pde_type;
         break;
       default:
@@ -100,90 +100,90 @@ variableAttributeLoader::set_variable_equation_type(const unsigned int &index,
 }
 
 void
-variableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
+VariableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
-  var_attributes[index].is_postprocess = is_postprocess;
+  var_attributes[index].is_postprocessed_variable = is_postprocess;
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_RHS(const unsigned int &index,
+VariableAttributeLoader::set_dependencies_value_term_rhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_value_term_RHS(index, dependencies_set);
+  insert_dependencies_value_term_rhs(index, dependencies_set);
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_RHS(
+VariableAttributeLoader::set_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_gradient_term_RHS(index, dependencies_set);
+  insert_dependencies_gradient_term_rhs(index, dependencies_set);
 }
 
 void
-variableAttributeLoader::set_dependencies_value_term_LHS(const unsigned int &index,
+VariableAttributeLoader::set_dependencies_value_term_lhs(const unsigned int &index,
                                                          const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_value_term_LHS(index, dependencies_set);
+  insert_dependencies_value_term_lhs(index, dependencies_set);
 }
 
 void
-variableAttributeLoader::set_dependencies_gradient_term_LHS(
+VariableAttributeLoader::set_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const std::string  &dependencies)
 {
   const std::vector<std::string> dependencies_set =
     dealii::Utilities::split_string_list(strip_whitespace(dependencies));
-  insert_dependencies_gradient_term_LHS(index, dependencies_set);
+  insert_dependencies_gradient_term_lhs(index, dependencies_set);
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_RHS(const unsigned int &index,
+VariableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_RHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_value_rhs.insert(dependencies.begin(),
                                                       dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_RHS(
+VariableAttributeLoader::insert_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_RHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_gradient_rhs.insert(dependencies.begin(),
                                                          dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_value_term_LHS(const unsigned int &index,
+VariableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_LHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_value_lhs.insert(dependencies.begin(),
                                                       dependencies.end());
 }
 
 template <typename Iterable>
 void
-variableAttributeLoader::insert_dependencies_gradient_term_LHS(
+VariableAttributeLoader::insert_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_LHS.insert(dependencies.begin(),
+  var_attributes[index].dependencies_gradient_lhs.insert(dependencies.begin(),
                                                          dependencies.end());
 }
 
 void
-variableAttributeLoader::validate_variable_name(
+VariableAttributeLoader::validate_variable_name(
   const std::string           &name,
   const std::set<std::string> &forbidden_names,
   const std::string           &context,
@@ -209,7 +209,7 @@ variableAttributeLoader::validate_variable_name(
 }
 
 void
-variableAttributeLoader::populate_dependencies(
+VariableAttributeLoader::populate_dependencies(
   const std::set<std::pair<std::string, std::string>> &reg_delimiters,
   const std::set<std::pair<std::string, std::string>> &dep_type_delimiters,
   const std::string                                   &variable_name,
@@ -218,7 +218,7 @@ variableAttributeLoader::populate_dependencies(
   std::map<unsigned int, std::set<std::string>>       &change_possible_deps)
 {
   // If we are dealing with a postprocessed variable, no dependencies are valid
-  if (var_attributes.at(index).is_postprocess)
+  if (var_attributes.at(index).is_postprocessed_variable)
     {
       return;
     }
@@ -245,7 +245,7 @@ variableAttributeLoader::populate_dependencies(
 }
 
 void
-variableAttributeLoader::validate_dependencies(
+VariableAttributeLoader::validate_dependencies(
   const std::set<std::string>                  &dependencies,
   const std::string                            &context,
   unsigned int                                  index,
@@ -272,18 +272,19 @@ variableAttributeLoader::validate_dependencies(
 }
 
 void
-variableAttributeLoader::validate_attributes()
+VariableAttributeLoader::validate_attributes()
 {
   for (const auto &[index, variable] : var_attributes)
     {
       // Check that postprocessed variables are only explicit
-      AssertThrow(
-        !variable.is_postprocess || variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT,
-        dealii::ExcMessage("Currently, postprocessing only allows explicit equations."));
+      AssertThrow(!variable.is_postprocessed_variable ||
+                    variable.pde_type == PDEType::ExplicitTimeDependent,
+                  dealii::ExcMessage(
+                    "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
-      AssertThrow(!(variable.pde_type == PDEType::CONSTANT) ||
-                    (variable.dependencies_RHS.empty() &&
-                     variable.dependencies_LHS.empty()),
+      AssertThrow(!(variable.pde_type == PDEType::Constant) ||
+                    (variable.dependencies_rhs.empty() &&
+                     variable.dependencies_lhs.empty()),
                   dealii::ExcMessage("Constant fields are determined by the initial "
                                      "condition. They cannot have dependencies."));
     }
@@ -291,7 +292,7 @@ variableAttributeLoader::validate_attributes()
   // Make sure dependencies are all variable names. If there are change() dependencies
   // make sure they are of the same field. Note that this does not enforce them to be on
   // the LHS. It also does not enforce the fact div(), symgrad(), or curl() dependencies
-  // must belong to a vector field. Both of these are done later in variableAttributes.
+  // must belong to a vector field. Both of these are done later in VariableAttributes.
   const std::set<std::pair<std::string, std::string>> reg_delimiters = {
     {"",          "" },
     {"grad(",     ")"},
@@ -348,14 +349,14 @@ variableAttributeLoader::validate_attributes()
   // Check dependencies
   for (const auto &[index, variable] : var_attributes)
     {
-      validate_dependencies(variable.dependencies_RHS,
+      validate_dependencies(variable.dependencies_rhs,
                             "RHS",
                             index,
                             variable.name,
                             reg_possible_deps,
                             change_possible_deps);
 
-      validate_dependencies(variable.dependencies_LHS,
+      validate_dependencies(variable.dependencies_lhs,
                             "LHS",
                             index,
                             variable.name,
@@ -365,19 +366,19 @@ variableAttributeLoader::validate_attributes()
 }
 
 void
-variableAttributeLoader::validate_old_solution_dependencies()
+VariableAttributeLoader::validate_old_solution_dependencies()
 {
   // First create a combined dependency set for all fields
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {
-      for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
+      for (const auto &[pair, flag] : variable.eval_flag_set_rhs)
         {
           dependency_set[pair] |= flag;
         }
-      for (const auto &[pair, flag] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, flag] : variable.eval_flag_set_lhs)
         {
           dependency_set[pair] |= flag;
         }
@@ -386,10 +387,10 @@ variableAttributeLoader::validate_old_solution_dependencies()
   // Check that constant equations do not have old dependencies
   for (const auto &[pair, flag] : dependency_set)
     {
-      if (var_attributes.at(pair.first).pde_type == PDEType::CONSTANT)
+      if (var_attributes.at(pair.first).pde_type == PDEType::Constant)
         {
           AssertThrow(
-            pair.second == dependencyType::NORMAL,
+            pair.second == DependencyType::Normal,
             dealii::ExcMessage(
               "Constant fields cannot be specified as old() or change() dependencies"));
         }
@@ -398,10 +399,10 @@ variableAttributeLoader::validate_old_solution_dependencies()
   // Check that old fields dependencies are sequential
   for (const auto &[index, variable] : var_attributes)
     {
-      std::vector<dependencyType> old_types = {dependencyType::OLD_1,
-                                               dependencyType::OLD_2,
-                                               dependencyType::OLD_3,
-                                               dependencyType::OLD_4};
+      std::vector<DependencyType> old_types = {DependencyType::OldOne,
+                                               DependencyType::OldTwo,
+                                               DependencyType::OldThree,
+                                               DependencyType::OldFour};
 
       // Find first gap in sequence
       unsigned int gap_index = 0;

@@ -12,32 +12,32 @@
 #
 
 if test ! -d src -o ! -d include -o ! -d applications; then
-  echo "This script must be run from the top-level directory of PRISMS-PF"
-  exit 1
+	echo "This script must be run from the top-level directory of PRISMS-PF"
+	exit 1
 fi
 
 if ! [ -x "$(command -v cppcheck)" ]; then
-  echo "make sure cppcheck is in the path"
-  exit 1
+	echo "make sure cppcheck is in the path"
+	exit 1
 fi
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "$@")
 
 # Compile
 if [ -f CMakeCache.txt ]; then
-  rm -f CMakeCache.txt
+	rm -f CMakeCache.txt
 fi
 cmake "${ARGS[@]}" . || (
-  echo "cmake failed!"
-  false
+	echo "cmake failed!"
+	false
 ) || exit 2
 cmake --build . || exit 3
 
 # Create a file that contains all the headers to ensure that cppcheck runs on all headers
 (
-  cd include
-  find . -name '*.h'
+	cd include
+	find . -name '*.h'
 ) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
 # Run cppcheck
@@ -52,8 +52,8 @@ grep -E '(warning|error|style|performance|portability): ' output.txt | grep -v '
 
 # If we have errors, report them and set exit status to failure
 if [ -s cppcheck.log ]; then
-  cat cppcheck.log
-  exit 4
+	cat cppcheck.log
+	exit 4
 fi
 
 # Print unused functions

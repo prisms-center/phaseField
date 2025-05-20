@@ -14,7 +14,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class handles the nonlinear solves of a several nonexplicit fields
  */
-class nonexplicitCoNonlinearSolver
+class NonexplicitCononlinearSolver
 {};
 
 PRISMS_PF_END_NAMESPACE

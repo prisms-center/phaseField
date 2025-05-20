@@ -29,18 +29,18 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const triangulationHandler<dim>                        &_triangulation_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+NonexplicitAuxiliarySolver<dim, degree>::NonexplicitAuxiliarySolver(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const TriangulationHandler<dim>                        &_triangulation_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : nonexplicitBase<dim, degree>(_user_inputs,
+  : NonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
                                  _invm_handler,
@@ -54,92 +54,93 @@ nonexplicitAuxiliarySolver<dim, degree>::nonexplicitAuxiliarySolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitAuxiliarySolver<dim, degree>::init()
+NonexplicitAuxiliarySolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_AUXILIARY);
+  this->compute_subset_attributes(FieldSolveType::NonexplicitAuxiliary);
 
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Creating temporary map to match types
-      std::map<unsigned int, variableAttributes> temp;
+      std::map<unsigned int, VariableAttributes> temp;
       temp.emplace(index, variable);
       subset_attributes_list.push_back(temp);
 
-      // Create the implementation of matrixFreeOperator with the subset of variable
+      // Create the implementation of MatrixFreeOperator with the subset of variable
       // attributes
-      this->system_matrix[index] =
-        std::make_unique<SystemMatrixType>(subset_attributes_list.back(),
-                                           this->pde_operator,
+      this->get_system_matrix()[index] =
+        std::make_unique<SystemMatrixType>(this->get_subset_attributes(),
+                                           this->get_pde_operator(),
                                            index);
 
       // Set up the user-implemented equations and create the residual vectors
-      this->system_matrix.at(index)->clear();
-      this->system_matrix.at(index)->initialize(
-        this->matrix_free_handler->get_matrix_free());
+      this->get_system_matrix()[index]->clear();
+      this->get_system_matrix()[index]->initialize(
+        this->get_matrix_free_handler().get_matrix_free());
 
-      // Create the subset of solution vectors and add the mapping to matrixFreeOperator
+      // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
       new_solution_subset[index].push_back(
-        this->solution_handler->get_new_solution_vector(index));
+        this->get_solution_handler().get_new_solution_vector(index));
       solution_subset[index].push_back(
-        this->solution_handler->get_solution_vector(index, dependencyType::NORMAL));
+        this->get_solution_handler().get_solution_vector(index, DependencyType::Normal));
       global_to_local_solution[index].emplace(std::make_pair(index,
-                                                             dependencyType::NORMAL),
+                                                             DependencyType::Normal),
                                               0);
       for (const auto &[variable_index, map] :
-           subset_attributes_list.back().begin()->second.dependency_set_RHS)
+           this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
         {
           for (const auto &[dependency_type, field_type] : map)
             {
               const auto pair = std::make_pair(variable_index, dependency_type);
 
               solution_subset[index].push_back(
-                this->solution_handler->get_solution_vector(variable_index,
-                                                            dependency_type));
+                this->get_solution_handler().get_solution_vector(variable_index,
+                                                                 dependency_type));
               global_to_local_solution[index].emplace(pair,
                                                       solution_subset.at(index).size() -
                                                         1);
             }
         }
-      this->system_matrix.at(index)->add_global_to_local_mapping(
+      this->get_system_matrix()[index]->add_global_to_local_mapping(
         global_to_local_solution.at(index));
     }
 }
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitAuxiliarySolver<dim, degree>::solve()
+NonexplicitAuxiliarySolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Compute the update
-      this->system_matrix.at(index)->compute_nonexplicit_auxiliary_update(
+      this->get_system_matrix()[index]->compute_nonexplicit_auxiliary_update(
         new_solution_subset.at(index),
         solution_subset.at(index));
 
-      // Scale the update by the respective (SCALAR/VECTOR) invm.
-      new_solution_subset.at(index).at(0)->scale(this->invm_handler->get_invm(index));
+      // Scale the update by the respective (Scalar/Vector) invm.
+      new_solution_subset.at(index).at(0)->scale(
+        this->get_invm_handler().get_invm(index));
 
       // Update the solutions
-      this->solution_handler->update(fieldSolveType::NONEXPLICIT_AUXILIARY, index);
+      this->get_solution_handler().update(FieldSolveType::NonexplicitAuxiliary, index);
 
       // Apply constraints
-      this->constraint_handler->get_constraint(index).distribute(
-        *(this->solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+      this->get_constraint_handler().get_constraint(index).distribute(*(
+        this->get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitAuxiliarySolver)
+INSTANTIATE_BI_TEMPLATE(NonexplicitAuxiliarySolver)
 
 PRISMS_PF_END_NAMESPACE

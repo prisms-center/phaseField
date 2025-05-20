@@ -12,13 +12,13 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 /**
  * \brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
 template <unsigned int dim, typename number = double>
-class solutionOutput
+class SolutionOutput
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
@@ -26,20 +26,20 @@ public:
   /**
    * \brief Constructor for a single field that must be output.
    */
-  solutionOutput(const VectorType               &solution,
+  SolutionOutput(const VectorType               &solution,
                  const dealii::DoFHandler<dim>  &dof_handler,
                  const unsigned int             &degree,
                  const std::string              &name,
-                 const userInputParameters<dim> &user_inputs);
+                 const UserInputParameters<dim> &user_inputs);
 
   /**
    * \brief Constructor for a multiple fields that must be output.
    */
-  solutionOutput(const std::map<unsigned int, VectorType *>         &solution_set,
+  SolutionOutput(const std::map<unsigned int, VectorType *>         &solution_set,
                  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
                  const unsigned int                                 &degree,
                  const std::string                                  &name,
-                 const userInputParameters<dim>                     &user_inputs);
+                 const UserInputParameters<dim>                     &user_inputs);
 };
 
 PRISMS_PF_END_NAMESPACE
