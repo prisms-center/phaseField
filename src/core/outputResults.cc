@@ -177,7 +177,7 @@ MatrixFreePDE<dim, degree>::outputResults()
                   std::ostringstream vtuProcFileNameStream;
                   vtuProcFileNameStream << userInputs.output_file_name << "-"
                                         << cycleAsString.str() << "." << i << "."
-                                        << "userInputs.output_file_type";
+                                        << userInputs.output_file_type;
                   std::string vtuProcFileName = vtuProcFileNameStream.str();
 
                   filenames.emplace_back(vtuProcFileName);
