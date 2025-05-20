@@ -60,6 +60,7 @@ identitySolver<dim, degree>::init()
   this->constraint_handler->get_constraint(this->field_index)
     .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
                                                               dependencyType::NORMAL)));
+  this->solver_control.enable_history_data();
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -110,10 +111,18 @@ identitySolver<dim, degree>::solve(const double &step_length)
   if (this->user_inputs->output_parameters.should_output(
         this->user_inputs->temporal_discretization.get_current_increment()))
     {
+      auto residual_history = this->solver_control.get_history_data();
+
       conditionalOStreams::pout_summary()
         << " Final residual: " << this->solver_control.last_value()
         << " Steps: " << this->solver_control.last_step() << "\n"
         << std::flush;
+
+      conditionalOStreams::pout_summary() << "  Residual history: ";
+      for (const auto& residual_norm : residual_history){
+        conditionalOStreams::pout_summary() << residual_norm << " ";
+      }
+      conditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 
   // Update the solutions

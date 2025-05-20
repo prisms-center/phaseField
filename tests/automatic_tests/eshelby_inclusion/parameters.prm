@@ -1,5 +1,5 @@
 set dim = 3
-set global refinement = 6
+set global refinement = 7
 set degree = 1
 
 # =================================================================================
@@ -21,9 +21,9 @@ end
 
 subsection linear solver parameters: u
     set tolerance type = ABSOLUTE_RESIDUAL
-    set tolerance value = 1e-10
+    set tolerance value = 1e-5
     set max iterations = 1000
-    set preconditioner type = NONE
+    set preconditioner type = GMG
 end
 
 # =================================================================================
@@ -48,6 +48,6 @@ set boundary condition for u, z component = NON_UNIFORM_DIRICHLET
 # =================================================================================
 
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants
-set Model constant incRadius = 10.0, DOUBLE
+set Model constant incRadius = 15.0, DOUBLE
 set Model constant poisson = 0.3, DOUBLE
 set Model constant center = (50.0,50.0,50.0), TENSOR
