@@ -46,6 +46,21 @@ struct variableAttributes
   PDEType pde_type = PDEType::UNDEFINED_PDE;
 
   /**
+   * \brief Whether the field can stochastically nucleate. \remark User-set
+   */
+  bool can_nucleate = false;
+
+  /**
+   * \brief Nucleation probability field name. \remark User-set
+   */
+  std::string nucleation_probability_field_name;
+
+  /**
+   * \brief Nucleation probability. \remark User-set
+   */
+  bool is_nucleation_probability = false;
+
+  /**
    * \brief Postprocess variable. \remark User-set
    */
   bool is_postprocess = false;

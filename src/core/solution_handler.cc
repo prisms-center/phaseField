@@ -301,6 +301,9 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
           case fieldSolveType::EXPLICIT_CONSTANT:
             break;
           case fieldSolveType::EXPLICIT:
+          case fieldSolveType::EXPLICIT_NUCLEATION:
+            swap_all_dependency_vectors(index, new_vector);
+            break;
           case fieldSolveType::EXPLICIT_POSTPROCESS:
             // For EXPLICIT_POSTPROCESS we only swap NORMAL, but the helper function will
             // do that first and ignore the rest since they should exist
