@@ -6,20 +6,21 @@
 #include <deal.II/lac/vector.h>
 
 #include <prismspf/core/initial_conditions.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
+
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-initialCondition<dim, degree>::initialCondition(
+InitialCondition<dim, degree>::InitialCondition(
   const unsigned int                                            &_index,
-  const fieldType                                               &field_type,
+  const FieldType                                               &field_type,
   const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator)
-  : dealii::Function<dim>((field_type == fieldType::VECTOR) ? dim : 1)
+  : dealii::Function<dim>((field_type == FieldType::Vector) ? dim : 1)
   , index(_index)
   , pde_operator(_pde_operator)
 {}
@@ -28,7 +29,7 @@ initialCondition<dim, degree>::initialCondition(
 
 template <unsigned int dim, unsigned int degree>
 void
-initialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
+InitialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
                                             dealii::Vector<double>   &value) const
 {
   // Initialize passed variables to zero
@@ -45,6 +46,6 @@ initialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
 
 // NOLINTEND(readability-identifier-length)
 
-INSTANTIATE_BI_TEMPLATE(initialCondition)
+INSTANTIATE_BI_TEMPLATE(InitialCondition)
 
 PRISMS_PF_END_NAMESPACE

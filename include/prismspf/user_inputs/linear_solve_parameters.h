@@ -16,32 +16,32 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that stores relevant linear solve information of a certain field
  */
-struct linearSolverParameters
+struct LinearSolverParameters
 {
 public:
   // Solver tolerance
-  double tolerance = defaults::tolerance;
+  double tolerance = Defaults::tolerance;
 
   // Solver tolerance type
-  solverToleranceType tolerance_type = solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
+  SolverToleranceType tolerance_type = SolverToleranceType::RelativeResidualChange;
 
   // Max number of iterations for the linear solve
-  unsigned int max_iterations = defaults::iterations;
+  unsigned int max_iterations = Defaults::iterations;
 
   // Preconditioner
-  preconditionerType preconditioner = preconditionerType::GMG;
+  PreconditionerType preconditioner = PreconditionerType::GMG;
 
   // Smoothing range for eigenvalues. This denotes the lower bound of eigenvalues that are
   // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated
   // maximum eigenvalue. A choice between 5 and 20 is usually useful when the
   // preconditioner is used as a smoother in multigrid.
-  double smoothing_range = defaults::smoothing_range;
+  double smoothing_range = Defaults::smoothing_range;
 
   // Polynomial degree for the Chebyshev smoother
-  unsigned int smoother_degree = defaults::smoother_degree;
+  unsigned int smoother_degree = Defaults::smoother_degree;
 
   // Maximum number of CG iterations used to find the maximum eigenvalue
-  unsigned int eig_cg_n_iterations = defaults::eig_cg_n_iterations;
+  unsigned int eig_cg_n_iterations = Defaults::eig_cg_n_iterations;
 
   // The minimum multigrid level
   unsigned int min_mg_level = 0;
@@ -50,7 +50,7 @@ public:
 /**
  * \brief Struct that holds linear solver parameters.
  */
-struct linearSolveParameters
+struct LinearSolveParameters
 {
 public:
   /**
@@ -65,29 +65,79 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Whether we have any linear solve parameters.
+   */
+  [[nodiscard]] bool
+  has_linear_solve_parameters() const
+  {
+    return !linear_solve.empty();
+  }
+
+  /**
+   * \brief Whether we have linear solve parameters for a given field.
+   */
+  [[nodiscard]] bool
+  has_linear_solve_parameters(unsigned int field_index) const
+  {
+    return linear_solve.contains(field_index);
+  }
+
+  /**
+   * \brief Set the linear solve parameters for a given field.
+   */
+  void
+  set_linear_solve_parameters(unsigned int                  field_index,
+                              const LinearSolverParameters &linear_solver_parameters)
+  {
+    linear_solve[field_index] = linear_solver_parameters;
+  }
+
+  /**
+   * \brief Return the linear solve parameters for a given field.
+   */
+  [[nodiscard]] const LinearSolverParameters &
+  get_linear_solve_parameters(unsigned int field_index) const
+  {
+    AssertThrow(has_linear_solve_parameters(field_index),
+                dealii::ExcMessage("No linear solve parameters found for field index " +
+                                   std::to_string(field_index)));
+    return linear_solve.at(field_index);
+  }
+
+  /**
+   * \brief Return the linear solve parameters for a given field.
+   */
+  [[nodiscard]] const std::map<unsigned int, LinearSolverParameters> &
+  get_linear_solve_parameters() const
+  {
+    return linear_solve;
+  }
+
+private:
   // Map of linear solve parameters for fields that require them
-  std::map<unsigned int, linearSolverParameters> linear_solve;
+  std::map<unsigned int, LinearSolverParameters> linear_solve;
 };
 
 inline void
-linearSolveParameters::postprocess_and_validate()
+LinearSolveParameters::postprocess_and_validate()
 {
   // Nothing to do here for now
 }
 
 inline void
-linearSolveParameters::print_parameter_summary() const
+LinearSolveParameters::print_parameter_summary() const
 {
   if (!linear_solve.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Linear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, linear_solver_parameters] : linear_solve)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Tolerance: " << linear_solver_parameters.tolerance << "\n"
             << "  Type: " << to_string(linear_solver_parameters.tolerance_type) << "\n"
@@ -95,9 +145,9 @@ linearSolveParameters::print_parameter_summary() const
             << "  Preconditioner: " << to_string(linear_solver_parameters.preconditioner)
             << "\n";
 
-          if (linear_solver_parameters.preconditioner == preconditionerType::GMG)
+          if (linear_solver_parameters.preconditioner == PreconditionerType::GMG)
             {
-              conditionalOStreams::pout_summary()
+              ConditionalOStreams::pout_summary()
                 << "  Smoothing range: " << linear_solver_parameters.smoothing_range
                 << "\n"
                 << "  Smoother degree: " << linear_solver_parameters.smoother_degree
@@ -109,7 +159,7 @@ linearSolveParameters::print_parameter_summary() const
             }
         }
 
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

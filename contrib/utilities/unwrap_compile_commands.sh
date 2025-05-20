@@ -16,43 +16,43 @@
 #
 
 if test ! -d src -o ! -d include -o ! -d applications; then
-    echo "This script must be run from the top-level directory of PRISMS-PF"
-    exit 1
+	echo "This script must be run from the top-level directory of PRISMS-PF"
+	exit 1
 fi
 
 # Check that compile_commands.json exists
 if test ! -f compile_commands.json; then
-    echo "There is no compile_commands.json file in the current directory."
-    exit 1
+	echo "There is no compile_commands.json file in the current directory."
+	exit 1
 fi
 
 # Make a copy of compile commands for us to operate on
 cp compile_commands.json compile_commands.json.bak || {
-    echo "Failed to copy compile_commands.json"
-    exit 1
+	echo "Failed to copy compile_commands.json"
+	exit 1
 }
 
 # Grab the compiler and unwrap it
 COMPILER=$(grep -m1 '"command":' compile_commands.json | sed -E 's/.*"command": ?"([^"]+)".*/\1/' | awk '{print $1}') || {
-    echo "Compiler not found or not executable: $COMPILER"
-    exit 1
+	echo "Compiler not found or not executable: $COMPILER"
+	exit 1
 }
 UNWRAPPED_COMPILER=$($COMPILER -show) || {
-    echo "Failed to run '$COMPILER -show'"
-    rm compile_commands.json.bak
-    exit 0
+	echo "Failed to run '$COMPILER -show'"
+	rm compile_commands.json.bak
+	exit 0
 }
 
 # Replace the COMPILER instances with the UNWRAPPED_COMPILER
 sed -i "s|$COMPILER|$UNWRAPPED_COMPILER|g" compile_commands.json || {
-    echo "sed failed to update compile_commands.json"
-    exit 1
+	echo "sed failed to update compile_commands.json"
+	exit 1
 }
 
 # Delete the backup file
 rm compile_commands.json.bak || {
-    echo "Failed to delete backup"
-    exit 1
+	echo "Failed to delete backup"
+	exit 1
 }
 
 exit 0

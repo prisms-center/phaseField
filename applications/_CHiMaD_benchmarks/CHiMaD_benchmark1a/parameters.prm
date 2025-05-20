@@ -20,8 +20,8 @@ set Time step = 1.0e-2
 set Simulation end time = 1000
 
 
-set Boundary condition for variable c = PERIODIC
-set Boundary condition for variable mu = PERIODIC
+set Boundary condition for variable c = Periodic
+set Boundary condition for variable mu = Periodic
 
 
 set Output condition = EQUAL_SPACING

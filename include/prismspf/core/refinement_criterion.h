@@ -23,17 +23,17 @@ namespace GridRefinement
     /**
      * \brief No adaptive refinement criterion.
      */
-    nothing = 0,
+    Nothing = 0,
 
     /**
      * \brief Use value of the variable as a criterion for refinement.
      */
-    value = 0x0001,
+    Value = 0x0001,
 
     /**
      * \brief Use gradient of the variable as a criterion for refinement.
      */
-    gradient = 0x0002,
+    Gradient = 0x0002,
   };
 
   // Function that enables bitwise OR between flags
@@ -72,7 +72,7 @@ namespace GridRefinement
    * This class holds information for a determining whether the mesh should be
    * refined.
    *
-   * TODO (landinjm): This should likely be part of variableAttributes
+   * TODO (landinjm): This should likely be part of VariableAttributes
    */
   class RefinementCriterion
   {
@@ -178,20 +178,20 @@ namespace GridRefinement
     [[nodiscard]] std::string
     criterion_to_string() const
     {
-      if (criterion == RefinementFlags::nothing)
+      if (criterion == RefinementFlags::Nothing)
         {
           return "None";
         }
-      if (((criterion & RefinementFlags::value) != 0U) &&
-          ((criterion & RefinementFlags::gradient) != 0U))
+      if (((criterion & RefinementFlags::Value) != 0U) &&
+          ((criterion & RefinementFlags::Gradient) != 0U))
         {
           return "Value and gradient";
         }
-      if ((criterion & RefinementFlags::value) != 0U)
+      if ((criterion & RefinementFlags::Value) != 0U)
         {
           return "Value";
         }
-      if ((criterion & RefinementFlags::gradient) != 0U)
+      if ((criterion & RefinementFlags::Gradient) != 0U)
         {
           return "Gradient";
         }
@@ -200,7 +200,7 @@ namespace GridRefinement
     }
 
   private:
-    RefinementFlags criterion            = RefinementFlags::nothing;
+    RefinementFlags criterion            = RefinementFlags::Nothing;
     double          value_lower_bound    = DBL_MAX;
     double          value_upper_bound    = DBL_MAX;
     double          gradient_lower_bound = DBL_MAX;

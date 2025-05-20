@@ -2,7 +2,7 @@ set dim = 2
 set global refinement = 7
 set degree = 1
 
-subsection rectangular mesh
+subsection Rectangular mesh
   set x size = 0.1
   set y size = 0.1
   set z size = 0.1
@@ -19,15 +19,15 @@ subsection output
   set number = 5
 end
 
-set boundary condition for n = NATURAL
-set boundary condition for Ex = NATURAL
-set boundary condition for Gx = NATURAL
-set boundary condition for dndt = NATURAL
-set boundary condition for u, x component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET
-set boundary condition for u, y component = TIME_DEPENDENT_NON_UNIFORM_DIRICHLET 
+set boundary condition for n = Natural
+set boundary condition for Ex = Natural
+set boundary condition for Gx = Natural
+set boundary condition for dndt = Natural
+set boundary condition for u, x component = TimeDependentNonuniformDirichlet
+set boundary condition for u, y component = TimeDependentNonuniformDirichlet 
 
 subsection linear solver parameters: u
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-5
     set max iterations = 1000
     set preconditioner type = GMG

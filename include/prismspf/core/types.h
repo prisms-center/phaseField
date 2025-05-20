@@ -40,35 +40,35 @@ private:
   T value;
 };
 
-namespace types
+namespace Types
 {
   /**
    * \brief Type for field indices.
    */
-  using index = unsigned int;
+  using Index = unsigned int;
 
-} // namespace types
+} // namespace Types
 
-namespace numbers
+namespace Numbers
 {
   /**
    * \brief Invalid field index.
    */
-  static const types::index invalid_index = static_cast<types::index>(-1);
+  static const Types::Index invalid_index = static_cast<Types::Index>(-1);
 
   /**
    * \brief Max element degree.
    */
   static const unsigned int max_element_degree = 6;
 
-} // namespace numbers
+} // namespace Numbers
 
-namespace defaults
+namespace Defaults
 {
   /**
    * \brief Default field index.
    */
-  static const types::index index = 0;
+  static const Types::Index index = 0;
 
   /**
    * \brief Default tolerance.
@@ -100,6 +100,6 @@ namespace defaults
    */
   static const unsigned int eig_cg_n_iterations = 10;
 
-} // namespace defaults
+} // namespace Defaults
 
 PRISMS_PF_END_NAMESPACE

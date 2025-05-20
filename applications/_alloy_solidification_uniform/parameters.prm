@@ -31,9 +31,9 @@ set Time step = 0.008
 set Number of time steps = 100000
 
 
-set Boundary condition for variable phi =  NATURAL
-set Boundary condition for variable c =  NATURAL
-set Boundary condition for variable xi =  NATURAL
+set Boundary condition for variable phi =  Natural
+set Boundary condition for variable c =  Natural
+set Boundary condition for variable xi =  Natural
 
 
 set Model constant eps4 = 0.02, DOUBLE

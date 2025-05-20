@@ -2,7 +2,7 @@ set dim = 2
 set global refinement = 7
 set degree = 1
 
-subsection rectangular mesh
+subsection Rectangular mesh
     set x size = 50
     set y size = 50
     set z size = 50
@@ -19,7 +19,7 @@ subsection output
     set number = 5
 end
 
-set boundary condition for n = NATURAL
+set boundary condition for n = Natural
 
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE

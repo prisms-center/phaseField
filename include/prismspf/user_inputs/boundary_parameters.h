@@ -29,30 +29,30 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Struct that stores relevant information for boundary conditions of a certain
  * field.
  */
-struct boundaryCondition
+struct BoundaryCondition
 {
 public:
   /**
    * \brief Type of boundary condition.
    */
-  enum type : std::uint8_t
+  enum Type : std::uint8_t
   {
-    UNDEFINED_BOUNDARY,
-    NATURAL,
-    DIRICHLET,
-    PERIODIC,
-    NEUMANN,
-    NON_UNIFORM_DIRICHLET,
-    NON_UNIFORM_NEUMANN,
-    TIME_DEPENDENT_NON_UNIFORM_DIRICHLET,
-    TIME_DEPENDENT_NON_UNIFORM_NEUMANN,
+    UndefinedBoundary,
+    Natural,
+    Dirichlet,
+    Periodic,
+    Neumann,
+    NonuniformDirichlet,
+    NonuniformNeumann,
+    TimeDependentNonuniformDirichlet,
+    TimeDependentNonuniformNeumann,
   };
 
   /**
    * \brief Test for equality of two boundary conditions.
    */
   bool
-  operator==(const boundaryCondition &other) const
+  operator==(const BoundaryCondition &other) const
   {
     return boundary_condition_map == other.boundary_condition_map &&
            dirichlet_value_map == other.dirichlet_value_map;
@@ -61,7 +61,7 @@ public:
   /**
    * \brief Get the map of boundary conditions.
    */
-  [[nodiscard]] const std::map<dealii::types::boundary_id, type> &
+  [[nodiscard]] const std::map<dealii::types::boundary_id, Type> &
   get_boundary_condition_map() const
   {
     return boundary_condition_map;
@@ -71,7 +71,7 @@ public:
    * \brief Add a boundary conditions.
    */
   void
-  add_boundary_condition(dealii::types::boundary_id boundary_id, type boundary_type)
+  add_boundary_condition(dealii::types::boundary_id boundary_id, Type boundary_type)
   {
     boundary_condition_map.emplace(boundary_id, boundary_type);
   }
@@ -82,7 +82,7 @@ public:
   [[nodiscard]] double
   get_dirichlet_value(dealii::types::boundary_id boundary_id) const
   {
-    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+    Assert(boundary_condition_map.at(boundary_id) == Type::Dirichlet,
            dealii::ExcMessage("Boundary condition is not dirichlet"));
     Assert(dirichlet_value_map.contains(boundary_id),
            dealii::ExcMessage("Value does not exist in the map."));
@@ -95,7 +95,7 @@ public:
   void
   add_boundary_condition(dealii::types::boundary_id boundary_id, double boundary_value)
   {
-    Assert(boundary_condition_map.at(boundary_id) == type::DIRICHLET,
+    Assert(boundary_condition_map.at(boundary_id) == Type::Dirichlet,
            dealii::ExcMessage("Boundary condition is not dirichlet"));
     dirichlet_value_map.emplace(boundary_id, boundary_value);
   }
@@ -104,28 +104,28 @@ public:
    * \brief Enum to string for type
    */
   [[nodiscard]] std::string
-  to_string(type boundary_type) const
+  to_string(Type boundary_type) const
   {
     switch (boundary_type)
       {
-        case type::UNDEFINED_BOUNDARY:
-          return "UNDEFINED_BOUNDARY";
-        case type::NATURAL:
-          return "NATURAL";
-        case type::DIRICHLET:
-          return "DIRICHLET";
-        case type::PERIODIC:
-          return "PERIODIC";
-        case type::NEUMANN:
-          return "NEUMANN";
-        case type::NON_UNIFORM_DIRICHLET:
-          return "NON_UNIFORM_DIRICHLET";
-        case type::NON_UNIFORM_NEUMANN:
-          return "NON_UNIFORM_NEUMANN";
-        case type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET:
-          return "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET";
-        case type::TIME_DEPENDENT_NON_UNIFORM_NEUMANN:
-          return "TIME_DEPENDENT_NON_UNIFORM_NEUMANN";
+        case Type::UndefinedBoundary:
+          return "UndefinedBoundary";
+        case Type::Natural:
+          return "Natural";
+        case Type::Dirichlet:
+          return "Dirichlet";
+        case Type::Periodic:
+          return "Periodic";
+        case Type::Neumann:
+          return "Neumann";
+        case Type::NonuniformDirichlet:
+          return "NonuniformDirichlet";
+        case Type::NonuniformNeumann:
+          return "NonuniformNeumann";
+        case Type::TimeDependentNonuniformDirichlet:
+          return "TimeDependentNonuniformDirichlet";
+        case Type::TimeDependentNonuniformNeumann:
+          return "TimeDependentNonuniformNeumann";
         default:
           return "UNKNOWN";
       }
@@ -136,7 +136,7 @@ private:
   // simple geometry like a square the boundary ids are marked, in order, by x=0, x=max,
   // y=0, y=max. More complex geometries can have somewhat arbitrary ordering, but will
   // render some of our assertions moot.
-  std::map<dealii::types::boundary_id, type> boundary_condition_map;
+  std::map<dealii::types::boundary_id, Type> boundary_condition_map;
 
   // A map of boundary values for dirichlet boundary conditions
   std::map<dealii::types::boundary_id, double> dirichlet_value_map;
@@ -146,14 +146,14 @@ private:
  * \brief Struct that holds boundary parameters.
  */
 template <unsigned int dim>
-struct boundaryParameters
+struct BoundaryParameters
 {
 public:
   using BoundaryConditionMap =
-    std::map<types::index, std::map<unsigned int, boundaryCondition>>;
-  using BCList = std::map<types::index, std::map<unsigned int, std::string>>;
+    std::map<Types::Index, std::map<unsigned int, BoundaryCondition>>;
+  using BCList = std::map<Types::Index, std::map<unsigned int, std::string>>;
   using PinnedPointMap =
-    std::map<types::index,
+    std::map<Types::Index,
              std::pair<std::variant<double, std::vector<double>>, dealii::Point<dim>>>;
 
   /**
@@ -161,14 +161,14 @@ public:
    */
   void
   postprocess_and_validate(
-    const std::map<unsigned int, variableAttributes> &var_attributes);
+    const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
    * \brief Check whether the boundary conditions for two fields are the same.
    */
   [[nodiscard]] bool
-  check_duplicate_boundary_conditions(const types::index &index_1,
-                                      const types::index &index_2) const;
+  check_duplicate_boundary_conditions(const Types::Index &index_1,
+                                      const Types::Index &index_2) const;
 
   /**
    * \brief Print parameters to summary.log
@@ -176,29 +176,81 @@ public:
   void
   print_parameter_summary() const;
 
-  // Map of unfiltered boundary conditions strings. The first key is the global index. The
-  // second key is the number of dimensions.
-  BCList BC_list;
+  /**
+   * \brief Set the boundary condition string for a field index and component.
+   */
+  void
+  set_boundary_condition_string(const std::string  &bc_string,
+                                const Types::Index &index,
+                                const unsigned int &component)
+  {
+    bc_list[index][component] = bc_string;
+  }
 
-  // Map of time-dependent boundary conditions strings. The first key is the global index.
-  // The second key is the number of dimensions.
-  std::set<types::index> time_dependent_BC_list;
+  /**
+   * \brief Whether there are time-dependent boundary conditions.
+   */
+  [[nodiscard]] bool
+  has_time_dependent_bcs() const
+  {
+    return !time_dependent_bc_list.empty();
+  }
 
-  // Map of pinned points. The first key is the global index. The pair is the pinned
-  // value and point.
-  PinnedPointMap pinned_point_list = {};
+  /**
+   * \brief Whether the boundary condition is time-dependent.
+   */
+  [[nodiscard]] bool
+  is_time_dependent(const Types::Index &index) const
+  {
+    return time_dependent_bc_list.contains(index);
+  }
 
-  // Map of boundary conditions. The first key is the global index. The second key is the
-  // number of dimensions.
-  BoundaryConditionMap boundary_condition_list;
+  /**
+   * \brief Set a pinned point.
+   */
+  void
+  set_pinned_point(const std::variant<double, std::vector<double>> &value,
+                   const dealii::Point<dim>                        &point,
+                   const Types::Index                              &index)
+  {
+    pinned_point_list[index] = std::make_pair(value, point);
+  }
+
+  /**
+   * \brief Whether there is a pinned point for a field index.
+   */
+  [[nodiscard]] bool
+  has_pinned_point(const Types::Index &index) const
+  {
+    return pinned_point_list.contains(index);
+  }
+
+  /**
+   * \brief Get the pinned point for a field index.
+   */
+  [[nodiscard]] const std::pair<std::variant<double, std::vector<double>>,
+                                dealii::Point<dim>> &
+  get_pinned_point(const Types::Index &index) const
+  {
+    return pinned_point_list.at(index);
+  }
+
+  /**
+   * \brief Get the boundary conditions list.
+   */
+  [[nodiscard]] const BoundaryConditionMap &
+  get_boundary_condition_list() const
+  {
+    return boundary_condition_list;
+  }
 
 private:
   /**
    * \brief Set the boundary for a single component of a field index.
    */
   void
-  set_boundary(const std::string  &BC_string,
-               const types::index &index,
+  set_boundary(const std::string  &bc_string,
+               const Types::Index &index,
                const unsigned int &component);
 
   /**
@@ -206,60 +258,76 @@ private:
    */
   void
   validate_boundary_conditions() const;
+
+  // Map of unfiltered boundary conditions strings. The first key is the global index. The
+  // second key is the number of dimensions.
+  BCList bc_list;
+
+  // Map of time-dependent boundary conditions strings. The first key is the global index.
+  // The second key is the number of dimensions.
+  std::set<Types::Index> time_dependent_bc_list;
+
+  // Map of pinned points. The first key is the global index. The pair is the pinned value
+  // and point.
+  PinnedPointMap pinned_point_list = {};
+
+  // Map of boundary conditions. The first key is the global index. The second key is the
+  // number of dimensions.
+  BoundaryConditionMap boundary_condition_list;
 };
 
 template <unsigned int dim>
 inline void
-boundaryParameters<dim>::postprocess_and_validate(
-  const std::map<unsigned int, variableAttributes> &var_attributes)
+BoundaryParameters<dim>::postprocess_and_validate(
+  const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   for (const auto &[index, variable] : var_attributes)
     {
       // Ensure that boundary conditions are specified for all variables and their
       // components
-      if (variable.field_type == fieldType::VECTOR)
+      if (variable.get_field_type() == FieldType::Vector)
         {
           for (unsigned int i = 0; i < dim; i++)
             {
-              if (variable.is_postprocess)
+              if (variable.is_postprocess())
                 {
-                  set_boundary("NATURAL", variable.field_index, i);
+                  set_boundary("Natural", variable.get_field_index(), i);
                 }
               else
                 {
-                  AssertThrow(BC_list.contains(variable.field_index),
+                  AssertThrow(bc_list.contains(variable.get_field_index()),
                               dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(BC_list.at(variable.field_index).contains(i),
+                  AssertThrow(bc_list.at(variable.get_field_index()).contains(i),
                               dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(!BC_list.at(variable.field_index).at(i).empty(),
+                  AssertThrow(!bc_list.at(variable.get_field_index()).at(i).empty(),
                               dealii::ExcMessage(
                                 "Boundary conditions must be specified "
                                 "for all components in all vector field."));
 
-                  set_boundary(BC_list.at(variable.field_index).at(i),
-                               variable.field_index,
+                  set_boundary(bc_list.at(variable.get_field_index()).at(i),
+                               variable.get_field_index(),
                                i);
                 }
             }
         }
       else
         {
-          if (variable.is_postprocess)
+          if (variable.is_postprocess())
             {
-              set_boundary("NATURAL", variable.field_index, 0);
+              set_boundary("Natural", variable.get_field_index(), 0);
             }
           else
             {
-              AssertThrow(BC_list.contains(variable.field_index),
+              AssertThrow(bc_list.contains(variable.get_field_index()),
                           dealii::ExcMessage("Invalid entry"));
-              AssertThrow(BC_list.at(variable.field_index).contains(0),
+              AssertThrow(bc_list.at(variable.get_field_index()).contains(0),
                           dealii::ExcMessage("Invalid entry"));
-              AssertThrow(!BC_list.at(variable.field_index).at(0).empty(),
+              AssertThrow(!bc_list.at(variable.get_field_index()).at(0).empty(),
                           dealii::ExcMessage("Boundary conditions must be specified "
                                              "for all scalar fields."));
 
-              set_boundary(BC_list.at(variable.field_index).at(0),
-                           variable.field_index,
+              set_boundary(bc_list.at(variable.get_field_index()).at(0),
+                           variable.get_field_index(),
                            0);
             }
         }
@@ -268,8 +336,8 @@ boundaryParameters<dim>::postprocess_and_validate(
   // Validate boundary conditions
   validate_boundary_conditions();
 
-  // Clear the BC_list now that it's no longer necessary
-  BC_list.clear();
+  // Clear the bc_list now that it's no longer necessary
+  bc_list.clear();
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   // Check if any fields are duplicates in terms of boundary conditions
@@ -277,37 +345,38 @@ boundaryParameters<dim>::postprocess_and_validate(
   for (const auto &[index_1, variable_1] : var_attributes)
     {
       // Skip is the duplicate index has already been assigned
-      if (variable_1.duplicate_field_index != numbers::invalid_index)
+      if (variable_1.get_duplicate_field_index() != Numbers::invalid_index)
         {
           continue;
         }
-      if (variable_1.is_postprocess)
+      if (variable_1.is_postprocess())
         {
           continue;
         }
 
-      const auto field_type_1 = variable_1.field_type;
+      const auto field_type_1 = variable_1.get_field_type();
 
       for (const auto &[index_2, variable_2] : var_attributes)
         {
-          if (variable_2.is_postprocess)
+          if (variable_2.is_postprocess())
             {
               continue;
             }
 
           bool is_duplicate = false;
 
-          const auto field_type_2 = variable_2.field_type;
+          const auto field_type_2 = variable_2.get_field_type();
 
           is_duplicate = field_type_1 == field_type_2 &&
                          check_duplicate_boundary_conditions(index_1, index_2);
 
           if (is_duplicate)
             {
-              conditionalOStreams::pout_verbose()
-                << "Field " << variable_1.name << " has the same boundary conditions as "
-                << variable_2.name << ". Using optimizations...\n";
-              variable_2.duplicate_field_index = index_1;
+              ConditionalOStreams::pout_verbose()
+                << "Field " << variable_1.get_name()
+                << " has the same boundary conditions as " << variable_2.get_name()
+                << ". Using optimizations...\n";
+              variable_2.set_duplicate_field_index(index_1);
             }
         }
     }
@@ -316,9 +385,9 @@ boundaryParameters<dim>::postprocess_and_validate(
 
 template <unsigned int dim>
 inline bool
-boundaryParameters<dim>::check_duplicate_boundary_conditions(
-  const types::index &index_1,
-  const types::index &index_2) const
+BoundaryParameters<dim>::check_duplicate_boundary_conditions(
+  const Types::Index &index_1,
+  const Types::Index &index_2) const
 {
   // If the indices are the same return false
   if (index_1 == index_2)
@@ -351,42 +420,42 @@ boundaryParameters<dim>::check_duplicate_boundary_conditions(
 
 template <unsigned int dim>
 inline void
-boundaryParameters<dim>::print_parameter_summary() const
+BoundaryParameters<dim>::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Boundary Parameters\n"
     << "================================================\n";
 
   for (const auto &[index, component_map] : boundary_condition_list)
     {
-      conditionalOStreams::pout_summary() << "Index: " << index << "\n";
+      ConditionalOStreams::pout_summary() << "Index: " << index << "\n";
       for (const auto &[component, boundary_condition] : component_map)
         {
-          conditionalOStreams::pout_summary() << "  Component: " << component << "\n";
+          ConditionalOStreams::pout_summary() << "  Component: " << component << "\n";
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              conditionalOStreams::pout_summary()
+              ConditionalOStreams::pout_summary()
                 << "    Boundary id: " << domain_id << "    "
                 << "Condition: " << boundary_condition.to_string(boundary_type);
-              if (boundary_type == boundaryCondition::type::DIRICHLET)
+              if (boundary_type == BoundaryCondition::Type::Dirichlet)
                 {
-                  conditionalOStreams::pout_summary()
+                  ConditionalOStreams::pout_summary()
                     << " = " << boundary_condition.get_dirichlet_value(domain_id);
                 }
-              conditionalOStreams::pout_summary() << "\n";
+              ConditionalOStreams::pout_summary() << "\n";
             }
         }
     }
 
   if (!pinned_point_list.empty())
     {
-      conditionalOStreams::pout_summary() << "Pinned field index: ";
+      ConditionalOStreams::pout_summary() << "Pinned field index: ";
     }
   for (const auto &[index, point_value_pair] : pinned_point_list)
     {
-      conditionalOStreams::pout_summary() << index << "\n"
+      ConditionalOStreams::pout_summary() << index << "\n"
                                           << "  Value: ";
 
       // Handle variant value printing
@@ -395,112 +464,112 @@ boundaryParameters<dim>::print_parameter_summary() const
         {
           if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
             {
-              conditionalOStreams::pout_summary() << value;
+              ConditionalOStreams::pout_summary() << value;
             }
           else
             {
               for (unsigned int i = 0; i < value.size(); ++i)
                 {
-                  conditionalOStreams::pout_summary() << value[i] << " ";
+                  ConditionalOStreams::pout_summary() << value[i] << " ";
                 }
             }
         },
         point_value_pair.first);
 
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "\n  Point: " << point_value_pair.second << "\n";
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 template <unsigned int dim>
 inline void
-boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
-                                      const types::index &index,
+BoundaryParameters<dim>::set_boundary(const std::string  &bc_string,
+                                      const Types::Index &index,
                                       const unsigned int &component)
 {
   // Split string
-  auto BC_string_list = dealii::Utilities::split_string_list(BC_string);
+  auto bc_string_list = dealii::Utilities::split_string_list(bc_string);
 
   // Check that there is either 1 or 2*dim entries in the vector. This can be changed
   // later to support other geometries.
-  AssertThrow(BC_string_list.size() == 1 ||
-                BC_string_list.size() == static_cast<std::size_t>(2 * dim),
+  AssertThrow(bc_string_list.size() == 1 ||
+                bc_string_list.size() == static_cast<std::size_t>(2 * dim),
               dealii::ExcMessage(
                 "Either 1 or 2*dim boundary conditions must be specified."));
 
   // If there is only 1 boundary condition resize BC_string_list, copying the first
   // entry.
-  if (BC_string_list.size() == 1)
+  if (bc_string_list.size() == 1)
     {
-      BC_string_list.resize(static_cast<std::size_t>(2 * dim), BC_string_list[0]);
+      bc_string_list.resize(static_cast<std::size_t>(2 * dim), bc_string_list[0]);
     }
 
   // Assign boundary condition
-  boundaryCondition condition;
+  BoundaryCondition condition;
   for (unsigned int i = 0; i < (2 * dim); i++)
     {
-      const std::string dirichlet = "DIRICHLET";
-      const std::string neumann   = "NEUMANN";
+      const std::string dirichlet = "Dirichlet";
+      const std::string neumann   = "Neumann";
 
-      if (boost::iequals(BC_string_list[i], "NATURAL"))
+      if (boost::iequals(bc_string_list[i], "Natural"))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::NATURAL);
+          condition.add_boundary_condition(i, BoundaryCondition::Type::Natural);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, dirichlet.size()), dirichlet))
+      else if (boost::iequals(bc_string_list[i].substr(0, dirichlet.size()), dirichlet))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::DIRICHLET);
+          condition.add_boundary_condition(i, BoundaryCondition::Type::Dirichlet);
           std::string dirichlet_value =
-            BC_string_list[i].substr(dirichlet.size() + 1, BC_string_list[i].size());
+            bc_string_list[i].substr(dirichlet.size() + 1, bc_string_list[i].size());
           dirichlet_value = dealii::Utilities::trim(dirichlet_value);
           condition.add_boundary_condition(i,
                                            dealii::Utilities::string_to_double(
                                              dirichlet_value));
         }
-      else if (boost::iequals(BC_string_list[i], "PERIODIC"))
+      else if (boost::iequals(bc_string_list[i], "Periodic"))
         {
-          condition.add_boundary_condition(i, boundaryCondition::type::PERIODIC);
+          condition.add_boundary_condition(i, BoundaryCondition::Type::Periodic);
         }
-      else if (boost::iequals(BC_string_list[i].substr(0, neumann.size()), neumann))
+      else if (boost::iequals(bc_string_list[i].substr(0, neumann.size()), neumann))
         {
           AssertThrow(false, FeatureNotImplemented("Neumann boundary conditions"));
         }
-      else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_DIRICHLET"))
+      else if (boost::iequals(bc_string_list[i], "NonuniformDirichlet"))
         {
-          condition
-            .add_boundary_condition(i, boundaryCondition::type::NON_UNIFORM_DIRICHLET);
+          condition.add_boundary_condition(i,
+                                           BoundaryCondition::Type::NonuniformDirichlet);
         }
-      else if (boost::iequals(BC_string_list[i], "NON_UNIFORM_NEUMANN"))
+      else if (boost::iequals(bc_string_list[i], "NonuniformNeumann"))
         {
           AssertThrow(false,
                       FeatureNotImplemented("Nonuniform neumann boundary conditions"));
         }
-      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_DIRICHLET"))
+      else if (boost::iequals(bc_string_list[i], "TimeDependentNonuniformDirichlet"))
         {
           condition.add_boundary_condition(
             i,
-            boundaryCondition::type::TIME_DEPENDENT_NON_UNIFORM_DIRICHLET);
-          time_dependent_BC_list.insert(index);
+            BoundaryCondition::Type::TimeDependentNonuniformDirichlet);
+          time_dependent_bc_list.insert(index);
         }
-      else if (boost::iequals(BC_string_list[i], "TIME_DEPENDENT_NON_UNIFORM_NEUMANN"))
+      else if (boost::iequals(bc_string_list[i], "TimeDependentNonuniformNeumann"))
         {
           AssertThrow(false,
                       FeatureNotImplemented(
                         "Time-dependent neumann boundary conditions"));
-          time_dependent_BC_list.insert(index);
+          time_dependent_bc_list.insert(index);
         }
       else
         {
           AssertThrow(false,
                       dealii::ExcMessage("Invalid boundary condition " +
-                                         BC_string_list[i]));
+                                         bc_string_list[i]));
         }
       // If periodic boundary conditions are used, ensure that they are applied on
       // both sides of the domain.
       if (i % 2 == 0)
         {
-          AssertThrow(boost::iequals(BC_string_list[i], "PERIODIC") ==
-                        boost::iequals(BC_string_list[i + 1], "PERIODIC"),
+          AssertThrow(boost::iequals(bc_string_list[i], "Periodic") ==
+                        boost::iequals(bc_string_list[i + 1], "Periodic"),
                       dealii::ExcMessage("Periodic boundary condition must be "
                                          "specified on both sides of domain"));
         }
@@ -511,7 +580,7 @@ boundaryParameters<dim>::set_boundary(const std::string  &BC_string,
 
 template <unsigned int dim>
 inline void
-boundaryParameters<dim>::validate_boundary_conditions() const
+BoundaryParameters<dim>::validate_boundary_conditions() const
 {
   // Throw a warning if the pinned point is not on a vertex
   // TODO (landinjm): How do we want to handle this?
@@ -543,7 +612,7 @@ boundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type == boundaryCondition::type::PERIODIC)
+              if (boundary_type == BoundaryCondition::Type::Periodic)
                 {
                   periodic_ids[domain_id] = true;
                 }
@@ -557,7 +626,7 @@ boundaryParameters<dim>::validate_boundary_conditions() const
           for (const auto &[domain_id, boundary_type] :
                boundary_condition.get_boundary_condition_map())
             {
-              if (boundary_type != boundaryCondition::type::PERIODIC &&
+              if (boundary_type != BoundaryCondition::Type::Periodic &&
                   periodic_ids[domain_id])
                 {
                   AssertThrow(

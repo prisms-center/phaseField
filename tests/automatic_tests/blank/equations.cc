@@ -11,37 +11,37 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}

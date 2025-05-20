@@ -54,7 +54,7 @@ public:
    * \brief Constructor.
    */
   PDEProblem(
-    const userInputParameters<dim>                                &_user_inputs,
+    const UserInputParameters<dim>                                &_user_inputs,
     const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
@@ -93,7 +93,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Multigrid info class.
@@ -103,44 +103,44 @@ private:
   /**
    * \brief Triangulation handler.
    */
-  triangulationHandler<dim> triangulation_handler;
+  TriangulationHandler<dim> triangulation_handler;
 
   /**
    * \brief Constraint handler.
    */
-  constraintHandler<dim, degree> constraint_handler;
+  ConstraintHandler<dim, degree> constraint_handler;
 
   /**
    * \brief Matrix-free object handler for non-multigrid data.
    */
-  matrixfreeHandler<dim, double> matrix_free_handler;
+  MatrixfreeHandler<dim, double> matrix_free_handler;
 
   /**
    * \brief Matrix-free object handler for multigrid data.
    */
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
 
   /**
    * \brief invm handler.
    */
-  invmHandler<dim, degree, double> invm_handler;
+  InvmHandler<dim, degree, double> invm_handler;
 
   /**
    * \brief Solution handler.
    */
-  solutionHandler<dim> solution_handler;
+  SolutionHandler<dim> solution_handler;
 
   /**
    * \brief DoF handler.
    */
-  dofHandler<dim> dof_handler;
+  DofHandler<dim> dof_handler;
 
   /**
    * \brief Collection of finite element systems. This is just a collection of two
    * FESystem's: one for scalar fields and one for vector fields. For now they both use
    * FE_Q finite elements.
    */
-  std::map<fieldType, dealii::FESystem<dim>> fe_system;
+  std::map<FieldType, dealii::FESystem<dim>> fe_system;
 
   /**
    * \brief Mappings to and from reference cell.
@@ -150,44 +150,44 @@ private:
   /**
    * \brief Element volumes.
    */
-  elementVolume<dim, degree, double> element_volume;
+  ElementVolume<dim, degree, double> element_volume;
 
   /**
    * \brief Integral utility.
    *
    * TODO (landinjm): Rename this class.
    */
-  computeIntegral<dim, degree, double> integral_computer;
+  ComputeIntegral<dim, degree, double> integral_computer;
 
   /**
    * \brief Explicit constant field solver class.
    */
-  explicitConstantSolver<dim, degree> explicit_constant_solver;
+  ExplicitConstantSolver<dim, degree> explicit_constant_solver;
 
   /**
    * \brief Explicit field solver class.
    */
-  explicitSolver<dim, degree> explicit_solver;
+  ExplicitSolver<dim, degree> explicit_solver;
 
   /**
    * \brief Postprocessed explicit field solver class.
    */
-  explicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
+  ExplicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
 
   /**
    * \brief Nonexplicit auxiliary field solver class.
    */
-  nonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
+  NonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
 
   /**
    * \brief Nonexplicit linear field solver class.
    */
-  nonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
+  NonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
 
   /**
    * \brief Nonexplicit self nonlinear field solver class.
    */
-  nonexplicitSelfNonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
+  NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
 };
 
 PRISMS_PF_END_NAMESPACE

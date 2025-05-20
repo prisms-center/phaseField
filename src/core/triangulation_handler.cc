@@ -31,8 +31,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-triangulationHandler<dim>::triangulationHandler(
-  const userInputParameters<dim> &_user_inputs,
+TriangulationHandler<dim>::TriangulationHandler(
+  const UserInputParameters<dim> &_user_inputs,
   const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
@@ -58,8 +58,8 @@ triangulationHandler<dim>::triangulationHandler(
 }
 
 template <unsigned int dim>
-const typename triangulationHandler<dim>::Triangulation &
-triangulationHandler<dim>::get_triangulation() const
+const typename TriangulationHandler<dim>::Triangulation &
+TriangulationHandler<dim>::get_triangulation() const
 {
   Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return *triangulation;
@@ -67,7 +67,7 @@ triangulationHandler<dim>::get_triangulation() const
 
 template <unsigned int dim>
 const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
-triangulationHandler<dim>::get_mg_triangulation() const
+TriangulationHandler<dim>::get_mg_triangulation() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -76,7 +76,7 @@ triangulationHandler<dim>::get_mg_triangulation() const
 
 template <unsigned int dim>
 const dealii::Triangulation<dim> &
-triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
+TriangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -88,7 +88,7 @@ triangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_n_global_levels() const
+TriangulationHandler<dim>::get_n_global_levels() const
 {
   Assert(triangulation != nullptr, dealii::ExcNotInitialized());
   return triangulation->n_global_levels();
@@ -96,7 +96,7 @@ triangulationHandler<dim>::get_n_global_levels() const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_mg_min_level() const
+TriangulationHandler<dim>::get_mg_min_level() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -105,7 +105,7 @@ triangulationHandler<dim>::get_mg_min_level() const
 
 template <unsigned int dim>
 unsigned int
-triangulationHandler<dim>::get_mg_max_level() const
+TriangulationHandler<dim>::get_mg_max_level() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -114,39 +114,40 @@ triangulationHandler<dim>::get_mg_max_level() const
 
 template <unsigned int dim>
 bool
-triangulationHandler<dim>::has_setup_multigrid() const
+TriangulationHandler<dim>::has_setup_multigrid() const
 {
   return has_multigrid;
 }
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::generate_mesh()
+TriangulationHandler<dim>::generate_mesh()
 {
   // TODO (landinjm): Add more generality in selecting mesh types
-  if (user_inputs->spatial_discretization.radius != 0.0)
+  if (user_inputs->get_spatial_discretization().get_radius() != 0.0)
     {
       // TODO (landinjm): Adding assertion about periodic boundary conditions for spheres
       // Generate a sphere
 
       // TODO (landinjm): Add assertion that the user cannot specify multiple boundary
       // conditions for a hyper_ball geometry
-      dealii::GridGenerator::hyper_ball(*triangulation,
-                                        dealii::Point<dim>(),
-                                        user_inputs->spatial_discretization.radius);
+      dealii::GridGenerator::hyper_ball(
+        *triangulation,
+        dealii::Point<dim>(),
+        user_inputs->get_spatial_discretization().get_radius());
     }
   else
     {
       // TODO (landinjm): Add assertions about periodic boundary conditions for
-      // rectangular domains here. Not sure whether it is better to check for assertions
+      // Rectangular domains here. Not sure whether it is better to check for assertions
       // here or when we parse user inputs.
 
       // Generate rectangle
       dealii::GridGenerator::subdivided_hyper_rectangle(
         *triangulation,
-        user_inputs->spatial_discretization.subdivisions,
+        user_inputs->get_spatial_discretization().get_subdivisions(),
         dealii::Point<dim>(),
-        dealii::Point<dim>(user_inputs->spatial_discretization.size));
+        dealii::Point<dim>(user_inputs->get_spatial_discretization().get_size()));
 
       // Mark boundaries. This is done before global refinement to reduce the number of
       // cells we have to loop through.
@@ -163,7 +164,8 @@ triangulationHandler<dim>::generate_mesh()
 #endif
 
   // Global refinement
-  triangulation->refine_global(user_inputs->spatial_discretization.global_refinement);
+  triangulation->refine_global(
+    user_inputs->get_spatial_discretization().get_global_refinement());
 
   // Create the triangulations for the coarser levels if we have at least one instance of
   // multigrid for any of the fields
@@ -185,17 +187,17 @@ triangulationHandler<dim>::generate_mesh()
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
+TriangulationHandler<dim>::export_triangulation_as_vtk(const std::string &filename) const
 {
   const dealii::GridOut grid_out;
   std::ofstream         out(filename + ".vtk");
   grid_out.write_vtk(*triangulation, out);
-  conditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
+  ConditionalOStreams::pout_base() << "Triangulation written to " << filename << ".vtk\n";
 }
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::mark_boundaries() const
+TriangulationHandler<dim>::mark_boundaries() const
 {
   const double tolerance = 1e-12;
 
@@ -212,8 +214,9 @@ triangulationHandler<dim>::mark_boundaries() const
 
           // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
           if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance ||
-              std::fabs(cell->face(face_number)->center()(direction) -
-                        (user_inputs->spatial_discretization.size[direction])) <
+              std::fabs(
+                cell->face(face_number)->center()(direction) -
+                (user_inputs->get_spatial_discretization().get_size()[direction])) <
                 tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);
@@ -224,19 +227,19 @@ triangulationHandler<dim>::mark_boundaries() const
 
 template <unsigned int dim>
 void
-triangulationHandler<dim>::mark_periodic()
+TriangulationHandler<dim>::mark_periodic()
 {
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.
   for (const auto &[index, boundary_condition] :
-       user_inputs->boundary_parameters.boundary_condition_list)
+       user_inputs->get_boundary_parameters().get_boundary_condition_list())
     {
       for (const auto &[component, condition] : boundary_condition)
         {
           for (const auto &[boundary_id, boundary_type] :
                condition.get_boundary_condition_map())
             {
-              if (boundary_type == boundaryCondition::type::PERIODIC)
+              if (boundary_type == BoundaryCondition::Type::Periodic)
                 {
                   // Skip boundary ids that are odd since those map to the even faces
                   if (boundary_id % 2 != 0)
@@ -269,6 +272,6 @@ triangulationHandler<dim>::mark_periodic()
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(triangulationHandler)
+INSTANTIATE_UNI_TEMPLATE(TriangulationHandler)
 
 PRISMS_PF_END_NAMESPACE

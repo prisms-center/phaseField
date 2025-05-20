@@ -84,14 +84,14 @@ set Number of smoothing cycles after grain structure loading = 2
 set Minimum radius for loaded grains = 2.0
 
 
-set Boundary condition for variable n0 = NATURAL
-set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable n2 = NATURAL
-set Boundary condition for variable n3 = NATURAL
-set Boundary condition for variable n4 = NATURAL
-set Boundary condition for variable n5 = NATURAL
-set Boundary condition for variable n6 = NATURAL
-set Boundary condition for variable n7 = NATURAL
+set Boundary condition for variable n0 = Natural
+set Boundary condition for variable n1 = Natural
+set Boundary condition for variable n2 = Natural
+set Boundary condition for variable n3 = Natural
+set Boundary condition for variable n4 = Natural
+set Boundary condition for variable n5 = Natural
+set Boundary condition for variable n6 = Natural
+set Boundary condition for variable n7 = Natural
 
 
 set Model constant MnV = 1.0, DOUBLE

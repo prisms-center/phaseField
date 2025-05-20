@@ -23,30 +23,31 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-linearSolverBase<dim, degree>::linearSolverBase(
-  const userInputParameters<dim>                         &_user_inputs,
-  const variableAttributes                               &_variable_attributes,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+LinearSolverBase<dim, degree>::LinearSolverBase(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const VariableAttributes                               &_variable_attributes,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , variable_attributes(&_variable_attributes)
   , matrix_free_handler(&_matrix_free_handler)
   , constraint_handler(&_constraint_handler)
   , solution_handler(&_solution_handler)
-  , field_index(_variable_attributes.field_index)
+  , field_index(_variable_attributes.get_field_index())
   , residual(_solution_handler.get_new_solution_vector(field_index))
   , newton_update(
-      _solution_handler.get_solution_vector(field_index, dependencyType::CHANGE))
+      _solution_handler.get_solution_vector(field_index, DependencyType::Change))
   , pde_operator(std::move(_pde_operator))
-  , solver_control(
-      _user_inputs.linear_solve_parameters.linear_solve.at(field_index).max_iterations)
+  , solver_control(_user_inputs.get_linear_solve_parameters()
+                     .get_linear_solve_parameters(field_index)
+                     .max_iterations)
 {
   // Creating map to match types
   subset_attributes.emplace(field_index, *variable_attributes);
 
-  // Create the implementation of matrixFreeOperator with the subset of variable
+  // Create the implementation of MatrixFreeOperator with the subset of variable
   // attributes
   system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
@@ -54,13 +55,13 @@ linearSolverBase<dim, degree>::linearSolverBase(
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
 
   // Create the residual subset of solution vectors and add the mapping to
-  // matrixFreeOperator
+  // MatrixFreeOperator
   residual_src.push_back(
-    solution_handler->get_solution_vector(field_index, dependencyType::NORMAL));
+    solution_handler->get_solution_vector(field_index, DependencyType::Normal));
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
-                                                           dependencyType::NORMAL),
+                                                           DependencyType::Normal),
                                             0);
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_RHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_rhs())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
@@ -73,20 +74,20 @@ linearSolverBase<dim, degree>::linearSolverBase(
     }
 
   // Create the newton update subset of solution vectors and add the mapping to
-  // matrixFreeOperator. For this one we consider the singular src vector as the residual
+  // MatrixFreeOperator. For this one we consider the singular src vector as the residual
   // vector above and the src subset all other dependencies vectors. This is
   // complicated, but has to do with the way deal.II's solvers (like CG) handle
   // iterative updates. For this reason, we have to pass the residual vector as
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->dependency_set_LHS)
+  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_lhs())
     {
       for (const auto &[dependency_type, field_type] : map)
         {
           const auto pair = std::make_pair(variable_index, dependency_type);
 
-          if (dependency_type == dependencyType::CHANGE)
+          if (dependency_type == DependencyType::Change)
             {
               Assert(field_index == variable_index,
                      dealii::ExcMessage("The change type should have the same type as "
@@ -106,16 +107,20 @@ linearSolverBase<dim, degree>::linearSolverBase(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-linearSolverBase<dim, degree>::compute_solver_tolerance()
+LinearSolverBase<dim, degree>::compute_solver_tolerance()
 {
-  tolerance =
-    user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance_type ==
-        solverToleranceType::RELATIVE_RESIDUAL_CHANGE
-      ? user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance *
-          residual->l2_norm()
-      : user_inputs->linear_solve_parameters.linear_solve.at(field_index).tolerance;
+  tolerance = user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance_type == SolverToleranceType::RelativeResidualChange
+                ? user_inputs->get_linear_solve_parameters()
+                      .get_linear_solve_parameters(field_index)
+                      .tolerance *
+                    residual->l2_norm()
+                : user_inputs->get_linear_solve_parameters()
+                    .get_linear_solve_parameters(field_index)
+                    .tolerance;
 }
 
-INSTANTIATE_BI_TEMPLATE(linearSolverBase)
+INSTANTIATE_BI_TEMPLATE(LinearSolverBase)
 
 PRISMS_PF_END_NAMESPACE

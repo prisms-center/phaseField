@@ -14,20 +14,20 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that stores relevant nonlinear solve information of a certain field
  */
-struct nonlinearSolverParameters
+struct NonlinearSolverParameters
 {
 public:
   // Nonlinear step length
   mutable double step_length = 1.0;
 
   // Max number of iterations for the nonlinear solve
-  unsigned int max_iterations = defaults::iterations;
+  unsigned int max_iterations = Defaults::iterations;
 };
 
 /**
  * \brief Struct that holds nonlinear solver parameters.
  */
-struct nonlinearSolveParameters
+struct NonlinearSolveParameters
 {
 public:
   /**
@@ -42,35 +42,55 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Set the nonlinear solve parameters for a field index.
+   */
+  void
+  set_nonlinear_solve_parameters(const Types::Index              &index,
+                                 const NonlinearSolverParameters &parameters)
+  {
+    nonlinear_solve[index] = parameters;
+  }
+
+  /**
+   * \brief Get the nonlinear solve parameters for a field index.
+   */
+  [[nodiscard]] const NonlinearSolverParameters &
+  get_nonlinear_solve_parameters(const Types::Index &index) const
+  {
+    return nonlinear_solve.at(index);
+  }
+
+private:
   // Map of nonlinear solve parameters for fields that require them
-  std::map<unsigned int, nonlinearSolverParameters> nonlinear_solve;
+  std::map<Types::Index, NonlinearSolverParameters> nonlinear_solve;
 };
 
 inline void
-nonlinearSolveParameters::postprocess_and_validate()
+NonlinearSolveParameters::postprocess_and_validate()
 {
   // Nothing to do here for now
 }
 
 inline void
-nonlinearSolveParameters::print_parameter_summary() const
+NonlinearSolveParameters::print_parameter_summary() const
 {
   if (!nonlinear_solve.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Nonlinear Solve Parameters\n"
         << "================================================\n";
 
       for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"
             << "  Max iterations: " << nonlinear_solver_parameters.max_iterations << "\n"
             << "  Step length: " << nonlinear_solver_parameters.step_length << "\n";
         }
 
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

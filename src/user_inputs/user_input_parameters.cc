@@ -13,6 +13,8 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
+#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
@@ -24,9 +26,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-userInputParameters<dim>::userInputParameters(inputFileReader          &input_file_reader,
+UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_file_reader,
                                               dealii::ParameterHandler &parameter_handler)
-  : var_attributes(&input_file_reader.var_attributes)
+  : var_attributes(input_file_reader.get_var_attributes())
 {
   // Assign the parameters to the appropriate data structures
   assign_spatial_discretization_parameters(parameter_handler);
@@ -40,12 +42,12 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
   // Perform and postprocessing of user inputs and run checks
   spatial_discretization.postprocess_and_validate();
-  temporal_discretization.postprocess_and_validate(*var_attributes);
+  temporal_discretization.postprocess_and_validate(var_attributes);
   linear_solve_parameters.postprocess_and_validate();
   nonlinear_solve_parameters.postprocess_and_validate();
   output_parameters.postprocess_and_validate(temporal_discretization);
   checkpoint_parameters.postprocess_and_validate(temporal_discretization);
-  boundary_parameters.postprocess_and_validate(*var_attributes);
+  boundary_parameters.postprocess_and_validate(var_attributes);
 
   // Print all the parameters to summary.log
   spatial_discretization.print_parameter_summary();
@@ -60,74 +62,79 @@ userInputParameters<dim>::userInputParameters(inputFileReader          &input_fi
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_spatial_discretization_parameters(
+UserInputParameters<dim>::assign_spatial_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  parameter_handler.enter_subsection("rectangular mesh");
+  parameter_handler.enter_subsection("Rectangular mesh");
   {
     std::vector<std::string> axis_labels = {"x", "y", "z"};
     for (unsigned int i = 0; i < dim; ++i)
       {
-        spatial_discretization.size[i] =
-          parameter_handler.get_double(axis_labels[i] + " size");
-        spatial_discretization.subdivisions[i] =
-          parameter_handler.get_integer(axis_labels[i] + " subdivisions");
+        spatial_discretization.set_size(i,
+                                        parameter_handler.get_double(axis_labels[i] +
+                                                                     " size"));
+        spatial_discretization.set_subdivisions(i,
+                                                parameter_handler.get_integer(
+                                                  axis_labels[i] + " subdivisions"));
       }
   }
   parameter_handler.leave_subsection();
 
-  parameter_handler.enter_subsection("spherical mesh");
+  parameter_handler.enter_subsection("Spherical mesh");
   {
-    spatial_discretization.radius = parameter_handler.get_double("radius");
+    spatial_discretization.set_radius(parameter_handler.get_double("radius"));
   }
   parameter_handler.leave_subsection();
 
-  spatial_discretization.global_refinement =
-    parameter_handler.get_integer("global refinement");
+  spatial_discretization.set_global_refinement(
+    parameter_handler.get_integer("global refinement"));
 
-  spatial_discretization.degree = parameter_handler.get_integer("degree");
+  spatial_discretization.set_degree(parameter_handler.get_integer("degree"));
 
-  spatial_discretization.has_adaptivity = parameter_handler.get_bool("mesh adaptivity");
+  spatial_discretization.set_has_adaptivity(
+    parameter_handler.get_bool("mesh adaptivity"));
 
-  spatial_discretization.remeshing_period =
-    parameter_handler.get_integer("remeshing period");
+  spatial_discretization.set_remeshing_period(
+    parameter_handler.get_integer("remeshing period"));
 
-  spatial_discretization.max_refinement = parameter_handler.get_integer("max refinement");
-  spatial_discretization.min_refinement = parameter_handler.get_integer("min refinement");
+  spatial_discretization.set_max_refinement(
+    parameter_handler.get_integer("max refinement"));
+  spatial_discretization.set_min_refinement(
+    parameter_handler.get_integer("min refinement"));
 
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
-      subsection_text.append(variable.name);
+      subsection_text.append(variable.get_name());
       parameter_handler.enter_subsection(subsection_text);
       {
         const std::string crit_type_string = parameter_handler.get("type");
         if (!boost::iequals(crit_type_string, "none"))
           {
             GridRefinement::RefinementCriterion new_criterion(
-              GridRefinement::RefinementFlags::nothing,
+              GridRefinement::RefinementFlags::Nothing,
               parameter_handler.get_double("value lower bound"),
               parameter_handler.get_double("value upper bound"),
               parameter_handler.get_double("gradient magnitude lower bound"));
 
             if (boost::iequals(crit_type_string, "value"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::value);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Value);
               }
             else if (boost::iequals(crit_type_string, "gradient"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::gradient);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Gradient);
               }
             else if (boost::iequals(crit_type_string, "value_and_gradient"))
               {
-                new_criterion.set_criterion(GridRefinement::RefinementFlags::value |
-                                            GridRefinement::RefinementFlags::gradient);
+                new_criterion.set_criterion(GridRefinement::RefinementFlags::Value |
+                                            GridRefinement::RefinementFlags::Gradient);
               }
             else
               {
                 AssertThrow(false, UnreachableCode());
               }
-            spatial_discretization.refinement_criteria.push_back(new_criterion);
+            spatial_discretization.add_refinement_criteria(new_criterion);
           }
       }
       parameter_handler.leave_subsection();
@@ -136,7 +143,7 @@ userInputParameters<dim>::assign_spatial_discretization_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_temporal_discretization_parameters(
+UserInputParameters<dim>::assign_temporal_discretization_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   temporal_discretization.set_timestep(parameter_handler.get_double("time step"));
@@ -147,125 +154,117 @@ userInputParameters<dim>::assign_temporal_discretization_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_output_parameters(
+UserInputParameters<dim>::assign_output_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("output");
   {
-    output_parameters.file_name          = parameter_handler.get("file name");
-    output_parameters.file_type          = parameter_handler.get("file type");
-    output_parameters.patch_subdivisions = parameter_handler.get_integer("subdivisions");
-    output_parameters.condition          = parameter_handler.get("condition");
-    output_parameters.user_output_list   = dealii::Utilities::string_to_int(
-      dealii::Utilities::split_string_list(parameter_handler.get("list")));
-    output_parameters.n_outputs =
-      static_cast<unsigned int>(parameter_handler.get_integer("number"));
-    output_parameters.print_output_period =
-      parameter_handler.get_integer("print step period");
-    output_parameters.print_timing_with_output =
-      parameter_handler.get_bool("timing information with output");
+    output_parameters.set_file_name(parameter_handler.get("file name"));
+    output_parameters.set_file_type(parameter_handler.get("file type"));
+    output_parameters.set_patch_subdivisions(
+      parameter_handler.get_integer("subdivisions"));
+    output_parameters.set_output_condition(parameter_handler.get("condition"));
+    output_parameters.set_user_output_list(dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list"))));
+    output_parameters.set_n_outputs(
+      static_cast<unsigned int>(parameter_handler.get_integer("number")));
+    output_parameters.set_print_output_period(
+      parameter_handler.get_integer("print step period"));
+    output_parameters.set_print_timing_with_output(
+      parameter_handler.get_bool("timing information with output"));
   }
   parameter_handler.leave_subsection();
 }
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_checkpoint_parameters(
+UserInputParameters<dim>::assign_checkpoint_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("checkpoints");
   {
-    checkpoint_parameters.load_from_checkpoint =
-      parameter_handler.get_bool("load from checkpoint");
-    checkpoint_parameters.condition            = parameter_handler.get("condition");
-    checkpoint_parameters.user_checkpoint_list = dealii::Utilities::string_to_int(
-      dealii::Utilities::split_string_list(parameter_handler.get("list")));
-    checkpoint_parameters.n_checkpoints =
-      static_cast<unsigned int>(parameter_handler.get_integer("number"));
+    checkpoint_parameters.set_load_from_checkpoint(
+      parameter_handler.get_bool("load from checkpoint"));
+    checkpoint_parameters.set_condition(parameter_handler.get("condition"));
+    checkpoint_parameters.set_user_checkpoint_list(dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list"))));
+    checkpoint_parameters.set_n_checkpoints(
+      static_cast<unsigned int>(parameter_handler.get_integer("number")));
   }
   parameter_handler.leave_subsection();
 }
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_boundary_parameters(
+UserInputParameters<dim>::assign_boundary_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
+  std::vector<std::string> axis_labels = {"x", "y", "z"};
+
   // Assign the normal boundary parameters
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
-      // TODO (landinjm): We Should still add the ability to assign boundary conditions
-      // for postprocessed fields
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.field_type == SCALAR)
+
+      const unsigned int n_components =
+        (variable.get_field_type() == FieldType::Scalar) ? 1 : dim;
+      for (unsigned int i = 0; i < n_components; i++)
         {
-          std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
-          boundary_parameters.BC_list[index].emplace(0, parameter_handler.get(bc_text));
-        }
-      else
-        {
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          for (unsigned int i = 0; i < dim; i++)
+          std::string bc_text = "boundary condition for " + variable.get_name();
+          if (variable.get_field_type() != FieldType::Scalar)
             {
-              std::string bc_text = "boundary condition for ";
-              bc_text.append(variable.name + ", " + axis_labels[i] + " component");
-              boundary_parameters.BC_list[index].emplace(i,
-                                                         parameter_handler.get(bc_text));
+              bc_text += ", " + axis_labels[i] + " component";
             }
+          boundary_parameters
+            .set_boundary_condition_string(parameter_handler.get(bc_text), index, i);
         }
     }
 
   // Assign any pinning points
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
       std::string pinning_text = "pinning point for ";
-      pinning_text.append(variable.name);
+      pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
-      if (variable.field_type == SCALAR)
+
+      const std::string value_key =
+        (variable.get_field_type() == FieldType::Scalar) ? "value" : "x value";
+
+      // Skip if the value is the default INT_MAX
+      if (parameter_handler.get_double(value_key) == INT_MAX)
         {
-          // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("value") == INT_MAX)
-            {
-              parameter_handler.leave_subsection();
-              continue;
-            }
-          // Otherwise, fill out point and value
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          dealii::Point<dim>       point;
-          for (unsigned int i = 0; i < dim; ++i)
-            {
-              point[i] = parameter_handler.get_double(axis_labels[i]);
-            }
-          boundary_parameters.pinned_point_list
-            .emplace(index, std::make_pair(parameter_handler.get_double("value"), point));
+          parameter_handler.leave_subsection();
+          continue;
+        }
+
+      // Fill out the point and value
+      dealii::Point<dim> point;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          point[i] = parameter_handler.get_double(axis_labels[i]);
+        }
+
+      if (variable.get_field_type() == FieldType::Scalar)
+        {
+          boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
+                                               point,
+                                               index);
         }
       else
         {
-          // Skip if the value is the default INT_MAX
-          if (parameter_handler.get_double("x value") == INT_MAX)
-            {
-              parameter_handler.leave_subsection();
-              continue;
-            }
-          // Otherwise, fill out point and value
-          std::vector<std::string> axis_labels = {"x", "y", "z"};
-          dealii::Point<dim>       point;
-          std::vector<double>      value(dim);
+          std::vector<double> value(dim);
           for (unsigned int i = 0; i < dim; ++i)
             {
-              point[i] = parameter_handler.get_double(axis_labels[i]);
               value[i] = parameter_handler.get_double(axis_labels[i] + " value");
             }
-          boundary_parameters.pinned_point_list.emplace(index,
-                                                        std::make_pair(value, point));
+          boundary_parameters.set_pinned_point(value, point, index);
         }
       parameter_handler.leave_subsection();
     }
@@ -273,29 +272,31 @@ userInputParameters<dim>::assign_boundary_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_linear_solve_parameters(
+UserInputParameters<dim>::assign_linear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.pde_type == TIME_INDEPENDENT ||
-          variable.pde_type == IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TimeIndependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
+
+          LinearSolverParameters linear_solver_parameters;
 
           // Set the tolerance type
           const std::string type_string = parameter_handler.get("tolerance type");
-          if (boost::iequals(type_string, "ABSOLUTE_RESIDUAL"))
+          if (boost::iequals(type_string, "AbsoluteResidual"))
             {
-              linear_solve_parameters.linear_solve[index].tolerance_type =
-                solverToleranceType::ABSOLUTE_RESIDUAL;
+              linear_solver_parameters.tolerance_type =
+                SolverToleranceType::AbsoluteResidual;
             }
-          else if (boost::iequals(type_string, "RELATIVE_RESIDUAL_CHANGE"))
+          else if (boost::iequals(type_string, "RelativeResidualChange"))
             {
-              linear_solve_parameters.linear_solve[index].tolerance_type =
-                solverToleranceType::RELATIVE_RESIDUAL_CHANGE;
+              linear_solver_parameters.tolerance_type =
+                SolverToleranceType::RelativeResidualChange;
             }
           else
             {
@@ -303,30 +304,33 @@ userInputParameters<dim>::assign_linear_solve_parameters(
             }
 
           // Set the tolerance value
-          linear_solve_parameters.linear_solve[index].tolerance =
+          linear_solver_parameters.tolerance =
             parameter_handler.get_double("tolerance value");
 
           // Set the maximum number of iterations
-          linear_solve_parameters.linear_solve[index].max_iterations =
+          linear_solver_parameters.max_iterations =
             parameter_handler.get_integer("max iterations");
 
           // Set preconditioner type and related parameters
-          linear_solve_parameters.linear_solve[index].preconditioner =
+          linear_solver_parameters.preconditioner =
             boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
-              ? preconditionerType::GMG
-              : preconditionerType::NONE;
+              ? PreconditionerType::GMG
+              : PreconditionerType::None;
 
-          linear_solve_parameters.linear_solve[index].smoothing_range =
+          linear_solver_parameters.smoothing_range =
             parameter_handler.get_double("smoothing range");
 
-          linear_solve_parameters.linear_solve[index].smoother_degree =
+          linear_solver_parameters.smoother_degree =
             parameter_handler.get_integer("smoother degree");
 
-          linear_solve_parameters.linear_solve[index].eig_cg_n_iterations =
+          linear_solver_parameters.eig_cg_n_iterations =
             parameter_handler.get_integer("eigenvalue cg iterations");
 
-          linear_solve_parameters.linear_solve[index].min_mg_level =
+          linear_solver_parameters.min_mg_level =
             parameter_handler.get_integer("min mg level");
+
+          linear_solve_parameters.set_linear_solve_parameters(index,
+                                                              linear_solver_parameters);
 
           parameter_handler.leave_subsection();
         }
@@ -335,22 +339,25 @@ userInputParameters<dim>::assign_linear_solve_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::assign_nonlinear_solve_parameters(
+UserInputParameters<dim>::assign_nonlinear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : *var_attributes)
+  for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
+          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
 
-          nonlinear_solve_parameters.nonlinear_solve[index].max_iterations =
+          NonlinearSolverParameters nonlinear_solver_parameters;
+          nonlinear_solver_parameters.max_iterations =
             parameter_handler.get_integer("max iterations");
-          nonlinear_solve_parameters.nonlinear_solve[index].step_length =
+          nonlinear_solver_parameters.step_length =
             parameter_handler.get_double("step size");
+          nonlinear_solve_parameters
+            .set_nonlinear_solve_parameters(index, nonlinear_solver_parameters);
 
           // TODO (landinjm): Implement backtracking line search
 
@@ -361,11 +368,11 @@ userInputParameters<dim>::assign_nonlinear_solve_parameters(
 
 template <unsigned int dim>
 void
-userInputParameters<dim>::load_model_constants(
-  const inputFileReader    &input_file_reader,
+UserInputParameters<dim>::load_model_constants(
+  const InputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const std::string &constant_name : input_file_reader.model_constant_names)
+  for (const std::string &constant_name : input_file_reader.get_model_constant_names())
     {
       std::string constants_text = "Model constant ";
       constants_text.append(constant_name);
@@ -377,6 +384,6 @@ userInputParameters<dim>::load_model_constants(
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(userInputParameters)
+INSTANTIATE_UNI_TEMPLATE(UserInputParameters)
 
 PRISMS_PF_END_NAMESPACE

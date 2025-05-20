@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the attributes of the postprocessing variables
 // =================================================================================
-// This function is analogous to 'loadVariableAttributes' in 'equations.h', but
+// This function is analogous to 'load_variable_attributes' in 'equations.h', but
 // for the postprocessing expressions. It sets the attributes for each
 // postprocessing expression, including its name, whether it is a vector or
 // scalar (only scalars are supported at present), its dependencies on other
@@ -12,35 +12,35 @@
 // postprocessed quantity over the entire domain.
 
 void
-customAttributeLoader::loadPostProcessorVariableAttributes()
+CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "feature_ids");
-  set_variable_type(0, SCALAR);
+  set_variable_type(0, Scalar);
 
   // For the input file 'parameters.in'
-  set_dependencies_value_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7");
+  set_dependencies_value_term_rhs(0, "n0, n1, n2, n3, n4, n5, n6, n7");
 
   // For the input file 'parameters_large_2D.in'
-  // set_dependencies_value_term_RHS(0, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+  // set_dependencies_value_term_rhs(0, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
   // n10, n11");
 
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_output_integral(0, false);
 
   // Variable 1
   set_variable_name(1, "op_ids");
-  set_variable_type(1, SCALAR);
+  set_variable_type(1, Scalar);
 
   // For the input file 'parameters.in'
-  set_dependencies_value_term_RHS(1, "n0, n1, n2, n3, n4, n5, n6, n7");
+  set_dependencies_value_term_rhs(1, "n0, n1, n2, n3, n4, n5, n6, n7");
 
   // For the input file 'parameters_large_2D.in'
-  // set_dependencies_value_term_RHS(1, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+  // set_dependencies_value_term_rhs(1, "n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
   // n10, n11");
 
-  set_dependencies_gradient_term_RHS(1, "");
+  set_dependencies_gradient_term_rhs(1, "");
 
   set_output_integral(1, false);
 }
@@ -60,9 +60,9 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                             &pp_variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
   [[maybe_unused]] const VectorizedArray<double>             element_volume) const
@@ -140,6 +140,6 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, feature_ids);
-  pp_variable_list.set_scalar_value_term_RHS(1, max_op);
+  pp_variable_list.set_scalar_value_term_rhs(0, feature_ids);
+  pp_variable_list.set_scalar_value_term_rhs(1, max_op);
 }

@@ -18,7 +18,7 @@ set Number of time steps = 20000000
 
 
 subsection Linear solver parameters: phi
-    set Tolerance type = ABSOLUTE_RESIDUAL
+    set Tolerance type = AbsoluteResidual
 
     set Tolerance value = 1e-5
 
@@ -37,9 +37,9 @@ subsection Nonlinear solver parameters: mu
 end
 
 
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable mu = NATURAL
-set Boundary condition for variable phi =  DIRICHLET: 0.0, NON_UNIFORM_DIRICHLET, NATURAL, NATURAL, NATURAL, NATURAL
+set Boundary condition for variable c = Natural
+set Boundary condition for variable mu = Natural
+set Boundary condition for variable phi =  Dirichlet: 0.0, NonuniformDirichlet, Natural, Natural, Natural, Natural
 
 
 set Model constant McV = 5.0, DOUBLE

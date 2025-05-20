@@ -28,14 +28,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-explicitBase<dim, degree>::explicitBase(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+ExplicitBase<dim, degree>::ExplicitBase(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  solutionHandler<dim>                                   &_solution_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , matrix_free_handler(&_matrix_free_handler)
@@ -49,21 +49,21 @@ explicitBase<dim, degree>::explicitBase(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::compute_subset_attributes(
-  const fieldSolveType &field_solve_type)
+ExplicitBase<dim, degree>::compute_subset_attributes(
+  const FieldSolveType &field_solve_type)
 {
-  Assert((field_solve_type == fieldSolveType::EXPLICIT ||
-          field_solve_type == fieldSolveType::EXPLICIT_POSTPROCESS ||
-          field_solve_type == fieldSolveType::EXPLICIT_CONSTANT),
+  Assert((field_solve_type == FieldSolveType::Explicit ||
+          field_solve_type == FieldSolveType::ExplicitPostprocess ||
+          field_solve_type == FieldSolveType::ExplicitConstant),
          dealii::ExcMessage(
            "compute_subset_attributes() should only be used for "
-           "EXPLICIT, EXPLICIT_POSTPROCESS, and EXPLICIT_CONSTANT fieldSolveTypes"));
+           "Explicit, ExplicitPostprocess, and ExplicitConstant fieldSolveTypes"));
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.field_solve_type == field_solve_type)
+      if (variable.get_field_solve_type() == field_solve_type)
         {
           subset_attributes.emplace(index, variable);
         }
@@ -72,15 +72,15 @@ explicitBase<dim, degree>::compute_subset_attributes(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::compute_shared_dependencies()
+ExplicitBase<dim, degree>::compute_shared_dependencies()
 {
   // Compute the shared dependency flags
-  auto &dependency_flag_set = subset_attributes.begin()->second.eval_flag_set_RHS;
+  auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (!variable.eval_flag_set_RHS.empty())
+      if (!variable.get_eval_flag_set_rhs().empty())
         {
-          for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
+          for (const auto &[pair, flag] : variable.get_eval_flag_set_rhs())
             {
               dependency_flag_set[pair] |= flag;
             }
@@ -90,15 +90,15 @@ explicitBase<dim, degree>::compute_shared_dependencies()
     {
       for (const auto &[pair, flag] : dependency_flag_set)
         {
-          variable.eval_flag_set_RHS[pair] |= flag;
+          variable.get_eval_flag_set_rhs()[pair] |= flag;
         }
     }
 
   // Compute the shared dependency set
-  auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.get_dependency_set_rhs())
         {
           for (const auto &[dependency_type, field_type] : map)
             {
@@ -108,7 +108,7 @@ explicitBase<dim, degree>::compute_shared_dependencies()
     }
   for (auto &[index, variable] : subset_attributes)
     {
-      variable.dependency_set_RHS = dependency_set;
+      variable.set_dependency_set_rhs(dependency_set);
     }
 
 #ifdef DEBUG
@@ -118,7 +118,7 @@ explicitBase<dim, degree>::compute_shared_dependencies()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::set_initial_condition()
+ExplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
@@ -134,34 +134,34 @@ explicitBase<dim, degree>::set_initial_condition()
       dealii::VectorTools::interpolate(
         *mapping,
         *(dof_handler->get_dof_handlers().at(index)),
-        initialCondition<dim, degree>(index,
-                                      subset_attributes.at(index).field_type,
+        InitialCondition<dim, degree>(index,
+                                      subset_attributes.at(index).get_field_type(),
                                       pde_operator),
-        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+        *(solution_handler->get_solution_vector(index, DependencyType::Normal)));
     }
 }
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitBase<dim, degree>::print()
+ExplicitBase<dim, degree>::print()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
-  const auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[index, map] : dependency_set)
     {
       for (const auto &[dependency_type, field_type] : map)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "  Index: " << index << " Dependency: " << to_string(dependency_type)
             << " Field: " << to_string(field_type) << "\n";
         }
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-INSTANTIATE_BI_TEMPLATE(explicitBase)
+INSTANTIATE_BI_TEMPLATE(ExplicitBase)
 
 PRISMS_PF_END_NAMESPACE

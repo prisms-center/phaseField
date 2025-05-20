@@ -8,17 +8,17 @@
 // Set the attributes of the primary field variables
 // =================================================================================
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   // Variable 2
   set_variable_name(0, "u");
-  set_variable_type(0, VECTOR);
-  set_variable_equation_type(0, TIME_INDEPENDENT);
+  set_variable_type(0, Vector);
+  set_variable_equation_type(0, TimeIndependent);
 
-  set_dependencies_value_term_RHS(0, "");
-  set_dependencies_gradient_term_RHS(0, "grad(u)");
-  set_dependencies_value_term_LHS(0, "");
-  set_dependencies_gradient_term_LHS(0, "grad(change(u))");
+  set_dependencies_value_term_rhs(0, "");
+  set_dependencies_gradient_term_rhs(0, "grad(u)");
+  set_dependencies_value_term_lhs(0, "");
+  set_dependencies_gradient_term_lhs(0, "grad(change(u))");
 }
 
 // =============================================================================================
@@ -37,7 +37,7 @@ customAttributeLoader::loadVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {}
@@ -58,7 +58,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
@@ -82,7 +82,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
     }
 
   // compute stress tensor
-  computeStress<dim>(CIJ, E, S);
+  computeStress<dim>(compliance, E, S);
 
   // compute the term in the equation
   for (unsigned int i = 0; i < dim; i++)
@@ -95,7 +95,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_vector_gradient_term_RHS(0, eqx_u);
+  variable_list.set_vector_gradient_term_rhs(0, eqx_u);
 }
 
 /// =============================================================================================
@@ -116,7 +116,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 template <int dim, int degree>
 void
 customPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>> &variable_list,
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
@@ -140,7 +140,7 @@ customPDE<dim, degree>::equationLHS(
     }
 
   // compute stress tensor
-  computeStress<dim>(CIJ, E, S);
+  computeStress<dim>(compliance, E, S);
 
   // compute the term in the governing equation
   for (unsigned int i = 0; i < dim; i++)
@@ -153,5 +153,5 @@ customPDE<dim, degree>::equationLHS(
 
   // --- Submitting the terms for the governing equations ---
 
-  variable_list.set_vector_gradient_term_LHS(0, eqx_Du);
+  variable_list.set_vector_gradient_term_lhs(0, eqx_Du);
 }

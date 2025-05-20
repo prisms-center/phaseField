@@ -13,11 +13,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Type of field. Currently, the only support fields are scalar and vector.
  */
-enum fieldType : std::uint8_t
+enum FieldType : std::uint8_t
 {
-  UNDEFINED_FIELD,
-  SCALAR,
-  VECTOR
+  UndefinedField,
+  Scalar,
+  Vector
 };
 
 /**
@@ -25,104 +25,104 @@ enum fieldType : std::uint8_t
  */
 enum PDEType : std::uint8_t
 {
-  UNDEFINED_PDE,
-  EXPLICIT_TIME_DEPENDENT,
-  IMPLICIT_TIME_DEPENDENT,
-  TIME_INDEPENDENT,
-  AUXILIARY,
-  CONSTANT
+  UndefinedPDE,
+  ExplicitTimeDependent,
+  ImplicitTimeDependent,
+  TimeIndependent,
+  Auxiliary,
+  Constant
 };
 
 /**
  * \brief Type of solve.
  */
-enum solveType : std::uint8_t
+enum SolveType : std::uint8_t
 {
-  EXPLICIT_RHS,
-  NONEXPLICIT_RHS,
-  NONEXPLICIT_LHS,
-  POSTPROCESS
+  ExplicitRHS,
+  NonexplicitRHS,
+  NonexplicitLHS,
+  Postprocess
 };
 
 /**
  * \brief Symmetry of elastic tensor.
  */
-enum elasticityModel : std::uint8_t
+enum ElasticityModel : std::uint8_t
 {
-  ISOTROPIC,
-  TRANSVERSE,
-  ORTHOTROPIC,
-  ANISOTROPIC
+  Isotropic,
+  Transverse,
+  Orthotropic,
+  Anisotropic
 };
 
 /**
  * \brief Internal classification of combined field and solve types. There are six
- * different types of solve that are possible. For EXPLICIT solves, all fields of that
- * type can be solved concurrently. For NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR,
- * and NONEXPLICIT_AUXILIARY, these must be solved sequentially and wrapped in
- * conditionals in the user implmentation. For NONEXPLICIT_CO_NONLINEAR, there are at
- * least 2 fields that are nonlinear together, as opposed to NONEXPLICIT_SELF_NONLINEAR,
+ * different types of solve that are possible. For Explicit solves, all fields of that
+ * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
+ * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
+ * conditionals in the user implmentation. For NonexplicitCononlinear, there are at
+ * least 2 fields that are nonlinear together, as opposed to NonexplicitSelfnonlinear,
  * which must be solved at the same time. A simply case for this is the steady-state
- * Cahn-Hilliard equation. Finally, for EXPLICIT_POSTPROCESS and EXPLICIT_CONSTANT, they
- * are more or less the same as EXPLICIT.
+ * Cahn-Hilliard equation. Finally, for ExplicitPostprocess and ExplicitConstant, they
+ * are more or less the same as Explicit.
  */
-enum fieldSolveType : std::uint8_t
+enum FieldSolveType : std::uint8_t
 {
-  UNDEFINED_SOLVE,
-  EXPLICIT_CONSTANT,
-  EXPLICIT,
-  NONEXPLICIT_LINEAR,
-  NONEXPLICIT_SELF_NONLINEAR,
-  NONEXPLICIT_AUXILIARY,
-  NONEXPLICIT_CO_NONLINEAR,
-  EXPLICIT_POSTPROCESS,
+  UndefinedSolve,
+  ExplicitConstant,
+  Explicit,
+  NonexplicitLinear,
+  NonexplicitSelfnonlinear,
+  NonexplicitAuxiliary,
+  NonexplicitCononlinear,
+  ExplicitPostprocess,
 };
 
 /**
  * \brief Internal classification for types of variable dependencies.
  */
-enum dependencyType : std::uint8_t
+enum DependencyType : std::uint8_t
 {
-  NORMAL,
-  CHANGE,
-  OLD_1,
-  OLD_2,
-  OLD_3,
-  OLD_4
+  Normal,
+  Change,
+  OldOne,
+  OldTwo,
+  OldThree,
+  OldFour
 };
 
 /**
  * \brief Solver tolerance type.
  */
-enum solverToleranceType : std::uint8_t
+enum SolverToleranceType : std::uint8_t
 {
-  ABSOLUTE_RESIDUAL,
-  RELATIVE_RESIDUAL_CHANGE
+  AbsoluteResidual,
+  RelativeResidualChange
 };
 
 /**
  * \brief Preconditioner type.
  */
-enum preconditionerType : std::uint8_t
+enum PreconditionerType : std::uint8_t
 {
-  NONE,
+  None,
   GMG
 };
 
 /**
- * \brief Enum to string for fieldType
+ * \brief Enum to string for FieldType
  */
 inline std::string
-to_string(fieldType type)
+to_string(FieldType type)
 
 {
   switch (type)
     {
-      case fieldType::UNDEFINED_FIELD:
-        return "UNDEFINED_FIELD";
-      case fieldType::SCALAR:
+      case FieldType::UndefinedField:
+        return "UndefinedField";
+      case FieldType::Scalar:
         return "SCALAR_FIELD";
-      case fieldType::VECTOR:
+      case FieldType::Vector:
         return "VECTOR_FIELD";
       default:
         return "UNKNOWN";
@@ -137,147 +137,147 @@ to_string(PDEType type)
 {
   switch (type)
     {
-      case PDEType::UNDEFINED_PDE:
-        return "UNDEFINED_PDE";
-      case PDEType::EXPLICIT_TIME_DEPENDENT:
-        return "EXPLICIT_TIME_DEPENDENT";
-      case PDEType::IMPLICIT_TIME_DEPENDENT:
-        return "IMPLICIT_TIME_DEPENDENT";
-      case PDEType::TIME_INDEPENDENT:
-        return "TIME_INDEPENDENT";
-      case PDEType::AUXILIARY:
-        return "AUXILIARY";
-      case PDEType::CONSTANT:
-        return "CONSTANT";
+      case PDEType::UndefinedPDE:
+        return "UndefinedPDE";
+      case PDEType::ExplicitTimeDependent:
+        return "ExplicitTimeDependent";
+      case PDEType::ImplicitTimeDependent:
+        return "ImplicitTimeDependent";
+      case PDEType::TimeIndependent:
+        return "TimeIndependent";
+      case PDEType::Auxiliary:
+        return "Auxiliary";
+      case PDEType::Constant:
+        return "Constant";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for solveType
+ * \brief Enum to string for SolveType
  */
 inline std::string
-to_string(solveType type)
+to_string(SolveType type)
 {
   switch (type)
     {
-      case solveType::EXPLICIT_RHS:
-        return "EXPLICIT_RHS";
-      case solveType::NONEXPLICIT_RHS:
-        return "NONEXPLICIT_RHS";
-      case solveType::NONEXPLICIT_LHS:
-        return "NONEXPLICIT_LHS";
-      case solveType::POSTPROCESS:
-        return "POSTPROCESS";
+      case SolveType::ExplicitRHS:
+        return "ExplicitRHS";
+      case SolveType::NonexplicitRHS:
+        return "NonexplicitRHS";
+      case SolveType::NonexplicitLHS:
+        return "NonexplicitLHS";
+      case SolveType::Postprocess:
+        return "Postprocess";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for elasticityModel
+ * \brief Enum to string for ElasticityModel
  */
 inline std::string
-to_string(elasticityModel type)
+to_string(ElasticityModel type)
 {
   switch (type)
     {
-      case elasticityModel::ISOTROPIC:
-        return "ISOTROPIC";
-      case elasticityModel::TRANSVERSE:
-        return "TRANSVERSE";
-      case elasticityModel::ORTHOTROPIC:
-        return "ORTHOTROPIC";
-      case elasticityModel::ANISOTROPIC:
-        return "ANISOTROPIC";
+      case ElasticityModel::Isotropic:
+        return "Isotropic";
+      case ElasticityModel::Transverse:
+        return "Transverse";
+      case ElasticityModel::Orthotropic:
+        return "Orthotropic";
+      case ElasticityModel::Anisotropic:
+        return "Anisotropic";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for fieldSolveType
+ * \brief Enum to string for FieldSolveType
  */
 inline std::string
-to_string(fieldSolveType type)
+to_string(FieldSolveType type)
 {
   switch (type)
     {
-      case fieldSolveType::UNDEFINED_SOLVE:
-        return "UNDEFINED_SOLVE";
-      case fieldSolveType::EXPLICIT:
-        return "EXPLICIT";
-      case fieldSolveType::NONEXPLICIT_LINEAR:
-        return "NONEXPLICIT_LINEAR";
-      case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
-        return "NONEXPLICIT_SELF_NONLINEAR";
-      case fieldSolveType::NONEXPLICIT_AUXILIARY:
-        return "NONEXPLICIT_AUXILIARY";
-      case fieldSolveType::NONEXPLICIT_CO_NONLINEAR:
-        return "NONEXPLICIT_CO_NONLINEAR";
-      case fieldSolveType::EXPLICIT_POSTPROCESS:
-        return "EXPLICIT_POSTPROCESS";
-      case fieldSolveType::EXPLICIT_CONSTANT:
-        return "EXPLICIT_CONSTANT";
+      case FieldSolveType::UndefinedSolve:
+        return "UndefinedSolve";
+      case FieldSolveType::Explicit:
+        return "Explicit";
+      case FieldSolveType::NonexplicitLinear:
+        return "NonexplicitLinear";
+      case FieldSolveType::NonexplicitSelfnonlinear:
+        return "NonexplicitSelfnonlinear";
+      case FieldSolveType::NonexplicitAuxiliary:
+        return "NonexplicitAuxiliary";
+      case FieldSolveType::NonexplicitCononlinear:
+        return "NonexplicitCononlinear";
+      case FieldSolveType::ExplicitPostprocess:
+        return "ExplicitPostprocess";
+      case FieldSolveType::ExplicitConstant:
+        return "ExplicitConstant";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for dependencyType
+ * \brief Enum to string for DependencyType
  */
 inline std::string
-to_string(dependencyType type)
+to_string(DependencyType type)
 {
   switch (type)
     {
-      case dependencyType::NORMAL:
-        return "NORMAL";
-      case dependencyType::CHANGE:
-        return "CHANGE";
-      case dependencyType::OLD_1:
-        return "OLD_1";
-      case dependencyType::OLD_2:
-        return "OLD_2";
-      case dependencyType::OLD_3:
-        return "OLD_3";
-      case dependencyType::OLD_4:
-        return "OLD_4";
+      case DependencyType::Normal:
+        return "Normal";
+      case DependencyType::Change:
+        return "Change";
+      case DependencyType::OldOne:
+        return "OldOne";
+      case DependencyType::OldTwo:
+        return "OldTwo";
+      case DependencyType::OldThree:
+        return "OldThree";
+      case DependencyType::OldFour:
+        return "OldFour";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for solverToleranceType
+ * \brief Enum to string for SolverToleranceType
  */
 inline std::string
-to_string(solverToleranceType type)
+to_string(SolverToleranceType type)
 {
   switch (type)
     {
-      case solverToleranceType::ABSOLUTE_RESIDUAL:
-        return "ABSOLUTE_RESIDUAL";
-      case solverToleranceType::RELATIVE_RESIDUAL_CHANGE:
-        return "RELATIVE_RESIDUAL_CHANGE";
+      case SolverToleranceType::AbsoluteResidual:
+        return "AbsoluteResidual";
+      case SolverToleranceType::RelativeResidualChange:
+        return "RelativeResidualChange";
       default:
         return "UNKNOWN";
     }
 }
 
 /**
- * \brief Enum to string for preconditionerType
+ * \brief Enum to string for PreconditionerType
  */
 inline std::string
-to_string(preconditionerType type)
+to_string(PreconditionerType type)
 {
   switch (type)
     {
-      case preconditionerType::NONE:
-        return "NONE";
-      case preconditionerType::GMG:
+      case PreconditionerType::None:
+        return "None";
+      case PreconditionerType::GMG:
         return "GMG";
       default:
         return "UNKNOWN";

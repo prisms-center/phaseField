@@ -30,9 +30,9 @@ set Time step = 5.0e-2
 set Number of time steps = 40000
 
 
-set Boundary condition for variable c = NATURAL
-set Boundary condition for variable n = NATURAL
-set Boundary condition for variable biharm = NATURAL
+set Boundary condition for variable c = Natural
+set Boundary condition for variable n = Natural
+set Boundary condition for variable biharm = Natural
 
 
 set Model constant McV = 1.0, DOUBLE
