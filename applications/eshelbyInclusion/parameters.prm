@@ -55,11 +55,6 @@ set Number of outputs = 1
 # =================================================================================
 # Set the boundary conditions
 # =================================================================================
-
-#set Boundary condition for variable u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-#set Boundary condition for variable u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-#set Boundary condition for variable u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
-
 set Boundary condition for variable u, x component = NON_UNIFORM_DIRICHLET
 set Boundary condition for variable u, y component = NON_UNIFORM_DIRICHLET
 set Boundary condition for variable u, z component = NON_UNIFORM_DIRICHLET
