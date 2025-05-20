@@ -179,6 +179,141 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
+template <typename FEEvaluationType>
+FEEvaluationType *
+VariableContainer<dim, degree, number>::extract_feeval_ptr(
+  VariantFEEvaluation &variant) const
+{
+  FEEvaluationType *return_ptr = nullptr;
+  std::visit(
+    [&return_ptr](auto &ptr)
+    {
+      using T = std::decay_t<decltype(ptr)>;
+      if constexpr (std::is_same_v<T, std::unique_ptr<FEEvaluationType>>)
+        {
+          return_ptr = ptr.get();
+        }
+      else
+        {
+          Assert(false, dealii::ExcNotInitialized());
+        }
+    },
+    variant);
+  return return_ptr;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename DiagonalType>
+DiagonalType *
+VariableContainer<dim, degree, number>::extract_diagonal_ptr(
+  VariantDiagonal &variant) const
+{
+  DiagonalType *return_ptr = nullptr;
+  std::visit(
+    [&return_ptr](auto &ptr)
+    {
+      using T = std::decay_t<decltype(ptr)>;
+      if constexpr (std::is_same_v<T, std::unique_ptr<DiagonalType>>)
+        {
+          return_ptr = ptr.get();
+        }
+      else
+        {
+          Assert(false, dealii::ExcNotInitialized());
+        }
+    },
+    variant);
+  return return_ptr;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename FEEvaluationType, typename DiagonalType>
+void
+VariableContainer<dim, degree, number>::eval_cell_diagonal(
+  FEEvaluationType *feeval_ptr,
+  DiagonalType     *diagonal_ptr,
+  unsigned int      cell,
+  unsigned int      global_var_index,
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
+                                  &func,
+  VectorType                      &dst,
+  const std::vector<VectorType *> &src_subset)
+{
+  using DiagonalValueType = typename DiagonalType::value_type;
+
+  // Helper function to submit the identity matrix
+  auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
+  {
+    for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+      {
+        if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
+          {
+            feeval_ptr->submit_dof_value(SizeType(), j);
+          }
+        else
+          {
+            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
+          }
+      }
+
+    // Set the i-th value to 1.0
+    if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
+      {
+        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
+                                     dof_index);
+      }
+    else
+      {
+        DiagonalValueType one;
+        for (unsigned int dimension = 0; dimension < dim; ++dimension)
+          {
+            one[dimension] = dealii::make_vectorized_array<number>(1.0);
+          }
+        feeval_ptr->submit_dof_value(one, dof_index);
+      }
+  };
+  // Reinit the cell for all the dependencies
+  reinit(cell, global_var_index);
+
+  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+    {
+      // Submit an identity matrix for the change term
+      submit_identity(feeval_ptr, i);
+
+      // Read plain dof values for non change src
+      read_dof_values(src_subset);
+
+      // Evaluate the dependencies based on the flags
+      eval(global_var_index);
+
+      // Evaluate at each quadrature point
+      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
+        {
+          q_point = quad;
+          func(*this, get_q_point_location());
+        }
+
+      // Integrate the diagonal
+      integrate(global_var_index);
+      (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
+    }
+
+  // Submit calculated diagonal values and distribute
+  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+    {
+      if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim != 1)
+        {
+          feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
+        }
+      else
+        {
+          feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
+        }
+    }
+  feeval_ptr->distribute_local_to_global(dst);
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_diagonal(
   const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
@@ -196,87 +331,20 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
   feevaluation_exists(global_var_index, DependencyType::Change);
   auto &feeval_variant = feeval_map.at(global_var_index).at(DependencyType::Change);
 
-  // Helper function to submit the identity matrix
-  auto submit_identity = [&](auto &feeval_ptr, const auto &diag_ptr, unsigned int i)
-  {
-    using DiagonalType      = std::decay_t<decltype(*diag_ptr)>;
-    using DiagonalValueType = typename DiagonalType::value_type;
-
-    for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
-      {
-        if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
-          {
-            feeval_ptr->submit_dof_value(SizeType(), j);
-          }
-        else
-          {
-            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
-          }
-      }
-
-    // Set the i-th value to 1.0
-    if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
-      {
-        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0), i);
-      }
-    else
-      {
-        DiagonalValueType one;
-        for (unsigned int dimension = 0; dimension < dim; ++dimension)
-          {
-            one[dimension] = dealii::make_vectorized_array<number>(1.0);
-          }
-        feeval_ptr->submit_dof_value(one, i);
-      }
-  };
-
   auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
   {
-    using FEEvaluationType  = std::decay_t<decltype(*feeval_ptr)>;
-    using DiagonalType      = std::decay_t<decltype(*diag_ptr)>;
-    using DiagonalValueType = typename DiagonalType::value_type;
+    using FEEvaluationType = std::decay_t<decltype(*feeval_ptr)>;
+    using DiagonalType     = std::decay_t<decltype(*diag_ptr)>;
 
     for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
       {
-        // Reinit the cell for all the dependencies
-        reinit(cell, global_var_index);
-
-        for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-          {
-            // Submit an identity matrix for the change term
-            submit_identity(feeval_ptr, diag_ptr, i);
-
-            // Read plain dof values for non change src
-            read_dof_values(src_subset);
-
-            // Evaluate the dependencies based on the flags
-            eval(global_var_index);
-
-            // Evaluate at each quadrature point
-            for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
-              {
-                q_point = quad;
-                func(*this, get_q_point_location());
-              }
-
-            // Integrate the diagonal
-            integrate(global_var_index);
-            (*diag_ptr)[i] = feeval_ptr->get_dof_value(i);
-          }
-
-        // Submit calculated diagonal values and distribute
-        for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-          {
-            if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim != 1)
-              {
-                feeval_ptr->submit_dof_value((*diag_ptr)[i], i);
-              }
-            else
-              {
-                feeval_ptr->submit_dof_value((*diag_ptr)[i][0], i);
-              }
-          }
-        feeval_ptr->distribute_local_to_global(dst);
+        eval_cell_diagonal<FEEvaluationType, DiagonalType>(feeval_ptr,
+                                                           diag_ptr,
+                                                           cell,
+                                                           global_var_index,
+                                                           func,
+                                                           dst,
+                                                           src_subset);
       }
   };
 
@@ -290,41 +358,12 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
         }
       else
         {
-          std::visit(
-            [&scalar_feeval_ptr](auto &ptr)
-            {
-              using T = std::decay_t<decltype(ptr)>;
-              if constexpr (std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>>)
-                {
-                  scalar_feeval_ptr = ptr.get();
-                }
-              else
-                {
-                  Assert(false, dealii::ExcNotInitialized());
-                }
-            },
-            feeval_variant);
+          scalar_feeval_ptr = extract_feeval_ptr<ScalarFEEvaluation>(feeval_variant);
         }
 
       n_dofs_per_cell                 = scalar_feeval_ptr->dofs_per_cell;
       diagonal                        = std::make_unique<ScalarDiagonal>(n_dofs_per_cell);
-      ScalarDiagonal *scalar_diag_ptr = nullptr;
-
-      std::visit(
-        [&scalar_diag_ptr](auto &ptr)
-        {
-          using T = std::decay_t<decltype(ptr)>;
-          if constexpr (std::is_same_v<T, std::unique_ptr<ScalarDiagonal>>)
-            {
-              scalar_diag_ptr = ptr.get();
-            }
-          else
-            {
-              Assert(false, dealii::ExcNotInitialized());
-            }
-        },
-        diagonal);
-
+      ScalarDiagonal *scalar_diag_ptr = extract_diagonal_ptr<ScalarDiagonal>(diagonal);
       process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
     }
   else if (field_type == FieldType::Vector)
@@ -337,41 +376,12 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
         }
       else
         {
-          std::visit(
-            [&vector_feeval_ptr](auto &ptr)
-            {
-              using T = std::decay_t<decltype(ptr)>;
-              if constexpr (std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>)
-                {
-                  vector_feeval_ptr = ptr.get();
-                }
-              else
-                {
-                  Assert(false, dealii::ExcNotInitialized());
-                }
-            },
-            feeval_variant);
+          vector_feeval_ptr = extract_feeval_ptr<VectorFEEvaluation>(feeval_variant);
         }
 
       n_dofs_per_cell                 = vector_feeval_ptr->dofs_per_component;
       diagonal                        = std::make_unique<VectorDiagonal>(n_dofs_per_cell);
-      VectorDiagonal *vector_diag_ptr = nullptr;
-
-      std::visit(
-        [&vector_diag_ptr](auto &ptr)
-        {
-          using T = std::decay_t<decltype(ptr)>;
-          if constexpr (std::is_same_v<T, std::unique_ptr<VectorDiagonal>>)
-            {
-              vector_diag_ptr = ptr.get();
-            }
-          else
-            {
-              Assert(false, dealii::ExcNotInitialized());
-            }
-        },
-        diagonal);
-
+      VectorDiagonal *vector_diag_ptr = extract_diagonal_ptr<VectorDiagonal>(diagonal);
       process_feeval(vector_feeval_ptr, vector_diag_ptr);
     }
   else

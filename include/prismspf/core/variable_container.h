@@ -347,6 +347,35 @@ private:
   integrate(const unsigned int &global_variable_index);
 
   /**
+   * \brief Get the FEEvaluation pointer from the variant.
+   */
+  template <typename FEEvaluationType>
+  FEEvaluationType *
+  extract_feeval_ptr(VariantFEEvaluation &variant) const;
+
+  /**
+   * \brief Get the diagonal pointer from the variant.
+   */
+  template <typename DiagonalType>
+  DiagonalType *
+  extract_diagonal_ptr(VariantDiagonal &variant) const;
+
+  /**
+   * \brief Evaluate the diagonal entry for a given cell.
+   */
+  template <typename FEEvaluationType, typename DiagonalType>
+  void
+  eval_cell_diagonal(
+    FEEvaluationType *feeval_ptr,
+    DiagonalType     *diagonal_ptr,
+    unsigned int      cell,
+    unsigned int      global_var_index,
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
+                                    &func,
+    VectorType                      &dst,
+    const std::vector<VectorType *> &src_subset);
+
+  /**
    * \brief Map of FEEvaluation objects for each active variable. The first mapping is
    * for the global variable, the second is for the DependencyType, and the value is
    * a variant that can hold either a scalar or vector FEEvaluation.
