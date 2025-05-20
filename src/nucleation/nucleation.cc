@@ -6,6 +6,8 @@
 #include <nucleation/parallelNucleationList.h>
 #include <random>
 
+#include <deal.II/base/utilities.h>
+
 // =======================================================================================================
 // Function called in solve to update the global list of nuclei
 // =======================================================================================================
@@ -125,6 +127,13 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
   // Nickname for current time and time step
   double       t   = currentTime;
   unsigned int inc = currentIncrement;
+  
+  // DEBUG
+  const unsigned int thisProc = dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+  std::cout << "[" << thisProc << "] Generating local nuclei list\n";
+  double proc_avg_mult2op = 0.0;
+  int proc_n_elems = 0;
+  int proc_nucleation_sites = 0;
 
   // QGauss<dim>  quadrature(degree+1);
   QGaussLobatto<dim>               quadrature(degree + 1);
@@ -192,6 +201,10 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
               ele_val /= element_volume;
               variable_values.set(userInputs.nucleation_need_value[var], ele_val);
             }
+	  
+          // DEBUG:
+	  proc_avg_mult2op += variable_values(83+83+1);
+          proc_n_elems += 1;
 
           // Loop through each nucleating order parameter
           for (unsigned int i = 0; i < userInputs.nucleating_variable_indices.size(); i++)
@@ -219,8 +232,16 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
 
                   // ----------------------------
 
+                  // DEBUG:
+		  if (Prob > 0) {
+                      proc_nucleation_sites += 1;
+		  }
+
                   if (rand_val <= Prob)
                     {
+	              // DEBUG
+                      std::cout << "[" << thisProc << "]" << " Rolled a potential nucleus, " << rand_val << " < " << Prob << "\n";
+
                       // Initializing random vector in "dim" dimensions
                       std::vector<double> randvec(dim, 0.0);
                       dealii::Point<dim>  nuc_ele_pos;
@@ -349,6 +370,9 @@ MatrixFreePDE<dim, degree>::getLocalNucleiList(std::vector<nucleus<dim>> &newnuc
             }
         }
     }
+  // DEBUG
+  std::cout << "[" << thisProc << "] avg. multi2Op = " << (proc_avg_mult2op / proc_n_elems) << "\n";
+  std::cout << "[" << thisProc << "] nucleation sites rolled = " << proc_nucleation_sites << "\n";
 }
 
 // =======================================================================================================

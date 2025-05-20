@@ -166,7 +166,7 @@ customPDE<dim, degree>::explicitEquationRHS(
   for (unsigned int i = 0; i < number_ops_total; i++)
     {
       source_term[i] = constV(0.0);
-      gamma[i] = constV(0.0);
+      gamma[i] = constV(1.0);
     }
   seedNucleus(q_point_loc, source_term, gamma);
 

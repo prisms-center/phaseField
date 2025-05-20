@@ -11,6 +11,8 @@ MatrixFreePDE<dim, degree>::solve()
   computing_timer.enter_subsection("matrixFreePDE: solve");
   pcout << "\nsolving...\n\n";
 
+  bool nucleation_complete = false;
+
   // time dependent BVP
   if (isTimeDependentBVP)
     {
@@ -97,9 +99,10 @@ MatrixFreePDE<dim, degree>::solve()
           // Update the list of nuclei (if relevant)
           updateNucleiList();
 
-          if (currentTime == userInputs.nucleation_end_time)
+          if (currentTime >= userInputs.nucleation_end_time && !nucleation_complete)
             {
               pcout << "Total number of nuclei = " << nuclei.size() << std::endl;
+	      nucleation_complete = true;
             }
 
           // If grain reassignment is activated, reassign grains
