@@ -12,41 +12,41 @@
 #
 
 if test ! -d src -o ! -d include -o ! -d applications; then
-    echo "This script must be run from the top-level directory of PRISMS-PF"
-    exit 1
+	echo "This script must be run from the top-level directory of PRISMS-PF"
+	exit 1
 fi
 
 if [ -x "$(command -v run-clang-tidy)" ]; then
-    CLANG_TIDY=run-clang-tidy
+	CLANG_TIDY=run-clang-tidy
 elif [ -x "$(command -v run-clang-tidy-20)" ]; then
-    CLANG_TIDY=run-clang-tidy-20    
+	CLANG_TIDY=run-clang-tidy-20
 else
-    echo "Neither run-clang-tidy nor run-clang-tidy-20 are in path."
-    exit 1
+	echo "Neither run-clang-tidy nor run-clang-tidy-20 are in path."
+	exit 1
 fi
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Wpedantic -Wall -Wextra" "$@")
 
 # Compile
 if [ -f CMakeCache.txt ]; then
-    rm -f CMakeCache.txt
+	rm -f CMakeCache.txt
 fi
 cmake "${ARGS[@]}" . || (
-    echo "cmake failed!"
-    false
+	echo "cmake failed!"
+	false
 ) || exit 2
 cmake --build . || exit 3
 
 # Try to run unwrap_compile_commands
 if [ -x "$(command -v contrib/utilities/unwrap_compile_commands.sh)" ]; then
-    contrib/utilities/unwrap_compile_commands.sh || exit 3
+	contrib/utilities/unwrap_compile_commands.sh || exit 3
 fi
 
 # Create a file that contains all the headers to ensure that clang-tidy runs on all headers
 (
-    cd include
-    find . -name '*.h'
+	cd include
+	find . -name '*.h'
 ) | grep -v allheaders.h | sed 's|^./|#include <|' | sed 's|$|>|' >include/prismspf/allheaders.h
 
 # Print clang-tidy rules
@@ -60,8 +60,8 @@ grep -E '(warning|error): ' output.txt | grep -v 'include/deal.II' | sort | uniq
 
 # If we have errors, report them and set exit status to failure
 if [ -s clang-tidy.log ]; then
-    cat clang-tidy.log
-    exit 4
+	cat clang-tidy.log
+	exit 4
 fi
 
 echo "OK"

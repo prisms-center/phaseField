@@ -10,8 +10,8 @@
 #
 
 if test ! -d src -o ! -d include -o ! -d applications; then
-  echo "This script must be run from the top-level directory of PRISMS-PF"
-  exit 1
+	echo "This script must be run from the top-level directory of PRISMS-PF"
+	exit 1
 fi
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
