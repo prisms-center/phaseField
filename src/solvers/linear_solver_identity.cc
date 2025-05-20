@@ -24,14 +24,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-identitySolver<dim, degree>::identitySolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const variableAttributes                               &_variable_attributes,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+IdentitySolver<dim, degree>::IdentitySolver(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const VariableAttributes                               &_variable_attributes,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : linearSolverBase<dim, degree>(_user_inputs,
+  : LinearSolverBase<dim, degree>(_user_inputs,
                                   _variable_attributes,
                                   _matrix_free_handler,
                                   _constraint_handler,
@@ -41,90 +41,100 @@ identitySolver<dim, degree>::identitySolver(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::init()
+IdentitySolver<dim, degree>::init()
 {
-  this->system_matrix->clear();
-  this->system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
-  this->update_system_matrix->clear();
-  this->update_system_matrix->initialize(this->matrix_free_handler->get_matrix_free());
+  this->get_system_matrix()->clear();
+  this->get_system_matrix()->initialize(
+    this->get_matrix_free_handler().get_matrix_free());
+  this->get_update_system_matrix()->clear();
+  this->get_update_system_matrix()->initialize(
+    this->get_matrix_free_handler().get_matrix_free());
 
-  this->system_matrix->add_global_to_local_mapping(
-    this->residual_global_to_local_solution);
-  this->system_matrix->add_src_solution_subset(this->residual_src);
+  this->get_system_matrix()->add_global_to_local_mapping(
+    this->get_residual_global_to_local_solution());
+  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
 
-  this->update_system_matrix->add_global_to_local_mapping(
-    this->newton_update_global_to_local_solution);
-  this->update_system_matrix->add_src_solution_subset(this->newton_update_src);
+  this->get_update_system_matrix()->add_global_to_local_mapping(
+    this->get_newton_update_global_to_local_solution());
+  this->get_update_system_matrix()->add_src_solution_subset(
+    this->get_newton_update_src());
 
   // Apply constraints
-  this->constraint_handler->get_constraint(this->field_index)
-    .distribute(*(this->solution_handler->get_solution_vector(this->field_index,
-                                                              dependencyType::NORMAL)));
+  this->get_constraint_handler()
+    .get_constraint(this->get_field_index())
+    .distribute(
+      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
+                                                         DependencyType::Normal)));
 }
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::reinit()
+IdentitySolver<dim, degree>::reinit()
 {}
 
 template <unsigned int dim, unsigned int degree>
 inline void
-identitySolver<dim, degree>::solve(const double &step_length)
+IdentitySolver<dim, degree>::solve(const double &step_length)
 {
-  auto *solution = this->solution_handler->get_solution_vector(this->field_index,
-                                                               dependencyType::NORMAL);
+  auto *solution =
+    this->get_solution_handler().get_solution_vector(this->get_field_index(),
+                                                     DependencyType::Normal);
 
   // Compute the residual
-  this->system_matrix->compute_residual(*this->residual, *solution);
-  if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.get_current_increment()))
+  this->get_system_matrix()->compute_residual(*this->get_residual(), *solution);
+  if (this->get_user_inputs().get_output_parameters().should_output(
+        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
-      conditionalOStreams::pout_summary()
-        << "  field: " << this->field_index
-        << " Initial residual: " << this->residual->l2_norm() << std::flush;
+      ConditionalOStreams::pout_summary()
+        << "  field: " << this->get_field_index()
+        << " Initial residual: " << this->get_residual()->l2_norm() << std::flush;
     }
 
   // Determine the residual tolerance
   this->compute_solver_tolerance();
 
   // Update solver controls
-  this->solver_control.set_tolerance(this->tolerance);
-  dealii::SolverCG<VectorType> cg_solver(this->solver_control);
+  this->get_solver_control().set_tolerance(this->get_tolerance());
+  dealii::SolverCG<VectorType> cg_solver(this->get_solver_control());
 
   try
     {
-      *this->newton_update = 0.0;
-      cg_solver.solve(*(this->update_system_matrix),
-                      *this->newton_update,
-                      *this->residual,
+      *this->get_newton_update() = 0.0;
+      cg_solver.solve(*(this->get_update_system_matrix()),
+                      *(this->get_newton_update()),
+                      *(this->get_residual()),
                       dealii::PreconditionIdentity());
     }
   catch (...)
     {
-      conditionalOStreams::pout_base()
+      ConditionalOStreams::pout_base()
         << "Warning: linear solver did not converge as per set tolerances.\n";
     }
-  this->constraint_handler->get_constraint(this->field_index)
-    .set_zero(*this->newton_update);
+  this->get_constraint_handler()
+    .get_constraint(this->get_field_index())
+    .set_zero(*this->get_newton_update());
 
-  if (this->user_inputs->output_parameters.should_output(
-        this->user_inputs->temporal_discretization.get_current_increment()))
+  if (this->get_user_inputs().get_output_parameters().should_output(
+        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
     {
-      conditionalOStreams::pout_summary()
-        << " Final residual: " << this->solver_control.last_value()
-        << " Steps: " << this->solver_control.last_step() << "\n"
+      ConditionalOStreams::pout_summary()
+        << " Final residual: " << this->get_solver_control().last_value()
+        << " Steps: " << this->get_solver_control().last_step() << "\n"
         << std::flush;
     }
 
   // Update the solutions
-  (*solution).add(step_length, *this->newton_update);
-  this->solution_handler->update(fieldSolveType::NONEXPLICIT_LINEAR, this->field_index);
+  (*solution).add(step_length, *this->get_newton_update());
+  this->get_solution_handler().update(FieldSolveType::NonexplicitLinear,
+                                      this->get_field_index());
 
   // Apply constraints
   // This may be redundant with the constraints on the update step.
-  this->constraint_handler->get_constraint(this->field_index).distribute(*solution);
+  this->get_constraint_handler()
+    .get_constraint(this->get_field_index())
+    .distribute(*solution);
 }
 
-INSTANTIATE_BI_TEMPLATE(identitySolver)
+INSTANTIATE_BI_TEMPLATE(IdentitySolver)
 
 PRISMS_PF_END_NAMESPACE

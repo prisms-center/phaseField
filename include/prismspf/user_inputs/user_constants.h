@@ -24,7 +24,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Class the stores and manages user-defined constants.
  */
 template <unsigned int dim>
-class userConstants
+class UserConstants
 {
 public:
   using InputVariant = boost::variant<double,
@@ -145,11 +145,12 @@ private:
   primitive_model_constant(std::vector<std::string> &model_constants_strings);
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  get_Cij_tensor(std::vector<double> elastic_constants,
+  get_cij_tensor(std::vector<double> elastic_constants,
                  const std::string  &elastic_const_symmetry) const;
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  getCIJMatrix(const elasticityModel &model, const std::vector<double> &constants) const;
+  get_cij_matrix(const ElasticityModel     &model,
+                 const std::vector<double> &constants) const;
 
   /**
    * \brief List of user-defined constants.
@@ -165,40 +166,40 @@ private:
     void
     operator()(double value) const
     {
-      conditionalOStreams::pout_summary() << value;
+      ConditionalOStreams::pout_summary() << value;
     }
 
     void
     operator()(int value) const
     {
-      conditionalOStreams::pout_summary() << value;
+      ConditionalOStreams::pout_summary() << value;
     }
 
     void
     operator()(bool value) const
     {
-      conditionalOStreams::pout_summary() << std::boolalpha << value;
+      ConditionalOStreams::pout_summary() << std::boolalpha << value;
     }
 
     void
     operator()(const dealii::Tensor<1, dim> &value) const
     {
-      conditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
       for (unsigned int i = 0; i < dim; ++i)
         {
-          conditionalOStreams::pout_summary() << value[i] << ' ';
+          ConditionalOStreams::pout_summary() << value[i] << ' ';
         }
     }
 
     void
     operator()(const dealii::Tensor<2, dim> &value) const
     {
-      conditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<2, " << dim << ">: ";
       for (unsigned int i = 0; i < dim; ++i)
         {
           for (unsigned int j = 0; j < dim; ++j)
             {
-              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
@@ -209,12 +210,12 @@ private:
     requires((D != ((2 * D) - 1 + (D / 3))))
     {
       constexpr unsigned int dimension = (2 * D) - 1 + (D / 3);
-      conditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
+      ConditionalOStreams::pout_summary() << "Tensor<2, " << dimension << ">: ";
       for (unsigned int i = 0; i < dimension; ++i)
         {
           for (unsigned int j = 0; j < dimension; ++j)
             {
-              conditionalOStreams::pout_summary() << value[i][j] << ' ';
+              ConditionalOStreams::pout_summary() << value[i][j] << ' ';
             }
         }
     }
@@ -223,7 +224,7 @@ private:
 
 template <unsigned int dim>
 inline double
-userConstants<dim>::get_model_constant_double(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_double(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -236,7 +237,7 @@ userConstants<dim>::get_model_constant_double(const std::string &constant_name) 
 
 template <unsigned int dim>
 inline int
-userConstants<dim>::get_model_constant_int(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_int(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -249,7 +250,7 @@ userConstants<dim>::get_model_constant_int(const std::string &constant_name) con
 
 template <unsigned int dim>
 inline bool
-userConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
+UserConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -262,7 +263,7 @@ userConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
 
 template <unsigned int dim>
 inline dealii::Tensor<1, dim>
-userConstants<dim>::get_model_constant_rank_1_tensor(
+UserConstants<dim>::get_model_constant_rank_1_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -276,7 +277,7 @@ userConstants<dim>::get_model_constant_rank_1_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, dim>
-userConstants<dim>::get_model_constant_rank_2_tensor(
+UserConstants<dim>::get_model_constant_rank_2_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -290,7 +291,7 @@ userConstants<dim>::get_model_constant_rank_2_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::get_model_constant_elasticity_tensor(
+UserConstants<dim>::get_model_constant_elasticity_tensor(
   const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
@@ -305,7 +306,7 @@ userConstants<dim>::get_model_constant_elasticity_tensor(
 
 template <unsigned int dim>
 inline unsigned int
-userConstants<dim>::compute_tensor_parentheses(
+UserConstants<dim>::compute_tensor_parentheses(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -339,7 +340,7 @@ userConstants<dim>::compute_tensor_parentheses(
 
 template <unsigned int dim>
 inline void
-userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements)
+UserConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements)
 {
   for (std::string &element : tensor_elements)
     {
@@ -350,7 +351,7 @@ userConstants<dim>::remove_parentheses(std::vector<std::string> &tensor_elements
 
 template <unsigned int dim>
 inline dealii::Tensor<1, dim>
-userConstants<dim>::compute_rank_1_tensor_constant(
+UserConstants<dim>::compute_rank_1_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -369,7 +370,7 @@ userConstants<dim>::compute_rank_1_tensor_constant(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, dim>
-userConstants<dim>::compute_rank_2_tensor_constant(
+UserConstants<dim>::compute_rank_2_tensor_constant(
   const unsigned int             &n_elements,
   const std::vector<std::string> &tensor_elements)
 {
@@ -393,8 +394,8 @@ userConstants<dim>::compute_rank_2_tensor_constant(
 }
 
 template <unsigned int dim>
-inline typename userConstants<dim>::InputVariant
-userConstants<dim>::construct_user_constant(
+inline typename UserConstants<dim>::InputVariant
+UserConstants<dim>::construct_user_constant(
   std::vector<std::string> &model_constants_strings)
 {
   // Ensure that the input includes a value and a type
@@ -449,7 +450,7 @@ userConstants<dim>::construct_user_constant(
         }
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
-        get_Cij_tensor(temp_elastic_constants, elastic_const_symmetry);
+        get_cij_tensor(temp_elastic_constants, elastic_const_symmetry);
       return temp;
     }
 
@@ -460,8 +461,8 @@ userConstants<dim>::construct_user_constant(
 }
 
 template <unsigned int dim>
-inline typename userConstants<dim>::InputVariant
-userConstants<dim>::primitive_model_constant(
+inline typename UserConstants<dim>::InputVariant
+UserConstants<dim>::primitive_model_constant(
   std::vector<std::string> &model_constants_strings)
 {
   std::vector<std::string> model_constants_type_strings =
@@ -491,26 +492,26 @@ userConstants<dim>::primitive_model_constant(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
+UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
                                    const std::string  &elastic_const_symmetry) const
 {
   // First set the material model
-  elasticityModel mat_model = ISOTROPIC;
+  ElasticityModel mat_model = Isotropic;
   if (elastic_const_symmetry == "isotropic")
     {
-      mat_model = elasticityModel::ISOTROPIC;
+      mat_model = ElasticityModel::Isotropic;
     }
   else if (elastic_const_symmetry == "transverse")
     {
-      mat_model = elasticityModel::TRANSVERSE;
+      mat_model = ElasticityModel::Transverse;
     }
   else if (elastic_const_symmetry == "orthotropic")
     {
-      mat_model = elasticityModel::ORTHOTROPIC;
+      mat_model = ElasticityModel::Orthotropic;
     }
   else if (elastic_const_symmetry == "anisotropic")
     {
-      mat_model = elasticityModel::ANISOTROPIC;
+      mat_model = ElasticityModel::Anisotropic;
     }
   else
     {
@@ -521,13 +522,13 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
   // constants are given for a 3D calculation, change the elastic constant
   // vector to the 2D form
   constexpr unsigned int max_number = 21;
-  if ((mat_model == ANISOTROPIC) && (dim == 2) && elastic_constants.size() == max_number)
+  if ((mat_model == Anisotropic) && (dim == 2) && elastic_constants.size() == max_number)
     {
       std::vector<double> elastic_constants_temp = elastic_constants;
       elastic_constants.clear();
-      const std::vector<unsigned int> indices_2D = {0, 1, 5, 6, 10, 14};
-      std::transform(indices_2D.begin(),
-                     indices_2D.end(),
+      const std::vector<unsigned int> indices_2d = {0, 1, 5, 6, 10, 14};
+      std::transform(indices_2d.begin(),
+                     indices_2d.end(),
                      std::back_inserter(elastic_constants),
                      [&elastic_constants_temp](unsigned int index)
                      {
@@ -535,16 +536,16 @@ userConstants<dim>::get_Cij_tensor(std::vector<double> elastic_constants,
                      });
     }
 
-  return getCIJMatrix(mat_model, elastic_constants);
+  return get_cij_matrix(mat_model, elastic_constants);
 }
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
-                                 const std::vector<double> &constants) const
+UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
+                                   const std::vector<double> &constants) const
 {
   // Initialize tensor
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> CIJ;
+  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> compliance;
 
   switch (dim)
     {
@@ -557,11 +558,11 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
               // TODO (landinjm): Should we both fixing this for the other cases and just
               // selecting the x index. It would allow the user to switch from 2D to 1D to
               // 3D, but would produce unexpected behavior.
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   const double modulus = constants.at(0);
 
-                  CIJ[xx_dir][xx_dir] = modulus;
+                  compliance[xx_dir][xx_dir] = modulus;
                   break;
                 }
               default:
@@ -580,7 +581,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
 
           switch (model)
             {
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   // TODO (landinjm): Document this
                   const double modulus = constants.at(0);
@@ -590,12 +591,13 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = lambda + 2 * shear_modulus;
-                  CIJ[xy_dir][xy_dir]                       = shear_modulus;
-                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = lambda;
+                  compliance[xx_dir][xx_dir] = compliance[yy_dir][yy_dir] =
+                    lambda + 2 * shear_modulus;
+                  compliance[xy_dir][xy_dir] = shear_modulus;
+                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;
                   break;
                 }
-              case ANISOTROPIC:
+              case Anisotropic:
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
@@ -612,7 +614,7 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
 
           switch (model)
             {
-              case ISOTROPIC:
+              case Isotropic:
                 {
                   // TODO (landinjm): Document this
                   const double modulus = constants.at(0);
@@ -622,18 +624,18 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  CIJ[xx_dir][xx_dir] = CIJ[yy_dir][yy_dir] = CIJ[zz_dir][zz_dir] =
-                    lambda + 2 * shear_modulus;
-                  CIJ[yz_dir][yz_dir] = CIJ[xz_dir][xz_dir] = CIJ[xy_dir][xy_dir] =
-                    shear_modulus;
-                  CIJ[xx_dir][yy_dir] = CIJ[yy_dir][xx_dir] = CIJ[xx_dir][zz_dir] =
-                    CIJ[zz_dir][xx_dir] = CIJ[yy_dir][zz_dir] = CIJ[zz_dir][yy_dir] =
-                      lambda;
+                  compliance[xx_dir][xx_dir]     = compliance[yy_dir][yy_dir] =
+                    compliance[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;
+                  compliance[yz_dir][yz_dir]     = compliance[xz_dir][xz_dir] =
+                    compliance[xy_dir][xy_dir]   = shear_modulus;
+                  compliance[xx_dir][yy_dir]     = compliance[yy_dir][xx_dir] =
+                    compliance[xx_dir][zz_dir]   = compliance[zz_dir][xx_dir] =
+                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;
                   break;
                 }
-              case TRANSVERSE:
-              case ORTHOTROPIC:
-              case ANISOTROPIC:
+              case Transverse:
+              case Orthotropic:
+              case Anisotropic:
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
@@ -645,27 +647,27 @@ userConstants<dim>::getCIJMatrix(const elasticityModel     &model,
         }
     }
 
-  return CIJ;
+  return compliance;
 }
 
 template <unsigned int dim>
 void
-userConstants<dim>::print() const
+UserConstants<dim>::print() const
 {
   if (!model_constants.empty())
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  User Constants\n"
         << "================================================\n";
 
       for (const auto &[constant_name, variant] : model_constants)
         {
-          conditionalOStreams::pout_summary() << constant_name << ": ";
+          ConditionalOStreams::pout_summary() << constant_name << ": ";
           boost::apply_visitor(VariantPrinter(), variant);
-          conditionalOStreams::pout_summary() << "\n";
+          ConditionalOStreams::pout_summary() << "\n";
         }
-      conditionalOStreams::pout_summary() << "\n" << std::flush;
+      ConditionalOStreams::pout_summary() << "\n" << std::flush;
     }
 }
 

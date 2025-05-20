@@ -13,20 +13,20 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Parameters file reader. Declares parameter names in a dealii parameter_handler
- * and parses the file for the values. Variable assignment occurs in userInputParameters.
+ * and parses the file for the values. Variable assignment occurs in UserInputParameters.
  */
-class inputFileReader
+class InputFileReader
 {
 public:
   /**
    * \brief Constructor.
    */
-  inputFileReader(std::string                                       input_file_name,
-                  const std::map<unsigned int, variableAttributes> &_var_attributes);
+  InputFileReader(std::string                                       input_file_name,
+                  const std::map<unsigned int, VariableAttributes> &_var_attributes);
 
   /**
    * \brief Get the trailing part of the entry name after a specified string (used to
@@ -34,6 +34,42 @@ public:
    */
   [[nodiscard]] std::set<std::string>
   get_model_constant_names();
+
+  /**
+   * \brief Get the variable attributes.
+   */
+  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
+  get_var_attributes() const
+  {
+    return *var_attributes;
+  }
+
+  /**
+   * \brief Get the parameter handler.
+   */
+  [[nodiscard]] dealii::ParameterHandler &
+  get_parameter_handler()
+  {
+    return parameter_handler;
+  }
+
+  /**
+   * \brief Get the model constant names.
+   */
+  [[nodiscard]] const std::set<std::string> &
+  get_model_constant_names() const
+  {
+    return model_constant_names;
+  }
+
+  /**
+   * \brief Get the number of dimensions.
+   */
+  [[nodiscard]] unsigned int
+  get_dim() const
+  {
+    return number_of_dimensions;
+  };
 
   /**
    * \brief Method to declare the parameters to be read from an input file.
@@ -91,7 +127,7 @@ public:
    * \brief Declare parameters for loading ICs from files.
    */
   void
-  declare_load_IC_parameters();
+  declare_load_ic_parameters();
 
   /**
    * \brief Declare parameters for checkpoints.
@@ -103,7 +139,7 @@ public:
    * \brief Declare parameters for boundary conditions.
    */
   void
-  declare_BC_parameters();
+  declare_bc_parameters();
 
   /**
    * \brief Declare parameters for pinned points.
@@ -135,8 +171,9 @@ public:
   void
   declare_model_constants();
 
+private:
   std::string                                       parameters_file_name;
-  const std::map<unsigned int, variableAttributes> &var_attributes;
+  const std::map<unsigned int, VariableAttributes> *var_attributes;
   dealii::ParameterHandler                          parameter_handler;
   std::set<std::string>                             model_constant_names;
   unsigned int                                      number_of_dimensions = 0;

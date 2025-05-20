@@ -27,10 +27,10 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
-  const std::map<unsigned int, variableAttributes>       &_attributes_list,
+MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
+  const std::map<unsigned int, VariableAttributes>       &_attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  types::index                                            _current_index,
+  Types::Index                                            _current_index,
   bool                                                    _use_local_mapping)
   : Subscriptor()
   , attributes_list(&_attributes_list)
@@ -41,9 +41,9 @@ matrixFreeOperator<dim, degree, number>::matrixFreeOperator(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::initialize(
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
-  const std::vector<unsigned int> &selected_field_indexes)
+MatrixFreeOperator<dim, degree, number>::initialize(
+  std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
+  const std::vector<unsigned int>                                 &selected_field_indexes)
 {
   data = std::move(_data);
 
@@ -75,7 +75,7 @@ matrixFreeOperator<dim, degree, number>::initialize(
 
 template <unsigned int dim, unsigned int degree, typename number>
 dealii::types::global_dof_index
-matrixFreeOperator<dim, degree, number>::m() const
+MatrixFreeOperator<dim, degree, number>::m() const
 {
   Assert(data.get() != nullptr, dealii::ExcNotInitialized());
 
@@ -93,7 +93,7 @@ matrixFreeOperator<dim, degree, number>::m() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 number
-matrixFreeOperator<dim, degree, number>::el(
+MatrixFreeOperator<dim, degree, number>::el(
   [[maybe_unused]] const unsigned int &row,
   [[maybe_unused]] const unsigned int &col) const
 {
@@ -103,7 +103,7 @@ matrixFreeOperator<dim, degree, number>::el(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::clear()
+MatrixFreeOperator<dim, degree, number>::clear()
 {
   data.reset();
   inverse_diagonal_entries.reset();
@@ -112,7 +112,7 @@ matrixFreeOperator<dim, degree, number>::clear()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
+MatrixFreeOperator<dim, degree, number>::initialize_dof_vector(
   VectorType  &dst,
   unsigned int dof_handler_index) const
 {
@@ -121,7 +121,7 @@ matrixFreeOperator<dim, degree, number>::initialize_dof_vector(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
+MatrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
   VectorType &dst) const
 {
   for (unsigned int j = 0; j < dealii::MatrixFreeOperators::BlockHelper::n_blocks(dst);
@@ -139,8 +139,8 @@ matrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
-  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+MatrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
+  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     &_global_to_local_solution)
 {
   global_to_local_solution = _global_to_local_solution;
@@ -148,15 +148,15 @@ matrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::shared_ptr<const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
-matrixFreeOperator<dim, degree, number>::get_matrix_free() const
+MatrixFreeOperator<dim, degree, number>::get_matrix_free() const
 {
   return data;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 const std::shared_ptr<
-  dealii::DiagonalMatrix<typename matrixFreeOperator<dim, degree, number>::VectorType>> &
-matrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
+  dealii::DiagonalMatrix<typename MatrixFreeOperator<dim, degree, number>::VectorType>> &
+MatrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 {
   Assert(inverse_diagonal_entries.get() != nullptr && inverse_diagonal_entries->m() > 0,
          dealii::ExcNotInitialized());
@@ -165,7 +165,7 @@ matrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::add_src_solution_subset(
+MatrixFreeOperator<dim, degree, number>::add_src_solution_subset(
   const std::vector<VectorType *> &_src_solution_subset)
 {
   src_solution_subset = _src_solution_subset;
@@ -173,7 +173,7 @@ matrixFreeOperator<dim, degree, number>::add_src_solution_subset(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_explicit_update(
+MatrixFreeOperator<dim, degree, number>::compute_explicit_update(
   std::vector<VectorType *>       &dst,
   const std::vector<VectorType *> &src) const
 {
@@ -184,7 +184,7 @@ matrixFreeOperator<dim, degree, number>::compute_explicit_update(
   Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
   Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
 
-  this->data->cell_loop(&matrixFreeOperator::compute_local_explicit_update,
+  this->data->cell_loop(&MatrixFreeOperator::compute_local_explicit_update,
                         this,
                         dst,
                         src,
@@ -193,7 +193,7 @@ matrixFreeOperator<dim, degree, number>::compute_explicit_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
+MatrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
   std::vector<VectorType *>       &dst,
   const std::vector<VectorType *> &src) const
 {
@@ -204,7 +204,7 @@ matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
   Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
   Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
 
-  this->data->cell_loop(&matrixFreeOperator::compute_local_postprocess_explicit_update,
+  this->data->cell_loop(&MatrixFreeOperator::compute_local_postprocess_explicit_update,
                         this,
                         dst,
                         src,
@@ -213,7 +213,7 @@ matrixFreeOperator<dim, degree, number>::compute_postprocess_explicit_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
+MatrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
   std::vector<VectorType *>       &dst,
   const std::vector<VectorType *> &src) const
 {
@@ -224,7 +224,7 @@ matrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
   Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
   Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
 
-  this->data->cell_loop(&matrixFreeOperator::compute_local_nonexplicit_auxiliary_update,
+  this->data->cell_loop(&MatrixFreeOperator::compute_local_nonexplicit_auxiliary_update,
                         this,
                         dst,
                         src,
@@ -233,7 +233,7 @@ matrixFreeOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
+MatrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
                                                           const VectorType &src) const
 {
   Assert(!global_to_local_solution.empty(),
@@ -247,7 +247,7 @@ matrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
   Assert(src.size() != 0,
          dealii::ExcMessage("The src vector should not have size equal to 0"));
 
-  this->data->cell_loop(&matrixFreeOperator::compute_local_residual,
+  this->data->cell_loop(&MatrixFreeOperator::compute_local_residual,
                         this,
                         dst,
                         src,
@@ -256,7 +256,7 @@ matrixFreeOperator<dim, degree, number>::compute_residual(VectorType       &dst,
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
+MatrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
                                                const VectorType &src) const
 {
   Assert(!global_to_local_solution.empty(),
@@ -268,41 +268,45 @@ matrixFreeOperator<dim, degree, number>::vmult(VectorType       &dst,
   Assert(src.size() != 0,
          dealii::ExcMessage("The src vector should not have size equal to 0"));
 
-  this->data->cell_loop(&matrixFreeOperator::compute_local_newton_update,
+  this->data->cell_loop(&MatrixFreeOperator::compute_local_newton_update,
                         this,
                         dst,
                         src,
                         true);
 }
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
+MatrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
                                                 const VectorType &src) const
 {
   this->vmult(dst, src);
 }
 
+// NOLINTEND(readability-identifier-naming)
+
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
+MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::EXPLICIT_RHS);
+                                                       SolveType::ExplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_explicit_rhs(var_list, q_point_loc);
     },
     dst,
     src,
@@ -311,24 +315,24 @@ matrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_update(
+MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::POSTPROCESS);
+                                                       SolveType::Postprocess);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_postprocess_explicit_RHS(var_list, q_point_loc);
+      this->pde_operator->compute_postprocess_explicit_rhs(var_list, q_point_loc);
     },
     dst,
     src,
@@ -337,24 +341,24 @@ matrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_update(
+MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_RHS);
+                                                       SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -363,24 +367,24 @@ matrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_local_residual(
+MatrixFreeOperator<dim, degree, number>::compute_local_residual(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   VectorType                                                             &dst,
   [[maybe_unused]] const VectorType                                      &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_RHS);
+                                                       SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_RHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,
@@ -389,26 +393,26 @@ matrixFreeOperator<dim, degree, number>::compute_local_residual(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
+MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   VectorType                                                             &dst,
   const VectorType                                                       &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS,
+                                                       SolveType::NonexplicitLHS,
                                                        use_local_mapping);
 
   // Initialize, evaluate, and submit based on user function. Note that the src solution
   // subset must not include the src vector.
   variable_list.eval_local_operator(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },
     dst,
     src,
@@ -418,13 +422,13 @@ matrixFreeOperator<dim, degree, number>::compute_local_newton_update(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_index)
+MatrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_index)
 {
   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<VectorType>());
   VectorType &inverse_diagonal = inverse_diagonal_entries->get_vector();
   data->initialize_dof_vector(inverse_diagonal, field_index);
   const unsigned int dummy = 0;
-  data->cell_loop(&matrixFreeOperator::local_compute_diagonal,
+  data->cell_loop(&MatrixFreeOperator::local_compute_diagonal,
                   this,
                   inverse_diagonal,
                   dummy);
@@ -442,31 +446,31 @@ matrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-matrixFreeOperator<dim, degree, number>::local_compute_diagonal(
+MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   VectorType                                                             &dst,
   [[maybe_unused]] const unsigned int                                    &dummy,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  variableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(data,
                                                        *attributes_list,
                                                        global_to_local_solution,
-                                                       solveType::NONEXPLICIT_LHS,
+                                                       SolveType::NonexplicitLHS,
                                                        use_local_mapping);
 
   // Initialize, evaluate, and submit diagonal based on user function.
   variable_list.eval_local_diagonal(
-    [this](variableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, size_type>    &q_point_loc)
+    [this](VariableContainer<dim, degree, number> &var_list,
+           const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_LHS(var_list, q_point_loc, current_index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, current_index);
     },
     dst,
     src_solution_subset,
     cell_range);
 }
 
-INSTANTIATE_TRI_TEMPLATE(matrixFreeOperator)
+INSTANTIATE_TRI_TEMPLATE(MatrixFreeOperator)
 
 PRISMS_PF_END_NAMESPACE

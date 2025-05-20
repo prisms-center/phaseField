@@ -30,9 +30,9 @@ set Time step = 0.04
 set Number of time steps = 25000
 
 
-set Boundary condition for variable u = DIRICHLET: -0.75
-set Boundary condition for variable phi = NATURAL
-set Boundary condition for variable mu = NATURAL
+set Boundary condition for variable u = Dirichlet: -0.75
+set Boundary condition for variable phi = Natural
+set Boundary condition for variable mu = Natural
 
 
 set Model constant D = 1.0, DOUBLE

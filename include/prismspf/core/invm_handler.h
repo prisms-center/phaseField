@@ -13,32 +13,32 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
 template <unsigned int dim, unsigned int degree, typename number = double>
-class invmHandler
+class InvmHandler
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
-  using size_type  = dealii::VectorizedArray<number>;
+  using SizeType   = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
    */
-  explicit invmHandler(
-    const std::map<unsigned int, variableAttributes> &_variable_attributes);
+  explicit InvmHandler(
+    const std::map<unsigned int, VariableAttributes> &_variable_attributes);
 
   /**
    * \brief Initialize.
    */
   void
-  initialize(std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> _data);
+  initialize(std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> _data);
 
   /**
    * \brief Compute the mass matrix for scalar/vector fields.
@@ -83,12 +83,12 @@ private:
    * \brief Variable attributes. This is used to determine the proper return type for the
    * invm when given a field index.
    */
-  const std::map<unsigned int, variableAttributes> *variable_attributes;
+  const std::map<unsigned int, VariableAttributes> *variable_attributes;
 
   /**
    * \brief Matrix-free object.
    */
-  std::shared_ptr<dealii::MatrixFree<dim, number, size_type>> data;
+  std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> data;
 
   /**
    * \brief Inverse of the mass matrix for scalar fields.
@@ -114,18 +114,18 @@ private:
    * \brief Field index of the first occuring scalar field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int scalar_index = numbers::invalid_index;
+  unsigned int scalar_index = Numbers::invalid_index;
 
   /**
    * \brief Field index of the first occuring vector field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
-  unsigned int vector_index = numbers::invalid_index;
+  unsigned int vector_index = Numbers::invalid_index;
 
   /**
    * \brief Tolerance for minimum value of the mass matrix when inverting.
    */
-  number tolerance = defaults::mesh_tolerance;
+  number tolerance = Defaults::mesh_tolerance;
 };
 
 PRISMS_PF_END_NAMESPACE

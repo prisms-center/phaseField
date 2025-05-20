@@ -17,7 +17,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief This class permits the access of a subset of indexed fields and gives an error
@@ -29,153 +29,152 @@ struct variableAttributes;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class variableContainer
+class VariableContainer
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
-  using value_type = number;
-  using size_type  = dealii::VectorizedArray<number>;
+  using SizeType   = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
    */
-  variableContainer(
+  VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const std::map<unsigned int, variableAttributes> &_subset_attributes,
-    const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+    const std::map<unsigned int, VariableAttributes> &_subset_attributes,
+    const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
                     &_global_to_local_solution,
-    const solveType &_solve_type,
+    const SolveType &_solve_type,
     bool             use_local_mapping = false);
 
   /**
    * \brief Return the value of the specified scalar field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_scalar_value(unsigned int   global_variable_index,
-                   dependencyType dependency_type = dependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_scalar_gradient(unsigned int   global_variable_index,
-                      dependencyType dependency_type = dependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_scalar_hessian(unsigned int   global_variable_index,
-                     dependencyType dependency_type = dependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified scalar field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_scalar_hessian_diagonal(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the laplacian of the specified scalar field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_scalar_laplacian(unsigned int   global_variable_index,
-                       dependencyType dependency_type = dependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the value of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_vector_value(unsigned int   global_variable_index,
-                   dependencyType dependency_type = dependencyType::NORMAL) const;
+                   DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the gradient of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_gradient(unsigned int   global_variable_index,
-                      dependencyType dependency_type = dependencyType::NORMAL) const;
+                      DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the hessian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<3, dim, size_type>
+  [[nodiscard]] dealii::Tensor<3, dim, SizeType>
   get_vector_hessian(unsigned int   global_variable_index,
-                     dependencyType dependency_type = dependencyType::NORMAL) const;
+                     DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the diagonal of the hessian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_hessian_diagonal(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the laplacian of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<1, dim, size_type>
+  [[nodiscard]] dealii::Tensor<1, dim, SizeType>
   get_vector_laplacian(unsigned int   global_variable_index,
-                       dependencyType dependency_type = dependencyType::NORMAL) const;
+                       DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the divergence of the specified vector field.
    */
-  [[nodiscard]] size_type
+  [[nodiscard]] SizeType
   get_vector_divergence(unsigned int   global_variable_index,
-                        dependencyType dependency_type = dependencyType::NORMAL) const;
+                        DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the symmetric gradient of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, size_type>
+  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
-    dependencyType dependency_type = dependencyType::NORMAL) const;
+    DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Return the curl of the specified vector field. Note that this is
    * dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1, dim,
    * dealii::VectorizedArray<number>> type for 3D.
    */
-  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), size_type>
+  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>
   get_vector_curl(unsigned int   global_variable_index,
-                  dependencyType dependency_type = dependencyType::NORMAL) const;
+                  DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * \brief Set the residual value of the specified scalar field.
    */
   void
   set_scalar_value_term(const unsigned int   &global_variable_index,
-                        const size_type      &val,
-                        const dependencyType &dependency_type = dependencyType::NORMAL);
+                        const SizeType       &val,
+                        const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual gradient of the specified scalar field.
    */
   void
   set_scalar_gradient_term(
-    const unsigned int                      &global_variable_index,
-    const dealii::Tensor<1, dim, size_type> &grad,
-    const dependencyType                    &dependency_type = dependencyType::NORMAL);
+    const unsigned int                     &global_variable_index,
+    const dealii::Tensor<1, dim, SizeType> &grad,
+    const DependencyType                   &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual value of the specified vector field.
    */
   void
-  set_vector_value_term(const unsigned int                      &global_variable_index,
-                        const dealii::Tensor<1, dim, size_type> &val,
-                        const dependencyType &dependency_type = dependencyType::NORMAL);
+  set_vector_value_term(const unsigned int                     &global_variable_index,
+                        const dealii::Tensor<1, dim, SizeType> &val,
+                        const DependencyType &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Set the residual gradient of the specified vector field.
    */
   void
   set_vector_gradient_term(
-    const unsigned int                      &global_variable_index,
-    const dealii::Tensor<2, dim, size_type> &grad,
-    const dependencyType                    &dependency_type = dependencyType::NORMAL);
+    const unsigned int                     &global_variable_index,
+    const dealii::Tensor<2, dim, SizeType> &grad,
+    const DependencyType                   &dependency_type = DependencyType::Normal);
 
   /**
    * \brief Apply some operator function for a given cell range and source vector to
@@ -183,7 +182,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     std::vector<VectorType *>                   &dst,
     const std::vector<VectorType *>             &src,
@@ -195,7 +194,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src,
@@ -207,7 +206,7 @@ public:
    */
   void
   eval_local_operator(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const VectorType                            &src,
@@ -219,7 +218,7 @@ public:
    */
   void
   eval_local_diagonal(
-    const std::function<void(variableContainer &, const dealii::Point<dim, size_type> &)>
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                                 &func,
     VectorType                                  &dst,
     const std::vector<VectorType *>             &src_subset,
@@ -229,46 +228,47 @@ private:
   /**
    * \brief Typedef for scalar evaluation objects.
    */
-  using scalar_FEEval = dealii::
+  using ScalarFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, 1, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for vector evaluation objects.
    */
-  using vector_FEEval = dealii::
+  using VectorFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Typedef for the varaint evaluation objects. Note that the states become
    * degenerate at dim = 1, hence the use of std::conditional_t.
    */
-  using variant_FEEval = std::conditional_t<
-    std::is_same_v<scalar_FEEval, vector_FEEval>,
-    std::unique_ptr<scalar_FEEval>,
-    std::variant<std::unique_ptr<scalar_FEEval>, std::unique_ptr<vector_FEEval>>>;
+  using VariantFEEvaluation =
+    std::conditional_t<std::is_same_v<ScalarFEEvaluation, VectorFEEvaluation>,
+                       std::unique_ptr<ScalarFEEvaluation>,
+                       std::variant<std::unique_ptr<ScalarFEEvaluation>,
+                                    std::unique_ptr<VectorFEEvaluation>>>;
 
   /**
    * \brief Typedef for scalar diagonal matrix objects.
    */
-  using scalar_diag = dealii::AlignedVector<size_type>;
+  using ScalarDiagonal = dealii::AlignedVector<SizeType>;
 
   /**
    * \brief Typedef for vector diagonal matrix objects.
    */
-  using vector_diag = dealii::AlignedVector<dealii::Tensor<1, dim, size_type>>;
+  using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, SizeType>>;
 
   /**
    * \brief Typedef for the varaint diagonal matrix objects.
    */
-  using variant_diag =
-    std::variant<std::unique_ptr<scalar_diag>, std::unique_ptr<vector_diag>>;
+  using VariantDiagonal =
+    std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;
 
   /**
    * \brief Check whether the map entry for the  FEEvaluation exists.
    */
   void
-  FEEval_exists(const unsigned int   &dependency_index,
-                const dependencyType &dependency_type) const;
+  feevaluation_exists(const unsigned int   &dependency_index,
+                      const DependencyType &dependency_type) const;
 
   /**
    * \brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -276,14 +276,14 @@ private:
    */
   void
   access_valid(const unsigned int                             &dependency_index,
-               const dependencyType                           &dependency_type,
+               const DependencyType                           &dependency_type,
                const dealii::EvaluationFlags::EvaluationFlags &flag) const;
 
   /**
    * \brief Check that a value is valid for submission.
    */
   void
-  submission_valid(const dependencyType &dependency_type) const;
+  submission_valid(const DependencyType &dependency_type) const;
 
   /**
    * \brief Return the number of quadrature points.
@@ -294,7 +294,7 @@ private:
   /**
    * \brief Return the quadrate point location.
    */
-  [[nodiscard]] dealii::Point<dim, size_type>
+  [[nodiscard]] dealii::Point<dim, SizeType>
   get_q_point_location() const;
 
   /**
@@ -347,21 +347,50 @@ private:
   integrate(const unsigned int &global_variable_index);
 
   /**
+   * \brief Get the FEEvaluation pointer from the variant.
+   */
+  template <typename FEEvaluationType>
+  FEEvaluationType *
+  extract_feeval_ptr(VariantFEEvaluation &variant) const;
+
+  /**
+   * \brief Get the diagonal pointer from the variant.
+   */
+  template <typename DiagonalType>
+  DiagonalType *
+  extract_diagonal_ptr(VariantDiagonal &variant) const;
+
+  /**
+   * \brief Evaluate the diagonal entry for a given cell.
+   */
+  template <typename FEEvaluationType, typename DiagonalType>
+  void
+  eval_cell_diagonal(
+    FEEvaluationType *feeval_ptr,
+    DiagonalType     *diagonal_ptr,
+    unsigned int      cell,
+    unsigned int      global_var_index,
+    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
+                                    &func,
+    VectorType                      &dst,
+    const std::vector<VectorType *> &src_subset);
+
+  /**
    * \brief Map of FEEvaluation objects for each active variable. The first mapping is
-   * for the global variable, the second is for the dependencyType, and the value is
+   * for the global variable, the second is for the DependencyType, and the value is
    * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<dependencyType, variant_FEEval>> feeval_map;
+  std::map<unsigned int, std::map<DependencyType, VariantFEEvaluation>> feeval_map;
 
   /**
    * \brief The attribute list of the relevant subset of variables.
    */
-  const std::map<unsigned int, variableAttributes> *subset_attributes;
+  const std::map<unsigned int, VariableAttributes> *subset_attributes;
 
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  const std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     *global_to_local_solution;
 
   /**
@@ -369,7 +398,7 @@ private:
    * solve types, there is only a single unique instance of the eval flags, so we can
    * simply store it here when the constructor is called.
    */
-  std::map<std::pair<unsigned int, dependencyType>,
+  std::map<std::pair<unsigned int, DependencyType>,
            dealii::EvaluationFlags::EvaluationFlags>
     src_eval_flags;
 
@@ -384,7 +413,7 @@ private:
   /**
    * \brief The solve type
    */
-  solveType solve_type;
+  SolveType solve_type;
 
   /**
    * \brief The quadrature point index.
@@ -399,7 +428,7 @@ private:
   /**
    * \brief Diagonal matrix that is used for preconditioning of fields.
    */
-  variant_diag diagonal;
+  VariantDiagonal diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE

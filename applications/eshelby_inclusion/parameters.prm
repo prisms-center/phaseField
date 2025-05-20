@@ -2,7 +2,7 @@ set dim = 3
 set global refinement = 6
 set degree = 1
 
-subsection rectangular mesh
+subsection Rectangular mesh
   set x size = 100.0
   set y size = 100.0
   set z size = 100.0
@@ -12,7 +12,7 @@ subsection rectangular mesh
 end
 
 subsection linear solver parameters: u
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 1000
     set preconditioner type = GMG
@@ -22,8 +22,8 @@ subsection linear solver parameters: u
     set min mg level = 0
 end
 
-set boundary condition for u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set boundary condition for u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
-set boundary condition for u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set boundary condition for u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
+set boundary condition for u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
 
-set Model constant CIJ = (22.5,0.3), isotropic elastic constants
+set Model constant compliance = (22.5,0.3), isotropic elastic constants

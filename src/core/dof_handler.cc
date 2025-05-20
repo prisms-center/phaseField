@@ -22,21 +22,23 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
+DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
                             const MGInfo<dim>              &mg_info)
   : user_inputs(&_user_inputs)
 {
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
       // TODO (landinjm): This relies on the fact the entry has already been created. Add
       // an assertion
-      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
-          numbers::invalid_index)
+      if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
+          Numbers::invalid_index)
         {
-          const_dof_handlers.push_back(
-            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
-              .get());
+          const_dof_handlers.push_back(dof_handlers
+                                         .at(user_inputs->get_variable_attributes()
+                                               .at(index)
+                                               .get_duplicate_field_index())
+                                         .get());
           continue;
         }
 #endif
@@ -71,7 +73,7 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
 #endif
       if (mg_dof_handlers.contains(index))
         {
-          // TODO (landinjm): Small edge case where the CHANGE and NORMAL term have
+          // TODO (landinjm): Small edge case where the Change and Normal term have
           // different min levels.
           Assert(mg_dof_handlers.at(index).min_level() == min_level,
                  dealii::ExcMessage("The minimum multigrid level for index " +
@@ -96,25 +98,27 @@ dofHandler<dim>::dofHandler(const userInputParameters<dim> &_user_inputs,
 
 template <unsigned int dim>
 void
-dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
-                      const std::map<fieldType, dealii::FESystem<dim>> &fe_system,
+DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
+                      const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
                       const MGInfo<dim>                                &mg_info)
 {
   unsigned int n_dofs = 0;
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      if (user_inputs->var_attributes->at(index).duplicate_field_index !=
-          numbers::invalid_index)
+      if (user_inputs->get_variable_attributes().at(index).get_duplicate_field_index() !=
+          Numbers::invalid_index)
         {
-          n_dofs +=
-            dof_handlers.at(user_inputs->var_attributes->at(index).duplicate_field_index)
-              ->n_dofs();
+          n_dofs += dof_handlers
+                      .at(user_inputs->get_variable_attributes()
+                            .at(index)
+                            .get_duplicate_field_index())
+                      ->n_dofs();
           continue;
         }
 #endif
       dof_handlers.at(index)->reinit(triangulation_handler.get_triangulation());
-      dof_handlers.at(index)->distribute_dofs(fe_system.at(variable.field_type));
+      dof_handlers.at(index)->distribute_dofs(fe_system.at(variable.get_field_type()));
 
       n_dofs += dof_handlers.at(index)->n_dofs();
     }
@@ -123,7 +127,7 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
   if (!has_multigrid)
     {
       // TODO (landinjm): Print other useful information in debug mode
-      conditionalOStreams::pout_base()
+      ConditionalOStreams::pout_base()
         << "  number of degrees of freedom: " << n_dofs << "\n"
         << std::flush;
       return;
@@ -141,14 +145,14 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
         {
           mg_dof_handlers.at(index)[level]->reinit(
             triangulation_handler.get_mg_triangulation(level));
-          mg_dof_handlers.at(index)[level]->distribute_dofs(
-            fe_system.at(user_inputs->var_attributes->at(index).field_type));
+          mg_dof_handlers.at(index)[level]->distribute_dofs(fe_system.at(
+            user_inputs->get_variable_attributes().at(index).get_field_type()));
           n_dofs_with_mg += mg_dof_handlers.at(index)[level]->n_dofs();
         }
     }
 
   // TODO (landinjm): Print other useful information in debug mode
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "  number of degrees of freedom: " << n_dofs << "\n"
     << "    with multigrid levels: " << n_dofs_with_mg << "\n"
     << std::flush;
@@ -156,16 +160,16 @@ dofHandler<dim>::init(const triangulationHandler<dim> &triangulation_handler,
 
 template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
-dofHandler<dim>::get_dof_handlers() const
+DofHandler<dim>::get_dof_handlers() const
 {
-  Assert(const_dof_handlers.size() == user_inputs->var_attributes->size(),
+  Assert(const_dof_handlers.size() == user_inputs->get_variable_attributes().size(),
          dealii::ExcNotInitialized());
   return const_dof_handlers;
 }
 
 template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
-dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
+DofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!const_mg_dof_handlers.empty(), dealii::ExcNotInitialized());
@@ -174,6 +178,6 @@ dofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
   return const_mg_dof_handlers[level - global_min_level];
 }
 
-INSTANTIATE_UNI_TEMPLATE(dofHandler)
+INSTANTIATE_UNI_TEMPLATE(DofHandler)
 
 PRISMS_PF_END_NAMESPACE

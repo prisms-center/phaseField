@@ -10,7 +10,7 @@ class customPDE : public MatrixFreePDE<dim, degree>
 {
 public:
   // Constructor
-  customPDE(userInputParameters<dim> _userInputs)
+  customPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs) {};
 
@@ -34,13 +34,13 @@ public:
 private:
 #include <core/typeDefs.h>
 
-  const userInputParameters<dim> userInputs;
+  const UserInputParameters<dim> userInputs;
 
   // Function to set the RHS of the governing equations for explicit time
   // dependent equations (in equations.cc)
   void
   explicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -49,7 +49,7 @@ private:
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -57,7 +57,7 @@ private:
   // Function to set the LHS of the governing equations (in equations.cc)
   void
   equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -66,9 +66,9 @@ private:
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
       &variable_list,
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -121,8 +121,8 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
   char  buffer[200];
 
   // Calculating integral for mu (field 1)
-  this->computeIntegral(integrated_n, 0, this->solutionSet);
-  this->computeIntegral(integrated_mu, 1, this->solutionSet);
+  this->ComputeIntegral(integrated_n, 0, this->solutionSet);
+  this->ComputeIntegral(integrated_mu, 1, this->solutionSet);
 
   if (this->currentIncrement % userInputs.skip_print_steps == 0)
     {
@@ -142,7 +142,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
       this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
       // Parabolic (first order derivatives in time) fields
-      if (this->fields[fieldIndex].pdetype == EXPLICIT_TIME_DEPENDENT &&
+      if (this->fields[fieldIndex].pdetype == ExplicitTimeDependent &&
           !skip_time_dependent)
         {
           this->updateExplicitSolution(fieldIndex);
@@ -164,7 +164,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                        this->residualSet[fieldIndex]->l2_norm());
               this->pcout << buffer;
 
-              if (!numbers::is_finite(solution_L2_norm))
+              if (!Numbers::is_finite(solution_L2_norm))
                 {
                   snprintf(buffer,
                            sizeof(buffer),
@@ -191,7 +191,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                                                 // false if any variable isn't converged
 
           // Update residualSet for the non-explicitly updated variables
-          // compute_nonexplicit_RHS()
+          // compute_nonexplicit_rhs()
           // Ideally, I'd just do this for the non-explicit variables, but for
           // now I'll do all of them this is a little redundant, but hopefully
           // not too terrible
@@ -202,9 +202,9 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
             {
               this->currentFieldIndex = fieldIndex; // Used in computeLHS()
 
-              if ((this->fields[fieldIndex].pdetype == IMPLICIT_TIME_DEPENDENT &&
+              if ((this->fields[fieldIndex].pdetype == ImplicitTimeDependent &&
                    !skip_time_dependent) ||
-                  this->fields[fieldIndex].pdetype == TIME_INDEPENDENT)
+                  this->fields[fieldIndex].pdetype == TimeIndependent)
                 {
                   if (this->currentIncrement % userInputs.skip_print_steps == 0 &&
                       this->var_attributes.at(fieldIndex).is_nonlinear)
@@ -225,7 +225,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                   // Apply Boundary conditions
                   this->applyBCs(fieldIndex);
                 }
-              else if (this->fields[fieldIndex].pdetype == AUXILIARY)
+              else if (this->fields[fieldIndex].pdetype == Auxiliary)
                 {
                   if (this->var_attributes.at(fieldIndex).is_nonlinear ||
                       nonlinear_iteration_index == 0)
@@ -234,7 +234,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                       // old solution
                       if (this->var_attributes.at(fieldIndex).is_nonlinear)
                         {
-                          if (this->fields[fieldIndex].type == SCALAR)
+                          if (this->fields[fieldIndex].type == Scalar)
                             {
                               this->dU_scalar = *this->solutionSet[fieldIndex];
                             }
@@ -271,7 +271,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                             {
                               double diff;
 
-                              if (this->fields[fieldIndex].type == SCALAR)
+                              if (this->fields[fieldIndex].type == Scalar)
                                 {
                                   this->dU_scalar -= *this->solutionSet[fieldIndex];
                                   diff = this->dU_scalar.l2_norm();
@@ -313,7 +313,7 @@ customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
                 }
 
               // check if solution is nan
-              if (!numbers::is_finite(this->solutionSet[fieldIndex]->l2_norm()))
+              if (!Numbers::is_finite(this->solutionSet[fieldIndex]->l2_norm()))
                 {
                   snprintf(buffer,
                            sizeof(buffer),

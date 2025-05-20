@@ -17,12 +17,12 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
-struct variableAttributes;
+struct VariableAttributes;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class variableContainer;
+class VariableContainer;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
@@ -37,12 +37,11 @@ class PDEOperator;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class matrixFreeOperator : public dealii::Subscriptor
+class MatrixFreeOperator : public dealii::Subscriptor
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
-  using value_type = number;
-  using size_type  = dealii::VectorizedArray<number>;
+  using SizeType   = dealii::VectorizedArray<number>;
 
   /**
    * \brief Default constructor.
@@ -50,17 +49,17 @@ public:
    * TODO (landinjm): Should we have a default constructor and pass everything through
    * initialize? Need to pick one.
    */
-  matrixFreeOperator(
-    const std::map<unsigned int, variableAttributes>       &_attributes_list,
+  MatrixFreeOperator(
+    const std::map<unsigned int, VariableAttributes>       &_attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-    types::index _current_index     = numbers::invalid_index,
+    Types::Index _current_index     = Numbers::invalid_index,
     bool         _use_local_mapping = false);
 
   /**
    * \brief Initialize operator.
    */
   void
-  initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> _data,
+  initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
              const std::vector<unsigned int> &selected_field_indexes =
                std::vector<unsigned int>());
 
@@ -101,7 +100,7 @@ public:
   /**
    * \brief Get read access to the MatrixFree object stored with this operator.
    */
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>>
+  std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>>
   get_matrix_free() const;
 
   /**
@@ -114,7 +113,7 @@ public:
    * \brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(const std::map<std::pair<unsigned int, dependencyType>,
+  add_global_to_local_mapping(const std::map<std::pair<unsigned int, DependencyType>,
                                              unsigned int> &_global_to_local_solution);
 
   /**
@@ -130,11 +129,15 @@ public:
   void
   vmult(VectorType &dst, const VectorType &src) const;
 
+  // NOLINTBEGIN(readability-identifier-naming)
+
   /**
    * \brief Transpose matrix-vector multiplication.
    */
   void
   Tvmult(VectorType &dst, const VectorType &src) const;
+
+  // NOLINTEND(readability-identifier-naming)
 
   /**
    * \brief Compute the explicit update.
@@ -175,38 +178,38 @@ private:
    */
   void
   compute_local_explicit_update(
-    const dealii::MatrixFree<dim, number, size_type> &data,
-    std::vector<VectorType *>                        &dst,
-    const std::vector<VectorType *>                  &src,
-    const std::pair<unsigned int, unsigned int>      &cell_range) const;
+    const dealii::MatrixFree<dim, number, SizeType> &data,
+    std::vector<VectorType *>                       &dst,
+    const std::vector<VectorType *>                 &src,
+    const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
    * \brief Local computation of the explicit update of postprocessed fields.
    */
   void
   compute_local_postprocess_explicit_update(
-    const dealii::MatrixFree<dim, number, size_type> &data,
-    std::vector<VectorType *>                        &dst,
-    const std::vector<VectorType *>                  &src,
-    const std::pair<unsigned int, unsigned int>      &cell_range) const;
+    const dealii::MatrixFree<dim, number, SizeType> &data,
+    std::vector<VectorType *>                       &dst,
+    const std::vector<VectorType *>                 &src,
+    const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
    * \brief Local computation of the nonexplicit auxiliary update.
    */
   void
   compute_local_nonexplicit_auxiliary_update(
-    const dealii::MatrixFree<dim, number, size_type> &data,
-    std::vector<VectorType *>                        &dst,
-    const std::vector<VectorType *>                  &src,
-    const std::pair<unsigned int, unsigned int>      &cell_range) const;
+    const dealii::MatrixFree<dim, number, SizeType> &data,
+    std::vector<VectorType *>                       &dst,
+    const std::vector<VectorType *>                 &src,
+    const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
    * \brief Local computation of the residual of the operator.
    */
   void
-  compute_local_residual(const dealii::MatrixFree<dim, number, size_type> &data,
-                         VectorType                                       &dst,
-                         const VectorType                                 &src,
+  compute_local_residual(const dealii::MatrixFree<dim, number, SizeType> &data,
+                         VectorType                                      &dst,
+                         const VectorType                                &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /**
@@ -214,24 +217,24 @@ private:
    */
   void
   compute_local_newton_update(
-    const dealii::MatrixFree<dim, number, size_type> &data,
-    VectorType                                       &dst,
-    const VectorType                                 &src,
-    const std::pair<unsigned int, unsigned int>      &cell_range) const;
+    const dealii::MatrixFree<dim, number, SizeType> &data,
+    VectorType                                      &dst,
+    const VectorType                                &src,
+    const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
    * \brief Local computation of the diagonal of the operator.
    */
   void
-  local_compute_diagonal(const dealii::MatrixFree<dim, number, size_type> &data,
-                         VectorType                                       &dst,
-                         const unsigned int                               &dummy,
+  local_compute_diagonal(const dealii::MatrixFree<dim, number, SizeType> &data,
+                         VectorType                                      &dst,
+                         const unsigned int                              &dummy,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /**
    * \brief The attribute list of the relevant variables.
    */
-  const std::map<unsigned int, variableAttributes> *attributes_list = nullptr;
+  const std::map<unsigned int, VariableAttributes> *attributes_list = nullptr;
 
   /**
    * \brief PDE operator object for user defined PDEs.
@@ -241,17 +244,17 @@ private:
   /**
    * \brief Current field index that is being evaluated.
    */
-  types::index current_index = numbers::invalid_index;
+  Types::Index current_index = Numbers::invalid_index;
 
   /**
-   * \brief Whether to use local mapping for the variableContainer object.
+   * \brief Whether to use local mapping for the VariableContainer object.
    */
   bool use_local_mapping = false;
 
   /**
    * \brief Matrix-free object.
    */
-  std::shared_ptr<const dealii::MatrixFree<dim, number, size_type>> data;
+  std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> data;
 
   /**
    * \brief Selected fields for which we'll evaluate.
@@ -266,7 +269,7 @@ private:
   /**
    * \brief Mapping from global solution vectors to the local ones
    */
-  std::map<std::pair<unsigned int, dependencyType>, unsigned int>
+  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     global_to_local_solution;
 
   /**

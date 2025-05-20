@@ -66,7 +66,7 @@ customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
   [[maybe_unused]] const dealii::Point<dim>       &point,
   [[maybe_unused]] double                         &scalar_value,
   [[maybe_unused]] double                         &vector_component_value,
-  [[maybe_unused]] const userInputParameters<dim> &user_inputs) const
+  [[maybe_unused]] const UserInputParameters<dim> &user_inputs) const
 {}
 
 INSTANTIATE_UNI_TEMPLATE(customInitialCondition)

@@ -16,9 +16,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 dealii::TimerOutput &
-timer::serial_timer()
+Timer::serial_timer()
 {
-  static dealii::TimerOutput instance(conditionalOStreams::pout_base(),
+  static dealii::TimerOutput instance(ConditionalOStreams::pout_base(),
                                       dealii::TimerOutput::never,
                                       dealii::TimerOutput::wall_times);
 
@@ -26,7 +26,7 @@ timer::serial_timer()
 }
 
 dealii::TimerOutput &
-timer::parallel_timer()
+Timer::parallel_timer()
 {
   static dealii::TimerOutput instance(MPI_COMM_WORLD,
                                       std::cout,
@@ -37,7 +37,7 @@ timer::parallel_timer()
 }
 
 void
-timer::print_summary()
+Timer::print_summary()
 {
   // Get the timer output for the serial and parallel timers
   const auto serial_n_calls =
@@ -55,7 +55,7 @@ timer::print_summary()
 
       const auto n_calls = serial_n_calls.at(section);
 
-      conditionalOStreams::pout_base()
+      ConditionalOStreams::pout_base()
         << "Serial: " << section << " - " << wall_time << "s (" << wall_time / n_calls
         << "s/call, " << n_calls << " calls)" << "\n"
         << std::flush;

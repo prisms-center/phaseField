@@ -15,16 +15,16 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-class userInputParameters;
+class UserInputParameters;
 
 template <unsigned int dim>
-class solutionHandler;
+class SolutionHandler;
 
 /**
  * \brief This class handlers the generation and manipulation of triangulations.
  */
 template <unsigned int dim>
-class triangulationHandler
+class TriangulationHandler
 {
 public:
   using Triangulation =
@@ -35,7 +35,7 @@ public:
   /**
    * \brief Constructor.
    */
-  triangulationHandler(const userInputParameters<dim> &_user_inputs,
+  TriangulationHandler(const UserInputParameters<dim> &_user_inputs,
                        const MGInfo<dim>              &mg_info);
 
   /**
@@ -114,7 +114,7 @@ private:
   /**
    * \brief User-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Main triangulation.

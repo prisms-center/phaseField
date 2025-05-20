@@ -29,13 +29,13 @@ template <unsigned int dim>
 class MGInfo
 {
 public:
-  using min = unsigned int;
-  using max = unsigned int;
+  using Min = unsigned int;
+  using Max = unsigned int;
 
   /**
    * \brief Constructor.
    */
-  explicit MGInfo(const userInputParameters<dim> &_user_inputs);
+  explicit MGInfo(const UserInputParameters<dim> &_user_inputs);
 
   /**
    * \brief If multigrid is enabled.
@@ -49,7 +49,7 @@ public:
   /**
    * \brief Get the minimum multigrid level.
    */
-  [[nodiscard]] min
+  [[nodiscard]] Min
   get_mg_min_level() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -59,7 +59,7 @@ public:
   /**
    * \brief Get the maximum multigrid level.
    */
-  [[nodiscard]] max
+  [[nodiscard]] Max
   get_mg_max_level() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -69,7 +69,7 @@ public:
   /**
    * \brief Get the collection of minimum multigrid levels for the LHS fields.
    */
-  [[nodiscard]] std::set<std::tuple<types::index, dependencyType, min>>
+  [[nodiscard]] std::set<std::tuple<Types::Index, DependencyType, Min>>
   get_lhs_fields() const
   {
     Assert(multigrid_on, dealii::ExcNotInitialized());
@@ -148,7 +148,7 @@ private:
   /**
    * \brief User inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 
   /**
    * \brief Whether multigrid is enabled.
@@ -156,15 +156,15 @@ private:
   bool multigrid_on = false;
 
   /**
-   * \brief Global min and max multigrid levels.
+   * \brief Global Min and Max multigrid levels.
    */
-  std::pair<min, max> global_mg_level;
+  std::pair<Min, Max> global_mg_level;
 
   /**
    * \brief The collection of LHS fields and their minimum multigrid level that need to be
    * initialized for the LHS of gmg fields.
    */
-  std::set<std::tuple<types::index, dependencyType, min>> lhs_fields;
+  std::set<std::tuple<Types::Index, DependencyType, Min>> lhs_fields;
 
   /**
    * \brief Vector hierarchy of required multigrid levels.
@@ -173,22 +173,23 @@ private:
 };
 
 template <unsigned int dim>
-inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
+inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
   : user_inputs(&_user_inputs)
 {
-  const max max_mg_level = user_inputs->spatial_discretization.has_adaptivity
-                             ? user_inputs->spatial_discretization.max_refinement
-                             : user_inputs->spatial_discretization.global_refinement;
-  min       min_mg_level = UINT_MAX;
+  const Max max_mg_level =
+    user_inputs->get_spatial_discretization().get_has_adaptivity()
+      ? user_inputs->get_spatial_discretization().get_max_refinement()
+      : user_inputs->get_spatial_discretization().get_global_refinement();
+  Min min_mg_level = UINT_MAX;
 
-  std::set<types::index>      fields_with_multigrid;
-  std::map<types::index, min> min_levels;
+  std::set<Types::Index>      fields_with_multigrid;
+  std::map<Types::Index, Min> min_levels;
   for (const auto &[index, linear_solver] :
-       user_inputs->linear_solve_parameters.linear_solve)
+       user_inputs->get_linear_solve_parameters().get_linear_solve_parameters())
     {
-      if (linear_solver.preconditioner == preconditionerType::GMG)
+      if (linear_solver.preconditioner == PreconditionerType::GMG)
         {
-          const min min_level = linear_solver.min_mg_level;
+          const Min min_level = linear_solver.min_mg_level;
           fields_with_multigrid.insert(index);
           min_levels.emplace(index, min_level);
           min_mg_level = std::min(min_mg_level, min_level);
@@ -205,20 +206,20 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
   multigrid_on = true;
 
   // Create the set of tuples that let us know which fields have what multigrid levels.
-  // Note that we don't have to do this if the dependencyType is CHANGE, although we must
-  // always include dependencyType::NORMAL.
-  std::set<std::tuple<types::index, dependencyType, min>> all_lhs_fields;
+  // Note that we don't have to do this if the DependencyType is Change, although we must
+  // always include DependencyType::Normal.
+  std::set<std::tuple<Types::Index, DependencyType, Min>> all_lhs_fields;
   for (const auto &index : fields_with_multigrid)
     {
-      const auto &variable = user_inputs->var_attributes->at(index);
+      const auto &variable = user_inputs->get_variable_attributes().at(index);
 
-      // First add the dependencyType::CHANGE
+      // First add the DependencyType::Change
       all_lhs_fields.insert(
-        std::make_tuple(index, dependencyType::CHANGE, min_levels.at(index)));
+        std::make_tuple(index, DependencyType::Change, min_levels.at(index)));
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
-      // the duplicates that have the same variable but different min multigrid levels.
-      for (const auto &[pair, eval_flag] : variable.eval_flag_set_LHS)
+      // the duplicates that have the same variable but different Min multigrid levels.
+      for (const auto &[pair, eval_flag] : variable.get_eval_flag_set_lhs())
         {
           // Skip if the eval flags is not set (e.i., nothing)
           if (eval_flag == 0U)
@@ -226,8 +227,8 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
               continue;
             }
 
-          AssertThrow(pair.second == dependencyType::NORMAL ||
-                        pair.second == dependencyType::CHANGE,
+          AssertThrow(pair.second == DependencyType::Normal ||
+                        pair.second == DependencyType::Change,
                       dealii::ExcNotImplemented());
 
           all_lhs_fields.insert(
@@ -235,11 +236,11 @@ inline MGInfo<dim>::MGInfo(const userInputParameters<dim> &_user_inputs)
         }
     }
   // Trim fields that have the same first and second entry of the tuple.
-  std::map<std::pair<types::index, dependencyType>, min> lowest_mg_level;
+  std::map<std::pair<Types::Index, DependencyType>, Min> lowest_mg_level;
   for (const auto &tuple : all_lhs_fields)
     {
       auto      key       = std::make_pair(std::get<0>(tuple), std::get<1>(tuple));
-      const min min_level = std::get<2>(tuple);
+      const Min min_level = std::get<2>(tuple);
 
       auto iterator = lowest_mg_level.find(key);
       if (iterator == lowest_mg_level.end() || min_level < iterator->second)
@@ -267,41 +268,41 @@ template <unsigned int dim>
 void
 MGInfo<dim>::print()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  MGInfo\n"
     << "================================================\n";
   if (!multigrid_on)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "  There are no fields with multigrid enabled\n\n"
         << std::flush;
       return;
     }
-  conditionalOStreams::pout_summary() << "  Global min = " << global_mg_level.first
+  ConditionalOStreams::pout_summary() << "  Global min = " << global_mg_level.first
                                       << " and max = " << global_mg_level.second << "\n"
                                       << "  LHS dependency fields:\n";
   for (const auto &[field, dependency, minimum] : lhs_fields)
     {
-      conditionalOStreams::pout_summary()
+      ConditionalOStreams::pout_summary()
         << "    Index " << field << " Type " << to_string(dependency) << " Min "
         << minimum << "\n";
     }
   unsigned int outer_index = 0;
-  conditionalOStreams::pout_summary() << "  LHS index hierarchy:\n";
+  ConditionalOStreams::pout_summary() << "  LHS index hierarchy:\n";
   for (const auto &vector : mg_levels)
     {
-      conditionalOStreams::pout_summary() << "    Outer index " << outer_index << "\n";
+      ConditionalOStreams::pout_summary() << "    Outer index " << outer_index << "\n";
       unsigned int inner_index = 0;
       for (const auto &index : vector)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "      Inner index " << inner_index << " Field index: " << index << "\n";
           inner_index++;
         }
       outer_index++;
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

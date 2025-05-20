@@ -15,7 +15,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `matrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -36,7 +36,7 @@ public:
   /**
    * \brief Constructor.
    */
-  explicit customPDE(const userInputParameters<dim> &_user_inputs)
+  explicit customPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
@@ -66,7 +66,7 @@ private:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                        const dealii::Point<dim, dealii::VectorizedArray<number>>
                          &q_point_loc) const override;
 
@@ -74,26 +74,26 @@ private:
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_LHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_nonexplicit_lhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    types::index current_index = numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   void
-  compute_postprocess_explicit_RHS(
-    variableContainer<dim, degree, number>                    &variable_list,
+  compute_postprocess_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 };

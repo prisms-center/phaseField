@@ -74,12 +74,12 @@ set Buffer between grains before reassignment = 5.0
 set Load grain structure = false
 
 
-set Boundary condition for variable n0 = NATURAL
-set Boundary condition for variable n1 = NATURAL
-set Boundary condition for variable n2 = NATURAL
-set Boundary condition for variable n3 = NATURAL
-set Boundary condition for variable n4 = NATURAL
-set Boundary condition for variable n5 = NATURAL
+set Boundary condition for variable n0 = Natural
+set Boundary condition for variable n1 = Natural
+set Boundary condition for variable n2 = Natural
+set Boundary condition for variable n3 = Natural
+set Boundary condition for variable n4 = Natural
+set Boundary condition for variable n5 = Natural
 
 
 set Model constant MnV = 1.0, DOUBLE

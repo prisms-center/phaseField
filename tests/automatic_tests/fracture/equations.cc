@@ -11,93 +11,93 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
-customAttributeLoader::loadVariableAttributes()
+CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "n");
-  set_variable_type(0, SCALAR);
-  set_variable_equation_type(0, EXPLICIT_TIME_DEPENDENT);
+  set_variable_type(0, Scalar);
+  set_variable_equation_type(0, ExplicitTimeDependent);
 
-  set_dependencies_value_term_RHS(0, "n, dndt");
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_value_term_rhs(0, "n, dndt");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_variable_name(1, "u");
-  set_variable_type(1, VECTOR);
-  set_variable_equation_type(1, TIME_INDEPENDENT);
+  set_variable_type(1, Vector);
+  set_variable_equation_type(1, TimeIndependent);
 
-  set_dependencies_value_term_RHS(1, "");
-  set_dependencies_gradient_term_RHS(1, "n, grad(u), Ex");
-  set_dependencies_value_term_LHS(1, "");
-  set_dependencies_gradient_term_LHS(1, "n, grad(change(u)), Ex");
+  set_dependencies_value_term_rhs(1, "");
+  set_dependencies_gradient_term_rhs(1, "n, grad(u), Ex");
+  set_dependencies_value_term_lhs(1, "");
+  set_dependencies_gradient_term_lhs(1, "n, grad(change(u)), Ex");
 
   set_variable_name(2, "dndt");
-  set_variable_type(2, SCALAR);
-  set_variable_equation_type(2, AUXILIARY);
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, Auxiliary);
 
-  set_dependencies_value_term_RHS(2, "n, grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(2, "grad(n), Gx");
+  set_dependencies_value_term_rhs(2, "n, grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(2, "grad(n), Gx");
 
   set_variable_name(3, "Ex");
-  set_variable_type(3, SCALAR);
-  set_variable_equation_type(3, CONSTANT);
+  set_variable_type(3, Scalar);
+  set_variable_equation_type(3, Constant);
 
   set_variable_name(4, "Gx");
-  set_variable_type(4, SCALAR);
-  set_variable_equation_type(4, CONSTANT);
+  set_variable_type(4, Scalar);
+  set_variable_equation_type(4, Constant);
 
   set_variable_name(5, "f_tot");
-  set_variable_type(5, SCALAR);
-  set_variable_equation_type(5, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(5, "n, grad(n), grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(5, "");
+  set_variable_type(5, Scalar);
+  set_variable_equation_type(5, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(5, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(5, "");
   set_is_postprocessed_field(5, true);
 
   set_variable_name(6, "s11");
-  set_variable_type(6, SCALAR);
-  set_variable_equation_type(6, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(6, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(6, "");
+  set_variable_type(6, Scalar);
+  set_variable_equation_type(6, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(6, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(6, "");
   set_is_postprocessed_field(6, true);
 
   set_variable_name(7, "s12");
-  set_variable_type(7, SCALAR);
-  set_variable_equation_type(7, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(7, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(7, "");
+  set_variable_type(7, Scalar);
+  set_variable_equation_type(7, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(7, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(7, "");
   set_is_postprocessed_field(7, true);
 
   set_variable_name(8, "s22");
-  set_variable_type(8, SCALAR);
-  set_variable_equation_type(8, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(8, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(8, "");
+  set_variable_type(8, Scalar);
+  set_variable_equation_type(8, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(8, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(8, "");
   set_is_postprocessed_field(8, true);
 
   set_variable_name(9, "e22");
-  set_variable_type(9, SCALAR);
-  set_variable_equation_type(9, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(9, "grad(u), Ex");
-  set_dependencies_gradient_term_RHS(9, "");
+  set_variable_type(9, Scalar);
+  set_variable_equation_type(9, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(9, "grad(u), Ex");
+  set_dependencies_gradient_term_rhs(9, "");
   set_is_postprocessed_field(9, true);
 
   set_variable_name(10, "f_int");
-  set_variable_type(10, SCALAR);
-  set_variable_equation_type(10, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(10, "n, grad(n), grad(u), Ex, Gx");
-  set_dependencies_gradient_term_RHS(10, "");
+  set_variable_type(10, Scalar);
+  set_variable_equation_type(10, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(10, "n, grad(n), grad(u), Ex, Gx");
+  set_dependencies_gradient_term_rhs(10, "");
   set_is_postprocessed_field(10, true);
 
   set_variable_name(11, "f_el");
-  set_variable_type(11, SCALAR);
-  set_variable_equation_type(11, EXPLICIT_TIME_DEPENDENT);
-  set_dependencies_value_term_RHS(11, "n, grad(u), Ex");
-  set_dependencies_gradient_term_RHS(11, "");
+  set_variable_type(11, Scalar);
+  set_variable_equation_type(11, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(11, "n, grad(u), Ex");
+  set_dependencies_gradient_term_rhs(11, "");
   set_is_postprocessed_field(11, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
@@ -122,10 +122,10 @@ customPDE<dim, degree, number>::compute_explicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 1)
     {
@@ -133,10 +133,10 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       vectorGrad  ux = variable_list.get_vector_symmetric_gradient(1);
       scalarValue Ex = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
         CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux, stress);
+      compute_stress<dim, scalarValue>(compliance, ux, stress);
 
       variable_list.set_vector_gradient_term(1, -stress);
     }
@@ -148,9 +148,9 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
       scalarValue Ex = variable_list.get_scalar_value(3);
       scalarValue Gx = variable_list.get_scalar_value(4);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ = CIJ_base * Ex;
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance = CIJ_base * Ex;
       vectorGrad                                             stress;
-      compute_stress<dim, scalarValue>(CIJ, ux, stress);
+      compute_stress<dim, scalarValue>(compliance, ux, stress);
       scalarValue elastic_energy = 0.0;
       for (unsigned int i = 0; i < dim; i++)
         {
@@ -170,30 +170,30 @@ customPDE<dim, degree, number>::compute_nonexplicit_RHS(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_LHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] types::index current_index) const
+  [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 1)
     {
       scalarValue n         = variable_list.get_scalar_value(0);
-      vectorGrad  ux_change = variable_list.get_vector_symmetric_gradient(1, CHANGE);
+      vectorGrad  ux_change = variable_list.get_vector_symmetric_gradient(1, Change);
       scalarValue Ex        = variable_list.get_scalar_value(3);
 
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
         CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
       vectorGrad stress;
-      compute_stress<dim, scalarValue>(CIJ, ux_change, stress);
+      compute_stress<dim, scalarValue>(compliance, ux_change, stress);
 
-      variable_list.set_vector_gradient_term(1, stress, CHANGE);
+      variable_list.set_vector_gradient_term(1, stress, Change);
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
-  [[maybe_unused]] variableContainer<dim, degree, number> &variable_list,
+customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
@@ -205,10 +205,10 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_RHS(
 
   scalarValue f_int = Gc0 * n * Gx * 3.0 / 8.0 / ell + Gc0 * Gx * 0.5 * ell * nx * nx;
 
-  dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ =
+  dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> compliance =
     CIJ_base * Ex * (1.0 - 2.0 * n + n * n);
   vectorGrad stress;
-  compute_stress<dim, scalarValue>(CIJ, ux, stress);
+  compute_stress<dim, scalarValue>(compliance, ux, stress);
 
   scalarValue f_el = 0.0;
   for (unsigned int i = 0; i < dim; i++)

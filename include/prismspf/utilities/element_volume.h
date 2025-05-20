@@ -16,13 +16,13 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Compute the element volume.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class elementVolume
+class ElementVolume
 {
 public:
   /**
    * \brief Constructor.
    */
-  elementVolume() = default;
+  ElementVolume() = default;
 
   /**
    * \brief Initialize.

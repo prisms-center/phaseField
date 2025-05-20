@@ -4,7 +4,7 @@
 // =================================================================================
 // Set the attributes of the postprocessing variables
 // =================================================================================
-// This function is analogous to 'loadVariableAttributes' in 'equations.h', but
+// This function is analogous to 'load_variable_attributes' in 'equations.h', but
 // for the postprocessing expressions. It sets the attributes for each
 // postprocessing expression, including its name, whether it is a vector or
 // scalar (only scalars are supported at present), its dependencies on other
@@ -12,23 +12,23 @@
 // postprocessed quantity over the entire domain.
 
 void
-customAttributeLoader::loadPostProcessorVariableAttributes()
+CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "f_tot");
-  set_variable_type(0, SCALAR);
+  set_variable_type(0, Scalar);
 
-  set_dependencies_value_term_RHS(0, "c,n,grad(n)");
-  set_dependencies_gradient_term_RHS(0, "");
+  set_dependencies_value_term_rhs(0, "c,n,grad(n)");
+  set_dependencies_gradient_term_rhs(0, "");
 
   set_output_integral(0, true);
 
   // Variable 0
   set_variable_name(1, "c_grad");
-  set_variable_type(1, SCALAR);
+  set_variable_type(1, Scalar);
 
-  set_dependencies_value_term_RHS(1, "grad(c)");
-  set_dependencies_gradient_term_RHS(1, "");
+  set_dependencies_value_term_rhs(1, "grad(c)");
+  set_dependencies_gradient_term_rhs(1, "");
 
   set_output_integral(1, false);
 }
@@ -48,9 +48,9 @@ customAttributeLoader::loadPostProcessorVariableAttributes()
 template <int dim, int degree>
 void
 customPDE<dim, degree>::postProcessedFields(
-  [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
-  [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                             &pp_variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
   [[maybe_unused]] const VectorizedArray<double>             element_volume) const
@@ -99,6 +99,6 @@ customPDE<dim, degree>::postProcessedFields(
 
   // --- Submitting the terms for the postprocessing expressions ---
 
-  pp_variable_list.set_scalar_value_term_RHS(0, f_tot);
-  pp_variable_list.set_scalar_value_term_RHS(1, mag_grad_c);
+  pp_variable_list.set_scalar_value_term_rhs(0, f_tot);
+  pp_variable_list.set_scalar_value_term_rhs(1, mag_grad_c);
 }

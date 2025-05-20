@@ -21,7 +21,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds output parameters.
  */
-struct outputParameters
+struct OutputParameters
 {
 public:
   /**
@@ -34,7 +34,7 @@ public:
    * \brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(const temporalDiscretization &temporal_discretization);
+  postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
    * \brief Print parameters to summary.log
@@ -42,6 +42,106 @@ public:
   void
   print_parameter_summary() const;
 
+  /**
+   * \brief Get the file type.
+   */
+  [[nodiscard]] const std::string &
+  get_file_type() const
+  {
+    return file_type;
+  }
+
+  /**
+   * \brief Set the file type
+   */
+  void
+  set_file_type(const std::string &_file_type)
+  {
+    file_type = _file_type;
+  }
+
+  /**
+   * \brief Get the file name.
+   */
+  [[nodiscard]] const std::string &
+  get_file_name() const
+  {
+    return file_name;
+  }
+
+  /**
+   * \brief Set the file name
+   */
+  void
+  set_file_name(const std::string &_file_name)
+  {
+    file_name = _file_name;
+  }
+
+  /**
+   * \brief Set the print output period
+   */
+  void
+  set_print_output_period(const unsigned int &_print_output_period)
+  {
+    print_output_period = _print_output_period;
+  }
+
+  /**
+   * \brief Get the patch subdivisions
+   */
+  [[nodiscard]] unsigned int
+  get_patch_subdivisions() const
+  {
+    return patch_subdivisions;
+  }
+
+  /**
+   * \brief Set the patch subdivisions
+   */
+  void
+  set_patch_subdivisions(const unsigned int &_patch_subdivisions)
+  {
+    patch_subdivisions = _patch_subdivisions;
+  }
+
+  /**
+   * \brief Set the output condition
+   */
+  void
+  set_output_condition(const std::string &_condition)
+  {
+    condition = _condition;
+  }
+
+  /**
+   * \brief Set the number of outputs
+   */
+  void
+  set_n_outputs(const unsigned int &_n_outputs)
+  {
+    n_outputs = _n_outputs;
+  }
+
+  /**
+   * \brief Set the user output list
+   */
+  void
+  set_user_output_list(const std::vector<int> &_user_output_list)
+  {
+    user_output_list = _user_output_list;
+  }
+
+  /**
+   * \brief Whether to print timing information with output
+   */
+  void
+  set_print_timing_with_output(const bool &_print_timing_with_output)
+  {
+    print_timing_with_output = _print_timing_with_output;
+  }
+
+private:
   // Output file type
   std::string file_type;
 
@@ -73,14 +173,14 @@ public:
 };
 
 inline bool
-outputParameters::should_output(unsigned int increment) const
+OutputParameters::should_output(unsigned int increment) const
 {
   return output_list.contains(increment);
 }
 
 inline void
-outputParameters::postprocess_and_validate(
-  const temporalDiscretization &temporal_discretization)
+OutputParameters::postprocess_and_validate(
+  const TemporalDiscretization &temporal_discretization)
 {
   // If the user has specified a list and we have list output use that and return early
   if (condition == "LIST")
@@ -150,9 +250,9 @@ outputParameters::postprocess_and_validate(
 }
 
 inline void
-outputParameters::print_parameter_summary() const
+OutputParameters::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Output Parameters\n"
     << "================================================\n"
@@ -164,12 +264,12 @@ outputParameters::print_parameter_summary() const
     << "Number of outputs: " << n_outputs << "\n"
     << "Print timing info: " << bool_to_string(print_timing_with_output) << "\n";
 
-  conditionalOStreams::pout_summary() << "Output iteration list: ";
+  ConditionalOStreams::pout_summary() << "Output iteration list: ";
   for (const auto &iteration : output_list)
     {
-      conditionalOStreams::pout_summary() << iteration << " ";
+      ConditionalOStreams::pout_summary() << iteration << " ";
     }
-  conditionalOStreams::pout_summary() << "\n\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
 }
 
 PRISMS_PF_END_NAMESPACE

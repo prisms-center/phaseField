@@ -11,28 +11,28 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct variableAttributes;
+struct VariableAttributes;
 
 /**
  * \brief Class to manage the variable attributes that the user specifies.
  */
-class variableAttributeLoader
+class VariableAttributeLoader
 {
 public:
   /**
    * \brief Constructor.
    */
-  variableAttributeLoader() = default;
+  VariableAttributeLoader() = default;
 
   /**
    * \brief Destructor.
    */
-  virtual ~variableAttributeLoader() = default;
+  virtual ~VariableAttributeLoader() = default;
 
   /**
    * \brief Initialize the variable attributes from the two user-facing methods
-   * `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()`. This must be
-   * called after the default constructor for derived classes.
+   * `load_variable_attributes()` and `loadPostProcessorVariableAttributes()`. This must
+   * be called after the default constructor for derived classes.
    */
   void
   init_variable_attributes();
@@ -42,7 +42,7 @@ public:
   /**
    * \brief getter function for variable attributes list (copy).
    */
-  [[nodiscard]] std::map<unsigned int, variableAttributes>
+  [[nodiscard]] std::map<unsigned int, VariableAttributes>
   get_var_attributes() const;
 
   // cppcheck-suppress-end returnByReference
@@ -53,7 +53,7 @@ protected:
    * and postprocess fields.
    */
   virtual void
-  loadVariableAttributes() = 0;
+  load_variable_attributes() = 0;
 
   /**
    * \brief Set the name of the variable at `index` to `name`.
@@ -66,18 +66,18 @@ protected:
 
   /**
    * \brief Set the field type of the variable at `index` to `field_type` where
-   * `field_type` can be `SCALAR` or `VECTOR`.
+   * `field_type` can be `Scalar` or `Vector`.
    *
    * \param index Index of variable
-   * \param field_type Field type of variable at `index` (`SCALAR` or `VECTOR`).
+   * \param field_type Field type of variable at `index` (`Scalar` or `Vector`).
    */
   void
-  set_variable_type(const unsigned int &index, const fieldType &field_type);
+  set_variable_type(const unsigned int &index, const FieldType &field_type);
 
   /**
    * \brief Set the PDE type of the variable at `index` to `pde_type` where
-   *`pde_type`can be `EXPLICIT_TIME_DEPENDENT`, `IMPLICIT_TIME_DEPENDENT`,
-   *`TIME_INDEPENDENT`, `AUXILIARY`.
+   *`pde_type`can be `ExplicitTimeDependent`, `ImplicitTimeDependent`,
+   *`TimeIndependent`, `Auxiliary`.
    *
    * \param index Index of variable
    * \param pde_type PDE type of variable at `index`.
@@ -103,7 +103,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_value_term_RHS(const unsigned int &index,
+  set_dependencies_value_term_rhs(const unsigned int &index,
                                   const std::string  &dependencies);
 
   /**
@@ -115,7 +115,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_gradient_term_RHS(const unsigned int &index,
+  set_dependencies_gradient_term_rhs(const unsigned int &index,
                                      const std::string  &dependencies);
 
   /**
@@ -127,7 +127,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_value_term_LHS(const unsigned int &index,
+  set_dependencies_value_term_lhs(const unsigned int &index,
                                   const std::string  &dependencies);
 
   /**
@@ -139,7 +139,7 @@ protected:
    * variable at `index` Hint: "variable, grad(variable), hess(variable)"
    */
   void
-  set_dependencies_gradient_term_LHS(const unsigned int &index,
+  set_dependencies_gradient_term_lhs(const unsigned int &index,
                                      const std::string  &dependencies);
 
   /**
@@ -152,7 +152,7 @@ protected:
    */
   template <typename Iterable>
   void
-  insert_dependencies_value_term_RHS(const unsigned int &index,
+  insert_dependencies_value_term_rhs(const unsigned int &index,
                                      const Iterable     &dependencies);
 
   /**
@@ -165,7 +165,7 @@ protected:
    */
   template <typename Iterable>
   void
-  insert_dependencies_gradient_term_RHS(const unsigned int &index,
+  insert_dependencies_gradient_term_rhs(const unsigned int &index,
                                         const Iterable     &dependencies);
 
   /**
@@ -178,7 +178,7 @@ protected:
    */
   template <typename Iterable>
   void
-  insert_dependencies_value_term_LHS(const unsigned int &index,
+  insert_dependencies_value_term_lhs(const unsigned int &index,
                                      const Iterable     &dependencies);
 
   /**
@@ -191,14 +191,14 @@ protected:
    */
   template <typename Iterable>
   void
-  insert_dependencies_gradient_term_LHS(const unsigned int &index,
+  insert_dependencies_gradient_term_lhs(const unsigned int &index,
                                         const Iterable     &dependencies);
 
 private:
   /**
    * \brief The solutions variable & postprocessing variable attributes
    */
-  std::map<unsigned int, variableAttributes> var_attributes;
+  std::map<unsigned int, VariableAttributes> var_attributes;
 
   /**
    * \brief Perform a suite of assertions on the attributes to ensure that
@@ -250,16 +250,16 @@ private:
   validate_old_solution_dependencies();
 };
 
-// Template derived class for variableAttributeLoader for applications.
-// `loadVariableAttributes()` and `loadPostProcessorVariableAttributes()` are should be
+// Template derived class for VariableAttributeLoader for applications.
+// `load_variable_attributes()` and `loadPostProcessorVariableAttributes()` are should be
 // filled out in all the applications.
-class customAttributeLoader : public variableAttributeLoader
+class CustomAttributeLoader : public VariableAttributeLoader
 {
 public:
-  ~customAttributeLoader() override = default;
+  ~CustomAttributeLoader() override = default;
 
   void
-  loadVariableAttributes() override;
+  load_variable_attributes() override;
 };
 
 PRISMS_PF_END_NAMESPACE

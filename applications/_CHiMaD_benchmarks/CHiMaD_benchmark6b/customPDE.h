@@ -13,7 +13,7 @@ class customPDE : public MatrixFreePDE<dim, degree>
 {
 public:
   // Constructor
-  customPDE(userInputParameters<dim> _userInputs)
+  customPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs) {};
 
@@ -37,13 +37,13 @@ public:
 private:
 #include <core/typeDefs.h>
 
-  const userInputParameters<dim> userInputs;
+  const UserInputParameters<dim> userInputs;
 
   // Function to set the RHS of the governing equations for explicit time
   // dependent equations (in equations.h)
   void
   explicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -52,7 +52,7 @@ private:
   // (in equations.h)
   void
   nonExplicitEquationRHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -60,7 +60,7 @@ private:
   // Function to set the LHS of the governing equations (in equations.h)
   void
   equationLHS(
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -69,9 +69,9 @@ private:
 #ifdef POSTPROCESS_FILE_EXISTS
   void
   postProcessedFields(
-    [[maybe_unused]] const variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
       &variable_list,
-    [[maybe_unused]] variableContainer<dim, degree, VectorizedArray<double>>
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
                                                               &pp_variable_list,
     [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
     [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
@@ -142,7 +142,7 @@ customPDE<dim, degree>::create_triangulation(
                                  semicircle_origin,
                                  userInputs.size[1] / 2.0);
 
-  // Find the two non-corner vertices on the right side of the rectangular mesh
+  // Find the two non-corner vertices on the right side of the Rectangular mesh
   Point<dim> pt1;
   Point<dim> pt2;
   for (auto &cell : tria_box.active_cell_iterators())
@@ -164,7 +164,7 @@ customPDE<dim, degree>::create_triangulation(
     }
 
   // Move the vertices at the center of the half hyper ball so that they will
-  // align with non-corner vertices on the right side of the rectangular mesh
+  // align with non-corner vertices on the right side of the Rectangular mesh
   for (auto &cell : tria_semicircle.active_cell_iterators())
     {
       for (unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
@@ -191,10 +191,10 @@ customPDE<dim, degree>::create_triangulation(
   tria.set_manifold(0, FlatManifold<dim>());
   tria.set_all_manifold_ids(0);
 
-  // Attach spherical manifold
+  // Attach Spherical manifold
   tria.set_manifold(8, SphericalManifold<dim>(semicircle_origin));
 
-  // Set the 3 outer cells of semicircle to the spherical manifold
+  // Set the 3 outer cells of semicircle to the Spherical manifold
   for (const auto &cell : tria.active_cell_iterators())
     {
       const Point<dim> cell_center          = cell->center();

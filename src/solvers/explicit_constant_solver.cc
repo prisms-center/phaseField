@@ -24,16 +24,16 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-explicitConstantSolver<dim, degree>::explicitConstantSolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+ExplicitConstantSolver<dim, degree>::ExplicitConstantSolver(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  solutionHandler<dim>                                   &_solution_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : explicitBase<dim, degree>(_user_inputs,
+  : ExplicitBase<dim, degree>(_user_inputs,
                               _matrix_free_handler,
                               _invm_handler,
                               _constraint_handler,
@@ -45,12 +45,12 @@ explicitConstantSolver<dim, degree>::explicitConstantSolver(
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitConstantSolver<dim, degree>::init()
+ExplicitConstantSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::EXPLICIT_CONSTANT);
+  this->compute_subset_attributes(FieldSolveType::ExplicitConstant);
 
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
@@ -60,9 +60,9 @@ explicitConstantSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 void
-explicitConstantSolver<dim, degree>::solve()
+ExplicitConstantSolver<dim, degree>::solve()
 {}
 
-INSTANTIATE_BI_TEMPLATE(explicitConstantSolver)
+INSTANTIATE_BI_TEMPLATE(ExplicitConstantSolver)
 
 PRISMS_PF_END_NAMESPACE

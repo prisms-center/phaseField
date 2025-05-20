@@ -23,18 +23,18 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-inputFileReader::inputFileReader(
+InputFileReader::InputFileReader(
   std::string                                       input_file_name,
-  const std::map<unsigned int, variableAttributes> &_var_attributes)
+  const std::map<unsigned int, VariableAttributes> &_var_attributes)
   : parameters_file_name(std::move(input_file_name))
-  , var_attributes(_var_attributes)
+  , var_attributes(&_var_attributes)
 {
   model_constant_names             = get_model_constant_names();
   const unsigned int num_constants = model_constant_names.size();
 
-  conditionalOStreams::pout_base()
+  ConditionalOStreams::pout_base()
     << "Number of constants: " << num_constants << "\n"
-    << "Number of variables: " << var_attributes.size() << "\n";
+    << "Number of variables: " << var_attributes->size() << "\n";
 
   // Read in all of the parameters now
   declare_parameters();
@@ -43,7 +43,7 @@ inputFileReader::inputFileReader(
 }
 
 void
-inputFileReader::strip_spaces(std::string &line)
+InputFileReader::strip_spaces(std::string &line)
 {
   while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
     {
@@ -57,7 +57,7 @@ inputFileReader::strip_spaces(std::string &line)
 }
 
 bool
-inputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
+InputFileReader::check_keyword_match(const std::string &line, const std::string &keyword)
 {
   // Early return if the line is less than the keyword size
   if (line.size() < keyword.size())
@@ -78,7 +78,7 @@ inputFileReader::check_keyword_match(const std::string &line, const std::string 
 }
 
 bool
-inputFileReader::parse_line(std::string        line,
+InputFileReader::parse_line(std::string        line,
                             const std::string &keyword,
                             const std::string &entry_name,
                             std::string       &out_string,
@@ -144,7 +144,7 @@ inputFileReader::parse_line(std::string        line,
 }
 
 std::set<std::string>
-inputFileReader::get_model_constant_names()
+InputFileReader::get_model_constant_names()
 {
   const std::string keyword             = "set";
   const std::string entry_name_begining = "Model constant";
@@ -198,16 +198,16 @@ inputFileReader::get_model_constant_names()
 }
 
 void
-inputFileReader::declare_parameters()
+InputFileReader::declare_parameters()
 {
   // Declare all of the entries
   declare_mesh();
   declare_time_discretization();
   declare_solver_parameters();
   declare_output_parameters();
-  declare_load_IC_parameters();
+  declare_load_ic_parameters();
   declare_checkpoint_parameters();
-  declare_BC_parameters();
+  declare_bc_parameters();
   declare_pinning_parameters();
   declare_nucleation_parameters();
   declare_grain_remapping_parameters();
@@ -216,7 +216,7 @@ inputFileReader::declare_parameters()
 }
 
 void
-inputFileReader::declare_mesh()
+InputFileReader::declare_mesh()
 {
   parameter_handler.declare_entry("dim",
                                   "1",
@@ -226,7 +226,7 @@ inputFileReader::declare_mesh()
   parameter_handler.declare_entry("degree",
                                   "1",
                                   dealii::Patterns::Integer(1,
-                                                            numbers::max_element_degree),
+                                                            Numbers::max_element_degree),
                                   "The polynomial order of the finite element.",
                                   true);
   parameter_handler.declare_entry("global refinement",
@@ -235,7 +235,7 @@ inputFileReader::declare_mesh()
                                   "The number of initial refinements of the coarse mesh.",
                                   true);
 
-  parameter_handler.enter_subsection("rectangular mesh");
+  parameter_handler.enter_subsection("Rectangular mesh");
   {
     parameter_handler.declare_entry("x size",
                                     "0.0",
@@ -267,7 +267,7 @@ inputFileReader::declare_mesh()
   }
   parameter_handler.leave_subsection();
 
-  parameter_handler.enter_subsection("spherical mesh");
+  parameter_handler.enter_subsection("Spherical mesh");
   {
     parameter_handler.declare_entry("radius",
                                     "0",
@@ -294,10 +294,10 @@ inputFileReader::declare_mesh()
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
-      subsection_text.append(variable.name);
+      subsection_text.append(variable.get_name());
       parameter_handler.enter_subsection(subsection_text);
       {
         parameter_handler.declare_entry(
@@ -329,7 +329,7 @@ inputFileReader::declare_mesh()
 }
 
 void
-inputFileReader::declare_time_discretization()
+InputFileReader::declare_time_discretization()
 {
   parameter_handler.declare_entry("number steps",
                                   "1",
@@ -347,23 +347,23 @@ inputFileReader::declare_time_discretization()
 }
 
 void
-inputFileReader::declare_solver_parameters()
+InputFileReader::declare_solver_parameters()
 {
   // For linear solves
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.pde_type == TIME_INDEPENDENT ||
-          variable.pde_type == IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::TimeIndependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
           {
-            parameter_handler.declare_entry(
-              "tolerance type",
-              "ABSOLUTE_RESIDUAL",
-              dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
-              "The tolerance type for the linear solver.");
+            parameter_handler.declare_entry("tolerance type",
+                                            "AbsoluteResidual",
+                                            dealii::Patterns::Selection(
+                                              "AbsoluteResidual|RelativeResidualChange"),
+                                            "The tolerance type for the linear solver.");
             parameter_handler.declare_entry(
               "tolerance value",
               "1.0e-10",
@@ -378,7 +378,7 @@ inputFileReader::declare_solver_parameters()
             parameter_handler.declare_entry(
               "preconditioner type",
               "GMG",
-              dealii::Patterns::Selection("NONE|GMG"),
+              dealii::Patterns::Selection("None|GMG"),
               "The preconditioner type for the linear solver.");
             parameter_handler.declare_entry("smoothing range",
                                             "15.0",
@@ -403,13 +403,13 @@ inputFileReader::declare_solver_parameters()
     }
 
   // For nonlinear solves
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          variable.field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR)
+      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
+          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
         {
           std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.name);
+          subsection_text.append(variable.get_name());
           parameter_handler.enter_subsection(subsection_text);
           {
             parameter_handler.declare_entry("max iterations",
@@ -419,8 +419,8 @@ inputFileReader::declare_solver_parameters()
                                             "iterations before the loop is stopped.");
             parameter_handler.declare_entry(
               "tolerance type",
-              "ABSOLUTE_RESIDUAL",
-              dealii::Patterns::Selection("ABSOLUTE_RESIDUAL|RELATIVE_RESIDUAL_CHANGE"),
+              "AbsoluteResidual",
+              dealii::Patterns::Selection("AbsoluteResidual|RelativeResidualChange"),
               "The tolerance type for the nonlinear solver.");
             parameter_handler.declare_entry(
               "tolerance value",
@@ -458,7 +458,7 @@ inputFileReader::declare_solver_parameters()
 }
 
 void
-inputFileReader::declare_output_parameters()
+InputFileReader::declare_output_parameters()
 {
   parameter_handler.enter_subsection("output");
   {
@@ -508,7 +508,7 @@ inputFileReader::declare_output_parameters()
 }
 
 void
-inputFileReader::declare_load_IC_parameters()
+InputFileReader::declare_load_ic_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Load initial conditions",
@@ -533,7 +533,7 @@ inputFileReader::declare_load_IC_parameters()
 }
 
 void
-inputFileReader::declare_checkpoint_parameters()
+InputFileReader::declare_checkpoint_parameters()
 {
   parameter_handler.enter_subsection("checkpoints");
   {
@@ -564,18 +564,18 @@ inputFileReader::declare_checkpoint_parameters()
 }
 
 void
-inputFileReader::declare_BC_parameters()
+InputFileReader::declare_bc_parameters()
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.field_type == SCALAR)
+      if (variable.get_field_type() == Scalar)
         {
           std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           parameter_handler.declare_entry(
             bc_text,
             "",
@@ -585,7 +585,7 @@ inputFileReader::declare_BC_parameters()
       else
         {
           std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", x component");
           parameter_handler.declare_entry(
             bc_text,
@@ -594,7 +594,7 @@ inputFileReader::declare_BC_parameters()
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", y component");
           parameter_handler.declare_entry(
             bc_text,
@@ -603,7 +603,7 @@ inputFileReader::declare_BC_parameters()
             "The boundary conditions for one of the governing equations).");
 
           bc_text = "boundary condition for ";
-          bc_text.append(variable.name);
+          bc_text.append(variable.get_name());
           bc_text.append(", z component");
           parameter_handler.declare_entry(
             bc_text,
@@ -615,19 +615,19 @@ inputFileReader::declare_BC_parameters()
 }
 
 void
-inputFileReader::declare_pinning_parameters()
+InputFileReader::declare_pinning_parameters()
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &[index, variable] : *var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
       std::string pinning_text = "pinning point for ";
-      pinning_text.append(variable.name);
+      pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
       {
-        if (variable.field_type == SCALAR)
+        if (variable.get_field_type() == Scalar)
           {
             parameter_handler.declare_entry("value",
                                             "2147483647",
@@ -667,7 +667,7 @@ inputFileReader::declare_pinning_parameters()
 }
 
 void
-inputFileReader::declare_nucleation_parameters()
+InputFileReader::declare_nucleation_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Enable evolution before nucleation",
@@ -703,7 +703,7 @@ inputFileReader::declare_nucleation_parameters()
   //                                 dealii::Patterns::Double(),
   //                                 "The time after which no nucleation occurs.");
 
-  // for (const auto &[index, variable] : var_attributes)
+  // for (const auto &[index, variable] : *var_attributes)
   //   {
   //     if (variable.nucleating_variable)
   //       {
@@ -748,7 +748,7 @@ inputFileReader::declare_nucleation_parameters()
 }
 
 void
-inputFileReader::declare_grain_remapping_parameters()
+InputFileReader::declare_grain_remapping_parameters()
 {
   // parameter_handler.declare_entry(
   //   "Activate grain reassignment",
@@ -787,7 +787,7 @@ inputFileReader::declare_grain_remapping_parameters()
 }
 
 void
-inputFileReader::declare_grain_loading_parameters()
+InputFileReader::declare_grain_loading_parameters()
 {
   // parameter_handler.declare_entry("Load grain structure",
   //                                 "false",
@@ -840,7 +840,7 @@ inputFileReader::declare_grain_loading_parameters()
 }
 
 void
-inputFileReader::declare_model_constants()
+InputFileReader::declare_model_constants()
 {
   for (const std::string &constant_name : model_constant_names)
     {

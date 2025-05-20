@@ -20,12 +20,12 @@ template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator
 {
 public:
-  using size_type = dealii::VectorizedArray<number>;
+  using SizeType = dealii::VectorizedArray<number>;
 
   /**
    * \brief Constructor.
    */
-  explicit PDEOperator(const userInputParameters<dim> &_user_inputs);
+  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs);
 
   /**
    * \brief Destructor.
@@ -57,37 +57,37 @@ public:
    * \brief User-implemented class for the RHS of explicit equations.
    */
   virtual void
-  compute_explicit_RHS(variableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
+  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
+                       const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_RHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc,
-                          types::index current_index = numbers::invalid_index) const = 0;
+  compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
+                          const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index current_index = Numbers::invalid_index) const = 0;
 
   /**
    * \brief User-implemented class for the LHS of nonexplicit equations.
    */
   virtual void
-  compute_nonexplicit_LHS(variableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, size_type>    &q_point_loc,
-                          types::index current_index = numbers::invalid_index) const = 0;
+  compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
+                          const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index current_index = Numbers::invalid_index) const = 0;
 
   /**
    * \brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   virtual void
-  compute_postprocess_explicit_RHS(
-    variableContainer<dim, degree, number> &variable_list,
-    const dealii::Point<dim, size_type>    &q_point_loc) const = 0;
+  compute_postprocess_explicit_rhs(
+    VariableContainer<dim, degree, number> &variable_list,
+    const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
 
   /**
    * \brief Get the user inputs (constant reference).
    */
-  [[nodiscard]] const userInputParameters<dim> &
+  [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const;
 
   /**
@@ -100,7 +100,7 @@ private:
   /**
    * \brief The user-inputs.
    */
-  const userInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs;
 };
 
 PRISMS_PF_END_NAMESPACE

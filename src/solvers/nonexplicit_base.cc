@@ -30,16 +30,16 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitBase<dim, degree>::nonexplicitBase(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const triangulationHandler<dim>                        &_triangulation_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+NonexplicitBase<dim, degree>::NonexplicitBase(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const TriangulationHandler<dim>                        &_triangulation_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
   : user_inputs(&_user_inputs)
   , matrix_free_handler(&_matrix_free_handler)
@@ -55,23 +55,23 @@ nonexplicitBase<dim, degree>::nonexplicitBase(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::compute_subset_attributes(
-  const fieldSolveType &field_solve_type)
+NonexplicitBase<dim, degree>::compute_subset_attributes(
+  const FieldSolveType &field_solve_type)
 {
-  Assert((field_solve_type == fieldSolveType::NONEXPLICIT_LINEAR ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_SELF_NONLINEAR ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_AUXILIARY ||
-          field_solve_type == fieldSolveType::NONEXPLICIT_CO_NONLINEAR),
+  Assert((field_solve_type == FieldSolveType::NonexplicitLinear ||
+          field_solve_type == FieldSolveType::NonexplicitSelfnonlinear ||
+          field_solve_type == FieldSolveType::NonexplicitAuxiliary ||
+          field_solve_type == FieldSolveType::NonexplicitCononlinear),
          dealii::ExcMessage(
            "compute_subset_attributes() should only be used for "
-           "NONEXPLICIT_LINEAR, NONEXPLICIT_SELF_NONLINEAR, NONEXPLICIT_AUXILIARY, and "
-           "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
+           "NonexplicitLinear, NonexplicitSelfnonlinear, NonexplicitAuxiliary, and "
+           "NonexplicitCononlinear fieldSolveTypes"));
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : *user_inputs->var_attributes)
+  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.field_solve_type == field_solve_type)
+      if (variable.get_field_solve_type() == field_solve_type)
         {
           subset_attributes.emplace(index, variable);
         }
@@ -80,20 +80,20 @@ nonexplicitBase<dim, degree>::compute_subset_attributes(
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::compute_shared_dependencies()
+NonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
-  Assert(subset_attributes.begin()->second.field_solve_type ==
-           fieldSolveType::NONEXPLICIT_CO_NONLINEAR,
+  Assert(subset_attributes.begin()->second.get_field_solve_type() ==
+           FieldSolveType::NonexplicitCononlinear,
          dealii::ExcMessage("compute_shared_dependencies() should only be used for "
-                            "NONEXPLICIT_CO_NONLINEAR fieldSolveTypes"));
+                            "NonexplicitCononlinear fieldSolveTypes"));
 
   // Compute the shared dependency flags
-  auto &dependency_flag_set = subset_attributes.begin()->second.eval_flag_set_RHS;
+  auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (!variable.eval_flag_set_RHS.empty())
+      if (!variable.get_eval_flag_set_rhs().empty())
         {
-          for (const auto &[pair, flag] : variable.eval_flag_set_RHS)
+          for (const auto &[pair, flag] : variable.get_eval_flag_set_rhs())
             {
               dependency_flag_set[pair] |= flag;
             }
@@ -103,15 +103,15 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     {
       for (const auto &[pair, flag] : dependency_flag_set)
         {
-          variable.eval_flag_set_RHS[pair] |= flag;
+          variable.get_eval_flag_set_rhs()[pair] |= flag;
         }
     }
 
   // Compute the shared dependency set
-  auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[dependency_index, map] : variable.dependency_set_RHS)
+      for (const auto &[dependency_index, map] : variable.get_dependency_set_rhs())
         {
           for (const auto &[dependency_type, field_type] : map)
             {
@@ -121,7 +121,7 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
     }
   for (auto &[index, variable] : subset_attributes)
     {
-      variable.dependency_set_RHS = dependency_set;
+      variable.set_dependency_set_rhs(dependency_set);
     }
 
 #ifdef DEBUG
@@ -131,12 +131,12 @@ nonexplicitBase<dim, degree>::compute_shared_dependencies()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::set_initial_condition()
+NonexplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (variable.pde_type != PDEType::IMPLICIT_TIME_DEPENDENT &&
-          variable.pde_type != PDEType::TIME_INDEPENDENT)
+      if (variable.get_pde_type() != PDEType::ImplicitTimeDependent &&
+          variable.get_pde_type() != PDEType::TimeIndependent)
         {
           continue;
         }
@@ -153,10 +153,10 @@ nonexplicitBase<dim, degree>::set_initial_condition()
       dealii::VectorTools::interpolate(
         *mapping,
         *(dof_handler->get_dof_handlers().at(index)),
-        initialCondition<dim, degree>(index,
-                                      subset_attributes.at(index).field_type,
+        InitialCondition<dim, degree>(index,
+                                      subset_attributes.at(index).get_field_type(),
                                       pde_operator),
-        *(solution_handler->get_solution_vector(index, dependencyType::NORMAL)));
+        *(solution_handler->get_solution_vector(index, DependencyType::Normal)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.
@@ -166,25 +166,25 @@ nonexplicitBase<dim, degree>::set_initial_condition()
 
 template <unsigned int dim, unsigned int degree>
 inline void
-nonexplicitBase<dim, degree>::print()
+NonexplicitBase<dim, degree>::print()
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "  ==============================================\n"
     << "    Shared dependency set\n"
     << "  ==============================================\n";
-  const auto &dependency_set = subset_attributes.begin()->second.dependency_set_RHS;
+  const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[index, map] : dependency_set)
     {
       for (const auto &[dependency_type, field_type] : map)
         {
-          conditionalOStreams::pout_summary()
+          ConditionalOStreams::pout_summary()
             << "  Index: " << index << " Dependency: " << to_string(dependency_type)
             << " Field: " << to_string(field_type) << "\n";
         }
     }
-  conditionalOStreams::pout_summary() << "\n" << std::flush;
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitBase)
+INSTANTIATE_BI_TEMPLATE(NonexplicitBase)
 
 PRISMS_PF_END_NAMESPACE

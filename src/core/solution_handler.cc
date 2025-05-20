@@ -24,8 +24,8 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-solutionHandler<dim>::solutionHandler(
-  const std::map<unsigned int, variableAttributes> &_attributes_list,
+SolutionHandler<dim>::SolutionHandler(
+  const std::map<unsigned int, VariableAttributes> &_attributes_list,
   const MGInfo<dim>                                &_mg_info)
   : attributes_list(&_attributes_list)
   , mg_info(&_mg_info)
@@ -46,13 +46,13 @@ solutionHandler<dim>::solutionHandler(
 }
 
 template <unsigned int dim>
-std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
-solutionHandler<dim>::get_solution_vector() const
+std::map<unsigned int, typename SolutionHandler<dim>::VectorType *>
+SolutionHandler<dim>::get_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
   for (const auto &[pair, vector] : solution_set)
     {
-      if (pair.second != dependencyType::NORMAL)
+      if (pair.second != DependencyType::Normal)
         {
           continue;
         }
@@ -66,9 +66,9 @@ solutionHandler<dim>::get_solution_vector() const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::VectorType *
-solutionHandler<dim>::get_solution_vector(unsigned int   index,
-                                          dependencyType dependency_type) const
+typename SolutionHandler<dim>::VectorType *
+SolutionHandler<dim>::get_solution_vector(unsigned int   index,
+                                          DependencyType dependency_type) const
 {
   const auto pair = std::make_pair(index, dependency_type);
 
@@ -82,8 +82,8 @@ solutionHandler<dim>::get_solution_vector(unsigned int   index,
 }
 
 template <unsigned int dim>
-std::map<unsigned int, typename solutionHandler<dim>::VectorType *>
-solutionHandler<dim>::get_new_solution_vector() const
+std::map<unsigned int, typename SolutionHandler<dim>::VectorType *>
+SolutionHandler<dim>::get_new_solution_vector() const
 {
   std::map<unsigned int, VectorType *> temp;
   for (const auto &[index, vector] : new_solution_set)
@@ -97,8 +97,8 @@ solutionHandler<dim>::get_new_solution_vector() const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::VectorType *
-solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
+typename SolutionHandler<dim>::VectorType *
+SolutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 {
   Assert(new_solution_set.contains(index),
          dealii::ExcMessage("There is no new solution vector for the given index = " +
@@ -109,8 +109,8 @@ solutionHandler<dim>::get_new_solution_vector(unsigned int index) const
 }
 
 template <unsigned int dim>
-std::vector<typename solutionHandler<dim>::MGVectorType *>
-solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
+std::vector<typename SolutionHandler<dim>::MGVectorType *>
+SolutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 
@@ -133,8 +133,8 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level) const
 }
 
 template <unsigned int dim>
-typename solutionHandler<dim>::MGVectorType *
-solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int index) const
+typename SolutionHandler<dim>::MGVectorType *
+SolutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int index) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 
@@ -143,7 +143,8 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int in
   Assert(relative_level < mg_solution_set.size(),
          dealii::ExcMessage("The mg solution set does not contain level = " +
                             std::to_string(level)));
-  const unsigned int global_index = mg_info->get_global_index(index, relative_level);
+  [[maybe_unused]] const unsigned int global_index =
+    mg_info->get_global_index(index, relative_level);
   Assert(index < mg_solution_set[relative_level].size(),
          dealii::ExcMessage(
            "The mg solution at the given level does not contain index = " +
@@ -153,15 +154,15 @@ solutionHandler<dim>::get_mg_solution_vector(unsigned int level, unsigned int in
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
+SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
 {
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
     {
       // Add the current variable if it doesn't already exist
-      if (!solution_set.contains(std::make_pair(index, dependencyType::NORMAL)))
+      if (!solution_set.contains(std::make_pair(index, DependencyType::Normal)))
         {
-          solution_set[std::make_pair(index, dependencyType::NORMAL)] =
+          solution_set[std::make_pair(index, DependencyType::Normal)] =
             std::make_unique<VectorType>();
 
           new_solution_set[index] = std::make_unique<VectorType>();
@@ -169,11 +170,11 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
 
       // Add dependencies if they don't exist
-      for (const auto &[pair, flags] : variable.eval_flag_set_RHS)
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_rhs())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
-      for (const auto &[pair, flags] : variable.eval_flag_set_LHS)
+      for (const auto &[pair, flags] : variable.get_eval_flag_set_lhs())
         {
           solution_set.try_emplace(pair, std::make_unique<VectorType>());
         }
@@ -194,8 +195,8 @@ solutionHandler<dim>::init(matrixfreeHandler<dim, double> &matrix_free_handler)
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::mg_init(
-  const dealii::MGLevelObject<matrixfreeHandler<dim, float>> &mg_matrix_free_handler)
+SolutionHandler<dim>::mg_init(
+  const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler)
 {
   // Create all entries and initialize them
   for (unsigned int level = 0; level < mg_solution_set.size(); level++)
@@ -213,7 +214,7 @@ solutionHandler<dim>::mg_init(
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::update_ghosts() const
+SolutionHandler<dim>::update_ghosts() const
 {
   for (const auto &[pair, solution] : solution_set)
     {
@@ -230,7 +231,7 @@ solutionHandler<dim>::update_ghosts() const
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::apply_constraints(
+SolutionHandler<dim>::apply_constraints(
   unsigned int                             index,
   const dealii::AffineConstraints<double> &constraints)
 {
@@ -246,35 +247,37 @@ solutionHandler<dim>::apply_constraints(
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::apply_initial_condition_for_old_fields()
+SolutionHandler<dim>::apply_initial_condition_for_old_fields()
 {
   for (auto &[pair, vector] : solution_set)
     {
-      if (pair.second == dependencyType::NORMAL)
+      if (pair.second == DependencyType::Normal)
         {
           continue;
         }
       *(get_solution_vector(pair.first, pair.second)) =
-        *(get_solution_vector(pair.first, dependencyType::NORMAL));
+        *(get_solution_vector(pair.first, DependencyType::Normal));
     }
 }
 
 template <unsigned int dim>
 void
-solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
+SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
                              const unsigned int   &variable_index)
 {
   // Helper function to swap vectors for all dependency types
   auto swap_all_dependency_vectors = [this](unsigned int index, auto &new_vector)
   {
-    // Always swap the NORMAL dependency
-    new_vector->swap(*(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+    // Always swap the Normal dependency
+    new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::Normal))));
 
     // Swap old dependency types if they exist
-    const std::array<dependencyType, 4> old_types = {dependencyType::OLD_1,
-                                                     dependencyType::OLD_2,
-                                                     dependencyType::OLD_3,
-                                                     dependencyType::OLD_4};
+    const std::array<DependencyType, 4> old_types = {
+      {DependencyType::OldOne,
+       DependencyType::OldTwo,
+       DependencyType::OldThree,
+       DependencyType::OldFour}
+    };
 
     for (const auto &dep_type : old_types)
       {
@@ -288,7 +291,7 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
   // Loop through the solutions and swap them
   for (auto &[index, new_vector] : new_solution_set)
     {
-      const auto &attr_field_type = attributes_list->at(index).field_solve_type;
+      const auto &attr_field_type = attributes_list->at(index).get_field_solve_type();
 
       // Skip if field solve types don't match
       if (attr_field_type != field_solve_type)
@@ -298,40 +301,40 @@ solutionHandler<dim>::update(const fieldSolveType &field_solve_type,
 
       switch (field_solve_type)
         {
-          case fieldSolveType::EXPLICIT_CONSTANT:
+          case FieldSolveType::ExplicitConstant:
             break;
-          case fieldSolveType::EXPLICIT:
-          case fieldSolveType::EXPLICIT_POSTPROCESS:
-            // For EXPLICIT_POSTPROCESS we only swap NORMAL, but the helper function will
+          case FieldSolveType::Explicit:
+          case FieldSolveType::ExplicitPostprocess:
+            // For ExplicitPostprocess we only swap Normal, but the helper function will
             // do that first and ignore the rest since they should exist
             swap_all_dependency_vectors(index, new_vector);
             break;
-          case fieldSolveType::NONEXPLICIT_LINEAR:
+          case FieldSolveType::NonexplicitLinear:
             if (variable_index == index)
               {
                 swap_all_dependency_vectors(index, new_vector);
-                // Additional swap for NONEXPLICIT_LINEAR since the change term is the NEW
-                // vector and the NORMAL vector is the old one
+                // Additional swap for NonexplicitLinear since the change term is the NEW
+                // vector and the Normal vector is the old one
                 new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, dependencyType::NORMAL))));
+                  *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
               }
             break;
-          case fieldSolveType::NONEXPLICIT_AUXILIARY:
+          case FieldSolveType::NonexplicitAuxiliary:
             if (variable_index == index)
               {
                 swap_all_dependency_vectors(index, new_vector);
               }
             break;
-          case fieldSolveType::NONEXPLICIT_SELF_NONLINEAR:
-          case fieldSolveType::NONEXPLICIT_CO_NONLINEAR:
+          case FieldSolveType::NonexplicitSelfnonlinear:
+          case FieldSolveType::NonexplicitCononlinear:
             Assert(false, dealii::ExcNotImplemented());
             break;
           default:
-            AssertThrow(false, dealii::ExcMessage("Invalid fieldSolveType"));
+            AssertThrow(false, dealii::ExcMessage("Invalid FieldSolveType"));
         }
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(solutionHandler)
+INSTANTIATE_UNI_TEMPLATE(SolutionHandler)
 
 PRISMS_PF_END_NAMESPACE

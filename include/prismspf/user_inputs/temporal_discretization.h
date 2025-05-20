@@ -13,7 +13,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief Struct that holds temporal discretization parameters.
  */
-struct temporalDiscretization
+struct TemporalDiscretization
 {
 public:
   /**
@@ -21,7 +21,7 @@ public:
    */
   void
   postprocess_and_validate(
-    const std::map<unsigned int, variableAttributes> &var_attributes);
+    const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
    * \brief Print parameters to summary.log
@@ -141,20 +141,20 @@ private:
 };
 
 inline void
-temporalDiscretization::postprocess_and_validate(
-  const std::map<unsigned int, variableAttributes> &var_attributes)
+TemporalDiscretization::postprocess_and_validate(
+  const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
-  // If all of the variables are `TIME_INDEPENDENT`, `AUXILIARY`, or `CONSTANT` then
+  // If all of the variables are `TimeIndependent`, `Auxiliary`, or `Constant` then
   // total_increments should be 1 and final_time should be 0
   bool only_time_independent_pdes = true;
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess)
+      if (variable.is_postprocess())
         {
           continue;
         }
-      if (variable.pde_type == PDEType::EXPLICIT_TIME_DEPENDENT ||
-          variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT)
+      if (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
+          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
         {
           only_time_independent_pdes = false;
           break;
@@ -177,9 +177,9 @@ temporalDiscretization::postprocess_and_validate(
 }
 
 inline void
-temporalDiscretization::print_parameter_summary() const
+TemporalDiscretization::print_parameter_summary() const
 {
-  conditionalOStreams::pout_summary()
+  ConditionalOStreams::pout_summary()
     << "================================================\n"
     << "  Temporal Discretization\n"
     << "================================================\n"
