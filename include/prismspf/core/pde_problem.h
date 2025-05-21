@@ -188,6 +188,11 @@ private:
    * \brief Nonexplicit self-nonlinear field solver class.
    */
   NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
+
+  /**
+   * \brief Nonexplicit co-nonlinear field solver class.
+   */
+  NonexplicitCononlinearSolver<dim, degree> nonexplicit_co_nonlinear_solver;
 };
 
 PRISMS_PF_END_NAMESPACE

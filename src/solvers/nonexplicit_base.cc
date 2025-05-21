@@ -54,7 +54,7 @@ NonexplicitBase<dim, degree>::NonexplicitBase(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitBase<dim, degree>::compute_subset_attributes(
   const FieldSolveType &field_solve_type)
 {
@@ -79,7 +79,7 @@ NonexplicitBase<dim, degree>::compute_subset_attributes(
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitBase<dim, degree>::compute_shared_dependencies()
 {
   Assert(subset_attributes.begin()->second.get_field_solve_type() ==
@@ -130,7 +130,7 @@ NonexplicitBase<dim, degree>::compute_shared_dependencies()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
@@ -165,7 +165,7 @@ NonexplicitBase<dim, degree>::set_initial_condition()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitBase<dim, degree>::print()
 {
   ConditionalOStreams::pout_summary()

@@ -106,7 +106,7 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 LinearSolverBase<dim, degree>::compute_solver_tolerance()
 {
   tolerance = user_inputs->get_linear_solve_parameters()

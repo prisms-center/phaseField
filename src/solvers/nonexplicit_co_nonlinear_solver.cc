@@ -32,20 +32,20 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-nonexplicitCoNonlinearSolver<dim, degree>::nonexplicitCoNonlinearSolver(
-  const userInputParameters<dim>                         &_user_inputs,
-  const matrixfreeHandler<dim>                           &_matrix_free_handler,
-  const triangulationHandler<dim>                        &_triangulation_handler,
-  const invmHandler<dim, degree>                         &_invm_handler,
-  const constraintHandler<dim, degree>                   &_constraint_handler,
-  const dofHandler<dim>                                  &_dof_handler,
+NonexplicitCononlinearSolver<dim, degree>::NonexplicitCononlinearSolver(
+  const UserInputParameters<dim>                         &_user_inputs,
+  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
+  const TriangulationHandler<dim>                        &_triangulation_handler,
+  const InvmHandler<dim, degree>                         &_invm_handler,
+  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const DofHandler<dim>                                  &_dof_handler,
   const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<matrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  solutionHandler<dim>                                   &_solution_handler,
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
+  SolutionHandler<dim>                                   &_solution_handler,
   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)
-  : nonexplicitBase<dim, degree>(_user_inputs,
+  : NonexplicitBase<dim, degree>(_user_inputs,
                                  _matrix_free_handler,
                                  _triangulation_handler,
                                  _invm_handler,
@@ -61,96 +61,99 @@ nonexplicitCoNonlinearSolver<dim, degree>::nonexplicitCoNonlinearSolver(
 
 template <unsigned int dim, unsigned int degree>
 void
-nonexplicitCoNonlinearSolver<dim, degree>::init()
+NonexplicitCononlinearSolver<dim, degree>::init()
 {
-  this->compute_subset_attributes(fieldSolveType::NONEXPLICIT_CO_NONLINEAR);
+  this->compute_subset_attributes(FieldSolveType::NonexplicitCononlinear);
 
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
   this->set_initial_condition();
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
-      if (variable.pde_type == PDEType::AUXILIARY)
+      if (variable.get_pde_type() == PDEType::Auxiliary)
         {
           // Creating temporary map to match types
-          std::map<unsigned int, variableAttributes> temp;
+          std::map<unsigned int, VariableAttributes> temp;
           temp.emplace(index, variable);
           subset_attributes_list.push_back(temp);
 
           // Create the implementation of matrixFreeOperator with the subset of variable
           // attributes
-          this->system_matrix[index] =
+          this->get_system_matrix()[index] =
             std::make_unique<SystemMatrixType>(subset_attributes_list.back(),
-                                               this->pde_operator,
+                                               this->get_pde_operator(),
                                                index);
 
           // Set up the user-implemented equations and create the residual vectors
-          this->system_matrix.at(index)->clear();
-          this->system_matrix.at(index)->initialize(
-            this->matrix_free_handler->get_matrix_free());
+          this->get_system_matrix().at(index)->clear();
+          this->get_system_matrix().at(index)->initialize(
+            this->get_matrix_free_handler().get_matrix_free());
 
           // Create the subset of solution vectors and add the mapping to
           // matrixFreeOperator
           new_solution_subset[index].push_back(
-            this->solution_handler->get_new_solution_vector(index));
+            this->get_solution_handler().get_new_solution_vector(index));
           solution_subset[index].push_back(
-            this->solution_handler->get_solution_vector(index, dependencyType::NORMAL));
+            this->get_solution_handler().get_solution_vector(index,
+                                                             DependencyType::Normal));
           global_to_local_solution[index].emplace(std::make_pair(index,
-                                                                 dependencyType::NORMAL),
+                                                                 DependencyType::Normal),
                                                   0);
           for (const auto &[variable_index, map] :
-               subset_attributes_list.back().begin()->second.dependency_set_RHS)
+               subset_attributes_list.back().begin()->second.get_dependency_set_rhs())
             {
               for (const auto &[dependency_type, field_type] : map)
                 {
                   const auto pair = std::make_pair(variable_index, dependency_type);
 
                   solution_subset[index].push_back(
-                    this->solution_handler->get_solution_vector(variable_index,
-                                                                dependency_type));
+                    this->get_solution_handler().get_solution_vector(variable_index,
+                                                                     dependency_type));
                   global_to_local_solution[index]
                     .emplace(pair, solution_subset.at(index).size() - 1);
                 }
             }
-          this->system_matrix.at(index)->add_global_to_local_mapping(
+          this->get_system_matrix().at(index)->add_global_to_local_mapping(
             global_to_local_solution.at(index));
         }
-      else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
-               variable.pde_type == PDEType::TIME_INDEPENDENT)
+      else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
+               variable.get_pde_type() == PDEType::TimeIndependent)
         {
-          if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
-                .preconditioner == preconditionerType::GMG)
+          if (this->get_user_inputs()
+                .get_linear_solve_parameters()
+                .get_linear_solve_parameters(index)
+                .preconditioner == PreconditionerType::GMG)
             {
-              gmg_solvers.emplace(
-                index,
-                std::make_unique<GMGSolver<dim, degree>>(*this->user_inputs,
-                                                         variable,
-                                                         *this->matrix_free_handler,
-                                                         *this->constraint_handler,
-                                                         *this->triangulation_handler,
-                                                         *this->dof_handler,
-                                                         *this->mg_matrix_free_handler,
-                                                         *this->solution_handler,
-                                                         this->pde_operator,
-                                                         pde_operator_float,
-                                                         *mg_info));
+              gmg_solvers.emplace(index,
+                                  std::make_unique<GMGSolver<dim, degree>>(
+                                    this->get_user_inputs(),
+                                    variable,
+                                    this->get_matrix_free_handler(),
+                                    this->get_constraint_handler(),
+                                    this->get_triangulation_handler(),
+                                    this->get_dof_handler(),
+                                    this->get_mg_matrix_free_handler(),
+                                    this->get_solution_handler(),
+                                    this->get_pde_operator(),
+                                    pde_operator_float,
+                                    *mg_info));
               gmg_solvers.at(index)->init();
             }
           else
             {
-              identity_solvers.emplace(
-                index,
-                std::make_unique<identitySolver<dim, degree>>(*this->user_inputs,
-                                                              variable,
-                                                              *this->matrix_free_handler,
-                                                              *this->constraint_handler,
-                                                              *this->solution_handler,
-                                                              this->pde_operator));
+              identity_solvers.emplace(index,
+                                       std::make_unique<IdentitySolver<dim, degree>>(
+                                         this->get_user_inputs(),
+                                         variable,
+                                         this->get_matrix_free_handler(),
+                                         this->get_constraint_handler(),
+                                         this->get_solution_handler(),
+                                         this->get_pde_operator()));
               identity_solvers.at(index)->init();
             }
         }
@@ -163,61 +166,65 @@ nonexplicitCoNonlinearSolver<dim, degree>::init()
 
 template <unsigned int dim, unsigned int degree>
 void
-nonexplicitCoNonlinearSolver<dim, degree>::solve()
+NonexplicitCononlinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
-  if (this->subset_attributes.empty())
+  if (this->get_subset_attributes().empty())
     {
       return;
     }
 
-  for (const auto &[index, variable] : this->subset_attributes)
+  for (const auto &[index, variable] : this->get_subset_attributes())
     {
       // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
       // is 0.
-      if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT &&
-          this->user_inputs->temporal_discretization.get_current_increment() == 0)
+      if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
+          this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
+            0)
         {
           continue;
         }
 
       bool         is_converged = true;
       unsigned int iteration    = 0;
-      const auto  &step_length =
-        this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
-          .step_length;
+      const auto  &step_length  = this->get_user_inputs()
+                                  .get_nonlinear_solve_parameters()
+                                  .get_nonlinear_solve_parameters(index)
+                                  .step_length;
 
       while (is_converged)
         {
           is_converged = false;
 
           // Update the auxiliary fields
-          if (variable.pde_type == PDEType::AUXILIARY)
+          if (variable.get_pde_type() == PDEType::Auxiliary)
             {
               // Compute the update
-              this->system_matrix.at(index)->compute_nonexplicit_auxiliary_update(
+              this->get_system_matrix().at(index)->compute_nonexplicit_auxiliary_update(
                 new_solution_subset.at(index),
                 solution_subset.at(index));
 
               // Scale the update by the respective (SCALAR/VECTOR) invm.
               new_solution_subset.at(index).at(0)->scale(
-                this->invm_handler->get_invm(index));
+                this->get_invm_handler().get_invm(index));
 
               // Update the solutions
-              this->solution_handler->update(fieldSolveType::NONEXPLICIT_CO_NONLINEAR,
-                                             index);
+              this->get_solution_handler().update(FieldSolveType::NonexplicitCononlinear,
+                                                  index);
 
               // Apply constraints
-              this->constraint_handler->get_constraint(index).distribute(
-                *(this->solution_handler->get_solution_vector(index,
-                                                              dependencyType::NORMAL)));
+              this->get_constraint_handler().get_constraint(index).distribute(
+                *(this->get_solution_handler()
+                    .get_solution_vector(index, DependencyType::Normal)));
             }
-          else if (variable.pde_type == PDEType::IMPLICIT_TIME_DEPENDENT ||
-                   variable.pde_type == PDEType::TIME_INDEPENDENT)
+          else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
+                   variable.get_pde_type() == PDEType::TimeIndependent)
             {
               // Perform the linear solve with the step length
-              if (this->user_inputs->linear_solve_parameters.linear_solve.at(index)
-                    .preconditioner == preconditionerType::GMG)
+              if (this->get_user_inputs()
+                    .get_linear_solve_parameters()
+                    .get_linear_solve_parameters(index)
+                    .preconditioner == PreconditionerType::GMG)
                 {
                   gmg_solvers.at(index)->solve(step_length);
                 }
@@ -229,9 +236,10 @@ nonexplicitCoNonlinearSolver<dim, degree>::solve()
               iteration++;
 
               // TODO (landinjm): Check the convergence of the nonlinear solve somehow
-              if (iteration <
-                  this->user_inputs->nonlinear_solve_parameters.nonlinear_solve.at(index)
-                    .max_iterations)
+              if (iteration < this->get_user_inputs()
+                                .get_nonlinear_solve_parameters()
+                                .get_nonlinear_solve_parameters(index)
+                                .max_iterations)
                 {
                   is_converged = true;
                 }
@@ -244,6 +252,6 @@ nonexplicitCoNonlinearSolver<dim, degree>::solve()
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(nonexplicitCoNonlinearSolver)
+INSTANTIATE_BI_TEMPLATE(NonexplicitCononlinearSolver)
 
 PRISMS_PF_END_NAMESPACE

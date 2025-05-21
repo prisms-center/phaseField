@@ -57,7 +57,7 @@ NonexplicitSelfnonlinearSolver<dim, degree>::NonexplicitSelfnonlinearSolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitSelfnonlinearSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitSelfnonlinear);
@@ -108,7 +108,7 @@ NonexplicitSelfnonlinearSolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitSelfnonlinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
