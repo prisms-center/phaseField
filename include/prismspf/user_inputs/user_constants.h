@@ -228,7 +228,7 @@ UserConstants<dim>::get_model_constant_double(const std::string &constant_name) 
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
            "that you attempted to access was " +
            constant_name + "."));
 
@@ -241,7 +241,7 @@ UserConstants<dim>::get_model_constant_int(const std::string &constant_name) con
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
            "that you attempted to access was " +
            constant_name + "."));
 
@@ -254,7 +254,7 @@ UserConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
            "that you attempted to access was " +
            constant_name + "."));
 
@@ -269,7 +269,7 @@ UserConstants<dim>::get_model_constant_rank_1_tensor(
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
            " Mismatch between constants in parameters.prm and "
-           "customPDE.h. The constant that you attempted to access was " +
+           "CustomPDE.h. The constant that you attempted to access was " +
            constant_name + "."));
 
   return boost::get<dealii::Tensor<1, dim>>(model_constants.at(constant_name));
@@ -282,7 +282,7 @@ UserConstants<dim>::get_model_constant_rank_2_tensor(
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
            "that you attempted to access was " +
            constant_name + "."));
 
@@ -296,7 +296,7 @@ UserConstants<dim>::get_model_constant_elasticity_tensor(
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
-           "Mismatch between constants in parameters.prm and customPDE.h. The constant "
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
            "that you attempted to access was " +
            constant_name + "."));
 

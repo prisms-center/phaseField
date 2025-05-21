@@ -53,7 +53,7 @@ NonexplicitAuxiliarySolver<dim, degree>::NonexplicitAuxiliarySolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitAuxiliarySolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitAuxiliary);
@@ -112,7 +112,7 @@ NonexplicitAuxiliarySolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitAuxiliarySolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early

@@ -68,58 +68,58 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  scalarValue c   = variable_list.get_scalar_value(0);
-  scalarGrad  cx  = variable_list.get_scalar_gradient(0);
-  scalarValue n1  = variable_list.get_scalar_value(1);
-  scalarGrad  n1x = variable_list.get_scalar_gradient(1);
-  scalarValue n2  = variable_list.get_scalar_value(2);
-  scalarGrad  n2x = variable_list.get_scalar_gradient(2);
-  scalarValue n3  = variable_list.get_scalar_value(3);
-  scalarGrad  n3x = variable_list.get_scalar_gradient(3);
-  vectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
+  ScalarValue c   = variable_list.get_scalar_value(0);
+  ScalarGrad  cx  = variable_list.get_scalar_gradient(0);
+  ScalarValue n1  = variable_list.get_scalar_value(1);
+  ScalarGrad  n1x = variable_list.get_scalar_gradient(1);
+  ScalarValue n2  = variable_list.get_scalar_value(2);
+  ScalarGrad  n2x = variable_list.get_scalar_gradient(2);
+  ScalarValue n3  = variable_list.get_scalar_value(3);
+  ScalarGrad  n3x = variable_list.get_scalar_gradient(3);
+  VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
-  scalarValue faV   = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
-  scalarValue facV  = A1 + 2.0 * A2 * c + 3.0 * A3 * c * c + 4.0 * A4 * c * c * c;
-  scalarValue faccV = 2.0 * A2 + 6.0 * A3 * c + 12.0 * A4 * c * c;
-  scalarValue fbV   = B2 * c * c + B1 * c + B0;
-  scalarValue fbcV  = 2.0 * B2 * c + B1;
-  scalarValue fbccV = 2.0 * B2;
-  scalarValue h1V   = compute_hV(n1);
-  scalarValue h2V   = compute_hV(n2);
-  scalarValue h3V   = compute_hV(n3);
+  ScalarValue faV   = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
+  ScalarValue facV  = A1 + 2.0 * A2 * c + 3.0 * A3 * c * c + 4.0 * A4 * c * c * c;
+  ScalarValue faccV = 2.0 * A2 + 6.0 * A3 * c + 12.0 * A4 * c * c;
+  ScalarValue fbV   = B2 * c * c + B1 * c + B0;
+  ScalarValue fbcV  = 2.0 * B2 * c + B1;
+  ScalarValue fbccV = 2.0 * B2;
+  ScalarValue h1V   = compute_hV(n1);
+  ScalarValue h2V   = compute_hV(n2);
+  ScalarValue h3V   = compute_hV(n3);
 
-  scalarValue hn1V = compute_hnV(n1);
-  scalarValue hn2V = compute_hnV(n2);
-  scalarValue hn3V = compute_hnV(n3);
+  ScalarValue hn1V = compute_hnV(n1);
+  ScalarValue hn2V = compute_hnV(n2);
+  ScalarValue hn3V = compute_hnV(n3);
 
   // Compute strain
-  vectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
+  VectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
   // Compute stress
-  vectorGrad stress;
+  VectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      scalarValue                                            sum_hV = h1V + h2V + h3V;
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
+      ScalarValue                                            sum_hV = h1V + h2V + h3V;
+      dealii::Tensor<2, voigt_tensor_size<dim>, ScalarValue> CIJ_combined =
         CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
-      compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
+      compute_stress<dim, ScalarValue>(CIJ_combined, strain, stress);
     }
   else
     {
-      compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
+      compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
     }
 
   // Compute one of the stress terms in the order parameter chemical potential,
   // nDependentMisfitACp = C*(E-E0)*(E0_p*Hn)
-  scalarValue nDependentMisfitAC1 = 0.0;
-  scalarValue nDependentMisfitAC2 = 0.0;
-  scalarValue nDependentMisfitAC3 = 0.0;
+  ScalarValue nDependentMisfitAC1 = 0.0;
+  ScalarValue nDependentMisfitAC2 = 0.0;
+  ScalarValue nDependentMisfitAC3 = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -136,13 +136,13 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
   // Compute the other stress term in the order parameter chemical potential,
   // heterMechACp = 0.5*Hn*(C_beta-C_alpha)*(E-E0)*(E-E0)
-  scalarValue heterMechAC1 = 0.0;
-  scalarValue heterMechAC2 = 0.0;
-  scalarValue heterMechAC3 = 0.0;
+  ScalarValue heterMechAC1 = 0.0;
+  ScalarValue heterMechAC2 = 0.0;
+  ScalarValue heterMechAC3 = 0.0;
   if (n_dependent_stiffness == true)
     {
-      vectorGrad stress_2;
-      compute_stress<dim, scalarValue>(CIJ_Beta - CIJ_Mg, strain, stress_2);
+      VectorGrad stress_2;
+      compute_stress<dim, ScalarValue>(CIJ_Beta - CIJ_Mg, strain, stress_2);
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -157,7 +157,7 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
     }
 
   // compute K*nx
-  scalarGrad Knx1, Knx2, Knx3;
+  ScalarGrad Knx1, Knx2, Knx3;
   for (unsigned int a = 0; a < dim; a++)
     {
       Knx1[a] = 0.0;
@@ -171,23 +171,23 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
         }
     }
 
-  scalarValue sum_hV = h1V + h2V + h3V;
+  ScalarValue sum_hV = h1V + h2V + h3V;
 
   // The terms in the govering equations
-  scalarValue eq_c       = c;
-  scalarGrad  eqx_c_temp = cx * ((1.0 - sum_hV) * faccV + sum_hV * fbccV) +
+  ScalarValue eq_c       = c;
+  ScalarGrad  eqx_c_temp = cx * ((1.0 - sum_hV) * faccV + sum_hV * fbccV) +
                           n1x * ((fbcV - facV) * hn1V) + n2x * ((fbcV - facV) * hn2V) +
                           n3x * ((fbcV - facV) * hn3V);
-  scalarGrad  eqx_c = -this->get_timestep() * McV * eqx_c_temp;
-  scalarValue eq_n1 = n1 - this->get_timestep() * Mn1V *
+  ScalarGrad  eqx_c = -this->get_timestep() * McV * eqx_c_temp;
+  ScalarValue eq_n1 = n1 - this->get_timestep() * Mn1V *
                              ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1);
-  scalarValue eq_n2 = n2 - this->get_timestep() * Mn2V *
+  ScalarValue eq_n2 = n2 - this->get_timestep() * Mn2V *
                              ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2);
-  scalarValue eq_n3 = n3 - this->get_timestep() * Mn3V *
+  ScalarValue eq_n3 = n3 - this->get_timestep() * Mn3V *
                              ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3);
-  scalarGrad eqx_n1 = -this->get_timestep() * Mn1V * Knx1;
-  scalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
-  scalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
+  ScalarGrad eqx_n1 = -this->get_timestep() * Mn1V * Knx1;
+  ScalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
+  ScalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
 
   variable_list.set_scalar_value_term(0, eq_c);
   variable_list.set_scalar_gradient_term(0, eqx_c);
@@ -201,39 +201,39 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 4)
     {
-      scalarValue n1 = variable_list.get_scalar_value(1);
-      scalarValue n2 = variable_list.get_scalar_value(2);
-      scalarValue n3 = variable_list.get_scalar_value(3);
-      vectorGrad  ux = variable_list.get_vector_symmetric_gradient(4);
+      ScalarValue n1 = variable_list.get_scalar_value(1);
+      ScalarValue n2 = variable_list.get_scalar_value(2);
+      ScalarValue n3 = variable_list.get_scalar_value(3);
+      VectorGrad  ux = variable_list.get_vector_symmetric_gradient(4);
 
       // Interpolation functions
-      scalarValue h1V = compute_hV(n1);
-      scalarValue h2V = compute_hV(n2);
-      scalarValue h3V = compute_hV(n3);
+      ScalarValue h1V = compute_hV(n1);
+      ScalarValue h2V = compute_hV(n2);
+      ScalarValue h3V = compute_hV(n3);
 
       // Compute strain
-      vectorGrad strain =
+      VectorGrad strain =
         ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
       // Compute stress
-      vectorGrad stress;
+      VectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          scalarValue                                            sum_hV = h1V + h2V + h3V;
-          dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
+          ScalarValue                                            sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, voigt_tensor_size<dim>, ScalarValue> CIJ_combined =
             CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
-          compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
+          compute_stress<dim, ScalarValue>(CIJ_combined, strain, stress);
         }
       else
         {
-          compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
+          compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
       variable_list.set_vector_gradient_term(4, -stress);
@@ -242,38 +242,38 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 4)
     {
-      scalarValue n1        = variable_list.get_scalar_value(1);
-      scalarValue n2        = variable_list.get_scalar_value(2);
-      scalarValue n3        = variable_list.get_scalar_value(3);
-      vectorGrad  change_ux = variable_list.get_vector_symmetric_gradient(4, Change);
+      ScalarValue n1        = variable_list.get_scalar_value(1);
+      ScalarValue n2        = variable_list.get_scalar_value(2);
+      ScalarValue n3        = variable_list.get_scalar_value(3);
+      VectorGrad  change_ux = variable_list.get_vector_symmetric_gradient(4, Change);
 
       // Interpolation functions
-      scalarValue h1V = compute_hV(n1);
-      scalarValue h2V = compute_hV(n2);
-      scalarValue h3V = compute_hV(n3);
+      ScalarValue h1V = compute_hV(n1);
+      ScalarValue h2V = compute_hV(n2);
+      ScalarValue h3V = compute_hV(n3);
 
       // Compute strain
-      vectorGrad strain = change_ux;
+      VectorGrad strain = change_ux;
 
       // Compute stress
-      vectorGrad stress;
+      VectorGrad stress;
       if (n_dependent_stiffness == true)
         {
-          scalarValue                                            sum_hV = h1V + h2V + h3V;
-          dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
+          ScalarValue                                            sum_hV = h1V + h2V + h3V;
+          dealii::Tensor<2, voigt_tensor_size<dim>, ScalarValue> CIJ_combined =
             CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
-          compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
+          compute_stress<dim, ScalarValue>(CIJ_combined, strain, stress);
         }
       else
         {
-          compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
+          compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
       variable_list.set_vector_gradient_term(4, stress, Change);
@@ -282,31 +282,31 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  scalarValue c   = variable_list.get_scalar_value(0);
-  scalarValue n1  = variable_list.get_scalar_value(1);
-  scalarGrad  n1x = variable_list.get_scalar_gradient(1);
-  scalarValue n2  = variable_list.get_scalar_value(2);
-  scalarGrad  n2x = variable_list.get_scalar_gradient(2);
-  scalarValue n3  = variable_list.get_scalar_value(3);
-  scalarGrad  n3x = variable_list.get_scalar_gradient(3);
-  vectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
+  ScalarValue c   = variable_list.get_scalar_value(0);
+  ScalarValue n1  = variable_list.get_scalar_value(1);
+  ScalarGrad  n1x = variable_list.get_scalar_gradient(1);
+  ScalarValue n2  = variable_list.get_scalar_value(2);
+  ScalarGrad  n2x = variable_list.get_scalar_gradient(2);
+  ScalarValue n3  = variable_list.get_scalar_value(3);
+  ScalarGrad  n3x = variable_list.get_scalar_gradient(3);
+  VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
-  scalarValue faV    = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
-  scalarValue fbV    = B2 * c * c + B1 * c + B0;
-  scalarValue h1V    = compute_hV(n1);
-  scalarValue h2V    = compute_hV(n2);
-  scalarValue h3V    = compute_hV(n3);
-  scalarValue sum_hV = h1V + h2V + h3V;
+  ScalarValue faV    = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
+  ScalarValue fbV    = B2 * c * c + B1 * c + B0;
+  ScalarValue h1V    = compute_hV(n1);
+  ScalarValue h2V    = compute_hV(n2);
+  ScalarValue h3V    = compute_hV(n3);
+  ScalarValue sum_hV = h1V + h2V + h3V;
 
-  scalarValue f_chem = (1.0 - sum_hV) * faV + sum_hV * fbV;
+  ScalarValue f_chem = (1.0 - sum_hV) * faV + sum_hV * fbV;
 
-  scalarValue f_grad = 0.0;
+  ScalarValue f_grad = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -317,22 +317,22 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
     }
 
   // Compute strain
-  vectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
+  VectorGrad strain = ux - (sfts_const1 * h1V + sfts_const2 * h2V + sfts_const3 * h3V);
 
   // Compute stress
-  vectorGrad stress;
+  VectorGrad stress;
   if (n_dependent_stiffness == true)
     {
-      dealii::Tensor<2, voigt_tensor_size<dim>, scalarValue> CIJ_combined =
+      dealii::Tensor<2, voigt_tensor_size<dim>, ScalarValue> CIJ_combined =
         CIJ_Mg * (1.0 - sum_hV) + CIJ_Beta * sum_hV;
-      compute_stress<dim, scalarValue>(CIJ_combined, strain, stress);
+      compute_stress<dim, ScalarValue>(CIJ_combined, strain, stress);
     }
   else
     {
-      compute_stress<dim, scalarValue>(CIJ_Mg, strain, stress);
+      compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
     }
 
-  scalarValue f_el = 0.0;
+  ScalarValue f_el = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       for (unsigned int j = 0; j < dim; j++)
@@ -341,11 +341,11 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
         }
     }
 
-  scalarValue f_tot = f_chem + f_grad + f_el;
+  ScalarValue f_tot = f_chem + f_grad + f_el;
 
   variable_list.set_scalar_value_term(5, f_tot);
 }
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

@@ -23,20 +23,20 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \tparam number Datatype to use. Either double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class customPDE : public PDEOperator<dim, degree, number>
+class CustomPDE : public PDEOperator<dim, degree, number>
 {
 public:
-  using scalarValue = dealii::VectorizedArray<number>;
-  using scalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using scalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using vectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using vectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using vectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Constructor.
    */
-  explicit customPDE(const UserInputParameters<dim> &_user_inputs)
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
@@ -54,7 +54,7 @@ private:
   /**
    * \brief User-implemented class for nonuniform boundary conditions.
    */
-  virtual void
+  void
   set_nonuniform_dirichlet(const unsigned int       &index,
                            const unsigned int       &boundary_id,
                            const unsigned int       &component,

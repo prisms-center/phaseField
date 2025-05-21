@@ -7,7 +7,7 @@
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+CustomPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &p,
                                             [[maybe_unused]] const unsigned int index,
                                             [[maybe_unused]] double            &scalar_IC,
                                             [[maybe_unused]] Vector<double>    &vector_IC)
@@ -70,7 +70,7 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setNonUniformDirichletBCs(
+CustomPDE<dim, degree>::setNonUniformDirichletBCs(
   [[maybe_unused]] const Point<dim>  &p,
   [[maybe_unused]] const unsigned int index,
   [[maybe_unused]] const unsigned int direction,

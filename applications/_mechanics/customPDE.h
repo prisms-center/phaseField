@@ -6,11 +6,11 @@
 using namespace dealii;
 
 template <int dim, int degree>
-class customPDE : public MatrixFreePDE<dim, degree>
+class CustomPDE : public MatrixFreePDE<dim, degree>
 {
 public:
   // Constructor
-  customPDE(UserInputParameters<dim> _userInputs)
+  CustomPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs) {};
 

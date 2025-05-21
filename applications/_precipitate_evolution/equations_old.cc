@@ -79,7 +79,7 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::explicitEquationRHS(
+CustomPDE<dim, degree>::explicitEquationRHS(
   [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
@@ -376,7 +376,7 @@ customPDE<dim, degree>::explicitEquationRHS(
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::nonExplicitEquationRHS(
+CustomPDE<dim, degree>::nonExplicitEquationRHS(
   [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
@@ -495,7 +495,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::equationLHS(
+CustomPDE<dim, degree>::equationLHS(
   [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
   [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
   [[maybe_unused]] const VectorizedArray<double> element_volume) const

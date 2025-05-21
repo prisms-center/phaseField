@@ -22,7 +22,7 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -30,24 +30,24 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      vectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
+      VectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
 
-      scalarValue dist_from_inclusion = 0.0;
-      scalarValue inclusion_radius    = 10.0;
+      ScalarValue dist_from_inclusion = 0.0;
+      ScalarValue inclusion_radius    = 10.0;
       for (unsigned int i = 0; i < dim; i++)
         {
           dist_from_inclusion += (q_point_loc[i] - 0.0) * (q_point_loc[i] - 0.0);
         }
       dist_from_inclusion = std::sqrt(dist_from_inclusion);
 
-      vectorGrad transformation_strain;
+      VectorGrad transformation_strain;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -67,36 +67,36 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
                 }
             }
         }
-      vectorGrad stress;
-      compute_stress<dim, scalarValue>(compliance, ux - transformation_strain, stress);
+      VectorGrad stress;
+      compute_stress<dim, ScalarValue>(compliance, ux - transformation_strain, stress);
       variable_list.set_vector_gradient_term(0, -stress);
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      vectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
-      vectorGrad stress;
-      compute_stress<dim, scalarValue>(compliance, change_ux, stress);
+      VectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
+      VectorGrad stress;
+      compute_stress<dim, ScalarValue>(compliance, change_ux, stress);
       variable_list.set_vector_gradient_term(0, stress, Change);
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

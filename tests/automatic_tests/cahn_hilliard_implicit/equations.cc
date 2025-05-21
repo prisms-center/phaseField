@@ -13,22 +13,25 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 CustomAttributeLoader::load_variable_attributes()
 {
-  set_variable_name(0, "T");
+  set_variable_name(0, "c");
   set_variable_type(0, Scalar);
-  set_variable_equation_type(0, TimeIndependent);
-  set_dependencies_value_term_rhs(0, "q");
-  set_dependencies_gradient_term_rhs(0, "grad(T)");
-  set_dependencies_gradient_term_lhs(0, "grad(change(T))");
+  set_variable_equation_type(0, ImplicitTimeDependent);
+  set_dependencies_value_term_rhs(0, "c, old_1(c)");
+  set_dependencies_gradient_term_rhs(0, "grad(mu)");
+  set_dependencies_value_term_lhs(0, "change(c)");
+  set_dependencies_gradient_term_lhs(0, "");
 
-  set_variable_name(1, "q");
+  set_variable_name(1, "mu");
   set_variable_type(1, Scalar);
-  set_variable_equation_type(1, Constant);
+  set_variable_equation_type(1, Auxiliary);
+  set_dependencies_value_term_rhs(1, "c");
+  set_dependencies_gradient_term_rhs(1, "grad(c)");
 
-  set_variable_name(2, "error");
+  set_variable_name(2, "f_tot");
   set_variable_type(2, Scalar);
   set_variable_equation_type(2, ExplicitTimeDependent);
   set_is_postprocessed_field(2, true);
-  set_dependencies_value_term_rhs(2, "T");
+  set_dependencies_value_term_rhs(2, "c, grad(c)");
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -48,11 +51,28 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (current_index == 0)
     {
-      ScalarGrad  Tx = variable_list.get_scalar_gradient(0);
-      ScalarValue q  = variable_list.get_scalar_value(1);
+      ScalarValue c     = variable_list.get_scalar_value(0);
+      ScalarValue old_c = variable_list.get_scalar_value(0, OldOne);
+      ScalarGrad  mux   = variable_list.get_scalar_gradient(1);
 
-      variable_list.set_scalar_value_term(0, q);
-      variable_list.set_scalar_gradient_term(0, -Tx);
+      ScalarValue eq_c  = c - old_c;
+      ScalarGrad  eqx_c = -McV * this->get_timestep() * mux;
+
+      variable_list.set_scalar_value_term(0, eq_c);
+      variable_list.set_scalar_gradient_term(0, eqx_c);
+    }
+  if (current_index == 1)
+    {
+      ScalarValue c  = variable_list.get_scalar_value(0);
+      ScalarGrad  cx = variable_list.get_scalar_gradient(0);
+
+      ScalarValue fcV = 4.0 * (c - 1.0) * (c - 0.5) * c;
+
+      ScalarValue eq_mu  = fcV;
+      ScalarGrad  eqx_mu = KcV * cx;
+
+      variable_list.set_scalar_value_term(1, eq_mu);
+      variable_list.set_scalar_gradient_term(1, eqx_mu);
     }
 }
 
@@ -65,9 +85,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      ScalarGrad change_Tx = variable_list.get_scalar_gradient(0, Change);
+      ScalarValue change_c = variable_list.get_scalar_value(0, Change);
 
-      variable_list.set_scalar_gradient_term(0, change_Tx, Change);
+      variable_list.set_scalar_value_term(0, change_c, Change);
     }
 }
 
@@ -78,18 +98,22 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue T = variable_list.get_scalar_value(0);
+  ScalarValue c  = variable_list.get_scalar_value(0);
+  ScalarGrad  cx = variable_list.get_scalar_gradient(0);
 
-  ScalarValue analytic =
-    std::sin(M_PI * q_point_loc[0] /
-             this->get_user_inputs().get_spatial_discretization().get_size()[0]) *
-    q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().get_size()[1] *
-    (1.0 -
-     q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().get_size()[1]);
+  ScalarValue f_tot  = 0.0;
+  ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
+  ScalarValue f_grad = 0.0;
 
-  ScalarValue error = (T - analytic) * (T - analytic);
-
-  variable_list.set_scalar_value_term(2, error);
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      for (unsigned int j = 0; j < dim; j++)
+        {
+          f_grad += 0.5 * KcV * cx[i] * cx[j];
+        }
+    }
+  f_tot = f_chem + f_grad;
+  variable_list.set_scalar_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

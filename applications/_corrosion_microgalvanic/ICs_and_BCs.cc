@@ -10,7 +10,7 @@ using namespace std;
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setInitialCondition(
+CustomPDE<dim, degree>::setInitialCondition(
   [[maybe_unused]] const dealii::Point<dim> &p,
   [[maybe_unused]] const unsigned int        index,
   [[maybe_unused]] double                   &scalar_IC,
@@ -95,7 +95,7 @@ customPDE<dim, degree>::setInitialCondition(
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::setNonUniformDirichletBCs(
+CustomPDE<dim, degree>::setNonUniformDirichletBCs(
   [[maybe_unused]] const dealii::Point<dim> &p,
   [[maybe_unused]] const unsigned int        index,
   [[maybe_unused]] const unsigned int        direction,

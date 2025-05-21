@@ -8,12 +8,14 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
+ * \brief This is a derived class of `matrixFreeOperator` where the user implements their
  * PDEs.
  *
  * \tparam dim The number of dimensions in the problem.
@@ -52,7 +54,7 @@ private:
   /**
    * \brief User-implemented class for nonuniform boundary conditions.
    */
-  virtual void
+  void
   set_nonuniform_dirichlet(const unsigned int       &index,
                            const unsigned int       &boundary_id,
                            const unsigned int       &component,
@@ -95,10 +97,10 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
-  constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-  dealii::Tensor<2, CIJ_tensor_size, number> compliance =
-    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
-      "compliance");
+  number McV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  number KcV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("KcV");
 };
 
 PRISMS_PF_END_NAMESPACE
