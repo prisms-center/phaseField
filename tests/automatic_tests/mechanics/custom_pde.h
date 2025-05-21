@@ -54,7 +54,7 @@ private:
   /**
    * \brief User-implemented class for nonuniform boundary conditions.
    */
-  virtual void
+  void
   set_nonuniform_dirichlet(const unsigned int       &index,
                            const unsigned int       &boundary_id,
                            const unsigned int       &component,

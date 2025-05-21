@@ -2,7 +2,7 @@ set dim = 2
 set global refinement = 6
 set degree = 2
 
-subsection rectangular mesh
+subsection Rectangular mesh
     set x size = 50
     set y size = 50
     set z size = 50
@@ -26,10 +26,10 @@ set Model constant McV = 1.0, DOUBLE
 set Model constant KcV = 1.5, DOUBLE
 
 subsection linear solver parameters: c
-    set tolerance type = ABSOLUTE_RESIDUAL
+    set tolerance type = AbsoluteResidual
     set tolerance value = 1e-10
     set max iterations = 100
-    set preconditioner type = NONE
+    set preconditioner type = None
 end
 
 subsection nonlinear solver parameters: c
