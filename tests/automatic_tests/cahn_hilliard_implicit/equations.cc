@@ -36,7 +36,7 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -44,32 +44,32 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      scalarValue c     = variable_list.get_scalar_value(0);
-      scalarValue old_c = variable_list.get_scalar_value(0, OldOne);
-      scalarGrad  mux   = variable_list.get_scalar_gradient(1);
+      ScalarValue c     = variable_list.get_scalar_value(0);
+      ScalarValue old_c = variable_list.get_scalar_value(0, OldOne);
+      ScalarGrad  mux   = variable_list.get_scalar_gradient(1);
 
-      scalarValue eq_c  = c - old_c;
-      scalarGrad  eqx_c = -McV * this->get_timestep() * mux;
+      ScalarValue eq_c  = c - old_c;
+      ScalarGrad  eqx_c = -McV * this->get_timestep() * mux;
 
       variable_list.set_scalar_value_term(0, eq_c);
       variable_list.set_scalar_gradient_term(0, eqx_c);
     }
   if (current_index == 1)
     {
-      scalarValue c  = variable_list.get_scalar_value(0);
-      scalarGrad  cx = variable_list.get_scalar_gradient(0);
+      ScalarValue c  = variable_list.get_scalar_value(0);
+      ScalarGrad  cx = variable_list.get_scalar_gradient(0);
 
-      scalarValue fcV = 4.0 * (c - 1.0) * (c - 0.5) * c;
+      ScalarValue fcV = 4.0 * (c - 1.0) * (c - 0.5) * c;
 
-      scalarValue eq_mu  = fcV;
-      scalarGrad  eqx_mu = KcV * cx;
+      ScalarValue eq_mu  = fcV;
+      ScalarGrad  eqx_mu = KcV * cx;
 
       variable_list.set_scalar_value_term(1, eq_mu);
       variable_list.set_scalar_gradient_term(1, eqx_mu);
@@ -78,14 +78,14 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      scalarValue change_c = variable_list.get_scalar_value(0, Change);
+      ScalarValue change_c = variable_list.get_scalar_value(0, Change);
 
       variable_list.set_scalar_value_term(0, change_c, Change);
     }
@@ -93,17 +93,17 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  scalarValue c  = variable_list.get_scalar_value(0);
-  scalarGrad  cx = variable_list.get_scalar_gradient(0);
+  ScalarValue c  = variable_list.get_scalar_value(0);
+  ScalarGrad  cx = variable_list.get_scalar_gradient(0);
 
-  scalarValue f_tot  = 0.0;
-  scalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
-  scalarValue f_grad = 0.0;
+  ScalarValue f_tot  = 0.0;
+  ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
+  ScalarValue f_grad = 0.0;
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -116,6 +116,6 @@ customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   variable_list.set_scalar_value_term(2, f_tot);
 }
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

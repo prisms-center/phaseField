@@ -11,7 +11,7 @@
 // scalar (only scalars are supported at present), its dependencies on other
 // variables and their derivatives, and whether to calculate an integral of the
 // postprocessed quantity over the entire domain. Note: this function is not a
-// member of customPDE.
+// member of CustomPDE.
 
 void
 CustomAttributeLoader::loadPostProcessorVariableAttributes()
@@ -42,7 +42,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::postProcessedFields(
+CustomPDE<dim, degree>::postProcessedFields(
   [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
   [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>

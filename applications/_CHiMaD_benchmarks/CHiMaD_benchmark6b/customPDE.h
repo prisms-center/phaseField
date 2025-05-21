@@ -9,11 +9,11 @@
 using namespace dealii;
 
 template <int dim, int degree>
-class customPDE : public MatrixFreePDE<dim, degree>
+class CustomPDE : public MatrixFreePDE<dim, degree>
 {
 public:
   // Constructor
-  customPDE(UserInputParameters<dim> _userInputs)
+  CustomPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs) {};
 
@@ -113,7 +113,7 @@ private:
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::create_triangulation(
+CustomPDE<dim, degree>::create_triangulation(
   parallel::distributed::Triangulation<dim> &tria) const
 {
   parallel::distributed::Triangulation<dim> tria_box(MPI_COMM_WORLD);

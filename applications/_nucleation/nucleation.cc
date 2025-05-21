@@ -10,7 +10,7 @@
 // =================================================================================
 template <int dim, int degree>
 double
-customPDE<dim, degree>::getNucleationProbability(
+CustomPDE<dim, degree>::getNucleationProbability(
   [[maybe_unused]] variableValueContainer variable_value,
   [[maybe_unused]] double                 dV,
   [[maybe_unused]] dealii::Point<dim>     p,
