@@ -284,7 +284,8 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
             {
               unconverged = false;
               ConditionalOStreams::pout_base()
-                << "Warning: nonlinear solver did not converge as per set tolerances.\n";
+                << "Warning: nonlinear solver did not converge as per set tolerances.\n\n"
+                << std::flush;
             }
         }
 
