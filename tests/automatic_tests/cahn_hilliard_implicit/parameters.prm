@@ -33,6 +33,6 @@ subsection linear solver parameters: c
 end
 
 subsection nonlinear solver parameters: c
-    set max iterations = 10
-    set step size = 0.52
+    set max iterations = 100
+    set step size = 0.68
 end
