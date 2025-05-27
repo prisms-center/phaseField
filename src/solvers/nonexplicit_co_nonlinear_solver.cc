@@ -292,6 +292,12 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
       // Update the iteration counter
       iteration++;
     }
+
+  // Update the solution
+  for (const auto &[index, variable] : this->get_subset_attributes())
+    {
+      this->get_solution_handler().update(FieldSolveType::NonexplicitCononlinear, index);
+    }
 }
 
 INSTANTIATE_BI_TEMPLATE(NonexplicitCononlinearSolver)

@@ -12,15 +12,15 @@ subsection Rectangular mesh
 end
 
 set time step = 2.0e-4
-set number steps = 1
+set end time = 3.0
 
 subsection output
     set condition = EQUAL_SPACING
     set number = 5
 end
 
-set boundary condition for c = NATURAL
-set boundary condition for gamma = NATURAL
+set boundary condition for c = Natural
+set boundary condition for gamma = Natural
 
 set Model constant McV = 1.0, DOUBLE
 set Model constant KcV = 1.5, DOUBLE
@@ -33,6 +33,10 @@ subsection linear solver parameters: c
 end
 
 subsection nonlinear solver parameters: c
+    set max iterations = 100
+    set step size = 0.68
+end
+subsection nonlinear solver parameters: gamma
     set max iterations = 100
     set step size = 0.68
 end
