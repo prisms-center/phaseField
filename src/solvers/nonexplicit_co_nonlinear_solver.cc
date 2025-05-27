@@ -173,28 +173,34 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
     {
       return;
     }
+  bool         unconverged = true;
+  unsigned int iteration   = 0;
 
-  for (const auto &[index, variable] : this->get_subset_attributes())
+  while (unconverged)
     {
-      // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
-      // is 0.
-      if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
-          this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
-            0)
-        {
-          continue;
-        }
+      // Assume the solve is converged, unless proven otherwise
+      unconverged = false;
 
-      bool         is_converged = true;
-      unsigned int iteration    = 0;
-      const auto  &step_length  = this->get_user_inputs()
-                                  .get_nonlinear_solve_parameters()
-                                  .get_nonlinear_solve_parameters(index)
-                                  .step_length;
-
-      while (is_converged)
+      for (const auto &[index, variable] : this->get_subset_attributes())
         {
-          is_converged = false;
+          // Skip if the field type is IMPLICIT_TIME_DEPENDENT and the current increment
+          // is 0.
+          if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
+              this->get_user_inputs()
+                  .get_temporal_discretization()
+                  .get_current_increment() == 0)
+            {
+              continue;
+            }
+
+          // Get the step length
+          const double step_length = this->get_user_inputs()
+                                       .get_nonlinear_solve_parameters()
+                                       .get_nonlinear_solve_parameters(index)
+                                       .step_length;
+
+          // Set the norm of the newton update
+          double newton_update_norm = 0.0;
 
           // Update the auxiliary fields
           if (variable.get_pde_type() == PDEType::Auxiliary)
@@ -227,28 +233,43 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                     .preconditioner == PreconditionerType::GMG)
                 {
                   gmg_solvers.at(index)->solve(step_length);
+                  newton_update_norm = gmg_solvers.at(index)->get_newton_update_l2_norm();
                 }
               else
                 {
                   identity_solvers.at(index)->solve(step_length);
-                }
-
-              iteration++;
-
-              // TODO (landinjm): Check the convergence of the nonlinear solve somehow
-              if (iteration < this->get_user_inputs()
-                                .get_nonlinear_solve_parameters()
-                                .get_nonlinear_solve_parameters(index)
-                                .max_iterations)
-                {
-                  is_converged = true;
+                  newton_update_norm =
+                    identity_solvers.at(index)->get_newton_update_l2_norm();
                 }
             }
           else
             {
               AssertThrow(false, UnreachableCode());
             }
+
+          std::cout << "newton_update_norm: " << newton_update_norm << std::endl;
+
+          // Check the convergence of the nonlinear solve
+          if (newton_update_norm > this->get_user_inputs()
+                                     .get_nonlinear_solve_parameters()
+                                     .get_nonlinear_solve_parameters(index)
+                                     .tolerance_value)
+            {
+              unconverged = true;
+            }
+
+          // Check if the maximum number of iterations has been reached
+          if (iteration >= this->get_user_inputs()
+                             .get_nonlinear_solve_parameters()
+                             .get_nonlinear_solve_parameters(index)
+                             .max_iterations)
+            {
+              unconverged = false;
+            }
         }
+
+      // Update the iteration counter
+      iteration++;
     }
 }
 

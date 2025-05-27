@@ -359,6 +359,9 @@ PDEProblem<dim, degree>::solve_increment()
   nonexplicit_self_nonlinear_solver.solve();
   solution_handler.update_ghosts();
 
+  nonexplicit_co_nonlinear_solver.solve();
+  solution_handler.update_ghosts();
+
   Timer::serial_timer().leave_subsection();
 }
 
