@@ -178,6 +178,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
 
   while (unconverged)
     {
+      ConditionalOStreams::pout_summary()
+        << "Nonlinear solver step: " << iteration << "\n";
+
       // Assume the solve is converged, unless proven otherwise
       unconverged = false;
 
@@ -248,6 +251,10 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
             }
 
           // Check the convergence of the nonlinear solve
+          ConditionalOStreams::pout_summary()
+            << "  field: " << index << " Newton update norm: " << newton_update_norm
+            << "\n";
+
           if (newton_update_norm > this->get_user_inputs()
                                      .get_nonlinear_solve_parameters()
                                      .get_nonlinear_solve_parameters(index)
@@ -263,6 +270,8 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                              .max_iterations)
             {
               unconverged = false;
+              ConditionalOStreams::pout_base()
+                << "Warning: nonlinear solver did not converge as per set tolerances.\n";
             }
         }
 
