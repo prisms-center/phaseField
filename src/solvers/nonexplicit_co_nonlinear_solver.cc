@@ -247,8 +247,6 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
               AssertThrow(false, UnreachableCode());
             }
 
-          std::cout << "newton_update_norm: " << newton_update_norm << std::endl;
-
           // Check the convergence of the nonlinear solve
           if (newton_update_norm > this->get_user_inputs()
                                      .get_nonlinear_solve_parameters()
