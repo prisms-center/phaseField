@@ -178,8 +178,14 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
 
   while (unconverged)
     {
-      ConditionalOStreams::pout_summary()
-        << "Nonlinear solver step: " << iteration << "\n";
+      if (this->get_user_inputs().get_output_parameters().should_output(
+            this->get_user_inputs()
+              .get_temporal_discretization()
+              .get_current_increment()))
+        {
+          ConditionalOStreams::pout_summary()
+            << "Nonlinear solver step: " << iteration << "\n";
+        }
 
       // Assume the solve is converged, unless proven otherwise
       unconverged = false;
@@ -251,9 +257,16 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
             }
 
           // Check the convergence of the nonlinear solve
-          ConditionalOStreams::pout_summary()
-            << "  field: " << index << " Newton update norm: " << newton_update_norm
-            << "\n";
+          if (this->get_user_inputs().get_output_parameters().should_output(
+                this->get_user_inputs()
+                  .get_temporal_discretization()
+                  .get_current_increment()))
+            {
+              ConditionalOStreams::pout_summary()
+                << "  field: " << index << " Newton update norm: " << newton_update_norm
+                << "\n"
+                << std::flush;
+            }
 
           if (newton_update_norm > this->get_user_inputs()
                                      .get_nonlinear_solve_parameters()
