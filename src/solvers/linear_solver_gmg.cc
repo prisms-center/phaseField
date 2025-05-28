@@ -334,9 +334,6 @@ GMGSolver<dim, degree>::solve(const double &step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->get_newton_update());
-  this->get_solution_handler().update(
-    this->get_variable_attributes().get_field_solve_type(),
-    this->get_field_index());
 
   // Apply constraints
   // This may be redundant with the constraints on the update step.

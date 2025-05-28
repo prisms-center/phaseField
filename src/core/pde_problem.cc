@@ -266,42 +266,37 @@ PDEProblem<dim, degree>::init_system()
   nonexplicit_self_nonlinear_solver.init();
   nonexplicit_co_nonlinear_solver.init();
 
-  // Update ghosts
+  // Update the ghosts
   solution_handler.update_ghosts();
 
   // Solve the auxiliary fields at the 0th step
   ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
   nonexplicit_auxiliary_solver.solve();
-  solution_handler.update_ghosts();
 
   // Solve the linear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_linear_solver.solve();
-  solution_handler.update_ghosts();
 
   // Solve the self-nonlinear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_self_nonlinear_solver.solve();
-  solution_handler.update_ghosts();
 
   // Solve the co-nonlinear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving co-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   nonexplicit_co_nonlinear_solver.solve();
-  solution_handler.update_ghosts();
 
   // Solve the postprocessed fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   postprocess_explicit_solver.solve();
-  solution_handler.update_ghosts();
 
   // Output initial condition
   ConditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
@@ -339,28 +334,16 @@ PDEProblem<dim, degree>::solve_increment()
         }
     }
 
-  // Update ghosts
-  solution_handler.update_ghosts();
-
   // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
   // apparent in an application that includes multiple of these solve types. Also only
   // update ghosts that need to be. It's wasteful to over communicate.
 
   // Solve a single increment
   explicit_solver.solve();
-  solution_handler.update_ghosts();
-
   nonexplicit_auxiliary_solver.solve();
-  solution_handler.update_ghosts();
-
   nonexplicit_linear_solver.solve();
-  solution_handler.update_ghosts();
-
   nonexplicit_self_nonlinear_solver.solve();
-  solution_handler.update_ghosts();
-
   nonexplicit_co_nonlinear_solver.solve();
-  solution_handler.update_ghosts();
 
   Timer::serial_timer().leave_subsection();
 }
@@ -399,21 +382,13 @@ PDEProblem<dim, degree>::solve()
       if (user_inputs->get_output_parameters().should_output(
             user_inputs->get_temporal_discretization().get_current_increment()))
         {
-          // Ideally just update ghosts that need to be here.
-          solution_handler.update_ghosts();
           postprocess_explicit_solver.solve();
 
-          // TODO (landinjm): Do I need to zero out the ghost values when outputting the
-          // solution?
           SolutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),
                               degree,
                               "solution",
                               *user_inputs);
-
-          // Update the ghost again so we can call compute integral. May as well wrap this
-          // into ComputeIntegral.
-          solution_handler.update_ghosts();
 
           // Print the l2-norms and integrals of each solution
           ConditionalOStreams::pout_base()

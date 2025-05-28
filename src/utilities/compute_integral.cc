@@ -30,6 +30,9 @@ ComputeIntegral<dim, degree, number>::compute_integral(
                             "components as the expected ones. For scalar fields there "
                             "should be 1 component."));
 
+  // Update ghosts
+  vector.update_ghost_values();
+
   // Set quadrature rule and FEValues to update the JxW values
   const dealii::QGaussLobatto<dim> quadrature(degree + 1);
   dealii::FEValues<dim>            fe_values(dof_handler.get_fe(),
@@ -80,6 +83,9 @@ ComputeIntegral<dim, degree, number>::compute_integral(
                             "should be dim components."));
   Assert(integral_value.size() == dim,
          dealii::ExcMessage("The provided `integral_value` must already be size dim"));
+
+  // Update ghosts
+  vector.update_ghost_values();
 
   // Set quadrature rule and FEValues to update the JxW values
   const dealii::QGaussLobatto<dim> quadrature(degree + 1);

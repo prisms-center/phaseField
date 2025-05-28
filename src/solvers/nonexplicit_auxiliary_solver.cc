@@ -138,6 +138,9 @@ NonexplicitAuxiliarySolver<dim, degree>::solve()
       // Apply constraints
       this->get_constraint_handler().get_constraint(index).distribute(*(
         this->get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

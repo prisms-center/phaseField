@@ -161,6 +161,13 @@ NonexplicitSelfnonlinearSolver<dim, degree>::solve()
               is_converged = true;
             }
         }
+
+      // Update the solutions
+      this->get_solution_handler().update(FieldSolveType::NonexplicitSelfnonlinear,
+                                          index);
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

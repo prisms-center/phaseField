@@ -12,7 +12,7 @@ subsection Rectangular mesh
 end
 
 set time step = 1.0e-3
-set end time = 3.0
+set end time = 0.01
 
 subsection output
     set condition = EQUAL_SPACING

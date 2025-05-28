@@ -138,6 +138,12 @@ NonexplicitLinearSolver<dim, degree>::solve()
         {
           identity_solvers.at(index)->solve();
         }
+
+      // Update the solutions
+      this->get_solution_handler().update(FieldSolveType::NonexplicitLinear, index);
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

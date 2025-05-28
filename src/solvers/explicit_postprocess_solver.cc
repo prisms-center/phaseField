@@ -114,6 +114,9 @@ ExplicitPostprocessSolver<dim, degree>::solve()
 
   // Update the solutions
   this->get_solution_handler().update(FieldSolveType::ExplicitPostprocess);
+
+  // Update the ghosts
+  this->get_solution_handler().update_ghosts();
 }
 
 INSTANTIATE_BI_TEMPLATE(ExplicitPostprocessSolver)

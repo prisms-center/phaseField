@@ -293,11 +293,14 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
       iteration++;
     }
 
-  // Update the solution
+  // Update the solutions
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
       this->get_solution_handler().update(FieldSolveType::NonexplicitCononlinear, index);
     }
+
+  // Update the ghosts
+  this->get_solution_handler().update_ghosts();
 }
 
 INSTANTIATE_BI_TEMPLATE(NonexplicitCononlinearSolver)
