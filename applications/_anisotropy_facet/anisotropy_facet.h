@@ -6,7 +6,7 @@
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::anisotropy(
+CustomPDE<dim, degree>::anisotropy(
   const Tensor<1, dim, VectorizedArray<double>> &normal,
   VectorizedArray<double>                       &gamma,
   Tensor<1, dim, VectorizedArray<double>>       &dgammadnormal) const

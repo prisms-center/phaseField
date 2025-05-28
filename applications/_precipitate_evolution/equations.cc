@@ -48,15 +48,15 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <int dim, int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  scalarValue c  = variable_list.get_scalar_value(0);
-  scalarValue n1 = variable_list.get_scalar_value(1);
-  scalarValue n2 = variable_list.get_scalar_value(2);
-  scalarValue n3 = variable_list.get_scalar_value(3);
+  ScalarValue c  = variable_list.get_scalar_value(0);
+  ScalarValue n1 = variable_list.get_scalar_value(1);
+  ScalarValue n2 = variable_list.get_scalar_value(2);
+  ScalarValue n3 = variable_list.get_scalar_value(3);
 
   variable_list.set_scalar_value_term(0, c);
   variable_list.set_scalar_value_term(1, n1);
@@ -66,14 +66,14 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
 template <int dim, int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
   if (this->current_index == 4)
     {
-      vectorGrad grad_u = variable_list.get_vector_gradient(4);
+      VectorGrad grad_u = variable_list.get_vector_gradient(4);
 
       variable_list.set_vector_gradient_term(4, -grad_u);
     }
@@ -81,14 +81,14 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
 
 template <int dim, int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
   if (this->current_index == 4)
     {
-      vectorGrad change_grad_u = variable_list.get_vector_gradient(4, Change);
+      VectorGrad change_grad_u = variable_list.get_vector_gradient(4, Change);
 
       variable_list.set_vector_gradient_term(4, change_grad_u, Change);
     }
@@ -96,12 +96,12 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 
 template <int dim, int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {}
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

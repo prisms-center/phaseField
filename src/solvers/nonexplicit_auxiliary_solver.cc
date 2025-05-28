@@ -53,7 +53,7 @@ NonexplicitAuxiliarySolver<dim, degree>::NonexplicitAuxiliarySolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitAuxiliarySolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitAuxiliary);
@@ -112,7 +112,7 @@ NonexplicitAuxiliarySolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitAuxiliarySolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
@@ -138,6 +138,9 @@ NonexplicitAuxiliarySolver<dim, degree>::solve()
       // Apply constraints
       this->get_constraint_handler().get_constraint(index).distribute(*(
         this->get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

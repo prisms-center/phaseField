@@ -22,6 +22,9 @@ public:
 
   // Max number of iterations for the nonlinear solve
   unsigned int max_iterations = Defaults::iterations;
+
+  // Tolerance value for the nonlinear solve
+  double tolerance_value = Defaults::tolerance;
 };
 
 /**

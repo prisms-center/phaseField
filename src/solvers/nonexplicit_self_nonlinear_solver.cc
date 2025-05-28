@@ -57,7 +57,7 @@ NonexplicitSelfnonlinearSolver<dim, degree>::NonexplicitSelfnonlinearSolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitSelfnonlinearSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitSelfnonlinear);
@@ -108,7 +108,7 @@ NonexplicitSelfnonlinearSolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitSelfnonlinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
@@ -161,6 +161,13 @@ NonexplicitSelfnonlinearSolver<dim, degree>::solve()
               is_converged = true;
             }
         }
+
+      // Update the solutions
+      this->get_solution_handler().update(FieldSolveType::NonexplicitSelfnonlinear,
+                                          index);
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

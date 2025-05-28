@@ -1,0 +1,42 @@
+set dim = 2
+set global refinement = 6
+set degree = 2
+
+subsection Rectangular mesh
+    set x size = 50
+    set y size = 50
+    set z size = 50
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
+end
+
+set time step = 1.0e-3
+set end time = 0.01
+
+subsection output
+    set condition = EQUAL_SPACING
+    set number = 5
+end
+
+set boundary condition for c = Natural
+set boundary condition for gamma = Natural
+
+set Model constant McV = 1.0, DOUBLE
+set Model constant KcV = 1.5, DOUBLE
+
+subsection linear solver parameters: c
+    set tolerance type = AbsoluteResidual
+    set tolerance value = 1e-6
+    set max iterations = 1000
+    set preconditioner type = None
+end
+
+subsection nonlinear solver parameters: c
+    set max iterations = 1000
+    set step size = 0.1
+end
+subsection nonlinear solver parameters: gamma
+    set max iterations = 1000
+    set step size = 0.1
+end
