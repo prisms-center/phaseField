@@ -1,9 +1,11 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/fe/mapping_q1.h>
 
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
@@ -27,6 +29,7 @@
 
 #include <map>
 #include <memory>
+#include <ostream>
 #include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
