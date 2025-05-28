@@ -77,6 +77,16 @@ public:
   virtual void
   solve(const double &step_length = 1.0) = 0;
 
+  /**
+   * \brief Get the l2-norm of the newton update.
+   */
+  [[nodiscard]] double
+  get_newton_update_l2_norm() const
+  {
+    AssertThrow(newton_update != nullptr, dealii::ExcNotInitialized());
+    return newton_update->l2_norm();
+  };
+
 protected:
   /**
    * \brief Compute the solver tolerance based on the specified tolerance type.

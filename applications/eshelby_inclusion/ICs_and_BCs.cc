@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::set_initial_condition(
+CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
@@ -26,7 +26,7 @@ customPDE<dim, degree, number>::set_initial_condition(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::set_nonuniform_dirichlet(
+CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &boundary_id,
   [[maybe_unused]] const unsigned int       &component,
@@ -35,6 +35,6 @@ customPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                   &vector_component_value) const
 {}
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

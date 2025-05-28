@@ -19,20 +19,20 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \tparam number Datatype to use. Either double or float.
  */
 template <int dim, int degree, typename number>
-class customPDE : public MatrixFreeOperator<dim, degree, number>
+class CustomPDE : public MatrixFreeOperator<dim, degree, number>
 {
 public:
-  using scalarValue = dealii::VectorizedArray<number>;
-  using scalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using scalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using vectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using vectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using vectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
    * \brief Constructor for concurrent solves.
    */
-  customPDE(const UserInputParameters<dim>                   &_user_inputs,
+  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
             const std::map<unsigned int, VariableAttributes> &subset_attributes)
     : MatrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
   {}
@@ -40,7 +40,7 @@ public:
   /**
    * \brief Constructor for single solves.
    */
-  customPDE(const UserInputParameters<dim>                   &_user_inputs,
+  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
             const unsigned int                               &_current_index,
             const std::map<unsigned int, VariableAttributes> &subset_attributes)
     : MatrixFreeOperator<dim, degree, number>(_user_inputs,

@@ -40,7 +40,7 @@ IdentitySolver<dim, degree>::IdentitySolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 IdentitySolver<dim, degree>::init()
 {
   this->get_system_matrix()->clear();
@@ -68,12 +68,12 @@ IdentitySolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 IdentitySolver<dim, degree>::reinit()
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 IdentitySolver<dim, degree>::solve(const double &step_length)
 {
   auto *solution =
@@ -125,8 +125,6 @@ IdentitySolver<dim, degree>::solve(const double &step_length)
 
   // Update the solutions
   (*solution).add(step_length, *this->get_newton_update());
-  this->get_solution_handler().update(FieldSolveType::NonexplicitLinear,
-                                      this->get_field_index());
 
   // Apply constraints
   // This may be redundant with the constraints on the update step.

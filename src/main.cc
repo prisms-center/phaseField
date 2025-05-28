@@ -78,10 +78,10 @@ main(int argc, char *argv[])
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<1, 1, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<1, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<1, 1, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<1, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<1, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<1, 1, float>>(user_inputs);
 
                       prisms::PDEProblem<1, 1> problem(user_inputs,
                                                        pde_operator,
@@ -92,10 +92,10 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<1, 2, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<1, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<1, 2, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<1, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<1, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<1, 2, float>>(user_inputs);
 
                       prisms::PDEProblem<1, 2> problem(user_inputs,
                                                        pde_operator,
@@ -106,10 +106,10 @@ main(int argc, char *argv[])
                   case 3:
                     {
                       std::shared_ptr<prisms::PDEOperator<1, 3, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<1, 3, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<1, 3, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<1, 3, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<1, 3, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<1, 3, float>>(user_inputs);
 
                       prisms::PDEProblem<1, 3> problem(user_inputs,
                                                        pde_operator,
@@ -132,10 +132,10 @@ main(int argc, char *argv[])
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<2, 1, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<2, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<2, 1, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<2, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<2, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<2, 1, float>>(user_inputs);
 
                       prisms::PDEProblem<2, 1> problem(user_inputs,
                                                        pde_operator,
@@ -146,10 +146,10 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<2, 2, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<2, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<2, 2, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<2, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<2, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<2, 2, float>>(user_inputs);
 
                       prisms::PDEProblem<2, 2> problem(user_inputs,
                                                        pde_operator,
@@ -160,10 +160,10 @@ main(int argc, char *argv[])
                   case 3:
                     {
                       std::shared_ptr<prisms::PDEOperator<2, 3, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<2, 3, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<2, 3, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<2, 3, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<2, 3, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<2, 3, float>>(user_inputs);
 
                       prisms::PDEProblem<2, 3> problem(user_inputs,
                                                        pde_operator,
@@ -186,10 +186,10 @@ main(int argc, char *argv[])
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<3, 1, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<3, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<3, 1, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<3, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<3, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<3, 1, float>>(user_inputs);
 
                       prisms::PDEProblem<3, 1> problem(user_inputs,
                                                        pde_operator,
@@ -200,10 +200,10 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<3, 2, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<3, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<3, 2, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<3, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<3, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<3, 2, float>>(user_inputs);
 
                       prisms::PDEProblem<3, 2> problem(user_inputs,
                                                        pde_operator,
@@ -214,10 +214,10 @@ main(int argc, char *argv[])
                   case 3:
                     {
                       std::shared_ptr<prisms::PDEOperator<3, 3, double>> pde_operator =
-                        std::make_shared<prisms::customPDE<3, 3, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<3, 3, double>>(user_inputs);
                       std::shared_ptr<prisms::PDEOperator<3, 3, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::customPDE<3, 3, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<3, 3, float>>(user_inputs);
 
                       prisms::PDEProblem<3, 3> problem(user_inputs,
                                                        pde_operator,
