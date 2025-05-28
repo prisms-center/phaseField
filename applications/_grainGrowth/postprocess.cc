@@ -47,7 +47,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::postProcessedFields(
+CustomPDE<dim, degree>::postProcessedFields(
   [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
     &variable_list,
   [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>

@@ -240,12 +240,14 @@ applicationList = [
     "allen_cahn_explicit",
     "allen_cahn_implicit",
     "cahn_hilliard_explicit",
+    "cahn_hilliard_implicit",
     "heat_equation_steady_state",
     "mechanics",
     "precipitate_explicit",
     "fracture",
 ]
 getNewGoldStandardList = [
+    False,
     False,
     False,
     False,

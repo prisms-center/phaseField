@@ -57,7 +57,7 @@ NonexplicitLinearSolver<dim, degree>::NonexplicitLinearSolver(
 {}
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitLinearSolver<dim, degree>::init()
 {
   this->compute_subset_attributes(FieldSolveType::NonexplicitLinear);
@@ -108,7 +108,7 @@ NonexplicitLinearSolver<dim, degree>::init()
 }
 
 template <unsigned int dim, unsigned int degree>
-inline void
+void
 NonexplicitLinearSolver<dim, degree>::solve()
 {
   // If the subset attribute is empty return early
@@ -138,6 +138,12 @@ NonexplicitLinearSolver<dim, degree>::solve()
         {
           identity_solvers.at(index)->solve();
         }
+
+      // Update the solutions
+      this->get_solution_handler().update(FieldSolveType::NonexplicitLinear, index);
+
+      // Update the ghosts
+      this->get_solution_handler().update_ghosts();
     }
 }
 

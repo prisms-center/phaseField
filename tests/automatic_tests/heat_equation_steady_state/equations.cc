@@ -33,7 +33,7 @@ CustomAttributeLoader::load_variable_attributes()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
@@ -41,15 +41,15 @@ customPDE<dim, degree, number>::compute_explicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_rhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      scalarGrad  Tx = variable_list.get_scalar_gradient(0);
-      scalarValue q  = variable_list.get_scalar_value(1);
+      ScalarGrad  Tx = variable_list.get_scalar_gradient(0);
+      ScalarValue q  = variable_list.get_scalar_value(1);
 
       variable_list.set_scalar_value_term(0, q);
       variable_list.set_scalar_gradient_term(0, -Tx);
@@ -58,14 +58,14 @@ customPDE<dim, degree, number>::compute_nonexplicit_rhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_nonexplicit_lhs(
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index current_index) const
 {
   if (current_index == 0)
     {
-      scalarGrad change_Tx = variable_list.get_scalar_gradient(0, Change);
+      ScalarGrad change_Tx = variable_list.get_scalar_gradient(0, Change);
 
       variable_list.set_scalar_gradient_term(0, change_Tx, Change);
     }
@@ -73,25 +73,25 @@ customPDE<dim, degree, number>::compute_nonexplicit_lhs(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-customPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  scalarValue T = variable_list.get_scalar_value(0);
+  ScalarValue T = variable_list.get_scalar_value(0);
 
-  scalarValue analytic =
+  ScalarValue analytic =
     std::sin(M_PI * q_point_loc[0] /
              this->get_user_inputs().get_spatial_discretization().get_size()[0]) *
     q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().get_size()[1] *
     (1.0 -
      q_point_loc[1] / this->get_user_inputs().get_spatial_discretization().get_size()[1]);
 
-  scalarValue error = (T - analytic) * (T - analytic);
+  ScalarValue error = (T - analytic) * (T - analytic);
 
   variable_list.set_scalar_value_term(2, error);
 }
 
-INSTANTIATE_TRI_TEMPLATE(customPDE)
+INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
 PRISMS_PF_END_NAMESPACE

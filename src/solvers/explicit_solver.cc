@@ -132,6 +132,9 @@ ExplicitSolver<dim, degree>::solve()
       this->get_solution_handler()
         .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
     }
+
+  // Update the ghosts
+  this->get_solution_handler().update_ghosts();
 }
 
 INSTANTIATE_BI_TEMPLATE(ExplicitSolver)

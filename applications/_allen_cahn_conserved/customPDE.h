@@ -6,11 +6,11 @@
 using namespace dealii;
 
 template <int dim, int degree>
-class customPDE : public MatrixFreePDE<dim, degree>
+class CustomPDE : public MatrixFreePDE<dim, degree>
 {
 public:
   // Constructor
-  customPDE(UserInputParameters<dim> _userInputs)
+  CustomPDE(UserInputParameters<dim> _userInputs)
     : MatrixFreePDE<dim, degree>(_userInputs)
     , userInputs(_userInputs) {};
 
@@ -113,7 +113,7 @@ private:
 
 template <int dim, int degree>
 void
-customPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
+CustomPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 {
   // log time
   this->computing_timer.enter_subsection("matrixFreePDE: solveIncrements");
