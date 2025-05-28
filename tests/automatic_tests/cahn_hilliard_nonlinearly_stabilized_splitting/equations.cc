@@ -17,9 +17,9 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_type(0, Scalar);
   set_variable_equation_type(0, ImplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "c, old_1(c)");
-  set_dependencies_gradient_term_rhs(0, "grad(gamma), c, grad(old_1(c))");
+  set_dependencies_gradient_term_rhs(0, "grad(gamma), c, grad(c), grad(old_1(c))");
   set_dependencies_value_term_lhs(0, "change(c)");
-  set_dependencies_gradient_term_lhs(0, "");
+  set_dependencies_gradient_term_lhs(0, "change(c), grad(change(c)), c, grad(c)");
 
   set_variable_name(1, "gamma");
   set_variable_type(1, Scalar);
@@ -52,6 +52,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   if (current_index == 0)
     {
       ScalarValue c          = variable_list.get_scalar_value(0);
+      ScalarGrad  grad_c     = variable_list.get_scalar_gradient(0);
       ScalarValue old_c      = variable_list.get_scalar_value(0, OldOne);
       ScalarGrad  old_grad_c = variable_list.get_scalar_gradient(0, OldOne);
       ScalarGrad  grad_gamma = variable_list.get_scalar_gradient(1);
@@ -59,7 +60,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarValue eq_c = old_c - c;
       ScalarGrad  eq_grad_c =
         McV * this->get_timestep() *
-        (grad_gamma - (12.0 * old_c * old_c - 12.0 * old_c + 2.0) * old_grad_c);
+        (grad_gamma - (12.0 * c * c - 12.0 * c + 3.0) * grad_c + old_grad_c);
 
       variable_list.set_scalar_value_term(0, eq_c);
       variable_list.set_scalar_gradient_term(0, eq_grad_c);
@@ -83,11 +84,21 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      ScalarValue change_c = variable_list.get_scalar_value(0, Change);
+      ScalarValue change_c      = variable_list.get_scalar_value(0, Change);
+      ScalarGrad  change_grad_c = variable_list.get_scalar_gradient(0, Change);
+      ScalarValue c             = variable_list.get_scalar_value(0);
+      ScalarGrad  grad_c        = variable_list.get_scalar_gradient(0);
 
       ScalarValue eq_c = change_c;
+      ScalarGrad  eq_grad_c =
+        McV * this->get_timestep() *
+        ((12.0 * c * c + 24.0 * c * change_c + 12.0 * change_c * change_c -
+          12.0 * (c + change_c) + 3.0) *
+           change_grad_c +
+         (12.0 * change_c * change_c + 24.0 * c * change_c - 12.0 * change_c) * grad_c);
 
       variable_list.set_scalar_value_term(0, eq_c, Change);
+      variable_list.set_scalar_gradient_term(0, eq_grad_c, Change);
     }
 }
 
