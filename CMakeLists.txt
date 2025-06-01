@@ -120,6 +120,14 @@ if(NOT DEAL_II_WITH_LAPACK)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
+if(NOT DEAL_II_WITH_VTK)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for VTK!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
+
 if(NOT DEAL_II_WITH_P4EST)
     message(SEND_ERROR
       "\n**deal.II was built without support for p4est!\n"
