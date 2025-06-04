@@ -28,6 +28,20 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 // FUNCTION FOR NON-UNIFORM DIRICHLET BOUNDARY CONDITIONS
 // ===========================================================================
 
+// First we need a Kronecker Delta
+int
+kDelta(int i, int j)
+{
+  if (i == j)
+    {
+      return 1;
+    }
+  else
+    {
+      return 0;
+    }
+}
+
 template <int dim, int degree>
 void
 customPDE<dim, degree>::setNonUniformDirichletBCs(
@@ -51,4 +65,29 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
   // (i.e. left = 0, right = 1, bottom = 2, top = 3, front = 4, back = 5).
 
   // -------------------------------------------------------------------------
+
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      double A = (incRadius * incRadius * incRadius) /
+                 (6 * (1 - poisson)); // All constants for the displacement equation
+      double dist =
+        sqrt((p[0] - centerX) * (p[0] - centerX) + (p[1] - centerY) * (p[1] - centerY) +
+             (p[2] - centerZ) * (p[2] - centerZ)); // distance from center of inclusion
+      // double sfts = 0.01;
+      double G = 0.0;
+      for (unsigned int j = 0; j < dim; j++)
+        {
+          for (unsigned int k = 0; k < dim; k++)
+            {
+              double g = (1 - 2 * poisson) * (kDelta(i, j) * ((p[k] - centerZ) / dist) +
+                                              kDelta(i, k) * ((p[j] - centerY) / dist) -
+                                              kDelta(j, k) * ((p[i] - centerX) / dist)) +
+                         3 * ((p[i] - centerX) / dist) * ((p[j] - centerY) / dist) *
+                           ((p[k] - centerZ) / dist);
+              double sfts = kDelta(j, k) * 0.01;
+              G += sfts * g;
+            }
+        }
+      vector_BC(i) = -1.0 * A * (1 / (dist * dist)) * G;
+    }
 }
