@@ -19,7 +19,7 @@
 
 ## What is PRISMS-PF?
 
-PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution if microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, and solidification.
+PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution in microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, and solidification.
 
 With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be over 6x faster than an equivalent finite difference code.
 
@@ -63,7 +63,7 @@ here `<nprocs>` denotes the number of threads you want to use to compile the lib
 
 ### Running a pre-built application:
 
-Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen_files/running_apps.html) for full details including instructions for visualization of the results.
+Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/running_apps.html) for full details including instructions for visualization of the results.
 
 Examples of various phase field models are located under the
 applications directory. The easiest way to get started on the code is to
@@ -93,7 +93,7 @@ $ mpirun -np <nprocs> ./main
 
 ### Visualization:
 
-Output of the primal fields fields is in standard vtk
+Output of the primal fields is in standard vtk
 format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
 following open source applications:
 
