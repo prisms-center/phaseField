@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
@@ -163,6 +164,20 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
     }
 
   return result;
+}
+
+template <unsigned int dim>
+inline std::array<double, 3>
+dealii_point_to_c_array(const dealii::Point<dim> &point)
+{
+  std::array<double, 3> arr = {
+    {0.0, 0.0, 0.0}
+  };
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      arr[i] = point[i];
+    }
+  return arr;
 }
 
 PRISMS_PF_END_NAMESPACE
