@@ -119,9 +119,10 @@ ReadUnstructuredVTK<dim>::ReadUnstructuredVTK(const std::string &filename)
 
   // Check that we only have one cell type
   auto output = reader->GetOutput();
-  AssertThrow(output->IsHomogeneous(),
-              dealii::ExcMessage(
-                "The vtk file must have homogeneous cells of type VTK_HEXAHEDRON"));
+  AssertThrow(
+    output->IsHomogeneous(),
+    dealii::ExcMessage(
+      "The vtk file must have homogeneous cells of type VTK_HEXAHEDRON or VTK_QUAD"));
 
   // Check that the cells are hexahedra or quads
   if constexpr (dim == 3)
