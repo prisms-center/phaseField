@@ -3,6 +3,7 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
+#include <deal.II/lac/vector.h>
 
 #include <prismspf/utilities/utilities.h>
 
@@ -70,6 +71,12 @@ public:
    */
   double
   get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name);
+
+  /**
+   * \brief Get vector value for a given point
+   */
+  dealii::Vector<double>
+  get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name);
 
 private:
   /**
@@ -255,6 +262,48 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
 
   // Get the value of the scalar at the point
   return data_array->GetComponent(point_id, 0);
+}
+
+template <unsigned int dim>
+inline dealii::Vector<double>
+ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
+                                           const std::string        &vector_name)
+{
+  // Check that the scalar name is in the vtk file
+  auto vectors_names = get_vectors_names();
+  AssertThrow(std::find(vectors_names.begin(), vectors_names.end(), vector_name) !=
+                vectors_names.end(),
+              dealii::ExcMessage(
+                "The provided vtk dataset does not contain a field named " +
+                vector_name));
+
+  // Convet the dealii point to an array
+  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim>(point);
+
+  // Set the active vector and update the reader
+  reader->SetVectorsName(vector_name.c_str());
+  reader->Update();
+
+  // Grab the output and point data
+  vtkUnstructuredGrid *output     = reader->GetOutput();
+  vtkPointData        *point_data = output->GetPointData();
+
+  // Find the point id in the vtk file
+  vtkIdType point_id = output->FindPoint(point_c_array.data());
+  AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
+
+  // Get the data array
+  vtkDataArray *data_array = point_data->GetArray(vector_name.c_str());
+  AssertThrow(data_array != nullptr,
+              dealii::ExcMessage(std::string("Data array not found: ") + vector_name));
+
+  // Get the value of the vector at the point
+  dealii::Vector<double> vector_value(dim);
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      vector_value[i] = data_array->GetComponent(point_id, i);
+    }
+  return vector_value;
 }
 
 PRISMS_PF_END_NAMESPACE
