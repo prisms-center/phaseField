@@ -42,3 +42,13 @@ set Model constant Gc0 = 3.0, double
 set Model constant CIJ_base = (3e3,0.35), isotropic elastic constants
 set Model constant vel_nom = 2e-5, double
 set Model constant KI_nom = 103, double
+
+set read initial conditions from file = true
+
+subsection initial condition file 1
+  set file name = modulus
+  set file extension = vtk
+  set grid type = unstructured
+  set file variable names = phi
+  set simulation variable names = Ex
+end
