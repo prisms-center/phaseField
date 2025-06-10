@@ -30,9 +30,10 @@
 #include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
-#include <prismspf/utilities/compute_integral.h>
 #include <prismspf/utilities/element_volume.h>
+#include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
 
@@ -148,16 +149,19 @@ private:
   dealii::MappingQ1<dim> mapping;
 
   /**
+   * \brief Solver context.
+   */
+  SolverContext<dim, degree> solver_context;
+
+  /**
    * \brief Element volumes.
    */
   ElementVolume<dim, degree, double> element_volume;
 
   /**
-   * \brief Integral utility.
-   *
-   * TODO (landinjm): Rename this class.
+   * \brief Integrator utility.
    */
-  ComputeIntegral<dim, degree, double> integral_computer;
+  Integrator<dim, degree, double> integrator;
 
   /**
    * \brief Explicit constant field solver class.

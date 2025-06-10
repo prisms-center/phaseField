@@ -121,8 +121,8 @@ CustomPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
   char  buffer[200];
 
   // Calculating integral for mu (field 1)
-  this->ComputeIntegral(integrated_n, 0, this->solutionSet);
-  this->ComputeIntegral(integrated_mu, 1, this->solutionSet);
+  this->Integrator(integrated_n, 0, this->solutionSet);
+  this->Integrator(integrated_mu, 1, this->solutionSet);
 
   if (this->currentIncrement % userInputs.skip_print_steps == 0)
     {

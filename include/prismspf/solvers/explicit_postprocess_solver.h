@@ -26,15 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  ExplicitPostprocessSolver(
-    const UserInputParameters<dim>                         &_user_inputs,
-    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
-    const InvmHandler<dim, degree, double>                 &_invm_handler,
-    const ConstraintHandler<dim, degree>                   &_constraint_handler,
-    const DofHandler<dim>                                  &_dof_handler,
-    const dealii::MappingQ1<dim>                           &_mapping,
-    SolutionHandler<dim>                                   &_solution_handler,
-    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  explicit ExplicitPostprocessSolver(const SolverContext<dim, degree> &_solver_context);
 
   /**
    * \brief Destructor.

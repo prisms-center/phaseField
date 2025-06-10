@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief Compute the integral of a given field.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class ComputeIntegral
+class Integrator
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
@@ -24,7 +24,7 @@ public:
   /**
    * \brief Constructor.
    */
-  ComputeIntegral() = default;
+  Integrator() = default;
 
   /**
    * \brief Compute the integral for a scalar field

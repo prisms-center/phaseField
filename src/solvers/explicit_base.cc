@@ -2,49 +2,28 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/explicit_base.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
-#include <memory>
 #include <ostream>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
-ExplicitBase<dim, degree>::ExplicitBase(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const InvmHandler<dim, degree>                         &_invm_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  const DofHandler<dim>                                  &_dof_handler,
-  const dealii::MappingQ1<dim>                           &_mapping,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : user_inputs(&_user_inputs)
-  , matrix_free_handler(&_matrix_free_handler)
-  , invm_handler(&_invm_handler)
-  , constraint_handler(&_constraint_handler)
-  , dof_handler(&_dof_handler)
-  , mapping(&_mapping)
-  , solution_handler(&_solution_handler)
-  , pde_operator(std::move(_pde_operator))
+ExplicitBase<dim, degree>::ExplicitBase(const SolverContext<dim, degree> &_solver_context)
+  : solver_context(&_solver_context)
 {}
 
 template <unsigned int dim, unsigned int degree>
@@ -61,7 +40,8 @@ ExplicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
+  for (const auto &[index, variable] :
+       solver_context->get_user_inputs().get_variable_attributes())
     {
       if (variable.get_field_solve_type() == field_solve_type)
         {
@@ -122,7 +102,7 @@ ExplicitBase<dim, degree>::set_initial_condition()
 {
   for (const auto &[index, variable] : subset_attributes)
     {
-      Assert(dof_handler->get_dof_handlers().size() > index,
+      Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -132,12 +112,13 @@ ExplicitBase<dim, degree>::set_initial_condition()
                std::to_string(index)));
 
       dealii::VectorTools::interpolate(
-        *mapping,
-        *(dof_handler->get_dof_handlers().at(index)),
+        solver_context->get_mapping(),
+        *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
         InitialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
-                                      pde_operator),
-        *(solution_handler->get_solution_vector(index, DependencyType::Normal)));
+                                      solver_context->get_pde_operator()),
+        *(solver_context->get_solution_handler()
+            .get_solution_vector(index, DependencyType::Normal)));
     }
 }
 
