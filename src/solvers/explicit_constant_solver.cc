@@ -1,25 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/fe/mapping_q1.h>
-
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/solvers/explicit_base.h>
 #include <prismspf/solvers/explicit_constant_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
-
-#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

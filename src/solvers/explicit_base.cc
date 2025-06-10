@@ -2,26 +2,21 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/explicit_base.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
-#include <memory>
 #include <ostream>
 #include <string>
 

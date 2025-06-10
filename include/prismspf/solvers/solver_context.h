@@ -4,6 +4,8 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
+#include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
@@ -51,8 +53,8 @@ public:
     , mapping(&_mapping)
     , solution_handler(&_solution_handler)
     , mg_matrix_free_handler(&_mg_matrix_free_handler)
-    , pde_operator(_pde_operator)
-    , pde_operator_float(_pde_operator_float) {};
+    , pde_operator(std::move(_pde_operator))
+    , pde_operator_float(std::move(_pde_operator_float)) {};
 
   /**
    * \brief Destructor.
