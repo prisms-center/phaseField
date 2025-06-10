@@ -61,6 +61,15 @@ PDEProblem<dim, degree>::PDEProblem(
   , invm_handler(_user_inputs.get_variable_attributes())
   , solution_handler(_user_inputs.get_variable_attributes(), mg_info)
   , dof_handler(_user_inputs, mg_info)
+  , solver_context(_user_inputs,
+                   matrix_free_handler,
+                   invm_handler,
+                   constraint_handler,
+                   dof_handler,
+                   mapping,
+                   solution_handler,
+                   _pde_operator,
+                   _pde_operator_float)
   , explicit_constant_solver(_user_inputs,
                              matrix_free_handler,
                              invm_handler,

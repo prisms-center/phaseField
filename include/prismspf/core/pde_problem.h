@@ -30,6 +30,7 @@
 #include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/utilities/compute_integral.h>
 #include <prismspf/utilities/element_volume.h>
@@ -146,6 +147,11 @@ private:
    * \brief Mappings to and from reference cell.
    */
   dealii::MappingQ1<dim> mapping;
+
+  /**
+   * \brief Solver context.
+   */
+  SolverContext<dim, degree> solver_context;
 
   /**
    * \brief Element volumes.
