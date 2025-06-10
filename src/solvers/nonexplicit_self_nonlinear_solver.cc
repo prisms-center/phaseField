@@ -12,8 +12,6 @@
 
 #include <prismspf/config.h>
 
-#include <memory>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
