@@ -8,7 +8,7 @@
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/utilities/compute_integral.h>
+#include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
 
@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-ComputeIntegral<dim, degree, number>::compute_integral(
+Integrator<dim, degree, number>::compute_integral(
   number                        &integral_value,
   const dealii::DoFHandler<dim> &dof_handler,
   const VectorType              &vector) const
@@ -71,7 +71,7 @@ ComputeIntegral<dim, degree, number>::compute_integral(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-ComputeIntegral<dim, degree, number>::compute_integral(
+Integrator<dim, degree, number>::compute_integral(
   std::vector<number>           &integral_value,
   const dealii::DoFHandler<dim> &dof_handler,
   const VectorType              &vector) const
@@ -133,6 +133,6 @@ ComputeIntegral<dim, degree, number>::compute_integral(
   integral_value = value;
 }
 
-INSTANTIATE_TRI_TEMPLATE(ComputeIntegral)
+INSTANTIATE_TRI_TEMPLATE(Integrator)
 
 PRISMS_PF_END_NAMESPACE

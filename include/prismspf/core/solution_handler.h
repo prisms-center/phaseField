@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/mg_level_object.h>
+#include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
 #include <prismspf/core/multigrid_info.h>

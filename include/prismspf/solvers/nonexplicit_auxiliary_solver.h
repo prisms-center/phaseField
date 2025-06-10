@@ -26,17 +26,7 @@ public:
   /**
    * \brief Constructor.
    */
-  NonexplicitAuxiliarySolver(
-    const UserInputParameters<dim>                         &_user_inputs,
-    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
-    const TriangulationHandler<dim>                        &_triangulation_handler,
-    const InvmHandler<dim, degree, double>                 &_invm_handler,
-    const ConstraintHandler<dim, degree>                   &_constraint_handler,
-    const DofHandler<dim>                                  &_dof_handler,
-    const dealii::MappingQ1<dim>                           &_mapping,
-    dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-    SolutionHandler<dim>                                   &_solution_handler,
-    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  explicit NonexplicitAuxiliarySolver(const SolverContext<dim, degree> &_solver_context);
 
   /**
    * \brief Destructor.

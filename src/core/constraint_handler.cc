@@ -305,7 +305,7 @@ ConstraintHandler<dim, degree>::apply_nonuniform_dirichlet_constraints(
 {
   if (!is_change_term)
     {
-      const auto &desired_pde_operator = [this]() -> const auto &
+      const auto desired_pde_operator = [this]() -> const auto &
       {
         if constexpr (std::is_same_v<number, double>)
           {

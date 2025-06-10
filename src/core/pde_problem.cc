@@ -31,8 +31,8 @@
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
 
-#include <prismspf/utilities/compute_integral.h>
 #include <prismspf/utilities/element_volume.h>
+#include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
 
@@ -61,76 +61,24 @@ PDEProblem<dim, degree>::PDEProblem(
   , invm_handler(_user_inputs.get_variable_attributes())
   , solution_handler(_user_inputs.get_variable_attributes(), mg_info)
   , dof_handler(_user_inputs, mg_info)
-  , explicit_constant_solver(_user_inputs,
-                             matrix_free_handler,
-                             invm_handler,
-                             constraint_handler,
-                             dof_handler,
-                             mapping,
-                             solution_handler,
-                             _pde_operator)
-  , explicit_solver(_user_inputs,
-                    matrix_free_handler,
-                    invm_handler,
-                    constraint_handler,
-                    dof_handler,
-                    mapping,
-                    solution_handler,
-                    _pde_operator)
-  , postprocess_explicit_solver(_user_inputs,
-                                matrix_free_handler,
-                                invm_handler,
-                                constraint_handler,
-                                dof_handler,
-                                mapping,
-                                solution_handler,
-                                _pde_operator)
-  , nonexplicit_auxiliary_solver(_user_inputs,
-                                 matrix_free_handler,
-                                 triangulation_handler,
-                                 invm_handler,
-                                 constraint_handler,
-                                 dof_handler,
-                                 mapping,
-                                 multigrid_matrix_free_handler,
-                                 solution_handler,
-                                 _pde_operator)
-  , nonexplicit_linear_solver(_user_inputs,
-                              matrix_free_handler,
-                              triangulation_handler,
-                              invm_handler,
-                              constraint_handler,
-                              dof_handler,
-                              mapping,
-                              multigrid_matrix_free_handler,
-                              solution_handler,
-                              _pde_operator,
-                              _pde_operator_float,
-                              mg_info)
-  , nonexplicit_self_nonlinear_solver(_user_inputs,
-                                      matrix_free_handler,
-                                      triangulation_handler,
-                                      invm_handler,
-                                      constraint_handler,
-                                      dof_handler,
-                                      mapping,
-                                      multigrid_matrix_free_handler,
-                                      solution_handler,
-                                      _pde_operator,
-                                      _pde_operator_float,
-                                      mg_info)
-  , nonexplicit_co_nonlinear_solver(_user_inputs,
-                                    matrix_free_handler,
-                                    triangulation_handler,
-                                    invm_handler,
-                                    constraint_handler,
-                                    dof_handler,
-                                    mapping,
-                                    multigrid_matrix_free_handler,
-                                    solution_handler,
-                                    _pde_operator,
-                                    _pde_operator_float,
-                                    mg_info)
+  , solver_context(_user_inputs,
+                   matrix_free_handler,
+                   triangulation_handler,
+                   invm_handler,
+                   constraint_handler,
+                   dof_handler,
+                   mapping,
+                   solution_handler,
+                   multigrid_matrix_free_handler,
+                   _pde_operator,
+                   _pde_operator_float)
+  , explicit_constant_solver(solver_context)
+  , explicit_solver(solver_context)
+  , postprocess_explicit_solver(solver_context)
+  , nonexplicit_auxiliary_solver(solver_context)
+  , nonexplicit_linear_solver(solver_context, mg_info)
+  , nonexplicit_self_nonlinear_solver(solver_context, mg_info)
+  , nonexplicit_co_nonlinear_solver(solver_context, mg_info)
 {}
 
 template <unsigned int dim, unsigned int degree>
@@ -406,10 +354,9 @@ PDEProblem<dim, degree>::solve()
               if (local_field_type == FieldType::Vector)
                 {
                   std::vector<double> integrated_values(dim, 0.0);
-                  integral_computer.compute_integral(
-                    integrated_values,
-                    *dof_handler.get_dof_handlers()[index],
-                    *vector);
+                  integrator.compute_integral(integrated_values,
+                                              *dof_handler.get_dof_handlers()[index],
+                                              *vector);
 
                   for (unsigned int dimension = 0; dimension < dim; dimension++)
                     {
@@ -420,10 +367,9 @@ PDEProblem<dim, degree>::solve()
               else
                 {
                   double integrated_value = 0.0;
-                  integral_computer.compute_integral(
-                    integrated_value,
-                    *dof_handler.get_dof_handlers()[index],
-                    *vector);
+                  integrator.compute_integral(integrated_value,
+                                              *dof_handler.get_dof_handlers()[index],
+                                              *vector);
 
                   ConditionalOStreams::pout_base() << integrated_value;
                 }

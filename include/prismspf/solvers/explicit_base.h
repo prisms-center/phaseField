@@ -9,32 +9,11 @@
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
+#include <prismspf/solvers/solver_context.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-template <unsigned int dim>
-class UserInputParameters;
-
-template <unsigned int dim, unsigned int degree>
-class ConstraintHandler;
-
-template <unsigned int dim>
-class DofHandler;
-
-template <unsigned int dim, unsigned int degree>
-class InitialCondition;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class InvmHandler;
-
-template <unsigned int dim, typename number>
-class MatrixfreeHandler;
-
-template <unsigned int dim>
-class SolutionHandler;
-
-struct VariableAttributes;
 
 /**
  * \brief Base class for explicit solves.
@@ -48,14 +27,7 @@ public:
   /**
    * \brief Constructor.
    */
-  ExplicitBase(const UserInputParameters<dim>         &_user_inputs,
-               const MatrixfreeHandler<dim, double>   &_matrix_free_handler,
-               const InvmHandler<dim, degree, double> &_invm_handler,
-               const ConstraintHandler<dim, degree>   &_constraint_handler,
-               const DofHandler<dim>                  &_dof_handler,
-               const dealii::MappingQ1<dim>           &_mapping,
-               SolutionHandler<dim>                   &_solution_handler,
-               std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  explicit ExplicitBase(const SolverContext<dim, degree> &_solver_context);
 
   /**
    * \brief Destructor.
@@ -109,7 +81,7 @@ protected:
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
-    return *user_inputs;
+    return solver_context->get_user_inputs();
   }
 
   /**
@@ -118,7 +90,7 @@ protected:
   [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
   {
-    return *matrix_free_handler;
+    return solver_context->get_matrix_free_handler();
   }
 
   /**
@@ -127,7 +99,7 @@ protected:
   [[nodiscard]] const InvmHandler<dim, degree, double> &
   get_invm_handler() const
   {
-    return *invm_handler;
+    return solver_context->get_invm_handler();
   }
 
   /**
@@ -136,7 +108,7 @@ protected:
   [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
   {
-    return *constraint_handler;
+    return solver_context->get_constraint_handler();
   }
 
   /**
@@ -145,7 +117,7 @@ protected:
   [[nodiscard]] const DofHandler<dim> &
   get_dof_handler() const
   {
-    return *dof_handler;
+    return solver_context->get_dof_handler();
   }
 
   /**
@@ -154,7 +126,7 @@ protected:
   [[nodiscard]] const dealii::MappingQ1<dim> &
   get_mapping() const
   {
-    return *mapping;
+    return solver_context->get_mapping();
   }
 
   /**
@@ -163,7 +135,7 @@ protected:
   [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
   {
-    return *solution_handler;
+    return solver_context->get_solution_handler();
   }
 
   /**
@@ -181,7 +153,7 @@ protected:
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
   {
-    return pde_operator;
+    return solver_context->get_pde_operator();
   }
 
   /**
@@ -195,49 +167,14 @@ protected:
 
 private:
   /**
-   * \brief User-inputs.
+   * \brief Solver context.
    */
-  const UserInputParameters<dim> *user_inputs;
-
-  /**
-   * \brief Matrix-free object handler for non-multigrid data.
-   */
-  const MatrixfreeHandler<dim, double> *matrix_free_handler;
-
-  /**
-   * \brief invm handler.
-   */
-  const InvmHandler<dim, degree, double> *invm_handler;
-
-  /**
-   * \brief Constraint handler.
-   */
-  const ConstraintHandler<dim, degree> *constraint_handler;
-
-  /**
-   * \brief DoF handler.
-   */
-  const DofHandler<dim> *dof_handler;
-
-  /**
-   * \brief Mappings to and from reference cell.
-   */
-  const dealii::MappingQ1<dim> *mapping;
-
-  /**
-   * \brief Solution handler.
-   */
-  SolutionHandler<dim> *solution_handler;
+  const SolverContext<dim, degree> *solver_context;
 
   /**
    * \brief Subset of variable attributes.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
-
-  /**
-   * \brief PDE operator.
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 
   /**
    * \brief Matrix-free operator.
