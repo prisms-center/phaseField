@@ -31,8 +31,8 @@
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
 
-#include <prismspf/utilities/compute_integral.h>
 #include <prismspf/utilities/element_volume.h>
+#include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
 
@@ -415,10 +415,9 @@ PDEProblem<dim, degree>::solve()
               if (local_field_type == FieldType::Vector)
                 {
                   std::vector<double> integrated_values(dim, 0.0);
-                  integral_computer.compute_integral(
-                    integrated_values,
-                    *dof_handler.get_dof_handlers()[index],
-                    *vector);
+                  integrator.compute_integral(integrated_values,
+                                              *dof_handler.get_dof_handlers()[index],
+                                              *vector);
 
                   for (unsigned int dimension = 0; dimension < dim; dimension++)
                     {
@@ -429,10 +428,9 @@ PDEProblem<dim, degree>::solve()
               else
                 {
                   double integrated_value = 0.0;
-                  integral_computer.compute_integral(
-                    integrated_value,
-                    *dof_handler.get_dof_handlers()[index],
-                    *vector);
+                  integrator.compute_integral(integrated_value,
+                                              *dof_handler.get_dof_handlers()[index],
+                                              *vector);
 
                   ConditionalOStreams::pout_base() << integrated_value;
                 }
