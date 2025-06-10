@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/solvers/explicit_base.h>

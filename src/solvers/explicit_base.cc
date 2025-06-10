@@ -6,7 +6,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
 
