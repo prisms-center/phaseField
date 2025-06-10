@@ -31,26 +31,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 NonexplicitBase<dim, degree>::NonexplicitBase(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const TriangulationHandler<dim>                        &_triangulation_handler,
-  const InvmHandler<dim, degree>                         &_invm_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  const DofHandler<dim>                                  &_dof_handler,
-  const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : user_inputs(&_user_inputs)
-  , matrix_free_handler(&_matrix_free_handler)
-  , triangulation_handler(&_triangulation_handler)
-  , invm_handler(&_invm_handler)
-  , constraint_handler(&_constraint_handler)
-  , dof_handler(&_dof_handler)
-  , mapping(&_mapping)
-  , mg_matrix_free_handler(&_mg_matrix_free_handler)
-  , solution_handler(&_solution_handler)
-  , pde_operator(std::move(_pde_operator))
+  const SolverContext<dim, degree> &_solver_context)
+  : solver_context(&_solver_context)
 {}
 
 template <unsigned int dim, unsigned int degree>
@@ -69,7 +51,8 @@ NonexplicitBase<dim, degree>::compute_subset_attributes(
 
   subset_attributes.clear();
 
-  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
+  for (const auto &[index, variable] :
+       solver_context->get_user_inputs().get_variable_attributes())
     {
       if (variable.get_field_solve_type() == field_solve_type)
         {
@@ -141,7 +124,7 @@ NonexplicitBase<dim, degree>::set_initial_condition()
           continue;
         }
 
-      Assert(dof_handler->get_dof_handlers().size() > index,
+      Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
              dealii::ExcMessage(
                "The const DoFHandler set is smaller than the given index = " +
                std::to_string(index)));
@@ -151,16 +134,17 @@ NonexplicitBase<dim, degree>::set_initial_condition()
                std::to_string(index)));
 
       dealii::VectorTools::interpolate(
-        *mapping,
-        *(dof_handler->get_dof_handlers().at(index)),
+        solver_context->get_mapping(),
+        *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
         InitialCondition<dim, degree>(index,
                                       subset_attributes.at(index).get_field_type(),
-                                      pde_operator),
-        *(solution_handler->get_solution_vector(index, DependencyType::Normal)));
+                                      solver_context->get_pde_operator()),
+        *(solver_context->get_solution_handler()
+            .get_solution_vector(index, DependencyType::Normal)));
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.
-      solution_handler->apply_initial_condition_for_old_fields();
+      solver_context->get_solution_handler().apply_initial_condition_for_old_fields();
     }
 }
 

@@ -27,17 +27,7 @@ public:
   /**
    * \brief Constructor.
    */
-  NonexplicitBase(
-    const UserInputParameters<dim>                         &_user_inputs,
-    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
-    const TriangulationHandler<dim>                        &_triangulation_handler,
-    const InvmHandler<dim, degree, double>                 &_invm_handler,
-    const ConstraintHandler<dim, degree>                   &_constraint_handler,
-    const DofHandler<dim>                                  &_dof_handler,
-    const dealii::MappingQ1<dim>                           &_mapping,
-    dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-    SolutionHandler<dim>                                   &_solution_handler,
-    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  explicit NonexplicitBase(const SolverContext<dim, degree> &_solver_context);
 
   /**
    * \brief Destructor.
@@ -94,7 +84,7 @@ protected:
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
-    return *user_inputs;
+    return solver_context->get_user_inputs();
   }
 
   /**
@@ -103,7 +93,7 @@ protected:
   [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
   {
-    return *matrix_free_handler;
+    return solver_context->get_matrix_free_handler();
   }
 
   /**
@@ -112,7 +102,7 @@ protected:
   [[nodiscard]] const TriangulationHandler<dim> &
   get_triangulation_handler() const
   {
-    return *triangulation_handler;
+    return solver_context->get_triangulation_handler();
   }
 
   /**
@@ -121,7 +111,7 @@ protected:
   [[nodiscard]] const InvmHandler<dim, degree, double> &
   get_invm_handler() const
   {
-    return *invm_handler;
+    return solver_context->get_invm_handler();
   }
 
   /**
@@ -130,7 +120,7 @@ protected:
   [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
   {
-    return *constraint_handler;
+    return solver_context->get_constraint_handler();
   }
 
   /**
@@ -139,7 +129,7 @@ protected:
   [[nodiscard]] const DofHandler<dim> &
   get_dof_handler() const
   {
-    return *dof_handler;
+    return solver_context->get_dof_handler();
   }
 
   /**
@@ -148,7 +138,7 @@ protected:
   [[nodiscard]] const dealii::MappingQ1<dim> &
   get_mapping() const
   {
-    return *mapping;
+    return solver_context->get_mapping();
   }
 
   /**
@@ -157,7 +147,7 @@ protected:
   [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
   get_mg_matrix_free_handler()
   {
-    return *mg_matrix_free_handler;
+    return solver_context->get_mg_matrix_free_handler();
   }
 
   /**
@@ -166,7 +156,7 @@ protected:
   [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
   {
-    return *solution_handler;
+    return solver_context->get_solution_handler();
   }
 
   /**
@@ -184,7 +174,16 @@ protected:
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
   {
-    return pde_operator;
+    return solver_context->get_pde_operator();
+  }
+
+  /**
+   * \brief Get the pde operator for float.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
+  get_pde_operator_float() const
+  {
+    return solver_context->get_pde_operator_float();
   }
 
   /**
@@ -207,59 +206,14 @@ protected:
 
 private:
   /**
-   * \brief User-inputs.
+   * \brief Solver context.
    */
-  const UserInputParameters<dim> *user_inputs;
-
-  /**
-   * \brief Matrix-free object handler for non-multigrid data.
-   */
-  const MatrixfreeHandler<dim, double> *matrix_free_handler;
-
-  /**
-   * \brief Triangulation handler.
-   */
-  const TriangulationHandler<dim> *triangulation_handler;
-
-  /**
-   * \brief invm handler.
-   */
-  const InvmHandler<dim, degree, double> *invm_handler;
-
-  /**
-   * \brief Constraint handler.
-   */
-  const ConstraintHandler<dim, degree> *constraint_handler;
-
-  /**
-   * \brief DoF handler.
-   */
-  const DofHandler<dim> *dof_handler;
-
-  /**
-   * \brief Mappings to and from reference cell.
-   */
-  const dealii::MappingQ1<dim> *mapping;
-
-  /**
-   * \brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
-
-  /**
-   * \brief Solution handler.
-   */
-  SolutionHandler<dim> *solution_handler;
+  const SolverContext<dim, degree> *solver_context;
 
   /**
    * \brief Subset of variable attributes for fields.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
-
-  /**
-   * \brief PDE operator.
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 
   /**
    * \brief Matrix-free operator for the residual side.

@@ -36,29 +36,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 NonexplicitCononlinearSolver<dim, degree>::NonexplicitCononlinearSolver(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const TriangulationHandler<dim>                        &_triangulation_handler,
-  const InvmHandler<dim, degree>                         &_invm_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  const DofHandler<dim>                                  &_dof_handler,
-  const dealii::MappingQ1<dim>                           &_mapping,
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
-  const MGInfo<dim>                                      &_mg_info)
-  : NonexplicitBase<dim, degree>(_user_inputs,
-                                 _matrix_free_handler,
-                                 _triangulation_handler,
-                                 _invm_handler,
-                                 _constraint_handler,
-                                 _dof_handler,
-                                 _mapping,
-                                 _mg_matrix_free_handler,
-                                 _solution_handler,
-                                 std::move(_pde_operator))
-  , pde_operator_float(std::move(_pde_operator_float))
+  const SolverContext<dim, degree> &_solver_context,
+  const MGInfo<dim>                &_mg_info)
+  : NonexplicitBase<dim, degree>(_solver_context)
   , mg_info(&_mg_info)
 {}
 

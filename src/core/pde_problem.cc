@@ -69,57 +69,16 @@ PDEProblem<dim, degree>::PDEProblem(
                    dof_handler,
                    mapping,
                    solution_handler,
+                   multigrid_matrix_free_handler,
                    _pde_operator,
                    _pde_operator_float)
   , explicit_constant_solver(solver_context)
   , explicit_solver(solver_context)
   , postprocess_explicit_solver(solver_context)
-  , nonexplicit_auxiliary_solver(_user_inputs,
-                                 matrix_free_handler,
-                                 triangulation_handler,
-                                 invm_handler,
-                                 constraint_handler,
-                                 dof_handler,
-                                 mapping,
-                                 multigrid_matrix_free_handler,
-                                 solution_handler,
-                                 _pde_operator)
-  , nonexplicit_linear_solver(_user_inputs,
-                              matrix_free_handler,
-                              triangulation_handler,
-                              invm_handler,
-                              constraint_handler,
-                              dof_handler,
-                              mapping,
-                              multigrid_matrix_free_handler,
-                              solution_handler,
-                              _pde_operator,
-                              _pde_operator_float,
-                              mg_info)
-  , nonexplicit_self_nonlinear_solver(_user_inputs,
-                                      matrix_free_handler,
-                                      triangulation_handler,
-                                      invm_handler,
-                                      constraint_handler,
-                                      dof_handler,
-                                      mapping,
-                                      multigrid_matrix_free_handler,
-                                      solution_handler,
-                                      _pde_operator,
-                                      _pde_operator_float,
-                                      mg_info)
-  , nonexplicit_co_nonlinear_solver(_user_inputs,
-                                    matrix_free_handler,
-                                    triangulation_handler,
-                                    invm_handler,
-                                    constraint_handler,
-                                    dof_handler,
-                                    mapping,
-                                    multigrid_matrix_free_handler,
-                                    solution_handler,
-                                    _pde_operator,
-                                    _pde_operator_float,
-                                    mg_info)
+  , nonexplicit_auxiliary_solver(solver_context)
+  , nonexplicit_linear_solver(solver_context, mg_info)
+  , nonexplicit_self_nonlinear_solver(solver_context, mg_info)
+  , nonexplicit_co_nonlinear_solver(solver_context, mg_info)
 {}
 
 template <unsigned int dim, unsigned int degree>

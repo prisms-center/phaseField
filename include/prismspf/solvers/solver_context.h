@@ -39,6 +39,7 @@ public:
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
     SolutionHandler<dim>                                   &_solution_handler,
+    dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
     std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
     : user_inputs(&_user_inputs)
@@ -49,6 +50,7 @@ public:
     , dof_handler(&_dof_handler)
     , mapping(&_mapping)
     , solution_handler(&_solution_handler)
+    , mg_matrix_free_handler(&_mg_matrix_free_handler)
     , pde_operator(_pde_operator)
     , pde_operator_float(_pde_operator_float) {};
 
@@ -138,6 +140,16 @@ public:
   }
 
   /**
+   * \brief Get the mg matrix-free handler.
+   */
+  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
+  get_mg_matrix_free_handler() const
+  {
+    Assert(mg_matrix_free_handler != nullptr, dealii::ExcNotInitialized());
+    return *mg_matrix_free_handler;
+  }
+
+  /**
    * \brief Get the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
@@ -197,6 +209,11 @@ private:
    * \brief Solution handler.
    */
   SolutionHandler<dim> *solution_handler;
+
+  /**
+   * \brief Matrix-free object handler for multigrid data.
+   */
+  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * \brief PDE operator.
