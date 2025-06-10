@@ -9,35 +9,11 @@
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
+#include <prismspf/solvers/solver_context.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-template <unsigned int dim>
-class UserInputParameters;
-
-template <unsigned int dim, unsigned int degree>
-class ConstraintHandler;
-
-template <unsigned int dim>
-class DofHandler;
-
-template <unsigned int dim, unsigned int degree>
-class InitialCondition;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class InvmHandler;
-
-template <unsigned int dim, typename number>
-class MatrixfreeHandler;
-
-template <unsigned int dim>
-class SolutionHandler;
-
-template <unsigned int dim>
-class TriangulationHandler;
-
-struct VariableAttributes;
 
 /**
  * \brief Base class for nonexplicit solves.

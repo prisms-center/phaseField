@@ -63,6 +63,7 @@ PDEProblem<dim, degree>::PDEProblem(
   , dof_handler(_user_inputs, mg_info)
   , solver_context(_user_inputs,
                    matrix_free_handler,
+                   triangulation_handler,
                    invm_handler,
                    constraint_handler,
                    dof_handler,
@@ -70,30 +71,9 @@ PDEProblem<dim, degree>::PDEProblem(
                    solution_handler,
                    _pde_operator,
                    _pde_operator_float)
-  , explicit_constant_solver(_user_inputs,
-                             matrix_free_handler,
-                             invm_handler,
-                             constraint_handler,
-                             dof_handler,
-                             mapping,
-                             solution_handler,
-                             _pde_operator)
-  , explicit_solver(_user_inputs,
-                    matrix_free_handler,
-                    invm_handler,
-                    constraint_handler,
-                    dof_handler,
-                    mapping,
-                    solution_handler,
-                    _pde_operator)
-  , postprocess_explicit_solver(_user_inputs,
-                                matrix_free_handler,
-                                invm_handler,
-                                constraint_handler,
-                                dof_handler,
-                                mapping,
-                                solution_handler,
-                                _pde_operator)
+  , explicit_constant_solver(solver_context)
+  , explicit_solver(solver_context)
+  , postprocess_explicit_solver(solver_context)
   , nonexplicit_auxiliary_solver(_user_inputs,
                                  matrix_free_handler,
                                  triangulation_handler,

@@ -11,6 +11,7 @@
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
+#include <prismspf/core/triangulation_handler.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -32,13 +33,24 @@ public:
   SolverContext(
     const UserInputParameters<dim>                         &_user_inputs,
     const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
+    const TriangulationHandler<dim>                        &_triangulation_handler,
     const InvmHandler<dim, degree, double>                 &_invm_handler,
     const ConstraintHandler<dim, degree>                   &_constraint_handler,
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
     SolutionHandler<dim>                                   &_solution_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
-    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float);
+    std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
+    : user_inputs(&_user_inputs)
+    , matrix_free_handler(&_matrix_free_handler)
+    , triangulation_handler(&_triangulation_handler)
+    , invm_handler(&_invm_handler)
+    , constraint_handler(&_constraint_handler)
+    , dof_handler(&_dof_handler)
+    , mapping(&_mapping)
+    , solution_handler(&_solution_handler)
+    , pde_operator(_pde_operator)
+    , pde_operator_float(_pde_operator_float) {};
 
   /**
    * \brief Destructor.
@@ -63,6 +75,16 @@ public:
   {
     Assert(matrix_free_handler != nullptr, dealii::ExcNotInitialized());
     return *matrix_free_handler;
+  }
+
+  /**
+   * \brief Get the triangulation handler.
+   */
+  [[nodiscard]] const TriangulationHandler<dim> &
+  get_triangulation_handler() const
+  {
+    Assert(triangulation_handler != nullptr, dealii::ExcNotInitialized());
+    return *triangulation_handler;
   }
 
   /**
@@ -145,6 +167,11 @@ private:
    * \brief Matrix-free object handler for non-multigrid data.
    */
   const MatrixfreeHandler<dim, double> *matrix_free_handler;
+
+  /**
+   * \brief Triangulation handler.
+   */
+  const TriangulationHandler<dim> *triangulation_handler;
 
   /**
    * \brief invm handler.
