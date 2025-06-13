@@ -510,26 +510,43 @@ InputFileReader::declare_output_parameters()
 void
 InputFileReader::declare_load_ic_parameters()
 {
-  // parameter_handler.declare_entry(
-  //   "Load initial conditions",
-  //   "void",
-  //   dealii::Patterns::Anything(),
-  //   "Whether to load the initial conditions for each variable from file.");
-  // parameter_handler.declare_entry(
-  //   "Load parallel file",
-  //   "void",
-  //   dealii::Patterns::Anything(),
-  //   "Whether all processors should read from a single file (versus each "
-  //   "reading from separate files).");
-  // parameter_handler.declare_entry("File names",
-  //                                 "void",
-  //                                 dealii::Patterns::Anything(),
-  //                                 "The file name to load from for each variable.");
-  // parameter_handler.declare_entry(
-  //   "Variable names in the files",
-  //   "void",
-  //   dealii::Patterns::Anything(),
-  //   "What each variable is named in the file being loaded.");
+  parameter_handler.declare_entry("read initial conditions from file",
+                                  "false",
+                                  dealii::Patterns::Bool(),
+                                  "Whether to read any initial conditions from file.");
+
+  const unsigned int max_files = 8;
+  for (unsigned int i = 0; i < max_files; i++)
+    {
+      parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
+      {
+        parameter_handler.declare_entry("file name",
+                                        "",
+                                        dealii::Patterns::Anything(),
+                                        "The file name to load from for each variable.");
+        parameter_handler.declare_entry("file extension",
+                                        "vtk",
+                                        dealii::Patterns::Selection(
+                                          "vtk|vtu|pvtu|vtr|vts"),
+                                        "The file extension.");
+        parameter_handler.declare_entry("grid type",
+                                        "unstructured",
+                                        dealii::Patterns::Selection(
+                                          "unstructured|structured"),
+                                        "The type of grid in the file.");
+        parameter_handler.declare_entry("file variable names",
+                                        "",
+                                        dealii::Patterns::List(
+                                          dealii::Patterns::Anything()),
+                                        "The name of the variable in the file.");
+        parameter_handler.declare_entry("simulation variable names",
+                                        "",
+                                        dealii::Patterns::List(
+                                          dealii::Patterns::Anything()),
+                                        "The name of the variable in the file.");
+      }
+      parameter_handler.leave_subsection();
+    }
 }
 
 void
