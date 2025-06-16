@@ -141,10 +141,9 @@ if(NOT DEALII_INSTALL_VALID)
 endif()
 
 # Optional deal.II packages
-set(PRISMS_PF_WITH_ZLIB OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_ZLIB)
-  set(PRISMS_PF_WITH_ZLIB ON)
-endif()
+
+# zlib should be required by p4est in deal.II, so its on by default
+set(PRISMS_PF_WITH_ZLIB ON CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not.")
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
 if(PRISMS_PF_WITH_ZLIB)
   if(DEAL_II_WITH_ZLIB)
