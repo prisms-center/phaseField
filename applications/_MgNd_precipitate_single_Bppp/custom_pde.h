@@ -92,6 +92,15 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
+  /**
+   * \brief User-implemented class for the RHS of nucleation probability equations.
+   */
+  void
+  compute_nucleation_probability_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
+    const override;
+
   number McV  = this->user_inputs.user_constants.get_model_constant_double("McV");
   number Mn1V = this->user_inputs.user_constants.get_model_constant_double("Mn1V");
   dealii::Tensor<2, dim, number> Kn1 =

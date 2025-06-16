@@ -86,6 +86,29 @@ protected:
   set_variable_equation_type(const unsigned int &index, const PDEType &pde_type);
 
   /**
+   * \brief Set whether the variable at `index` can nucleate.
+   *
+   * \param index Index of variable
+   * \param allowed_to_nucleate Whether the field can stochastically nucleate
+   * \param nucleation_probability_field_name Name of the field that is a nucleation
+   *probability
+   */
+  void
+  set_allowed_to_nucleate(const unsigned int &index,
+                          const bool         &allowed_to_nucleate,
+                          const std::string  &nucleation_probability_field_name);
+
+  /**
+   * \brief Set the whether the field is a nucleation probability.
+   *
+   * \param index Index of variable
+   * \param is_nucleation_probability Whether the field is a nucleation probability.
+   */
+  void
+  set_is_nucleation_probability(const unsigned int &index,
+                                const bool         &is_nucleation_probability);
+
+  /**
    * \brief Set the whether the field is a postprocessed field.
    *
    * \param index Index of variable
