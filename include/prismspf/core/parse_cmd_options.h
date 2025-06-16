@@ -109,7 +109,7 @@ public:
       }
 
     // Default config
-    std::string config = "runtime-report";
+    std::string config = "runtime-report,mem.highwatermark";
 
     if (argc >= n_args - 1 && !cmd_option_exists("-P"))
       {
