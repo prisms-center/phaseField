@@ -37,7 +37,7 @@ subsection linear solver parameters: u
     set min mg level = 0
 end
 
-set Model constant cracklength = -0.01, double
+set Model constant cracklength = 0.01, double
 set Model constant Mn = 1e-2, double
 set Model constant ell = 3.75e-3, double
 set Model constant Gc0 = 3.0, double
