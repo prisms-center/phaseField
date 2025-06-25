@@ -264,7 +264,7 @@ PDEProblem<dim, degree>::solve_increment()
   Timer::serial_timer().enter_subsection("Solve Increment");
 
   // Update the time-dependent constraints
-  if (!user_inputs->get_boundary_parameters().has_time_dependent_bcs())
+  if (user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
       constraint_handler
         .update_time_dependent_constraints(mapping, dof_handler.get_dof_handlers());
