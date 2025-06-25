@@ -137,11 +137,13 @@ def run_regression_test(application, new_gold_standard, test_dir, n_threads=1):
 
         def extract_l2_norms(filename):
             """Extracts the l2-norm values from a given file."""
+
+            # TODO: This is slightly hacky, since it only grabs the final iteration outputs
             norms = {}
             with open(filename, "r") as file:
                 for line in file:
                     match = re.search(
-                        r"Solution index (\d+) type \w+ l2-norm: ([\d.eE+-]+)", line
+                        r"^\s+Solution index (\d+) l2-norm: ([0-9.]+).+", line
                     )
                     if match:
                         index, norm_value = int(match.group(1)), float(match.group(2))
@@ -226,7 +228,7 @@ args = parser.parse_args()
 n_processes = args.ntasks
 n_threads = args.nthreads
 
-print(f"Running automatic tests with {n_processes} processes and {n_threads} threads.")
+print(f"Running automatic tests with {n_processes} processes and {n_threads} threads per process.")
 
 # Grab current directory and the path to the test results file
 pwd = os.path.dirname(os.path.realpath(__file__))
