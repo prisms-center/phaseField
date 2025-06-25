@@ -203,6 +203,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
               this->get_constraint_handler().get_constraint(index).distribute(
                 *(this->get_solution_handler()
                     .get_solution_vector(index, DependencyType::Normal)));
+
+              // Update the ghosts
+              this->get_solution_handler().update_ghosts();
             }
           else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
                    variable.get_pde_type() == PDEType::TimeIndependent)
@@ -222,6 +225,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                   newton_update_norm =
                     identity_solvers.at(index)->get_newton_update_l2_norm();
                 }
+
+              // Update the ghosts
+              this->get_solution_handler().update_ghosts();
             }
           else
             {
