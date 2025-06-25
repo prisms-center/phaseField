@@ -103,6 +103,9 @@ SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solu
     {
       AssertThrow(false, UnreachableCode());
     }
+
+  // Update the ghost values again to allow for read access
+  solution.update_ghost_values();
 }
 
 template <unsigned int dim, typename number>
@@ -198,6 +201,13 @@ SolutionOutput<dim, number>::SolutionOutput(
   else
     {
       AssertThrow(false, UnreachableCode());
+    }
+
+  // Update the ghost values again to allow for read access
+  for (const auto &[index, variable] : user_inputs.get_variable_attributes())
+    {
+      auto *solution = solution_set.at(index);
+      solution->update_ghost_values();
     }
 }
 
