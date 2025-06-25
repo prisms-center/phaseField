@@ -67,7 +67,7 @@ NonuniformDirichlet<dim, degree, number>::vector_value(
     {
       pde_operator->set_nonuniform_dirichlet(index,
                                              boundary_id,
-                                             0,
+                                             i,
                                              p,
                                              temp_scalar_value,
                                              temp_vector_value[i]);

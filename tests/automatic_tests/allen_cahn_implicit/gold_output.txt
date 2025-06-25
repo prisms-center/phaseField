@@ -1,11 +1,7 @@
 Using the input parameter file: parameters.prm
+Using the caliper configuration: runtime-report,mem.highwatermark
 Number of constants: 2
 Number of variables: 3
-================================================
-  MGInfo
-================================================
-  There are no fields with multigrid enabled
-
 number of processes: 1
 vectorization over 2 doubles = 128 bits (SSE2)
 creating FESystem...
@@ -21,33 +17,32 @@ initializing solvers...
 solving auxiliary variables in 0th timestep...
 solving linear time-independent variables in 0th timestep...
 solving self-nonlinear time-independent variables in 0th timestep...
+solving co-nonlinear time-independent variables in 0th timestep...
 solving postprocessed variables in 0th timestep...
 outputting initial condition...
 
 Iteration: 300
-  Solution index 0 l2-norm: 114.973 integrated value: 2052.27
-  Solution index 1 l2-norm: 8.41815 integrated value: 66.3314
-  Solution index 2 l2-norm: 3.82289 integrated value: 23.0453
+  Solution index 0 l2-norm: 114.97 integrated value: 2052.18
+  Solution index 1 l2-norm: 8.41942 integrated value: 66.3567
+  Solution index 2 l2-norm: 3.82362 integrated value: 23.0534
 
 Iteration: 600
-  Solution index 0 l2-norm: 115.755 integrated value: 2073.23
-  Solution index 1 l2-norm: 8.14627 integrated value: 61.5275
-  Solution index 2 l2-norm: 3.6989 integrated value: 21.4781
+  Solution index 0 l2-norm: 115.753 integrated value: 2073.16
+  Solution index 1 l2-norm: 8.14702 integrated value: 61.5398
+  Solution index 2 l2-norm: 3.69917 integrated value: 21.4819
 
 Iteration: 900
-  Solution index 0 l2-norm: 116.398 integrated value: 2092.18
-  Solution index 1 l2-norm: 7.9413 integrated value: 58.275
-  Solution index 2 l2-norm: 3.62561 integrated value: 20.4873
+  Solution index 0 l2-norm: 116.396 integrated value: 2092.12
+  Solution index 1 l2-norm: 7.94193 integrated value: 58.2847
+  Solution index 2 l2-norm: 3.62584 integrated value: 20.4903
 
 Iteration: 1200
-  Solution index 0 l2-norm: 117.004 integrated value: 2110.79
-  Solution index 1 l2-norm: 7.7644 integrated value: 55.6137
-  Solution index 2 l2-norm: 3.55416 integrated value: 19.6139
+  Solution index 0 l2-norm: 117.002 integrated value: 2110.72
+  Solution index 1 l2-norm: 7.76495 integrated value: 55.6219
+  Solution index 2 l2-norm: 3.55441 integrated value: 19.6167
 
 Iteration: 1500
-  Solution index 0 l2-norm: 117.59 integrated value: 2129.23
-  Solution index 1 l2-norm: 7.60472 integrated value: 53.294
-  Solution index 2 l2-norm: 3.4781 integrated value: 18.7789
+  Solution index 0 l2-norm: 117.588 integrated value: 2129.17
+  Solution index 1 l2-norm: 7.60523 integrated value: 53.3014
+  Solution index 2 l2-norm: 3.47836 integrated value: 18.7816
 
-Serial: Initialization - 0.192802s (0.192802s/call, 1 calls)
-Serial: Solve Increment - 51.5261s (0.0343507s/call, 1500 calls)
