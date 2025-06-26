@@ -145,7 +145,7 @@ TemporalDiscretization::postprocess_and_validate(
   const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   // If all of the variables are `TimeIndependent`, `Auxiliary`, or `Constant` then
-  // total_increments should be 1 and final_time should be 0
+  // total_increments should be 0 and final_time should be 0
   bool only_time_independent_pdes = true;
   for (const auto &[index, variable] : var_attributes)
     {
@@ -162,7 +162,7 @@ TemporalDiscretization::postprocess_and_validate(
     }
   if (only_time_independent_pdes)
     {
-      total_increments = 1;
+      total_increments = 0;
       return;
     }
 

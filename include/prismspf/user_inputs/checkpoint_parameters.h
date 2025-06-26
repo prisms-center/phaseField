@@ -126,6 +126,13 @@ CheckpointParameters::postprocess_and_validate(
   // equivalent
   n_checkpoints = std::min(n_checkpoints, temporal_discretization.get_total_increments());
 
+  // If the number of increments is 0, the number of checkpoints should be 0, so we return
+  // early
+  if (temporal_discretization.get_total_increments() == 0)
+    {
+      return;
+    }
+
   // Determine the output list from the other criteria
   if (condition == "EQUAL_SPACING")
     {

@@ -202,6 +202,14 @@ OutputParameters::postprocess_and_validate(
   // equivalent
   n_outputs = std::min(n_outputs, temporal_discretization.get_total_increments());
 
+  // If the number of increments is 0, we only output the initial condition. We can set
+  // that and return early.
+  if (temporal_discretization.get_total_increments() == 0)
+    {
+      output_list.insert(0);
+      return;
+    }
+
   // Determine the output list from the other criteria
   if (condition == "EQUAL_SPACING")
     {
