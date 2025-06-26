@@ -315,7 +315,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
         }
       else
         {
-          if (variable.is_postprocess())
+          if (variable.is_postprocess() || variable.get_pde_type() == PDEType::Constant)
             {
               set_boundary("Natural", variable.get_field_index(), 0);
             }
