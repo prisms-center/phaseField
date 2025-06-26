@@ -20,8 +20,6 @@ subsection output
 end
 
 set boundary condition for n = Natural
-set boundary condition for Ex = Natural
-set boundary condition for Gx = Natural
 set boundary condition for dndt = Natural
 set boundary condition for u, x component = TimeDependentNonuniformDirichlet
 set boundary condition for u, y component = TimeDependentNonuniformDirichlet 
