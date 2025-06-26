@@ -120,6 +120,14 @@ if(NOT DEAL_II_WITH_LAPACK)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
+if(NOT DEAL_II_WITH_VTK)
+    message(SEND_ERROR
+      "\n**deal.II was built without support for VTK!\n"
+      )
+    set(DEALII_INSTALL_VALID OFF)
+endif()
+
+
 if(NOT DEAL_II_WITH_P4EST)
     message(SEND_ERROR
       "\n**deal.II was built without support for p4est!\n"
@@ -150,6 +158,19 @@ if(PRISMS_PF_WITH_ZLIB)
     message(STATUS "  Found deal.II installation with zlib")
   else()
     message(FATAL_ERROR "deal.II installation with zlib not found. Disable PRISMS_PF_WITH_ZLIB or recompile deal.II with zlib.")
+  endif()
+endif()
+
+set(PRISMS_PF_WITH_HDF5 OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's HDF5 dependency, or not.")
+if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_HDF5)
+  set(PRISMS_PF_WITH_HDF5 ON)
+endif()
+message(STATUS "Using PRISMS_PF_WITH_HDF5 = '${PRISMS_PF_WITH_HDF5}'")
+if(PRISMS_PF_WITH_HDF5)
+  if(DEAL_II_WITH_HDF5)
+    message(STATUS "  Found deal.II installation with HDF5")
+  else()
+    message(FATAL_ERROR "deal.II installation with HDF5 not found. Disable PRISMS_PF_WITH_HDF5 or recompile deal.II with HDF5.")
   endif()
 endif()
 
