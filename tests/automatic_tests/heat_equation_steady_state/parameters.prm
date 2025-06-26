@@ -10,7 +10,6 @@ subsection Rectangular mesh
 end
 
 set boundary condition for T = Dirichlet: 0.0
-set boundary condition for q = Natural
 
 subsection linear solver parameters: T
     set tolerance type = AbsoluteResidual
