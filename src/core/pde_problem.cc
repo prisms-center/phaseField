@@ -254,6 +254,45 @@ PDEProblem<dim, degree>::init_system()
                       "solution",
                       *user_inputs);
 
+  // Print the l2-norms and integrals of each solution
+  ConditionalOStreams::pout_base()
+    << "Iteration: " << user_inputs->get_temporal_discretization().get_current_increment()
+    << "\n";
+  for (const auto &[index, vector] : solution_handler.get_solution_vector())
+    {
+      ConditionalOStreams::pout_base()
+        << "  Solution index " << index << " l2-norm: " << vector->l2_norm()
+        << " integrated value: ";
+
+      const auto local_field_type =
+        user_inputs->get_variable_attributes().at(index).get_field_type();
+
+      if (local_field_type == FieldType::Vector)
+        {
+          std::vector<double> integrated_values(dim, 0.0);
+          integrator.compute_integral(integrated_values,
+                                      *dof_handler.get_dof_handlers()[index],
+                                      *vector);
+
+          for (unsigned int dimension = 0; dimension < dim; dimension++)
+            {
+              ConditionalOStreams::pout_base() << integrated_values[dimension] << " ";
+            }
+        }
+      else
+        {
+          double integrated_value = 0.0;
+          integrator.compute_integral(integrated_value,
+                                      *dof_handler.get_dof_handlers()[index],
+                                      *vector);
+
+          ConditionalOStreams::pout_base() << integrated_value;
+        }
+
+      ConditionalOStreams::pout_base() << "\n";
+    }
+  ConditionalOStreams::pout_base() << "\n" << std::flush;
+
   Timer::serial_timer().leave_subsection();
 }
 
