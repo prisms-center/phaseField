@@ -351,6 +351,12 @@ PDEProblem<dim, degree>::solve()
 
   ConditionalOStreams::pout_base() << "\n";
 
+  // If the number of increments is 0, we return early
+  if (user_inputs->get_temporal_discretization().get_total_increments() == 0)
+    {
+      return;
+    }
+
   ConditionalOStreams::pout_summary()
     << "================================================\n"
        "  Solve\n"
