@@ -289,7 +289,10 @@ BoundaryParameters<dim>::postprocess_and_validate(
         {
           for (unsigned int i = 0; i < dim; i++)
             {
-              if (variable.is_postprocess())
+              // For postprocess and constant fields, the boundary condition is built-in
+              // to whatever the user sets. Thus, we set it to natural.
+              if (variable.is_postprocess() ||
+                  variable.get_pde_type() == PDEType::Constant)
                 {
                   set_boundary("Natural", variable.get_field_index(), i);
                 }
@@ -312,7 +315,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
         }
       else
         {
-          if (variable.is_postprocess())
+          if (variable.is_postprocess() || variable.get_pde_type() == PDEType::Constant)
             {
               set_boundary("Natural", variable.get_field_index(), 0);
             }
