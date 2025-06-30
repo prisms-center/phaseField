@@ -192,7 +192,10 @@ if(PRISMS_PF_AUTODETECTION)
 endif()
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 if(PRISMS_PF_WITH_CALIPER)
-  find_package(CALIPER)
+  find_package(CALIPER QUIET
+    HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR}
+    )
+  message(STATUS "CALIPER_DIR: ${CALIPER_DIR}")
   if(${CALIPER_FOUND})
     include_directories(${CALIPER_INCLUDE_DIR})
     message(STATUS "  Caliper found at ${CALIPER_DIR}")
