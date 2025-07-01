@@ -38,6 +38,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   assign_output_parameters(parameter_handler);
   assign_checkpoint_parameters(parameter_handler);
   assign_boundary_parameters(parameter_handler);
+  assign_load_initial_condition_parameters(parameter_handler);
   load_model_constants(input_file_reader, parameter_handler);
 
   // Perform and postprocessing of user inputs and run checks
@@ -48,6 +49,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   output_parameters.postprocess_and_validate(temporal_discretization);
   checkpoint_parameters.postprocess_and_validate(temporal_discretization);
   boundary_parameters.postprocess_and_validate(var_attributes);
+  load_ic_parameters.postprocess_and_validate();
 
   // Print all the parameters to summary.log
   spatial_discretization.print_parameter_summary();
@@ -57,6 +59,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   output_parameters.print_parameter_summary();
   checkpoint_parameters.print_parameter_summary();
   boundary_parameters.print_parameter_summary();
+  load_ic_parameters.print_parameter_summary();
   user_constants.print();
 }
 
@@ -363,6 +366,38 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
 
           parameter_handler.leave_subsection();
         }
+    }
+}
+
+template <unsigned int dim>
+void
+UserInputParameters<dim>::assign_load_initial_condition_parameters(
+  dealii::ParameterHandler &parameter_handler)
+{
+  load_ic_parameters.set_read_initial_conditions_from_file(
+    parameter_handler.get_bool("read initial conditions from file"));
+
+  for (unsigned int i = 0; i < 8; i++)
+    {
+      parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
+      {
+        // Check if the file is specified
+        if (parameter_handler.get("file name") != "")
+          {
+            // Create the LoadICFile object
+            InitialConditionFile ic_file;
+            ic_file.filename            = parameter_handler.get("file name");
+            ic_file.file_extension      = parameter_handler.get("file extension");
+            ic_file.grid_type           = parameter_handler.get("grid type");
+            ic_file.file_variable_names = dealii::Utilities::split_string_list(
+              parameter_handler.get("file variable names"));
+            ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
+              parameter_handler.get("simulation variable names"));
+
+            load_ic_parameters.add_initial_condition_file(ic_file);
+          }
+      }
+      parameter_handler.leave_subsection();
     }
 }
 
