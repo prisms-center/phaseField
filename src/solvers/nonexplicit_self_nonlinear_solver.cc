@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/solvers/linear_solver_gmg.h>
@@ -133,7 +134,9 @@ NonexplicitSelfnonlinearSolver<dim, degree>::solve()
                                           index);
 
       // Update the ghosts
+      Timer::start_section("Update ghosts");
       this->get_solution_handler().update_ghosts();
+      Timer::end_section("Update ghosts");
     }
 }
 

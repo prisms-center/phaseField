@@ -85,8 +85,6 @@ template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::init_system()
 {
-  Timer::serial_timer().enter_subsection("Initialization");
-
   const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
   ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
                                    << std::flush;
@@ -102,6 +100,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Create the Scalar/Vector FESystem's, if applicable
   ConditionalOStreams::pout_base() << "creating FESystem...\n" << std::flush;
+  Timer::start_section("Create FESystem");
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
       if (variable.get_field_type() == FieldType::Scalar &&
@@ -125,20 +124,26 @@ PDEProblem<dim, degree>::init_system()
                                               << std::flush;
         }
     }
+  Timer::end_section("Create FESystem");
 
   // Create the mesh
   ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  Timer::start_section("Generate mesh");
   triangulation_handler.generate_mesh();
+  Timer::end_section("Generate mesh");
 
   // Print multigrid info
   mg_info.print();
 
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
+  Timer::start_section("Initialize DoFHandlers");
   dof_handler.init(triangulation_handler, fe_system, mg_info);
+  Timer::end_section("Initialize DoFHandlers");
 
   // Create the constraints
   ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  Timer::start_section("Create constraints");
   constraint_handler.make_constraints(mapping, dof_handler.get_dof_handlers());
   if (mg_info.has_multigrid())
     {
@@ -154,10 +159,12 @@ PDEProblem<dim, degree>::init_system()
                                                  level);
         }
     }
+  Timer::end_section("Create constraints");
 
   // Reinit the matrix-free objects
   ConditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
                                    << std::flush;
+  Timer::start_section("Initialize matrix-free objects");
   matrix_free_handler.reinit(mapping,
                              dof_handler.get_dof_handlers(),
                              constraint_handler.get_constraints(),
@@ -179,33 +186,40 @@ PDEProblem<dim, degree>::init_system()
             dealii::QGaussLobatto<1>(degree + 1));
         }
     }
+  Timer::end_section("Initialize matrix-free objects");
 
   // Initialize the solution set
   ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
+  Timer::start_section("Initialize solution set");
   solution_handler.init(matrix_free_handler);
   if (mg_info.has_multigrid())
     {
       solution_handler.mg_init(multigrid_matrix_free_handler);
     }
+  Timer::end_section("Initialize solution set");
 
   // Initialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
   // the output directory so we should create a separate flag and/or directory for this.
   ConditionalOStreams::pout_base() << "initializing invm...\n" << std::flush;
+  Timer::start_section("Initialize invm");
   invm_handler.initialize(matrix_free_handler.get_matrix_free());
   invm_handler.compute_invm();
+  Timer::end_section("Initialize invm");
 
   // Initialize the element volumes and compute them
   // TODO (landinjm): Output the element volumes for debug mode. This will create a lot of
   // bloat in the output directory so we should create a separate flag and/or directory
   // for this.
   ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
+  Timer::start_section("Initialize element volumes");
   element_volume.initialize(matrix_free_handler.get_matrix_free());
   element_volume.compute_element_volume(fe_system.begin()->second);
+  Timer::end_section("Initialize element volumes");
 
   // Initialize the solver types
   ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
-
+  Timer::start_section("Solver initialization");
   explicit_constant_solver.init();
   explicit_solver.init();
   postprocess_explicit_solver.init();
@@ -213,40 +227,54 @@ PDEProblem<dim, degree>::init_system()
   nonexplicit_linear_solver.init();
   nonexplicit_self_nonlinear_solver.init();
   nonexplicit_co_nonlinear_solver.init();
+  Timer::end_section("Solver initialization");
 
   // Update the ghosts
+  Timer::start_section("Update ghosts");
   solution_handler.update_ghosts();
+  Timer::end_section("Update ghosts");
 
   // Solve the auxiliary fields at the 0th step
   ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
+  Timer::start_section("Auxiliary solver");
   nonexplicit_auxiliary_solver.solve();
+  Timer::end_section("Auxiliary solver");
 
   // Solve the linear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
+  Timer::start_section("Nonexplicit linear solver");
   nonexplicit_linear_solver.solve();
+  Timer::end_section("Nonexplicit linear solver");
 
   // Solve the self-nonlinear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
+  Timer::start_section("Nonexplicit self-nonlinear solver");
   nonexplicit_self_nonlinear_solver.solve();
+  Timer::end_section("Nonexplicit self-nonlinear solver");
 
   // Solve the co-nonlinear time-independent fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving co-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
+  Timer::start_section("Nonexplicit co-nonlinear solver");
   nonexplicit_co_nonlinear_solver.solve();
+  Timer::end_section("Nonexplicit co-nonlinear solver");
 
   // Solve the postprocessed fields at the 0th step
   ConditionalOStreams::pout_base()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
+  Timer::start_section("Postprocess solver");
   postprocess_explicit_solver.solve();
+  Timer::end_section("Postprocess solver");
 
   // Output initial condition
+  Timer::start_section("Output");
   ConditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
   SolutionOutput<dim>(solution_handler.get_solution_vector(),
                       dof_handler.get_dof_handlers(),
@@ -292,16 +320,14 @@ PDEProblem<dim, degree>::init_system()
       ConditionalOStreams::pout_base() << "\n";
     }
   ConditionalOStreams::pout_base() << "\n" << std::flush;
-
-  Timer::serial_timer().leave_subsection();
+  Timer::end_section("Output");
 }
 
 template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve_increment()
 {
-  Timer::serial_timer().enter_subsection("Solve Increment");
-
+  Timer::start_section("Update time-dependent constraints");
   // Update the time-dependent constraints
   if (user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
@@ -320,19 +346,32 @@ PDEProblem<dim, degree>::solve_increment()
             }
         }
     }
+  Timer::end_section("Update time-dependent constraints");
 
   // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
   // apparent in an application that includes multiple of these solve types. Also only
   // update ghosts that need to be. It's wasteful to over communicate.
 
   // Solve a single increment
+  Timer::start_section("Explicit solver");
   explicit_solver.solve();
-  nonexplicit_auxiliary_solver.solve();
-  nonexplicit_linear_solver.solve();
-  nonexplicit_self_nonlinear_solver.solve();
-  nonexplicit_co_nonlinear_solver.solve();
+  Timer::end_section("Explicit solver");
 
-  Timer::serial_timer().leave_subsection();
+  Timer::start_section("Nonexplicit auxiliary solver");
+  nonexplicit_auxiliary_solver.solve();
+  Timer::end_section("Nonexplicit auxiliary solver");
+
+  Timer::start_section("Nonexplicit linear solver");
+  nonexplicit_linear_solver.solve();
+  Timer::end_section("Nonexplicit linear solver");
+
+  Timer::start_section("Nonexplicit self-nonlinear solver");
+  nonexplicit_self_nonlinear_solver.solve();
+  Timer::end_section("Nonexplicit self-nonlinear solver");
+
+  Timer::start_section("Nonexplicit co-nonlinear solver");
+  nonexplicit_co_nonlinear_solver.solve();
+  Timer::end_section("Nonexplicit co-nonlinear solver");
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -345,9 +384,9 @@ PDEProblem<dim, degree>::solve()
     << "================================================\n"
     << std::flush;
 
-  CALI_MARK_BEGIN("Initialization");
+  Timer::start_section("Initialization");
   init_system();
-  CALI_MARK_END("Initialization");
+  Timer::end_section("Initialization");
 
   ConditionalOStreams::pout_base() << "\n";
 
@@ -368,15 +407,18 @@ PDEProblem<dim, degree>::solve()
       user_inputs->get_temporal_discretization().update_current_increment();
       user_inputs->get_temporal_discretization().update_current_time();
 
-      CALI_MARK_BEGIN("Solve Increment");
+      Timer::start_section("Solve Increment");
       solve_increment();
-      CALI_MARK_END("Solve Increment");
+      Timer::end_section("Solve Increment");
 
       if (user_inputs->get_output_parameters().should_output(
             user_inputs->get_temporal_discretization().get_current_increment()))
         {
+          Timer::start_section("Postprocess solver");
           postprocess_explicit_solver.solve();
+          Timer::end_section("Postprocess solver");
 
+          Timer::start_section("Output");
           SolutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),
                               degree,
@@ -422,6 +464,7 @@ PDEProblem<dim, degree>::solve()
               ConditionalOStreams::pout_base() << "\n";
             }
           ConditionalOStreams::pout_base() << "\n" << std::flush;
+          Timer::end_section("Output");
         }
     }
 }
@@ -432,9 +475,7 @@ PDEProblem<dim, degree>::run()
 {
   solve();
 
-#ifndef PRISMS_PF_WITH_CALIPER
   Timer::print_summary();
-#endif
 }
 
 INSTANTIATE_BI_TEMPLATE(PDEProblem)

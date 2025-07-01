@@ -13,7 +13,31 @@
 #include <mpi.h>
 #include <ostream>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+void
+Timer::start_section(const char *name)
+{
+#ifdef PRISMS_PF_WITH_CALIPER
+  CALI_MARK_BEGIN(name);
+#else
+  serial_timer().enter_subsection(name);
+#endif
+}
+
+void
+Timer::end_section([[maybe_unused]] const char *name)
+{
+#ifdef PRISMS_PF_WITH_CALIPER
+  CALI_MARK_END(name);
+#else
+  serial_timer().leave_subsection();
+#endif
+}
 
 dealii::TimerOutput &
 Timer::serial_timer()
@@ -39,6 +63,11 @@ Timer::parallel_timer()
 void
 Timer::print_summary()
 {
+  // Caliper already prints the summary
+#ifdef PRISMS_PF_WITH_CALIPER
+  return;
+#endif
+
   // Get the timer output for the serial and parallel timers
   const auto serial_n_calls =
     serial_timer().get_summary_data(dealii::TimerOutput::OutputData::n_calls);

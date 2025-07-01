@@ -37,10 +37,6 @@
 
 #include <prismspf/config.h>
 
-#ifdef PRISMS_PF_WITH_CALIPER
-#  include <caliper/cali.h>
-#endif
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**

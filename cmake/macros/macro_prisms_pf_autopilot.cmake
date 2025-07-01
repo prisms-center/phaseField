@@ -15,7 +15,7 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
 
   # Find Caliper if enabled
   if(${PRISMS_PF_WITH_CALIPER})
-    find_package(caliper REQUIRED)
+    find_package(CALIPER REQUIRED)
     include_directories(${CALIPER_INCLUDE_DIR})
   endif()
 
