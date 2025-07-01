@@ -58,7 +58,8 @@ public:
    * \brief Set the nonlinear solve parameters for a field index.
    */
   void
-  set_nonlinear_solve_parameters(Types::Index index, NonlinearSolverParameters parameters)
+  set_nonlinear_solve_parameters(Types::Index                     index,
+                                 const NonlinearSolverParameters &parameters)
   {
     nonlinear_solve[index] = parameters;
   }
