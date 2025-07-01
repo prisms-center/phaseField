@@ -41,6 +41,7 @@ enum SolveType : std::uint8_t
   ExplicitRHS,
   NonexplicitRHS,
   NonexplicitLHS,
+  Nucleation,
   Postprocess
 };
 
@@ -75,6 +76,7 @@ enum FieldSolveType : std::uint8_t
   NonexplicitSelfnonlinear,
   NonexplicitAuxiliary,
   NonexplicitCononlinear,
+  ExplicitNucleation,
   ExplicitPostprocess,
 };
 
@@ -168,6 +170,8 @@ to_string(SolveType type)
         return "NonexplicitRHS";
       case SolveType::NonexplicitLHS:
         return "NonexplicitLHS";
+      case SolveType::Nucleation:
+        return "Nucleation";
       case SolveType::Postprocess:
         return "Postprocess";
       default:
