@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 
 #include <prismspf/config.h>
@@ -40,9 +42,14 @@ struct InitialConditionFile
 /**
  * \brief Struct that stores relevant load initial condition information
  */
-struct LoadICParameters
+struct LoadInitialConditionParameters
 {
 public:
+  /**
+   * \brief Maximum number of initial condition files
+   */
+  static constexpr unsigned int max_files = 8;
+
   /**
    * \brief Postprocess and validate parameters.
    */
@@ -54,6 +61,16 @@ public:
    */
   void
   print_parameter_summary() const;
+
+  /**
+   * \brief Clear the initial condition parameters.
+   */
+  void
+  clear()
+  {
+    read_initial_conditions_from_file = false;
+    ic_files.clear();
+  }
 
   /**
    * \brief Set the read initial conditions from file flag.
@@ -77,9 +94,21 @@ public:
    * \brief Add a initial condition file.
    */
   void
-  add_ic_file(InitialConditionFile _ic_file)
+  add_initial_condition_file(InitialConditionFile _ic_file)
   {
-    ic_files.push_back(std::move(_ic_file));
+    if (read_initial_conditions_from_file)
+      {
+        ic_files.push_back(std::move(_ic_file));
+      }
+  }
+
+  /**
+   * \brief Get the number of initial condition files.
+   */
+  [[nodiscard]] unsigned int
+  get_n_initial_condition_files() const
+  {
+    return ic_files.size();
   }
 
 private:
@@ -91,7 +120,7 @@ private:
 };
 
 inline void
-LoadICParameters::postprocess_and_validate()
+LoadInitialConditionParameters::postprocess_and_validate()
 {
   for (const auto &ic_file : ic_files)
     {
@@ -104,7 +133,7 @@ LoadICParameters::postprocess_and_validate()
 }
 
 inline void
-LoadICParameters::print_parameter_summary() const
+LoadInitialConditionParameters::print_parameter_summary() const
 {
   if (read_initial_conditions_from_file)
     {

@@ -10,6 +10,7 @@
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
+#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -515,8 +516,7 @@ InputFileReader::declare_load_ic_parameters()
                                   dealii::Patterns::Bool(),
                                   "Whether to read any initial conditions from file.");
 
-  const unsigned int max_files = 8;
-  for (unsigned int i = 0; i < max_files; i++)
+  for (unsigned int i = 0; i < LoadInitialConditionParameters::max_files; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
       {

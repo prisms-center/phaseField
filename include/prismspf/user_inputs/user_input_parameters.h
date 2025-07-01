@@ -109,7 +109,7 @@ public:
   /**
    * \brief Return the load IC parameters.
    */
-  [[nodiscard]] const LoadICParameters &
+  [[nodiscard]] const LoadInitialConditionParameters &
   get_load_ic_parameters() const
   {
     return load_ic_parameters;
@@ -227,7 +227,7 @@ private:
   BoundaryParameters<dim> boundary_parameters;
 
   // Load IC parameters
-  LoadICParameters load_ic_parameters;
+  LoadInitialConditionParameters load_ic_parameters;
 
   // User constants
   UserConstants<dim> user_constants;

@@ -394,7 +394,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variable names"));
 
-            load_ic_parameters.add_ic_file(ic_file);
+            load_ic_parameters.add_initial_condition_file(ic_file);
           }
       }
       parameter_handler.leave_subsection();
