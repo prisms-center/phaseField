@@ -30,7 +30,7 @@ public:
 /**
  * \brief Struct that holds nonlinear solver parameters.
  */
-struct NonlinearSolveParameters
+struct NonlinearSolveParameterSet
 {
 public:
   /**
@@ -78,7 +78,7 @@ private:
 };
 
 inline void
-NonlinearSolveParameters::postprocess_and_validate()
+NonlinearSolveParameterSet::postprocess_and_validate()
 {
   for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
     {
@@ -94,7 +94,7 @@ NonlinearSolveParameters::postprocess_and_validate()
 }
 
 inline void
-NonlinearSolveParameters::print_parameter_summary() const
+NonlinearSolveParameterSet::print_parameter_summary() const
 {
   if (!nonlinear_solve.empty())
     {

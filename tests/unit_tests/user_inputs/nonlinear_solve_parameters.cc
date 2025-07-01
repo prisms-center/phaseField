@@ -14,7 +14,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 TEST_CASE("Nonlinear solve parameters")
 {
-  NonlinearSolveParameters parameters;
+  NonlinearSolveParameterSet parameters;
   SECTION("Step length")
   {
     NonlinearSolverParameters solver_parameters;
