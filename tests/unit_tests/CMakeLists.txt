@@ -17,6 +17,11 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
   "Please delete the file before running cmake again.")
 endif()
 
+# Set the standard to C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # =========================================================
 # External libraries
 # =========================================================
