@@ -5,10 +5,14 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
+#include <prismspf/core/types.h>
+
 #include <prismspf/utilities/utilities.h>
 
 #include <filesystem>
+#include <vtkCellLocator.h>
 #include <vtkDataArray.h>
+#include <vtkGenericCell.h>
 #include <vtkNew.h>
 #include <vtkPointData.h>
 #include <vtkUnstructuredGrid.h>
@@ -253,7 +257,22 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
 
   // Find the point id in the vtk file
   vtkIdType point_id = output->FindPoint(point_c_array.data());
+
+  // Check that point is inside the grid
   AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
+
+  // Check that the point is within some tolerance to know whether we have to interpolate
+  // or not
+  std::array<double, 3> point_in_dataset;
+  output->GetPoint(point_id, point_in_dataset.data());
+  bool interpolate = false;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      if (std::abs(point_in_dataset[i] - point_c_array[i]) > Defaults::mesh_tolerance)
+        {
+          interpolate = true;
+        }
+    }
 
   // Get the data array
   vtkDataArray *data_array = point_data->GetArray(scalar_name.c_str());
@@ -261,7 +280,42 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
               dealii::ExcMessage(std::string("Data array not found: ") + scalar_name));
 
   // Get the value of the scalar at the point
-  return data_array->GetComponent(point_id, 0);
+  if (interpolate)
+    {
+      vtkNew<vtkCellLocator> cell_locator;
+      cell_locator->SetDataSet(output);
+      cell_locator->BuildLocator();
+
+      double pcoords[3];
+      double weights[8];
+      int    sub_id;
+
+      vtkGenericCell *cell    = vtkGenericCell::New();
+      vtkIdType       cell_id = cell_locator->FindCell(point_c_array.data(),
+                                                 Defaults::mesh_tolerance,
+                                                 cell,
+                                                 sub_id,
+                                                 pcoords,
+                                                 weights);
+
+      AssertThrow(cell_id >= 0,
+                  dealii::ExcMessage("Point not inside any cell for interpolation"));
+
+      // Interpolate scalar value using weights and nodal values
+      vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
+      double     interpolated_value = 0.0;
+      for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
+        {
+          vtkIdType pt_id = point_ids->GetId(i);
+          interpolated_value += weights[i] * data_array->GetComponent(pt_id, 0);
+        }
+
+      return interpolated_value;
+    }
+  else
+    {
+      return data_array->GetComponent(point_id, 0);
+    }
 }
 
 template <unsigned int dim>
@@ -290,7 +344,22 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
 
   // Find the point id in the vtk file
   vtkIdType point_id = output->FindPoint(point_c_array.data());
+
+  // Check that point is inside the grid
   AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
+
+  // Check that the point is within some tolerance to know whether we have to interpolate
+  // or not
+  std::array<double, 3> point_in_dataset;
+  output->GetPoint(point_id, point_in_dataset.data());
+  bool interpolate = false;
+  for (unsigned int i = 0; i < dim; i++)
+    {
+      if (std::abs(point_in_dataset[i] - point_c_array[i]) > Defaults::mesh_tolerance)
+        {
+          interpolate = true;
+        }
+    }
 
   // Get the data array
   vtkDataArray *data_array = point_data->GetArray(vector_name.c_str());
@@ -299,9 +368,45 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
 
   // Get the value of the vector at the point
   dealii::Vector<double> vector_value(dim);
+
   for (unsigned int i = 0; i < dim; i++)
     {
-      vector_value[i] = data_array->GetComponent(point_id, i);
+      if (interpolate)
+        {
+          vtkNew<vtkCellLocator> cell_locator;
+          cell_locator->SetDataSet(output);
+          cell_locator->BuildLocator();
+
+          double pcoords[3];
+          double weights[8];
+          int    sub_id;
+
+          vtkGenericCell *cell    = vtkGenericCell::New();
+          vtkIdType       cell_id = cell_locator->FindCell(point_c_array.data(),
+                                                     Defaults::mesh_tolerance,
+                                                     cell,
+                                                     sub_id,
+                                                     pcoords,
+                                                     weights);
+
+          AssertThrow(cell_id >= 0,
+                      dealii::ExcMessage("Point not inside any cell for interpolation"));
+
+          // Interpolate scalar value using weights and nodal values
+          vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
+          double     interpolated_value = 0.0;
+          for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
+            {
+              vtkIdType pt_id = point_ids->GetId(i);
+              interpolated_value += weights[i] * data_array->GetComponent(pt_id, i);
+            }
+
+          vector_value[i] = interpolated_value;
+        }
+      else
+        {
+          vector_value[i] = data_array->GetComponent(point_id, i);
+        }
     }
   return vector_value;
 }
