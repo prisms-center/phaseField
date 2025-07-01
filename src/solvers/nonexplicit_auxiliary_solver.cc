@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -110,7 +111,9 @@ NonexplicitAuxiliarySolver<dim, degree>::solve()
         this->get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
 
       // Update the ghosts
+      Timer::start_section("Update ghosts");
       this->get_solution_handler().update_ghosts();
+      Timer::end_section("Update ghosts");
     }
 }
 

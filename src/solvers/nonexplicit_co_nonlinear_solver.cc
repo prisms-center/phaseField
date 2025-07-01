@@ -5,6 +5,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -205,7 +206,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                     .get_solution_vector(index, DependencyType::Normal)));
 
               // Update the ghosts
+              Timer::start_section("Update ghosts");
               this->get_solution_handler().update_ghosts();
+              Timer::end_section("Update ghosts");
             }
           else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
                    variable.get_pde_type() == PDEType::TimeIndependent)
@@ -227,7 +230,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
                 }
 
               // Update the ghosts
+              Timer::start_section("Update ghosts");
               this->get_solution_handler().update_ghosts();
+              Timer::end_section("Update ghosts");
             }
           else
             {
@@ -278,7 +283,9 @@ NonexplicitCononlinearSolver<dim, degree>::solve()
     }
 
   // Update the ghosts
+  Timer::start_section("Update ghosts");
   this->get_solution_handler().update_ghosts();
+  Timer::end_section("Update ghosts");
 }
 
 INSTANTIATE_BI_TEMPLATE(NonexplicitCononlinearSolver)
