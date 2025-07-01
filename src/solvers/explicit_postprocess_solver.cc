@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/solvers/explicit_base.h>
@@ -92,7 +93,9 @@ ExplicitPostprocessSolver<dim, degree>::solve()
   this->get_solution_handler().update(FieldSolveType::ExplicitPostprocess);
 
   // Update the ghosts
+  Timer::start_section("Update ghosts");
   this->get_solution_handler().update_ghosts();
+  Timer::end_section("Update ghosts");
 }
 
 INSTANTIATE_BI_TEMPLATE(ExplicitPostprocessSolver)

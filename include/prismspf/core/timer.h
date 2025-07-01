@@ -21,6 +21,18 @@ public:
   Timer();
 
   /**
+   * \brief Start a new timer section.
+   */
+  static void
+  start_section(const char *name);
+
+  /**
+   * \brief End the current timer section.
+   */
+  static void
+  end_section(const char *name);
+
+  /**
    * \brief deal.II timer for the 0th MPI process
    */
   static dealii::TimerOutput &

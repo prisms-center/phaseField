@@ -6,6 +6,11 @@ message(STATUS "Configuring PRISMS-PF application")
 message(STATUS "=========================================================")
 message(STATUS "")
 
+# Set the standard to C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Setup the build type (debug, release, debugrelease)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE "DebugRelease" 
