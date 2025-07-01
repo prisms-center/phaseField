@@ -30,7 +30,7 @@ Timer::start_section(const char *name)
 }
 
 void
-Timer::end_section(const char *name)
+Timer::end_section([[maybe_unused]] const char *name)
 {
 #ifdef PRISMS_PF_WITH_CALIPER
   CALI_MARK_END(name);
