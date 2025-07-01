@@ -11,6 +11,7 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
+#include <prismspf/field_input/read_vtk.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -48,6 +49,40 @@ private:
   unsigned int index;
 
   std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+};
+
+/**
+ * \brief Function for read-in intial conditions. These are only ever used for
+ * for explicit time dependent fields and implicit time dependent, as all others are
+ * calculated at runtime.
+ */
+template <unsigned int dim>
+class ReadInitialCondition : public dealii::Function<dim, double>
+{
+public:
+  /**
+   * \brief Constructor.
+   */
+  ReadInitialCondition(std::string      file_name,
+                       std::string      field_name,
+                       const FieldType &field_type);
+
+  // NOLINTBEGIN(readability-identifier-length)
+
+  /**
+   * \brief Scalar/Vector value.
+   */
+  void
+  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+
+  // NOLINTEND(readability-identifier-length)
+
+private:
+  std::string field_name;
+
+  FieldType field_type;
+
+  std::shared_ptr<ReadUnstructuredVTK<dim>> reader;
 };
 
 PRISMS_PF_END_NAMESPACE
