@@ -45,10 +45,3 @@ set Model constant KI_nom = 103, double
 
 set read initial conditions from file = true
 
-subsection initial condition file 1
-  set file name = modulus
-  set file extension = vtk
-  set grid type = unstructured
-  set file variable names = phi
-  set simulation variable names = Ex
-end
