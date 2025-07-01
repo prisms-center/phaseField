@@ -8,6 +8,7 @@
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/output_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
@@ -103,6 +104,15 @@ public:
   get_boundary_parameters() const
   {
     return boundary_parameters;
+  }
+
+  /**
+   * \brief Return the load IC parameters.
+   */
+  [[nodiscard]] const LoadInitialConditionParameters &
+  get_load_initial_condition_parameters() const
+  {
+    return load_ic_parameters;
   }
 
   /**
@@ -215,6 +225,9 @@ private:
 
   // Boundary parameters
   BoundaryParameters<dim> boundary_parameters;
+
+  // Load IC parameters
+  LoadInitialConditionParameters load_ic_parameters;
 
   // User constants
   UserConstants<dim> user_constants;
