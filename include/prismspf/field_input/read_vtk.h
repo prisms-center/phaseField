@@ -395,10 +395,10 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
           // Interpolate scalar value using weights and nodal values
           vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
           double     interpolated_value = 0.0;
-          for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
+          for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
             {
-              vtkIdType pt_id = point_ids->GetId(i);
-              interpolated_value += weights[i] * data_array->GetComponent(pt_id, i);
+              vtkIdType pt_id = point_ids->GetId(id);
+              interpolated_value += weights[id] * data_array->GetComponent(pt_id, id);
             }
 
           vector_value[i] = interpolated_value;
