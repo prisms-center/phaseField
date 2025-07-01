@@ -72,7 +72,7 @@ public:
   /**
    * \brief Return the nonlinear solve parameters.
    */
-  [[nodiscard]] const NonlinearSolveParameters &
+  [[nodiscard]] const NonlinearSolveParameterSet &
   get_nonlinear_solve_parameters() const
   {
     return nonlinear_solve_parameters;
@@ -205,7 +205,7 @@ private:
   LinearSolveParameters linear_solve_parameters;
 
   // Nonlinear solve parameters
-  NonlinearSolveParameters nonlinear_solve_parameters;
+  NonlinearSolveParameterSet nonlinear_solve_parameters;
 
   // Output parameters
   OutputParameters output_parameters;
