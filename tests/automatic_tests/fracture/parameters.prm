@@ -43,5 +43,3 @@ set Model constant CIJ_base = (3e3,0.35), isotropic elastic constants
 set Model constant vel_nom = 2e-5, double
 set Model constant KI_nom = 103, double
 
-set read initial conditions from file = true
-
