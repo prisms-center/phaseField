@@ -111,6 +111,15 @@ public:
     return ic_files.size();
   }
 
+  /**
+   * \brief Get the initial condition files.
+   */
+  [[nodiscard]] const std::vector<InitialConditionFile> &
+  get_initial_condition_files() const
+  {
+    return ic_files;
+  }
+
 private:
   // Whether to read initial conditions from file
   bool read_initial_conditions_from_file = false;
@@ -130,6 +139,9 @@ LoadInitialConditionParameters::postprocess_and_validate()
                   dealii::ExcMessage("The number of file variables must be the same as "
                                      "the number of simulation variables"));
     }
+
+  // TODO (landinjm): Check that there are no duplicate field names so we don't double
+  // assign.
 }
 
 inline void

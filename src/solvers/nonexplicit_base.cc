@@ -126,14 +126,47 @@ NonexplicitBase<dim, degree>::set_initial_condition()
                "There is no entry in the attribute subset for the given index = " +
                std::to_string(index)));
 
-      dealii::VectorTools::interpolate(
-        solver_context->get_mapping(),
-        *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-        InitialCondition<dim, degree>(index,
-                                      subset_attributes.at(index).get_field_type(),
-                                      solver_context->get_pde_operator()),
-        *(solver_context->get_solution_handler()
-            .get_solution_vector(index, DependencyType::Normal)));
+      if (solver_context->get_user_inputs()
+            .get_load_initial_condition_parameters()
+            .get_read_initial_conditions_from_file())
+        {
+          auto &initial_condition_parameters =
+            solver_context->get_user_inputs().get_load_initial_condition_parameters();
+          for (const auto &initial_condition_file :
+               initial_condition_parameters.get_initial_condition_files())
+            {
+              auto iterator =
+                std::find(initial_condition_file.simulation_variable_names.begin(),
+                          initial_condition_file.simulation_variable_names.end(),
+                          variable.get_name());
+              if (iterator != initial_condition_file.simulation_variable_names.end())
+                {
+                  dealii::VectorTools::interpolate(
+                    solver_context->get_mapping(),
+                    *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+                    ReadInitialCondition<dim>(
+                      initial_condition_file.filename + "." +
+                        initial_condition_file.file_extension,
+                      initial_condition_file.file_variable_names
+                        [iterator -
+                         initial_condition_file.simulation_variable_names.begin()],
+                      subset_attributes.at(index).get_field_type()),
+                    *(solver_context->get_solution_handler()
+                        .get_solution_vector(index, DependencyType::Normal)));
+                }
+            }
+        }
+      else
+        {
+          dealii::VectorTools::interpolate(
+            solver_context->get_mapping(),
+            *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+            InitialCondition<dim, degree>(index,
+                                          subset_attributes.at(index).get_field_type(),
+                                          solver_context->get_pde_operator()),
+            *(solver_context->get_solution_handler()
+                .get_solution_vector(index, DependencyType::Normal)));
+        }
 
       // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
       // vector for all types.

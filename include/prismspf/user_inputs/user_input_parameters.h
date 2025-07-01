@@ -110,7 +110,7 @@ public:
    * \brief Return the load IC parameters.
    */
   [[nodiscard]] const LoadInitialConditionParameters &
-  get_load_ic_parameters() const
+  get_load_initial_condition_parameters() const
   {
     return load_ic_parameters;
   }
