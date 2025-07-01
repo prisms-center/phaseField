@@ -85,8 +85,6 @@ template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::init_system()
 {
-  Timer::serial_timer().enter_subsection("Initialization");
-
   const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
   ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
                                    << std::flush;
@@ -292,16 +290,12 @@ PDEProblem<dim, degree>::init_system()
       ConditionalOStreams::pout_base() << "\n";
     }
   ConditionalOStreams::pout_base() << "\n" << std::flush;
-
-  Timer::serial_timer().leave_subsection();
 }
 
 template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::solve_increment()
 {
-  Timer::serial_timer().enter_subsection("Solve Increment");
-
   // Update the time-dependent constraints
   if (user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
@@ -331,8 +325,6 @@ PDEProblem<dim, degree>::solve_increment()
   nonexplicit_linear_solver.solve();
   nonexplicit_self_nonlinear_solver.solve();
   nonexplicit_co_nonlinear_solver.solve();
-
-  Timer::serial_timer().leave_subsection();
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -345,9 +337,7 @@ PDEProblem<dim, degree>::solve()
     << "================================================\n"
     << std::flush;
 
-  CALI_MARK_BEGIN("Initialization");
   init_system();
-  CALI_MARK_END("Initialization");
 
   ConditionalOStreams::pout_base() << "\n";
 
@@ -368,9 +358,7 @@ PDEProblem<dim, degree>::solve()
       user_inputs->get_temporal_discretization().update_current_increment();
       user_inputs->get_temporal_discretization().update_current_time();
 
-      CALI_MARK_BEGIN("Solve Increment");
       solve_increment();
-      CALI_MARK_END("Solve Increment");
 
       if (user_inputs->get_output_parameters().should_output(
             user_inputs->get_temporal_discretization().get_current_increment()))
@@ -432,9 +420,7 @@ PDEProblem<dim, degree>::run()
 {
   solve();
 
-#ifndef PRISMS_PF_WITH_CALIPER
   Timer::print_summary();
-#endif
 }
 
 INSTANTIATE_BI_TEMPLATE(PDEProblem)
