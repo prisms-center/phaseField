@@ -23,13 +23,13 @@ public:
   /**
    * \brief Start a new timer section.
    */
-  void
+  static void
   start_section(const char *name);
 
   /**
    * \brief End the current timer section.
    */
-  void
+  static void
   end_section(const char *name);
 
   /**
