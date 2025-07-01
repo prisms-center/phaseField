@@ -46,11 +46,19 @@ public:
   print_parameter_summary() const;
 
   /**
+   * \brief Clear the nonlinear solve parameters.
+   */
+  void
+  clear()
+  {
+    nonlinear_solve.clear();
+  }
+
+  /**
    * \brief Set the nonlinear solve parameters for a field index.
    */
   void
-  set_nonlinear_solve_parameters(const Types::Index              &index,
-                                 const NonlinearSolverParameters &parameters)
+  set_nonlinear_solve_parameters(Types::Index index, NonlinearSolverParameters parameters)
   {
     nonlinear_solve[index] = parameters;
   }
@@ -59,7 +67,7 @@ public:
    * \brief Get the nonlinear solve parameters for a field index.
    */
   [[nodiscard]] const NonlinearSolverParameters &
-  get_nonlinear_solve_parameters(const Types::Index &index) const
+  get_nonlinear_solve_parameters(Types::Index index) const
   {
     return nonlinear_solve.at(index);
   }
@@ -72,7 +80,17 @@ private:
 inline void
 NonlinearSolveParameters::postprocess_and_validate()
 {
-  // Nothing to do here for now
+  for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
+    {
+      AssertThrow(
+        nonlinear_solver_parameters.step_length > 0.0 &&
+          nonlinear_solver_parameters.step_length <= 1.0,
+        dealii::ExcMessage(
+          "Step length must be greater than 0.0 and less than or equal to 1.0"));
+
+      AssertThrow(nonlinear_solver_parameters.tolerance_value > 0,
+                  dealii::ExcMessage("Tolerance must be greater than 0.0"));
+    }
 }
 
 inline void
