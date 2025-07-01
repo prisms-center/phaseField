@@ -19,9 +19,9 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     include_directories(${CALIPER_INCLUDE_DIR})
   endif()
 
-  # Set the location of the main.cc file
+  # Set the location of application source files
   set(TARGET_SRC 
-    "${PRISMS_PF_CORE_DIR}/src/main.cc" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/main.cc" 
     "${CMAKE_CURRENT_SOURCE_DIR}/equations.cc" 
     "${CMAKE_CURRENT_SOURCE_DIR}/ICs_and_BCs.cc"
   )
