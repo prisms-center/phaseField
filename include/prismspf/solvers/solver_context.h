@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * \brief This class provides context for a solver with ptrs to all the relevant
  * dependencies.
  */
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number = double>
 class SolverContext
 {
 public:
