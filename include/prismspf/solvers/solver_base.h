@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -20,8 +19,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 class SolverBase
 {
 public:
-  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
-
   /**
    * \brief Constructor.
    */
@@ -80,7 +77,12 @@ public:
   virtual void
   solve() = 0;
 
-protected:
+  /**
+   * \brief Print information about the solver to summary.log.
+   */
+  void
+  print();
+
   /**
    * \brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType and solver order.
@@ -102,11 +104,6 @@ private:
    * \brief Subset of variable attributes.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
-
-  /**
-   * \brief Matrix-free operator
-   */
-  std::unique_ptr<SystemMatrixType> system_matrix;
 };
 
 PRISMS_PF_END_NAMESPACE
