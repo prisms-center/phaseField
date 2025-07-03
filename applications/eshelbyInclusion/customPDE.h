@@ -86,8 +86,13 @@ private:
   // Model constants specific to this subclass
   // ================================================================
 
-  const static unsigned int  CIJ_tensor_size = 2 * dim - 1 + dim / 3;
+  const static unsigned int  CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
   Tensor<2, CIJ_tensor_size> CIJ = userInputs.get_model_constant_elasticity_tensor("CIJ");
+  double inclusion_radius = userInputs.get_model_constant_double("inclusion_radius");
+  double poisson          = userInputs.get_model_constant_double("poisson");
+  double centerX          = userInputs.get_model_constant_double("centerX");
+  double centerY          = userInputs.get_model_constant_double("centerY");
+  double centerZ          = userInputs.get_model_constant_double("centerZ");
 
   // ================================================================
 };
