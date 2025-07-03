@@ -61,12 +61,11 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
 
   for (unsigned int i = 0; i < dim; i++)
     {
-      double A = (incRadius * incRadius * incRadius) /
+      double A = (inclusion_radius * inclusion_radius * inclusion_radius) /
                  (6 * (1 - poisson)); // All constants for the displacement equation
       double dist =
         sqrt((p[0] - centerX) * (p[0] - centerX) + (p[1] - centerY) * (p[1] - centerY) +
              (p[2] - centerZ) * (p[2] - centerZ)); // distance from center of inclusion
-      // double sfts = 0.01;
       double G = 0.0;
       for (unsigned int j = 0; j < dim; j++)
         {

@@ -70,7 +70,6 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  // u
   vectorgradType ux = variable_list.get_vector_gradient(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
@@ -79,11 +78,7 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
 
   scalarvalueType sfts[dim][dim];
 
-  scalarvalueType dist, a;
-
-  // Radius of the inclusion
-  // a = constV(10.0);
-  a = incRadius;
+  scalarvalueType dist;
 
   // Distance from the center of the inclusion
   dist = std::sqrt((q_point_loc[0] - centerX) * (q_point_loc[0] - centerX) +
@@ -97,14 +92,12 @@ customPDE<dim, degree>::nonExplicitEquationRHS(
         {
           if (i == j)
             {
-              // sfts[i][j] =
-              //   0.01 * (0.5 + 0.5 * (constV(1.0) - std::exp(-20.0 * (dist - a))) /
-              //                   (constV(1.0) + std::exp(-20.0 * (dist - a))));
               for (unsigned int lane = 0; lane < dist.size(); lane++)
                 {
                   sfts[i][j][lane] =
                     0.01 *
-                    (0.5 + 0.5 * (-1.0 * std::tanh(-20.0 * (dist[lane] - a[lane]))));
+                    (0.5 +
+                     0.5 * (-1.0 * std::tanh(-20.0 * (dist[lane] - inclusion_radius))));
                 }
             }
           else

@@ -65,10 +65,8 @@ set Boundary condition for variable u, z component = NON_UNIFORM_DIRICHLET
 # Type options currently are double, int, bool, and tensor
 
 set Model constant CIJ = (22.5,0.3), isotropic elastic constants
-set Model constant incRadius = 10.0, DOUBLE
+set Model constant inclusion_radius = 10.0, DOUBLE
 set Model constant poisson = 0.3, double
 set Model constant centerX = 50.0, double
 set Model constant centerY = 50.0, double
 set Model constant centerZ = 50.0, double
-
-set Model constant center = (50.0,50.0,50.0), TENSOR
