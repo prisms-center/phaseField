@@ -29,17 +29,10 @@ customPDE<dim, degree>::setInitialCondition([[maybe_unused]] const Point<dim>  &
 // ===========================================================================
 
 // First we need a Kronecker Delta
-int
-kDelta(int i, int j)
+unsigned int
+kronecker_delta(unsigned int i, unsigned int j)
 {
-  if (i == j)
-    {
-      return 1;
-    }
-  else
-    {
-      return 0;
-    }
+  return i == j ? 1 : 0;
 }
 
 template <int dim, int degree>
@@ -79,12 +72,13 @@ customPDE<dim, degree>::setNonUniformDirichletBCs(
         {
           for (unsigned int k = 0; k < dim; k++)
             {
-              double g = (1 - 2 * poisson) * (kDelta(i, j) * ((p[k] - centerZ) / dist) +
-                                              kDelta(i, k) * ((p[j] - centerY) / dist) -
-                                              kDelta(j, k) * ((p[i] - centerX) / dist)) +
-                         3 * ((p[i] - centerX) / dist) * ((p[j] - centerY) / dist) *
-                           ((p[k] - centerZ) / dist);
-              double sfts = kDelta(j, k) * 0.01;
+              double g =
+                (1 - 2 * poisson) * (kronecker_delta(i, j) * ((p[k] - centerZ) / dist) +
+                                     kronecker_delta(i, k) * ((p[j] - centerY) / dist) -
+                                     kronecker_delta(j, k) * ((p[i] - centerX) / dist)) +
+                3 * ((p[i] - centerX) / dist) * ((p[j] - centerY) / dist) *
+                  ((p[k] - centerZ) / dist);
+              double sfts = kronecker_delta(j, k) * 0.01;
               G += sfts * g;
             }
         }
