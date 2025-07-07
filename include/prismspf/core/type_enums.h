@@ -15,7 +15,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 enum FieldType : std::uint8_t
 {
-  UndefinedField,
   Scalar,
   Vector
 };
@@ -25,7 +24,6 @@ enum FieldType : std::uint8_t
  */
 enum PDEType : std::uint8_t
 {
-  UndefinedPDE,
   ExplicitTimeDependent,
   ImplicitTimeDependent,
   TimeIndependent,
@@ -68,7 +66,6 @@ enum ElasticityModel : std::uint8_t
  */
 enum FieldSolveType : std::uint8_t
 {
-  UndefinedSolve,
   ExplicitConstant,
   Explicit,
   NonexplicitLinear,

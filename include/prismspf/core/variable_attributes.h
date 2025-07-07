@@ -295,6 +295,8 @@ private:
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
    * \brief Duplicate field index. \remark Internally determined
+   *
+   * TODO (landinjm): Rename
    */
   mutable Types::Index duplicate_field_index = Numbers::invalid_index;
 #endif
@@ -353,6 +355,8 @@ private:
 
   /**
    * \brief The user-inputted dependencies for the RHS value term. \remark User-set
+   *
+   * TODO (landinjm): Make these std::set<std::string>> their own struct
    */
   std::set<std::string> dependencies_value_rhs;
 

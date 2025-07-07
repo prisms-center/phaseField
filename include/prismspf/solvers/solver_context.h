@@ -24,6 +24,10 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * \brief This class provides context for a solver with ptrs to all the relevant
  * dependencies.
+ *
+ * The context in this case refers to all the finite element machinery needed to solve the
+ * fields. For example, it contains the triangulation handler and pde operator that
+ * evaluates the user-specified PDEs.
  */
 template <unsigned int dim, unsigned int degree, typename number = double>
 class SolverContext

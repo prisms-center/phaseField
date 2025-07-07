@@ -94,6 +94,27 @@ public:
   compute_subset_attributes(const FieldSolveType &field_solve_type,
                             unsigned int          solve_priority = 0);
 
+  /**
+   * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
+   * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
+   * initialized.
+   *
+   * This should only be used for concurrent solves.
+   *
+   * TODO (landinjm): Move to the VariableAttributeLoader
+   */
+  void
+  compute_shared_dependencies();
+
+  /**
+   * \brief Set the initial condition according to subset_attributes.
+   *
+   * This only sets the initial conditions for ExplicitTimeDependent,
+   * ImplicitTimeDependent, TimeIndependent, and Constant fields.
+   */
+  void
+  set_initial_condition();
+
 private:
   /**
    * \brief Solver context.
