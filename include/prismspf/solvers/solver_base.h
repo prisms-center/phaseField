@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <deal.II/numerics/vector_tools.h>
+
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -19,10 +22,18 @@ template <unsigned int dim, unsigned int degree, typename number>
 class SolverBase
 {
 public:
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
+
   /**
    * \brief Constructor.
    */
-  explicit SolverBase(const SolverContext<dim, degree> &_solver_context);
+  SolverBase(const SolverContext<dim, degree> &_solver_context,
+             const FieldSolveType             &_field_solve_type,
+             unsigned int                      _solve_priority = 0)
+    : solver_context(std::make_shared<SolverContext<dim, degree>>(_solver_context))
+    , field_solve_type(_field_solve_type)
+    , solve_priority(_solve_priority)
+  {}
 
   /**
    * \brief Destructor.
@@ -63,19 +74,46 @@ public:
    * \brief Initialize the solver.
    */
   virtual void
-  init() = 0;
+  init()
+  {
+    // Compute the subset of variable attributes
+    compute_subset_attributes(field_solve_type, solve_priority);
+
+    // If the subset attribute is empty return early
+    if (subset_attributes.empty())
+      {
+        return;
+      }
+
+    // Set the initial condition
+    set_initial_condition();
+  };
 
   /**
    * \brief Reinitialize the solver.
    */
   virtual void
-  reinit() = 0;
+  reinit()
+  {
+    // If the subset attribute is empty return early
+    if (subset_attributes.empty())
+      {
+        return;
+      }
+  };
 
   /**
    * \brief Solve for a single update step.
    */
   virtual void
-  solve() = 0;
+  solve()
+  {
+    // If the subset attribute is empty return early
+    if (subset_attributes.empty())
+      {
+        return;
+      }
+  };
 
   /**
    * \brief Print information about the solver to summary.log.
@@ -92,19 +130,22 @@ public:
    */
   void
   compute_subset_attributes(const FieldSolveType &field_solve_type,
-                            unsigned int          solve_priority = 0);
+                            unsigned int          solve_priority)
+  {
+    subset_attributes.clear();
 
-  /**
-   * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
-   * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
-   * initialized.
-   *
-   * This should only be used for concurrent solves.
-   *
-   * TODO (landinjm): Move to the VariableAttributeLoader
-   */
-  void
-  compute_shared_dependencies();
+    // TODO (landinjm): Use the solve priority
+    (void) solve_priority;
+
+    for (const auto &[index, variable] :
+         solver_context->get_user_inputs().get_variable_attributes())
+      {
+        if (variable.get_field_solve_type() == field_solve_type)
+          {
+            subset_attributes.emplace(index, variable);
+          }
+      }
+  };
 
   /**
    * \brief Set the initial condition according to subset_attributes.
@@ -113,13 +154,192 @@ public:
    * ImplicitTimeDependent, TimeIndependent, and Constant fields.
    */
   void
-  set_initial_condition();
+  set_initial_condition()
+  {
+    for (const auto &[index, variable] : subset_attributes)
+      {
+        // TODO (landinjm): Skip certain fields for initial conditions
+
+        Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
+               dealii::ExcMessage(
+                 "The const DoFHandler set is smaller than the given index = " +
+                 std::to_string(index)));
+        Assert(subset_attributes.contains(index),
+               dealii::ExcMessage(
+                 "There is no entry in the attribute subset for the given index = " +
+                 std::to_string(index)));
+
+        if (solver_context->get_user_inputs()
+              .get_load_initial_condition_parameters()
+              .get_read_initial_conditions_from_file())
+          {
+            auto &initial_condition_parameters =
+              solver_context->get_user_inputs().get_load_initial_condition_parameters();
+            for (const auto &initial_condition_file :
+                 initial_condition_parameters.get_initial_condition_files())
+              {
+                auto iterator =
+                  std::find(initial_condition_file.simulation_variable_names.begin(),
+                            initial_condition_file.simulation_variable_names.end(),
+                            variable.get_name());
+                if (iterator != initial_condition_file.simulation_variable_names.end())
+                  {
+                    dealii::VectorTools::interpolate(
+                      solver_context->get_mapping(),
+                      *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+                      ReadInitialCondition<dim>(
+                        initial_condition_file.filename + "." +
+                          initial_condition_file.file_extension,
+                        initial_condition_file.file_variable_names
+                          [iterator -
+                           initial_condition_file.simulation_variable_names.begin()],
+                        subset_attributes.at(index).get_field_type()),
+                      *(solver_context->get_solution_handler()
+                          .get_solution_vector(index, DependencyType::Normal)));
+                  }
+              }
+          }
+        else
+          {
+            dealii::VectorTools::interpolate(
+              solver_context->get_mapping(),
+              *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+              InitialCondition<dim, degree>(index,
+                                            subset_attributes.at(index).get_field_type(),
+                                            solver_context->get_pde_operator()),
+              *(solver_context->get_solution_handler()
+                  .get_solution_vector(index, DependencyType::Normal)));
+          }
+
+        // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
+        // vector for all types.
+        solver_context->get_solution_handler().apply_initial_condition_for_old_fields();
+      }
+  };
+
+  /**
+   * \brief Get the user-inputs.
+   */
+  [[nodiscard]] const UserInputParameters<dim> &
+  get_user_inputs() const
+  {
+    return solver_context->get_user_inputs();
+  }
+
+  /**
+   * \brief Get the matrix-free object handler for non-multigrid data.
+   */
+  [[nodiscard]] const MatrixfreeHandler<dim, double> &
+  get_matrix_free_handler() const
+  {
+    return solver_context->get_matrix_free_handler();
+  }
+
+  /**
+   * \brief Get the triangulation handler.
+   */
+  [[nodiscard]] const TriangulationHandler<dim> &
+  get_triangulation_handler() const
+  {
+    return solver_context->get_triangulation_handler();
+  }
+
+  /**
+   * \brief Get the invm handler.
+   */
+  [[nodiscard]] const InvmHandler<dim, degree, double> &
+  get_invm_handler() const
+  {
+    return solver_context->get_invm_handler();
+  }
+
+  /**
+   * \brief Get the constraint handler.
+   */
+  [[nodiscard]] const ConstraintHandler<dim, degree> &
+  get_constraint_handler() const
+  {
+    return solver_context->get_constraint_handler();
+  }
+
+  /**
+   * \brief Get the dof handler.
+   */
+  [[nodiscard]] const DofHandler<dim> &
+  get_dof_handler() const
+  {
+    return solver_context->get_dof_handler();
+  }
+
+  /**
+   * \brief Get the mapping.
+   */
+  [[nodiscard]] const dealii::MappingQ1<dim> &
+  get_mapping() const
+  {
+    return solver_context->get_mapping();
+  }
+
+  /**
+   * \brief Get the mg matrix-free handler.
+   */
+  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
+  get_mg_matrix_free_handler()
+  {
+    return solver_context->get_mg_matrix_free_handler();
+  }
+
+  /**
+   * \brief Get the solution handler.
+   */
+  [[nodiscard]] SolutionHandler<dim> &
+  get_solution_handler() const
+  {
+    return solver_context->get_solution_handler();
+  }
+
+  /**
+   * \brief Get the subset attributes.
+   */
+  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
+  get_subset_attributes() const
+  {
+    return subset_attributes;
+  }
+
+  /**
+   * \brief Get the pde operator.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
+  get_pde_operator() const
+  {
+    return solver_context->get_pde_operator();
+  }
+
+  /**
+   * \brief Get the pde operator for float.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
+  get_pde_operator_float() const
+  {
+    return solver_context->get_pde_operator_float();
+  }
 
 private:
   /**
    * \brief Solver context.
    */
   const std::shared_ptr<SolverContext<dim, degree>> solver_context;
+
+  /**
+   * \brief Field solve type.
+   */
+  const FieldSolveType field_solve_type;
+
+  /**
+   * \brief Solve priority.
+   */
+  const unsigned int solve_priority;
 
   /**
    * \brief Subset of variable attributes.
