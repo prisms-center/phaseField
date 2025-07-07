@@ -280,12 +280,12 @@ private:
   /**
    * \brief Field type (Scalar/Vector). \remark User-set
    */
-  FieldType field_type = FieldType::UndefinedField;
+  FieldType field_type = Numbers::invalid_field_type;
 
   /**
    * \brief PDE type (Explicit/NONEXPLICIT). \remark User-set
    */
-  PDEType pde_type = PDEType::UndefinedPDE;
+  PDEType pde_type = Numbers::invalid_pde_type;
 
   /**
    * \brief Postprocess variable. \remark User-set
@@ -305,7 +305,7 @@ private:
    * \brief Internal classification for the field solve type. \remark Internally
    * determined
    */
-  FieldSolveType field_solve_type = FieldSolveType::UndefinedSolve;
+  FieldSolveType field_solve_type = Numbers::invalid_field_solve_type;
 
   /**
    * \brief A map of evaluation flags for the dependencies of the current variable's RHS.

@@ -115,8 +115,6 @@ to_string(FieldType type)
 {
   switch (type)
     {
-      case FieldType::UndefinedField:
-        return "UndefinedField";
       case FieldType::Scalar:
         return "SCALAR_FIELD";
       case FieldType::Vector:
@@ -134,8 +132,6 @@ to_string(PDEType type)
 {
   switch (type)
     {
-      case PDEType::UndefinedPDE:
-        return "UndefinedPDE";
       case PDEType::ExplicitTimeDependent:
         return "ExplicitTimeDependent";
       case PDEType::ImplicitTimeDependent:
@@ -201,8 +197,6 @@ to_string(FieldSolveType type)
 {
   switch (type)
     {
-      case FieldSolveType::UndefinedSolve:
-        return "UndefinedSolve";
       case FieldSolveType::Explicit:
         return "Explicit";
       case FieldSolveType::NonexplicitLinear:

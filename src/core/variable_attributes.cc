@@ -253,7 +253,7 @@ VariableAttributes::determine_field_solve_type(
     }
 
   // Set undefined is anything falls through our criteria.
-  field_solve_type = FieldSolveType::UndefinedSolve;
+  field_solve_type = Numbers::invalid_field_solve_type;
 }
 
 void

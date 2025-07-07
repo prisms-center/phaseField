@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <prismspf/core/type_enums.h>
+
 #include <prismspf/config.h>
 
 #include <utility>
@@ -60,6 +62,26 @@ namespace Numbers
    * \brief Max element degree.
    */
   static const unsigned int max_element_degree = 6;
+
+  /**
+   * \brief Max number of subsections.
+   */
+  static const unsigned int max_subsections = 16;
+
+  /**
+   * \brief Invalid field type.
+   */
+  static const FieldType invalid_field_type = static_cast<FieldType>(-1);
+
+  /**
+   * \brief Invalid PDE type.
+   */
+  static const PDEType invalid_pde_type = static_cast<PDEType>(-1);
+
+  /**
+   * \brief Invalid field solve type.
+   */
+  static const FieldSolveType invalid_field_solve_type = static_cast<FieldSolveType>(-1);
 
 } // namespace Numbers
 
