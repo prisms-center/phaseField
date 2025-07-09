@@ -25,19 +25,37 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 VariableAttributeLoader::init_variable_attributes()
 {
+  // Load the variable attributes from the user
   load_variable_attributes();
 
+  // Determine the max number of fields that user has defined. This is used to determine
+  // the length of the vector for the eval flag set at runtime.
+  Types::Index max_fields = var_attributes.size();
+
+  // Determine the max numer of dependency types. This is used to determine the length of
+  // the vector for the eval flag set at runtime.
+  Types::Index max_dependency_types = static_cast<Types::Index>(DependencyType::OldFour);
+
+  // Format the dependencies
   for (auto &[index, variable] : var_attributes)
     {
       variable.format_dependencies();
     }
+
+  // Validate the attributes
   validate_attributes();
+
+  // Parse the string dependencies into the eval flag set
   for (auto &[index, variable] : var_attributes)
     {
       variable.parse_residual_dependencies();
-      variable.parse_dependencies(var_attributes);
+      variable.parse_dependencies(var_attributes, max_fields, max_dependency_types);
     }
+
+  // Validate the old solution dependencies
   validate_old_solution_dependencies();
+
+  // Determine the field solve type
   for (auto &[index, variable] : var_attributes)
     {
       variable.determine_field_solve_type(var_attributes);

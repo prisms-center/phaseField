@@ -235,6 +235,13 @@ struct VariableAttributes
   }
 
   /**
+   * @brief Print variable attributes to summary.log
+   */
+  void
+  print() const;
+
+private:
+  /**
    * @brief Combine 'value' and 'gradient' residual dependencies to one dependency set per
    * RHS and LHS. This will populate `dependencies_rhs` and `dependencies_lhs`.
    */
@@ -251,9 +258,15 @@ struct VariableAttributes
   /**
    * @brief Take user-defined dependency sets to set the evaluation flags for each
    * variable.
+   *
+   * @param[in] other_var_attributes The other variable attributes.
+   * @param[in] max_fields The max number of fields that user has defined.
+   * @param[in] max_dependency_types The max number of dependency types.
    */
   void
-  parse_dependencies(std::map<unsigned int, VariableAttributes> &other_var_attributes);
+  parse_dependencies(std::map<unsigned int, VariableAttributes> &other_var_attributes,
+                     const Types::Index                         &max_fields,
+                     const Types::Index                         &max_dependency_types);
 
   /**
    * @brief Using the assigned evaluation flags determine the solve type for this
@@ -263,13 +276,6 @@ struct VariableAttributes
   determine_field_solve_type(
     const std::map<unsigned int, VariableAttributes> &other_var_attributes);
 
-  /**
-   * @brief Print variable attributes to summary.log
-   */
-  void
-  print() const;
-
-private:
   /**
    * @brief Validate a dependency.
    */

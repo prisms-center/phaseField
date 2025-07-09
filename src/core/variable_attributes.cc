@@ -65,7 +65,9 @@ VariableAttributes::parse_residual_dependencies()
 
 void
 VariableAttributes::parse_dependencies(
-  std::map<unsigned int, VariableAttributes> &other_var_attributes)
+  std::map<unsigned int, VariableAttributes> &other_var_attributes,
+  const Types::Index                         &max_fields,
+  const Types::Index                         &max_dependency_types)
 {
   const std::map<std::string, std::pair<DependencyType, EvalFlags>> relevant_flag = []()
   {
