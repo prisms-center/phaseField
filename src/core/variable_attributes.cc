@@ -24,13 +24,19 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 VariableAttributes::format_dependencies()
 {
-  dependencies_rhs.insert(dependencies_value_rhs.begin(), dependencies_value_rhs.end());
-  dependencies_rhs.insert(dependencies_gradient_rhs.begin(),
-                          dependencies_gradient_rhs.end());
+  raw_dependencies.dependencies_rhs.insert(
+    raw_dependencies.dependencies_value_rhs.begin(),
+    raw_dependencies.dependencies_value_rhs.end());
+  raw_dependencies.dependencies_rhs.insert(
+    raw_dependencies.dependencies_gradient_rhs.begin(),
+    raw_dependencies.dependencies_gradient_rhs.end());
 
-  dependencies_lhs.insert(dependencies_value_lhs.begin(), dependencies_value_lhs.end());
-  dependencies_lhs.insert(dependencies_gradient_lhs.begin(),
-                          dependencies_gradient_lhs.end());
+  raw_dependencies.dependencies_lhs.insert(
+    raw_dependencies.dependencies_value_lhs.begin(),
+    raw_dependencies.dependencies_value_lhs.end());
+  raw_dependencies.dependencies_lhs.insert(
+    raw_dependencies.dependencies_gradient_lhs.begin(),
+    raw_dependencies.dependencies_gradient_lhs.end());
 }
 
 void
@@ -39,19 +45,19 @@ VariableAttributes::parse_residual_dependencies()
   // Check if either is empty and set value and gradient flags for the
   // residual appropriately. Note that this relies on the fact that only valid
   // dependencies are part of the set.
-  if (!dependencies_value_rhs.empty())
+  if (!raw_dependencies.dependencies_value_rhs.empty())
     {
       eval_flags_residual_rhs |= dealii::EvaluationFlags::values;
     }
-  if (!dependencies_gradient_rhs.empty())
+  if (!raw_dependencies.dependencies_gradient_rhs.empty())
     {
       eval_flags_residual_rhs |= dealii::EvaluationFlags::gradients;
     }
-  if (!dependencies_value_lhs.empty())
+  if (!raw_dependencies.dependencies_value_lhs.empty())
     {
       eval_flags_residual_lhs |= dealii::EvaluationFlags::values;
     }
-  if (!dependencies_gradient_lhs.empty())
+  if (!raw_dependencies.dependencies_gradient_lhs.empty())
     {
       eval_flags_residual_lhs |= dealii::EvaluationFlags::gradients;
     }
@@ -61,9 +67,7 @@ void
 VariableAttributes::parse_dependencies(
   std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
-  const std::map<std::string,
-                 std::pair<DependencyType, dealii::EvaluationFlags::EvaluationFlags>>
-    relevant_flag = []()
+  const std::map<std::string, std::pair<DependencyType, EvalFlags>> relevant_flag = []()
   {
     // Modifiers for the dependency types
     const std::vector<std::pair<std::string, DependencyType>> dependency_types = {
@@ -76,21 +80,18 @@ VariableAttributes::parse_dependencies(
     };
 
     // Dependency evaluation types & their corresponding evaluation flag
-    const std::vector<std::pair<std::string, dealii::EvaluationFlags::EvaluationFlags>>
-      eval_flags = {
-        {"value",              dealii::EvaluationFlags::values   },
-        {"gradient",           dealii::EvaluationFlags::gradients},
-        {"hessian",            dealii::EvaluationFlags::hessians },
-        {"hessian_diagonal",   dealii::EvaluationFlags::hessians },
-        {"laplacian",          dealii::EvaluationFlags::hessians },
-        {"divergence",         dealii::EvaluationFlags::gradients},
-        {"symmetric_gradient", dealii::EvaluationFlags::gradients},
-        {"curl",               dealii::EvaluationFlags::gradients},
+    const std::vector<std::pair<std::string, EvalFlags>> eval_flags = {
+      {"value",              dealii::EvaluationFlags::values   },
+      {"gradient",           dealii::EvaluationFlags::gradients},
+      {"hessian",            dealii::EvaluationFlags::hessians },
+      {"hessian_diagonal",   dealii::EvaluationFlags::hessians },
+      {"laplacian",          dealii::EvaluationFlags::hessians },
+      {"divergence",         dealii::EvaluationFlags::gradients},
+      {"symmetric_gradient", dealii::EvaluationFlags::gradients},
+      {"curl",               dealii::EvaluationFlags::gradients},
     };
 
-    std::map<std::string,
-             std::pair<DependencyType, dealii::EvaluationFlags::EvaluationFlags>>
-      map;
+    std::map<std::string, std::pair<DependencyType, EvalFlags>> map;
     for (const auto &dep : dependency_types)
       {
         for (const auto &eval : eval_flags)
@@ -144,10 +145,9 @@ VariableAttributes::parse_dependencies(
 
   // Helper lambda to validate and fill in dependency sets
   auto set_dependencies =
-    [&](const std::set<std::string>                        &dependencies,
-        std::map<std::pair<unsigned int, DependencyType>,
-                 dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set,
-        const std::string                                  &context)
+    [&](const std::set<std::string>                                  &dependencies,
+        std::map<std::pair<unsigned int, DependencyType>, EvalFlags> &eval_flag_set,
+        const std::string                                            &context)
   {
     // Loop through the available delimiters
     for (const auto &[variation, delimiter] : delimiters)
@@ -165,8 +165,7 @@ VariableAttributes::parse_dependencies(
             if (dependencies.contains(possible_dependency))
               {
                 const DependencyType dep_type = relevant_flag.at(variation).first;
-                const dealii::EvaluationFlags::EvaluationFlags flags =
-                  relevant_flag.at(variation).second;
+                const EvalFlags      flags    = relevant_flag.at(variation).second;
 
                 validate_dependency(variation, dep_type, other_index, context);
 
@@ -186,8 +185,8 @@ VariableAttributes::parse_dependencies(
       }
   };
 
-  set_dependencies(dependencies_rhs, eval_flag_set_rhs, "RHS");
-  set_dependencies(dependencies_lhs, eval_flag_set_lhs, "LHS");
+  set_dependencies(raw_dependencies.dependencies_rhs, eval_flag_set_rhs, "RHS");
+  set_dependencies(raw_dependencies.dependencies_lhs, eval_flag_set_lhs, "LHS");
 
   // Compute the dependency_set and simplified_dependency_set
   compute_dependency_set(other_var_attributes);
@@ -333,13 +332,12 @@ VariableAttributes::compute_dependency_set(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change flags are irrelevant for RHS,
-  // so ignore those. If we have dealii::EvaluationFlags::EvaluationFlags::nothing ignore
+  // so ignore those. If we have EvalFlags::nothing ignore
   // it. Always add itself as a dependency for RHS since this is used for determining what
   // FEEvaluation objects should be made.
   for (const auto &[pair, flag] : eval_flag_set_rhs)
     {
-      if (pair.second == DependencyType::Change ||
-          flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
+      if (pair.second == DependencyType::Change || flag == EvalFlags::nothing)
         {
           continue;
         }
@@ -356,7 +354,7 @@ VariableAttributes::compute_dependency_set(
 
   for (const auto &[pair, flag] : eval_flag_set_lhs)
     {
-      if (flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
+      if (flag == EvalFlags::nothing)
         {
           continue;
         }
@@ -376,15 +374,14 @@ VariableAttributes::compute_simplified_dependency_set(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change and old flags are irrelevant,
-  // so ignore those. If we have dealii::EvaluationFlags::EvaluationFlags::nothing ignore
+  // so ignore those. If we have EvalFlags::nothing ignore
   // it. If the dependency is explicit or constant ignore it. If the dependency is itself
   // ignore it so it doesn't interfere with the map and flag circularity.
   auto compute_dependencies = [&](const auto &eval_flag_set)
   {
     for (const auto &[pair, flag] : eval_flag_set)
       {
-        if (pair.second != DependencyType::Normal ||
-            flag == dealii::EvaluationFlags::EvaluationFlags::nothing ||
+        if (pair.second != DependencyType::Normal || flag == EvalFlags::nothing ||
             other_var_attributes.at(pair.first).pde_type ==
               PDEType::ExplicitTimeDependent ||
             other_var_attributes.at(pair.first).pde_type == PDEType::Constant ||
