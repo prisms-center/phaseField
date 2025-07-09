@@ -149,8 +149,9 @@ void
 VariableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_rhs.insert(dependencies.begin(),
-                                                      dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_value_rhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -159,8 +160,9 @@ VariableAttributeLoader::insert_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_rhs.insert(dependencies.begin(),
-                                                         dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_gradient_rhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -168,8 +170,9 @@ void
 VariableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_lhs.insert(dependencies.begin(),
-                                                      dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_value_lhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -178,8 +181,9 @@ VariableAttributeLoader::insert_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_lhs.insert(dependencies.begin(),
-                                                         dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_gradient_lhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 void
@@ -283,8 +287,8 @@ VariableAttributeLoader::validate_attributes()
                     "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::Constant) ||
-                    (variable.dependencies_rhs.empty() &&
-                     variable.dependencies_lhs.empty()),
+                    (variable.raw_dependencies.dependencies_rhs.empty() &&
+                     variable.raw_dependencies.dependencies_lhs.empty()),
                   dealii::ExcMessage("Constant fields are determined by the initial "
                                      "condition. They cannot have dependencies."));
     }
@@ -349,14 +353,14 @@ VariableAttributeLoader::validate_attributes()
   // Check dependencies
   for (const auto &[index, variable] : var_attributes)
     {
-      validate_dependencies(variable.dependencies_rhs,
+      validate_dependencies(variable.raw_dependencies.dependencies_rhs,
                             "RHS",
                             index,
                             variable.name,
                             reg_possible_deps,
                             change_possible_deps);
 
-      validate_dependencies(variable.dependencies_lhs,
+      validate_dependencies(variable.raw_dependencies.dependencies_lhs,
                             "LHS",
                             index,
                             variable.name,

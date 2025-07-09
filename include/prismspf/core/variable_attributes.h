@@ -20,6 +20,52 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
+ * @brief Structure to hold the raw string dependencies of a field.
+ */
+struct RawDependencies
+{
+  /**
+   * @brief The user-inputted dependencies for the RHS value term.
+   * @remark User-set
+   */
+  std::set<std::string> dependencies_value_rhs;
+
+  /**
+   * @brief The user-inputted dependencies for the RHS gradient term.
+   * @remark User-set
+   */
+  std::set<std::string> dependencies_gradient_rhs;
+
+  /**
+   * @brief The user-inputted dependencies for the LHS value term.
+   * @remark User-set
+   */
+  std::set<std::string> dependencies_value_lhs;
+
+  /**
+   * @brief The user-inputted dependencies for the LHS gradient term.
+   * @remark User-set
+   */
+  std::set<std::string> dependencies_gradient_lhs;
+
+  /**
+   * @brief The collection of value and gradient dependencies for the RHS.
+   *
+   * This is just a superset of `dependencies_value_rhs` and `dependencies_gradient_rhs`.
+   * @remark Internally determined
+   */
+  std::set<std::string> dependencies_rhs;
+
+  /**
+   * @brief The collection of value and gradient dependencies for the LHS.
+   *
+   * This is just a superset of `dependencies_value_lhs` and `dependencies_gradient_lhs`.
+   * @remark Internally determined
+   */
+  std::set<std::string> dependencies_lhs;
+};
+
+/**
  * @brief Structure to hold the variable attributes of a field. This includes things like
  * the name, equation type, whether it's nonlinear, and its dependence on other variables.
  */
@@ -366,42 +412,9 @@ private:
   std::map<unsigned int, std::map<DependencyType, FieldType>> dependency_set_lhs;
 
   /**
-   * @brief The user-inputted dependencies for the RHS value term.
-   * @remark User-set
-   *
-   * TODO (landinjm): Make these std::set<std::string>> their own struct
+   * @brief Raw dependencies of the field.
    */
-  std::set<std::string> dependencies_value_rhs;
-
-  /**
-   * @brief The user-inputted dependencies for the RHS gradient term.
-   * @remark User-set
-   */
-  std::set<std::string> dependencies_gradient_rhs;
-
-  /**
-   * @brief The collection of value and gradient dependencies for the RHS.
-   * @remark Internally determined
-   */
-  std::set<std::string> dependencies_rhs;
-
-  /**
-   * @brief The user-inputted dependencies for the LHS value term.
-   * @remark User-set
-   */
-  std::set<std::string> dependencies_value_lhs;
-
-  /**
-   * @brief The user-inputted dependencies for the LHS gradient term.
-   * @remark User-set
-   */
-  std::set<std::string> dependencies_gradient_lhs;
-
-  /**
-   * @brief The collection of value and gradient dependencies for the LHS.
-   * @remark Internally determined
-   */
-  std::set<std::string> dependencies_lhs;
+  RawDependencies raw_dependencies;
 
   /**
    * @brief A simplified set of evaluation flags for the dependencies of the current
