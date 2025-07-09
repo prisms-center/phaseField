@@ -17,7 +17,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that store the read-in information for a single file
+ * @brief Struct that store the read-in information for a single file
  */
 struct InitialConditionFile
 {
@@ -40,30 +40,30 @@ struct InitialConditionFile
 };
 
 /**
- * \brief Struct that stores relevant load initial condition information
+ * @brief Struct that stores relevant load initial condition information
  */
 struct LoadInitialConditionParameters
 {
 public:
   /**
-   * \brief Maximum number of initial condition files
+   * @brief Maximum number of initial condition files
    */
   static constexpr unsigned int max_files = 8;
 
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate();
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Clear the initial condition parameters.
+   * @brief Clear the initial condition parameters.
    */
   void
   clear()
@@ -73,7 +73,7 @@ public:
   }
 
   /**
-   * \brief Set the read initial conditions from file flag.
+   * @brief Set the read initial conditions from file flag.
    */
   void
   set_read_initial_conditions_from_file(bool _read_initial_conditions_from_file)
@@ -82,7 +82,7 @@ public:
   }
 
   /**
-   * \brief Get the read initial conditions from file flag.
+   * @brief Get the read initial conditions from file flag.
    */
   [[nodiscard]] bool
   get_read_initial_conditions_from_file() const
@@ -91,7 +91,7 @@ public:
   }
 
   /**
-   * \brief Add a initial condition file.
+   * @brief Add a initial condition file.
    */
   void
   add_initial_condition_file(InitialConditionFile _ic_file)
@@ -103,7 +103,7 @@ public:
   }
 
   /**
-   * \brief Get the number of initial condition files.
+   * @brief Get the number of initial condition files.
    */
   [[nodiscard]] unsigned int
   get_n_initial_condition_files() const
@@ -112,7 +112,7 @@ public:
   }
 
   /**
-   * \brief Get the initial condition files.
+   * @brief Get the initial condition files.
    */
   [[nodiscard]] const std::vector<InitialConditionFile> &
   get_initial_condition_files() const

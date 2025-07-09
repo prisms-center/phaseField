@@ -25,86 +25,86 @@ class ReadUnstructuredVTK
 {
 public:
   /**
-   * \brief Constructor
+   * @brief Constructor
    */
   explicit ReadUnstructuredVTK(const std::string &filename);
 
   /**
-   * \brief Destructor
+   * @brief Destructor
    */
   ~ReadUnstructuredVTK() = default;
 
   /**
-   * \brief Get the vtk output
+   * @brief Get the vtk output
    */
   vtkUnstructuredGrid *
   get_output();
 
   /**
-   * \brief Get the number of points
+   * @brief Get the number of points
    */
   [[nodiscard]] dealii::types::global_dof_index
   get_n_points() const;
 
   /**
-   * \brief Get the number of cells
+   * @brief Get the number of cells
    */
   [[nodiscard]] dealii::types::global_dof_index
   get_n_cells() const;
 
   /**
-   * \brief Print the vtk file for debugging
+   * @brief Print the vtk file for debugging
    */
   void
   print_vtk_file();
 
   /**
-   * \brief Get the names of the scalars in the vtk file.
+   * @brief Get the names of the scalars in the vtk file.
    */
   std::vector<std::string>
   get_scalars_names();
 
   /**
-   * \brief Get the names of the vectors in the vtk file.
+   * @brief Get the names of the vectors in the vtk file.
    */
   std::vector<std::string>
   get_vectors_names();
 
   /**
-   * \brief Get scalar value for a given point
+   * @brief Get scalar value for a given point
    */
   double
   get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name);
 
   /**
-   * \brief Get vector value for a given point
+   * @brief Get vector value for a given point
    */
   dealii::Vector<double>
   get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name);
 
 private:
   /**
-   * \brief Reader for the vtk file
+   * @brief Reader for the vtk file
    */
   vtkNew<vtkUnstructuredGridReader> reader;
 
   /**
-   * \brief Number of points.
+   * @brief Number of points.
    */
   dealii::types::global_dof_index n_points;
 
   /**
-   * \brief Number of cells.
+   * @brief Number of cells.
    */
   dealii::types::global_dof_index n_cells;
 
   /**
-   * \brief Number of scalars in file.
+   * @brief Number of scalars in file.
    */
   unsigned int n_scalars;
 
   /**
-   * \brief Number of vectors in file.
+   * @brief Number of vectors in file.
    */
   unsigned int n_vectors;
 };

@@ -21,7 +21,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class the stores and manages user-defined constants.
+ * @brief Class the stores and manages user-defined constants.
  */
 template <unsigned int dim>
 class UserConstants
@@ -35,67 +35,67 @@ public:
                                       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>;
 
   /**
-   * \brief Assign the specified user constant to whatever type.
+   * @brief Assign the specified user constant to whatever type.
    */
   InputVariant
   construct_user_constant(std::vector<std::string> &model_constants_strings);
 
   /**
-   * \brief Retrieve the double from the `model_constants` that are defined from the
+   * @brief Retrieve the double from the `model_constants` that are defined from the
    * parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] double
   get_model_constant_double(const std::string &constant_name) const;
 
   /**
-   * \brief Retrieve the int from the `model_constants` that are defined from the
+   * @brief Retrieve the int from the `model_constants` that are defined from the
    * parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] int
   get_model_constant_int(const std::string &constant_name) const;
 
   /**
-   * \brief Retrieve the bool from the `model_constants` that are defined from the
+   * @brief Retrieve the bool from the `model_constants` that are defined from the
    * parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] bool
   get_model_constant_bool(const std::string &constant_name) const;
 
   /**
-   * \brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
+   * @brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
    * the parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<1, dim>
   get_model_constant_rank_1_tensor(const std::string &constant_name) const;
 
   /**
-   * \brief Retrieve the rank 2 tensor from the `model_constants` that are defined from
+   * @brief Retrieve the rank 2 tensor from the `model_constants` that are defined from
    * the parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, dim>
   get_model_constant_rank_2_tensor(const std::string &constant_name) const;
 
   /**
-   * \brief Retrieve the elasticity tensor from the `model_constants` that are defined
+   * @brief Retrieve the elasticity tensor from the `model_constants` that are defined
    * from the parameters.prm parser. This is essentially just a wrapper for boost::get.
    *
-   * \param constant_name Name of the constant to retrieve.
+   * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_model_constant_elasticity_tensor(const std::string &constant_name) const;
 
   /**
-   * \brief Print all user-specified constants
+   * @brief Print all user-specified constants
    */
   void
   add_user_constant(const std::string        &constant_name,
@@ -105,41 +105,41 @@ public:
   };
 
   /**
-   * \brief Print all user-specified constants
+   * @brief Print all user-specified constants
    */
   void
   print() const;
 
 private:
   /**
-   * \brief Compute the number of tensor rows.
+   * @brief Compute the number of tensor rows.
    */
   unsigned int
   compute_tensor_parentheses(const unsigned int             &n_elements,
                              const std::vector<std::string> &tensor_elements);
 
   /**
-   * \brief Remove and leading and trailing parentheses.
+   * @brief Remove and leading and trailing parentheses.
    */
   void
   remove_parentheses(std::vector<std::string> &tensor_elements);
 
   /**
-   * \brief Compute a 1st rank tensor from user inputs .
+   * @brief Compute a 1st rank tensor from user inputs .
    */
   dealii::Tensor<1, dim>
   compute_rank_1_tensor_constant(const unsigned int             &n_elements,
                                  const std::vector<std::string> &tensor_elements);
 
   /**
-   * \brief Compute a 2nd rank tensor from user inputs .
+   * @brief Compute a 2nd rank tensor from user inputs .
    */
   dealii::Tensor<2, dim>
   compute_rank_2_tensor_constant(const unsigned int             &n_elements,
                                  const std::vector<std::string> &tensor_elements);
 
   /**
-   * \brief Assign the primitive user constants (e.g., int, double, bool).
+   * @brief Assign the primitive user constants (e.g., int, double, bool).
    */
   InputVariant
   primitive_model_constant(std::vector<std::string> &model_constants_strings);
@@ -153,12 +153,12 @@ private:
                  const std::vector<double> &constants) const;
 
   /**
-   * \brief List of user-defined constants.
+   * @brief List of user-defined constants.
    */
   std::map<std::string, InputVariant> model_constants;
 
   /**
-   * \brief Class for printing of variant types. This is bad practice and should be fixed.
+   * @brief Class for printing of variant types. This is bad practice and should be fixed.
    */
   class VariantPrinter : public boost::static_visitor<>
   {

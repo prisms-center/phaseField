@@ -14,26 +14,26 @@ class SequentialSolver : public SolverBase<dim, degree, number>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   SequentialSolver(const SolverContext<dim, degree> &_solver_context,
                    const FieldSolveType             &_field_solve_type,
                    unsigned int                      _solve_priority = 0);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   virtual ~SequentialSolver() = 0;
 
   /**
-   * \brief Copy constructor.
+   * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
   SequentialSolver(const SequentialSolver &solver_base) = delete;
 
   /**
-   * \brief Copy assignment.
+   * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
@@ -41,14 +41,14 @@ public:
   operator=(const SequentialSolver &solver_base) = delete;
 
   /**
-   * \brief Move constructor.
+   * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
   SequentialSolver(SequentialSolver &&solver_base) noexcept = delete;
 
   /**
-   * \brief Move assignment.
+   * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
@@ -56,7 +56,7 @@ public:
   operator=(SequentialSolver &&solver_base) noexcept = delete;
 
   /**
-   * \brief Initialize the solver.
+   * @brief Initialize the solver.
    */
   void
   init() override
@@ -66,7 +66,7 @@ public:
   };
 
   /**
-   * \brief Reinitialize the solver.
+   * @brief Reinitialize the solver.
    */
   void
   reinit() override
@@ -76,7 +76,7 @@ public:
   };
 
   /**
-   * \brief Solve for a single update step.
+   * @brief Solve for a single update step.
    */
   void
   solve() override
@@ -86,7 +86,7 @@ public:
   };
 
   /**
-   * \brief Print information about the solver to summary.log.
+   * @brief Print information about the solver to summary.log.
    */
   void
   print()
@@ -95,7 +95,7 @@ public:
   };
 
   /**
-   * \brief Get the matrix-free operator for the residual side.
+   * @brief Get the matrix-free operator for the residual side.
    */
   [[nodiscard]] std::map<
     unsigned int,
@@ -106,7 +106,7 @@ public:
   }
 
   /**
-   * \brief Get the matrix-free operator for the newton update side.
+   * @brief Get the matrix-free operator for the newton update side.
    */
   [[nodiscard]] std::map<
     unsigned int,
@@ -118,14 +118,14 @@ public:
 
 private:
   /**
-   * \brief Matrix-free operator for the residual side.
+   * @brief Matrix-free operator for the residual side.
    */
   std::map<unsigned int,
            std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>>
     system_matrix;
 
   /**
-   * \brief Matrix-free operator for the newton update side.
+   * @brief Matrix-free operator for the newton update side.
    */
   std::map<unsigned int,
            std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>>

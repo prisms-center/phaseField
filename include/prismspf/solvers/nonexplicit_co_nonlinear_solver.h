@@ -12,7 +12,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This class handles the co-nonlinear solves of a several nonexplicit fields
+ * @brief This class handles the co-nonlinear solves of a several nonexplicit fields
  */
 template <unsigned int dim, unsigned int degree>
 class NonexplicitCononlinearSolver : public NonexplicitBase<dim, degree>
@@ -22,67 +22,67 @@ public:
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   NonexplicitCononlinearSolver(const SolverContext<dim, degree> &_solver_context,
                                const MGInfo<dim>                &_mg_info);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~NonexplicitCononlinearSolver() override = default;
 
   /**
-   * \brief Initialize system.
+   * @brief Initialize system.
    */
   void
   init() override;
 
   /**
-   * \brief Solve a single update step.
+   * @brief Solve a single update step.
    */
   void
   solve() override;
 
 private:
   /**
-   * \brief Mapping from global solution vectors to the local ones
+   * @brief Mapping from global solution vectors to the local ones
    */
   std::map<unsigned int, std::map<std::pair<unsigned int, DependencyType>, unsigned int>>
     global_to_local_solution;
 
   /**
-   * \brief Subset of solutions fields that are necessary for explicit solves.
+   * @brief Subset of solutions fields that are necessary for explicit solves.
    */
   std::map<unsigned int, std::vector<VectorType *>> solution_subset;
 
   /**
-   * \brief Subset of new solutions fields that are necessary for explicit solves.
+   * @brief Subset of new solutions fields that are necessary for explicit solves.
    */
   std::map<unsigned int, std::vector<VectorType *>> new_solution_subset;
 
   /**
-   * \brief List of subset attributes.
+   * @brief List of subset attributes.
    */
   std::vector<std::map<unsigned int, VariableAttributes>> subset_attributes_list;
 
   /**
-   * \brief Map of identity linear solvers
+   * @brief Map of identity linear solvers
    */
   std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
-   * \brief Map of geometric multigrid linear solvers
+   * @brief Map of geometric multigrid linear solvers
    */
   std::map<unsigned int, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
 
   /**
-   * \brief PDE operator but for floats!
+   * @brief PDE operator but for floats!
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 
   /**
-   * \brief Multigrid information
+   * @brief Multigrid information
    */
   const MGInfo<dim> *mg_info;
 };

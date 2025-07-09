@@ -19,31 +19,31 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that holds checkpoint parameters.
+ * @brief Struct that holds checkpoint parameters.
  */
 struct CheckpointParameters
 {
 public:
   /**
-   * \brief Return is the current increment should be checkpointed.
+   * @brief Return is the current increment should be checkpointed.
    */
   [[nodiscard]] bool
   should_checkpoint(unsigned int increment) const;
 
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Set whether to load from a checkpoint.
+   * @brief Set whether to load from a checkpoint.
    */
   void
   set_load_from_checkpoint(bool _load_from_checkpoint)
@@ -52,7 +52,7 @@ public:
   }
 
   /**
-   * \brief Set the checkpoint condition.
+   * @brief Set the checkpoint condition.
    */
   void
   set_condition(const std::string &_condition)
@@ -61,7 +61,7 @@ public:
   }
 
   /**
-   * \brief Set the number of checkpoints.
+   * @brief Set the number of checkpoints.
    */
   void
   set_n_checkpoints(unsigned int _n_checkpoints)
@@ -70,7 +70,7 @@ public:
   }
 
   /**
-   * \brief Set the user checkpoint list.
+   * @brief Set the user checkpoint list.
    */
   void
   set_user_checkpoint_list(const std::vector<int> &_user_checkpoint_list)

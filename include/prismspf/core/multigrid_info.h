@@ -22,7 +22,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This class centralized the collection of multigrid data, which is of particular
+ * @brief This class centralized the collection of multigrid data, which is of particular
  * important when dealing with multiple fields that have multigrid enabled.
  */
 template <unsigned int dim>
@@ -33,12 +33,12 @@ public:
   using Max = unsigned int;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit MGInfo(const UserInputParameters<dim> &_user_inputs);
 
   /**
-   * \brief If multigrid is enabled.
+   * @brief If multigrid is enabled.
    */
   [[nodiscard]] bool
   has_multigrid() const
@@ -47,7 +47,7 @@ public:
   }
 
   /**
-   * \brief Get the minimum multigrid level.
+   * @brief Get the minimum multigrid level.
    */
   [[nodiscard]] Min
   get_mg_min_level() const
@@ -57,7 +57,7 @@ public:
   }
 
   /**
-   * \brief Get the maximum multigrid level.
+   * @brief Get the maximum multigrid level.
    */
   [[nodiscard]] Max
   get_mg_max_level() const
@@ -67,7 +67,7 @@ public:
   }
 
   /**
-   * \brief Get the collection of minimum multigrid levels for the LHS fields.
+   * @brief Get the collection of minimum multigrid levels for the LHS fields.
    */
   [[nodiscard]] std::set<std::tuple<Types::Index, DependencyType, Min>>
   get_lhs_fields() const
@@ -77,7 +77,7 @@ public:
   }
 
   /**
-   * \brief Get the depth of the multigrid hierarchy
+   * @brief Get the depth of the multigrid hierarchy
    */
   [[nodiscard]] unsigned int
   get_mg_depth() const
@@ -87,7 +87,7 @@ public:
   }
 
   /**
-   * \brief Get the depth of the multigrid hierarchy
+   * @brief Get the depth of the multigrid hierarchy
    */
   [[nodiscard]] unsigned int
   get_mg_breadth(unsigned int level) const
@@ -101,7 +101,7 @@ public:
   }
 
   /**
-   * \brief Get the global index for a given local index and relative level.
+   * @brief Get the global index for a given local index and relative level.
    */
   [[nodiscard]] unsigned int
   get_global_index(unsigned int index, unsigned int level) const
@@ -119,7 +119,7 @@ public:
   }
 
   /**
-   * \brief Get the local index for a given global index and level.
+   * @brief Get the local index for a given global index and level.
    */
   [[nodiscard]] unsigned int
   get_local_index(unsigned int global_index, unsigned int level) const
@@ -139,35 +139,35 @@ public:
   }
 
   /**
-   * \brief Print information about the instances of this class.
+   * @brief Print information about the instances of this class.
    */
   void
   print();
 
 private:
   /**
-   * \brief User inputs.
+   * @brief User inputs.
    */
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * \brief Whether multigrid is enabled.
+   * @brief Whether multigrid is enabled.
    */
   bool multigrid_on = false;
 
   /**
-   * \brief Global Min and Max multigrid levels.
+   * @brief Global Min and Max multigrid levels.
    */
   std::pair<Min, Max> global_mg_level;
 
   /**
-   * \brief The collection of LHS fields and their minimum multigrid level that need to be
+   * @brief The collection of LHS fields and their minimum multigrid level that need to be
    * initialized for the LHS of gmg fields.
    */
   std::set<std::tuple<Types::Index, DependencyType, Min>> lhs_fields;
 
   /**
-   * \brief Vector hierarchy of required multigrid levels.
+   * @brief Vector hierarchy of required multigrid levels.
    */
   std::vector<std::vector<unsigned int>> mg_levels;
 };

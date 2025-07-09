@@ -10,30 +10,30 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This class handles the explicit solves of all constant fields
+ * @brief This class handles the explicit solves of all constant fields
  */
 template <unsigned int dim, unsigned int degree>
 class ExplicitConstantSolver : public ExplicitBase<dim, degree>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit ExplicitConstantSolver(const SolverContext<dim, degree> &_solver_context);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~ExplicitConstantSolver() override = default;
 
   /**
-   * \brief Initialize system.
+   * @brief Initialize system.
    */
   void
   init() override;
 
   /**
-   * \brief Solve a single update step.
+   * @brief Solve a single update step.
    */
   void
   solve() override;

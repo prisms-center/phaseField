@@ -14,14 +14,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that holds spatial discretization parameters.
+ * @brief Struct that holds spatial discretization parameters.
  */
 template <unsigned int dim>
 struct SpatialDiscretization
 {
 public:
   /**
-   * \brief Internal enum for various triangulation types.
+   * @brief Internal enum for various triangulation types.
    */
   enum TriangulationType : std::uint8_t
   {
@@ -30,24 +30,24 @@ public:
   };
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   SpatialDiscretization() = default;
 
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate();
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Get the domain extents in each cartesian direction
+   * @brief Get the domain extents in each cartesian direction
    */
   [[nodiscard]] const dealii::Tensor<1, dim, double> &
   get_size() const
@@ -56,7 +56,7 @@ public:
   }
 
   /**
-   * \brief Set the domain extents in each cartesian direction
+   * @brief Set the domain extents in each cartesian direction
    */
   void
   set_size(const unsigned int &direction, const double &_size)
@@ -65,7 +65,7 @@ public:
   }
 
   /**
-   * \brief Get the radius of the Spherical domain
+   * @brief Get the radius of the Spherical domain
    */
   [[nodiscard]] double
   get_radius() const
@@ -74,7 +74,7 @@ public:
   }
 
   /**
-   * \brief Set the radius of the Spherical domain
+   * @brief Set the radius of the Spherical domain
    */
   void
   set_radius(const double &_radius)
@@ -83,7 +83,7 @@ public:
   }
 
   /**
-   * \brief Get the mesh subdivisions in each cartesian direction
+   * @brief Get the mesh subdivisions in each cartesian direction
    */
   [[nodiscard]] const std::vector<unsigned int> &
   get_subdivisions() const
@@ -92,7 +92,7 @@ public:
   }
 
   /**
-   * \brief Set the mesh subdivisions in each cartesian direction
+   * @brief Set the mesh subdivisions in each cartesian direction
    */
   void
   set_subdivisions(const unsigned int &direction, const unsigned int &_subdivisions)
@@ -101,7 +101,7 @@ public:
   }
 
   /**
-   * \brief Get the global refinement of mesh
+   * @brief Get the global refinement of mesh
    */
   [[nodiscard]] unsigned int
   get_global_refinement() const
@@ -110,7 +110,7 @@ public:
   }
 
   /**
-   * \brief Set the global refinement of mesh
+   * @brief Set the global refinement of mesh
    */
   void
   set_global_refinement(const unsigned int &_global_refinement)
@@ -119,7 +119,7 @@ public:
   }
 
   /**
-   * \brief Get the element polynomial degree
+   * @brief Get the element polynomial degree
    */
   [[nodiscard]] unsigned int
   get_degree() const
@@ -128,7 +128,7 @@ public:
   }
 
   /**
-   * \brief Set the element polynomial degree
+   * @brief Set the element polynomial degree
    */
   void
   set_degree(const unsigned int &_degree)
@@ -137,7 +137,7 @@ public:
   }
 
   /**
-   * \brief Get whether adaptive meshing (AMR) is enabled
+   * @brief Get whether adaptive meshing (AMR) is enabled
    */
   [[nodiscard]] bool
   get_has_adaptivity() const
@@ -146,7 +146,7 @@ public:
   }
 
   /**
-   * \brief Set whether adaptive meshing (AMR) is enabled
+   * @brief Set whether adaptive meshing (AMR) is enabled
    */
   void
   set_has_adaptivity(const bool &_has_adaptivity)
@@ -155,7 +155,7 @@ public:
   }
 
   /**
-   * \brief Get the maximum global refinement for AMR
+   * @brief Get the maximum global refinement for AMR
    */
   [[nodiscard]] unsigned int
   get_max_refinement() const
@@ -164,7 +164,7 @@ public:
   }
 
   /**
-   * \brief Set the maximum global refinement for AMR
+   * @brief Set the maximum global refinement for AMR
    */
   void
   set_max_refinement(const unsigned int &_max_refinement)
@@ -173,7 +173,7 @@ public:
   }
 
   /**
-   * \brief Get the minimum global refinement for AMR
+   * @brief Get the minimum global refinement for AMR
    */
   [[nodiscard]] unsigned int
   get_min_refinement() const
@@ -182,7 +182,7 @@ public:
   }
 
   /**
-   * \brief Set the minimum global refinement for AMR
+   * @brief Set the minimum global refinement for AMR
    */
   void
   set_min_refinement(const unsigned int &_min_refinement)
@@ -191,7 +191,7 @@ public:
   }
 
   /**
-   * \brief Get the number of steps between remeshing
+   * @brief Get the number of steps between remeshing
    */
   [[nodiscard]] unsigned int
   get_remeshing_period() const
@@ -200,7 +200,7 @@ public:
   }
 
   /**
-   * \brief Set the number of steps between remeshing
+   * @brief Set the number of steps between remeshing
    */
   void
   set_remeshing_period(const unsigned int &_remeshing_period)
@@ -209,7 +209,7 @@ public:
   }
 
   /**
-   * \brief Get the refinement criteria
+   * @brief Get the refinement criteria
    */
   [[nodiscard]] const std::vector<GridRefinement::RefinementCriterion> &
   get_refinement_criteria() const
@@ -218,7 +218,7 @@ public:
   }
 
   /**
-   * \brief Set the refinement criteria
+   * @brief Set the refinement criteria
    */
   void
   add_refinement_criteria(

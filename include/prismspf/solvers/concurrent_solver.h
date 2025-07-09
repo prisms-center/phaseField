@@ -14,26 +14,26 @@ class ConcurrentSolver : public SolverBase<dim, degree, number>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   ConcurrentSolver(const SolverContext<dim, degree> &_solver_context,
                    const FieldSolveType             &_field_solve_type,
                    unsigned int                      _solve_priority = 0);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   virtual ~ConcurrentSolver() = 0;
 
   /**
-   * \brief Copy constructor.
+   * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
   ConcurrentSolver(const ConcurrentSolver &solver_base) = delete;
 
   /**
-   * \brief Copy assignment.
+   * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
@@ -41,14 +41,14 @@ public:
   operator=(const ConcurrentSolver &solver_base) = delete;
 
   /**
-   * \brief Move constructor.
+   * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
   ConcurrentSolver(ConcurrentSolver &&solver_base) noexcept = delete;
 
   /**
-   * \brief Move assignment.
+   * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
@@ -56,7 +56,7 @@ public:
   operator=(ConcurrentSolver &&solver_base) noexcept = delete;
 
   /**
-   * \brief Initialize the solver.
+   * @brief Initialize the solver.
    */
   void
   init() override
@@ -66,7 +66,7 @@ public:
   };
 
   /**
-   * \brief Reinitialize the solver.
+   * @brief Reinitialize the solver.
    */
   void
   reinit() override
@@ -76,7 +76,7 @@ public:
   };
 
   /**
-   * \brief Solve for a single update step.
+   * @brief Solve for a single update step.
    */
   void
   solve() override
@@ -86,7 +86,7 @@ public:
   };
 
   /**
-   * \brief Print information about the solver to summary.log.
+   * @brief Print information about the solver to summary.log.
    */
   void
   print()
@@ -96,7 +96,7 @@ public:
   }
 
   /**
-   * \brief Get the system matrix.
+   * @brief Get the system matrix.
    */
   [[nodiscard]] std::unique_ptr<
     typename SolverBase<dim, degree, number>::SystemMatrixType> &
@@ -107,7 +107,7 @@ public:
 
 private:
   /**
-   * \brief Matrix-free operator.
+   * @brief Matrix-free operator.
    */
   std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>
     system_matrix;

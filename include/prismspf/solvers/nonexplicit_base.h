@@ -16,7 +16,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Base class for nonexplicit solves.
+ * @brief Base class for nonexplicit solves.
  */
 template <unsigned int dim, unsigned int degree>
 class NonexplicitBase
@@ -25,30 +25,30 @@ public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit NonexplicitBase(const SolverContext<dim, degree> &_solver_context);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   virtual ~NonexplicitBase() = default;
 
   /**
-   * \brief Initialize system.
+   * @brief Initialize system.
    */
   virtual void
   init() = 0;
 
   /**
-   * \brief Solve a single update step.
+   * @brief Solve a single update step.
    */
   virtual void
   solve() = 0;
 
 protected:
   /**
-   * \brief Compute the subset of VariableAttributes that belongs to a given
+   * @brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType. This function should only be used for nonexplicit fieldSolveTypes,
    * such as NonexplicitLinear, NonexplicitSelfnonlinear, NonexplicitAuxiliary, and
    * NonexplicitCononlinear.
@@ -57,7 +57,7 @@ protected:
   compute_subset_attributes(const FieldSolveType &field_solve_type);
 
   /**
-   * \brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
+   * @brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
    * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
    * initialized. This should only be called for concurrent nonexplicit fieldSolveTypes
    * like NonexplicitCononlinear.
@@ -66,20 +66,20 @@ protected:
   compute_shared_dependencies();
 
   /**
-   * \brief Set the initial condition according to subset_attributes. This only applies
+   * @brief Set the initial condition according to subset_attributes. This only applies
    * for PDEType ImplicitTimeDependent fields.
    */
   void
   set_initial_condition();
 
   /**
-   * \brief Print dependency_set_rhs to summary.log
+   * @brief Print dependency_set_rhs to summary.log
    */
   void
   print();
 
   /**
-   * \brief Get the user-inputs.
+   * @brief Get the user-inputs.
    */
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
@@ -88,7 +88,7 @@ protected:
   }
 
   /**
-   * \brief Get the matrix-free object handler for non-multigrid data.
+   * @brief Get the matrix-free object handler for non-multigrid data.
    */
   [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
@@ -97,7 +97,7 @@ protected:
   }
 
   /**
-   * \brief Get the triangulation handler.
+   * @brief Get the triangulation handler.
    */
   [[nodiscard]] const TriangulationHandler<dim> &
   get_triangulation_handler() const
@@ -106,7 +106,7 @@ protected:
   }
 
   /**
-   * \brief Get the invm handler.
+   * @brief Get the invm handler.
    */
   [[nodiscard]] const InvmHandler<dim, degree, double> &
   get_invm_handler() const
@@ -115,7 +115,7 @@ protected:
   }
 
   /**
-   * \brief Get the constraint handler.
+   * @brief Get the constraint handler.
    */
   [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
@@ -124,7 +124,7 @@ protected:
   }
 
   /**
-   * \brief Get the dof handler.
+   * @brief Get the dof handler.
    */
   [[nodiscard]] const DofHandler<dim> &
   get_dof_handler() const
@@ -133,7 +133,7 @@ protected:
   }
 
   /**
-   * \brief Get the mapping.
+   * @brief Get the mapping.
    */
   [[nodiscard]] const dealii::MappingQ1<dim> &
   get_mapping() const
@@ -142,7 +142,7 @@ protected:
   }
 
   /**
-   * \brief Get the mg matrix-free handler.
+   * @brief Get the mg matrix-free handler.
    */
   [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
   get_mg_matrix_free_handler()
@@ -151,7 +151,7 @@ protected:
   }
 
   /**
-   * \brief Get the solution handler.
+   * @brief Get the solution handler.
    */
   [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
@@ -160,7 +160,7 @@ protected:
   }
 
   /**
-   * \brief Get the subset attributes.
+   * @brief Get the subset attributes.
    */
   [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_subset_attributes() const
@@ -169,7 +169,7 @@ protected:
   }
 
   /**
-   * \brief Get the pde operator.
+   * @brief Get the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
@@ -178,7 +178,7 @@ protected:
   }
 
   /**
-   * \brief Get the pde operator for float.
+   * @brief Get the pde operator for float.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
   get_pde_operator_float() const
@@ -187,7 +187,7 @@ protected:
   }
 
   /**
-   * \brief Get the matrix-free operator for the residual side.
+   * @brief Get the matrix-free operator for the residual side.
    */
   [[nodiscard]] std::map<unsigned int, std::unique_ptr<SystemMatrixType>> &
   get_system_matrix()
@@ -196,7 +196,7 @@ protected:
   }
 
   /**
-   * \brief Get the matrix-free operator for the newton update side.
+   * @brief Get the matrix-free operator for the newton update side.
    */
   [[nodiscard]] std::map<unsigned int, std::unique_ptr<SystemMatrixType>> &
   get_update_system_matrix()
@@ -206,22 +206,22 @@ protected:
 
 private:
   /**
-   * \brief Solver context.
+   * @brief Solver context.
    */
   const SolverContext<dim, degree> *solver_context;
 
   /**
-   * \brief Subset of variable attributes for fields.
+   * @brief Subset of variable attributes for fields.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
 
   /**
-   * \brief Matrix-free operator for the residual side.
+   * @brief Matrix-free operator for the residual side.
    */
   std::map<unsigned int, std::unique_ptr<SystemMatrixType>> system_matrix;
 
   /**
-   * \brief Matrix-free operator for the newton update side.
+   * @brief Matrix-free operator for the newton update side.
    */
   std::map<unsigned int, std::unique_ptr<SystemMatrixType>> update_system_matrix;
 };

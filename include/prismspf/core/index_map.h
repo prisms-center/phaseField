@@ -29,7 +29,7 @@ struct IsStdPair<std::pair<T, U>> : std::true_type
 {};
 
 /**
- * \brief This class handlers the conversion of maps and nested maps into a linearly
+ * @brief This class handlers the conversion of maps and nested maps into a linearly
  * indexed vector.
  *
  * For many places in the PRISMS-PF is makes sense to represented certain features with
@@ -53,18 +53,18 @@ public:
   using NestedMap = MapType<key1, MapType<key2, value>>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit IndexMap(const SimpleMap &_map);
 
   /**
-   * \brief Constructor with nested maps.
+   * @brief Constructor with nested maps.
    */
   explicit IndexMap(const NestedMap &_map);
 
 private:
   /**
-   * \brief Whether the MapType is a std::map.
+   * @brief Whether the MapType is a std::map.
    *
    * This is important because we want the same ordering regardless of whether a std::map
    * or std::unordered_map is passed. If a std::map is passed we don't have to spend time
@@ -73,28 +73,28 @@ private:
   bool template_map_is_std_map = IsStdMap<MapType>::value;
 
   /**
-   * \brief Whether key1 is a pair.
+   * @brief Whether key1 is a pair.
    */
   bool key1_is_pair = IsStdPair<key1>::value;
 
   /**
-   * \brief Whether key2 is a pair. This is unsupported and will immediately throw an
+   * @brief Whether key2 is a pair. This is unsupported and will immediately throw an
    * error.
    */
   bool key2_is_pair = IsStdPair<key2>::value;
 
   /**
-   * \brief Vector of the keys.
+   * @brief Vector of the keys.
    */
   std::vector<key1> vector_keys;
 
   /**
-   * \brief Vector of the nested keys. This is only used for nested maps.
+   * @brief Vector of the nested keys. This is only used for nested maps.
    */
   std::vector<std::pair<key1, key2>> vector_nested_keys;
 
   /**
-   * \brief Vector of the values.
+   * @brief Vector of the values.
    */
   std::vector<const value *> vector_values;
 };

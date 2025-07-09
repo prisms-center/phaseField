@@ -22,12 +22,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 const unsigned int n_copies = 64;
 
 /**
- * \brief This is a derived class of `MatrixFreeOperator` where the user implements their
+ * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
  * PDEs.
  *
- * \tparam dim The number of dimensions in the problem.
- * \tparam degree The polynomial degree of the shape functions.
- * \tparam number Datatype to use. Either double or float.
+ * @tparam dim The number of dimensions in the problem.
+ * @tparam degree The polynomial degree of the shape functions.
+ * @tparam number Datatype to use. Either double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
 class CustomPDE : public MatrixFreeOperator<dim, degree, number>
@@ -41,7 +41,7 @@ public:
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
-   * \brief Constructor for concurrent solves.
+   * @brief Constructor for concurrent solves.
    */
   CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
             const std::map<unsigned int, VariableAttributes> &subset_attributes)
@@ -49,7 +49,7 @@ public:
   {}
 
   /**
-   * \brief Constructor for single solves.
+   * @brief Constructor for single solves.
    */
   CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
             const unsigned int                               &_current_index,
@@ -61,7 +61,7 @@ public:
 
 private:
   /**
-   * \brief User-implemented class for the initial conditions.
+   * @brief User-implemented class for the initial conditions.
    */
   void
   set_initial_condition(const unsigned int       &index,
@@ -71,7 +71,7 @@ private:
                         double                   &vector_component_value) const override;
 
   /**
-   * \brief User-implemented class for nonuniform boundary conditions.
+   * @brief User-implemented class for nonuniform boundary conditions.
    */
   virtual void
   set_nonuniform_dirichlet(const unsigned int       &index,
@@ -82,7 +82,7 @@ private:
                            number &vector_component_value) const override;
 
   /**
-   * \brief User-implemented class for the RHS of explicit equations.
+   * @brief User-implemented class for the RHS of explicit equations.
    */
   void
   compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
@@ -90,7 +90,7 @@ private:
                          &q_point_loc) const override;
 
   /**
-   * \brief User-implemented class for the RHS of nonexplicit equations.
+   * @brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
   compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
@@ -98,7 +98,7 @@ private:
                             &q_point_loc) const override;
 
   /**
-   * \brief User-implemented class for the LHS of nonexplicit equations.
+   * @brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
   compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
@@ -106,7 +106,7 @@ private:
                             &q_point_loc) const override;
 
   /**
-   * \brief User-implemented class for the RHS of postprocessed explicit equations.
+   * @brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   void
   compute_postprocess_explicit_rhs(

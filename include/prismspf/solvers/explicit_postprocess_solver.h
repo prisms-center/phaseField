@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This class handles the explicit solves of all postprocessed fields
+ * @brief This class handles the explicit solves of all postprocessed fields
  */
 template <unsigned int dim, unsigned int degree>
 class ExplicitPostprocessSolver : public ExplicitBase<dim, degree>
@@ -20,41 +20,41 @@ public:
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit ExplicitPostprocessSolver(const SolverContext<dim, degree> &_solver_context);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~ExplicitPostprocessSolver() override = default;
 
   /**
-   * \brief Initialize system.
+   * @brief Initialize system.
    */
   void
   init() override;
 
   /**
-   * \brief Solve a single update step.
+   * @brief Solve a single update step.
    */
   void
   solve() override;
 
 private:
   /**
-   * \brief Mapping from global solution vectors to the local ones
+   * @brief Mapping from global solution vectors to the local ones
    */
   std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     global_to_local_solution;
 
   /**
-   * \brief Subset of solutions fields that are necessary for explicit solves.
+   * @brief Subset of solutions fields that are necessary for explicit solves.
    */
   std::vector<VectorType *> solution_subset;
 
   /**
-   * \brief Subset of new solutions fields that are necessary for explicit solves.
+   * @brief Subset of new solutions fields that are necessary for explicit solves.
    */
   std::vector<VectorType *> new_solution_subset;
 };

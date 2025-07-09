@@ -11,7 +11,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Type of field. Currently, the only support fields are scalar and vector.
+ * @brief Type of field. Currently, the only support fields are scalar and vector.
  */
 enum FieldType : std::uint8_t
 {
@@ -20,7 +20,7 @@ enum FieldType : std::uint8_t
 };
 
 /**
- * \brief Type of PDE that is being solved.
+ * @brief Type of PDE that is being solved.
  */
 enum PDEType : std::uint8_t
 {
@@ -32,7 +32,7 @@ enum PDEType : std::uint8_t
 };
 
 /**
- * \brief Type of solve.
+ * @brief Type of solve.
  */
 enum SolveType : std::uint8_t
 {
@@ -43,7 +43,7 @@ enum SolveType : std::uint8_t
 };
 
 /**
- * \brief Symmetry of elastic tensor.
+ * @brief Symmetry of elastic tensor.
  */
 enum ElasticityModel : std::uint8_t
 {
@@ -54,7 +54,7 @@ enum ElasticityModel : std::uint8_t
 };
 
 /**
- * \brief Internal classification of combined field and solve types. There are six
+ * @brief Internal classification of combined field and solve types. There are six
  * different types of solve that are possible. For Explicit solves, all fields of that
  * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
  * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
@@ -76,7 +76,7 @@ enum FieldSolveType : std::uint8_t
 };
 
 /**
- * \brief Internal classification for types of variable dependencies.
+ * @brief Internal classification for types of variable dependencies.
  */
 enum DependencyType : std::uint8_t
 {
@@ -89,7 +89,7 @@ enum DependencyType : std::uint8_t
 };
 
 /**
- * \brief Solver tolerance type.
+ * @brief Solver tolerance type.
  */
 enum SolverToleranceType : std::uint8_t
 {
@@ -98,7 +98,7 @@ enum SolverToleranceType : std::uint8_t
 };
 
 /**
- * \brief Preconditioner type.
+ * @brief Preconditioner type.
  */
 enum PreconditionerType : std::uint8_t
 {
@@ -107,7 +107,7 @@ enum PreconditionerType : std::uint8_t
 };
 
 /**
- * \brief Enum to string for FieldType
+ * @brief Enum to string for FieldType
  */
 inline std::string
 to_string(FieldType type)
@@ -125,7 +125,7 @@ to_string(FieldType type)
 }
 
 /**
- * \brief Enum to string for PDEType
+ * @brief Enum to string for PDEType
  */
 inline std::string
 to_string(PDEType type)
@@ -148,7 +148,7 @@ to_string(PDEType type)
 }
 
 /**
- * \brief Enum to string for SolveType
+ * @brief Enum to string for SolveType
  */
 inline std::string
 to_string(SolveType type)
@@ -169,7 +169,7 @@ to_string(SolveType type)
 }
 
 /**
- * \brief Enum to string for ElasticityModel
+ * @brief Enum to string for ElasticityModel
  */
 inline std::string
 to_string(ElasticityModel type)
@@ -190,7 +190,7 @@ to_string(ElasticityModel type)
 }
 
 /**
- * \brief Enum to string for FieldSolveType
+ * @brief Enum to string for FieldSolveType
  */
 inline std::string
 to_string(FieldSolveType type)
@@ -217,7 +217,7 @@ to_string(FieldSolveType type)
 }
 
 /**
- * \brief Enum to string for DependencyType
+ * @brief Enum to string for DependencyType
  */
 inline std::string
 to_string(DependencyType type)
@@ -242,7 +242,7 @@ to_string(DependencyType type)
 }
 
 /**
- * \brief Enum to string for SolverToleranceType
+ * @brief Enum to string for SolverToleranceType
  */
 inline std::string
 to_string(SolverToleranceType type)
@@ -259,7 +259,7 @@ to_string(SolverToleranceType type)
 }
 
 /**
- * \brief Enum to string for PreconditionerType
+ * @brief Enum to string for PreconditionerType
  */
 inline std::string
 to_string(PreconditionerType type)

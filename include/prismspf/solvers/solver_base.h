@@ -25,7 +25,7 @@ public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   SolverBase(const SolverContext<dim, degree> &_solver_context,
              const FieldSolveType             &_field_solve_type,
@@ -36,19 +36,19 @@ public:
   {}
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   virtual ~SolverBase() = 0;
 
   /**
-   * \brief Copy constructor.
+   * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
   SolverBase(const SolverBase &solver_base) = delete;
 
   /**
-   * \brief Copy assignment.
+   * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
@@ -56,14 +56,14 @@ public:
   operator=(const SolverBase &solver_base) = delete;
 
   /**
-   * \brief Move constructor.
+   * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
   SolverBase(SolverBase &&solver_base) noexcept = delete;
 
   /**
-   * \brief Move assignment.
+   * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
@@ -71,7 +71,7 @@ public:
   operator=(SolverBase &&solver_base) noexcept = delete;
 
   /**
-   * \brief Initialize the solver.
+   * @brief Initialize the solver.
    */
   virtual void
   init()
@@ -90,7 +90,7 @@ public:
   };
 
   /**
-   * \brief Reinitialize the solver.
+   * @brief Reinitialize the solver.
    */
   virtual void
   reinit()
@@ -103,7 +103,7 @@ public:
   };
 
   /**
-   * \brief Solve for a single update step.
+   * @brief Solve for a single update step.
    */
   virtual void
   solve()
@@ -116,13 +116,13 @@ public:
   };
 
   /**
-   * \brief Print information about the solver to summary.log.
+   * @brief Print information about the solver to summary.log.
    */
   void
   print();
 
   /**
-   * \brief Compute the subset of VariableAttributes that belongs to a given
+   * @brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType and solver order.
    *
    * This function creates a map of the VariablesAttributes that belong to a
@@ -148,7 +148,7 @@ public:
   };
 
   /**
-   * \brief Set the initial condition according to subset_attributes.
+   * @brief Set the initial condition according to subset_attributes.
    *
    * This only sets the initial conditions for ExplicitTimeDependent,
    * ImplicitTimeDependent, TimeIndependent, and Constant fields.
@@ -218,7 +218,7 @@ public:
   };
 
   /**
-   * \brief Get the user-inputs.
+   * @brief Get the user-inputs.
    */
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
@@ -227,7 +227,7 @@ public:
   }
 
   /**
-   * \brief Get the matrix-free object handler for non-multigrid data.
+   * @brief Get the matrix-free object handler for non-multigrid data.
    */
   [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
@@ -236,7 +236,7 @@ public:
   }
 
   /**
-   * \brief Get the triangulation handler.
+   * @brief Get the triangulation handler.
    */
   [[nodiscard]] const TriangulationHandler<dim> &
   get_triangulation_handler() const
@@ -245,7 +245,7 @@ public:
   }
 
   /**
-   * \brief Get the invm handler.
+   * @brief Get the invm handler.
    */
   [[nodiscard]] const InvmHandler<dim, degree, double> &
   get_invm_handler() const
@@ -254,7 +254,7 @@ public:
   }
 
   /**
-   * \brief Get the constraint handler.
+   * @brief Get the constraint handler.
    */
   [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
@@ -263,7 +263,7 @@ public:
   }
 
   /**
-   * \brief Get the dof handler.
+   * @brief Get the dof handler.
    */
   [[nodiscard]] const DofHandler<dim> &
   get_dof_handler() const
@@ -272,7 +272,7 @@ public:
   }
 
   /**
-   * \brief Get the mapping.
+   * @brief Get the mapping.
    */
   [[nodiscard]] const dealii::MappingQ1<dim> &
   get_mapping() const
@@ -281,7 +281,7 @@ public:
   }
 
   /**
-   * \brief Get the mg matrix-free handler.
+   * @brief Get the mg matrix-free handler.
    */
   [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
   get_mg_matrix_free_handler()
@@ -290,7 +290,7 @@ public:
   }
 
   /**
-   * \brief Get the solution handler.
+   * @brief Get the solution handler.
    */
   [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
@@ -299,7 +299,7 @@ public:
   }
 
   /**
-   * \brief Get the subset attributes.
+   * @brief Get the subset attributes.
    */
   [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_subset_attributes() const
@@ -308,7 +308,7 @@ public:
   }
 
   /**
-   * \brief Get the pde operator.
+   * @brief Get the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
@@ -317,7 +317,7 @@ public:
   }
 
   /**
-   * \brief Get the pde operator for float.
+   * @brief Get the pde operator for float.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
   get_pde_operator_float() const
@@ -327,22 +327,22 @@ public:
 
 private:
   /**
-   * \brief Solver context.
+   * @brief Solver context.
    */
   const std::shared_ptr<SolverContext<dim, degree>> solver_context;
 
   /**
-   * \brief Field solve type.
+   * @brief Field solve type.
    */
   const FieldSolveType field_solve_type;
 
   /**
-   * \brief Solve priority.
+   * @brief Solve priority.
    */
   const unsigned int solve_priority;
 
   /**
-   * \brief Subset of variable attributes.
+   * @brief Subset of variable attributes.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
 };

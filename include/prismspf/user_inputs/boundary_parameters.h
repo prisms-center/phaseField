@@ -26,14 +26,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that stores relevant information for boundary conditions of a certain
+ * @brief Struct that stores relevant information for boundary conditions of a certain
  * field.
  */
 struct BoundaryCondition
 {
 public:
   /**
-   * \brief Type of boundary condition.
+   * @brief Type of boundary condition.
    */
   enum Type : std::uint8_t
   {
@@ -49,7 +49,7 @@ public:
   };
 
   /**
-   * \brief Test for equality of two boundary conditions.
+   * @brief Test for equality of two boundary conditions.
    */
   bool
   operator==(const BoundaryCondition &other) const
@@ -59,7 +59,7 @@ public:
   }
 
   /**
-   * \brief Get the map of boundary conditions.
+   * @brief Get the map of boundary conditions.
    */
   [[nodiscard]] const std::map<dealii::types::boundary_id, Type> &
   get_boundary_condition_map() const
@@ -68,7 +68,7 @@ public:
   }
 
   /**
-   * \brief Add a boundary conditions.
+   * @brief Add a boundary conditions.
    */
   void
   add_boundary_condition(dealii::types::boundary_id boundary_id, Type boundary_type)
@@ -77,7 +77,7 @@ public:
   }
 
   /**
-   * \brief Get the value for a homogenous dirichlet boundary condition.
+   * @brief Get the value for a homogenous dirichlet boundary condition.
    */
   [[nodiscard]] double
   get_dirichlet_value(dealii::types::boundary_id boundary_id) const
@@ -90,7 +90,7 @@ public:
   }
 
   /**
-   * \brief Add the value for a homogenous dirichlet boundary condition.
+   * @brief Add the value for a homogenous dirichlet boundary condition.
    */
   void
   add_boundary_condition(dealii::types::boundary_id boundary_id, double boundary_value)
@@ -101,7 +101,7 @@ public:
   }
 
   /**
-   * \brief Enum to string for type
+   * @brief Enum to string for type
    */
   [[nodiscard]] std::string
   to_string(Type boundary_type) const
@@ -143,7 +143,7 @@ private:
 };
 
 /**
- * \brief Struct that holds boundary parameters.
+ * @brief Struct that holds boundary parameters.
  */
 template <unsigned int dim>
 struct BoundaryParameters
@@ -157,27 +157,27 @@ public:
              std::pair<std::variant<double, std::vector<double>>, dealii::Point<dim>>>;
 
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate(
     const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
-   * \brief Check whether the boundary conditions for two fields are the same.
+   * @brief Check whether the boundary conditions for two fields are the same.
    */
   [[nodiscard]] bool
   check_duplicate_boundary_conditions(const Types::Index &index_1,
                                       const Types::Index &index_2) const;
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Set the boundary condition string for a field index and component.
+   * @brief Set the boundary condition string for a field index and component.
    */
   void
   set_boundary_condition_string(const std::string  &bc_string,
@@ -188,7 +188,7 @@ public:
   }
 
   /**
-   * \brief Whether there are time-dependent boundary conditions.
+   * @brief Whether there are time-dependent boundary conditions.
    */
   [[nodiscard]] bool
   has_time_dependent_bcs() const
@@ -197,7 +197,7 @@ public:
   }
 
   /**
-   * \brief Whether the boundary condition is time-dependent.
+   * @brief Whether the boundary condition is time-dependent.
    */
   [[nodiscard]] bool
   is_time_dependent(const Types::Index &index) const
@@ -206,7 +206,7 @@ public:
   }
 
   /**
-   * \brief Set a pinned point.
+   * @brief Set a pinned point.
    */
   void
   set_pinned_point(const std::variant<double, std::vector<double>> &value,
@@ -217,7 +217,7 @@ public:
   }
 
   /**
-   * \brief Whether there is a pinned point for a field index.
+   * @brief Whether there is a pinned point for a field index.
    */
   [[nodiscard]] bool
   has_pinned_point(const Types::Index &index) const
@@ -226,7 +226,7 @@ public:
   }
 
   /**
-   * \brief Get the pinned point for a field index.
+   * @brief Get the pinned point for a field index.
    */
   [[nodiscard]] const std::pair<std::variant<double, std::vector<double>>,
                                 dealii::Point<dim>> &
@@ -236,7 +236,7 @@ public:
   }
 
   /**
-   * \brief Get the boundary conditions list.
+   * @brief Get the boundary conditions list.
    */
   [[nodiscard]] const BoundaryConditionMap &
   get_boundary_condition_list() const
@@ -246,7 +246,7 @@ public:
 
 private:
   /**
-   * \brief Set the boundary for a single component of a field index.
+   * @brief Set the boundary for a single component of a field index.
    */
   void
   set_boundary(const std::string  &bc_string,
@@ -254,7 +254,7 @@ private:
                const unsigned int &component);
 
   /**
-   * \brief Perform a check on the boundary conditions to ensure that they are valid
+   * @brief Perform a check on the boundary conditions to ensure that they are valid
    */
   void
   validate_boundary_conditions() const;
