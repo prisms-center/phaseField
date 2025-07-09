@@ -97,6 +97,15 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
 
+  /**
+   * \brief User-implemented class for the RHS of nucleation probability equations.
+   */
+  void
+  compute_nucleation_probability_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
+    const override;
+
   dealii::Tensor<2, voigt_tensor_size<dim>, number> compliance =
     this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "compliance");

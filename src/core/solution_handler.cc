@@ -304,6 +304,7 @@ SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
           case FieldSolveType::ExplicitConstant:
             break;
           case FieldSolveType::Explicit:
+          case FieldSolveType::ExplicitNucleation:
           case FieldSolveType::ExplicitPostprocess:
             // For ExplicitPostprocess we only swap Normal, but the helper function will
             // do that first and ignore the rest since they should exist
