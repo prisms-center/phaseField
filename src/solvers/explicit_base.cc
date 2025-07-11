@@ -58,19 +58,46 @@ ExplicitBase<dim, degree>::compute_shared_dependencies()
   auto &dependency_flag_set = subset_attributes.begin()->second.get_eval_flag_set_rhs();
   for (const auto &[index, variable] : subset_attributes)
     {
-      if (!variable.get_eval_flag_set_rhs().empty())
+      Types::Index field_index = 0;
+      for (const auto &local_dependency_set : variable.get_eval_flag_set_rhs())
         {
-          for (const auto &[pair, flag] : variable.get_eval_flag_set_rhs())
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
             {
-              dependency_flag_set[pair] |= flag;
+              if (static_cast<DependencyType>(dep_index) == DependencyType::Change ||
+                  value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              dependency_flag_set[field_index][dep_index] |= value;
+
+              dep_index++;
             }
+
+          field_index++;
         }
     }
   for (auto &[index, variable] : subset_attributes)
     {
-      for (const auto &[pair, flag] : dependency_flag_set)
+      Types::Index field_index = 0;
+      for (const auto &local_dependency_set : dependency_flag_set)
         {
-          variable.get_eval_flag_set_rhs()[pair] |= flag;
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
+            {
+              if (static_cast<DependencyType>(dep_index) == DependencyType::Change ||
+                  value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              variable.get_eval_flag_set_rhs()[field_index][dep_index] |= value;
+
+              dep_index++;
+            }
+
+          field_index++;
         }
     }
 

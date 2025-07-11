@@ -416,15 +416,17 @@ VariableContainer<dim, degree, number>::access_valid(
     {
       if (solve_type == SolveType::NonexplicitLHS)
         {
-          Assert(variable.get_eval_flag_set_lhs().contains(
-                   std::make_pair(dependency_index, dependency_type)),
-                 DependencyNotFound(dependency_index, to_string(dependency_type)));
+          Assert(
+            variable.get_eval_flag_set_lhs()[dependency_index][static_cast<Types::Index>(
+              dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
+            DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
       else
         {
-          Assert(variable.get_eval_flag_set_rhs().contains(
-                   std::make_pair(dependency_index, dependency_type)),
-                 DependencyNotFound(dependency_index, to_string(dependency_type)));
+          Assert(
+            variable.get_eval_flag_set_rhs()[dependency_index][static_cast<Types::Index>(
+              dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
+            DependencyNotFound(dependency_index, to_string(dependency_type)));
         }
     }
 }
@@ -515,8 +517,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, DependencyType>,
-                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
+    [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+                                                                          &eval_flag_set,
         const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -540,7 +542,9 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
             auto process_feeval = [&](auto &feeval_ptr)
             {
               feeval_ptr->reinit(cell);
-              if (!eval_flag_set.contains(pair))
+              if (eval_flag_set[dependency_index]
+                               [static_cast<Types::Index>(dependency_type)] ==
+                  dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
                   return;
                 }
@@ -553,7 +557,9 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                        " for global index = " + std::to_string(dependency_index) +
                        "  and type = " + to_string(dependency_type)));
               feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
-              feeval_ptr->evaluate(eval_flag_set.at(pair));
+              feeval_ptr->evaluate(
+                eval_flag_set[dependency_index]
+                             [static_cast<Types::Index>(dependency_type)]);
             };
 
             if constexpr (dim == 1)
@@ -612,8 +618,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   // the variable we're evaluating, which may or may not be an actually dependency. For
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, DependencyType>,
-                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
+    [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+                                                                          &eval_flag_set,
         const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -640,7 +646,9 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
             {
               feeval_ptr->reinit(cell);
               feeval_ptr->read_dof_values_plain(src);
-              feeval_ptr->evaluate(eval_flag_set.at(pair));
+              feeval_ptr->evaluate(
+                eval_flag_set[dependency_index]
+                             [static_cast<Types::Index>(dependency_type)]);
             };
 
             if constexpr (dim == 1)
@@ -685,38 +693,53 @@ VariableContainer<dim, degree, number>::reinit(unsigned int        cell,
                                                const unsigned int &global_variable_index)
 {
   auto reinit_map =
-    [&](const std::map<std::pair<unsigned int, DependencyType>,
-                       dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
+    [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+          &eval_flag_set)
   {
-    for (const auto &[pair, flags] : eval_flag_set)
+    Types::Index dependency_index = 0;
+    for (const auto &dependency_set : eval_flag_set)
       {
-        const unsigned int   &dependency_index = pair.first;
-        const DependencyType &dependency_type  = pair.second;
-        feevaluation_exists(dependency_index, dependency_type);
-        auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
-
-        auto process_feeval = [&](auto &feeval_ptr)
-        {
-          feeval_ptr->reinit(cell);
-        };
-
-        if constexpr (dim == 1)
+        Types::Index dependency_type = 0;
+        for (const auto &value : dependency_set)
           {
-            process_feeval(feeval_variant);
-          }
-        else
-          {
-            std::visit(
-              [&](auto &ptr)
+            if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
               {
-                using T = std::decay_t<decltype(ptr)>;
-                static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
-                                std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                              "Unexpected type in feeval_map variant");
-                process_feeval(ptr);
-              },
-              feeval_variant);
+                dependency_type++;
+                continue;
+              }
+
+            feevaluation_exists(dependency_index,
+                                static_cast<DependencyType>(dependency_type));
+            auto &feeval_variant = feeval_map.at(dependency_index)
+                                     .at(static_cast<DependencyType>(dependency_type));
+
+            auto process_feeval = [&](auto &feeval_ptr)
+            {
+              feeval_ptr->reinit(cell);
+            };
+
+            if constexpr (dim == 1)
+              {
+                process_feeval(feeval_variant);
+              }
+            else
+              {
+                std::visit(
+                  [&](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    static_assert(
+                      std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
+                        std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
+                      "Unexpected type in feeval_map variant");
+                    process_feeval(ptr);
+                  },
+                  feeval_variant);
+              }
+            dependency_type++;
           }
+
+        dependency_index++;
       }
   };
 
@@ -741,8 +764,8 @@ VariableContainer<dim, degree, number>::read_dof_values(
   const std::vector<VectorType *> &src)
 {
   auto reinit_and_eval_map =
-    [&](const std::map<std::pair<unsigned int, DependencyType>,
-                       dealii::EvaluationFlags::EvaluationFlags>          &eval_flag_set,
+    [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+                                                                          &eval_flag_set,
         const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
   {
     for (const auto &[dependency_index, map] : dependency_set)
@@ -765,7 +788,9 @@ VariableContainer<dim, degree, number>::read_dof_values(
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
-              if (eval_flag_set.contains(pair))
+              if (eval_flag_set[dependency_index]
+                               [static_cast<Types::Index>(dependency_type)] !=
+                  dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
                   const unsigned int &local_index = global_to_local_solution->at(pair);
                   Assert(src.size() > local_index,
@@ -823,38 +848,53 @@ void
 VariableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
 {
   auto eval_map =
-    [&](const std::map<std::pair<unsigned int, DependencyType>,
-                       dealii::EvaluationFlags::EvaluationFlags> &eval_flag_set)
+    [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+          &eval_flag_set)
   {
-    for (const auto &[pair, flags] : eval_flag_set)
+    Types::Index index = 0;
+    for (const auto &dependency_set : eval_flag_set)
       {
-        const unsigned int   &dependency_index = pair.first;
-        const DependencyType &dependency_type  = pair.second;
-        feevaluation_exists(dependency_index, dependency_type);
-        auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
-
-        auto process_feeval = [&](auto &feeval_ptr)
-        {
-          feeval_ptr->evaluate(flags);
-        };
-
-        if constexpr (dim == 1)
+        Types::Index dep_index = 0;
+        for (const auto &value : dependency_set)
           {
-            process_feeval(feeval_variant);
-          }
-        else
-          {
-            std::visit(
-              [&](auto &ptr)
+            if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
               {
-                using T = std::decay_t<decltype(ptr)>;
-                static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
-                                std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                              "Unexpected type in feeval_map variant");
-                process_feeval(ptr);
-              },
-              feeval_variant);
+                dep_index++;
+                continue;
+              }
+
+            feevaluation_exists(index, static_cast<DependencyType>(dep_index));
+            auto &feeval_variant =
+              feeval_map.at(index).at(static_cast<DependencyType>(dep_index));
+
+            auto process_feeval = [&](auto &feeval_ptr)
+            {
+              feeval_ptr->evaluate(value);
+            };
+
+            if constexpr (dim == 1)
+              {
+                process_feeval(feeval_variant);
+              }
+            else
+              {
+                std::visit(
+                  [&](auto &ptr)
+                  {
+                    using T = std::decay_t<decltype(ptr)>;
+                    static_assert(
+                      std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
+                        std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
+                      "Unexpected type in feeval_map variant");
+                    process_feeval(ptr);
+                  },
+                  feeval_variant);
+              }
+
+            dep_index++;
           }
+
+        index++;
       }
   };
 

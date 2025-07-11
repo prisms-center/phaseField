@@ -155,7 +155,7 @@ struct VariableAttributes
   /**
    * @brief Get the RHS evaluation flags.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, EvalFlags> &
+  [[nodiscard]] const std::vector<std::vector<EvalFlags>> &
   get_eval_flag_set_rhs() const
   {
     return eval_flag_set_rhs;
@@ -164,7 +164,7 @@ struct VariableAttributes
   /**
    * @brief Get the RHS evaluation flags.
    */
-  [[nodiscard]] std::map<std::pair<unsigned int, DependencyType>, EvalFlags> &
+  [[nodiscard]] std::vector<std::vector<EvalFlags>> &
   get_eval_flag_set_rhs()
   {
     return eval_flag_set_rhs;
@@ -173,7 +173,7 @@ struct VariableAttributes
   /**
    * @brief Get the LHS evaluation flags.
    */
-  [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, EvalFlags> &
+  [[nodiscard]] const std::vector<std::vector<EvalFlags>> &
   get_eval_flag_set_lhs() const
   {
     return eval_flag_set_lhs;
@@ -368,31 +368,35 @@ private:
    * @brief A map of evaluation flags for the dependencies of the current variable's RHS.
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field.
+   *
+   * The first dimension is the field index, the second dimension is the dependency type.
    * @remark Internally determined
    */
-  std::map<std::pair<unsigned int, DependencyType>, EvalFlags> eval_flag_set_rhs;
+  std::vector<std::vector<EvalFlags>> eval_flag_set_rhs;
 
   /**
    * @brief A map of evaluation flags for the dependencies of the current variable's LHS.
    * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
    * the specified field.
+   *
+   * The first dimension is the field index, the second dimension is the dependency type.
    * @remark Internally determined
    */
-  std::map<std::pair<unsigned int, DependencyType>, EvalFlags> eval_flag_set_lhs;
+  std::vector<std::vector<EvalFlags>> eval_flag_set_lhs;
 
   /**
    * @brief Evaluation flags for the types of residual the user is expected to submit to
    * on the RHS.
    * @remark Internally determined
    */
-  EvalFlags eval_flags_residual_rhs = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_residual_rhs = dealii::EvaluationFlags::EvaluationFlags::nothing;
 
   /**
    * @brief Evaluation flags for the types of residual the user is expected to submit to
    * on the LHS. This is empty for Explicit fields.
    * @remark Internally determined
    */
-  EvalFlags eval_flags_residual_lhs = dealii::EvaluationFlags::nothing;
+  EvalFlags eval_flags_residual_lhs = dealii::EvaluationFlags::EvaluationFlags::nothing;
 
   /**
    * @brief A dependency set where the RHS evaluation flags that are not 0 (not nothing)

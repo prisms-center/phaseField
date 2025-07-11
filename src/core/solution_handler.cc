@@ -170,13 +170,45 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
 
       // Add dependencies if they don't exist
-      for (const auto &[pair, flags] : variable.get_eval_flag_set_rhs())
+      Types::Index field_index = 0;
+      for (const auto &dependency_set : variable.get_eval_flag_set_rhs())
         {
-          solution_set.try_emplace(pair, std::make_unique<VectorType>());
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
+            {
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              solution_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<VectorType>());
+
+              dep_index++;
+            }
+
+          field_index++;
         }
-      for (const auto &[pair, flags] : variable.get_eval_flag_set_lhs())
+      field_index = 0;
+      for (const auto &dependency_set : variable.get_eval_flag_set_lhs())
         {
-          solution_set.try_emplace(pair, std::make_unique<VectorType>());
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
+            {
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              solution_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<VectorType>());
+
+              dep_index++;
+            }
+
+          field_index++;
         }
     }
 

@@ -219,20 +219,33 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
 
       // Then add the LHS dependencies. For now I just add all of them and go back to trim
       // the duplicates that have the same variable but different Min multigrid levels.
-      for (const auto &[pair, eval_flag] : variable.get_eval_flag_set_lhs())
+      Types::Index field_index = 0;
+      for (const auto &dependency_set : variable.get_eval_flag_set_lhs())
         {
-          // Skip if the eval flags is not set (e.i., nothing)
-          if (eval_flag == 0U)
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
             {
-              continue;
+              if (static_cast<DependencyType>(dep_index) == DependencyType::Change ||
+                  value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              AssertThrow(static_cast<DependencyType>(dep_index) ==
+                              DependencyType::Normal ||
+                            static_cast<DependencyType>(dep_index) ==
+                              DependencyType::Change,
+                          dealii::ExcNotImplemented());
+
+              all_lhs_fields.insert(
+                std::make_tuple(field_index,
+                                static_cast<DependencyType>(dep_index),
+                                min_levels.at(index)));
+
+              dep_index++;
             }
 
-          AssertThrow(pair.second == DependencyType::Normal ||
-                        pair.second == DependencyType::Change,
-                      dealii::ExcNotImplemented());
-
-          all_lhs_fields.insert(
-            std::make_tuple(pair.first, pair.second, min_levels.at(index)));
+          field_index++;
         }
     }
   // Trim fields that have the same first and second entry of the tuple.

@@ -146,10 +146,9 @@ VariableAttributes::parse_dependencies(
   }();
 
   // Helper lambda to validate and fill in dependency sets
-  auto set_dependencies =
-    [&](const std::set<std::string>                                  &dependencies,
-        std::map<std::pair<unsigned int, DependencyType>, EvalFlags> &eval_flag_set,
-        const std::string                                            &context)
+  auto set_dependencies = [&](const std::set<std::string>         &dependencies,
+                              std::vector<std::vector<EvalFlags>> &eval_flag_set,
+                              const std::string                   &context)
   {
     // Loop through the available delimiters
     for (const auto &[variation, delimiter] : delimiters)
@@ -171,21 +170,21 @@ VariableAttributes::parse_dependencies(
 
                 validate_dependency(variation, dep_type, other_index, context);
 
-                const std::pair<unsigned int, DependencyType> key = {other_index,
-                                                                     dep_type};
-
-                if (eval_flag_set.contains(key))
-                  {
-                    eval_flag_set[key] |= flags;
-                  }
-                else
-                  {
-                    eval_flag_set.emplace(key, flags);
-                  }
+                eval_flag_set[other_index][static_cast<Types::Index>(dep_type)] |= flags;
               }
           }
       }
   };
+
+  // Initialize the eval flag sets
+  eval_flag_set_rhs.resize(
+    max_fields,
+    std::vector<EvalFlags>(max_dependency_types + 1,
+                           dealii::EvaluationFlags::EvaluationFlags::nothing));
+  eval_flag_set_lhs.resize(
+    max_fields,
+    std::vector<EvalFlags>(max_dependency_types + 1,
+                           dealii::EvaluationFlags::EvaluationFlags::nothing));
 
   set_dependencies(raw_dependencies.dependencies_rhs, eval_flag_set_rhs, "RHS");
   set_dependencies(raw_dependencies.dependencies_lhs, eval_flag_set_lhs, "LHS");
@@ -234,8 +233,10 @@ VariableAttributes::determine_field_solve_type(
     }
 
   // Check for self-nonlinear solves.
-  if (eval_flag_set_lhs.contains({field_index, DependencyType::Change}) &&
-      eval_flag_set_lhs.contains({field_index, DependencyType::Normal}))
+  if (eval_flag_set_lhs[field_index][static_cast<Types::Index>(DependencyType::Change)] !=
+        EvalFlags::nothing &&
+      eval_flag_set_lhs[field_index][static_cast<Types::Index>(DependencyType::Normal)] !=
+        EvalFlags::nothing)
     {
       field_solve_type = FieldSolveType::NonexplicitSelfnonlinear;
       return;
@@ -272,21 +273,51 @@ VariableAttributes::print() const
     << "Field solve type: " << to_string(field_solve_type) << "\n";
 
   ConditionalOStreams::pout_summary() << "Evaluation flags RHS:\n";
-  for (const auto &[key, value] : eval_flag_set_rhs)
+  Types::Index index = 0;
+  for (const auto &dependency_set : eval_flag_set_rhs)
     {
-      ConditionalOStreams::pout_summary()
-        << "  Index: " << key.first << "\n"
-        << "  Dependency type: " << to_string(key.second) << "\n"
-        << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
+      Types::Index dep_index = 0;
+      for (const auto &value : dependency_set)
+        {
+          // Skip where the evaluation flags are nothing
+          if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+            {
+              dep_index++;
+              continue;
+            }
+
+          ConditionalOStreams::pout_summary()
+            << "  Index: " << index << "\n"
+            << "  Dependency type: " << to_string(static_cast<DependencyType>(dep_index))
+            << "\n"
+            << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
+          dep_index++;
+        }
+      index++;
     }
 
   ConditionalOStreams::pout_summary() << "Evaluation flags LHS:\n";
-  for (const auto &[key, value] : eval_flag_set_lhs)
+  index = 0;
+  for (const auto &dependency_set : eval_flag_set_lhs)
     {
-      ConditionalOStreams::pout_summary()
-        << "  Index: " << key.first << "\n"
-        << "  Dependency type: " << to_string(key.second) << "\n"
-        << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
+      Types::Index dep_index = 0;
+      for (const auto &value : dependency_set)
+        {
+          // Skip where the evaluation flags are nothing
+          if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+            {
+              dep_index++;
+              continue;
+            }
+
+          ConditionalOStreams::pout_summary()
+            << "  Index: " << index << "\n"
+            << "  Dependency type: " << to_string(static_cast<DependencyType>(dep_index))
+            << "\n"
+            << "  Evaluation flags: " << eval_flags_to_string(value) << "\n\n";
+          dep_index++;
+        }
+      index++;
     }
 
   ConditionalOStreams::pout_summary()
@@ -337,37 +368,60 @@ VariableAttributes::compute_dependency_set(
   // so ignore those. If we have EvalFlags::nothing ignore
   // it. Always add itself as a dependency for RHS since this is used for determining what
   // FEEvaluation objects should be made.
-  for (const auto &[pair, flag] : eval_flag_set_rhs)
+
+  Types::Index index = 0;
+  for (const auto &dependency_set : eval_flag_set_rhs)
     {
-      if (pair.second == DependencyType::Change || flag == EvalFlags::nothing)
+      Types::Index dep_index = 0;
+      for (const auto &value : dependency_set)
         {
-          continue;
+          if (static_cast<DependencyType>(dep_index) == DependencyType::Change ||
+              value == EvalFlags::nothing)
+            {
+              dep_index++;
+              continue;
+            }
+
+          Assert(other_var_attributes.contains(index),
+                 dealii::ExcMessage(
+                   "The provided attributes does not have an entry for the index = " +
+                   std::to_string(index)));
+
+          dependency_set_rhs[index].emplace(static_cast<DependencyType>(dep_index),
+                                            other_var_attributes.at(index).field_type);
+
+          dep_index++;
         }
 
-      Assert(other_var_attributes.contains(pair.first),
-             dealii::ExcMessage(
-               "The provided attributes does not have an entry for the index = " +
-               std::to_string(pair.first)));
-
-      dependency_set_rhs[pair.first]
-        .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
+      index++;
     }
+
   dependency_set_rhs[field_index].emplace(DependencyType::Normal, field_type);
 
-  for (const auto &[pair, flag] : eval_flag_set_lhs)
+  index = 0;
+  for (const auto &dependency_set : eval_flag_set_lhs)
     {
-      if (flag == EvalFlags::nothing)
+      Types::Index dep_index = 0;
+      for (const auto &value : dependency_set)
         {
-          continue;
+          if (value == EvalFlags::nothing)
+            {
+              dep_index++;
+              continue;
+            }
+
+          Assert(other_var_attributes.contains(index),
+                 dealii::ExcMessage(
+                   "The provided attributes does not have an entry for the index = " +
+                   std::to_string(index)));
+
+          dependency_set_lhs[index].emplace(static_cast<DependencyType>(dep_index),
+                                            other_var_attributes.at(index).field_type);
+
+          dep_index++;
         }
 
-      Assert(other_var_attributes.contains(pair.first),
-             dealii::ExcMessage(
-               "The provided attributes does not have an entry for the index = " +
-               std::to_string(pair.first)));
-
-      dependency_set_lhs[pair.first]
-        .emplace(pair.second, other_var_attributes.at(pair.first).field_type);
+      index++;
     }
 }
 
@@ -381,18 +435,29 @@ VariableAttributes::compute_simplified_dependency_set(
   // ignore it so it doesn't interfere with the map and flag circularity.
   auto compute_dependencies = [&](const auto &eval_flag_set)
   {
-    for (const auto &[pair, flag] : eval_flag_set)
+    Types::Index index = 0;
+    for (const auto &dependency_set : eval_flag_set)
       {
-        if (pair.second != DependencyType::Normal || flag == EvalFlags::nothing ||
-            other_var_attributes.at(pair.first).pde_type ==
-              PDEType::ExplicitTimeDependent ||
-            other_var_attributes.at(pair.first).pde_type == PDEType::Constant ||
-            pair.first == field_index)
+        Types::Index dep_index = 0;
+        for (const auto &value : dependency_set)
           {
-            continue;
+            if (static_cast<DependencyType>(dep_index) != DependencyType::Normal ||
+                value == EvalFlags::nothing ||
+                other_var_attributes.at(index).pde_type ==
+                  PDEType::ExplicitTimeDependent ||
+                other_var_attributes.at(index).pde_type == PDEType::Constant ||
+                index == field_index)
+              {
+                dep_index++;
+                continue;
+              }
+
+            simplified_dependency_set.insert(index);
+
+            dep_index++;
           }
 
-        simplified_dependency_set.insert(pair.first);
+        index++;
       }
   };
 

@@ -396,13 +396,44 @@ VariableAttributeLoader::validate_old_solution_dependencies()
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {
-      for (const auto &[pair, flag] : variable.eval_flag_set_rhs)
+      Types::Index field_index = 0;
+      for (const auto &local_dependency_set : variable.eval_flag_set_rhs)
         {
-          dependency_set[pair] |= flag;
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
+            {
+              // Skip where the evaluation flags are nothing
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              dependency_set[std::make_pair(field_index,
+                                            static_cast<DependencyType>(dep_index))] |=
+                value;
+              dep_index++;
+            }
+          field_index++;
         }
-      for (const auto &[pair, flag] : variable.eval_flag_set_lhs)
+
+      field_index = 0;
+      for (const auto &local_dependency_set : variable.eval_flag_set_lhs)
         {
-          dependency_set[pair] |= flag;
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
+            {
+              // Skip where the evaluation flags are nothing
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              dependency_set[std::make_pair(field_index,
+                                            static_cast<DependencyType>(dep_index))] |=
+                value;
+              dep_index++;
+            }
+          field_index++;
         }
     }
 
