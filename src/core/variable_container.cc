@@ -357,7 +357,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
   const auto &field_type       = subset_attributes->begin()->second.get_field_type();
   feevaluation_exists(global_var_index, DependencyType::Change);
   auto &feeval_variant =
-    feeval_map.at(global_var_index).at(static_cast<Types::Index>(DependencyType::Change));
+    feeval_map[global_var_index][static_cast<Types::Index>(DependencyType::Change)];
 
   auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
   {
@@ -424,6 +424,7 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
   [[maybe_unused]] const unsigned int   &dependency_index,
   [[maybe_unused]] const DependencyType &dependency_type) const
 {
+#ifdef DEBUG
   Assert(feeval_map.size() > dependency_index,
          dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
                             std::to_string(dependency_index)));
@@ -432,6 +433,30 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
          dealii::ExcMessage("The FEEvaluation object with global index = " +
                             std::to_string(dependency_index) +
                             " does not exist for type = " + to_string(dependency_type)));
+  // Check if the feeval_variant is nullptr
+  bool is_nullptr = true;
+
+  if constexpr (dim == 1)
+    {
+      is_nullptr =
+        feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)] ==
+        nullptr;
+    }
+  else
+    {
+      is_nullptr = std::visit(
+        [](const auto &ptr) -> bool
+        {
+          return ptr == nullptr;
+        },
+        feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)]);
+    }
+
+  Assert(!is_nullptr,
+         dealii::ExcMessage("The FEEvaluation object with global index = " +
+                            std::to_string(dependency_index) +
+                            " does not exist for type = " + to_string(dependency_type)));
+#endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -598,8 +623,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
             feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant = feeval_map.at(dependency_index)
-                                     .at(static_cast<Types::Index>(dependency_type));
+            auto &feeval_variant =
+              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -696,8 +721,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
               }
 
             feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant = feeval_map.at(dependency_index)
-                                     .at(static_cast<Types::Index>(dependency_type));
+            auto &feeval_variant =
+              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -767,7 +792,8 @@ VariableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
+            auto &feeval_variant =
+              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -840,8 +866,8 @@ VariableContainer<dim, degree, number>::read_dof_values(
                      std::to_string(dependency_index) +
                      "  and type = " + to_string(dependency_type)));
             feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant = feeval_map.at(dependency_index)
-                                     .at(static_cast<Types::Index>(dependency_type));
+            auto &feeval_variant =
+              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -921,7 +947,7 @@ VariableContainer<dim, degree, number>::eval(const unsigned int &global_variable
               }
 
             feevaluation_exists(index, static_cast<DependencyType>(dep_index));
-            auto &feeval_variant = feeval_map.at(index).at(dep_index);
+            auto &feeval_variant = feeval_map[index][dep_index];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -983,8 +1009,9 @@ VariableContainer<dim, degree, number>::integrate(
   if (solve_type == SolveType::NonexplicitLHS)
     {
       feevaluation_exists(global_variable_index, DependencyType::Change);
-      auto &feeval_variant = feeval_map.at(global_variable_index)
-                               .at(static_cast<Types::Index>(DependencyType::Change));
+      auto &feeval_variant =
+        feeval_map[global_variable_index]
+                  [static_cast<Types::Index>(DependencyType::Change)];
 
       auto process_feeval = [&](auto &feeval_ptr)
       {
@@ -1045,7 +1072,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
     auto &feeval_variant =
-      feeval_map.at(residual_index).at(static_cast<Types::Index>(dependency_type));
+      feeval_map[residual_index][static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)
     {
@@ -1103,7 +1130,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
     auto &feeval_variant =
-      feeval_map.at(residual_index).at(static_cast<Types::Index>(dependency_type));
+      feeval_map[residual_index][static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)
     {
@@ -1164,8 +1191,7 @@ VariableContainer<dim, degree, number>::get_scalar_value(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_value(q_point);
     }
   else
@@ -1186,8 +1212,7 @@ VariableContainer<dim, degree, number>::get_scalar_value(
               return SizeType();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1206,8 +1231,7 @@ VariableContainer<dim, degree, number>::get_scalar_gradient(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_gradient(q_point);
     }
   else
@@ -1228,8 +1252,7 @@ VariableContainer<dim, degree, number>::get_scalar_gradient(
               return dealii::Tensor<1, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1248,8 +1271,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_hessian(q_point);
     }
   else
@@ -1270,8 +1292,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian(
               return dealii::Tensor<2, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1290,8 +1311,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_hessian_diagonal(q_point);
     }
   else
@@ -1312,8 +1332,7 @@ VariableContainer<dim, degree, number>::get_scalar_hessian_diagonal(
               return dealii::Tensor<1, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1332,8 +1351,7 @@ VariableContainer<dim, degree, number>::get_scalar_laplacian(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_laplacian(q_point);
     }
   else
@@ -1354,8 +1372,7 @@ VariableContainer<dim, degree, number>::get_scalar_laplacian(
               return SizeType();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1375,9 +1392,9 @@ VariableContainer<dim, degree, number>::get_vector_value(
   if constexpr (dim == 1)
     {
       dealii::Tensor<1, dim, SizeType> wrapper;
-      wrapper[0] = feeval_map.at(global_variable_index)
-                     .at(static_cast<Types::Index>(dependency_type))
-                     ->get_value(q_point);
+      wrapper[0] =
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
+          ->get_value(q_point);
       return wrapper;
     }
   else
@@ -1398,8 +1415,7 @@ VariableContainer<dim, degree, number>::get_vector_value(
               return dealii::Tensor<1, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1419,9 +1435,9 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
   if constexpr (dim == 1)
     {
       dealii::Tensor<2, dim, SizeType> wrapper;
-      wrapper[0] = feeval_map.at(global_variable_index)
-                     .at(static_cast<Types::Index>(dependency_type))
-                     ->get_gradient(q_point);
+      wrapper[0] =
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
+          ->get_gradient(q_point);
       return wrapper;
     }
   else
@@ -1442,8 +1458,7 @@ VariableContainer<dim, degree, number>::get_vector_gradient(
               return dealii::Tensor<2, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1463,9 +1478,9 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
   if constexpr (dim == 1)
     {
       dealii::Tensor<3, dim, SizeType> wrapper;
-      wrapper[0] = feeval_map.at(global_variable_index)
-                     .at(static_cast<Types::Index>(dependency_type))
-                     ->get_hessian(q_point);
+      wrapper[0] =
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
+          ->get_hessian(q_point);
       return wrapper;
     }
   else
@@ -1486,8 +1501,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian(
               return dealii::Tensor<3, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1507,9 +1521,9 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
   if constexpr (dim == 1)
     {
       dealii::Tensor<2, dim, SizeType> wrapper;
-      wrapper[0] = feeval_map.at(global_variable_index)
-                     .at(static_cast<Types::Index>(dependency_type))
-                     ->get_hessian_diagonal(q_point);
+      wrapper[0] =
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
+          ->get_hessian_diagonal(q_point);
       return wrapper;
     }
   else
@@ -1530,8 +1544,7 @@ VariableContainer<dim, degree, number>::get_vector_hessian_diagonal(
               return dealii::Tensor<2, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1551,9 +1564,9 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
   if constexpr (dim == 1)
     {
       dealii::Tensor<1, dim, SizeType> wrapper;
-      wrapper[0] = feeval_map.at(global_variable_index)
-                     .at(static_cast<Types::Index>(dependency_type))
-                     ->get_laplacian(q_point);
+      wrapper[0] =
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
+          ->get_laplacian(q_point);
       return wrapper;
     }
   else
@@ -1574,8 +1587,7 @@ VariableContainer<dim, degree, number>::get_vector_laplacian(
               return dealii::Tensor<1, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1594,8 +1606,7 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_divergence(q_point);
     }
   else
@@ -1616,8 +1627,7 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
               return SizeType();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1636,8 +1646,7 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->get_symmetric_gradient(q_point);
     }
   else
@@ -1658,8 +1667,7 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
               return dealii::Tensor<2, dim, SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1702,8 +1710,7 @@ VariableContainer<dim, degree, number>::get_vector_curl(
               return dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>();
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1721,8 +1728,7 @@ VariableContainer<dim, degree, number>::set_scalar_value_term(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->submit_value(val, q_point);
     }
   else
@@ -1742,8 +1748,7 @@ VariableContainer<dim, degree, number>::set_scalar_value_term(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1761,8 +1766,7 @@ VariableContainer<dim, degree, number>::set_scalar_gradient_term(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->submit_gradient(grad, q_point);
     }
   else
@@ -1782,8 +1786,7 @@ VariableContainer<dim, degree, number>::set_scalar_gradient_term(
                        "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1801,8 +1804,7 @@ VariableContainer<dim, degree, number>::set_vector_value_term(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->submit_value(val, q_point);
     }
   else
@@ -1822,8 +1824,7 @@ VariableContainer<dim, degree, number>::set_vector_value_term(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
@@ -1841,8 +1842,7 @@ VariableContainer<dim, degree, number>::set_vector_gradient_term(
 
   if constexpr (dim == 1)
     {
-      return feeval_map.at(global_variable_index)
-        .at(static_cast<Types::Index>(dependency_type))
+      return feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]
         ->submit_gradient(grad, q_point);
     }
   else
@@ -1862,8 +1862,7 @@ VariableContainer<dim, degree, number>::set_vector_gradient_term(
                        "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
             }
         },
-        feeval_map.at(global_variable_index)
-          .at(static_cast<Types::Index>(dependency_type)));
+        feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
     }
 }
 
