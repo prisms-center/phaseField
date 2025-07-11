@@ -633,12 +633,6 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
                 continue;
               }
 
-            const auto &pair = std::make_pair(dependency_index, dependency_type);
-            Assert(global_to_local_solution->contains(pair),
-                   dealii::ExcMessage(
-                     "The global to local mapping does not exists for global index = " +
-                     std::to_string(dependency_index) +
-                     "  and type = " + to_string(dependency_type)));
             feevaluation_exists(dependency_index, dependency_type);
             auto &feeval_variant = feeval_map.at(dependency_index).at(dependency_type);
 

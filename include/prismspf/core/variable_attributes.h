@@ -200,7 +200,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] const std::map<unsigned int, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] const std::map<Types::Index, std::map<DependencyType, FieldType>> &
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
@@ -209,7 +209,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] std::map<unsigned int, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] std::map<Types::Index, std::map<DependencyType, FieldType>> &
   get_dependency_set_rhs()
   {
     return dependency_set_rhs;
@@ -219,7 +219,7 @@ struct VariableAttributes
    * @brief Set the dependency set for the RHS.
    */
   void
-  set_dependency_set_rhs(const std::map<unsigned int, std::map<DependencyType, FieldType>>
+  set_dependency_set_rhs(const std::map<Types::Index, std::map<DependencyType, FieldType>>
                            &_dependency_set_rhs)
   {
     dependency_set_rhs = _dependency_set_rhs;
@@ -228,7 +228,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the LHS.
    */
-  [[nodiscard]] const std::map<unsigned int, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] const std::map<Types::Index, std::map<DependencyType, FieldType>> &
   get_dependency_set_lhs() const
   {
     return dependency_set_lhs;
@@ -404,7 +404,7 @@ private:
    * variable container.
    * @remark Internally determined
    */
-  std::map<unsigned int, std::map<DependencyType, FieldType>> dependency_set_rhs;
+  std::map<Types::Index, std::map<DependencyType, FieldType>> dependency_set_rhs;
 
   /**
    * @brief A dependency set where the LHS evaluation flags that are not 0 (not nothing)
@@ -412,7 +412,7 @@ private:
    * variable container.
    * @remark Internally determined
    */
-  std::map<unsigned int, std::map<DependencyType, FieldType>> dependency_set_lhs;
+  std::map<Types::Index, std::map<DependencyType, FieldType>> dependency_set_lhs;
 
   /**
    * @brief Raw dependencies of the field.

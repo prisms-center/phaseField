@@ -242,9 +242,12 @@ private:
     const std::map<unsigned int, std::set<std::string>> &change_possible_deps);
 
   /**
-   * @brief Validate the old solution dependencies that the user has provided. There are
-   * two criterion: 1. The storage of old fields must be sequential (old_1 must be
-   * included before old_2). 2. Old fields cannot be stored for constant equations.
+   * @brief Validate the old solution dependencies that the user has provided.
+   *
+   * There are two criteria:
+   * 1. The storage of old fields must be sequential (old_1 must be included before
+   * old_2).
+   * 2. Old fields cannot be stored for constant equations.
    */
   void
   validate_old_solution_dependencies();
