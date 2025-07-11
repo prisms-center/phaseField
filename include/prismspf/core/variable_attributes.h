@@ -400,7 +400,7 @@ private:
 
   /**
    * @brief A dependency set where the RHS evaluation flags that are not 0 (not nothing)
-   * are included. This is used to determine what FEEvaluatiob objects are necessary in
+   * are included. This is used to determine what FEEvaluation objects are necessary in
    * variable container.
    * @remark Internally determined
    */
@@ -408,7 +408,7 @@ private:
 
   /**
    * @brief A dependency set where the LHS evaluation flags that are not 0 (not nothing)
-   * are included. This is used to determine what FEEvaluatiob objects are necessary in
+   * are included. This is used to determine what FEEvaluation objects are necessary in
    * variable container.
    * @remark Internally determined
    */
