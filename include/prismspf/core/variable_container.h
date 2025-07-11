@@ -380,7 +380,7 @@ private:
    * for the global variable, the second is for the DependencyType, and the value is
    * a variant that can hold either a scalar or vector FEEvaluation.
    */
-  std::map<unsigned int, std::map<DependencyType, VariantFEEvaluation>> feeval_map;
+  std::vector<std::vector<VariantFEEvaluation>> feeval_map;
 
   /**
    * @brief The attribute list of the relevant subset of variables.
