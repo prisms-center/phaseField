@@ -6,6 +6,7 @@
 #include <deal.II/base/exceptions.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -231,11 +232,12 @@ inline MGInfo<dim>::MGInfo(const UserInputParameters<dim> &_user_inputs)
                   dep_index++;
                   continue;
                 }
-              AssertThrow(static_cast<DependencyType>(dep_index) ==
-                              DependencyType::Normal ||
-                            static_cast<DependencyType>(dep_index) ==
-                              DependencyType::Change,
-                          dealii::ExcNotImplemented());
+              AssertThrow(
+                static_cast<DependencyType>(dep_index) == DependencyType::Normal ||
+                  static_cast<DependencyType>(dep_index) == DependencyType::Change,
+                FeatureNotImplemented("The dependency type = " +
+                                      to_string(static_cast<DependencyType>(dep_index)) +
+                                      " is not supported"));
 
               all_lhs_fields.insert(
                 std::make_tuple(field_index,
