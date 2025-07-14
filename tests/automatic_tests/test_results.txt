@@ -585,3 +585,175 @@ Time: 3.282435894012451
  
 Tests Passed: 8/8
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-07 13:49
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 5.879849910736084
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 84.99442720413208
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 61.65227484703064
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 27.099815368652344
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.9226744174957275
+ 
+Application: mechanics
+Result: Pass
+Time: 1.2077271938323975
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 42.73172116279602
+ 
+Application: fracture
+Result: Pass
+Time: 27.5274875164032
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-07 13:59
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 2.4921212196350098
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 24.19684100151062
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 25.481157064437866
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 8.40138292312622
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.8572678565979004
+ 
+Application: mechanics
+Result: Pass
+Time: 1.0323622226715088
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 29.302205324172974
+ 
+Application: fracture
+Result: Pass
+Time: 18.079655647277832
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-07 14:01
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 1.1365385055541992
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 6.791369199752808
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 6.1840856075286865
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 2.470177412033081
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.7280435562133789
+ 
+Application: mechanics
+Result: Pass
+Time: 0.7129154205322266
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 6.21803092956543
+ 
+Application: fracture
+Result: Pass
+Time: 4.132859230041504
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-07 15:38
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 1.4718873500823975
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 6.980400800704956
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 6.293954133987427
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 2.366309881210327
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.7573883533477783
+ 
+Application: mechanics
+Result: Pass
+Time: 0.7730660438537598
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 6.099502325057983
+ 
+Application: fracture
+Result: Pass
+Time: 4.163867712020874
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 

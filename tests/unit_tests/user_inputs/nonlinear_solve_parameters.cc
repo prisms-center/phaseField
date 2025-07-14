@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Test the nonlinear solve parameters.
+ * @brief Test the nonlinear solve parameters.
  */
 TEST_CASE("Nonlinear solve parameters")
 {

@@ -65,12 +65,12 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
+  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(1);
-  scalargradType  nx = variable_list.get_scalar_gradient(1);
+  scalarvalueType n  = variable_list.template get_value<Scalar>(1);
+  scalargradType  nx = variable_list.template get_gradient<Scalar>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

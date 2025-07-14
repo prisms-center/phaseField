@@ -19,7 +19,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 /**
- * \brief Function for user-implemented initial conditions. These are only ever calculated
+ * @brief Function for user-implemented initial conditions. These are only ever calculated
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
@@ -28,7 +28,7 @@ class InitialCondition : public dealii::Function<dim, double>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   InitialCondition(
     const unsigned int                                            &_index,
@@ -38,7 +38,7 @@ public:
   // NOLINTBEGIN(readability-identifier-length)
 
   /**
-   * \brief Scalar/Vector value.
+   * @brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
@@ -52,7 +52,7 @@ private:
 };
 
 /**
- * \brief Function for read-in intial conditions. These are only ever used for
+ * @brief Function for read-in intial conditions. These are only ever used for
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
@@ -61,16 +61,16 @@ class ReadInitialCondition : public dealii::Function<dim, double>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
-  ReadInitialCondition(std::string      file_name,
-                       std::string      field_name,
-                       const FieldType &field_type);
+  ReadInitialCondition(const std::string &file_name,
+                       std::string        _field_name,
+                       const FieldType   &_field_type);
 
   // NOLINTBEGIN(readability-identifier-length)
 
   /**
-   * \brief Scalar/Vector value.
+   * @brief Scalar/Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;

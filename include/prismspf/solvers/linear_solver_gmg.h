@@ -29,7 +29,7 @@ template <unsigned int dim>
 class DofHandler;
 
 /**
- * \brief Class that handles the assembly and solving of a field with a GMG preconditioner
+ * @brief Class that handles the assembly and solving of a field with a GMG preconditioner
  */
 template <unsigned int dim, unsigned int degree>
 class GMGSolver : public LinearSolverBase<dim, degree>
@@ -41,7 +41,7 @@ public:
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   GMGSolver(const UserInputParameters<dim>                       &_user_inputs,
             const VariableAttributes                             &_variable_attributes,
@@ -56,90 +56,90 @@ public:
             const MGInfo<dim>                                      &_mg_info);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~GMGSolver() override = default;
 
   /**
-   * \brief Initialize the system.
+   * @brief Initialize the system.
    */
   void
   init() override;
 
   /**
-   * \brief Reinitialize the system.
+   * @brief Reinitialize the system.
    */
   void
   reinit() override;
 
   /**
-   * \brief Solve the system Ax=b.
+   * @brief Solve the system Ax=b.
    */
   void
   solve(const double &step_length = 1.0) override;
 
 private:
   /**
-   * \brief Triangulation handler.
+   * @brief Triangulation handler.
    */
   const TriangulationHandler<dim> *triangulation_handler;
 
   /**
-   * \brief DoF handler.
+   * @brief DoF handler.
    */
   const DofHandler<dim> *dof_handler;
 
   /**
-   * \brief Matrix-free object handler for multigrid data.
+   * @brief Matrix-free object handler for multigrid data.
    */
   dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
-   * \brief Minimum multigrid level
+   * @brief Minimum multigrid level
    */
   unsigned int min_level = 0;
 
   /**
-   * \brief Maximum multigrid level
+   * @brief Maximum multigrid level
    */
   unsigned int max_level = 0;
 
   /**
-   * \brief Mappings to and from reference cell.
+   * @brief Mappings to and from reference cell.
    *
    * TODO (landinjm): This should be the same as the rest of the problem.
    */
   dealii::MappingQ1<dim> mapping;
 
   /**
-   * \brief Collection of transfer operators for each multigrid level.
+   * @brief Collection of transfer operators for each multigrid level.
    */
   std::vector<dealii::MGLevelObject<dealii::MGTwoLevelTransfer<dim, MGVectorType>>>
     mg_transfer_operators;
 
   /**
-   * \brief PDE operator for each multigrid level.
+   * @brief PDE operator for each multigrid level.
    */
   std::unique_ptr<dealii::MGLevelObject<LevelMatrixType>> mg_operators;
 
   /**
-   * \brief Multigrid object for storing all operators.
+   * @brief Multigrid object for storing all operators.
    */
   std::shared_ptr<dealii::mg::Matrix<MGVectorType>> mg_matrix;
 
   /**
-   * \brief Transfer operator for global coarsening.
+   * @brief Transfer operator for global coarsening.
    */
   std::vector<std::shared_ptr<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>>
     mg_transfer;
 
   /**
-   * \brief PDE operator but for floats!
+   * @brief PDE operator but for floats!
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 
   /**
-   * \brief Multigrid information.
+   * @brief Multigrid information.
    */
   const MGInfo<dim> *mg_info;
 };

@@ -5,6 +5,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_container.h>
 
 #include <prismspf/config.h>
 
@@ -48,11 +49,11 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (current_index == 0)
     {
-      ScalarGrad  Tx = variable_list.get_scalar_gradient(0);
-      ScalarValue q  = variable_list.get_scalar_value(1);
+      ScalarGrad  Tx = variable_list.template get_gradient<Scalar>(0);
+      ScalarValue q  = variable_list.template get_value<Scalar>(1);
 
-      variable_list.set_scalar_value_term(0, q);
-      variable_list.set_scalar_gradient_term(0, -Tx);
+      variable_list.template set_value_term<Scalar>(0, q);
+      variable_list.template set_gradient_term<Scalar>(0, -Tx);
     }
 }
 
@@ -65,9 +66,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      ScalarGrad change_Tx = variable_list.get_scalar_gradient(0, Change);
+      ScalarGrad change_Tx = variable_list.template get_gradient<Scalar>(0, Change);
 
-      variable_list.set_scalar_gradient_term(0, change_Tx, Change);
+      variable_list.template set_gradient_term<Scalar>(0, change_Tx, Change);
     }
 }
 
@@ -78,7 +79,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue T = variable_list.get_scalar_value(0);
+  ScalarValue T = variable_list.template get_value<Scalar>(0);
 
   ScalarValue analytic =
     std::sin(M_PI * q_point_loc[0] /
@@ -89,7 +90,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   ScalarValue error = (T - analytic) * (T - analytic);
 
-  variable_list.set_scalar_value_term(2, error);
+  variable_list.template set_value_term<Scalar>(2, error);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

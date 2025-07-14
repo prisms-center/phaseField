@@ -102,7 +102,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, UndefinedField);
+        set_variable_type(0, Numbers::invalid_field_type);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
@@ -127,7 +127,7 @@ TEST_CASE("Invalid dependencies")
       {
         set_variable_name(0, "phi");
         set_variable_type(0, Vector);
-        set_variable_equation_type(0, UndefinedPDE);
+        set_variable_equation_type(0, Numbers::invalid_pde_type);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");

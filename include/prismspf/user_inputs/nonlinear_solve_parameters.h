@@ -12,7 +12,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that stores relevant nonlinear solve information of a certain field
+ * @brief Struct that stores relevant nonlinear solve information of a certain field
  */
 struct NonlinearSolverParameters
 {
@@ -28,25 +28,25 @@ public:
 };
 
 /**
- * \brief Struct that holds nonlinear solver parameters.
+ * @brief Struct that holds nonlinear solver parameters.
  */
 struct NonlinearSolveParameterSet
 {
 public:
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate();
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Clear the nonlinear solve parameters.
+   * @brief Clear the nonlinear solve parameters.
    */
   void
   clear()
@@ -55,7 +55,7 @@ public:
   }
 
   /**
-   * \brief Set the nonlinear solve parameters for a field index.
+   * @brief Set the nonlinear solve parameters for a field index.
    */
   void
   set_nonlinear_solve_parameters(Types::Index                     index,
@@ -65,7 +65,7 @@ public:
   }
 
   /**
-   * \brief Get the nonlinear solve parameters for a field index.
+   * @brief Get the nonlinear solve parameters for a field index.
    */
   [[nodiscard]] const NonlinearSolverParameters &
   get_nonlinear_solve_parameters(Types::Index index) const

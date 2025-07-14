@@ -18,7 +18,7 @@ class UserInputParameters;
 struct VariableAttributes;
 
 /**
- * \brief This class handles the computation and access of the inverted mass matrix for
+ * @brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
 template <unsigned int dim, unsigned int degree, typename number = double>
@@ -29,101 +29,101 @@ public:
   using SizeType   = dealii::VectorizedArray<number>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   explicit InvmHandler(
     const std::map<unsigned int, VariableAttributes> &_variable_attributes);
 
   /**
-   * \brief Initialize.
+   * @brief Initialize.
    */
   void
   initialize(std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> _data);
 
   /**
-   * \brief Compute the mass matrix for scalar/vector fields.
+   * @brief Compute the mass matrix for scalar/vector fields.
    */
   void
   compute_invm();
 
   /**
-   * \brief Recompute the mass matrix for scalar/vector fields. This just points to
+   * @brief Recompute the mass matrix for scalar/vector fields. This just points to
    * compute_invm() and is used for style.
    */
   void
   recompute_invm();
 
   /**
-   * \brief Getter function for the mass matrix for the given field index (constant
+   * @brief Getter function for the mass matrix for the given field index (constant
    * reference).
    */
   [[nodiscard]] const VectorType &
   get_invm(const unsigned int &index) const;
 
   /**
-   * \brief Clear the data so we have something that resembles the base constructor.
+   * @brief Clear the data so we have something that resembles the base constructor.
    */
   void
   clear();
 
 private:
   /**
-   * \brief Compute the invm for scalar fields.
+   * @brief Compute the invm for scalar fields.
    */
   void
   compute_scalar_invm();
 
   /**
-   * \brief Compute the invm for vector fields.
+   * @brief Compute the invm for vector fields.
    */
   void
   compute_vector_invm();
 
   /**
-   * \brief Variable attributes. This is used to determine the proper return type for the
+   * @brief Variable attributes. This is used to determine the proper return type for the
    * invm when given a field index.
    */
   const std::map<unsigned int, VariableAttributes> *variable_attributes;
 
   /**
-   * \brief Matrix-free object.
+   * @brief Matrix-free object.
    */
   std::shared_ptr<dealii::MatrixFree<dim, number, SizeType>> data;
 
   /**
-   * \brief Inverse of the mass matrix for scalar fields.
+   * @brief Inverse of the mass matrix for scalar fields.
    */
   VectorType invm_scalar;
 
   /**
-   * \brief Inverse of the mass matrix for vector fields.
+   * @brief Inverse of the mass matrix for vector fields.
    */
   VectorType invm_vector;
 
   /**
-   * \brief Whether a scalar invm is needed.
+   * @brief Whether a scalar invm is needed.
    */
   bool scalar_needed = false;
 
   /**
-   * \brief Whether a vector invm is needed.
+   * @brief Whether a vector invm is needed.
    */
   bool vector_needed = false;
 
   /**
-   * \brief Field index of the first occuring scalar field. This is the index for which we
+   * @brief Field index of the first occuring scalar field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
   unsigned int scalar_index = Numbers::invalid_index;
 
   /**
-   * \brief Field index of the first occuring vector field. This is the index for which we
+   * @brief Field index of the first occuring vector field. This is the index for which we
    * attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
   unsigned int vector_index = Numbers::invalid_index;
 
   /**
-   * \brief Tolerance for minimum value of the mass matrix when inverting.
+   * @brief Tolerance for minimum value of the mass matrix when inverting.
    */
   number tolerance = Defaults::mesh_tolerance;
 };

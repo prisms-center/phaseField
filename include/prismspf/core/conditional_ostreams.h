@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief A class that allows printing to different output streams that are classified
+ * @brief A class that allows printing to different output streams that are classified
  * based on their verbosity. For now, this consists of two stream the release and debug.
  * The debug stream provides more information that may be useful when debugging.
  */
@@ -18,30 +18,30 @@ class ConditionalOStreams
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   ConditionalOStreams() = default;
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~ConditionalOStreams() = default;
 
   /**
-   * \brief Generic parallel output stream. Used for essential information in release and
+   * @brief Generic parallel output stream. Used for essential information in release and
    * debug mode.
    */
   static dealii::ConditionalOStream &
   pout_base();
 
   /**
-   * \brief Verbose parallel output stream. Used for additional information in debug mode.
+   * @brief Verbose parallel output stream. Used for additional information in debug mode.
    */
   static dealii::ConditionalOStream &
   pout_verbose();
 
   /**
-   * \brief Log output stream for writing a summary.log file.
+   * @brief Log output stream for writing a summary.log file.
    */
   static dealii::ConditionalOStream &
   pout_summary();

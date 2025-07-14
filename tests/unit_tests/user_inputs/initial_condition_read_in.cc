@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Test the initial condition read in.
+ * @brief Test the initial condition read in.
  */
 TEST_CASE("Initial condition read in")
 {

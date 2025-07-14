@@ -75,14 +75,14 @@ CustomPDE<dim, degree>::explicitEquationRHS(
 
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
-      ni  = variable_list.get_scalar_value(i);
-      nix = variable_list.get_scalar_gradient(i);
+      ni  = variable_list.template get_value<Scalar>(i);
+      nix = variable_list.template get_gradient<Scalar>(i);
       fnV = -ni + ni * ni * ni;
       for (unsigned int j = 0; j < userInputs.var_attributes.size(); j++)
         {
           if (i != j)
             {
-              nj = variable_list.get_scalar_value(j);
+              nj = variable_list.template get_value<Scalar>(j);
               fnV += constV(2.0 * alpha) * ni * nj * nj;
             }
         }

@@ -87,23 +87,23 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
+  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1  = variable_list.get_scalar_value(1);
-  scalargradType  n1x = variable_list.get_scalar_gradient(1);
+  scalarvalueType n1  = variable_list.template get_value<Scalar>(1);
+  scalargradType  n1x = variable_list.template get_gradient<Scalar>(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2  = variable_list.get_scalar_value(2);
-  scalargradType  n2x = variable_list.get_scalar_gradient(2);
+  scalarvalueType n2  = variable_list.template get_value<Scalar>(2);
+  scalargradType  n2x = variable_list.template get_gradient<Scalar>(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3  = variable_list.get_scalar_value(3);
-  scalargradType  n3x = variable_list.get_scalar_gradient(3);
+  scalarvalueType n3  = variable_list.template get_value<Scalar>(3);
+  scalargradType  n3x = variable_list.template get_gradient<Scalar>(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.get_vector_gradient(4);
+  vectorgradType ux = variable_list.template get_gradient<Vector>(4);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -123,7 +123,7 @@ CustomPDE<dim, degree>::explicitEquationRHS(
 
   if (c_dependent_misfit == true)
     {
-      uxx = variable_list.get_vector_hessian(4);
+      uxx = variable_list.template get_hessian<Vector>(4);
     }
 
   // Free energy expressions and interpolation functions
@@ -384,19 +384,19 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarvalueType c = variable_list.template get_value<Scalar>(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1 = variable_list.get_scalar_value(1);
+  scalarvalueType n1 = variable_list.template get_value<Scalar>(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2 = variable_list.get_scalar_value(2);
+  scalarvalueType n2 = variable_list.template get_value<Scalar>(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3 = variable_list.get_scalar_value(3);
+  scalarvalueType n3 = variable_list.template get_value<Scalar>(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.get_vector_gradient(4);
+  vectorgradType ux = variable_list.template get_gradient<Vector>(4);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -503,13 +503,13 @@ CustomPDE<dim, degree>::equationLHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // n1
-  scalarvalueType n1 = variable_list.get_scalar_value(1);
+  scalarvalueType n1 = variable_list.template get_value<Scalar>(1);
 
   // n2
-  scalarvalueType n2 = variable_list.get_scalar_value(2);
+  scalarvalueType n2 = variable_list.template get_value<Scalar>(2);
 
   // n3
-  scalarvalueType n3 = variable_list.get_scalar_value(3);
+  scalarvalueType n3 = variable_list.template get_value<Scalar>(3);
 
   // u
   vectorgradType Dux = variable_list.get_change_in_vector_gradient(4);

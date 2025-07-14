@@ -15,7 +15,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 /**
- * \brief Class that outputs a passed solution to vtu, vtk, or pvtu
+ * @brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
 template <unsigned int dim, typename number = double>
 class SolutionOutput
@@ -24,7 +24,7 @@ public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
 
   /**
-   * \brief Constructor for a single field that must be output.
+   * @brief Constructor for a single field that must be output.
    */
   SolutionOutput(const VectorType               &solution,
                  const dealii::DoFHandler<dim>  &dof_handler,
@@ -33,7 +33,7 @@ public:
                  const UserInputParameters<dim> &user_inputs);
 
   /**
-   * \brief Constructor for a multiple fields that must be output.
+   * @brief Constructor for a multiple fields that must be output.
    */
   SolutionOutput(const std::map<unsigned int, VectorType *>         &solution_set,
                  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,

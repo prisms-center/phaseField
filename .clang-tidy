@@ -31,7 +31,7 @@ CheckOptions:
   - key:             readability-identifier-naming.ConstexprVariableCase
     value:           lower_case
   - key:             readability-identifier-naming.ConstexprFunctionCase
-    value:           CamelCase
+    value:           lower_case
   - key:             readability-identifier-naming.EnumCase
     value:           CamelCase
   - key:             readability-identifier-naming.EnumConstantCase

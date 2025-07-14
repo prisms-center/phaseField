@@ -40,7 +40,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This is the main class that handles the construction and solving of
+ * @brief This is the main class that handles the construction and solving of
  * user-specified PDEs.
  */
 template <unsigned int dim, unsigned int degree>
@@ -48,7 +48,7 @@ class PDEProblem
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   PDEProblem(
     const UserInputParameters<dim>                                &_user_inputs,
@@ -56,141 +56,141 @@ public:
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
-   * \brief Run initialization and solving steps of the given problem.
+   * @brief Run initialization and solving steps of the given problem.
    */
   void
   run();
 
 private:
   /**
-   * \brief Main time-stepping loop that calls solve_increment, reinit_system,
+   * @brief Main time-stepping loop that calls solve_increment, reinit_system,
    * output_results, etc...
    */
   void
   solve();
 
   /**
-   * \brief Solve a single increment of the given PDEs.
+   * @brief Solve a single increment of the given PDEs.
    */
   void
   solve_increment();
 
   /**
-   * \brief Initialize the system.
+   * @brief Initialize the system.
    */
   void
   init_system();
 
   /**
-   * \brief Reinitialize the system.
+   * @brief Reinitialize the system.
    */
   void
   reinit_system();
 
   /**
-   * \brief User-inputs.
+   * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * \brief Multigrid info class.
+   * @brief Multigrid info class.
    */
   MGInfo<dim> mg_info;
 
   /**
-   * \brief Triangulation handler.
+   * @brief Triangulation handler.
    */
   TriangulationHandler<dim> triangulation_handler;
 
   /**
-   * \brief Constraint handler.
+   * @brief Constraint handler.
    */
   ConstraintHandler<dim, degree> constraint_handler;
 
   /**
-   * \brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object handler for non-multigrid data.
    */
   MatrixfreeHandler<dim, double> matrix_free_handler;
 
   /**
-   * \brief Matrix-free object handler for multigrid data.
+   * @brief Matrix-free object handler for multigrid data.
    */
   dealii::MGLevelObject<MatrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
 
   /**
-   * \brief invm handler.
+   * @brief invm handler.
    */
   InvmHandler<dim, degree, double> invm_handler;
 
   /**
-   * \brief Solution handler.
+   * @brief Solution handler.
    */
   SolutionHandler<dim> solution_handler;
 
   /**
-   * \brief DoF handler.
+   * @brief DoF handler.
    */
   DofHandler<dim> dof_handler;
 
   /**
-   * \brief Collection of finite element systems. This is just a collection of two
+   * @brief Collection of finite element systems. This is just a collection of two
    * FESystem's: one for scalar fields and one for vector fields. For now they both use
    * FE_Q finite elements.
    */
   std::map<FieldType, dealii::FESystem<dim>> fe_system;
 
   /**
-   * \brief Mappings to and from reference cell.
+   * @brief Mappings to and from reference cell.
    */
   dealii::MappingQ1<dim> mapping;
 
   /**
-   * \brief Solver context.
+   * @brief Solver context.
    */
   SolverContext<dim, degree> solver_context;
 
   /**
-   * \brief Element volumes.
+   * @brief Element volumes.
    */
   ElementVolume<dim, degree, double> element_volume;
 
   /**
-   * \brief Integrator utility.
+   * @brief Integrator utility.
    */
   Integrator<dim, degree, double> integrator;
 
   /**
-   * \brief Explicit constant field solver class.
+   * @brief Explicit constant field solver class.
    */
   ExplicitConstantSolver<dim, degree> explicit_constant_solver;
 
   /**
-   * \brief Explicit field solver class.
+   * @brief Explicit field solver class.
    */
   ExplicitSolver<dim, degree> explicit_solver;
 
   /**
-   * \brief Postprocessed explicit field solver class.
+   * @brief Postprocessed explicit field solver class.
    */
   ExplicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
 
   /**
-   * \brief Nonexplicit auxiliary field solver class.
+   * @brief Nonexplicit auxiliary field solver class.
    */
   NonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
 
   /**
-   * \brief Nonexplicit linear field solver class.
+   * @brief Nonexplicit linear field solver class.
    */
   NonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
 
   /**
-   * \brief Nonexplicit self-nonlinear field solver class.
+   * @brief Nonexplicit self-nonlinear field solver class.
    */
   NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
 
   /**
-   * \brief Nonexplicit co-nonlinear field solver class.
+   * @brief Nonexplicit co-nonlinear field solver class.
    */
   NonexplicitCononlinearSolver<dim, degree> nonexplicit_co_nonlinear_solver;
 };

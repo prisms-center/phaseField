@@ -13,19 +13,19 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Compute the element volume.
+ * @brief Compute the element volume.
  */
 template <unsigned int dim, unsigned int degree, typename number>
 class ElementVolume
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   ElementVolume() = default;
 
   /**
-   * \brief Initialize.
+   * @brief Initialize.
    */
   void
   initialize(
@@ -33,25 +33,25 @@ public:
       _data);
 
   /**
-   * \brief Compute element volume for the triangulation
+   * @brief Compute element volume for the triangulation
    */
   void
   compute_element_volume(const dealii::FESystem<dim> &fe_system);
 
   /**
-   * \brief Get the vector of element volumes (const reference).
+   * @brief Get the vector of element volumes (const reference).
    */
   [[nodiscard]] const dealii::AlignedVector<dealii::VectorizedArray<number>> &
   get_element_volumes() const;
 
 private:
   /**
-   * \brief Matrix-free object.
+   * @brief Matrix-free object.
    */
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> data;
 
   /**
-   * \brief Vector that stores element volumes
+   * @brief Vector that stores element volumes
    */
   dealii::AlignedVector<dealii::VectorizedArray<number>> element_volume;
 };

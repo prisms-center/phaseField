@@ -16,22 +16,22 @@ PRISMS_PF_BEGIN_NAMESPACE
 namespace GridRefinement
 {
   /**
-   * \brief Flags for refinement criterion.
+   * @brief Flags for refinement criterion.
    */
   enum RefinementFlags : std::uint8_t
   {
     /**
-     * \brief No adaptive refinement criterion.
+     * @brief No adaptive refinement criterion.
      */
     Nothing = 0,
 
     /**
-     * \brief Use value of the variable as a criterion for refinement.
+     * @brief Use value of the variable as a criterion for refinement.
      */
     Value = 0x0001,
 
     /**
-     * \brief Use gradient of the variable as a criterion for refinement.
+     * @brief Use gradient of the variable as a criterion for refinement.
      */
     Gradient = 0x0002,
   };
@@ -78,7 +78,7 @@ namespace GridRefinement
   {
   public:
     /**
-     * \brief Default constructor.
+     * @brief Default constructor.
      *
      * TODO (landinjm): Add some assertions here to make sure that nonsensical criteria
      * aren't specified
@@ -93,7 +93,7 @@ namespace GridRefinement
       , gradient_lower_bound(_gradient_lower_bound) {};
 
     /**
-     * \brief Set the refinement criterion.
+     * @brief Set the refinement criterion.
      */
     void
     set_criterion(const RefinementFlags &_criterion)
@@ -103,7 +103,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Set the value lower bound.
+     * @brief Set the value lower bound.
      */
     void
     set_value_lower_bound(const double &_value_lower_bound)
@@ -113,7 +113,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Set the value upper bound.
+     * @brief Set the value upper bound.
      */
     void
     set_value_upper_bound(const double &_value_upper_bound)
@@ -123,7 +123,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Set the gradient lower bound.
+     * @brief Set the gradient lower bound.
      */
     void
     set_gradient_lower_bound(const double &_gradient_lower_bound)
@@ -133,7 +133,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Get the refinement criterion.
+     * @brief Get the refinement criterion.
      */
     [[nodiscard]] const RefinementFlags &
     get_criterion() const
@@ -143,7 +143,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Get the value lower bound.
+     * @brief Get the value lower bound.
      */
     [[nodiscard]] const double &
     get_value_lower_bound() const
@@ -153,7 +153,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Get the value upper bound.
+     * @brief Get the value upper bound.
      */
     [[nodiscard]] const double &
     get_value_upper_bound() const
@@ -163,7 +163,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Get the gradient lower bound.
+     * @brief Get the gradient lower bound.
      */
     [[nodiscard]] const double &
     get_gradient_lower_bound() const
@@ -173,7 +173,7 @@ namespace GridRefinement
     };
 
     /**
-     * \brief Convert refinement criterion type to string.
+     * @brief Convert refinement criterion type to string.
      */
     [[nodiscard]] std::string
     criterion_to_string() const

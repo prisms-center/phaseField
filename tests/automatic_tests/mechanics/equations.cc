@@ -5,6 +5,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_container.h>
 
 #include <prismspf/config.h>
 
@@ -40,7 +41,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       VectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, ux, stress);
-      variable_list.set_vector_gradient_term(0, -stress);
+      variable_list.template set_gradient_term<Vector>(0, -stress);
     }
 }
 
@@ -56,7 +57,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
       VectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, change_ux, stress);
-      variable_list.set_vector_gradient_term(0, stress, Change);
+      variable_list.template set_gradient_term<Vector>(0, stress, Change);
     }
 }
 

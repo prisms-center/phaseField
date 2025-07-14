@@ -21,7 +21,7 @@ template <unsigned int dim>
 class SolutionHandler;
 
 /**
- * \brief This class handlers the generation and manipulation of triangulations.
+ * @brief This class handlers the generation and manipulation of triangulations.
  */
 template <unsigned int dim>
 class TriangulationHandler
@@ -33,62 +33,62 @@ public:
                        dealii::parallel::distributed::Triangulation<dim>>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   TriangulationHandler(const UserInputParameters<dim> &_user_inputs,
                        const MGInfo<dim>              &mg_info);
 
   /**
-   * \brief Getter function for triangulation (constant reference).
+   * @brief Getter function for triangulation (constant reference).
    */
   [[nodiscard]] const Triangulation &
   get_triangulation() const;
 
   /**
-   * \brief Getter function for the multigrid triangulation (constant reference).
+   * @brief Getter function for the multigrid triangulation (constant reference).
    */
   [[nodiscard]] const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
   get_mg_triangulation() const;
 
   /**
-   * \brief Getter function for a level in the globally coarsening multigrid triangulation
+   * @brief Getter function for a level in the globally coarsening multigrid triangulation
    * (constant reference).
    */
   [[nodiscard]] const dealii::Triangulation<dim> &
   get_mg_triangulation(unsigned int level) const;
 
   /**
-   * \brief Return the global maximum level of the triangulation.
+   * @brief Return the global maximum level of the triangulation.
    */
   [[nodiscard]] unsigned int
   get_n_global_levels() const;
 
   /**
-   * \brief Return the maximum multigrid level.
+   * @brief Return the maximum multigrid level.
    */
   [[nodiscard]] unsigned int
   get_mg_min_level() const;
 
   /**
-   * \brief Return the minimum multigrid level.
+   * @brief Return the minimum multigrid level.
    */
   [[nodiscard]] unsigned int
   get_mg_max_level() const;
 
   /**
-   * \brief Whether multigrid has been setup.
+   * @brief Whether multigrid has been setup.
    */
   [[nodiscard]] bool
   has_setup_multigrid() const;
 
   /**
-   * \brief Generate mesh based on the inputs provided by the user.
+   * @brief Generate mesh based on the inputs provided by the user.
    */
   void
   generate_mesh();
 
   /**
-   * \brief Export triangulation to vtk. This is done for debugging purposes when dealing
+   * @brief Export triangulation to vtk. This is done for debugging purposes when dealing
    * with unusual meshes (e.g., circular domains).
    */
   void
@@ -96,7 +96,7 @@ public:
 
 private:
   /**
-   * \brief Mark the domain ids on the triangulation to get the proper mapping of
+   * @brief Mark the domain ids on the triangulation to get the proper mapping of
    * specified boundary conditions.
    *
    * TODO (landinjm): When the user has different meshs (or custom for that matter), we
@@ -106,23 +106,23 @@ private:
   mark_boundaries() const;
 
   /**
-   * \brief Mark certain faces of the triangulation periodic.
+   * @brief Mark certain faces of the triangulation periodic.
    */
   void
   mark_periodic();
 
   /**
-   * \brief User-inputs.
+   * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * \brief Main triangulation.
+   * @brief Main triangulation.
    */
   std::shared_ptr<Triangulation> triangulation;
 
   /**
-   * \brief Collection of triangulations for each multigrid level.
+   * @brief Collection of triangulations for each multigrid level.
    *
    * TODO (landinjm): p-multigrid
    * TODO (landinjm): Should we allow for multiple instances of multigrid? Most likely
@@ -131,17 +131,17 @@ private:
   std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> coarsened_triangulations;
 
   /**
-   * \brief Whether we have multigrid.
+   * @brief Whether we have multigrid.
    */
   bool has_multigrid = false;
 
   /**
-   * \brief Minimum multigrid level.
+   * @brief Minimum multigrid level.
    */
   unsigned int min_level = 0;
 
   /**
-   * \brief Maximum multigrid level.
+   * @brief Maximum multigrid level.
    */
   unsigned int max_level = 0;
 };

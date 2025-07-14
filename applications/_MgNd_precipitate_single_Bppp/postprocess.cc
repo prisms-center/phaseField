@@ -61,16 +61,16 @@ CustomPDE<dim, degree>::postProcessedFields(
 
   /// The concentration and its derivatives (names here should match those in
   /// the macros above)
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarvalueType c = variable_list.template get_value<Scalar>(0);
 
   // The first order parameter and its derivatives (names here should match
   // those in the macros above)
-  scalarvalueType n1  = variable_list.get_scalar_value(2);
-  scalargradType  n1x = variable_list.get_scalar_gradient(2);
+  scalarvalueType n1  = variable_list.template get_value<Scalar>(2);
+  scalargradType  n1x = variable_list.template get_gradient<Scalar>(2);
 
   // The derivative of the displacement vector (names here should match those in
   // the macros above)
-  vectorgradType ux = variable_list.get_vector_gradient(3);
+  vectorgradType ux = variable_list.template get_gradient<Vector>(3);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

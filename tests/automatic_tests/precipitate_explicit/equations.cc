@@ -5,6 +5,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_container.h>
 
 #include <prismspf/config.h>
 
@@ -73,14 +74,14 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c   = variable_list.get_scalar_value(0);
-  ScalarGrad  cx  = variable_list.get_scalar_gradient(0);
-  ScalarValue n1  = variable_list.get_scalar_value(1);
-  ScalarGrad  n1x = variable_list.get_scalar_gradient(1);
-  ScalarValue n2  = variable_list.get_scalar_value(2);
-  ScalarGrad  n2x = variable_list.get_scalar_gradient(2);
-  ScalarValue n3  = variable_list.get_scalar_value(3);
-  ScalarGrad  n3x = variable_list.get_scalar_gradient(3);
+  ScalarValue c   = variable_list.template get_value<Scalar>(0);
+  ScalarGrad  cx  = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue n1  = variable_list.template get_value<Scalar>(1);
+  ScalarGrad  n1x = variable_list.template get_gradient<Scalar>(1);
+  ScalarValue n2  = variable_list.template get_value<Scalar>(2);
+  ScalarGrad  n2x = variable_list.template get_gradient<Scalar>(2);
+  ScalarValue n3  = variable_list.template get_value<Scalar>(3);
+  ScalarGrad  n3x = variable_list.template get_gradient<Scalar>(3);
   VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
@@ -189,14 +190,14 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
   ScalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
 
-  variable_list.set_scalar_value_term(0, eq_c);
-  variable_list.set_scalar_gradient_term(0, eqx_c);
-  variable_list.set_scalar_value_term(1, eq_n1);
-  variable_list.set_scalar_gradient_term(1, eqx_n1);
-  variable_list.set_scalar_value_term(2, eq_n2);
-  variable_list.set_scalar_gradient_term(2, eqx_n2);
-  variable_list.set_scalar_value_term(3, eq_n3);
-  variable_list.set_scalar_gradient_term(3, eqx_n3);
+  variable_list.template set_value_term<Scalar>(0, eq_c);
+  variable_list.template set_gradient_term<Scalar>(0, eqx_c);
+  variable_list.template set_value_term<Scalar>(1, eq_n1);
+  variable_list.template set_gradient_term<Scalar>(1, eqx_n1);
+  variable_list.template set_value_term<Scalar>(2, eq_n2);
+  variable_list.template set_gradient_term<Scalar>(2, eqx_n2);
+  variable_list.template set_value_term<Scalar>(3, eq_n3);
+  variable_list.template set_gradient_term<Scalar>(3, eqx_n3);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -208,9 +209,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (current_index == 4)
     {
-      ScalarValue n1 = variable_list.get_scalar_value(1);
-      ScalarValue n2 = variable_list.get_scalar_value(2);
-      ScalarValue n3 = variable_list.get_scalar_value(3);
+      ScalarValue n1 = variable_list.template get_value<Scalar>(1);
+      ScalarValue n2 = variable_list.template get_value<Scalar>(2);
+      ScalarValue n3 = variable_list.template get_value<Scalar>(3);
       VectorGrad  ux = variable_list.get_vector_symmetric_gradient(4);
 
       // Interpolation functions
@@ -236,7 +237,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
           compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
-      variable_list.set_vector_gradient_term(4, -stress);
+      variable_list.template set_gradient_term<Vector>(4, -stress);
     }
 }
 
@@ -249,9 +250,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 4)
     {
-      ScalarValue n1        = variable_list.get_scalar_value(1);
-      ScalarValue n2        = variable_list.get_scalar_value(2);
-      ScalarValue n3        = variable_list.get_scalar_value(3);
+      ScalarValue n1        = variable_list.template get_value<Scalar>(1);
+      ScalarValue n2        = variable_list.template get_value<Scalar>(2);
+      ScalarValue n3        = variable_list.template get_value<Scalar>(3);
       VectorGrad  change_ux = variable_list.get_vector_symmetric_gradient(4, Change);
 
       // Interpolation functions
@@ -276,7 +277,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
           compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
-      variable_list.set_vector_gradient_term(4, stress, Change);
+      variable_list.template set_gradient_term<Vector>(4, stress, Change);
     }
 }
 
@@ -287,13 +288,13 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c   = variable_list.get_scalar_value(0);
-  ScalarValue n1  = variable_list.get_scalar_value(1);
-  ScalarGrad  n1x = variable_list.get_scalar_gradient(1);
-  ScalarValue n2  = variable_list.get_scalar_value(2);
-  ScalarGrad  n2x = variable_list.get_scalar_gradient(2);
-  ScalarValue n3  = variable_list.get_scalar_value(3);
-  ScalarGrad  n3x = variable_list.get_scalar_gradient(3);
+  ScalarValue c   = variable_list.template get_value<Scalar>(0);
+  ScalarValue n1  = variable_list.template get_value<Scalar>(1);
+  ScalarGrad  n1x = variable_list.template get_gradient<Scalar>(1);
+  ScalarValue n2  = variable_list.template get_value<Scalar>(2);
+  ScalarGrad  n2x = variable_list.template get_gradient<Scalar>(2);
+  ScalarValue n3  = variable_list.template get_value<Scalar>(3);
+  ScalarGrad  n3x = variable_list.template get_gradient<Scalar>(3);
   VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
 
   // Free energy expressions and interpolation functions
@@ -343,7 +344,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   ScalarValue f_tot = f_chem + f_grad + f_el;
 
-  variable_list.set_scalar_value_term(5, f_tot);
+  variable_list.template set_value_term<Scalar>(5, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

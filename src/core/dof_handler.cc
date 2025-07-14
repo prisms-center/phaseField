@@ -8,6 +8,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_handler.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
@@ -67,7 +68,8 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
       // TODO (landinjm): Duplicate field index is not supported yet because we have
       // to handle the case where the duplicate field has different min multigrid
       // levels.
-      AssertThrow(false, dealii::ExcNotImplemented());
+      AssertThrow(false,
+                  FeatureNotImplemented("Additional optimizations for multigrid fields"));
       // TODO (landinjm): Add n_mg_dofs
 
 #endif
@@ -139,7 +141,8 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
   for (const auto &[index, dependency, min_level] : mg_info.get_lhs_fields())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      AssertThrow(false, dealii::ExcNotImplemented());
+      AssertThrow(false,
+                  FeatureNotImplemented("Additional optimizations for multigrid fields"));
 #endif
       for (unsigned int level = min_level; level <= mg_info.get_mg_max_level(); ++level)
         {

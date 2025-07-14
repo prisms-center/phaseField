@@ -18,13 +18,13 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Voigt notation index range
+ * @brief Voigt notation index range
  */
 template <unsigned int dim>
 constexpr unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
 
 /**
- * \brief Compute the stress with a given displacement and elasticity tensor. This assumes
+ * @brief Compute the stress with a given displacement and elasticity tensor. This assumes
  * that the provided parameters are in Voigt notation.
  */
 template <unsigned int dim, typename T>
@@ -37,7 +37,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 }
 
 /**
- * \brief Compute the stress with a given displacement and elasticity tensor. Note: this
+ * @brief Compute the stress with a given displacement and elasticity tensor. Note: this
  * functions internally converts to Voigt notation.
  */
 template <unsigned int dim, typename T>
@@ -110,7 +110,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 }
 
 /**
- * \brief Remove whitepace from strings
+ * @brief Remove whitepace from strings
  */
 inline std::string
 strip_whitespace(const std::string &_text)
@@ -121,7 +121,7 @@ strip_whitespace(const std::string &_text)
 }
 
 /**
- * \brief Convert bool to string.
+ * @brief Convert bool to string.
  */
 inline const char *
 bool_to_string(bool boolean)
@@ -130,7 +130,7 @@ bool_to_string(bool boolean)
 }
 
 /**
- * \brief Convert evaluation flags to string.
+ * @brief Convert evaluation flags to string.
  */
 inline std::string
 eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)

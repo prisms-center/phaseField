@@ -78,12 +78,12 @@ void customPDE<dim,degree>::explicitEquationRHS(variableContainer<dim,degree,dea
 // --- Getting the values and derivatives of the model variables ---
 
 //c
-scalarvalueType c = variable_list.get_scalar_value(0);
-scalargradType cx = variable_list.get_scalar_gradient(0);
+scalarvalueType c = variable_list.template get_value<Scalar>(0);
+scalargradType cx = variable_list.template get_gradient<Scalar>(0);
 
 //n
-scalarvalueType n = variable_list.get_scalar_value(1);
-scalargradType nx = variable_list.get_scalar_gradient(1);
+scalarvalueType n = variable_list.template get_value<Scalar>(1);
+scalargradType nx = variable_list.template get_gradient<Scalar>(1);
 
 // --- Setting the expressions for the terms in the governing equations ---
 
@@ -120,7 +120,7 @@ variable_list.set_scalar_gradient_term_rhs(1,eqx_n);
 }
 ```
 
-In this function the equation terms at a particular quadrature point are calculated. The inputs to this function are a list of the model variable values and derivatives, variable_list and a point giving access to (x,y,z) coordinates, q_point_loc. The equation terms are added to variable_list as the output. The first few lines of the function set more convenient names for the variables and their derivatives. By convention, the value of the variable is denoted by the variable name (c for the concentration and n for the structural order parameter in this case), the list of first derivatives is denoted by the variable name followed by an ''x'', and second derivatives are denoted by the variable name followed by ''xx''. Each variable in variable can be accessed by the index it was given in loadVariableAttributes. The variable value and the derivatives can be accessed through the get_scalar_value,  get_scalar_gradient, and get_scalar_hessian object members for scalar variables and the  get_vector_value,  get_vector_gradient, and get_vector_hessian functions. The data type for the value of a scalar variable is scalarvalueType (a scalar), the data type for the first derivatives of a scalar variable is scalargradType (a vector with a length equal to the number of dimensions), and the data type for the second derivatives of a scalar variable is scalarhessType (a matrix with a size equal to the number of dimensions by the number of dimensions). For vector variables, the data types are vectorvalueType (a vector with length equal to the number of dimensions), vectorgradType (a matrix with a size equal to the number of dimensions by the number of dimensions), and vectorgradType (a rank-three tensor with a size in each direction equal to the number of dimensions).
+In this function the equation terms at a particular quadrature point are calculated. The inputs to this function are a list of the model variable values and derivatives, variable_list and a point giving access to (x,y,z) coordinates, q_point_loc. The equation terms are added to variable_list as the output. The first few lines of the function set more convenient names for the variables and their derivatives. By convention, the value of the variable is denoted by the variable name (c for the concentration and n for the structural order parameter in this case), the list of first derivatives is denoted by the variable name followed by an ''x'', and second derivatives are denoted by the variable name followed by ''xx''. Each variable in variable can be accessed by the index it was given in loadVariableAttributes. The variable value and the derivatives can be accessed through the template get_value<Scalar>,  template get_gradient<Scalar>, and template get_hessian<Scalar> object members for scalar variables and the  template get_value<Vector>,  template get_gradient<Vector>, and template get_hessian<Vector> functions. The data type for the value of a scalar variable is scalarvalueType (a scalar), the data type for the first derivatives of a scalar variable is scalargradType (a vector with a length equal to the number of dimensions), and the data type for the second derivatives of a scalar variable is scalarhessType (a matrix with a size equal to the number of dimensions by the number of dimensions). For vector variables, the data types are vectorvalueType (a vector with length equal to the number of dimensions), vectorgradType (a matrix with a size equal to the number of dimensions by the number of dimensions), and vectorgradType (a rank-three tensor with a size in each direction equal to the number of dimensions).
 
 After the nicknames for the field variables are set, the equation terms are calculated (including some intermediate variables, such as the free energies and the interpolation functions in the example above). These use the same six data types discussed in the preceding paragraph. The model variables given in 'parameters.in' can be used to define the residual terms.
 
@@ -174,13 +174,13 @@ void customPDE<dim,degree>::equationLHS(variableContainer<dim,degree,dealii::Vec
 // --- Getting the values and derivatives of the model variables ---
 
 //n1
-scalarvalueType n1 = variable_list.get_scalar_value(1);
+scalarvalueType n1 = variable_list.template get_value<Scalar>(1);
 
 //n2
-scalarvalueType n2 = variable_list.get_scalar_value(2);
+scalarvalueType n2 = variable_list.template get_value<Scalar>(2);
 
 //n3
-scalarvalueType n3 = variable_list.get_scalar_value(3);
+scalarvalueType n3 = variable_list.template get_value<Scalar>(3);
 
 //u
 vectorgradType Dux = variable_list.get_change_in_vector_gradient(4);
@@ -377,11 +377,11 @@ void customPDE<dim,degree>::postProcessedFields(const variableContainer<dim,degr
 // --- Getting the values and derivatives of the model variables ---
 
 //c
-scalarvalueType c = variable_list.get_scalar_value(0);
+scalarvalueType c = variable_list.template get_value<Scalar>(0);
 
 //n
-scalarvalueType n = variable_list.get_scalar_value(1);
-scalargradType nx = variable_list.get_scalar_gradient(1);
+scalarvalueType n = variable_list.template get_value<Scalar>(1);
+scalargradType nx = variable_list.template get_gradient<Scalar>(1);
 
 // --- Setting the expressions for the terms in the postprocessing expressions ---
 

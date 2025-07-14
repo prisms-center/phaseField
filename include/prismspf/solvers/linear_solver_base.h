@@ -35,7 +35,7 @@ class TriangulationHandler;
 struct VariableAttributes;
 
 /**
- * \brief Base class that handles the assembly and linear solving of a field.
+ * @brief Base class that handles the assembly and linear solving of a field.
  */
 template <unsigned int dim, unsigned int degree>
 class LinearSolverBase
@@ -45,7 +45,7 @@ public:
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   LinearSolverBase(const UserInputParameters<dim>       &_user_inputs,
                    const VariableAttributes             &_variable_attributes,
@@ -55,30 +55,30 @@ public:
                    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   virtual ~LinearSolverBase() = default;
 
   /**
-   * \brief Initialize the system.
+   * @brief Initialize the system.
    */
   virtual void
   init() = 0;
 
   /**
-   * \brief Reinitialize the system.
+   * @brief Reinitialize the system.
    */
   virtual void
   reinit() = 0;
 
   /**
-   * \brief Solve the system Ax=b.
+   * @brief Solve the system Ax=b.
    */
   virtual void
   solve(const double &step_length = 1.0) = 0;
 
   /**
-   * \brief Get the l2-norm of the newton update.
+   * @brief Get the l2-norm of the newton update.
    */
   [[nodiscard]] double
   get_newton_update_l2_norm() const
@@ -89,13 +89,13 @@ public:
 
 protected:
   /**
-   * \brief Compute the solver tolerance based on the specified tolerance type.
+   * @brief Compute the solver tolerance based on the specified tolerance type.
    */
   void
   compute_solver_tolerance();
 
   /**
-   * \brief Get the user-inputs.
+   * @brief Get the user-inputs.
    */
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
@@ -104,7 +104,7 @@ protected:
   }
 
   /**
-   * \brief Get the variable attributes.
+   * @brief Get the variable attributes.
    */
   [[nodiscard]] const VariableAttributes &
   get_variable_attributes() const
@@ -113,7 +113,7 @@ protected:
   }
 
   /**
-   * \brief Get the matrix-free object handler for non-multigrid data.
+   * @brief Get the matrix-free object handler for non-multigrid data.
    */
   [[nodiscard]] const MatrixfreeHandler<dim, double> &
   get_matrix_free_handler() const
@@ -122,7 +122,7 @@ protected:
   }
 
   /**
-   * \brief Get the constraint handler.
+   * @brief Get the constraint handler.
    */
   [[nodiscard]] const ConstraintHandler<dim, degree> &
   get_constraint_handler() const
@@ -131,7 +131,7 @@ protected:
   }
 
   /**
-   * \brief Get the solution handler.
+   * @brief Get the solution handler.
    */
   [[nodiscard]] SolutionHandler<dim> &
   get_solution_handler() const
@@ -140,7 +140,7 @@ protected:
   }
 
   /**
-   * \brief Get the field index.
+   * @brief Get the field index.
    */
   [[nodiscard]] unsigned int
   get_field_index() const
@@ -149,7 +149,7 @@ protected:
   }
 
   /**
-   * \brief Get the mapping from global solution vectors to the local ones for the
+   * @brief Get the mapping from global solution vectors to the local ones for the
    * residual solve.
    */
   [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, unsigned int> &
@@ -159,7 +159,7 @@ protected:
   }
 
   /**
-   * \brief Get the subset of fields that are necessary for the source of the residual
+   * @brief Get the subset of fields that are necessary for the source of the residual
    * solve.
    */
   [[nodiscard]] const std::vector<VectorType *> &
@@ -169,7 +169,7 @@ protected:
   }
 
   /**
-   * \brief Get the residual vector.
+   * @brief Get the residual vector.
    */
   [[nodiscard]] VectorType *
   get_residual() const
@@ -178,7 +178,7 @@ protected:
   }
 
   /**
-   * \brief Get the mapping from global solution vectors to the local ones for the
+   * @brief Get the mapping from global solution vectors to the local ones for the
    * newton update.
    */
   [[nodiscard]] const std::map<std::pair<unsigned int, DependencyType>, unsigned int> &
@@ -188,7 +188,7 @@ protected:
   }
 
   /**
-   * \brief Get the subset of fields that are necessary for the source of the newton
+   * @brief Get the subset of fields that are necessary for the source of the newton
    * update.
    */
   [[nodiscard]] const std::vector<VectorType *> &
@@ -198,7 +198,7 @@ protected:
   }
 
   /**
-   * \brief Get the newton update vector.
+   * @brief Get the newton update vector.
    */
   [[nodiscard]] VectorType *
   get_newton_update() const
@@ -207,7 +207,7 @@ protected:
   }
 
   /**
-   * \brief Get the pde operator.
+   * @brief Get the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
   get_pde_operator() const
@@ -216,7 +216,7 @@ protected:
   }
 
   /**
-   * \brief Get the system matrix.
+   * @brief Get the system matrix.
    */
   [[nodiscard]] const std::unique_ptr<SystemMatrixType> &
   get_system_matrix() const
@@ -225,7 +225,7 @@ protected:
   }
 
   /**
-   * \brief Get the update system matrix.
+   * @brief Get the update system matrix.
    */
   [[nodiscard]] const std::unique_ptr<SystemMatrixType> &
   get_update_system_matrix() const
@@ -234,7 +234,7 @@ protected:
   }
 
   /**
-   * \brief Get the subset attributes.
+   * @brief Get the subset attributes.
    */
   [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_subset_attributes() const
@@ -243,7 +243,7 @@ protected:
   }
 
   /**
-   * \brief Get the solver control.
+   * @brief Get the solver control.
    */
   [[nodiscard]] dealii::SolverControl &
   get_solver_control()
@@ -252,7 +252,7 @@ protected:
   }
 
   /**
-   * \brief Get the solver tolerance.
+   * @brief Get the solver tolerance.
    */
   [[nodiscard]] double
   get_tolerance() const
@@ -262,94 +262,94 @@ protected:
 
 private:
   /**
-   * \brief User-inputs.
+   * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * \brief Variable attributes for field.
+   * @brief Variable attributes for field.
    */
   const VariableAttributes *variable_attributes;
 
   /**
-   * \brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object handler for non-multigrid data.
    */
   const MatrixfreeHandler<dim, double> *matrix_free_handler;
 
   /**
-   * \brief Constraint handler.
+   * @brief Constraint handler.
    */
   const ConstraintHandler<dim, degree> *constraint_handler;
 
   /**
-   * \brief Solution handler.
+   * @brief Solution handler.
    */
   SolutionHandler<dim> *solution_handler;
 
   /**
-   * \brief The field index we are solving.
+   * @brief The field index we are solving.
    */
   unsigned int field_index;
 
   /**
-   * \brief Mapping from global solution vectors to the local ones for the residual solve.
+   * @brief Mapping from global solution vectors to the local ones for the residual solve.
    */
   std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     residual_global_to_local_solution;
 
   /**
-   * \brief Subset of fields that are necessary for the source of the residual solve.
+   * @brief Subset of fields that are necessary for the source of the residual solve.
    */
   std::vector<VectorType *> residual_src;
 
   /**
-   * \brief Residual vector.
+   * @brief Residual vector.
    */
   VectorType *residual;
 
   /**
-   * \brief Mapping from global solution vectors to the local ones for the newton update.
+   * @brief Mapping from global solution vectors to the local ones for the newton update.
    */
   std::map<std::pair<unsigned int, DependencyType>, unsigned int>
     newton_update_global_to_local_solution;
 
   /**
-   * \brief Subset of fields that are necessary for the source of the newton update.
+   * @brief Subset of fields that are necessary for the source of the newton update.
    */
   std::vector<VectorType *> newton_update_src;
 
   /**
-   * \brief Newton update vector.
+   * @brief Newton update vector.
    */
   VectorType *newton_update;
 
   /**
-   * \brief PDE operator.
+   * @brief PDE operator.
    */
   std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 
   /**
-   * \brief Matrix-free operator for the residual side.
+   * @brief Matrix-free operator for the residual side.
    */
   std::unique_ptr<SystemMatrixType> system_matrix;
 
   /**
-   * \brief Matrix-free operator for the newton update side.
+   * @brief Matrix-free operator for the newton update side.
    */
   std::unique_ptr<SystemMatrixType> update_system_matrix;
 
   /**
-   * \brief Subset attributes.
+   * @brief Subset attributes.
    */
   std::map<unsigned int, VariableAttributes> subset_attributes;
 
   /**
-   * \brief Solver control.
+   * @brief Solver control.
    */
   dealii::SolverControl solver_control;
 
   /**
-   * \brief Solver tolerance
+   * @brief Solver tolerance
    */
   double tolerance = 0.0;
 };

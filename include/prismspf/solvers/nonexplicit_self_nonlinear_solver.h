@@ -12,7 +12,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief This class handles the self-nonlinear solves of a single nonexplicit field
+ * @brief This class handles the self-nonlinear solves of a single nonexplicit field
  */
 template <unsigned int dim, unsigned int degree>
 class NonexplicitSelfnonlinearSolver : public NonexplicitBase<dim, degree>
@@ -21,46 +21,46 @@ public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   NonexplicitSelfnonlinearSolver(const SolverContext<dim, degree> &_solver_context,
                                  const MGInfo<dim>                &_mg_info);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~NonexplicitSelfnonlinearSolver() override = default;
 
   /**
-   * \brief Initialize system.
+   * @brief Initialize system.
    */
   void
   init() override;
 
   /**
-   * \brief Solve a single update step.
+   * @brief Solve a single update step.
    */
   void
   solve() override;
 
 private:
   /**
-   * \brief Map of identity linear solvers
+   * @brief Map of identity linear solvers
    */
   std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
-   * \brief Map of geometric multigrid linear solvers
+   * @brief Map of geometric multigrid linear solvers
    */
   std::map<unsigned int, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
 
   /**
-   * \brief PDE operator but for floats!
+   * @brief PDE operator but for floats!
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 
   /**
-   * \brief Multigrid information
+   * @brief Multigrid information
    */
   const MGInfo<dim> *mg_info;
 };

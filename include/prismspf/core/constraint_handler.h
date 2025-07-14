@@ -19,7 +19,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 /**
- * \brief The class handles the generation and application of boundary conditions based on
+ * @brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
 template <unsigned int dim, unsigned int degree>
@@ -27,7 +27,7 @@ class ConstraintHandler
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   ConstraintHandler(
     const UserInputParameters<dim>                                &_user_inputs,
@@ -36,39 +36,39 @@ public:
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
-   * \brief Getter function for the constraints.
+   * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<double> *>
   get_constraints();
 
   /**
-   * \brief Getter function for the constraint of an index (constant reference).
+   * @brief Getter function for the constraint of an index (constant reference).
    */
   [[nodiscard]] const dealii::AffineConstraints<double> &
   get_constraint(unsigned int index) const;
 
   /**
-   * \brief Getter function for the multigrid constraints of a certain level.
+   * @brief Getter function for the multigrid constraints of a certain level.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<float> *>
   get_mg_constraints(unsigned int level);
 
   /**
-   * \brief Getter function for the multigrid constraint of a certain level and index
+   * @brief Getter function for the multigrid constraint of a certain level and index
    * (constant reference).
    */
   [[nodiscard]] const dealii::AffineConstraints<float> &
   get_mg_constraint(unsigned int level, unsigned int index) const;
 
   /**
-   * \brief Make constraints based on the inputs of the constructor.
+   * @brief Make constraints based on the inputs of the constructor.
    */
   void
   make_constraints(const dealii::Mapping<dim>                         &mapping,
                    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
 
   /**
-   * \brief Make multigrid constraints for a given level based on the inputs of the
+   * @brief Make multigrid constraints for a given level based on the inputs of the
    * constructor.
    */
   void
@@ -77,7 +77,7 @@ public:
                       unsigned int                                        level);
 
   /**
-   * \brief Update time-dependent constraints.
+   * @brief Update time-dependent constraints.
    *
    * For now this only updates the non-uniform dirichlet constraints.
    */
@@ -87,7 +87,7 @@ public:
     const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
 
   /**
-   * \brief Update time-dependent multigrid constraints for a given level.
+   * @brief Update time-dependent multigrid constraints for a given level.
    *
    * For now this only updates the non-uniform dirichlet constraints.
    */
@@ -99,19 +99,19 @@ public:
 
 private:
   /**
-   * \brief Create a component mask.
+   * @brief Create a component mask.
    */
   [[nodiscard]] dealii::ComponentMask
   create_component_mask(unsigned int component, bool is_vector_field) const;
 
   /**
-   * \brief Apply natural constraints.
+   * @brief Apply natural constraints.
    */
   void
   apply_natural_constraints() const;
 
   /**
-   * \brief Apply dirichlet constraints.
+   * @brief Apply dirichlet constraints.
    */
   template <typename number>
   void
@@ -124,7 +124,7 @@ private:
                               const dealii::ComponentMask       &mask) const;
 
   /**
-   * \brief Apply periodic constraints.
+   * @brief Apply periodic constraints.
    */
   template <typename number>
   void
@@ -134,7 +134,7 @@ private:
                              const dealii::ComponentMask       &mask) const;
 
   /**
-   * \brief Apply nonuniform dirichlet constraints.
+   * @brief Apply nonuniform dirichlet constraints.
    */
   template <typename number>
   void
@@ -148,7 +148,7 @@ private:
                                          bool is_change_term = false) const;
 
   /**
-   * \brief Make the constraint for a single index.
+   * @brief Make the constraint for a single index.
    */
   void
   make_constraint(const dealii::Mapping<dim>    &mapping,
@@ -156,7 +156,7 @@ private:
                   unsigned int                   index);
 
   /**
-   * \brief Make the multigrid constraint for a single index at a single level.
+   * @brief Make the multigrid constraint for a single index at a single level.
    */
   void
   make_mg_constraint(const dealii::Mapping<dim>    &mapping,
@@ -166,7 +166,7 @@ private:
                      DependencyType                 dependency_type);
 
   /**
-   * \brief Set the dirichlet constraint for the pinned point.
+   * @brief Set the dirichlet constraint for the pinned point.
    */
   template <typename number>
   void
@@ -176,7 +176,7 @@ private:
                    bool                               is_change_term = false) const;
 
   /**
-   * \brief Clear, reinitialize and make hanging node constraints
+   * @brief Clear, reinitialize and make hanging node constraints
    */
   template <typename number>
   void
@@ -184,7 +184,7 @@ private:
                             dealii::AffineConstraints<number> &constraints) const;
 
   /**
-   * \brief Apply constraints for common boundary conditions.
+   * @brief Apply constraints for common boundary conditions.
    */
   template <typename number, int spacedim>
   void
@@ -199,7 +199,7 @@ private:
                     bool                               is_change_term = false) const;
 
   /**
-   * \brief Apply multigrid constraints for common boundary conditions. The only
+   * @brief Apply multigrid constraints for common boundary conditions. The only
    * difference between this function and the previous one is that an dirichlet boundary
    * conditions are constrained to 0.
    */
@@ -213,42 +213,42 @@ private:
                        unsigned int                       component) const;
 
   /**
-   * \brief User-inputs.
+   * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * \brief Multigrid info
+   * @brief Multigrid info
    */
   const MGInfo<dim> *mg_info;
 
   /**
-   * \brief PDE operator double.
+   * @brief PDE operator double.
    */
   std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
 
   /**
-   * \brief PDE operator float.
+   * @brief PDE operator float.
    */
   std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 
   /**
-   * \brief Whether we have multigrid.
+   * @brief Whether we have multigrid.
    */
   bool has_multigrid = false;
 
   /**
-   * \brief Global minimum level for multigrid.
+   * @brief Global minimum level for multigrid.
    */
   unsigned int global_min_level = 0;
 
   /**
-   * \brief Constraints.
+   * @brief Constraints.
    */
   std::vector<dealii::AffineConstraints<double>> constraints;
 
   /**
-   * \brief Multigrid constraints.
+   * @brief Multigrid constraints.
    */
   std::vector<std::vector<dealii::AffineConstraints<float>>> mg_constraints;
 };

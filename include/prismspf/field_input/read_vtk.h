@@ -25,86 +25,86 @@ class ReadUnstructuredVTK
 {
 public:
   /**
-   * \brief Constructor
+   * @brief Constructor
    */
   explicit ReadUnstructuredVTK(const std::string &filename);
 
   /**
-   * \brief Destructor
+   * @brief Destructor
    */
   ~ReadUnstructuredVTK() = default;
 
   /**
-   * \brief Get the vtk output
+   * @brief Get the vtk output
    */
   vtkUnstructuredGrid *
   get_output();
 
   /**
-   * \brief Get the number of points
+   * @brief Get the number of points
    */
   [[nodiscard]] dealii::types::global_dof_index
   get_n_points() const;
 
   /**
-   * \brief Get the number of cells
+   * @brief Get the number of cells
    */
   [[nodiscard]] dealii::types::global_dof_index
   get_n_cells() const;
 
   /**
-   * \brief Print the vtk file for debugging
+   * @brief Print the vtk file for debugging
    */
   void
   print_vtk_file();
 
   /**
-   * \brief Get the names of the scalars in the vtk file.
+   * @brief Get the names of the scalars in the vtk file.
    */
   std::vector<std::string>
   get_scalars_names();
 
   /**
-   * \brief Get the names of the vectors in the vtk file.
+   * @brief Get the names of the vectors in the vtk file.
    */
   std::vector<std::string>
   get_vectors_names();
 
   /**
-   * \brief Get scalar value for a given point
+   * @brief Get scalar value for a given point
    */
   double
   get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name);
 
   /**
-   * \brief Get vector value for a given point
+   * @brief Get vector value for a given point
    */
   dealii::Vector<double>
   get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name);
 
 private:
   /**
-   * \brief Reader for the vtk file
+   * @brief Reader for the vtk file
    */
   vtkNew<vtkUnstructuredGridReader> reader;
 
   /**
-   * \brief Number of points.
+   * @brief Number of points.
    */
   dealii::types::global_dof_index n_points;
 
   /**
-   * \brief Number of cells.
+   * @brief Number of cells.
    */
   dealii::types::global_dof_index n_cells;
 
   /**
-   * \brief Number of scalars in file.
+   * @brief Number of scalars in file.
    */
   unsigned int n_scalars;
 
   /**
-   * \brief Number of vectors in file.
+   * @brief Number of vectors in file.
    */
   unsigned int n_vectors;
 };
@@ -129,7 +129,7 @@ ReadUnstructuredVTK<dim>::ReadUnstructuredVTK(const std::string &filename)
               dealii::ExcMessage("The vtk file must be an unstructured grid"));
 
   // Check that we only have one cell type
-  auto output = reader->GetOutput();
+  auto *output = reader->GetOutput();
   AssertThrow(
     output->IsHomogeneous(),
     dealii::ExcMessage(
@@ -156,8 +156,8 @@ ReadUnstructuredVTK<dim>::ReadUnstructuredVTK(const std::string &filename)
 
   // Get the number of points and cells. We first fill the variables in the same type as
   // the VTK return type so we can check for types mismatches with deal.II
-  vtkIdType n_points_vtk = output->GetNumberOfPoints();
-  vtkIdType n_cells_vtk  = output->GetNumberOfCells();
+  const vtkIdType n_points_vtk = output->GetNumberOfPoints();
+  const vtkIdType n_cells_vtk  = output->GetNumberOfCells();
 
   // Check that the number of points and cells are not too large
   AssertThrow(n_points_vtk < std::numeric_limits<dealii::types::global_dof_index>::max(),
@@ -256,14 +256,14 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
   vtkPointData        *point_data = output->GetPointData();
 
   // Find the point id in the vtk file
-  vtkIdType point_id = output->FindPoint(point_c_array.data());
+  const vtkIdType point_id = output->FindPoint(point_c_array.data());
 
   // Check that point is inside the grid
   AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
 
   // Check that the point is within some tolerance to know whether we have to interpolate
   // or not
-  std::array<double, 3> point_in_dataset;
+  std::array<double, 3> point_in_dataset {};
   output->GetPoint(point_id, point_in_dataset.data());
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
@@ -291,12 +291,12 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
       int    sub_id;
 
       vtkGenericCell *cell    = vtkGenericCell::New();
-      vtkIdType       cell_id = cell_locator->FindCell(point_c_array.data(),
-                                                 Defaults::mesh_tolerance,
-                                                 cell,
-                                                 sub_id,
-                                                 pcoords,
-                                                 weights);
+      const vtkIdType cell_id = cell_locator->FindCell(point_c_array.data(),
+                                                       Defaults::mesh_tolerance,
+                                                       cell,
+                                                       sub_id,
+                                                       pcoords,
+                                                       weights);
 
       AssertThrow(cell_id >= 0,
                   dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -306,16 +306,15 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
       double     interpolated_value = 0.0;
       for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
         {
-          vtkIdType pt_id = point_ids->GetId(i);
+          const vtkIdType pt_id = point_ids->GetId(i);
           interpolated_value += weights[i] * data_array->GetComponent(pt_id, 0);
         }
 
       return interpolated_value;
     }
-  else
-    {
-      return data_array->GetComponent(point_id, 0);
-    }
+
+  // If we are not interpolating, we can just get the value at the point
+  return data_array->GetComponent(point_id, 0);
 }
 
 template <unsigned int dim>
@@ -382,12 +381,12 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
           int    sub_id;
 
           vtkGenericCell *cell    = vtkGenericCell::New();
-          vtkIdType       cell_id = cell_locator->FindCell(point_c_array.data(),
-                                                     Defaults::mesh_tolerance,
-                                                     cell,
-                                                     sub_id,
-                                                     pcoords,
-                                                     weights);
+          const vtkIdType cell_id = cell_locator->FindCell(point_c_array.data(),
+                                                           Defaults::mesh_tolerance,
+                                                           cell,
+                                                           sub_id,
+                                                           pcoords,
+                                                           weights);
 
           AssertThrow(cell_id >= 0,
                       dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -397,7 +396,7 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
           double     interpolated_value = 0.0;
           for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
             {
-              vtkIdType pt_id = point_ids->GetId(id);
+              const vtkIdType pt_id = point_ids->GetId(id);
               interpolated_value += weights[id] * data_array->GetComponent(pt_id, id);
             }
 
