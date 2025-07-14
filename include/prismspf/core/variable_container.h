@@ -58,7 +58,7 @@ public:
    * @brief Return the value of the specified field.
    */
   template <FieldType T>
-  [[nodiscard]] std::
+  [[nodiscard]] constexpr std::
     conditional_t<T == FieldType::Scalar, SizeType, dealii::Tensor<1, dim, SizeType>>
     get_value(Types::Index   global_variable_index,
               DependencyType dependency_type = DependencyType::Normal) const
@@ -140,9 +140,9 @@ public:
    * @brief Return the gradient of the specified field.
    */
   template <FieldType T>
-  [[nodiscard]] std::conditional_t<T == FieldType::Scalar,
-                                   dealii::Tensor<1, dim, SizeType>,
-                                   dealii::Tensor<2, dim, SizeType>>
+  [[nodiscard]] constexpr std::conditional_t<T == FieldType::Scalar,
+                                             dealii::Tensor<1, dim, SizeType>,
+                                             dealii::Tensor<2, dim, SizeType>>
   get_gradient(Types::Index   global_variable_index,
                DependencyType dependency_type = DependencyType::Normal) const
   {
@@ -223,9 +223,9 @@ public:
    * @brief Return the hessian of the specified field.
    */
   template <FieldType T>
-  [[nodiscard]] std::conditional_t<T == FieldType::Scalar,
-                                   dealii::Tensor<2, dim, SizeType>,
-                                   dealii::Tensor<3, dim, SizeType>>
+  [[nodiscard]] constexpr std::conditional_t<T == FieldType::Scalar,
+                                             dealii::Tensor<2, dim, SizeType>,
+                                             dealii::Tensor<3, dim, SizeType>>
   get_hessian(Types::Index   global_variable_index,
               DependencyType dependency_type = DependencyType::Normal) const
   {
@@ -306,9 +306,9 @@ public:
    * @brief Return the diagonal of the hessian of the specified field.
    */
   template <FieldType T>
-  [[nodiscard]] std::conditional_t<T == FieldType::Scalar,
-                                   dealii::Tensor<1, dim, SizeType>,
-                                   dealii::Tensor<2, dim, SizeType>>
+  [[nodiscard]] constexpr std::conditional_t<T == FieldType::Scalar,
+                                             dealii::Tensor<1, dim, SizeType>,
+                                             dealii::Tensor<2, dim, SizeType>>
   get_hessian_diagonal(Types::Index   global_variable_index,
                        DependencyType dependency_type = DependencyType::Normal) const
   {
@@ -389,7 +389,7 @@ public:
    * @brief Return the laplacian of the specified field.
    */
   template <FieldType T>
-  [[nodiscard]] std::
+  [[nodiscard]] constexpr std::
     conditional_t<T == FieldType::Scalar, SizeType, dealii::Tensor<1, dim, SizeType>>
     get_laplacian(Types::Index   global_variable_index,
                   DependencyType dependency_type = DependencyType::Normal) const
@@ -473,14 +473,14 @@ public:
    * TODO (landinjm): Not sure if we should bother template this to make it look like the
    * other function. It will just throw an error in the scalar case.
    */
-  [[nodiscard]] SizeType
+  [[nodiscard]] constexpr SizeType
   get_vector_divergence(unsigned int   global_variable_index,
                         DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
    * @brief Return the symmetric gradient of the specified vector field.
    */
-  [[nodiscard]] dealii::Tensor<2, dim, SizeType>
+  [[nodiscard]] constexpr dealii::Tensor<2, dim, SizeType>
   get_vector_symmetric_gradient(
     unsigned int   global_variable_index,
     DependencyType dependency_type = DependencyType::Normal) const;
@@ -490,7 +490,7 @@ public:
    * dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1, dim,
    * dealii::VectorizedArray<number>> type for 3D.
    */
-  [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>
+  [[nodiscard]] constexpr dealii::Tensor<1, (dim == 2 ? 1 : dim), SizeType>
   get_vector_curl(unsigned int   global_variable_index,
                   DependencyType dependency_type = DependencyType::Normal) const;
 
@@ -498,7 +498,7 @@ public:
    * @brief Set the residual value of the specified scalar field.
    */
   template <FieldType T>
-  void
+  constexpr void
   set_value_term(const unsigned int   &global_variable_index,
                  const SizeType       &val,
                  const DependencyType &dependency_type = DependencyType::Normal)
@@ -542,7 +542,7 @@ public:
    * @brief Set the residual value of the specified vector field.
    */
   template <FieldType T>
-  void
+  constexpr void
   set_value_term(const unsigned int                     &global_variable_index,
                  const dealii::Tensor<1, dim, SizeType> &val,
                  const DependencyType &dependency_type = DependencyType::Normal)
@@ -586,7 +586,7 @@ public:
    * @brief Set the residual gradient of the specified scalar field.
    */
   template <FieldType T>
-  void
+  constexpr void
   set_gradient_term(const unsigned int                     &global_variable_index,
                     const dealii::Tensor<1, dim, SizeType> &grad,
                     const DependencyType &dependency_type = DependencyType::Normal)
@@ -630,7 +630,7 @@ public:
    * @brief Set the residual gradient of the specified vector field.
    */
   template <FieldType T>
-  void
+  constexpr void
   set_gradient_term(const unsigned int                     &global_variable_index,
                     const dealii::Tensor<2, dim, SizeType> &grad,
                     const DependencyType &dependency_type = DependencyType::Normal)

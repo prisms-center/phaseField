@@ -1177,7 +1177,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-typename VariableContainer<dim, degree, number>::SizeType
+constexpr typename VariableContainer<dim, degree, number>::SizeType
 VariableContainer<dim, degree, number>::get_vector_divergence(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
@@ -1217,10 +1217,11 @@ VariableContainer<dim, degree, number>::get_vector_divergence(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
-VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
-  unsigned int   global_variable_index,
-  DependencyType dependency_type) const
+constexpr dealii::
+  Tensor<2, dim, typename VariableContainer<dim, degree, number>::SizeType>
+  VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
+    unsigned int   global_variable_index,
+    DependencyType dependency_type) const
 {
 #ifdef DEBUG
   access_valid(global_variable_index,
@@ -1257,9 +1258,9 @@ VariableContainer<dim, degree, number>::get_vector_symmetric_gradient(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-dealii::Tensor<1,
-               (dim == 2 ? 1 : dim),
-               typename VariableContainer<dim, degree, number>::SizeType>
+constexpr dealii::Tensor<1,
+                         (dim == 2 ? 1 : dim),
+                         typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_vector_curl(
   unsigned int   global_variable_index,
   DependencyType dependency_type) const
