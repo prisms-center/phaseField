@@ -49,8 +49,7 @@ public:
 
 protected:
   /**
-   * @brief User-facing method where the variable attributes are set for solution fields
-   * and postprocess fields.
+   * @brief User-implemented method where the variable attributes are set for all fields.
    */
   virtual void
   load_variable_attributes() = 0;
@@ -251,18 +250,6 @@ private:
    */
   void
   validate_old_solution_dependencies();
-};
-
-// Template derived class for VariableAttributeLoader for applications.
-// `load_variable_attributes()` and `loadPostProcessorVariableAttributes()` are should be
-// filled out in all the applications.
-class CustomAttributeLoader : public VariableAttributeLoader
-{
-public:
-  ~CustomAttributeLoader() override = default;
-
-  void
-  load_variable_attributes() override;
 };
 
 PRISMS_PF_END_NAMESPACE

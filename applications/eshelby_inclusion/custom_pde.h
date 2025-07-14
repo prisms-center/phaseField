@@ -4,13 +4,35 @@
 #pragma once
 
 #include <prismspf/core/pde_operator.h>
+#include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief This is a derived class of `VariableAttributeLoader` where the user implements
+ * their variable attributes and field declarations.
+ */
+class CustomAttributeLoader : public VariableAttributeLoader
+{
+public:
+  /**
+   * @brief Destructor.
+   */
+  ~CustomAttributeLoader() override = default;
+
+  /**
+   * @brief User-implemented method where the variable attributes are set for all fields.
+   */
+  void
+  load_variable_attributes() override;
+};
 
 /**
  * @brief This is a derived class of `MatrixFreeOperator` where the user implements their

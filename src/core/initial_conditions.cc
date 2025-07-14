@@ -70,11 +70,11 @@ ReadInitialCondition<dim>::vector_value(const dealii::Point<dim> &p,
   // Get the value of the field at the point
   if (field_type == FieldType::Scalar)
     {
-      vector_value[0] = reader->get_scalar_value(p, field_name);
+      vector_value[0] = reader->template get_value<Scalar>(p, field_name);
     }
   else if (field_type == FieldType::Vector)
     {
-      vector_value = reader->get_vector_value(p, field_name);
+      vector_value = reader->template get_value<Vector>(p, field_name);
     }
 
   value = vector_value;

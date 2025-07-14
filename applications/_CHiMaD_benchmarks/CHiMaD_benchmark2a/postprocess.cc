@@ -53,18 +53,18 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.get_scalar_value(0);
-  scalargradType  cx = variable_list.get_scalar_gradient(0);
+  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
+  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType n1  = variable_list.get_scalar_value(2);
-  scalargradType  n1x = variable_list.get_scalar_gradient(2);
-  scalarvalueType n2  = variable_list.get_scalar_value(3);
-  scalargradType  n2x = variable_list.get_scalar_gradient(3);
-  scalarvalueType n3  = variable_list.get_scalar_value(4);
-  scalargradType  n3x = variable_list.get_scalar_gradient(4);
-  scalarvalueType n4  = variable_list.get_scalar_value(5);
-  scalargradType  n4x = variable_list.get_scalar_gradient(5);
+  scalarvalueType n1  = variable_list.template get_value<Scalar>(2);
+  scalargradType  n1x = variable_list.template get_gradient<Scalar>(2);
+  scalarvalueType n2  = variable_list.template get_value<Scalar>(3);
+  scalargradType  n2x = variable_list.template get_gradient<Scalar>(3);
+  scalarvalueType n3  = variable_list.template get_value<Scalar>(4);
+  scalargradType  n3x = variable_list.template get_gradient<Scalar>(4);
+  scalarvalueType n4  = variable_list.template get_value<Scalar>(5);
+  scalargradType  n4x = variable_list.template get_gradient<Scalar>(5);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

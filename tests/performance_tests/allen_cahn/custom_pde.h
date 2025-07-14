@@ -191,15 +191,15 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {
-      ScalarValue n  = variable_list.get_scalar_value(i);
-      ScalarGrad  nx = variable_list.get_scalar_gradient(i);
+      ScalarValue n  = variable_list.template get_value<Scalar>(i);
+      ScalarGrad  nx = variable_list.template get_gradient<Scalar>(i);
 
       ScalarValue fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
       ScalarValue eq_n  = (n - (this->get_timestep() * fnV));
       ScalarGrad  eqx_n = (-this->get_timestep() * 2.0 * nx);
 
-      variable_list.set_scalar_value_term(i, eq_n);
-      variable_list.set_scalar_gradient_term(i, eqx_n);
+      variable_list.template set_value_term<Scalar>(i, eq_n);
+      variable_list.template set_gradient_term<Scalar>(i, eqx_n);
     }
 }
 
