@@ -14,6 +14,7 @@
 
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -21,6 +22,7 @@
 
 #include <climits>
 #include <cmath>
+#include <string>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -382,7 +384,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
       {
         // Check if the file is specified
-        if (parameter_handler.get("file name") != "")
+        if (!parameter_handler.get("file name").empty())
           {
             // Create the LoadICFile object
             InitialConditionFile ic_file;

@@ -12,6 +12,8 @@
 #include <prismspf/config.h>
 
 #include <memory>
+#include <string>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -48,8 +50,8 @@ InitialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
 // NOLINTEND(readability-identifier-length)
 
 template <unsigned int dim>
-ReadInitialCondition<dim>::ReadInitialCondition(std::string      file_name,
-                                                std::string      field_name,
+ReadInitialCondition<dim>::ReadInitialCondition(std::string     &file_name,
+                                                std::string     &field_name,
                                                 const FieldType &field_type)
   : dealii::Function<dim>((field_type == FieldType::Vector) ? dim : 1)
   , field_name(std::move(field_name))

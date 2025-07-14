@@ -63,8 +63,8 @@ public:
   /**
    * @brief Constructor.
    */
-  ReadInitialCondition(std::string      file_name,
-                       std::string      field_name,
+  ReadInitialCondition(std::string     &file_name,
+                       std::string     &field_name,
                        const FieldType &field_type);
 
   // NOLINTBEGIN(readability-identifier-length)

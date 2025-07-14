@@ -2,12 +2,14 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 

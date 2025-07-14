@@ -4,11 +4,13 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>

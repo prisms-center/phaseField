@@ -11,6 +11,8 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+// NOLINTBEGIN(readability-identifier-naming)
+
 /**
  * Function for deal.II AssertThrow that is only valid in DEBUG mode. This is used to
  * throw and error that can be caught by catch2 while not bloating code in release mode.
@@ -30,6 +32,8 @@ AssertThrowDebug(const Condition &, const Exception &)
   // Do nothing in release mode
 }
 #endif
+
+// NOLINTEND(readability-identifier-naming)
 
 // NOLINTBEGIN
 
