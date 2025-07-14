@@ -50,12 +50,12 @@ InitialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
 // NOLINTEND(readability-identifier-length)
 
 template <unsigned int dim>
-ReadInitialCondition<dim>::ReadInitialCondition(std::string     &file_name,
-                                                std::string     &field_name,
-                                                const FieldType &field_type)
-  : dealii::Function<dim>((field_type == FieldType::Vector) ? dim : 1)
-  , field_name(std::move(field_name))
-  , field_type(field_type)
+ReadInitialCondition<dim>::ReadInitialCondition(const std::string &file_name,
+                                                std::string        _field_name,
+                                                const FieldType   &_field_type)
+  : dealii::Function<dim>((_field_type == FieldType::Vector) ? dim : 1)
+  , field_name(std::move(_field_name))
+  , field_type(_field_type)
   , reader(std::make_shared<ReadUnstructuredVTK<dim>>(file_name))
 {}
 
