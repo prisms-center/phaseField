@@ -85,6 +85,9 @@ public:
         return;
       }
 
+    // Compute the shared dependencies
+    compute_shared_dependencies(field_solve_type, solve_priority);
+
     // Set the initial condition
     set_initial_condition();
   };
@@ -125,14 +128,14 @@ public:
    * @brief Compute the subset of VariableAttributes that belongs to a given
    * FieldSolveType and solver order.
    *
-   * This function creates a map of the VariablesAttributes that belong to a
-   * FieldSolveType and solve order. The map can be accessed with get_subset_attributes.
+   * This function creates and returns a map of the VariablesAttributes that belong to a
+   * FieldSolveType and solve order.
    */
-  void
+  [[nodiscard]] std::map<unsigned int, VariableAttributes>
   compute_subset_attributes(const FieldSolveType &field_solve_type,
-                            unsigned int          solve_priority)
+                            unsigned int          solve_priority) const
   {
-    subset_attributes.clear();
+    std::map<unsigned int, VariableAttributes> local_subset_attributes;
 
     // TODO (landinjm): Use the solve priority
     (void) solve_priority;
@@ -142,8 +145,89 @@ public:
       {
         if (variable.get_field_solve_type() == field_solve_type)
           {
-            subset_attributes.emplace(index, variable);
+            local_subset_attributes.emplace(index, variable);
           }
+      }
+  };
+
+  /**
+   * @brief Compute and update the subset of VariableAttributes that belongs to a given
+   * FieldSolveType and solver order.
+   *
+   * This function creates a map of the VariablesAttributes that belong to a
+   * FieldSolveType and solve order. The map can be accessed with get_subset_attributes.
+   */
+  void
+  update_subset_attributes(const FieldSolveType &field_solve_type,
+                           unsigned int          solve_priority)
+  {
+    subset_attributes = compute_subset_attributes(field_solve_type, solve_priority);
+  };
+
+  /**
+   * @brief Compute the shared dependencies for a subset of VariableAttributes that belong
+   * to a given FieldSolveType and solve order.
+   */
+  void
+  compute_shared_dependencies(const FieldSolveType &field_solve_type,
+                              unsigned int          solve_priority)
+  {
+    Assert(field_solve_type == FieldSolveType::Explicit ||
+             field_solve_type == FieldSolveType::ExplicitPostprocess,
+           dealii::ExcMessage(
+             "compute_shared_dependencies() should only be used for concurrent solves."));
+
+    // First compute the subset of VariableAttributes
+    auto local_subset_attributes =
+      compute_subset_attributes(field_solve_type, solve_priority);
+
+    // Grab the max number of fields and dependencies
+    const Types::Index max_fields =
+      local_subset_attributes.begin()->second.get_eval_flag_set_rhs().size();
+    const Types::Index max_dependencies =
+      local_subset_attributes.begin()->second.get_eval_flag_set_rhs().begin()->size();
+
+    // Create a vector for the shared dependencies
+    std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
+      shared_dependencies(max_fields,
+                          std::vector<dealii::EvaluationFlags::EvaluationFlags>(
+                            max_dependencies,
+                            dealii::EvaluationFlags::EvaluationFlags::nothing));
+
+    // Populate the shared dependencies
+    for (const auto &[index, variable] : local_subset_attributes)
+      {
+        for (Types::Index field_index = 0; field_index <= max_fields; field_index++)
+          {
+            for (Types::Index dependency_index = 0; dependency_index <= max_dependencies;
+                 dependency_index++)
+              {
+                const auto &eval_flag =
+                  variable.get_eval_flag_set_rhs().at(field_index).at(dependency_index);
+
+                // If the eval flag is nothing skip it
+                if (eval_flag == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                  {
+                    continue;
+                  }
+
+                // Check that change terms are not found in the RHS of the dependency set
+                Assert(
+                  eval_flag == dealii::EvaluationFlags::EvaluationFlags::nothing ||
+                    dependency_index != static_cast<Types::Index>(DependencyType::Change),
+                  dealii::ExcMessage(
+                    "Change terms are not allowed in the RHS of the dependency set"));
+
+                // If the dependency is not a change term, then we can add the dependency
+                shared_dependencies.at(field_index).at(dependency_index) |= eval_flag;
+              }
+          }
+      }
+
+    // Assign the shared dependencies to the subset attributes
+    for (auto &[index, variable] : subset_attributes)
+      {
+        variable.set_dependency_set_rhs(shared_dependencies);
       }
   };
 

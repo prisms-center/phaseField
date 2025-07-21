@@ -137,11 +137,11 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
 {
   std::string result;
 
-  if ((flag & dealii::EvaluationFlags::values) != 0U)
+  if ((flag & dealii::EvaluationFlags::EvaluationFlags::values) != 0U)
     {
       result += "values";
     }
-  if ((flag & dealii::EvaluationFlags::gradients) != 0U)
+  if ((flag & dealii::EvaluationFlags::EvaluationFlags::gradients) != 0U)
     {
       if (!result.empty())
         {
@@ -149,7 +149,7 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
         }
       result += "gradients";
     }
-  if ((flag & dealii::EvaluationFlags::hessians) != 0U)
+  if ((flag & dealii::EvaluationFlags::EvaluationFlags::hessians) != 0U)
     {
       if (!result.empty())
         {

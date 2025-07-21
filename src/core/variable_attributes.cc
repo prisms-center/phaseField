@@ -48,19 +48,19 @@ VariableAttributes::parse_residual_dependencies()
   // dependencies are part of the set.
   if (!raw_dependencies.dependencies_value_rhs.empty())
     {
-      eval_flags_residual_rhs |= dealii::EvaluationFlags::values;
+      eval_flags_residual_rhs |= dealii::EvaluationFlags::EvaluationFlags::values;
     }
   if (!raw_dependencies.dependencies_gradient_rhs.empty())
     {
-      eval_flags_residual_rhs |= dealii::EvaluationFlags::gradients;
+      eval_flags_residual_rhs |= dealii::EvaluationFlags::EvaluationFlags::gradients;
     }
   if (!raw_dependencies.dependencies_value_lhs.empty())
     {
-      eval_flags_residual_lhs |= dealii::EvaluationFlags::values;
+      eval_flags_residual_lhs |= dealii::EvaluationFlags::EvaluationFlags::values;
     }
   if (!raw_dependencies.dependencies_gradient_lhs.empty())
     {
-      eval_flags_residual_lhs |= dealii::EvaluationFlags::gradients;
+      eval_flags_residual_lhs |= dealii::EvaluationFlags::EvaluationFlags::gradients;
     }
 }
 
@@ -84,14 +84,14 @@ VariableAttributes::parse_dependencies(
 
     // Dependency evaluation types & their corresponding evaluation flag
     const std::vector<std::pair<std::string, EvalFlags>> eval_flags = {
-      {"value",              dealii::EvaluationFlags::values   },
-      {"gradient",           dealii::EvaluationFlags::gradients},
-      {"hessian",            dealii::EvaluationFlags::hessians },
-      {"hessian_diagonal",   dealii::EvaluationFlags::hessians },
-      {"laplacian",          dealii::EvaluationFlags::hessians },
-      {"divergence",         dealii::EvaluationFlags::gradients},
-      {"symmetric_gradient", dealii::EvaluationFlags::gradients},
-      {"curl",               dealii::EvaluationFlags::gradients},
+      {"value",              dealii::EvaluationFlags::EvaluationFlags::values   },
+      {"gradient",           dealii::EvaluationFlags::EvaluationFlags::gradients},
+      {"hessian",            dealii::EvaluationFlags::EvaluationFlags::hessians },
+      {"hessian_diagonal",   dealii::EvaluationFlags::EvaluationFlags::hessians },
+      {"laplacian",          dealii::EvaluationFlags::EvaluationFlags::hessians },
+      {"divergence",         dealii::EvaluationFlags::EvaluationFlags::gradients},
+      {"symmetric_gradient", dealii::EvaluationFlags::EvaluationFlags::gradients},
+      {"curl",               dealii::EvaluationFlags::EvaluationFlags::gradients},
     };
 
     std::map<std::string, std::pair<DependencyType, EvalFlags>> map;
