@@ -48,8 +48,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::map<unsigned int, std::map<std::pair<unsigned int, DependencyType>, unsigned int>>
-    global_to_local_solution;
+  std::map<unsigned int, std::vector<std::vector<Types::Index>>> global_to_local_solution;
 
   /**
    * @brief Subset of solutions fields that are necessary for explicit solves.

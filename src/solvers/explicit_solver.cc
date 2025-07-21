@@ -55,6 +55,19 @@ ExplicitSolver<dim, degree>::init()
   this->get_system_matrix()->initialize(
     this->get_matrix_free_handler().get_matrix_free());
 
+  // Resize the global to local solution vector
+  global_to_local_solution.resize(
+    this->get_subset_attributes().begin()->second.get_dependency_set_rhs().size());
+  for (auto &vector : global_to_local_solution)
+    {
+      vector.resize(this->get_subset_attributes()
+                      .begin()
+                      ->second.get_dependency_set_rhs()
+                      .begin()
+                      ->size(),
+                    Numbers::invalid_index);
+    }
+
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
   Types::Index dependency_index = 0;
   for (const auto &inner_dependency_set :
@@ -63,21 +76,23 @@ ExplicitSolver<dim, degree>::init()
       Types::Index dependency_type = 0;
       for (const auto &field_type : inner_dependency_set)
         {
-          // Skip if an invalid field type is found
-          if (field_type == Numbers::invalid_field_type)
+          // Skip if an invalid field type is found or the global_to_local_solution
+          // already has an entry for this dependency index and dependency type
+          if (field_type == Numbers::invalid_field_type ||
+              global_to_local_solution[dependency_index][dependency_type] !=
+                Numbers::invalid_index)
             {
               dependency_type++;
               continue;
             }
-          const auto pair = std::make_pair(dependency_index,
-                                           static_cast<DependencyType>(dependency_type));
 
           solution_subset.push_back(this->get_solution_handler().get_solution_vector(
             dependency_index,
             static_cast<DependencyType>(dependency_type)));
           new_solution_subset.push_back(
             this->get_solution_handler().get_new_solution_vector(dependency_index));
-          global_to_local_solution.emplace(pair, solution_subset.size() - 1);
+          global_to_local_solution[dependency_index][dependency_type] =
+            solution_subset.size() - 1;
 
           dependency_type++;
         }

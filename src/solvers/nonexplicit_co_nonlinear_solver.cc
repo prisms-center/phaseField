@@ -67,6 +67,15 @@ NonexplicitCononlinearSolver<dim, degree>::init()
           this->get_system_matrix().at(index)->initialize(
             this->get_matrix_free_handler().get_matrix_free());
 
+          // Resize the global to local solution vector
+          global_to_local_solution[index].resize(
+            variable.get_dependency_set_rhs().size());
+          for (auto &vector : global_to_local_solution[index])
+            {
+              vector.resize(variable.get_dependency_set_rhs().begin()->size(),
+                            Numbers::invalid_index);
+            }
+
           // Create the subset of solution vectors and add the mapping to
           // matrixFreeOperator
           new_solution_subset[index].push_back(
@@ -74,9 +83,9 @@ NonexplicitCononlinearSolver<dim, degree>::init()
           solution_subset[index].push_back(
             this->get_solution_handler().get_solution_vector(index,
                                                              DependencyType::Normal));
-          global_to_local_solution[index].emplace(std::make_pair(index,
-                                                                 DependencyType::Normal),
-                                                  0);
+          global_to_local_solution[index][index]
+                                  [static_cast<Types::Index>(DependencyType::Normal)] = 0;
+
           Types::Index dependency_index = 0;
           for (const auto &inner_dependency_set :
                subset_attributes_list.back().begin()->second.get_dependency_set_rhs())
@@ -84,29 +93,30 @@ NonexplicitCononlinearSolver<dim, degree>::init()
               Types::Index dependency_type = 0;
               for (const auto &field_type : inner_dependency_set)
                 {
-                  // Skip if an invalid field type is found
-                  if (field_type == Numbers::invalid_field_type)
+                  // Skip if an invalid field type is found or the
+                  // global_to_local_solution already has an entry for this dependency
+                  // index and dependency type
+                  if (field_type == Numbers::invalid_field_type ||
+                      global_to_local_solution[index][dependency_index]
+                                              [dependency_type] != Numbers::invalid_index)
                     {
                       dependency_type++;
                       continue;
                     }
-                  const auto pair =
-                    std::make_pair(dependency_index,
-                                   static_cast<DependencyType>(dependency_type));
 
                   solution_subset[index].push_back(
                     this->get_solution_handler().get_solution_vector(
                       dependency_index,
                       static_cast<DependencyType>(dependency_type)));
-                  global_to_local_solution[index]
-                    .emplace(pair, solution_subset.at(index).size() - 1);
+                  global_to_local_solution[index][dependency_index][dependency_type] =
+                    solution_subset.at(index).size() - 1;
 
                   dependency_type++;
                 }
               dependency_index++;
             }
           this->get_system_matrix().at(index)->add_global_to_local_mapping(
-            global_to_local_solution.at(index));
+            global_to_local_solution[index]);
         }
       else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
                variable.get_pde_type() == PDEType::TimeIndependent)

@@ -30,10 +30,9 @@ template <unsigned int dim, unsigned int degree, typename number>
 VariableContainer<dim, degree, number>::VariableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<unsigned int, VariableAttributes> &_subset_attributes,
-  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-                  &_global_to_local_solution,
-  const SolveType &_solve_type,
-  bool             use_local_mapping)
+  const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
+  const SolveType                                  &_solve_type,
+  bool                                              use_local_mapping)
   : subset_attributes(&_subset_attributes)
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
@@ -90,12 +89,34 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // variables to matrix free indices. For most cases, they are one and
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
+
+                    Assert(global_to_local_solution->size() > dependency_index,
+                           dealii::ExcMessage(
+                             "Global to local solution size " +
+                             std::to_string(global_to_local_solution->size()) +
+                             " is greater than dependency index " +
+                             std::to_string(dependency_index)));
+                    Assert(global_to_local_solution->at(dependency_index).size() >
+                             dependency_type,
+                           dealii::ExcMessage(
+                             "Global to local solution size at dependency index " +
+                             std::to_string(dependency_index) + " " +
+                             std::to_string(
+                               global_to_local_solution->at(dependency_index).size()) +
+                             " is greater than dependency type " +
+                             std::to_string(dependency_type)));
+                    Assert(global_to_local_solution->at(dependency_index)
+                               .at(dependency_type) != Numbers::invalid_index,
+                           dealii::ExcMessage(
+                             "Global to local solution at dependency index " +
+                             std::to_string(dependency_index) + " " +
+                             std::to_string(dependency_type) + " is invalid"));
+
                     feeval_map[dependency_index][dependency_type] =
-                      std::make_unique<ScalarFEEvaluation>(
-                        data,
-                        global_to_local_solution->at(
-                          std::make_pair(dependency_index,
-                                         static_cast<DependencyType>(dependency_type))));
+                      std::make_unique<ScalarFEEvaluation>(data,
+                                                           global_to_local_solution
+                                                             ->at(dependency_index)
+                                                             .at(dependency_type));
                   }
               }
             else
@@ -107,12 +128,39 @@ VariableContainer<dim, degree, number>::VariableContainer(
                   }
                 else
                   {
+                    // TODO (landinjm): Find a better way to represent this. Maybe it
+                    // would be better just to pass the desired mapping of global
+                    // variables to matrix free indices. For most cases, they are one and
+                    // the same, but for multigrid they are different as not all fields
+                    // have matrixfree data associated for the multigrid levels.
+
+                    Assert(global_to_local_solution->size() > dependency_index,
+                           dealii::ExcMessage(
+                             "Global to local solution size " +
+                             std::to_string(global_to_local_solution->size()) +
+                             " is greater than dependency index " +
+                             std::to_string(dependency_index)));
+                    Assert(global_to_local_solution->at(dependency_index).size() >
+                             dependency_type,
+                           dealii::ExcMessage(
+                             "Global to local solution size at dependency index " +
+                             std::to_string(dependency_index) + " " +
+                             std::to_string(
+                               global_to_local_solution->at(dependency_index).size()) +
+                             " is greater than dependency type " +
+                             std::to_string(dependency_type)));
+                    Assert(global_to_local_solution->at(dependency_index)
+                               .at(dependency_type) != Numbers::invalid_index,
+                           dealii::ExcMessage(
+                             "Global to local solution at dependency index " +
+                             std::to_string(dependency_index) + " " +
+                             std::to_string(dependency_type) + " is invalid"));
+
                     feeval_map[dependency_index][dependency_type] =
-                      std::make_unique<VectorFEEvaluation>(
-                        data,
-                        global_to_local_solution->at(
-                          std::make_pair(dependency_index,
-                                         static_cast<DependencyType>(dependency_type))));
+                      std::make_unique<VectorFEEvaluation>(data,
+                                                           global_to_local_solution
+                                                             ->at(dependency_index)
+                                                             .at(dependency_type));
                   }
               }
 
@@ -631,14 +679,23 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                 continue;
               }
 
-            const auto &pair =
-              std::make_pair(dependency_index,
-                             static_cast<DependencyType>(dependency_type));
-            Assert(global_to_local_solution->contains(pair),
-                   dealii::ExcMessage(
-                     "The global to local mapping does not exists for global index = " +
-                     std::to_string(dependency_index) + "  and type = " +
-                     to_string(static_cast<DependencyType>(dependency_type))));
+            Assert(global_to_local_solution->size() > dependency_index,
+                   dealii::ExcMessage("Global to local solution size " +
+                                      std::to_string(global_to_local_solution->size()) +
+                                      " is greater than dependency index " +
+                                      std::to_string(dependency_index)));
+            Assert(
+              global_to_local_solution->at(dependency_index).size() > dependency_type,
+              dealii::ExcMessage(
+                "Global to local solution size at dependency index " +
+                std::to_string(dependency_index) + " " +
+                std::to_string(global_to_local_solution->at(dependency_index).size()) +
+                " is greater than dependency type " + std::to_string(dependency_type)));
+            Assert(global_to_local_solution->at(dependency_index).at(dependency_type) !=
+                     Numbers::invalid_index,
+                   dealii::ExcMessage("Global to local solution at dependency index " +
+                                      std::to_string(dependency_index) + " " +
+                                      std::to_string(dependency_type) + " is invalid"));
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant = feeval_map[dependency_index][dependency_type];
@@ -651,7 +708,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                 {
                   return;
                 }
-              const unsigned int &local_index = global_to_local_solution->at(pair);
+              const Types::Index &local_index =
+                global_to_local_solution->at(dependency_index).at(dependency_type);
               Assert(src.size() > local_index,
                      dealii::ExcMessage(
                        "The provided src vector's size is below the given local "
@@ -887,14 +945,23 @@ VariableContainer<dim, degree, number>::read_dof_values(
                 continue;
               }
 
-            const auto &pair =
-              std::make_pair(dependency_index,
-                             static_cast<DependencyType>(dependency_type));
-            Assert(global_to_local_solution->contains(pair),
-                   dealii::ExcMessage(
-                     "The global to local mapping does not exists for global index = " +
-                     std::to_string(dependency_index) + "  and type = " +
-                     to_string(static_cast<DependencyType>(dependency_type))));
+            Assert(global_to_local_solution->size() > dependency_index,
+                   dealii::ExcMessage("Global to local solution size " +
+                                      std::to_string(global_to_local_solution->size()) +
+                                      " is greater than dependency index " +
+                                      std::to_string(dependency_index)));
+            Assert(
+              global_to_local_solution->at(dependency_index).size() > dependency_type,
+              dealii::ExcMessage(
+                "Global to local solution size at dependency index " +
+                std::to_string(dependency_index) + " " +
+                std::to_string(global_to_local_solution->at(dependency_index).size()) +
+                " is greater than dependency type " + std::to_string(dependency_type)));
+            Assert(global_to_local_solution->at(dependency_index).at(dependency_type) !=
+                     Numbers::invalid_index,
+                   dealii::ExcMessage("Global to local solution at dependency index " +
+                                      std::to_string(dependency_index) + " " +
+                                      std::to_string(dependency_type) + " is invalid"));
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant = feeval_map[dependency_index][dependency_type];
@@ -904,7 +971,8 @@ VariableContainer<dim, degree, number>::read_dof_values(
               if (eval_flag_set[dependency_index][dependency_type] !=
                   dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
-                  const unsigned int &local_index = global_to_local_solution->at(pair);
+                  const Types::Index &local_index =
+                    global_to_local_solution->at(dependency_index).at(dependency_type);
                   Assert(src.size() > local_index,
                          dealii::ExcMessage(
                            "The provided src vector's size is below the given local "
@@ -1086,13 +1154,24 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
         const DependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
-    Assert(
-      global_to_local_solution->contains(std::make_pair(residual_index, dependency_type)),
-      dealii::ExcMessage(
-        "The global to local mapping does not exists for global index = " +
-        std::to_string(residual_index) + "  and type = " + to_string(dependency_type)));
-    const unsigned int &local_index =
-      global_to_local_solution->at(std::make_pair(residual_index, dependency_type));
+    Assert(global_to_local_solution->size() > residual_index,
+           dealii::ExcMessage("Global to local solution size " +
+                              std::to_string(global_to_local_solution->size()) +
+                              " is greater than dependency index " +
+                              std::to_string(residual_index)));
+    Assert(global_to_local_solution->at(residual_index).size() > dependency_type,
+           dealii::ExcMessage(
+             "Global to local solution size at dependency index " +
+             std::to_string(residual_index) + " " +
+             std::to_string(global_to_local_solution->at(residual_index).size()) +
+             " is greater than dependency type " + std::to_string(dependency_type)));
+    Assert(global_to_local_solution->at(residual_index).at(dependency_type) !=
+             Numbers::invalid_index,
+           dealii::ExcMessage("Global to local solution at dependency index " +
+                              std::to_string(residual_index) + " " +
+                              std::to_string(dependency_type) + " is invalid"));
+    const Types::Index &local_index =
+      global_to_local_solution->at(residual_index).at(dependency_type);
     Assert(dst.size() > local_index,
            dealii::ExcMessage(
              "The provided dst vector's size is below the given local index = " +

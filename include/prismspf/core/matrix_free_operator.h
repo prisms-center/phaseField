@@ -113,8 +113,8 @@ public:
    * @brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(const std::map<std::pair<unsigned int, DependencyType>,
-                                             unsigned int> &_global_to_local_solution);
+  add_global_to_local_mapping(
+    const std::vector<std::vector<Types::Index>> &_global_to_local_solution);
 
   /**
    * @brief Add the solution subset for src vector.
@@ -269,8 +269,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-    global_to_local_solution;
+  std::vector<std::vector<Types::Index>> global_to_local_solution;
 
   /**
    * @brief Subset of fields that are necessary for the source.

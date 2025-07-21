@@ -49,10 +49,9 @@ public:
   VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<unsigned int, VariableAttributes> &_subset_attributes,
-    const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-                    &_global_to_local_solution,
-    const SolveType &_solve_type,
-    bool             use_local_mapping = false);
+    const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
+    const SolveType                                  &_solve_type,
+    bool                                              use_local_mapping = false);
 
   /**
    * @brief Return the value of the specified field.
@@ -884,8 +883,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-    *global_to_local_solution;
+  const std::vector<std::vector<Types::Index>> *global_to_local_solution;
 
   /**
    * @brief The residual evaluation flags taken in from the subset attributes. For all
