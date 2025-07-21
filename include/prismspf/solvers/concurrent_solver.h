@@ -63,6 +63,9 @@ public:
   {
     // Call the base class init
     this->SolverBase<dim, degree, number>::init();
+
+    // Compute the shared dependencies
+    this->compute_shared_dependencies(this->field_solve_type, this->solve_priority);
   };
 
   /**
@@ -111,6 +114,21 @@ private:
    */
   std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>
     system_matrix;
+
+  /**
+   * @brief Mapping from global solution vectors to the local ones
+   */
+  std::vector<std::vector<Types::Index>> global_to_local_solution;
+
+  /**
+   * @brief Subset of solutions fields that are necessary for concurrent solves.
+   */
+  std::vector<typename SolverBase<dim, degree, number>::VectorType *> solution_subset;
+
+  /**
+   * @brief Subset of new solutions fields that are necessary for concurrent solves.
+   */
+  std::vector<typename SolverBase<dim, degree, number>::VectorType *> new_solution_subset;
 };
 
 PRISMS_PF_END_NAMESPACE

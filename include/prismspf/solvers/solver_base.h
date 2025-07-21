@@ -76,17 +76,14 @@ public:
   virtual void
   init()
   {
-    // Compute the subset of variable attributes
-    compute_subset_attributes(field_solve_type, solve_priority);
+    // Update the subset of variable attributes
+    update_subset_attributes(field_solve_type, solve_priority);
 
     // If the subset attribute is empty return early
     if (subset_attributes.empty())
       {
         return;
       }
-
-    // Compute the shared dependencies
-    compute_shared_dependencies(field_solve_type, solve_priority);
 
     // Set the initial condition
     set_initial_condition();
