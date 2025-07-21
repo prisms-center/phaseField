@@ -107,12 +107,25 @@ ExplicitBase<dim, degree>::compute_shared_dependencies()
   auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
   for (const auto &[main_index, variable] : subset_attributes)
     {
-      for (const auto &[dependency_index, map] : variable.get_dependency_set_rhs())
+      Types::Index dependency_index = 0;
+      for (const auto &inner_dependency_set : variable.get_dependency_set_rhs())
         {
-          for (const auto &[dependency_type, field_type] : map)
+          Types::Index dependency_type = 0;
+          for (const auto &field_type : inner_dependency_set)
             {
-              dependency_set[dependency_index].emplace(dependency_type, field_type);
+              // Skip if an invalid field type is found to not overwrite the existing
+              // dependency set.
+              if (field_type == Numbers::invalid_field_type)
+                {
+                  dependency_type++;
+                  continue;
+                }
+              dependency_set[dependency_index][dependency_type] = field_type;
+
+              dependency_type++;
             }
+
+          dependency_index++;
         }
     }
   for (auto &[index, variable] : subset_attributes)
@@ -193,14 +206,27 @@ ExplicitBase<dim, degree>::print()
     << "    Shared dependency set\n"
     << "  ==============================================\n";
   const auto &dependency_set = subset_attributes.begin()->second.get_dependency_set_rhs();
-  for (const auto &[index, map] : dependency_set)
+  Types::Index dependency_index = 0;
+  for (const auto &inner_dependency_set : dependency_set)
     {
-      for (const auto &[dependency_type, field_type] : map)
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
         {
+          // Skip if an invalid field type is found
+          if (field_type == Numbers::invalid_field_type)
+            {
+              dependency_type++;
+              continue;
+            }
           ConditionalOStreams::pout_summary()
-            << "  Index: " << index << " Dependency: " << to_string(dependency_type)
+            << "  Index: " << dependency_index
+            << " Dependency: " << to_string(static_cast<DependencyType>(dependency_type))
             << " Field: " << to_string(field_type) << "\n";
+
+          dependency_type++;
         }
+
+      dependency_index++;
     }
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }

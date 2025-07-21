@@ -77,19 +77,33 @@ NonexplicitCononlinearSolver<dim, degree>::init()
           global_to_local_solution[index].emplace(std::make_pair(index,
                                                                  DependencyType::Normal),
                                                   0);
-          for (const auto &[variable_index, map] :
+          Types::Index dependency_index = 0;
+          for (const auto &inner_dependency_set :
                subset_attributes_list.back().begin()->second.get_dependency_set_rhs())
             {
-              for (const auto &[dependency_type, field_type] : map)
+              Types::Index dependency_type = 0;
+              for (const auto &field_type : inner_dependency_set)
                 {
-                  const auto pair = std::make_pair(variable_index, dependency_type);
+                  // Skip if an invalid field type is found
+                  if (field_type == Numbers::invalid_field_type)
+                    {
+                      dependency_type++;
+                      continue;
+                    }
+                  const auto pair =
+                    std::make_pair(dependency_index,
+                                   static_cast<DependencyType>(dependency_type));
 
                   solution_subset[index].push_back(
-                    this->get_solution_handler().get_solution_vector(variable_index,
-                                                                     dependency_type));
+                    this->get_solution_handler().get_solution_vector(
+                      dependency_index,
+                      static_cast<DependencyType>(dependency_type)));
                   global_to_local_solution[index]
                     .emplace(pair, solution_subset.at(index).size() - 1);
+
+                  dependency_type++;
                 }
+              dependency_index++;
             }
           this->get_system_matrix().at(index)->add_global_to_local_mapping(
             global_to_local_solution.at(index));

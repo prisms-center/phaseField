@@ -61,16 +61,30 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   residual_global_to_local_solution.emplace(std::make_pair(field_index,
                                                            DependencyType::Normal),
                                             0);
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_rhs())
+  Types::Index variable_index = 0;
+  for (const auto &inner_dependency_set : variable_attributes->get_dependency_set_rhs())
     {
-      for (const auto &[dependency_type, field_type] : map)
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
         {
-          const auto pair = std::make_pair(variable_index, dependency_type);
+          // Skip if an invalid field type is found
+          if (field_type == Numbers::invalid_field_type)
+            {
+              dependency_type++;
+              continue;
+            }
+          const auto pair =
+            std::make_pair(variable_index, static_cast<DependencyType>(dependency_type));
 
-          residual_src.push_back(
-            solution_handler->get_solution_vector(variable_index, dependency_type));
+          residual_src.push_back(solution_handler->get_solution_vector(
+            variable_index,
+            static_cast<DependencyType>(dependency_type)));
           residual_global_to_local_solution.emplace(pair, residual_src.size() - 1);
+
+          dependency_type++;
         }
+
+      variable_index++;
     }
 
   // Create the newton update subset of solution vectors and add the mapping to
@@ -81,23 +95,38 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_lhs())
+  variable_index = 0;
+  for (const auto &inner_dependency_set : variable_attributes->get_dependency_set_lhs())
     {
-      for (const auto &[dependency_type, field_type] : map)
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
         {
-          const auto pair = std::make_pair(variable_index, dependency_type);
+          // Skip if an invalid field type is found
+          if (field_type == Numbers::invalid_field_type)
+            {
+              dependency_type++;
+              continue;
+            }
 
-          if (dependency_type == DependencyType::Change)
+          const auto pair =
+            std::make_pair(variable_index, static_cast<DependencyType>(dependency_type));
+
+          if (static_cast<DependencyType>(dependency_type) == DependencyType::Change)
             {
               Assert(field_index == variable_index,
                      dealii::ExcMessage("The change type should have the same type as "
                                         "the field we're solving."));
             }
-          newton_update_src.push_back(
-            solution_handler->get_solution_vector(variable_index, dependency_type));
+          newton_update_src.push_back(solution_handler->get_solution_vector(
+            variable_index,
+            static_cast<DependencyType>(dependency_type)));
           newton_update_global_to_local_solution.emplace(pair,
                                                          newton_update_src.size() - 1);
+
+          dependency_type++;
         }
+
+      variable_index++;
     }
   Assert(
     newton_update_global_to_local_solution.size() == newton_update_src.size(),

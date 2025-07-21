@@ -757,3 +757,47 @@ Time: 4.163867712020874
  
 Tests Passed: 8/8
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-20 22:06
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 5.227436304092407
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 81.54533076286316
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 54.580665588378906
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 22.439528703689575
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.9309360980987549
+ 
+Application: mechanics
+Result: Pass
+Time: 1.1958563327789307
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 38.833229780197144
+ 
+Application: fracture
+Result: Pass
+Time: 27.78476047515869
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 

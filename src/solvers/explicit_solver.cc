@@ -56,19 +56,33 @@ ExplicitSolver<dim, degree>::init()
     this->get_matrix_free_handler().get_matrix_free());
 
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
-  for (const auto &[index, map] :
+  Types::Index dependency_index = 0;
+  for (const auto &inner_dependency_set :
        this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
     {
-      for (const auto &[dependency_type, field_type] : map)
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
         {
-          const auto pair = std::make_pair(index, dependency_type);
+          // Skip if an invalid field type is found
+          if (field_type == Numbers::invalid_field_type)
+            {
+              dependency_type++;
+              continue;
+            }
+          const auto pair = std::make_pair(dependency_index,
+                                           static_cast<DependencyType>(dependency_type));
 
-          solution_subset.push_back(
-            this->get_solution_handler().get_solution_vector(index, dependency_type));
+          solution_subset.push_back(this->get_solution_handler().get_solution_vector(
+            dependency_index,
+            static_cast<DependencyType>(dependency_type)));
           new_solution_subset.push_back(
-            this->get_solution_handler().get_new_solution_vector(index));
+            this->get_solution_handler().get_new_solution_vector(dependency_index));
           global_to_local_solution.emplace(pair, solution_subset.size() - 1);
+
+          dependency_type++;
         }
+
+      dependency_index++;
     }
   this->get_system_matrix()->add_global_to_local_mapping(global_to_local_solution);
 }

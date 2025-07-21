@@ -42,29 +42,37 @@ VariableContainer<dim, degree, number>::VariableContainer(
   const Types::Index max_fields =
     subset_attributes->begin()->second.get_dependency_set_rhs().size();
   const Types::Index max_dependencies =
-    subset_attributes->begin()->second.get_dependency_set_rhs().begin()->second.size();
-  feeval_map.resize(max_fields + 1);
+    subset_attributes->begin()->second.get_dependency_set_rhs().begin()->size();
+  feeval_map.resize(max_fields);
   for (auto &dependency_feeval_map : feeval_map)
     {
-      dependency_feeval_map.resize(max_dependencies + 1);
+      dependency_feeval_map.resize(max_dependencies);
     }
 
-  auto construct_map =
-    [&](const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
+  auto construct_map = [&](const std::vector<std::vector<FieldType>> &dependency_set)
   {
-    for (const auto &[dependency_index, map] : dependency_set)
+    Types::Index dependency_index = 0;
+    for (const auto &inner_dependency_set : dependency_set)
       {
-        for (const auto &[dependency_type, field_type] : map)
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
           {
+            // Skip if the field type is invalid
+            if (field_type == Numbers::invalid_field_type)
+              {
+                dependency_type++;
+                continue;
+              }
+
             // Ensure the indices are within bounds
             Assert(dependency_index < feeval_map.size(),
                    dealii::ExcMessage(
                      "Dependency index " + std::to_string(dependency_index) +
                      " exceeds feeval_map size " + std::to_string(feeval_map.size())));
-            Assert(static_cast<Types::Index>(dependency_type) <
-                     feeval_map[dependency_index].size(),
+            Assert(dependency_type < feeval_map[dependency_index].size(),
                    dealii::ExcMessage(
-                     "Dependency type index " + to_string(dependency_type) +
+                     "Dependency type index " +
+                     to_string(static_cast<DependencyType>(dependency_type)) +
                      " exceeds feeval_map[dependency_index] size " +
                      std::to_string(feeval_map[dependency_index].size())));
 
@@ -72,8 +80,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
               {
                 if (!use_local_mapping)
                   {
-                    feeval_map[dependency_index][static_cast<Types::Index>(
-                      dependency_type)] =
+                    feeval_map[dependency_index][dependency_type] =
                       std::make_unique<ScalarFEEvaluation>(data, dependency_index);
                   }
                 else
@@ -83,33 +90,36 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // variables to matrix free indices. For most cases, they are one and
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
-                    feeval_map[dependency_index]
-                              [static_cast<Types::Index>(dependency_type)] =
-                                std::make_unique<ScalarFEEvaluation>(
-                                  data,
-                                  global_to_local_solution->at(
-                                    std::make_pair(dependency_index, dependency_type)));
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<ScalarFEEvaluation>(
+                        data,
+                        global_to_local_solution->at(
+                          std::make_pair(dependency_index,
+                                         static_cast<DependencyType>(dependency_type))));
                   }
               }
             else
               {
                 if (!use_local_mapping)
                   {
-                    feeval_map[dependency_index][static_cast<Types::Index>(
-                      dependency_type)] =
+                    feeval_map[dependency_index][dependency_type] =
                       std::make_unique<VectorFEEvaluation>(data, dependency_index);
                   }
                 else
                   {
-                    feeval_map[dependency_index]
-                              [static_cast<Types::Index>(dependency_type)] =
-                                std::make_unique<VectorFEEvaluation>(
-                                  data,
-                                  global_to_local_solution->at(
-                                    std::make_pair(dependency_index, dependency_type)));
+                    feeval_map[dependency_index][dependency_type] =
+                      std::make_unique<VectorFEEvaluation>(
+                        data,
+                        global_to_local_solution->at(
+                          std::make_pair(dependency_index,
+                                         static_cast<DependencyType>(dependency_type))));
                   }
               }
+
+            dependency_type++;
           }
+
+        dependency_index++;
       }
   };
 
@@ -605,33 +615,38 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                                          &eval_flag_set,
-        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
+                                                  &eval_flag_set,
+        const std::vector<std::vector<FieldType>> &dependency_set)
   {
-    for (const auto &[dependency_index, map] : dependency_set)
+    Types::Index dependency_index = 0;
+    for (const auto &inner_dependency_set : dependency_set)
       {
-        for (const auto &[dependency_type, field_type] : map)
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
           {
-            if (dependency_type == DependencyType::Change)
+            if (static_cast<DependencyType>(dependency_type) == DependencyType::Change ||
+                field_type == Numbers::invalid_field_type)
               {
+                dependency_type++;
                 continue;
               }
 
-            const auto &pair = std::make_pair(dependency_index, dependency_type);
+            const auto &pair =
+              std::make_pair(dependency_index,
+                             static_cast<DependencyType>(dependency_type));
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
-                     std::to_string(dependency_index) +
-                     "  and type = " + to_string(dependency_type)));
-            feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant =
-              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
+                     std::to_string(dependency_index) + "  and type = " +
+                     to_string(static_cast<DependencyType>(dependency_type))));
+            feevaluation_exists(dependency_index,
+                                static_cast<DependencyType>(dependency_type));
+            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
               feeval_ptr->reinit(cell);
-              if (eval_flag_set[dependency_index]
-                               [static_cast<Types::Index>(dependency_type)] ==
+              if (eval_flag_set[dependency_index][dependency_type] ==
                   dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
                   return;
@@ -641,13 +656,11 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                      dealii::ExcMessage(
                        "The provided src vector's size is below the given local "
                        "index = " +
-                       std::to_string(local_index) +
-                       " for global index = " + std::to_string(dependency_index) +
-                       "  and type = " + to_string(dependency_type)));
+                       std::to_string(local_index) + " for global index = " +
+                       std::to_string(dependency_index) + "  and type = " +
+                       to_string(static_cast<DependencyType>(dependency_type))));
               feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
-              feeval_ptr->evaluate(
-                eval_flag_set[dependency_index]
-                             [static_cast<Types::Index>(dependency_type)]);
+              feeval_ptr->evaluate(eval_flag_set[dependency_index][dependency_type]);
             };
 
             if constexpr (dim == 1)
@@ -668,7 +681,11 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                   },
                   feeval_variant);
               }
+
+            dependency_type++;
           }
+
+        dependency_index++;
       }
   };
 
@@ -707,31 +724,33 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                                          &eval_flag_set,
-        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
+                                                  &eval_flag_set,
+        const std::vector<std::vector<FieldType>> &dependency_set)
   {
-    for (const auto &[dependency_index, map] : dependency_set)
+    Types::Index dependency_index = 0;
+    for (const auto &inner_dependency_set : dependency_set)
       {
-        for (const auto &[dependency_type, field_type] : map)
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
           {
             // TODO (landinjm): This can be drastically simplified because all we're doing
             // in reinit-ing and eval-ing the change solution.
-            if (dependency_type != DependencyType::Change)
+            if (static_cast<DependencyType>(dependency_type) != DependencyType::Change ||
+                field_type == Numbers::invalid_field_type)
               {
+                dependency_type++;
                 continue;
               }
 
-            feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant =
-              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
+            feevaluation_exists(dependency_index,
+                                static_cast<DependencyType>(dependency_type));
+            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
               feeval_ptr->reinit(cell);
               feeval_ptr->read_dof_values_plain(src);
-              feeval_ptr->evaluate(
-                eval_flag_set[dependency_index]
-                             [static_cast<Types::Index>(dependency_type)]);
+              feeval_ptr->evaluate(eval_flag_set[dependency_index][dependency_type]);
             };
 
             if constexpr (dim == 1)
@@ -752,7 +771,11 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
                   },
                   feeval_variant);
               }
+
+            dependency_type++;
           }
+
+        dependency_index++;
       }
   };
 
@@ -848,32 +871,37 @@ VariableContainer<dim, degree, number>::read_dof_values(
 {
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                                          &eval_flag_set,
-        const std::map<unsigned int, std::map<DependencyType, FieldType>> &dependency_set)
+                                                  &eval_flag_set,
+        const std::vector<std::vector<FieldType>> &dependency_set)
   {
-    for (const auto &[dependency_index, map] : dependency_set)
+    Types::Index dependency_index = 0;
+    for (const auto &inner_dependency_set : dependency_set)
       {
-        for (const auto &[dependency_type, field_type] : map)
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
           {
-            if (dependency_type == DependencyType::Change)
+            if (static_cast<DependencyType>(dependency_type) == DependencyType::Change ||
+                field_type == Numbers::invalid_field_type)
               {
+                dependency_type++;
                 continue;
               }
 
-            const auto &pair = std::make_pair(dependency_index, dependency_type);
+            const auto &pair =
+              std::make_pair(dependency_index,
+                             static_cast<DependencyType>(dependency_type));
             Assert(global_to_local_solution->contains(pair),
                    dealii::ExcMessage(
                      "The global to local mapping does not exists for global index = " +
-                     std::to_string(dependency_index) +
-                     "  and type = " + to_string(dependency_type)));
-            feevaluation_exists(dependency_index, dependency_type);
-            auto &feeval_variant =
-              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
+                     std::to_string(dependency_index) + "  and type = " +
+                     to_string(static_cast<DependencyType>(dependency_type))));
+            feevaluation_exists(dependency_index,
+                                static_cast<DependencyType>(dependency_type));
+            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
-              if (eval_flag_set[dependency_index]
-                               [static_cast<Types::Index>(dependency_type)] !=
+              if (eval_flag_set[dependency_index][dependency_type] !=
                   dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
                   const unsigned int &local_index = global_to_local_solution->at(pair);
@@ -881,9 +909,9 @@ VariableContainer<dim, degree, number>::read_dof_values(
                          dealii::ExcMessage(
                            "The provided src vector's size is below the given local "
                            "index = " +
-                           std::to_string(local_index) +
-                           " for global index = " + std::to_string(dependency_index) +
-                           "  and type = " + to_string(dependency_type)));
+                           std::to_string(local_index) + " for global index = " +
+                           std::to_string(dependency_index) + "  and type = " +
+                           to_string(static_cast<DependencyType>(dependency_type))));
                   feeval_ptr->read_dof_values_plain(*(src.at(local_index)));
                 }
             };
@@ -906,7 +934,11 @@ VariableContainer<dim, degree, number>::read_dof_values(
                   },
                   feeval_variant);
               }
+
+            dependency_type++;
           }
+
+        dependency_index++;
       }
   };
 

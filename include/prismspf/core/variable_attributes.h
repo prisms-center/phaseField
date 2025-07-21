@@ -200,7 +200,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] const std::map<Types::Index, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] const std::vector<std::vector<FieldType>> &
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
@@ -209,7 +209,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] std::map<Types::Index, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] std::vector<std::vector<FieldType>> &
   get_dependency_set_rhs()
   {
     return dependency_set_rhs;
@@ -219,8 +219,7 @@ struct VariableAttributes
    * @brief Set the dependency set for the RHS.
    */
   void
-  set_dependency_set_rhs(const std::map<Types::Index, std::map<DependencyType, FieldType>>
-                           &_dependency_set_rhs)
+  set_dependency_set_rhs(const std::vector<std::vector<FieldType>> &_dependency_set_rhs)
   {
     dependency_set_rhs = _dependency_set_rhs;
   }
@@ -228,7 +227,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the LHS.
    */
-  [[nodiscard]] const std::map<Types::Index, std::map<DependencyType, FieldType>> &
+  [[nodiscard]] const std::vector<std::vector<FieldType>> &
   get_dependency_set_lhs() const
   {
     return dependency_set_lhs;
@@ -399,20 +398,38 @@ private:
   EvalFlags eval_flags_residual_lhs = dealii::EvaluationFlags::EvaluationFlags::nothing;
 
   /**
-   * @brief A dependency set where the RHS evaluation flags that are not 0 (not nothing)
-   * are included. This is used to determine what FEEvaluation objects are necessary in
-   * variable container.
+   * @brief TODO (Landinjm): Add brief description.
+   *
+   * To create the FEEvaluation object, we need to know two things: the index that
+   * corresponds to the matrix-free object and the spacedim of the field (e.g., scalar or
+   * vector). Notably, to avoid some burden of creating extra matrix-free objects for
+   * multigrid, we occasionly use local indexing rather than a global index.
+   *
+   * The goal of this dependency set is to create a vector of FEEvaluation objects in
+   * `VariableContainer`. For performance reasons, we represent this as a vector.
+   *
+   * TODO (Landinjm): Add some more details about the vector representation.
+   *
    * @remark Internally determined
    */
-  std::map<Types::Index, std::map<DependencyType, FieldType>> dependency_set_rhs;
+  std::vector<std::vector<FieldType>> dependency_set_rhs;
 
   /**
-   * @brief A dependency set where the LHS evaluation flags that are not 0 (not nothing)
-   * are included. This is used to determine what FEEvaluation objects are necessary in
-   * variable container.
+   * @brief TODO (Landinjm): Add brief description.
+   *
+   * To create the FEEvaluation object, we need to know two things: the index that
+   * corresponds to the matrix-free object and the spacedim of the field (e.g., scalar or
+   * vector). Notably, to avoid some burden of creating extra matrix-free objects for
+   * multigrid, we occasionly use local indexing rather than a global index.
+   *
+   * The goal of this dependency set is to create a vector of FEEvaluation objects in
+   * `VariableContainer`. For performance reasons, we represent this as a vector.
+   *
+   * TODO (Landinjm): Add some more details about the vector representation.
+   *
    * @remark Internally determined
    */
-  std::map<Types::Index, std::map<DependencyType, FieldType>> dependency_set_lhs;
+  std::vector<std::vector<FieldType>> dependency_set_lhs;
 
   /**
    * @brief Raw dependencies of the field.

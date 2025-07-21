@@ -366,9 +366,18 @@ VariableAttributes::compute_dependency_set(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change flags are irrelevant for RHS,
-  // so ignore those. If we have EvalFlags::nothing ignore
-  // it. Always add itself as a dependency for RHS since this is used for determining what
-  // FEEvaluation objects should be made.
+  // so ignore those. If we have EvalFlags::nothing ignore it. Always add itself as a
+  // dependency for RHS since this is used for determining what FEEvaluation objects
+  // should be made.
+
+  // First resize the dependency_set_rhs and dependency_set_lhs and populate them with
+  // invalid entries. This is so we don't create the FEEvaluation objects.
+  dependency_set_rhs.resize(eval_flag_set_rhs.size(),
+                            std::vector<FieldType>(eval_flag_set_rhs.begin()->size(),
+                                                   Numbers::invalid_field_type));
+  dependency_set_lhs.resize(eval_flag_set_lhs.size(),
+                            std::vector<FieldType>(eval_flag_set_lhs.begin()->size(),
+                                                   Numbers::invalid_field_type));
 
   Types::Index index = 0;
   for (const auto &dependency_set : eval_flag_set_rhs)
@@ -376,6 +385,8 @@ VariableAttributes::compute_dependency_set(
       Types::Index dep_index = 0;
       for (const auto &value : dependency_set)
         {
+          // TODO (landinjm): Should the change terms be disallowed? The assertion might
+          // be redundant but provide some context.
           if (static_cast<DependencyType>(dep_index) == DependencyType::Change ||
               value == EvalFlags::nothing)
             {
@@ -388,8 +399,8 @@ VariableAttributes::compute_dependency_set(
                    "The provided attributes does not have an entry for the index = " +
                    std::to_string(index)));
 
-          dependency_set_rhs[index].emplace(static_cast<DependencyType>(dep_index),
-                                            other_var_attributes.at(index).field_type);
+          dependency_set_rhs[index][static_cast<Types::Index>(dep_index)] =
+            other_var_attributes.at(index).field_type;
 
           dep_index++;
         }
@@ -397,7 +408,8 @@ VariableAttributes::compute_dependency_set(
       index++;
     }
 
-  dependency_set_rhs[field_index].emplace(DependencyType::Normal, field_type);
+  dependency_set_rhs[field_index][static_cast<Types::Index>(DependencyType::Normal)] =
+    field_type;
 
   index = 0;
   for (const auto &dependency_set : eval_flag_set_lhs)
@@ -416,8 +428,8 @@ VariableAttributes::compute_dependency_set(
                    "The provided attributes does not have an entry for the index = " +
                    std::to_string(index)));
 
-          dependency_set_lhs[index].emplace(static_cast<DependencyType>(dep_index),
-                                            other_var_attributes.at(index).field_type);
+          dependency_set_lhs[index][static_cast<Types::Index>(dep_index)] =
+            other_var_attributes.at(index).field_type;
 
           dep_index++;
         }
