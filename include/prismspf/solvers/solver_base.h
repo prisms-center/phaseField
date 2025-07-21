@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/vector_tools.h>
 
+#include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
@@ -23,13 +25,14 @@ class SolverBase
 {
 public:
   using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<number>;
 
   /**
    * @brief Constructor.
    */
   SolverBase(const SolverContext<dim, degree> &_solver_context,
              const FieldSolveType             &_field_solve_type,
-             unsigned int                      _solve_priority = 0)
+             Types::Index                      _solve_priority = 0)
     : solver_context(std::make_shared<SolverContext<dim, degree>>(_solver_context))
     , field_solve_type(_field_solve_type)
     , solve_priority(_solve_priority)
@@ -38,7 +41,7 @@ public:
   /**
    * @brief Destructor.
    */
-  virtual ~SolverBase() = 0;
+  virtual ~SolverBase() = default;
 
   /**
    * @brief Copy constructor.
@@ -113,6 +116,8 @@ public:
       {
         return;
       }
+
+    // Do nothing
   };
 
   /**
@@ -128,11 +133,11 @@ public:
    * This function creates and returns a map of the VariablesAttributes that belong to a
    * FieldSolveType and solve order.
    */
-  [[nodiscard]] std::map<unsigned int, VariableAttributes>
+  [[nodiscard]] std::map<Types::Index, VariableAttributes>
   compute_subset_attributes(const FieldSolveType &field_solve_type,
-                            unsigned int          solve_priority) const
+                            Types::Index          solve_priority) const
   {
-    std::map<unsigned int, VariableAttributes> local_subset_attributes;
+    std::map<Types::Index, VariableAttributes> local_subset_attributes;
 
     // TODO (landinjm): Use the solve priority
     (void) solve_priority;
@@ -145,6 +150,8 @@ public:
             local_subset_attributes.emplace(index, variable);
           }
       }
+
+    return local_subset_attributes;
   };
 
   /**
@@ -156,7 +163,7 @@ public:
    */
   void
   update_subset_attributes(const FieldSolveType &field_solve_type,
-                           unsigned int          solve_priority)
+                           Types::Index          solve_priority)
   {
     subset_attributes = compute_subset_attributes(field_solve_type, solve_priority);
   };
@@ -166,10 +173,10 @@ public:
    * to a given FieldSolveType and solve order.
    */
   void
-  compute_shared_dependencies(const FieldSolveType &field_solve_type,
-                              unsigned int          solve_priority)
+  compute_shared_dependencies()
   {
     Assert(field_solve_type == FieldSolveType::Explicit ||
+             field_solve_type == FieldSolveType::ExplicitConstant ||
              field_solve_type == FieldSolveType::ExplicitPostprocess,
            dealii::ExcMessage(
              "compute_shared_dependencies() should only be used for concurrent solves."));
@@ -184,19 +191,22 @@ public:
     const Types::Index max_dependencies =
       local_subset_attributes.begin()->second.get_eval_flag_set_rhs().begin()->size();
 
-    // Create a vector for the shared dependencies
-    std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-      shared_dependencies(max_fields,
-                          std::vector<dealii::EvaluationFlags::EvaluationFlags>(
-                            max_dependencies,
-                            dealii::EvaluationFlags::EvaluationFlags::nothing));
+    // Create a vector for the shared eval flags and dependencies
+    std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>> shared_eval_flags(
+      max_fields,
+      std::vector<dealii::EvaluationFlags::EvaluationFlags>(
+        max_dependencies,
+        dealii::EvaluationFlags::EvaluationFlags::nothing));
+    std::vector<std::vector<FieldType>> shared_dependencies(
+      max_fields,
+      std::vector<FieldType>(max_dependencies, Numbers::invalid_field_type));
 
-    // Populate the shared dependencies
+    // Populate the shared eval flags
     for (const auto &[index, variable] : local_subset_attributes)
       {
-        for (Types::Index field_index = 0; field_index <= max_fields; field_index++)
+        for (Types::Index field_index = 0; field_index < max_fields; field_index++)
           {
-            for (Types::Index dependency_index = 0; dependency_index <= max_dependencies;
+            for (Types::Index dependency_index = 0; dependency_index < max_dependencies;
                  dependency_index++)
               {
                 const auto &eval_flag =
@@ -216,7 +226,11 @@ public:
                     "Change terms are not allowed in the RHS of the dependency set"));
 
                 // If the dependency is not a change term, then we can add the dependency
-                shared_dependencies.at(field_index).at(dependency_index) |= eval_flag;
+                shared_eval_flags.at(field_index).at(dependency_index) |= eval_flag;
+
+                // Also add the field type to the shared dependencies
+                shared_dependencies.at(field_index).at(dependency_index) =
+                  variable.get_dependency_set_rhs().at(field_index).at(dependency_index);
               }
           }
       }
@@ -224,6 +238,7 @@ public:
     // Assign the shared dependencies to the subset attributes
     for (auto &[index, variable] : subset_attributes)
       {
+        variable.set_eval_flag_set_rhs(shared_eval_flags);
         variable.set_dependency_set_rhs(shared_dependencies);
       }
   };
@@ -382,7 +397,7 @@ public:
   /**
    * @brief Get the subset attributes.
    */
-  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
+  [[nodiscard]] const std::map<Types::Index, VariableAttributes> &
   get_subset_attributes() const
   {
     return subset_attributes;
@@ -406,6 +421,17 @@ public:
     return solver_context->get_pde_operator_float();
   }
 
+  /**
+   * @brief Get the field solve type.
+   */
+  [[nodiscard]] const FieldSolveType &
+  get_field_solve_type() const
+  {
+    Assert(field_solve_type != Numbers::invalid_field_solve_type,
+           dealii::ExcMessage("The field solve type is invalid."));
+    return field_solve_type;
+  }
+
 private:
   /**
    * @brief Solver context.
@@ -415,17 +441,17 @@ private:
   /**
    * @brief Field solve type.
    */
-  const FieldSolveType field_solve_type;
+  const FieldSolveType field_solve_type = Numbers::invalid_field_solve_type;
 
   /**
    * @brief Solve priority.
    */
-  const unsigned int solve_priority;
+  const Types::Index solve_priority = Numbers::invalid_index;
 
   /**
    * @brief Subset of variable attributes.
    */
-  std::map<unsigned int, VariableAttributes> subset_attributes;
+  std::map<Types::Index, VariableAttributes> subset_attributes;
 };
 
 PRISMS_PF_END_NAMESPACE

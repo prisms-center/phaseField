@@ -83,6 +83,8 @@ public:
   {
     // Call the base class solve
     this->SolverBase<dim, degree, number>::solve();
+
+    // Do nothing
   };
 
   /**

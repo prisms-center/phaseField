@@ -162,7 +162,7 @@ private:
   /**
    * @brief Explicit constant field solver class.
    */
-  ExplicitConstantSolver<dim, degree> explicit_constant_solver;
+  ExplicitConstantSolver<dim, degree, double> explicit_constant_solver;
 
   /**
    * @brief Explicit field solver class.

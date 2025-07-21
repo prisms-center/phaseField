@@ -164,6 +164,15 @@ struct VariableAttributes
   /**
    * @brief Get the RHS evaluation flags.
    */
+  void
+  set_eval_flag_set_rhs(const std::vector<std::vector<EvalFlags>> &_eval_flag_set_rhs)
+  {
+    eval_flag_set_rhs = _eval_flag_set_rhs;
+  }
+
+  /**
+   * @brief Get the RHS evaluation flags.
+   */
   [[nodiscard]] std::vector<std::vector<EvalFlags>> &
   get_eval_flag_set_rhs()
   {
@@ -362,6 +371,16 @@ private:
    * @remark Internally determined
    */
   FieldSolveType field_solve_type = Numbers::invalid_field_solve_type;
+
+  /**
+   * @brief Max number of fields.
+   */
+  Types::Index max_fields = Numbers::invalid_index;
+
+  /**
+   * @brief Max number of dependency types.
+   */
+  Types::Index max_dependency_types = Numbers::invalid_index;
 
   /**
    * @brief A map of evaluation flags for the dependencies of the current variable's RHS.

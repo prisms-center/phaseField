@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <prismspf/solvers/explicit_base.h>
+#include <prismspf/solvers/concurrent_solver.h>
 
 #include <prismspf/config.h>
 
@@ -12,14 +12,18 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief This class handles the explicit solves of all constant fields
  */
-template <unsigned int dim, unsigned int degree>
-class ExplicitConstantSolver : public ExplicitBase<dim, degree>
+template <unsigned int dim, unsigned int degree, typename number>
+class ExplicitConstantSolver : public ConcurrentSolver<dim, degree, number>
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit ExplicitConstantSolver(const SolverContext<dim, degree> &_solver_context);
+  explicit ExplicitConstantSolver(const SolverContext<dim, degree> &_solver_context,
+                                  Types::Index                      _solve_priority = 0)
+    : ConcurrentSolver<dim, degree, number>(_solver_context,
+                                            FieldSolveType::ExplicitConstant,
+                                            _solve_priority) {};
 
   /**
    * @brief Destructor.
@@ -27,16 +31,76 @@ public:
   ~ExplicitConstantSolver() override = default;
 
   /**
-   * @brief Initialize system.
+   * @brief Copy constructor.
+   *
+   * Deleted so solver instances aren't copied.
    */
-  void
-  init() override;
+  ExplicitConstantSolver(const ExplicitConstantSolver &solver_base) = delete;
 
   /**
-   * @brief Solve a single update step.
+   * @brief Copy assignment.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  ExplicitConstantSolver &
+  operator=(const ExplicitConstantSolver &solver_base) = delete;
+
+  /**
+   * @brief Move constructor.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  ExplicitConstantSolver(ExplicitConstantSolver &&solver_base) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  ExplicitConstantSolver &
+  operator=(ExplicitConstantSolver &&solver_base) noexcept = delete;
+
+  /**
+   * @brief Initialize the solver.
    */
   void
-  solve() override;
+  init() override
+  {
+    // Call the base class init
+    this->ConcurrentSolver<dim, degree, number>::init();
+  };
+
+  /**
+   * @brief Reinitialize the solver.
+   */
+  void
+  reinit() override
+  {
+    // Call the base class reinit
+    this->ConcurrentSolver<dim, degree, number>::reinit();
+  };
+
+  /**
+   * @brief Solve for a single update step.
+   */
+  void
+  solve() override
+  {
+    // Call the base class solve
+    this->ConcurrentSolver<dim, degree, number>::solve();
+
+    // Do nothing
+  };
+
+  /**
+   * @brief Print information about the solver to summary.log.
+   */
+  void
+  print()
+  {
+    // Print the base class information
+    this->ConcurrentSolver<dim, degree, number>::print();
+  }
 };
 
 PRISMS_PF_END_NAMESPACE

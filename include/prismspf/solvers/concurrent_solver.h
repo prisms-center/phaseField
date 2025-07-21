@@ -18,12 +18,15 @@ public:
    */
   ConcurrentSolver(const SolverContext<dim, degree> &_solver_context,
                    const FieldSolveType             &_field_solve_type,
-                   unsigned int                      _solve_priority = 0);
+                   Types::Index                      _solve_priority = 0)
+    : SolverBase<dim, degree, number>(_solver_context,
+                                      _field_solve_type,
+                                      _solve_priority) {};
 
   /**
    * @brief Destructor.
    */
-  virtual ~ConcurrentSolver() = 0;
+  ~ConcurrentSolver() override = default;
 
   /**
    * @brief Copy constructor.
@@ -65,7 +68,76 @@ public:
     this->SolverBase<dim, degree, number>::init();
 
     // Compute the shared dependencies
-    this->compute_shared_dependencies(this->field_solve_type, this->solve_priority);
+    this->compute_shared_dependencies();
+
+    // If the FieldSolveType is constant we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+      {
+        return;
+      }
+
+    // Create the MatrixFreeOperator
+    system_matrix =
+      std::make_unique<typename SolverBase<dim, degree, number>::SystemMatrixType>(
+        this->get_subset_attributes(),
+        this->get_pde_operator());
+
+    // Apply constraints
+    for (const auto &[index, variable] : this->get_subset_attributes())
+      {
+        this->get_solution_handler()
+          .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
+      }
+
+    // Set up the user-implemented equations and create the residual vectors
+    system_matrix->clear();
+    system_matrix->initialize(this->get_matrix_free_handler().get_matrix_free());
+
+    // Resize the global to local solution vector
+    global_to_local_solution.resize(
+      this->get_subset_attributes().begin()->second.get_dependency_set_rhs().size());
+    for (auto &vector : global_to_local_solution)
+      {
+        vector.resize(this->get_subset_attributes()
+                        .begin()
+                        ->second.get_dependency_set_rhs()
+                        .begin()
+                        ->size(),
+                      Numbers::invalid_index);
+      }
+
+    // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
+    Types::Index dependency_index = 0;
+    for (const auto &inner_dependency_set :
+         this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
+      {
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
+          {
+            // Skip if an invalid field type is found or the global_to_local_solution
+            // already has an entry for this dependency index and dependency type
+            if (field_type == Numbers::invalid_field_type ||
+                global_to_local_solution[dependency_index][dependency_type] !=
+                  Numbers::invalid_index)
+              {
+                dependency_type++;
+                continue;
+              }
+
+            solution_subset.push_back(this->get_solution_handler().get_solution_vector(
+              dependency_index,
+              static_cast<DependencyType>(dependency_type)));
+            new_solution_subset.push_back(
+              this->get_solution_handler().get_new_solution_vector(dependency_index));
+            global_to_local_solution[dependency_index][dependency_type] =
+              solution_subset.size() - 1;
+
+            dependency_type++;
+          }
+
+        dependency_index++;
+      }
+    system_matrix->add_global_to_local_mapping(global_to_local_solution);
   };
 
   /**
@@ -76,6 +148,12 @@ public:
   {
     // Call the base class reinit
     this->SolverBase<dim, degree, number>::reinit();
+
+    // If the FieldSolveType is constant we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+      {
+        return;
+      }
   };
 
   /**
@@ -86,6 +164,12 @@ public:
   {
     // Call the base class solve
     this->SolverBase<dim, degree, number>::solve();
+
+    // If the FieldSolveType is constant we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+      {
+        return;
+      }
   };
 
   /**
