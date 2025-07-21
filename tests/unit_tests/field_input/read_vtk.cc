@@ -24,8 +24,8 @@ TEST_CASE("Read vtk file")
         for (double y_coord : {0.0, 5.0, 10.0})
           {
             dealii::Point<2> point = {x_coord, y_coord};
-            REQUIRE(reader.template get_value<Scalar>(point, "n") == x_coord);
-            REQUIRE(reader.template get_value<Scalar>(point, "|nx|") == 1.0);
+            REQUIRE(reader.get_scalar_value(point, "n") == x_coord);
+            REQUIRE(reader.get_scalar_value(point, "|nx|") == 1.0);
           }
       }
   }
@@ -43,8 +43,8 @@ TEST_CASE("Read vtk file")
         for (double y_coord : {0.0, 2.5, 5.0, 7.5, 10.0})
           {
             dealii::Point<2> point = {x_coord, y_coord};
-            REQUIRE(reader.template get_value<Scalar>(point, "n") == x_coord);
-            REQUIRE(reader.template get_value<Scalar>(point, "|nx|") == 1.0);
+            REQUIRE(reader.get_scalar_value(point, "n") == x_coord);
+            REQUIRE(reader.get_scalar_value(point, "|nx|") == 1.0);
           }
       }
   }
@@ -64,8 +64,8 @@ TEST_CASE("Read vtk file")
             for (double z_coord : {0.0, 5.0, 10.0})
               {
                 dealii::Point<3> point = {x_coord, y_coord, z_coord};
-                REQUIRE(reader.template get_value<Scalar>(point, "n") == x_coord);
-                REQUIRE(reader.template get_value<Scalar>(point, "|nx|") == 1.0);
+                REQUIRE(reader.get_scalar_value(point, "n") == x_coord);
+                REQUIRE(reader.get_scalar_value(point, "|nx|") == 1.0);
               }
           }
       }
