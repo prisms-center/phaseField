@@ -886,23 +886,6 @@ private:
   const std::vector<std::vector<Types::Index>> *global_to_local_solution;
 
   /**
-   * @brief The residual evaluation flags taken in from the subset attributes. For all
-   * solve types, there is only a single unique instance of the eval flags, so we can
-   * simply store it here when the constructor is called.
-   */
-  std::map<std::pair<unsigned int, DependencyType>,
-           dealii::EvaluationFlags::EvaluationFlags>
-    src_eval_flags;
-
-  /**
-   * @brief The destination evaluation flags taken in from the subset attributes. For all
-   * solve types, there is only a single unique instance of the eval flags, so we can
-   * simply store it here when the constructor is called.
-   */
-  dealii::EvaluationFlags::EvaluationFlags dst_eval_flags =
-    dealii::EvaluationFlags::EvaluationFlags::nothing;
-
-  /**
    * @brief The solve type
    */
   SolveType solve_type;
