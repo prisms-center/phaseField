@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
@@ -18,7 +20,10 @@ public:
    */
   SequentialSolver(const SolverContext<dim, degree> &_solver_context,
                    const FieldSolveType             &_field_solve_type,
-                   unsigned int                      _solve_priority = 0);
+                   unsigned int                      _solve_priority = 0)
+    : SolverBase<dim, degree, number>(_solver_context,
+                                      _field_solve_type,
+                                      _solve_priority) {};
 
   /**
    * @brief Destructor.
@@ -63,6 +68,12 @@ public:
   {
     // Call the base class init
     this->SolverBase<dim, degree, number>::init();
+
+    // If the solver is empty we can just return early.
+    if (this->solver_is_empty())
+      {
+        return;
+      }
   };
 
   /**
@@ -73,6 +84,12 @@ public:
   {
     // Call the base class reinit
     this->SolverBase<dim, degree, number>::reinit();
+
+    // If the solver is empty we can just return early.
+    if (this->solver_is_empty())
+      {
+        return;
+      }
   };
 
   /**
@@ -84,7 +101,11 @@ public:
     // Call the base class solve
     this->SolverBase<dim, degree, number>::solve();
 
-    // Do nothing
+    // If the solver is empty we can just return early.
+    if (this->solver_is_empty())
+      {
+        return;
+      }
   };
 
   /**
@@ -118,6 +139,34 @@ public:
     return update_system_matrix;
   }
 
+  /**
+   * @brief Get the mapping from global solution vectors to the local ones.
+   */
+  [[nodiscard]] const std::vector<std::vector<Types::Index>> &
+  get_global_to_local_solution_mapping()
+  {
+    return global_to_local_solution;
+  }
+
+  /**
+   * @brief Get the src solution subset.
+   */
+  [[nodiscard]] const std::vector<
+    typename SolverBase<dim, degree, number>::VectorType *> &
+  get_src_solution_subset()
+  {
+    return solution_subset;
+  }
+
+  /**
+   * @brief Get the dst solution subset.
+   */
+  [[nodiscard]] std::vector<typename SolverBase<dim, degree, number>::VectorType *> &
+  get_dst_solution_subset()
+  {
+    return new_solution_subset;
+  }
+
 private:
   /**
    * @brief Matrix-free operator for the residual side.
@@ -132,6 +181,40 @@ private:
   std::map<unsigned int,
            std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>>
     update_system_matrix;
+
+  /**
+   * @brief Mapping from global solution vectors to the local ones
+   */
+  std::map<unsigned int, std::vector<std::vector<Types::Index>>> global_to_local_solution;
+
+  /**
+   * @brief Subset of solutions fields that are necessary for concurrent solves.
+   */
+  std::map<unsigned int,
+           std::vector<typename SolverBase<dim, degree, number>::VectorType *>>
+    solution_subset;
+
+  /**
+   * @brief Subset of new solutions fields that are necessary for concurrent solves.
+   */
+  std::map<unsigned int,
+           std::vector<typename SolverBase<dim, degree, number>::VectorType *>>
+    new_solution_subset;
+
+  /**
+   * @brief List of subset attributes.
+   */
+  std::vector<std::map<unsigned int, VariableAttributes>> subset_attributes_list;
+
+  /**
+   * @brief Map of identity linear solvers
+   */
+  std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
+
+  /**
+   * @brief Map of geometric multigrid linear solvers
+   */
+  std::map<unsigned int, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
 };
 
 PRISMS_PF_END_NAMESPACE

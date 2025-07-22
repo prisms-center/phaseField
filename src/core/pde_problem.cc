@@ -68,6 +68,7 @@ PDEProblem<dim, degree>::PDEProblem(
                    constraint_handler,
                    dof_handler,
                    mapping,
+                   mg_info,
                    solution_handler,
                    multigrid_matrix_free_handler,
                    _pde_operator,

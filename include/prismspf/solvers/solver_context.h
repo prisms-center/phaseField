@@ -44,6 +44,7 @@ public:
     const ConstraintHandler<dim, degree>                   &_constraint_handler,
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
+    const MGInfo<dim>                                      &_mg_info,
     SolutionHandler<dim>                                   &_solution_handler,
     dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
     std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
@@ -55,6 +56,7 @@ public:
     , constraint_handler(&_constraint_handler)
     , dof_handler(&_dof_handler)
     , mapping(&_mapping)
+    , mg_info(&_mg_info)
     , solution_handler(&_solution_handler)
     , mg_matrix_free_handler(&_mg_matrix_free_handler)
     , pde_operator(std::move(_pde_operator))
@@ -136,6 +138,16 @@ public:
   }
 
   /**
+   * @brief Get the multigrid info.
+   */
+  [[nodiscard]] const MGInfo<dim> &
+  get_mg_info() const
+  {
+    Assert(mg_info != nullptr, dealii::ExcNotInitialized());
+    return *mg_info;
+  }
+
+  /**
    * @brief Get the solution handler.
    */
   [[nodiscard]] SolutionHandler<dim> &
@@ -210,6 +222,11 @@ private:
    * @brief Mappings to and from reference cell.
    */
   const dealii::MappingQ1<dim> *mapping;
+
+  /**
+   * @brief Multigrid information
+   */
+  const MGInfo<dim> *mg_info;
 
   /**
    * @brief Solution handler.
