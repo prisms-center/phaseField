@@ -26,10 +26,10 @@
 #include <prismspf/solvers/concurrent_constant_solver.h>
 #include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
 #include <prismspf/solvers/concurrent_explicit_solver.h>
-#include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
-#include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
-#include <prismspf/solvers/nonexplicit_linear_solver.h>
-#include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+#include <prismspf/solvers/sequential_auxiliary_solver.h>
+#include <prismspf/solvers/sequential_co_nonlinear_solver.h>
+#include <prismspf/solvers/sequential_linear_solver.h>
+#include <prismspf/solvers/sequential_self_nonlinear_solver.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/utilities/element_volume.h>
@@ -178,22 +178,22 @@ private:
   /**
    * @brief Nonexplicit auxiliary field solver class.
    */
-  SequentialAuxiliarySolver<dim, degree, double> nonexplicit_auxiliary_solver;
+  SequentialAuxiliarySolver<dim, degree, double> sequential_auxiliary_solver;
 
   /**
    * @brief Nonexplicit linear field solver class.
    */
-  NonexplicitLinearSolver<dim, degree> nonexplicit_linear_solver;
+  SequentialLinearSolver<dim, degree, double> sequential_linear_solver;
 
   /**
    * @brief Nonexplicit self-nonlinear field solver class.
    */
-  NonexplicitSelfnonlinearSolver<dim, degree> nonexplicit_self_nonlinear_solver;
+  SequentialSelfNonlinearSolver<dim, degree, double> sequential_self_nonlinear_solver;
 
   /**
    * @brief Nonexplicit co-nonlinear field solver class.
    */
-  NonexplicitCononlinearSolver<dim, degree> nonexplicit_co_nonlinear_solver;
+  SequentialCoNonlinearSolver<dim, degree, double> sequential_co_nonlinear_solver;
 };
 
 PRISMS_PF_END_NAMESPACE

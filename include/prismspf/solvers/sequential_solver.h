@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <prismspf/core/timer.h>
+
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/solver_base.h>
@@ -134,7 +136,7 @@ public:
           .preconditioner == PreconditionerType::GMG)
       {
         gmg_solvers.emplace(
-          index,
+          global_field_index,
           std::make_unique<GMGSolver<dim, degree>>(this->get_user_inputs(),
                                                    variable,
                                                    this->get_matrix_free_handler(),
@@ -146,24 +148,24 @@ public:
                                                    this->get_pde_operator(),
                                                    this->get_pde_operator_float(),
                                                    this->get_mg_info()));
-        gmg_solvers.at(index)->init();
+        gmg_solvers.at(global_field_index)->init();
       }
     else
       {
         identity_solvers.emplace(
-          index,
+          global_field_index,
           std::make_unique<IdentitySolver<dim, degree>>(this->get_user_inputs(),
                                                         variable,
                                                         this->get_matrix_free_handler(),
                                                         this->get_constraint_handler(),
                                                         this->get_solution_handler(),
                                                         this->get_pde_operator()));
-        identity_solvers.at(index)->init();
+        identity_solvers.at(global_field_index)->init();
       }
   }
 
   /**
-   * @brief Init the explicit solver objects of a given VariableAttributes.
+   * @brief Init a explicit solver objects of a given VariableAttributes.
    *
    * @param[in] variable The VariableAttributes
    */
@@ -182,7 +184,7 @@ public:
     // attributes
     system_matrix[global_field_index] =
       std::make_unique<typename SolverBase<dim, degree, number>::SystemMatrixType>(
-        this->get_subset_attributes(),
+        subset_attributes_list.back(),
         this->get_pde_operator(),
         global_field_index);
 
@@ -241,6 +243,136 @@ public:
       }
     system_matrix[global_field_index]->add_global_to_local_mapping(
       global_to_local_solution[global_field_index]);
+  }
+
+  /**
+   * @brief Solve the explicit solver objects of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  solve_explicit_solver(const VariableAttributes &variable)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    // Compute the update
+    system_matrix[global_field_index]->compute_nonexplicit_auxiliary_update(
+      new_solution_subset.at(global_field_index),
+      solution_subset.at(global_field_index));
+
+    // Scale the update by the respective (Scalar/Vector) invm.
+    new_solution_subset.at(global_field_index)
+      .at(0)
+      ->scale(this->get_invm_handler().get_invm(global_field_index));
+
+    // Update the solutions
+    this->get_solution_handler().update(this->get_field_solve_type(), global_field_index);
+
+    // Apply constraints
+    this->get_constraint_handler()
+      .get_constraint(global_field_index)
+      .distribute(
+        *(this->get_solution_handler().get_solution_vector(global_field_index,
+                                                           DependencyType::Normal)));
+
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    this->get_solution_handler().update_ghosts();
+    Timer::end_section("Update ghosts");
+  }
+
+  /**
+   * @brief Solve the linear solver objects of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  solve_linear_solver(const VariableAttributes &variable)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
+        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
+          0)
+      {
+        return;
+      }
+
+    if (this->get_user_inputs()
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(global_field_index)
+          .preconditioner == PreconditionerType::GMG)
+      {
+        gmg_solvers.at(global_field_index)->solve();
+      }
+    else
+      {
+        identity_solvers.at(global_field_index)->solve();
+      }
+
+    // Update the solutions
+    this->get_solution_handler().update(this->get_field_solve_type(), global_field_index);
+
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    this->get_solution_handler().update_ghosts();
+    Timer::end_section("Update ghosts");
+  }
+
+  /**
+   * @brief Solve the linear solver objects of a given VariableAttributes.
+   *
+   * This function is overload specialized for co-nonlinear solves to use a given step
+   * length and return a norm of the newton update. Additionally, it doesn't update the
+   * solution.
+   *
+   * @param[in] variable The VariableAttributes
+   * @param[in] step_length The step length of the linear solve. This is only used for
+   * nonlinear solves when we don't want to use the entire solution.
+   */
+  double
+  solve_linear_solver(const VariableAttributes &variable, const double &step_length)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
+        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
+          0)
+      {
+        return 0.0;
+      }
+
+    if (this->get_user_inputs()
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(global_field_index)
+          .preconditioner == PreconditionerType::GMG)
+      {
+        gmg_solvers.at(global_field_index)->solve(step_length);
+      }
+    else
+      {
+        identity_solvers.at(global_field_index)->solve(step_length);
+      }
+
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    this->get_solution_handler().update_ghosts();
+    Timer::end_section("Update ghosts");
+
+    // Return the norm of the newton update
+    if (this->get_user_inputs()
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(global_field_index)
+          .preconditioner == PreconditionerType::GMG)
+      {
+        return gmg_solvers.at(global_field_index)->get_newton_update_l2_norm();
+      }
+    return identity_solvers.at(global_field_index)->get_newton_update_l2_norm();
   }
 
   /**

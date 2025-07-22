@@ -101,37 +101,14 @@ public:
         return;
       }
 
-    // Compute the update
-    this->get_system_matrix()->compute_explicit_update(this->get_dst_solution_subset(),
-                                                       this->get_src_solution_subset());
-
-    // Scale the update by the respective (Scalar/Vector) invm. Note that we do this with
-    // the original solution set to avoid some messy mapping.
-    for (auto [index, vector] : this->get_solution_handler().get_new_solution_vector())
+    // Otherwise, solve
+    this->solve_explicit_equations(
+      [this](
+        std::vector<typename SolverBase<dim, degree, number>::VectorType *>       &dst,
+        const std::vector<typename SolverBase<dim, degree, number>::VectorType *> &src)
       {
-        if (this->get_subset_attributes().find(index) !=
-            this->get_subset_attributes().end())
-          {
-            vector->scale(this->get_invm_handler().get_invm(index));
-          }
-      }
-
-    // Update the solutions
-    this->get_solution_handler().update(FieldSolveType::Explicit);
-
-    // Apply constraints
-    // TODO (landinjm): This applies the constraints even to the old fields, which is
-    // incorrect.
-    for (const auto &[index, variable] : this->get_subset_attributes())
-      {
-        this->get_solution_handler()
-          .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
-      }
-
-    // Update the ghosts
-    Timer::start_section("Update ghosts");
-    this->get_solution_handler().update_ghosts();
-    Timer::end_section("Update ghosts");
+        this->get_system_matrix()->compute_explicit_update(dst, src);
+      });
   };
 
   /**

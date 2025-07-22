@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <prismspf/core/timer.h>
-
 #include <prismspf/solvers/sequential_solver.h>
 
 #include <prismspf/config.h>
@@ -118,27 +116,7 @@ public:
     // Solve each field
     for (const auto &[index, variable] : this->get_subset_attributes())
       {
-        // Compute the update
-        this->get_system_matrix()[index]->compute_nonexplicit_auxiliary_update(
-          this->get_dst_solution_subset().at(index),
-          this->get_src_solution_subset().at(index));
-
-        // Scale the update by the respective (Scalar/Vector) invm.
-        this->get_dst_solution_subset().at(index).at(0)->scale(
-          this->get_invm_handler().get_invm(index));
-
-        // Update the solutions
-        this->get_solution_handler().update(FieldSolveType::NonexplicitAuxiliary, index);
-
-        // Apply constraints
-        this->get_constraint_handler().get_constraint(index).distribute(
-          *(this->get_solution_handler().get_solution_vector(index,
-                                                             DependencyType::Normal)));
-
-        // Update the ghosts
-        Timer::start_section("Update ghosts");
-        this->get_solution_handler().update_ghosts();
-        Timer::end_section("Update ghosts");
+        this->solve_explicit_solver(variable);
       }
   };
 

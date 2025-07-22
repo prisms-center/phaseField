@@ -27,9 +27,9 @@
 #include <prismspf/solvers/concurrent_constant_solver.h>
 #include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
 #include <prismspf/solvers/concurrent_explicit_solver.h>
-#include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
-#include <prismspf/solvers/nonexplicit_linear_solver.h>
-#include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
+#include <prismspf/solvers/sequential_auxiliary_solver.h>
+#include <prismspf/solvers/sequential_linear_solver.h>
+#include <prismspf/solvers/sequential_self_nonlinear_solver.h>
 
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>
@@ -76,10 +76,10 @@ PDEProblem<dim, degree>::PDEProblem(
   , concurrent_constant_solver(solver_context)
   , concurrent_explicit_solver(solver_context)
   , concurrent_concurrent_explicit_postprocess_solver(solver_context)
-  , nonexplicit_auxiliary_solver(solver_context)
-  , nonexplicit_linear_solver(solver_context, mg_info)
-  , nonexplicit_self_nonlinear_solver(solver_context, mg_info)
-  , nonexplicit_co_nonlinear_solver(solver_context, mg_info)
+  , sequential_auxiliary_solver(solver_context)
+  , sequential_linear_solver(solver_context)
+  , sequential_self_nonlinear_solver(solver_context)
+  , sequential_co_nonlinear_solver(solver_context)
 {}
 
 template <unsigned int dim, unsigned int degree>
@@ -236,19 +236,19 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base()
     << "  trying to initialize sequential auxiliary solvers...\n"
     << std::flush;
-  nonexplicit_auxiliary_solver.init();
+  sequential_auxiliary_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize sequential linear solvers...\n"
     << std::flush;
-  nonexplicit_linear_solver.init();
+  sequential_linear_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize sequential self-nonlinear solvers...\n"
     << std::flush;
-  nonexplicit_self_nonlinear_solver.init();
+  sequential_self_nonlinear_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize sequential co-nonlinear solvers...\n"
     << std::flush;
-  nonexplicit_co_nonlinear_solver.init();
+  sequential_co_nonlinear_solver.init();
   Timer::end_section("Solver initialization");
 
   // Update the ghosts
@@ -260,7 +260,7 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
                                    << std::flush;
   Timer::start_section("Auxiliary solver");
-  nonexplicit_auxiliary_solver.solve();
+  sequential_auxiliary_solver.solve();
   Timer::end_section("Auxiliary solver");
 
   // Solve the linear time-independent fields at the 0th step
@@ -268,7 +268,7 @@ PDEProblem<dim, degree>::init_system()
     << "solving linear time-independent variables in 0th timestep...\n"
     << std::flush;
   Timer::start_section("Nonexplicit linear solver");
-  nonexplicit_linear_solver.solve();
+  sequential_linear_solver.solve();
   Timer::end_section("Nonexplicit linear solver");
 
   // Solve the self-nonlinear time-independent fields at the 0th step
@@ -276,7 +276,7 @@ PDEProblem<dim, degree>::init_system()
     << "solving self-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   Timer::start_section("Nonexplicit self-nonlinear solver");
-  nonexplicit_self_nonlinear_solver.solve();
+  sequential_self_nonlinear_solver.solve();
   Timer::end_section("Nonexplicit self-nonlinear solver");
 
   // Solve the co-nonlinear time-independent fields at the 0th step
@@ -284,7 +284,7 @@ PDEProblem<dim, degree>::init_system()
     << "solving co-nonlinear time-independent variables in 0th timestep...\n"
     << std::flush;
   Timer::start_section("Nonexplicit co-nonlinear solver");
-  nonexplicit_co_nonlinear_solver.solve();
+  sequential_co_nonlinear_solver.solve();
   Timer::end_section("Nonexplicit co-nonlinear solver");
 
   // Solve the postprocessed fields at the 0th step
@@ -380,19 +380,19 @@ PDEProblem<dim, degree>::solve_increment()
   Timer::end_section("Explicit solver");
 
   Timer::start_section("Nonexplicit auxiliary solver");
-  nonexplicit_auxiliary_solver.solve();
+  sequential_auxiliary_solver.solve();
   Timer::end_section("Nonexplicit auxiliary solver");
 
   Timer::start_section("Nonexplicit linear solver");
-  nonexplicit_linear_solver.solve();
+  sequential_linear_solver.solve();
   Timer::end_section("Nonexplicit linear solver");
 
   Timer::start_section("Nonexplicit self-nonlinear solver");
-  nonexplicit_self_nonlinear_solver.solve();
+  sequential_self_nonlinear_solver.solve();
   Timer::end_section("Nonexplicit self-nonlinear solver");
 
   Timer::start_section("Nonexplicit co-nonlinear solver");
-  nonexplicit_co_nonlinear_solver.solve();
+  sequential_co_nonlinear_solver.solve();
   Timer::end_section("Nonexplicit co-nonlinear solver");
 }
 

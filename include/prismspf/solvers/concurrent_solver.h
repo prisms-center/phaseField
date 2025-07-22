@@ -7,6 +7,8 @@
 
 #include <prismspf/config.h>
 
+#include <functional>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -180,6 +182,55 @@ public:
   {
     // Print the base class information
     this->SolverBase<dim, degree, number>::print();
+  }
+
+  /**
+   * @brief Solve the explicit equations
+   *
+   * This is a common function for solving explicit (RHS only) equations that are
+   * independent of one another.
+   *
+   * Rather than duplicate this code a bunch of times for explicit, postprocess, amr,
+   * nucleation, etc... fields we have it here. Importantly, some of these have different
+   * functions, so we require this function.
+   */
+  void
+  solve_explicit_equations(
+    const std::function<
+      void(std::vector<typename SolverBase<dim, degree, number>::VectorType *> &,
+           const std::vector<typename SolverBase<dim, degree, number>::VectorType *> &)>
+      &function)
+  {
+    // Compute the update with the provided function
+    function(new_solution_subset, solution_subset);
+
+    // Scale the update by the respective (Scalar/Vector) invm. Note that we do this with
+    // the original solution set to avoid some messy mapping.
+    for (auto [index, vector] : this->get_solution_handler().get_new_solution_vector())
+      {
+        if (this->get_subset_attributes().find(index) !=
+            this->get_subset_attributes().end())
+          {
+            vector->scale(this->get_invm_handler().get_invm(index));
+          }
+      }
+
+    // Update the solutions
+    this->get_solution_handler().update(this->get_field_solve_type());
+
+    // Apply constraints
+    // TODO (landinjm): This applies the constraints even to the old fields, which is
+    // incorrect.
+    for (const auto &[index, variable] : this->get_subset_attributes())
+      {
+        this->get_solution_handler()
+          .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
+      }
+
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    this->get_solution_handler().update_ghosts();
+    Timer::end_section("Update ghosts");
   }
 
   /**
