@@ -315,6 +315,15 @@ public:
   }
 
   /**
+   * @brief Get the multigrid info.
+   */
+  [[nodiscard]] const MGInfo<dim> &
+  get_mg_info() const
+  {
+    return solver_context->get_mg_info();
+  }
+
+  /**
    * @brief Get the mg matrix-free handler.
    */
   [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &

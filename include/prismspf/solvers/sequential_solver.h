@@ -11,7 +11,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree, typename number>
+template <Types::Index dim, Types::Index degree, typename number>
 class SequentialSolver : public SolverBase<dim, degree, number>
 {
 public:
@@ -20,7 +20,7 @@ public:
    */
   SequentialSolver(const SolverContext<dim, degree> &_solver_context,
                    const FieldSolveType             &_field_solve_type,
-                   unsigned int                      _solve_priority = 0)
+                   Types::Index                      _solve_priority = 0)
     : SolverBase<dim, degree, number>(_solver_context,
                                       _field_solve_type,
                                       _solve_priority) {};
@@ -28,7 +28,7 @@ public:
   /**
    * @brief Destructor.
    */
-  virtual ~SequentialSolver() = 0;
+  ~SequentialSolver() override = default;
 
   /**
    * @brief Copy constructor.
@@ -118,10 +118,136 @@ public:
   };
 
   /**
+   * @brief Init a linear solver object of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  init_linear_solver(const VariableAttributes &variable)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    if (this->get_user_inputs()
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(global_field_index)
+          .preconditioner == PreconditionerType::GMG)
+      {
+        gmg_solvers.emplace(
+          index,
+          std::make_unique<GMGSolver<dim, degree>>(this->get_user_inputs(),
+                                                   variable,
+                                                   this->get_matrix_free_handler(),
+                                                   this->get_constraint_handler(),
+                                                   this->get_triangulation_handler(),
+                                                   this->get_dof_handler(),
+                                                   this->get_mg_matrix_free_handler(),
+                                                   this->get_solution_handler(),
+                                                   this->get_pde_operator(),
+                                                   this->get_pde_operator_float(),
+                                                   this->get_mg_info()));
+        gmg_solvers.at(index)->init();
+      }
+    else
+      {
+        identity_solvers.emplace(
+          index,
+          std::make_unique<IdentitySolver<dim, degree>>(this->get_user_inputs(),
+                                                        variable,
+                                                        this->get_matrix_free_handler(),
+                                                        this->get_constraint_handler(),
+                                                        this->get_solution_handler(),
+                                                        this->get_pde_operator()));
+        identity_solvers.at(index)->init();
+      }
+  }
+
+  /**
+   * @brief Init the explicit solver objects of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  init_explicit_solver(const VariableAttributes &variable)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    // Creating temporary map to match types
+    std::map<Types::Index, VariableAttributes> temp;
+    temp.emplace(global_field_index, variable);
+    subset_attributes_list.push_back(temp);
+
+    // Create the implementation of MatrixFreeOperator with the subset of variable
+    // attributes
+    system_matrix[global_field_index] =
+      std::make_unique<typename SolverBase<dim, degree, number>::SystemMatrixType>(
+        this->get_subset_attributes(),
+        this->get_pde_operator(),
+        global_field_index);
+
+    // Set up the user-implemented equations and create the residual vectors
+    system_matrix[global_field_index]->clear();
+    system_matrix[global_field_index]->initialize(
+      this->get_matrix_free_handler().get_matrix_free());
+
+    // Resize the global to local solution vector
+    global_to_local_solution[global_field_index].resize(
+      variable.get_dependency_set_rhs().size());
+    for (auto &vector : global_to_local_solution[global_field_index])
+      {
+        vector.resize(variable.get_dependency_set_rhs().begin()->size(),
+                      Numbers::invalid_index);
+      }
+
+    // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
+    new_solution_subset[global_field_index].push_back(
+      this->get_solution_handler().get_new_solution_vector(global_field_index));
+    solution_subset[global_field_index].push_back(
+      this->get_solution_handler().get_solution_vector(global_field_index,
+                                                       DependencyType::Normal));
+    global_to_local_solution[global_field_index][global_field_index]
+                            [static_cast<Types::Index>(DependencyType::Normal)] = 0;
+
+    Types::Index variable_index = 0;
+    for (const auto &inner_dependency_set :
+         this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
+      {
+        Types::Index dependency_type = 0;
+        for (const auto &field_type : inner_dependency_set)
+          {
+            // Skip if an invalid field type is found or the global_to_local_solution
+            // already has an entry for this dependency index and dependency type
+            if (field_type == Numbers::invalid_field_type ||
+                global_to_local_solution[global_field_index][variable_index]
+                                        [dependency_type] != Numbers::invalid_index)
+              {
+                dependency_type++;
+                continue;
+              }
+
+            solution_subset[global_field_index].push_back(
+              this->get_solution_handler().get_solution_vector(
+                variable_index,
+                static_cast<DependencyType>(dependency_type)));
+            global_to_local_solution[global_field_index][variable_index]
+                                    [dependency_type] =
+                                      solution_subset.at(global_field_index).size() - 1;
+
+            dependency_type++;
+          }
+
+        variable_index++;
+      }
+    system_matrix[global_field_index]->add_global_to_local_mapping(
+      global_to_local_solution[global_field_index]);
+  }
+
+  /**
    * @brief Get the matrix-free operator for the residual side.
    */
   [[nodiscard]] std::map<
-    unsigned int,
+    Types::Index,
     std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>> &
   get_system_matrix()
   {
@@ -132,7 +258,7 @@ public:
    * @brief Get the matrix-free operator for the newton update side.
    */
   [[nodiscard]] std::map<
-    unsigned int,
+    Types::Index,
     std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>> &
   get_update_system_matrix()
   {
@@ -142,7 +268,7 @@ public:
   /**
    * @brief Get the mapping from global solution vectors to the local ones.
    */
-  [[nodiscard]] const std::vector<std::vector<Types::Index>> &
+  [[nodiscard]] const std::map<Types::Index, std::vector<std::vector<Types::Index>>> &
   get_global_to_local_solution_mapping()
   {
     return global_to_local_solution;
@@ -151,8 +277,9 @@ public:
   /**
    * @brief Get the src solution subset.
    */
-  [[nodiscard]] const std::vector<
-    typename SolverBase<dim, degree, number>::VectorType *> &
+  [[nodiscard]] const std::map<
+    Types::Index,
+    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
   get_src_solution_subset()
   {
     return solution_subset;
@@ -161,7 +288,9 @@ public:
   /**
    * @brief Get the dst solution subset.
    */
-  [[nodiscard]] std::vector<typename SolverBase<dim, degree, number>::VectorType *> &
+  [[nodiscard]] std::map<
+    Types::Index,
+    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
   get_dst_solution_subset()
   {
     return new_solution_subset;
@@ -171,50 +300,50 @@ private:
   /**
    * @brief Matrix-free operator for the residual side.
    */
-  std::map<unsigned int,
+  std::map<Types::Index,
            std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>>
     system_matrix;
 
   /**
    * @brief Matrix-free operator for the newton update side.
    */
-  std::map<unsigned int,
+  std::map<Types::Index,
            std::unique_ptr<typename SolverBase<dim, degree, number>::SystemMatrixType>>
     update_system_matrix;
 
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::map<unsigned int, std::vector<std::vector<Types::Index>>> global_to_local_solution;
+  std::map<Types::Index, std::vector<std::vector<Types::Index>>> global_to_local_solution;
 
   /**
    * @brief Subset of solutions fields that are necessary for concurrent solves.
    */
-  std::map<unsigned int,
+  std::map<Types::Index,
            std::vector<typename SolverBase<dim, degree, number>::VectorType *>>
     solution_subset;
 
   /**
    * @brief Subset of new solutions fields that are necessary for concurrent solves.
    */
-  std::map<unsigned int,
+  std::map<Types::Index,
            std::vector<typename SolverBase<dim, degree, number>::VectorType *>>
     new_solution_subset;
 
   /**
    * @brief List of subset attributes.
    */
-  std::vector<std::map<unsigned int, VariableAttributes>> subset_attributes_list;
+  std::vector<std::map<Types::Index, VariableAttributes>> subset_attributes_list;
 
   /**
    * @brief Map of identity linear solvers
    */
-  std::map<unsigned int, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
+  std::map<Types::Index, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
 
   /**
    * @brief Map of geometric multigrid linear solvers
    */
-  std::map<unsigned int, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
+  std::map<Types::Index, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
 };
 
 PRISMS_PF_END_NAMESPACE

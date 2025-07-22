@@ -178,7 +178,7 @@ private:
   /**
    * @brief Nonexplicit auxiliary field solver class.
    */
-  NonexplicitAuxiliarySolver<dim, degree> nonexplicit_auxiliary_solver;
+  SequentialAuxiliarySolver<dim, degree, double> nonexplicit_auxiliary_solver;
 
   /**
    * @brief Nonexplicit linear field solver class.
