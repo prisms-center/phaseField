@@ -67,9 +67,6 @@ public:
     // Call the base class init
     this->SolverBase<dim, degree, number>::init();
 
-    // Compute the shared dependencies
-    this->compute_shared_dependencies();
-
     // If the FieldSolveType is constant we can just return early.
     if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
       {

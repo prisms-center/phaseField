@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
 #include <prismspf/config.h>
 
 #include <map>
@@ -250,6 +253,38 @@ private:
    */
   void
   validate_old_solution_dependencies();
+
+  /**
+   * @brief Compute the subset of VariableAttributes that belongs to a given
+   * FieldSolveType and solver order.
+   *
+   * This function creates and returns a map of the VariablesAttributes that belong to a
+   * FieldSolveType and solve order.
+   *
+   * @param[in] variable_attributes The set of variable attributes that we are taking the
+   * subset of
+   * @param[in] field_solve_type The FieldSolveType for the subset
+   * @param[in] solve_priority The solve priority for the subset
+   */
+  [[nodiscard]] std::map<Types::Index, VariableAttributes *>
+  compute_subset_attributes(
+    std::map<Types::Index, VariableAttributes> &variable_attributes,
+    FieldSolveType                              field_solve_type,
+    Types::Index                                solve_priority = 0) const;
+
+  /**
+   * @brief Compute the shared dependencies for a subset of VariableAttributes that belong
+   * to a given FieldSolveType and solve order.
+   *
+   * This function computes the shared dependencies for the RHS. It updates the
+   * eval_flag_set_rhs and dependency_set_rhs to be the same between all the variables.
+   *
+   * @param[in] variable_attributes The set of variable attributes that we are computing
+   * shared dependencies for
+   */
+  void
+  compute_shared_dependencies(
+    std::map<Types::Index, VariableAttributes *> &variable_attributes);
 };
 
 PRISMS_PF_END_NAMESPACE

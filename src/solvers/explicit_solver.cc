@@ -32,8 +32,6 @@ ExplicitSolver<dim, degree>::init()
       return;
     }
 
-  this->compute_shared_dependencies();
-
   // Create the implementation of MatrixFreeOperator with the subset of variable
   // attributes
   this->get_system_matrix() =

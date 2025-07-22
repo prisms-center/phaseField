@@ -56,14 +56,6 @@ protected:
   compute_subset_attributes(const FieldSolveType &field_solve_type);
 
   /**
-   * @brief Compute the shared dependency set and copy it to all eval_flag_set_rhs. Also
-   * do something similar with dependency_set_rhs so that all the FEEvaluation objects are
-   * initialized.
-   */
-  void
-  compute_shared_dependencies();
-
-  /**
    * @brief Set the initial condition according to subset_attributes.
    */
   void

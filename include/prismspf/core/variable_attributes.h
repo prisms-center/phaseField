@@ -162,24 +162,6 @@ struct VariableAttributes
   }
 
   /**
-   * @brief Get the RHS evaluation flags.
-   */
-  void
-  set_eval_flag_set_rhs(const std::vector<std::vector<EvalFlags>> &_eval_flag_set_rhs)
-  {
-    eval_flag_set_rhs = _eval_flag_set_rhs;
-  }
-
-  /**
-   * @brief Get the RHS evaluation flags.
-   */
-  [[nodiscard]] std::vector<std::vector<EvalFlags>> &
-  get_eval_flag_set_rhs()
-  {
-    return eval_flag_set_rhs;
-  }
-
-  /**
    * @brief Get the LHS evaluation flags.
    */
   [[nodiscard]] const std::vector<std::vector<EvalFlags>> &
@@ -213,24 +195,6 @@ struct VariableAttributes
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
-  }
-
-  /**
-   * @brief Get the dependency set for the RHS.
-   */
-  [[nodiscard]] std::vector<std::vector<FieldType>> &
-  get_dependency_set_rhs()
-  {
-    return dependency_set_rhs;
-  }
-
-  /**
-   * @brief Set the dependency set for the RHS.
-   */
-  void
-  set_dependency_set_rhs(const std::vector<std::vector<FieldType>> &_dependency_set_rhs)
-  {
-    dependency_set_rhs = _dependency_set_rhs;
   }
 
   /**
