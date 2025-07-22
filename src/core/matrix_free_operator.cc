@@ -140,8 +140,7 @@ MatrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
-  const std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-    &_global_to_local_solution)
+  const std::vector<std::vector<Types::Index>> &_global_to_local_solution)
 {
   global_to_local_solution = _global_to_local_solution;
 }

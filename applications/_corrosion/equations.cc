@@ -114,31 +114,31 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType delt = constV(userInputs.dtValue);
 
   // The order parameter and its derivatives
-  scalarvalueType n = variable_list.get_scalar_value(0);
+  scalarvalueType n = variable_list.template get_value<Scalar>(0);
 
   // The chemical potential and its derivatives
-  scalargradType mux = variable_list.get_scalar_gradient(1);
+  scalargradType mux = variable_list.template get_gradient<Scalar>(1);
 
   // The domain parameter and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(2);
-  scalargradType  psix = variable_list.get_scalar_gradient(2);
+  scalarvalueType psi  = variable_list.template get_value<Scalar>(2);
+  scalargradType  psix = variable_list.template get_gradient<Scalar>(2);
 
   // The chemical potential of the domain patameter
-  scalargradType mupsix = variable_list.get_scalar_gradient(3);
+  scalargradType mupsix = variable_list.template get_gradient<Scalar>(3);
 
   // The concentration of metal ion and its derivatives
-  scalarvalueType cM  = variable_list.get_scalar_value(4);
-  scalargradType  cMx = variable_list.get_scalar_gradient(4);
+  scalarvalueType cM  = variable_list.template get_value<Scalar>(4);
+  scalargradType  cMx = variable_list.template get_gradient<Scalar>(4);
 
   // The concentration of supporting cation and its derivatives
-  scalarvalueType cP  = variable_list.get_scalar_value(5);
-  scalargradType  cPx = variable_list.get_scalar_gradient(5);
+  scalarvalueType cP  = variable_list.template get_value<Scalar>(5);
+  scalargradType  cPx = variable_list.template get_gradient<Scalar>(5);
 
   // The electrolite potential and its derivatives
-  scalargradType Phix = variable_list.get_scalar_gradient(6);
+  scalargradType Phix = variable_list.template get_gradient<Scalar>(6);
 
   // The reaction current
-  scalarvalueType irxn = variable_list.get_scalar_value(7);
+  scalarvalueType irxn = variable_list.template get_value<Scalar>(7);
 
   // Calculation of capped fields
   psi = std::min(psi, constV(1.0));
@@ -239,27 +239,27 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(0);
-  scalargradType  nx = variable_list.get_scalar_gradient(0);
+  scalarvalueType n  = variable_list.template get_value<Scalar>(0);
+  scalargradType  nx = variable_list.template get_gradient<Scalar>(0);
 
   // The domain parameter and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(2);
-  scalargradType  psix = variable_list.get_scalar_gradient(2);
+  scalarvalueType psi  = variable_list.template get_value<Scalar>(2);
+  scalargradType  psix = variable_list.template get_gradient<Scalar>(2);
 
   // The concentration of metal ion and its derivatives
-  scalarvalueType cM  = variable_list.get_scalar_value(4);
-  scalargradType  cMx = variable_list.get_scalar_gradient(4);
+  scalarvalueType cM  = variable_list.template get_value<Scalar>(4);
+  scalargradType  cMx = variable_list.template get_gradient<Scalar>(4);
 
   // The concentration of supporting cation and its derivatives
-  scalarvalueType cP  = variable_list.get_scalar_value(5);
-  scalargradType  cPx = variable_list.get_scalar_gradient(5);
+  scalarvalueType cP  = variable_list.template get_value<Scalar>(5);
+  scalargradType  cPx = variable_list.template get_gradient<Scalar>(5);
 
   // The electrolite potential and its derivatives
-  scalarvalueType Phi  = variable_list.get_scalar_value(6);
-  scalargradType  Phix = variable_list.get_scalar_gradient(6);
+  scalarvalueType Phi  = variable_list.template get_value<Scalar>(6);
+  scalargradType  Phix = variable_list.template get_gradient<Scalar>(6);
 
   // The reaction current
-  scalarvalueType irxn = variable_list.get_scalar_value(7);
+  scalarvalueType irxn = variable_list.template get_value<Scalar>(7);
 
   // Calculation of capped fields
   psi = std::min(psi, constV(1.0));
@@ -380,22 +380,22 @@ CustomPDE<dim, degree>::equationLHS(
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // The order parameter and its derivatives
-  scalarvalueType n = variable_list.get_scalar_value(0);
+  scalarvalueType n = variable_list.template get_value<Scalar>(0);
 
   // The domain parameter and its derivatives
-  scalarvalueType psi  = variable_list.get_scalar_value(2);
-  scalargradType  psix = variable_list.get_scalar_gradient(2);
+  scalarvalueType psi  = variable_list.template get_value<Scalar>(2);
+  scalargradType  psix = variable_list.template get_gradient<Scalar>(2);
 
   // The concentration of metal ion and its derivatives
-  scalarvalueType cM  = variable_list.get_scalar_value(4);
-  scalargradType  cMx = variable_list.get_scalar_gradient(4);
+  scalarvalueType cM  = variable_list.template get_value<Scalar>(4);
+  scalargradType  cMx = variable_list.template get_gradient<Scalar>(4);
 
   // The concentration of supporting cation and its derivatives
-  scalarvalueType cP = variable_list.get_scalar_value(5);
+  scalarvalueType cP = variable_list.template get_value<Scalar>(5);
 
   // The electrolite potential and its derivatives
-  scalarvalueType Phi  = variable_list.get_scalar_value(6);
-  scalargradType  Phix = variable_list.get_scalar_gradient(6);
+  scalarvalueType Phi  = variable_list.template get_value<Scalar>(6);
+  scalargradType  Phix = variable_list.template get_gradient<Scalar>(6);
 
   // The change in potential in the electrode and its derivatives
   scalarvalueType DPhi  = variable_list.get_change_in_scalar_value(6);

@@ -102,20 +102,36 @@ GMGSolver<dim, degree>::init()
 
   // Print the local indices and global ones and check that they match the MGInfo provided
   // ones.
-  unsigned int change_index = 0;
-  for (const auto &[pair, local_index] :
-       this->get_newton_update_global_to_local_solution())
+  unsigned int change_index     = 0;
+  Types::Index dependency_index = 0;
+  for (const auto &inner_vector : this->get_newton_update_global_to_local_solution())
     {
-      if (pair.second == DependencyType::Change)
+      Types::Index dependency_type = 0;
+      for (const auto &local_index : inner_vector)
         {
-          change_index = local_index;
+          // Skip if the local index is invalid
+          if (local_index == Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+
+          if (dependency_type == static_cast<Types::Index>(DependencyType::Change))
+            {
+              change_index = local_index;
+            }
+          for (unsigned int level = min_level; level <= max_level; ++level)
+            {
+              Assert(local_index == mg_info->get_local_index(dependency_index, level),
+                     dealii::ExcMessage(
+                       "The multigrid info indexing must match the local to "
+                       "global ones in this solver. "));
+            }
+
+          dependency_type++;
         }
-      for (unsigned int level = min_level; level <= max_level; ++level)
-        {
-          Assert(local_index == mg_info->get_local_index(pair.first, level),
-                 dealii::ExcMessage("The multigrid info indexing must match the local to "
-                                    "global ones in this solver. "));
-        }
+
+      dependency_index++;
     }
 
   // Init the multilevel operator objects
@@ -146,27 +162,42 @@ GMGSolver<dim, degree>::init()
   // TODO (landinjm): This is awful please fix.
   mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
   mg_transfer.resize(mg_transfer_operators.size());
-  for (const auto &[pair, local_index] :
-       this->get_newton_update_global_to_local_solution())
+  dependency_index = 0;
+  for (const auto &inner_vector : this->get_newton_update_global_to_local_solution())
     {
-      mg_transfer_operators[local_index].resize(min_level, max_level);
-
-      for (unsigned int level = min_level; level < max_level; ++level)
+      Types::Index dependency_type = 0;
+      for (const auto &local_index : inner_vector)
         {
-          mg_transfer_operators[local_index][level + 1].reinit(
-            *dof_handler->get_mg_dof_handlers(level + 1)[local_index],
-            *dof_handler->get_mg_dof_handlers(level)[local_index],
-            this->get_constraint_handler().get_mg_constraint(level + 1, local_index),
-            this->get_constraint_handler().get_mg_constraint(level, local_index));
-        }
-      mg_transfer[local_index] =
-        std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
-          mg_transfer_operators[local_index],
-          std::function<void(const unsigned int, MGVectorType &)>(
-            [&](const unsigned int level, MGVectorType &vec)
+          // Skip if the local index is invalid
+          if (local_index == Numbers::invalid_index)
             {
-              (*mg_operators)[level].initialize_dof_vector(vec, local_index);
-            }));
+              dependency_type++;
+              continue;
+            }
+
+          mg_transfer_operators[local_index].resize(min_level, max_level);
+
+          for (unsigned int level = min_level; level < max_level; ++level)
+            {
+              mg_transfer_operators[local_index][level + 1].reinit(
+                *dof_handler->get_mg_dof_handlers(level + 1)[local_index],
+                *dof_handler->get_mg_dof_handlers(level)[local_index],
+                this->get_constraint_handler().get_mg_constraint(level + 1, local_index),
+                this->get_constraint_handler().get_mg_constraint(level, local_index));
+            }
+          mg_transfer[local_index] =
+            std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
+              mg_transfer_operators[local_index],
+              std::function<void(const unsigned int, MGVectorType &)>(
+                [&](const unsigned int level, MGVectorType &vec)
+                {
+                  (*mg_operators)[level].initialize_dof_vector(vec, local_index);
+                }));
+
+          dependency_type++;
+        }
+
+      dependency_index++;
     }
 
 #ifdef DEBUG
@@ -218,42 +249,56 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   dealii::SolverCG<VectorType> cg_solver(this->get_solver_control());
 
   // Interpolate the newton update src vector to each multigrid level
-  unsigned int change_index = 0;
-  for (const auto &[pair, local_index] :
-       this->get_newton_update_global_to_local_solution())
+  unsigned int change_index     = 0;
+  Types::Index dependency_index = 0;
+  for (const auto &inner_vector : this->get_newton_update_global_to_local_solution())
     {
-      if (pair.second == DependencyType::Change)
+      Types::Index dependency_type = 0;
+      for (const auto &local_index : inner_vector)
         {
-          change_index = local_index;
+          // Skip if the local index is invalid
+          if (local_index == Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+          if (dependency_type == static_cast<Types::Index>(DependencyType::Change))
+            {
+              change_index = local_index;
+            }
+
+          // Create a temporary collection of the the dst pointers
+          dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
+          for (unsigned int level = min_level; level <= max_level; ++level)
+            {
+              mg_src_subset[level] =
+                *this->get_solution_handler().get_mg_solution_vector(level, local_index);
+
+              // Check that the vector partitioning is right
+              Assert((*mg_operators)[level]
+                       .get_matrix_free()
+                       ->get_vector_partitioner(local_index)
+                       ->is_compatible(*mg_src_subset[level].get_partitioner()),
+                     dealii::ExcMessage("Incompatabile vector partitioners"));
+            }
+
+          // Interpolate
+          mg_transfer[local_index]->interpolate_to_mg(
+            *dof_handler->get_dof_handlers().at(dependency_index),
+            mg_src_subset,
+            *this->get_newton_update_src()[local_index]);
+
+          // Copy back the vectors
+          for (unsigned int level = min_level; level <= max_level; ++level)
+            {
+              *this->get_solution_handler().get_mg_solution_vector(level, local_index) =
+                mg_src_subset[level];
+            }
+
+          dependency_type++;
         }
 
-      // Create a temporary collection of the the dst pointers
-      dealii::MGLevelObject<MGVectorType> mg_src_subset(min_level, max_level);
-      for (unsigned int level = min_level; level <= max_level; ++level)
-        {
-          mg_src_subset[level] =
-            *this->get_solution_handler().get_mg_solution_vector(level, local_index);
-
-          // Check that the vector partitioning is right
-          Assert((*mg_operators)[level]
-                   .get_matrix_free()
-                   ->get_vector_partitioner(local_index)
-                   ->is_compatible(*mg_src_subset[level].get_partitioner()),
-                 dealii::ExcMessage("Incompatabile vector partitioners"));
-        }
-
-      // Interpolate
-      mg_transfer[local_index]->interpolate_to_mg(
-        *dof_handler->get_dof_handlers().at(pair.first),
-        mg_src_subset,
-        *this->get_newton_update_src()[local_index]);
-
-      // Copy back the vectors
-      for (unsigned int level = min_level; level <= max_level; ++level)
-        {
-          *this->get_solution_handler().get_mg_solution_vector(level, local_index) =
-            mg_src_subset[level];
-        }
+      dependency_index++;
     }
 
   // Create smoother for each level

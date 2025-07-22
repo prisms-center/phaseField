@@ -10,42 +10,42 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Timer class for PRISMS-PF
+ * @brief Timer class for PRISMS-PF
  */
 class Timer
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   Timer();
 
   /**
-   * \brief Start a new timer section.
+   * @brief Start a new timer section.
    */
   static void
   start_section(const char *name);
 
   /**
-   * \brief End the current timer section.
+   * @brief End the current timer section.
    */
   static void
   end_section(const char *name);
 
   /**
-   * \brief deal.II timer for the 0th MPI process
+   * @brief deal.II timer for the 0th MPI process
    */
   static dealii::TimerOutput &
   serial_timer();
 
   /**
-   * \brief deal.II timer for parallel MPI process
+   * @brief deal.II timer for parallel MPI process
    */
   static dealii::TimerOutput &
   parallel_timer();
 
   /**
-   * \brief Print a sorted summary of the timed sections.
+   * @brief Print a sorted summary of the timed sections.
    */
   static void
   print_summary();

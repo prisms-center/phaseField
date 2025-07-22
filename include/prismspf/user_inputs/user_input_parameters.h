@@ -28,14 +28,14 @@ class UserInputParameters
 {
 public:
   /**
-   * \brief Constructor. Reads in user input parameters from file and loads them into
+   * @brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
   UserInputParameters(InputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Return the variable attributes.
+   * @brief Return the variable attributes.
    */
   [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
   get_variable_attributes() const
@@ -44,7 +44,7 @@ public:
   }
 
   /**
-   * \brief Return the spatial discretization parameters.
+   * @brief Return the spatial discretization parameters.
    */
   [[nodiscard]] const SpatialDiscretization<dim> &
   get_spatial_discretization() const
@@ -53,7 +53,7 @@ public:
   }
 
   /**
-   * \brief Return the temporal discretization parameters.
+   * @brief Return the temporal discretization parameters.
    */
   [[nodiscard]] const TemporalDiscretization &
   get_temporal_discretization() const
@@ -62,7 +62,7 @@ public:
   }
 
   /**
-   * \brief Return the linear solve parameters.
+   * @brief Return the linear solve parameters.
    */
   [[nodiscard]] const LinearSolveParameters &
   get_linear_solve_parameters() const
@@ -71,7 +71,7 @@ public:
   }
 
   /**
-   * \brief Return the nonlinear solve parameters.
+   * @brief Return the nonlinear solve parameters.
    */
   [[nodiscard]] const NonlinearSolveParameterSet &
   get_nonlinear_solve_parameters() const
@@ -80,7 +80,7 @@ public:
   }
 
   /**
-   * \brief Return the output parameters.
+   * @brief Return the output parameters.
    */
   [[nodiscard]] const OutputParameters &
   get_output_parameters() const
@@ -89,7 +89,7 @@ public:
   }
 
   /**
-   * \brief Return the checkpoint parameters.
+   * @brief Return the checkpoint parameters.
    */
   [[nodiscard]] const CheckpointParameters &
   get_checkpoint_parameters() const
@@ -98,7 +98,7 @@ public:
   }
 
   /**
-   * \brief Return the boundary parameters.
+   * @brief Return the boundary parameters.
    */
   [[nodiscard]] const BoundaryParameters<dim> &
   get_boundary_parameters() const
@@ -107,7 +107,7 @@ public:
   }
 
   /**
-   * \brief Return the load IC parameters.
+   * @brief Return the load IC parameters.
    */
   [[nodiscard]] const LoadInitialConditionParameters &
   get_load_initial_condition_parameters() const
@@ -116,7 +116,7 @@ public:
   }
 
   /**
-   * \brief Return the user constants.
+   * @brief Return the user constants.
    */
   [[nodiscard]] const UserConstants<dim> &
   get_user_constants() const
@@ -126,77 +126,77 @@ public:
 
 private:
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to the
+   * @brief Assign the provided user inputs to parameters for anything related to the
    * spatial discretiziation.
    */
   void
   assign_spatial_discretization_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to the
+   * @brief Assign the provided user inputs to parameters for anything related to the
    * temporal discretiziation.
    */
   void
   assign_temporal_discretization_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to linear
+   * @brief Assign the provided user inputs to parameters for anything related to linear
    * solves.
    */
   void
   assign_linear_solve_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * nonlinear solves.
    */
   void
   assign_nonlinear_solve_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * outputs.
    */
   void
   assign_output_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * checkpoints.
    */
   void
   assign_checkpoint_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * loading in initial condition.
    */
   void
   assign_load_initial_condition_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * nucleation.
    */
   void
   assign_nucleation_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * grain remapping and grain vtk load-in.
    */
   void
   assign_grain_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user inputs to parameters for anything related to
+   * @brief Assign the provided user inputs to parameters for anything related to
    * boundaries.
    */
   void
   assign_boundary_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
-   * \brief Assign the provided user constants.
+   * @brief Assign the provided user constants.
    */
   void
   load_model_constants(const InputFileReader    &input_file_reader,
