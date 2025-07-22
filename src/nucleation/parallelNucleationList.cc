@@ -491,6 +491,9 @@ parallelNucleationList<dim>::resolveNucleationConflicts(double min_dist_between_
       if (!isClose)
         {
           newnuclei[nuc_index].index = old_num_nuclei + newnuclei_cleaned.size();
+          std::cout << "Nuclei number: " << newnuclei[nuc_index].index
+                    << " Nuclei OP: " << newnuclei[nuc_index].orderParameterIndex
+                    << " Nuclei center:" << newnuclei[nuc_index].center << std::endl;
           newnuclei_cleaned.push_back(newnuclei[nuc_index]);
         }
     }

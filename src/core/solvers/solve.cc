@@ -101,7 +101,7 @@ MatrixFreePDE<dim, degree>::solve()
 
           if (currentTime >= userInputs.nucleation_end_time && !nucleation_complete)
             {
-              pcout << "Total number of nuclei = " << nuclei.size() << std::endl;
+	      std::cout << "Total number of nuclei = " << nuclei.size() << std::endl;
 	      nucleation_complete = true;
             }
 
