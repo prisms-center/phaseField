@@ -153,7 +153,7 @@ InvmHandler<dim, degree, number>::compute_scalar_invm()
         {
           fe_eval.submit_value(dealii::VectorizedArray<number>(1.0), quad);
         }
-      fe_eval.integrate(dealii::EvaluationFlags::values);
+      fe_eval.integrate(dealii::EvaluationFlags::EvaluationFlags::values);
       fe_eval.distribute_local_to_global(invm_scalar);
     }
   invm_scalar.compress(dealii::VectorOperation::add);
@@ -193,7 +193,7 @@ InvmHandler<dim, degree, number>::compute_vector_invm()
         {
           fe_eval.submit_value(one, quad);
         }
-      fe_eval.integrate(dealii::EvaluationFlags::values);
+      fe_eval.integrate(dealii::EvaluationFlags::EvaluationFlags::values);
       fe_eval.distribute_local_to_global(invm_vector);
     }
   invm_vector.compress(dealii::VectorOperation::add);

@@ -19,31 +19,31 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that holds output parameters.
+ * @brief Struct that holds output parameters.
  */
 struct OutputParameters
 {
 public:
   /**
-   * \brief Return is the current increment should be output.
+   * @brief Return is the current increment should be output.
    */
   [[nodiscard]] bool
   should_output(unsigned int increment) const;
 
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Get the file type.
+   * @brief Get the file type.
    */
   [[nodiscard]] const std::string &
   get_file_type() const
@@ -52,7 +52,7 @@ public:
   }
 
   /**
-   * \brief Set the file type
+   * @brief Set the file type
    */
   void
   set_file_type(const std::string &_file_type)
@@ -61,7 +61,7 @@ public:
   }
 
   /**
-   * \brief Get the file name.
+   * @brief Get the file name.
    */
   [[nodiscard]] const std::string &
   get_file_name() const
@@ -70,7 +70,7 @@ public:
   }
 
   /**
-   * \brief Set the file name
+   * @brief Set the file name
    */
   void
   set_file_name(const std::string &_file_name)
@@ -79,7 +79,7 @@ public:
   }
 
   /**
-   * \brief Set the print output period
+   * @brief Set the print output period
    */
   void
   set_print_output_period(const unsigned int &_print_output_period)
@@ -88,7 +88,7 @@ public:
   }
 
   /**
-   * \brief Get the patch subdivisions
+   * @brief Get the patch subdivisions
    */
   [[nodiscard]] unsigned int
   get_patch_subdivisions() const
@@ -97,7 +97,7 @@ public:
   }
 
   /**
-   * \brief Set the patch subdivisions
+   * @brief Set the patch subdivisions
    */
   void
   set_patch_subdivisions(const unsigned int &_patch_subdivisions)
@@ -106,7 +106,7 @@ public:
   }
 
   /**
-   * \brief Set the output condition
+   * @brief Set the output condition
    */
   void
   set_output_condition(const std::string &_condition)
@@ -115,7 +115,7 @@ public:
   }
 
   /**
-   * \brief Set the number of outputs
+   * @brief Set the number of outputs
    */
   void
   set_n_outputs(const unsigned int &_n_outputs)
@@ -124,7 +124,7 @@ public:
   }
 
   /**
-   * \brief Set the user output list
+   * @brief Set the user output list
    */
   void
   set_user_output_list(const std::vector<int> &_user_output_list)
@@ -133,7 +133,7 @@ public:
   }
 
   /**
-   * \brief Whether to print timing information with output
+   * @brief Whether to print timing information with output
    */
   void
   set_print_timing_with_output(const bool &_print_timing_with_output)

@@ -18,14 +18,14 @@ template <unsigned int dim>
 class UserInputParameters;
 
 /**
- * \brief Function for user-implemented nonuniform dirichlet boundary condition.
+ * @brief Function for user-implemented nonuniform dirichlet boundary condition.
  */
 template <unsigned int dim, unsigned int degree, typename number>
 class NonuniformDirichlet : public dealii::Function<dim, number>
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   NonuniformDirichlet(
     unsigned int                                                   _index,
@@ -36,13 +36,13 @@ public:
   // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
 
   /**
-   * \brief Scalar value.
+   * @brief Scalar value.
    */
   number
   value(const dealii::Point<dim> &p, const unsigned int component = 0) const override;
 
   /**
-   * \brief Vector value.
+   * @brief Vector value.
    */
   void
   vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;

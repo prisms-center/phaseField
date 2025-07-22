@@ -67,15 +67,15 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The dimensionless solute supersaturation and its derivatives
-  scalarvalueType U  = variable_list.get_scalar_value(0);
-  scalargradType  Ux = variable_list.get_scalar_gradient(0);
+  scalarvalueType U  = variable_list.template get_value<Scalar>(0);
+  scalargradType  Ux = variable_list.template get_gradient<Scalar>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType phi  = variable_list.get_scalar_value(1);
-  scalargradType  phix = variable_list.get_scalar_gradient(1);
+  scalarvalueType phi  = variable_list.template get_value<Scalar>(1);
+  scalargradType  phix = variable_list.template get_gradient<Scalar>(1);
 
   // The auxiliary parameter and its derivatives
-  scalarvalueType xi = variable_list.get_scalar_value(2);
+  scalarvalueType xi = variable_list.template get_value<Scalar>(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -166,11 +166,11 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The temperature and its derivatives
-  scalarvalueType U = variable_list.get_scalar_value(0);
+  scalarvalueType U = variable_list.template get_value<Scalar>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType phi  = variable_list.get_scalar_value(1);
-  scalargradType  phix = variable_list.get_scalar_gradient(1);
+  scalarvalueType phi  = variable_list.template get_value<Scalar>(1);
+  scalargradType  phix = variable_list.template get_gradient<Scalar>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

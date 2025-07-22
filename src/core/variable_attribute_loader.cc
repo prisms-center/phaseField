@@ -6,6 +6,7 @@
 #include <deal.II/matrix_free/evaluation_flags.h>
 
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -25,22 +26,52 @@ PRISMS_PF_BEGIN_NAMESPACE
 void
 VariableAttributeLoader::init_variable_attributes()
 {
+  // Load the variable attributes from the user
   load_variable_attributes();
 
+  // Determine the max number of fields that user has defined. This is used to determine
+  // the length of the vector for the eval flag set at runtime.
+  Types::Index max_fields = var_attributes.size();
+
+  // Determine the max numer of dependency types. This is used to determine the length of
+  // the vector for the eval flag set at runtime.
+  Types::Index max_dependency_types = static_cast<Types::Index>(DependencyType::OldFour);
+
+  // Format the dependencies and add the max fields and dependency types
   for (auto &[index, variable] : var_attributes)
     {
       variable.format_dependencies();
+      variable.max_fields           = max_fields;
+      variable.max_dependency_types = max_dependency_types;
     }
+
+  // Validate the attributes
   validate_attributes();
+
+  // Parse the string dependencies into the eval flag set
   for (auto &[index, variable] : var_attributes)
     {
       variable.parse_residual_dependencies();
-      variable.parse_dependencies(var_attributes);
+      variable.parse_dependencies(var_attributes, max_fields, max_dependency_types);
     }
+
+  // Validate the old solution dependencies
   validate_old_solution_dependencies();
+
+  // Determine the field solve type
   for (auto &[index, variable] : var_attributes)
     {
       variable.determine_field_solve_type(var_attributes);
+    }
+
+  // Compute the shared dependencies
+  for (FieldSolveType field_solve_type : {FieldSolveType::ExplicitConstant,
+                                          FieldSolveType::Explicit,
+                                          FieldSolveType::ExplicitPostprocess})
+    {
+      auto subset_attributes =
+        compute_subset_attributes(var_attributes, field_solve_type);
+      compute_shared_dependencies(subset_attributes);
     }
 
   // Print variable attributes to summary.log
@@ -149,8 +180,9 @@ void
 VariableAttributeLoader::insert_dependencies_value_term_rhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_rhs.insert(dependencies.begin(),
-                                                      dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_value_rhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -159,8 +191,9 @@ VariableAttributeLoader::insert_dependencies_gradient_term_rhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_rhs.insert(dependencies.begin(),
-                                                         dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_gradient_rhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -168,8 +201,9 @@ void
 VariableAttributeLoader::insert_dependencies_value_term_lhs(const unsigned int &index,
                                                             const Iterable &dependencies)
 {
-  var_attributes[index].dependencies_value_lhs.insert(dependencies.begin(),
-                                                      dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_value_lhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 template <typename Iterable>
@@ -178,8 +212,9 @@ VariableAttributeLoader::insert_dependencies_gradient_term_lhs(
   const unsigned int &index,
   const Iterable     &dependencies)
 {
-  var_attributes[index].dependencies_gradient_lhs.insert(dependencies.begin(),
-                                                         dependencies.end());
+  var_attributes[index].raw_dependencies.dependencies_gradient_lhs.insert(
+    dependencies.begin(),
+    dependencies.end());
 }
 
 void
@@ -283,8 +318,8 @@ VariableAttributeLoader::validate_attributes()
                     "Currently, postprocessing only allows explicit equations."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::Constant) ||
-                    (variable.dependencies_rhs.empty() &&
-                     variable.dependencies_lhs.empty()),
+                    (variable.raw_dependencies.dependencies_rhs.empty() &&
+                     variable.raw_dependencies.dependencies_lhs.empty()),
                   dealii::ExcMessage("Constant fields are determined by the initial "
                                      "condition. They cannot have dependencies."));
     }
@@ -349,14 +384,14 @@ VariableAttributeLoader::validate_attributes()
   // Check dependencies
   for (const auto &[index, variable] : var_attributes)
     {
-      validate_dependencies(variable.dependencies_rhs,
+      validate_dependencies(variable.raw_dependencies.dependencies_rhs,
                             "RHS",
                             index,
                             variable.name,
                             reg_possible_deps,
                             change_possible_deps);
 
-      validate_dependencies(variable.dependencies_lhs,
+      validate_dependencies(variable.raw_dependencies.dependencies_lhs,
                             "LHS",
                             index,
                             variable.name,
@@ -374,13 +409,44 @@ VariableAttributeLoader::validate_old_solution_dependencies()
     dependency_set;
   for (const auto &[index, variable] : var_attributes)
     {
-      for (const auto &[pair, flag] : variable.eval_flag_set_rhs)
+      Types::Index field_index = 0;
+      for (const auto &local_dependency_set : variable.eval_flag_set_rhs)
         {
-          dependency_set[pair] |= flag;
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
+            {
+              // Skip where the evaluation flags are nothing
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              dependency_set[std::make_pair(field_index,
+                                            static_cast<DependencyType>(dep_index))] |=
+                value;
+              dep_index++;
+            }
+          field_index++;
         }
-      for (const auto &[pair, flag] : variable.eval_flag_set_lhs)
+
+      field_index = 0;
+      for (const auto &local_dependency_set : variable.eval_flag_set_lhs)
         {
-          dependency_set[pair] |= flag;
+          Types::Index dep_index = 0;
+          for (const auto &value : local_dependency_set)
+            {
+              // Skip where the evaluation flags are nothing
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+              dependency_set[std::make_pair(field_index,
+                                            static_cast<DependencyType>(dep_index))] |=
+                value;
+              dep_index++;
+            }
+          field_index++;
         }
     }
 
@@ -424,6 +490,109 @@ VariableAttributeLoader::validate_old_solution_dependencies()
                             "previous old_n() to old_1() must be present."));
             }
         }
+    }
+}
+
+std::map<Types::Index, VariableAttributes *>
+VariableAttributeLoader::compute_subset_attributes(
+  std::map<Types::Index, VariableAttributes> &variable_attributes,
+  FieldSolveType                              field_solve_type,
+  Types::Index                                solve_priority) const
+{
+  std::map<Types::Index, VariableAttributes *> local_subset_attributes;
+
+  // TODO (landinjm): Use the solve priority
+  (void) solve_priority;
+
+  for (auto &[index, variable] : variable_attributes)
+    {
+      if (variable.field_solve_type == field_solve_type)
+        {
+          local_subset_attributes.emplace(index, &variable);
+        }
+    }
+
+  return local_subset_attributes;
+}
+
+void
+VariableAttributeLoader::compute_shared_dependencies(
+  std::map<Types::Index, VariableAttributes *> &variable_attributes)
+{
+  // If the map is entry return early
+  if (variable_attributes.empty())
+    {
+      return;
+    }
+
+  // Grab the first entry in the variable_attributes to get some useful information
+  const auto *first_variable = variable_attributes.begin()->second;
+  [[maybe_unused]] const FieldSolveType field_solve_type =
+    first_variable->field_solve_type;
+  const Types::Index max_fields       = first_variable->max_fields;
+  const Types::Index max_dependencies = first_variable->max_dependency_types;
+
+  // If the field_solve_type is not something we would expect thow an assertion. We could
+  // return early, but I slightly favor an assertion and choosing the appropriate
+  // FieldSolveType's upstream.
+  Assert(field_solve_type == FieldSolveType::Explicit ||
+           field_solve_type == FieldSolveType::ExplicitConstant ||
+           field_solve_type == FieldSolveType::ExplicitPostprocess,
+         dealii::ExcMessage(
+           "compute_shared_dependencies() should only be used for concurrent solves."));
+
+  // Create a vector for the shared eval flags and dependencies
+  std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>> shared_eval_flags(
+    max_fields,
+    std::vector<dealii::EvaluationFlags::EvaluationFlags>(
+      max_dependencies,
+      dealii::EvaluationFlags::EvaluationFlags::nothing));
+  std::vector<std::vector<FieldType>> shared_dependencies(
+    max_fields,
+    std::vector<FieldType>(max_dependencies, Numbers::invalid_field_type));
+
+  // Populate the shared eval flags
+  for (const auto &[index, variable] : variable_attributes)
+    {
+      for (Types::Index field_index = 0; field_index < max_fields; field_index++)
+        {
+          for (Types::Index dependency_index = 0; dependency_index < max_dependencies;
+               dependency_index++)
+            {
+              const auto &eval_flag =
+                variable->eval_flag_set_rhs.at(field_index).at(dependency_index);
+              const auto &dependency_type =
+                variable->dependency_set_rhs.at(field_index).at(dependency_index);
+
+              // If the eval flag is nothing and the dependency type is invalid skip it
+              if (eval_flag == dealii::EvaluationFlags::EvaluationFlags::nothing &&
+                  dependency_type == Numbers::invalid_field_type)
+                {
+                  continue;
+                }
+
+              // Check that change terms are not found in the RHS of the dependency set
+              Assert(eval_flag == dealii::EvaluationFlags::EvaluationFlags::nothing ||
+                       dependency_index !=
+                         static_cast<Types::Index>(DependencyType::Change),
+                     dealii::ExcMessage(
+                       "Change terms are not allowed in the RHS of the dependency set"));
+
+              // If the dependency is not a change term, then we can add the dependency
+              shared_eval_flags.at(field_index).at(dependency_index) |= eval_flag;
+
+              // Also add the field type to the shared dependencies
+              shared_dependencies.at(field_index).at(dependency_index) =
+                variable->dependency_set_rhs.at(field_index).at(dependency_index);
+            }
+        }
+    }
+
+  // Assign the shared dependencies to the subset attributes
+  for (auto &[index, variable] : variable_attributes)
+    {
+      variable->eval_flag_set_rhs  = shared_eval_flags;
+      variable->dependency_set_rhs = shared_dependencies;
     }
 }
 

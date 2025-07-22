@@ -58,10 +58,10 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType n = variable_list.get_scalar_value(0);
+  scalarvalueType n = variable_list.template get_value<Scalar>(0);
 
   // The chemical potential
-  scalarvalueType mu = variable_list.get_scalar_value(1);
+  scalarvalueType mu = variable_list.template get_value<Scalar>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
   // scalarvalueType eq_n = (n-constV(userInputs.dtValue*MnV)*mu);
@@ -96,8 +96,8 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.get_scalar_value(0);
-  scalargradType  nx = variable_list.get_scalar_gradient(0);
+  scalarvalueType n  = variable_list.template get_value<Scalar>(0);
+  scalargradType  nx = variable_list.template get_gradient<Scalar>(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

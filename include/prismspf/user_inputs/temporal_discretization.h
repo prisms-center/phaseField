@@ -11,26 +11,26 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that holds temporal discretization parameters.
+ * @brief Struct that holds temporal discretization parameters.
  */
 struct TemporalDiscretization
 {
 public:
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate(
     const std::map<unsigned int, VariableAttributes> &var_attributes);
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Get the final time.
+   * @brief Get the final time.
    */
   double
   get_final_time() const
@@ -39,7 +39,7 @@ public:
   }
 
   /**
-   * \brief Set the final time.
+   * @brief Set the final time.
    */
   void
   set_final_time(double _final_time)
@@ -48,7 +48,7 @@ public:
   }
 
   /**
-   * \brief Get the current time.
+   * @brief Get the current time.
    */
   double
   get_current_time() const
@@ -57,7 +57,7 @@ public:
   }
 
   /**
-   * \brief Update the current time with the current timestep.
+   * @brief Update the current time with the current timestep.
    *
    * Note that this function is const even though it does increment the current timestep.
    */
@@ -68,7 +68,7 @@ public:
   }
 
   /**
-   * \brief Get the total number of increments.
+   * @brief Get the total number of increments.
    */
   unsigned int
   get_total_increments() const
@@ -77,7 +77,7 @@ public:
   }
 
   /**
-   * \brief Set the total number of increments.
+   * @brief Set the total number of increments.
    */
   void
   set_total_increments(unsigned int _total_increments)
@@ -86,7 +86,7 @@ public:
   }
 
   /**
-   * \brief Get the current increment.
+   * @brief Get the current increment.
    */
   unsigned int
   get_current_increment() const
@@ -95,7 +95,7 @@ public:
   }
 
   /**
-   * \brief Update the current increment by one.
+   * @brief Update the current increment by one.
    *
    * Note that this function is const even though it does increment the current increment.
    */
@@ -106,7 +106,7 @@ public:
   }
 
   /**
-   * \brief Get the current timestep.
+   * @brief Get the current timestep.
    */
   double
   get_timestep() const
@@ -115,7 +115,7 @@ public:
   }
 
   /**
-   * \brief Set the timestep.
+   * @brief Set the timestep.
    */
   void
   set_timestep(double _dt)

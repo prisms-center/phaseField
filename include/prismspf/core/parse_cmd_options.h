@@ -16,7 +16,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class to parse command line options.
+ * @brief Class to parse command line options.
  */
 class ParseCMDOptions
 {

@@ -28,12 +28,12 @@ template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
 /**
- * \brief This is the abstract base class for the matrix-free implementation of some
+ * @brief This is the abstract base class for the matrix-free implementation of some
  * PDE.
  *
- * \tparam dim The number of dimensions in the problem.
- * \tparam degree The polynomial degree of the shape functions.
- * \tparam number Datatype to use for `LinearAlgebra::distributed::Vector<number>`. Either
+ * @tparam dim The number of dimensions in the problem.
+ * @tparam degree The polynomial degree of the shape functions.
+ * @tparam number Datatype to use for `LinearAlgebra::distributed::Vector<number>`. Either
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
@@ -44,7 +44,7 @@ public:
   using SizeType   = dealii::VectorizedArray<number>;
 
   /**
-   * \brief Default constructor.
+   * @brief Default constructor.
    *
    * TODO (landinjm): Should we have a default constructor and pass everything through
    * initialize? Need to pick one.
@@ -56,7 +56,7 @@ public:
     bool         _use_local_mapping = false);
 
   /**
-   * \brief Initialize operator.
+   * @brief Initialize operator.
    */
   void
   initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
@@ -64,13 +64,13 @@ public:
                std::vector<unsigned int>());
 
   /**
-   * \brief Return the number of DoFs.
+   * @brief Return the number of DoFs.
    */
   dealii::types::global_dof_index
   m() const;
 
   /**
-   * \brief Return the value of the matrix entry. This function is only valid when row ==
+   * @brief Return the value of the matrix entry. This function is only valid when row ==
    * col and when the diagonal is initialized. Additionally, this is only used so that we
    * may compile. Trying to use this function will throw an error.
    */
@@ -78,53 +78,53 @@ public:
   el(const unsigned int &row, const unsigned int &col) const;
 
   /**
-   * \brief Release all memory and return to state like having called the default
+   * @brief Release all memory and return to state like having called the default
    * constructor.
    */
   void
   clear();
 
   /**
-   * \brief Initialize a given vector with the MatrixFree object that this object
+   * @brief Initialize a given vector with the MatrixFree object that this object
    * contains.
    */
   void
   initialize_dof_vector(VectorType &dst, unsigned int dof_handler_index = 0) const;
 
   /**
-   * \brief Set constrained entries to one.
+   * @brief Set constrained entries to one.
    */
   void
   set_constrained_entries_to_one(VectorType &dst) const;
 
   /**
-   * \brief Get read access to the MatrixFree object stored with this operator.
+   * @brief Get read access to the MatrixFree object stored with this operator.
    */
   std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>>
   get_matrix_free() const;
 
   /**
-   * \brief Get read access to the inverse diagonal of this operator.
+   * @brief Get read access to the inverse diagonal of this operator.
    */
   const std::shared_ptr<dealii::DiagonalMatrix<VectorType>> &
   get_matrix_diagonal_inverse() const;
 
   /**
-   * \brief Add the mappings from global to local solution vectors.
+   * @brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(const std::map<std::pair<unsigned int, DependencyType>,
-                                             unsigned int> &_global_to_local_solution);
+  add_global_to_local_mapping(
+    const std::vector<std::vector<Types::Index>> &_global_to_local_solution);
 
   /**
-   * \brief Add the solution subset for src vector.
+   * @brief Add the solution subset for src vector.
    */
   void
   add_src_solution_subset(
     const std::vector<VectorType *> &_src_solution_subset = std::vector<VectorType *>());
 
   /**
-   * \brief Matrix-vector multiplication.
+   * @brief Matrix-vector multiplication.
    */
   void
   vmult(VectorType &dst, const VectorType &src) const;
@@ -132,7 +132,7 @@ public:
   // NOLINTBEGIN(readability-identifier-naming)
 
   /**
-   * \brief Transpose matrix-vector multiplication.
+   * @brief Transpose matrix-vector multiplication.
    */
   void
   Tvmult(VectorType &dst, const VectorType &src) const;
@@ -140,41 +140,41 @@ public:
   // NOLINTEND(readability-identifier-naming)
 
   /**
-   * \brief Compute the explicit update.
+   * @brief Compute the explicit update.
    */
   void
   compute_explicit_update(std::vector<VectorType *>       &dst,
                           const std::vector<VectorType *> &src) const;
 
   /**
-   * \brief Compute the explicit update for postprocessed fields.
+   * @brief Compute the explicit update for postprocessed fields.
    */
   void
   compute_postprocess_explicit_update(std::vector<VectorType *>       &dst,
                                       const std::vector<VectorType *> &src) const;
 
   /**
-   * \brief Compute a nonexplicit auxiliary update.
+   * @brief Compute a nonexplicit auxiliary update.
    */
   void
   compute_nonexplicit_auxiliary_update(std::vector<VectorType *>       &dst,
                                        const std::vector<VectorType *> &src) const;
 
   /**
-   * \brief Compute the residual of this operator. This is the b in Ax=b.
+   * @brief Compute the residual of this operator. This is the b in Ax=b.
    */
   void
   compute_residual(VectorType &dst, const VectorType &src) const;
 
   /**
-   * \brief Compute the diagonal of this operator.
+   * @brief Compute the diagonal of this operator.
    */
   void
   compute_diagonal(unsigned int field_index);
 
 private:
   /**
-   * \brief Local computation of the explicit update.
+   * @brief Local computation of the explicit update.
    */
   void
   compute_local_explicit_update(
@@ -184,7 +184,7 @@ private:
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
-   * \brief Local computation of the explicit update of postprocessed fields.
+   * @brief Local computation of the explicit update of postprocessed fields.
    */
   void
   compute_local_postprocess_explicit_update(
@@ -194,7 +194,7 @@ private:
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
-   * \brief Local computation of the nonexplicit auxiliary update.
+   * @brief Local computation of the nonexplicit auxiliary update.
    */
   void
   compute_local_nonexplicit_auxiliary_update(
@@ -204,7 +204,7 @@ private:
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
-   * \brief Local computation of the residual of the operator.
+   * @brief Local computation of the residual of the operator.
    */
   void
   compute_local_residual(const dealii::MatrixFree<dim, number, SizeType> &data,
@@ -213,7 +213,7 @@ private:
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /**
-   * \brief Local computation of the newton update of the operator.
+   * @brief Local computation of the newton update of the operator.
    */
   void
   compute_local_newton_update(
@@ -223,7 +223,7 @@ private:
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
 
   /**
-   * \brief Local computation of the diagonal of the operator.
+   * @brief Local computation of the diagonal of the operator.
    */
   void
   local_compute_diagonal(const dealii::MatrixFree<dim, number, SizeType> &data,
@@ -232,58 +232,57 @@ private:
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   /**
-   * \brief The attribute list of the relevant variables.
+   * @brief The attribute list of the relevant variables.
    */
   const std::map<unsigned int, VariableAttributes> *attributes_list = nullptr;
 
   /**
-   * \brief PDE operator object for user defined PDEs.
+   * @brief PDE operator object for user defined PDEs.
    */
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
-   * \brief Current field index that is being evaluated.
+   * @brief Current field index that is being evaluated.
    */
   Types::Index current_index = Numbers::invalid_index;
 
   /**
-   * \brief Whether to use local mapping for the VariableContainer object.
+   * @brief Whether to use local mapping for the VariableContainer object.
    */
   bool use_local_mapping = false;
 
   /**
-   * \brief Matrix-free object.
+   * @brief Matrix-free object.
    */
   std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> data;
 
   /**
-   * \brief Selected fields for which we'll evaluate.
+   * @brief Selected fields for which we'll evaluate.
    */
   std::vector<unsigned int> selected_fields;
 
   /**
-   * \brief Indices of DoFs on edge in case the operator is used in GMG context.
+   * @brief Indices of DoFs on edge in case the operator is used in GMG context.
    */
   std::vector<std::vector<unsigned int>> edge_constrained_indices;
 
   /**
-   * \brief Mapping from global solution vectors to the local ones
+   * @brief Mapping from global solution vectors to the local ones
    */
-  std::map<std::pair<unsigned int, DependencyType>, unsigned int>
-    global_to_local_solution;
+  std::vector<std::vector<Types::Index>> global_to_local_solution;
 
   /**
-   * \brief Subset of fields that are necessary for the source.
+   * @brief Subset of fields that are necessary for the source.
    */
   std::vector<VectorType *> src_solution_subset;
 
   /**
-   * \brief The diagonal matrix.
+   * @brief The diagonal matrix.
    */
   std::shared_ptr<dealii::DiagonalMatrix<VectorType>> diagonal_entries;
 
   /**
-   * \brief The inverse diagonal matrix.
+   * @brief The inverse diagonal matrix.
    */
   std::shared_ptr<dealii::DiagonalMatrix<VectorType>> inverse_diagonal_entries;
 };

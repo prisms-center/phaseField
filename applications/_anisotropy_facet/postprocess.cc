@@ -51,14 +51,14 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // c
-  scalarvalueType c = variable_list.get_scalar_value(0);
+  scalarvalueType c = variable_list.template get_value<Scalar>(0);
 
   // n1
-  scalarvalueType n  = variable_list.get_scalar_value(1);
-  scalargradType  nx = variable_list.get_scalar_gradient(1);
+  scalarvalueType n  = variable_list.template get_value<Scalar>(1);
+  scalargradType  nx = variable_list.template get_gradient<Scalar>(1);
 
   // biharm
-  scalarvalueType biharm = variable_list.get_scalar_value(2);
+  scalarvalueType biharm = variable_list.template get_value<Scalar>(2);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

@@ -51,11 +51,11 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The temperature and its derivatives
-  scalarvalueType u = variable_list.get_scalar_value(0);
+  scalarvalueType u = variable_list.template get_value<Scalar>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType phi  = variable_list.get_scalar_value(1);
-  scalargradType  phix = variable_list.get_scalar_gradient(1);
+  scalarvalueType phi  = variable_list.template get_value<Scalar>(1);
+  scalargradType  phix = variable_list.template get_gradient<Scalar>(1);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

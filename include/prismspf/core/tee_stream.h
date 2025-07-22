@@ -10,7 +10,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Combined output streams so we can output to terminal and the summary.log with a
+ * @brief Combined output streams so we can output to terminal and the summary.log with a
  * single statement.
  */
 class TeeStream : public std::ostream

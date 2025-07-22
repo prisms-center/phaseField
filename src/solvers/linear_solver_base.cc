@@ -54,23 +54,57 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   update_system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
 
+  // Resize the global to local solution vector
+  residual_global_to_local_solution.resize(
+    variable_attributes->get_dependency_set_rhs().size());
+  for (auto &vector : residual_global_to_local_solution)
+    {
+      vector.resize(variable_attributes->get_dependency_set_rhs().begin()->size(),
+                    Numbers::invalid_index);
+    }
+
+  newton_update_global_to_local_solution.resize(
+    variable_attributes->get_dependency_set_lhs().size());
+  for (auto &vector : newton_update_global_to_local_solution)
+    {
+      vector.resize(variable_attributes->get_dependency_set_lhs().begin()->size(),
+                    Numbers::invalid_index);
+    }
+
   // Create the residual subset of solution vectors and add the mapping to
   // MatrixFreeOperator
   residual_src.push_back(
     solution_handler->get_solution_vector(field_index, DependencyType::Normal));
-  residual_global_to_local_solution.emplace(std::make_pair(field_index,
-                                                           DependencyType::Normal),
-                                            0);
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_rhs())
-    {
-      for (const auto &[dependency_type, field_type] : map)
-        {
-          const auto pair = std::make_pair(variable_index, dependency_type);
+  residual_global_to_local_solution[field_index]
+                                   [static_cast<Types::Index>(DependencyType::Normal)] =
+                                     0;
 
-          residual_src.push_back(
-            solution_handler->get_solution_vector(variable_index, dependency_type));
-          residual_global_to_local_solution.emplace(pair, residual_src.size() - 1);
+  Types::Index variable_index = 0;
+  for (const auto &inner_dependency_set : variable_attributes->get_dependency_set_rhs())
+    {
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
+        {
+          // Skip if an invalid field type is found or the global_to_local_solution
+          // already has an entry for this dependency index and dependency type
+          if (field_type == Numbers::invalid_field_type ||
+              residual_global_to_local_solution[variable_index][dependency_type] !=
+                Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+
+          residual_src.push_back(solution_handler->get_solution_vector(
+            variable_index,
+            static_cast<DependencyType>(dependency_type)));
+          residual_global_to_local_solution[variable_index][dependency_type] =
+            residual_src.size() - 1;
+
+          dependency_type++;
         }
+
+      variable_index++;
     }
 
   // Create the newton update subset of solution vectors and add the mapping to
@@ -81,28 +115,39 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   // VectorType src and all other dependencies for the LHS as std::vector<VectorType*>
   // src_subset.
 
-  for (const auto &[variable_index, map] : variable_attributes->get_dependency_set_lhs())
+  variable_index = 0;
+  for (const auto &inner_dependency_set : variable_attributes->get_dependency_set_lhs())
     {
-      for (const auto &[dependency_type, field_type] : map)
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
         {
-          const auto pair = std::make_pair(variable_index, dependency_type);
+          // Skip if an invalid field type is found or the global_to_local_solution
+          // already has an entry for this dependency index and dependency type
+          if (field_type == Numbers::invalid_field_type ||
+              newton_update_global_to_local_solution[variable_index][dependency_type] !=
+                Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
 
-          if (dependency_type == DependencyType::Change)
+          if (static_cast<DependencyType>(dependency_type) == DependencyType::Change)
             {
               Assert(field_index == variable_index,
                      dealii::ExcMessage("The change type should have the same type as "
                                         "the field we're solving."));
             }
-          newton_update_src.push_back(
-            solution_handler->get_solution_vector(variable_index, dependency_type));
-          newton_update_global_to_local_solution.emplace(pair,
-                                                         newton_update_src.size() - 1);
+          newton_update_src.push_back(solution_handler->get_solution_vector(
+            variable_index,
+            static_cast<DependencyType>(dependency_type)));
+          newton_update_global_to_local_solution[variable_index][dependency_type] =
+            newton_update_src.size() - 1;
+
+          dependency_type++;
         }
+
+      variable_index++;
     }
-  Assert(
-    newton_update_global_to_local_solution.size() == newton_update_src.size(),
-    dealii::ExcMessage(
-      "The newton update src and global to local mappings must have the same size."));
 }
 
 template <unsigned int dim, unsigned int degree>
