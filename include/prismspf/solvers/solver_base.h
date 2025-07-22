@@ -83,8 +83,10 @@ public:
     update_subset_attributes(field_solve_type, solve_priority);
 
     // If the subset attribute is empty return early
-    if (subset_attributes.empty())
+    if (solver_is_empty())
       {
+        ConditionalOStreams::pout_base() << "  no fields for this solver exist\n"
+                                         << std::flush;
         return;
       }
 
@@ -99,7 +101,7 @@ public:
   reinit()
   {
     // If the subset attribute is empty return early
-    if (subset_attributes.empty())
+    if (solver_is_empty())
       {
         return;
       }
@@ -112,7 +114,7 @@ public:
   solve()
   {
     // If the subset attribute is empty return early
-    if (subset_attributes.empty())
+    if (solver_is_empty())
       {
         return;
       }
@@ -125,6 +127,17 @@ public:
    */
   void
   print();
+
+  /**
+   * @brief Whether the subset attributes is empty.
+   *
+   * This function is used so we can return early.
+   */
+  [[nodiscard]] bool
+  solver_is_empty() const
+  {
+    return subset_attributes.empty();
+  }
 
   /**
    * @brief Compute the subset of VariableAttributes that belongs to a given

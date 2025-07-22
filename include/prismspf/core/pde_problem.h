@@ -167,12 +167,12 @@ private:
   /**
    * @brief Explicit field solver class.
    */
-  ExplicitSolver<dim, degree> explicit_solver;
+  ExplicitSolver<dim, degree, double> explicit_solver;
 
   /**
    * @brief Postprocessed explicit field solver class.
    */
-  ExplicitPostprocessSolver<dim, degree> postprocess_explicit_solver;
+  ExplicitPostprocessSolver<dim, degree, double> postprocess_explicit_solver;
 
   /**
    * @brief Nonexplicit auxiliary field solver class.

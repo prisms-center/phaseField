@@ -220,12 +220,33 @@ PDEProblem<dim, degree>::init_system()
   // Initialize the solver types
   ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
   Timer::start_section("Solver initialization");
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize concurrent constant solvers...\n"
+    << std::flush;
   explicit_constant_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize concurrent explicit solvers...\n"
+    << std::flush;
   explicit_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize concurrent explicit postprocess solvers...\n"
+    << std::flush;
   postprocess_explicit_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize sequential auxiliary solvers...\n"
+    << std::flush;
   nonexplicit_auxiliary_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize sequential linear solvers...\n"
+    << std::flush;
   nonexplicit_linear_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize sequential self-nonlinear solvers...\n"
+    << std::flush;
   nonexplicit_self_nonlinear_solver.init();
+  ConditionalOStreams::pout_base()
+    << "  trying to initialize sequential co-nonlinear solvers...\n"
+    << std::flush;
   nonexplicit_co_nonlinear_solver.init();
   Timer::end_section("Solver initialization");
 

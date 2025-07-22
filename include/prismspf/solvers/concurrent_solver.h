@@ -67,8 +67,9 @@ public:
     // Call the base class init
     this->SolverBase<dim, degree, number>::init();
 
-    // If the FieldSolveType is constant we can just return early.
-    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+    // If the FieldSolveType is constant or the solver is empty we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant ||
+        this->solver_is_empty())
       {
         return;
       }
@@ -146,8 +147,9 @@ public:
     // Call the base class reinit
     this->SolverBase<dim, degree, number>::reinit();
 
-    // If the FieldSolveType is constant we can just return early.
-    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+    // If the FieldSolveType is constant or the solver is empty we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant ||
+        this->solver_is_empty())
       {
         return;
       }
@@ -162,8 +164,9 @@ public:
     // Call the base class solve
     this->SolverBase<dim, degree, number>::solve();
 
-    // If the FieldSolveType is constant we can just return early.
-    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant)
+    // If the FieldSolveType is constant or the solver is empty we can just return early.
+    if (this->get_field_solve_type() == FieldSolveType::ExplicitConstant ||
+        this->solver_is_empty())
       {
         return;
       }
@@ -187,6 +190,34 @@ public:
   get_system_matrix()
   {
     return system_matrix;
+  }
+
+  /**
+   * @brief Get the mapping from global solution vectors to the local ones.
+   */
+  [[nodiscard]] const std::vector<std::vector<Types::Index>> &
+  get_global_to_local_solution_mapping()
+  {
+    return global_to_local_solution;
+  }
+
+  /**
+   * @brief Get the src solution subset.
+   */
+  [[nodiscard]] const std::vector<
+    typename SolverBase<dim, degree, number>::VectorType *> &
+  get_src_solution_subset()
+  {
+    return solution_subset;
+  }
+
+  /**
+   * @brief Get the dst solution subset.
+   */
+  [[nodiscard]] std::vector<typename SolverBase<dim, degree, number>::VectorType *> &
+  get_dst_solution_subset()
+  {
+    return new_solution_subset;
   }
 
 private:

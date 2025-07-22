@@ -68,6 +68,8 @@ public:
   {
     // Call the base class init
     this->ConcurrentSolver<dim, degree, number>::init();
+
+    // Do nothing
   };
 
   /**
@@ -78,6 +80,8 @@ public:
   {
     // Call the base class reinit
     this->ConcurrentSolver<dim, degree, number>::reinit();
+
+    // Do nothing
   };
 
   /**
