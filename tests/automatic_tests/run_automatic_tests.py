@@ -228,7 +228,9 @@ args = parser.parse_args()
 n_processes = args.ntasks
 n_threads = args.nthreads
 
-print(f"Running automatic tests with {n_processes} processes and {n_threads} threads per process.")
+print(
+    f"Running automatic tests with {n_processes} processes and {n_threads} threads per process."
+)
 
 # Grab current directory and the path to the test results file
 pwd = os.path.dirname(os.path.realpath(__file__))
@@ -275,6 +277,7 @@ write_to_file(
     f"CPU max/min MHz: {cpu_max_freq}, {cpu_min_freq}\n"
     f"Hypervisor vendor: {hypervisor}\n"
     f"Number of processes: {n_processes}\n"
+    f"Number of threads: {n_threads}\n"
     "--------------------------------------------------------- \n",
 )
 

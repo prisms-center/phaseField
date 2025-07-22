@@ -51,8 +51,8 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType U   = variable_list.get_scalar_value(0);
-  scalarvalueType phi = variable_list.get_scalar_value(1);
+  scalarvalueType U   = variable_list.template get_value<Scalar>(0);
+  scalarvalueType phi = variable_list.template get_value<Scalar>(1);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

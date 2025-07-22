@@ -16,7 +16,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Struct that stores relevant linear solve information of a certain field
+ * @brief Struct that stores relevant linear solve information of a certain field
  */
 struct LinearSolverParameters
 {
@@ -50,25 +50,25 @@ public:
 };
 
 /**
- * \brief Struct that holds linear solver parameters.
+ * @brief Struct that holds linear solver parameters.
  */
 struct LinearSolveParameters
 {
 public:
   /**
-   * \brief Postprocess and validate parameters.
+   * @brief Postprocess and validate parameters.
    */
   void
   postprocess_and_validate();
 
   /**
-   * \brief Print parameters to summary.log
+   * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
 
   /**
-   * \brief Whether we have any linear solve parameters.
+   * @brief Whether we have any linear solve parameters.
    */
   [[nodiscard]] bool
   has_linear_solve_parameters() const
@@ -77,7 +77,7 @@ public:
   }
 
   /**
-   * \brief Whether we have linear solve parameters for a given field.
+   * @brief Whether we have linear solve parameters for a given field.
    */
   [[nodiscard]] bool
   has_linear_solve_parameters(unsigned int field_index) const
@@ -86,7 +86,7 @@ public:
   }
 
   /**
-   * \brief Set the linear solve parameters for a given field.
+   * @brief Set the linear solve parameters for a given field.
    */
   void
   set_linear_solve_parameters(unsigned int                  field_index,
@@ -96,7 +96,7 @@ public:
   }
 
   /**
-   * \brief Return the linear solve parameters for a given field.
+   * @brief Return the linear solve parameters for a given field.
    */
   [[nodiscard]] const LinearSolverParameters &
   get_linear_solve_parameters(unsigned int field_index) const
@@ -108,7 +108,7 @@ public:
   }
 
   /**
-   * \brief Return the linear solve parameters for a given field.
+   * @brief Return the linear solve parameters for a given field.
    */
   [[nodiscard]] const std::map<unsigned int, LinearSolverParameters> &
   get_linear_solve_parameters() const

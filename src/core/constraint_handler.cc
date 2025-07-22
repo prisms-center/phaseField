@@ -506,7 +506,10 @@ ConstraintHandler<dim, degree>::make_mg_constraint(
     }
   else
     {
-      AssertThrow(false, dealii::ExcNotImplemented());
+      AssertThrow(false,
+                  FeatureNotImplemented(
+                    "The dependency type = " + to_string(dependency_type) +
+                    " is not supported"));
     }
 
   local_constraint.close();

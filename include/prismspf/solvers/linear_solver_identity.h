@@ -14,7 +14,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * \brief Class that handles the assembly and solving of a field with the identity
+ * @brief Class that handles the assembly and solving of a field with the identity
  * preconditioner (no preconditioner)
  */
 template <unsigned int dim, unsigned int degree>
@@ -25,7 +25,7 @@ public:
   using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
 
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   IdentitySolver(const UserInputParameters<dim>       &_user_inputs,
                  const VariableAttributes             &_variable_attributes,
@@ -35,24 +35,24 @@ public:
                  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
 
   /**
-   * \brief Destructor.
+   * @brief Destructor.
    */
   ~IdentitySolver() override = default;
 
   /**
-   * \brief Initialize the system.
+   * @brief Initialize the system.
    */
   void
   init() override;
 
   /**
-   * \brief Reinitialize the system.
+   * @brief Reinitialize the system.
    */
   void
   reinit() override;
 
   /**
-   * \brief Solve the system Ax=b.
+   * @brief Solve the system Ax=b.
    */
   void
   solve(const double &step_length = 1.0) override;

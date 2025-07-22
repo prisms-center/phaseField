@@ -17,19 +17,19 @@ template <unsigned int dim>
 class UserInputParameters;
 
 /**
- * \brief This class handlers the management and access of the matrix-free objects.
+ * @brief This class handlers the management and access of the matrix-free objects.
  */
 template <unsigned int dim, typename number = double>
 class MatrixfreeHandler
 {
 public:
   /**
-   * \brief Constructor.
+   * @brief Constructor.
    */
   MatrixfreeHandler();
 
   /**
-   * \brief Reinitialize the matrix-free object with the same quad rule.
+   * @brief Reinitialize the matrix-free object with the same quad rule.
    */
   void
   reinit(const dealii::Mapping<dim>              &mapping,
@@ -38,7 +38,7 @@ public:
          const dealii::Quadrature<1>             &quad);
 
   /**
-   * \brief Reinitialize the matrix-free object with the same quad rule.
+   * @brief Reinitialize the matrix-free object with the same quad rule.
    */
   void
   reinit(const dealii::Mapping<dim>                                   &mapping,
@@ -47,7 +47,7 @@ public:
          const dealii::Quadrature<1>                                  &quad);
 
   /**
-   * \brief Reinitialize the matrix-free object with the different quad rule.
+   * @brief Reinitialize the matrix-free object with the different quad rule.
    */
   void
   reinit(const dealii::Mapping<dim>                                   &mapping,
@@ -56,7 +56,7 @@ public:
          const std::vector<dealii::Quadrature<1>>                     &quad);
 
   /**
-   * \brief Getter function for the matrix-free object (shared ptr).
+   * @brief Getter function for the matrix-free object (shared ptr).
    */
   [[nodiscard]] std::shared_ptr<
     dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
@@ -64,13 +64,13 @@ public:
 
 private:
   /**
-   * \brief Matrix-free object that collects data to be used in cell loop operations.
+   * @brief Matrix-free object that collects data to be used in cell loop operations.
    */
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
     matrix_free_object;
 
   /**
-   * \brief Additional data scheme
+   * @brief Additional data scheme
    */
   typename dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>::
     AdditionalData additional_data;
