@@ -24,9 +24,9 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/solvers/explicit_constant_solver.h>
-#include <prismspf/solvers/explicit_postprocess_solver.h>
-#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/concurrent_constant_solver.h>
+#include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
+#include <prismspf/solvers/concurrent_explicit_solver.h>
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
 #include <prismspf/solvers/nonexplicit_self_nonlinear_solver.h>
@@ -72,9 +72,9 @@ PDEProblem<dim, degree>::PDEProblem(
                    multigrid_matrix_free_handler,
                    _pde_operator,
                    _pde_operator_float)
-  , explicit_constant_solver(solver_context)
-  , explicit_solver(solver_context)
-  , postprocess_explicit_solver(solver_context)
+  , concurrent_constant_solver(solver_context)
+  , concurrent_explicit_solver(solver_context)
+  , concurrent_concurrent_explicit_postprocess_solver(solver_context)
   , nonexplicit_auxiliary_solver(solver_context)
   , nonexplicit_linear_solver(solver_context, mg_info)
   , nonexplicit_self_nonlinear_solver(solver_context, mg_info)
@@ -223,15 +223,15 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base()
     << "  trying to initialize concurrent constant solvers...\n"
     << std::flush;
-  explicit_constant_solver.init();
+  concurrent_constant_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize concurrent explicit solvers...\n"
     << std::flush;
-  explicit_solver.init();
+  concurrent_explicit_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize concurrent explicit postprocess solvers...\n"
     << std::flush;
-  postprocess_explicit_solver.init();
+  concurrent_concurrent_explicit_postprocess_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to initialize sequential auxiliary solvers...\n"
     << std::flush;
@@ -291,7 +291,7 @@ PDEProblem<dim, degree>::init_system()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   Timer::start_section("Postprocess solver");
-  postprocess_explicit_solver.solve();
+  concurrent_concurrent_explicit_postprocess_solver.solve();
   Timer::end_section("Postprocess solver");
 
   // Output initial condition
@@ -375,7 +375,7 @@ PDEProblem<dim, degree>::solve_increment()
 
   // Solve a single increment
   Timer::start_section("Explicit solver");
-  explicit_solver.solve();
+  concurrent_explicit_solver.solve();
   Timer::end_section("Explicit solver");
 
   Timer::start_section("Nonexplicit auxiliary solver");
@@ -436,7 +436,7 @@ PDEProblem<dim, degree>::solve()
             user_inputs->get_temporal_discretization().get_current_increment()))
         {
           Timer::start_section("Postprocess solver");
-          postprocess_explicit_solver.solve();
+          concurrent_concurrent_explicit_postprocess_solver.solve();
           Timer::end_section("Postprocess solver");
 
           Timer::start_section("Output");

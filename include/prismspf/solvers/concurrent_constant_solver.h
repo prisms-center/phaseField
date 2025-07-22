@@ -13,14 +13,14 @@ PRISMS_PF_BEGIN_NAMESPACE
  * @brief This class handles the explicit solves of all constant fields
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class ExplicitConstantSolver : public ConcurrentSolver<dim, degree, number>
+class ConcurrentConstantSolver : public ConcurrentSolver<dim, degree, number>
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit ExplicitConstantSolver(const SolverContext<dim, degree> &_solver_context,
-                                  Types::Index                      _solve_priority = 0)
+  explicit ConcurrentConstantSolver(const SolverContext<dim, degree> &_solver_context,
+                                    Types::Index                      _solve_priority = 0)
     : ConcurrentSolver<dim, degree, number>(_solver_context,
                                             FieldSolveType::ExplicitConstant,
                                             _solve_priority) {};
@@ -28,37 +28,37 @@ public:
   /**
    * @brief Destructor.
    */
-  ~ExplicitConstantSolver() override = default;
+  ~ConcurrentConstantSolver() override = default;
 
   /**
    * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitConstantSolver(const ExplicitConstantSolver &solver_base) = delete;
+  ConcurrentConstantSolver(const ConcurrentConstantSolver &solver_base) = delete;
 
   /**
    * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitConstantSolver &
-  operator=(const ExplicitConstantSolver &solver_base) = delete;
+  ConcurrentConstantSolver &
+  operator=(const ConcurrentConstantSolver &solver_base) = delete;
 
   /**
    * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitConstantSolver(ExplicitConstantSolver &&solver_base) noexcept = delete;
+  ConcurrentConstantSolver(ConcurrentConstantSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitConstantSolver &
-  operator=(ExplicitConstantSolver &&solver_base) noexcept = delete;
+  ConcurrentConstantSolver &
+  operator=(ConcurrentConstantSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Initialize the solver.

@@ -12,55 +12,58 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief This class handles the explicit solves of all explicit fields
+ * @brief This class handles the explicit solves of all postprocessed fields
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class ExplicitSolver : public ConcurrentSolver<dim, degree, number>
+class ConcurrentExplicitPostprocessSolver : public ConcurrentSolver<dim, degree, number>
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit ExplicitSolver(const SolverContext<dim, degree> &_solver_context,
-                          Types::Index                      _solve_priority = 0)
+  explicit ConcurrentExplicitPostprocessSolver(
+    const SolverContext<dim, degree> &_solver_context,
+    Types::Index                      _solve_priority = 0)
     : ConcurrentSolver<dim, degree, number>(_solver_context,
-                                            FieldSolveType::Explicit,
+                                            FieldSolveType::ExplicitPostprocess,
                                             _solve_priority) {};
 
   /**
    * @brief Destructor.
    */
-  ~ExplicitSolver() override = default;
+  ~ConcurrentExplicitPostprocessSolver() override = default;
 
   /**
    * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitSolver(const ExplicitSolver &solver_base) = delete;
+  ConcurrentExplicitPostprocessSolver(
+    const ConcurrentExplicitPostprocessSolver &solver_base) = delete;
 
   /**
    * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitSolver &
-  operator=(const ExplicitSolver &solver_base) = delete;
+  ConcurrentExplicitPostprocessSolver &
+  operator=(const ConcurrentExplicitPostprocessSolver &solver_base) = delete;
 
   /**
    * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitSolver(ExplicitSolver &&solver_base) noexcept = delete;
+  ConcurrentExplicitPostprocessSolver(
+    ConcurrentExplicitPostprocessSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitSolver &
-  operator=(ExplicitSolver &&solver_base) noexcept = delete;
+  ConcurrentExplicitPostprocessSolver &
+  operator=(ConcurrentExplicitPostprocessSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Initialize the solver.
@@ -101,9 +104,10 @@ public:
         return;
       }
 
-    // Compute the update
-    this->get_system_matrix()->compute_explicit_update(this->get_dst_solution_subset(),
-                                                       this->get_src_solution_subset());
+    // Compute the postprocessed fields
+    this->get_system_matrix()->compute_postprocess_explicit_update(
+      this->get_dst_solution_subset(),
+      this->get_src_solution_subset());
 
     // Scale the update by the respective (Scalar/Vector) invm. Note that we do this with
     // the original solution set to avoid some messy mapping.
@@ -117,16 +121,7 @@ public:
       }
 
     // Update the solutions
-    this->get_solution_handler().update(FieldSolveType::Explicit);
-
-    // Apply constraints
-    // TODO (landinjm): This applies the constraints even to the old fields, which is
-    // incorrect.
-    for (const auto &[index, variable] : this->get_subset_attributes())
-      {
-        this->get_solution_handler()
-          .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
-      }
+    this->get_solution_handler().update(FieldSolveType::ExplicitPostprocess);
 
     // Update the ghosts
     Timer::start_section("Update ghosts");

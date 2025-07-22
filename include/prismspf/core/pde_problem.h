@@ -23,9 +23,9 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/solvers/explicit_constant_solver.h>
-#include <prismspf/solvers/explicit_postprocess_solver.h>
-#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/concurrent_constant_solver.h>
+#include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
+#include <prismspf/solvers/concurrent_explicit_solver.h>
 #include <prismspf/solvers/nonexplicit_auxiliary_solver.h>
 #include <prismspf/solvers/nonexplicit_co_nonlinear_solver.h>
 #include <prismspf/solvers/nonexplicit_linear_solver.h>
@@ -162,17 +162,18 @@ private:
   /**
    * @brief Explicit constant field solver class.
    */
-  ExplicitConstantSolver<dim, degree, double> explicit_constant_solver;
+  ConcurrentConstantSolver<dim, degree, double> concurrent_constant_solver;
 
   /**
    * @brief Explicit field solver class.
    */
-  ExplicitSolver<dim, degree, double> explicit_solver;
+  ConcurrentExplicitSolver<dim, degree, double> concurrent_explicit_solver;
 
   /**
    * @brief Postprocessed explicit field solver class.
    */
-  ExplicitPostprocessSolver<dim, degree, double> postprocess_explicit_solver;
+  ConcurrentExplicitPostprocessSolver<dim, degree, double>
+    concurrent_concurrent_explicit_postprocess_solver;
 
   /**
    * @brief Nonexplicit auxiliary field solver class.
