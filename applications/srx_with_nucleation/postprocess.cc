@@ -11,8 +11,8 @@
 void
 customAttributeLoader::loadPostProcessorVariableAttributes()
 {
-  // TODO (Phil): enable submission of the following several values,
-  //               via user input parameters
+  // TODO: enable submission/determination of the following several values
+  //       via user input parameters
 
   // Number of order parameters
   unsigned int number_ops_ini = 23;
@@ -95,8 +95,8 @@ customPDE<dim, degree>::postProcessedFields(
   [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
   [[maybe_unused]] const VectorizedArray<double>             element_volume) const
 {
-  // TODO (Phil): enable submission of the following several values,
-  //               via user input parameters
+  // TODO: enable submission/determination of the following several values
+  //       via user input parameters
 
   // Number of order parameters
   unsigned int number_ops_ini = 23;

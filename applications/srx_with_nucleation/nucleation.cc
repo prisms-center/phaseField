@@ -7,8 +7,8 @@ customPDE<dim, degree>::getNucleationProbability(variableValueContainer variable
     Point<dim>             p,
     unsigned int variable_index) const
 {
-  // TODO (Phil): enable submission of the following several values,
-  //               via user input parameters
+  // TODO: enable submission/determination of the following several values
+  //       via user input parameters
 
   // Number of order parameters
   unsigned int number_ops_ini = 23;
@@ -30,6 +30,7 @@ customPDE<dim, degree>::getNucleationProbability(variableValueContainer variable
   double Prob_rho, Prob_gb;
 
   // The big number in the numerator coming frmo Rayleigh nucleation model and plugging in physical parameters for Mg, the calculation uses SI units
+  // Rho is given in MJ, so needs to be multiplied by 10^6 to convert to J
   Prob_rho = std::exp(-(M_PI / 4) * std::pow(33790 / (A * sqrt(rho * 1.0e6)), 2));
 
   Prob_gb = mult2Op;

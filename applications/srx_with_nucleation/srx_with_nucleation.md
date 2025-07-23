@@ -69,17 +69,15 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-\int_{\Omega} w \eta_i^{n+1} dV &= \int_{\Omega} w \eta_i^{n} - w \Delta t L \left( m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 \right) - \kappa \nabla^2 \eta_i
-                                     + Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \right) dV \\
-&= \int_{\Omega} \left[ w \left( \eta_i^{n} - \Delta t L \left( m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 + Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \right) \right) \right)
-+ \nabla w (-\Delta t L \kappa) \cdot (\nabla \eta_i^{n}) \right]dV \quad [\kappa \nabla \eta_i \cdot n = 0 \text{on} \partial \Omega]
+\int_{\Omega} w \eta_i^{n+1} dV &= \int_{\Omega}\left[ w \eta_i^{n} - w \Delta t L \left(m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 \right) - \kappa \nabla^2 \eta_i
+                                     + Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \right) \right]dV \\
+&= \int_{\Omega} \left[ w \left( \eta_i^{n} - \Delta t L m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 \right) + \Delta t L Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \right) + \nabla w (-\Delta t L \kappa) \cdot (\nabla \eta_i^{n}) \right]dV \quad [\kappa \nabla \eta_i \cdot n = 0 \text{on} \partial \Omega]
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta_i} &= m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 \right) - \kappa \nabla^2 \eta_i
-                                     + Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \\
+r_{\eta_i} &= \eta_i^{n} - \Delta t L m_0\left(-\eta_i + \eta_i^3 + 2 \alpha \eta_i \sum_{j \ne i}^N \eta_j^2 \right) + \Delta t L Gb^2 \frac{\eta_i}{\sum_{j=1}^{N}} \left(\rho_i - \rho\right) \\
 r_{\eta_i x} &= (-\Delta t L \kappa) \cdot (\nabla \eta_i^{n})
 \end{align}
 $$
