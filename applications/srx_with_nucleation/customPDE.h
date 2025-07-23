@@ -99,7 +99,6 @@ private:
   double alpha = userInputs.get_model_constant_double("alpha");
   double fsbs  = userInputs.get_model_constant_double("fsbs");
   double A     = userInputs.get_model_constant_double("A");
-  double B     = userInputs.get_model_constant_double("B");
   double globalSeedingTime = userInputs.get_model_constant_double("globalSeedingTime");
   double interface_coeff   = std::sqrt(2.0 * KnV / m0);
 
