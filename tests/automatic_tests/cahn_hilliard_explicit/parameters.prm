@@ -24,13 +24,3 @@ set boundary condition for mu = Natural
 
 set Model constant McV = 1.0, DOUBLE
 set Model constant KcV = 1.5, DOUBLE
-
-set mesh adaptivity = true
-set max refinement = 6
-set min refinement = 3
-set remeshing period = 1000
-subsection refinement criterion: c
-    set type = value
-    set value lower bound = 0.01
-    set value upper bound = 0.99
-end
