@@ -219,7 +219,138 @@ GMGSolver<dim, degree>::init()
 template <unsigned int dim, unsigned int degree>
 void
 GMGSolver<dim, degree>::reinit()
-{}
+{
+  // Apply constraints
+  this->get_constraint_handler()
+    .get_constraint(this->get_field_index())
+    .distribute(
+      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
+                                                         DependencyType::Normal)));
+
+  // We solve the system with a global coarsening approach. There are two options when
+  // doing this: geometric coarsening and polynomial coarsening. We only support geometric
+  // as of now.
+
+  // Grab the min and max level
+  // TODO(landinjm): This should be done in the constructor and with MGInfo
+  min_level = mg_info->get_mg_min_level();
+  max_level = mg_info->get_mg_max_level();
+
+  // Print the local indices and global ones and check that they match the MGInfo provided
+  // ones.
+  unsigned int change_index     = 0;
+  Types::Index dependency_index = 0;
+  for (const auto &inner_vector : this->get_newton_update_global_to_local_solution())
+    {
+      Types::Index dependency_type = 0;
+      for (const auto &local_index : inner_vector)
+        {
+          // Skip if the local index is invalid
+          if (local_index == Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+
+          if (dependency_type == static_cast<Types::Index>(DependencyType::Change))
+            {
+              change_index = local_index;
+            }
+          for (unsigned int level = min_level; level <= max_level; ++level)
+            {
+              Assert(local_index == mg_info->get_local_index(dependency_index, level),
+                     dealii::ExcMessage(
+                       "The multigrid info indexing must match the local to "
+                       "global ones in this solver. "));
+            }
+
+          dependency_type++;
+        }
+
+      dependency_index++;
+    }
+  // TODO (landinjm): Can I remove some of this stuff?
+  // Init the multilevel operator objects
+  mg_operators = std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(
+    min_level,
+    max_level,
+    this->get_subset_attributes(),
+    pde_operator_float,
+    this->get_field_index(),
+    true);
+
+  // Setup operator on each level
+  for (unsigned int level = min_level; level <= max_level; ++level)
+    {
+      (*mg_operators)[level]
+        .initialize((*mg_matrix_free_handler)[level].get_matrix_free(), {change_index});
+
+      (*mg_operators)[level].add_global_to_local_mapping(
+        this->get_newton_update_global_to_local_solution());
+
+      (*mg_operators)[level].add_src_solution_subset(
+        this->get_solution_handler().get_mg_solution_vector(level));
+    }
+  mg_matrix = std::make_shared<dealii::mg::Matrix<MGVectorType>>(*mg_operators);
+
+  // Setup transfer operators
+  // For now I'll just make a bunch of them based on the local indices.
+  // TODO (landinjm): This is awful please fix.
+  mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
+  mg_transfer.resize(mg_transfer_operators.size());
+  dependency_index = 0;
+  for (const auto &inner_vector : this->get_newton_update_global_to_local_solution())
+    {
+      Types::Index dependency_type = 0;
+      for (const auto &local_index : inner_vector)
+        {
+          // Skip if the local index is invalid
+          if (local_index == Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+
+          mg_transfer_operators[local_index].resize(min_level, max_level);
+
+          for (unsigned int level = min_level; level < max_level; ++level)
+            {
+              mg_transfer_operators[local_index][level + 1].reinit(
+                *dof_handler->get_mg_dof_handlers(level + 1)[local_index],
+                *dof_handler->get_mg_dof_handlers(level)[local_index],
+                this->get_constraint_handler().get_mg_constraint(level + 1, local_index),
+                this->get_constraint_handler().get_mg_constraint(level, local_index));
+            }
+          mg_transfer[local_index] =
+            std::make_shared<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>(
+              mg_transfer_operators[local_index],
+              std::function<void(const unsigned int, MGVectorType &)>(
+                [&](const unsigned int level, MGVectorType &vec)
+                {
+                  (*mg_operators)[level].initialize_dof_vector(vec, local_index);
+                }));
+
+          dependency_type++;
+        }
+
+      dependency_index++;
+    }
+
+#ifdef DEBUG
+  ConditionalOStreams::pout_summary()
+    << "\nMultigrid Setup Information for index " << this->get_field_index() << ":\n"
+    << "  Min level: " << min_level << "\n"
+    << "  Max level: " << max_level << "\n"
+    << "  MG vertical communication efficiency: "
+    << dealii::MGTools::vertical_communication_efficiency(
+         triangulation_handler->get_mg_triangulation())
+    << "\n"
+    << "  MG workload imbalance: "
+    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
+    << "\n\n"
+    << std::flush;
+#endif
+}
 
 template <unsigned int dim, unsigned int degree>
 void

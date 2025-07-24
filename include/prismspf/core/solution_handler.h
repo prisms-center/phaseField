@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/mg_level_object.h>
+#include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
@@ -89,10 +90,23 @@ public:
   init(MatrixfreeHandler<dim, double> &matrix_free_handler);
 
   /**
+   * @brief Reinitialize the solution set.
+   */
+  void
+  reinit(MatrixfreeHandler<dim, double> &matrix_free_handler);
+
+  /**
    * @brief Initialize the multigrid solution set.
    */
   void
   mg_init(
+    const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler);
+
+  /**
+   * @brief Reinitialize the multigrid solution set.
+   */
+  void
+  mg_reinit(
     const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler);
 
   /**
@@ -129,6 +143,34 @@ public:
   void
   update(const FieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
 
+  /**
+   * @brief Prepare for solution transfer
+   */
+  void
+  prepare_for_solution_transfer()
+  {
+    Assert(solution_transfer_set.size() == solution_set.size(),
+           dealii::ExcInternalError());
+    for (auto &[pair, solution] : solution_set)
+      {
+        solution_transfer_set.at(pair)->prepare_for_coarsening_and_refinement(*solution);
+      }
+  };
+
+  /**
+   * @brief Transfer solutions
+   */
+  void
+  execute_solution_transfer()
+  {
+    Assert(solution_transfer_set.size() == solution_set.size(),
+           dealii::ExcInternalError());
+    for (auto &[pair, solution] : solution_set)
+      {
+        solution_transfer_set.at(pair)->interpolate(*solution);
+      }
+  };
+
 private:
   /**
    * @brief The attribute list of the relevant variables.
@@ -156,6 +198,14 @@ private:
    */
   std::map<std::pair<unsigned int, DependencyType>, std::unique_ptr<VectorType>>
     solution_set;
+
+  /**
+   * @brief The collection of solution transfer objects at the current timestep.
+   */
+  std::map<
+    std::pair<unsigned int, DependencyType>,
+    std::unique_ptr<dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>>
+    solution_transfer_set;
 
   /**
    * @brief The collection of new solution vectors at the current timestep. This is the

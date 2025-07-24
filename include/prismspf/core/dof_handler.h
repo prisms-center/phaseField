@@ -41,6 +41,14 @@ public:
        const MGInfo<dim>                                &mg_info);
 
   /**
+   * @brief Reinitialize the DoFHandlers
+   */
+  void
+  reinit(const TriangulationHandler<dim>                  &triangulation_handler,
+         const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
+         const MGInfo<dim>                                &mg_info);
+
+  /**
    * @brief Getter function for the DoFHandlers (constant reference).
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &

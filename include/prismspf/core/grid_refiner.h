@@ -89,7 +89,7 @@ public:
    * 2. Refine the grid and initialize the solution transfer object
    * 3. Redistribute the DoFs
    * 4. Transfer the solution from old to new
-   * 5. Recompute and reapply the constraints
+   * 5. Recompute and reapply the constraints (this is done in the solvers)
    * 6. Recompute invm & element volume (if applicable)
    */
   void
@@ -105,8 +105,71 @@ public:
         return;
       }
 
+    // Step 1
     mark_cells_for_refinement_and_coarsening();
+
+    // Step 2
     refine_grid();
+
+    // Step 3
+    grid_refinement_context.get_triangulation_handler().reinit();
+    grid_refinement_context.get_dof_handler().reinit(
+      grid_refinement_context.get_triangulation_handler(),
+      grid_refinement_context.get_finite_element_systems(),
+      grid_refinement_context.get_multigrid_info());
+    grid_refinement_context.get_constraint_handler().make_constraints(
+      grid_refinement_context.get_mapping(),
+      grid_refinement_context.get_dof_handler().get_dof_handlers());
+    if (grid_refinement_context.get_multigrid_info().has_multigrid())
+      {
+        const unsigned int min_level =
+          grid_refinement_context.get_multigrid_info().get_mg_min_level();
+        const unsigned int max_level =
+          grid_refinement_context.get_multigrid_info().get_mg_max_level();
+        for (unsigned int level = min_level; level <= max_level; ++level)
+          {
+            grid_refinement_context.get_constraint_handler().make_mg_constraints(
+              grid_refinement_context.get_mapping(),
+              grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
+              level);
+          }
+      }
+    grid_refinement_context.get_matrix_free_handler().reinit(
+      grid_refinement_context.get_mapping(),
+      grid_refinement_context.get_dof_handler().get_dof_handlers(),
+      grid_refinement_context.get_constraint_handler().get_constraints(),
+      dealii::QGaussLobatto<1>(degree + 1));
+    if (grid_refinement_context.get_multigrid_info().has_multigrid())
+      {
+        const unsigned int min_level =
+          grid_refinement_context.get_multigrid_info().get_mg_min_level();
+        const unsigned int max_level =
+          grid_refinement_context.get_multigrid_info().get_mg_max_level();
+        grid_refinement_context.get_mg_matrix_free_handler().resize(min_level, max_level);
+        for (unsigned int level = min_level; level <= max_level; ++level)
+          {
+            grid_refinement_context.get_mg_matrix_free_handler()[level].reinit(
+              grid_refinement_context.get_mapping(),
+              grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
+              grid_refinement_context.get_constraint_handler().get_mg_constraints(level),
+              dealii::QGaussLobatto<1>(degree + 1));
+          }
+      }
+    grid_refinement_context.get_solution_handler().reinit(
+      grid_refinement_context.get_matrix_free_handler());
+    if (grid_refinement_context.get_multigrid_info().has_multigrid())
+      {
+        grid_refinement_context.get_solution_handler().mg_reinit(
+          grid_refinement_context.get_mg_matrix_free_handler());
+      }
+
+    // Step 4
+    grid_refinement_context.get_solution_handler().execute_solution_transfer();
+
+    // Step 6
+    grid_refinement_context.get_invm_handler().compute_invm();
+    grid_refinement_context.get_element_volumes().compute_element_volume(
+      grid_refinement_context.get_finite_element_systems().begin()->second);
   };
 
 private:
@@ -221,7 +284,8 @@ private:
     // Prepare for grid refinement
     grid_refinement_context.get_triangulation_handler().prepare_for_grid_refinement();
 
-    // Init the solution transfer objects
+    // Prepare the solution transfer objects
+    grid_refinement_context.get_solution_handler().prepare_for_solution_transfer();
 
     // Execute grid refinement
     grid_refinement_context.get_triangulation_handler().execute_grid_refinement();

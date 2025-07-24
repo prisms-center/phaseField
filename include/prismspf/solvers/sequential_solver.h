@@ -246,6 +246,41 @@ public:
   }
 
   /**
+   * @brief Reinit a linear solver object of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  reinit_linear_solver(const VariableAttributes &variable)
+  {
+    // Grab the global field index
+    Types::Index global_field_index = variable.get_field_index();
+
+    if (this->get_user_inputs()
+          .get_linear_solve_parameters()
+          .get_linear_solve_parameters(global_field_index)
+          .preconditioner == PreconditionerType::GMG)
+      {
+        gmg_solvers.at(global_field_index)->reinit();
+      }
+    else
+      {
+        identity_solvers.at(global_field_index)->reinit();
+      }
+  }
+
+  /**
+   * @brief Reinit a explicit solver objects of a given VariableAttributes.
+   *
+   * @param[in] variable The VariableAttributes
+   */
+  void
+  reinit_explicit_solver([[maybe_unused]] const VariableAttributes &variable)
+  {
+    // Do nothing
+  }
+
+  /**
    * @brief Solve the explicit solver objects of a given VariableAttributes.
    *
    * @param[in] variable The VariableAttributes

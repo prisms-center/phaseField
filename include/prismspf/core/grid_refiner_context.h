@@ -48,7 +48,8 @@ public:
     DofHandler<dim>                                      &_dof_handler,
     std::map<FieldType, dealii::FESystem<dim>>           &_fe_system,
     const dealii::MappingQ1<dim>                         &_mapping,
-    ElementVolume<dim, degree, number>                   &_element_volume)
+    ElementVolume<dim, degree, number>                   &_element_volume,
+    const MGInfo<dim>                                    &_mg_info)
     : user_inputs(&_user_inputs)
     , triangulation_handler(&_triangulation_handler)
     , constraint_handler(&_constraint_handler)
@@ -59,7 +60,8 @@ public:
     , dof_handler(&_dof_handler)
     , fe_system(&_fe_system)
     , mapping(&_mapping)
-    , element_volume(&_element_volume) {};
+    , element_volume(&_element_volume)
+    , mg_info(&_mg_info) {};
 
   /**
    * @brief Destructor.
@@ -178,6 +180,16 @@ public:
     return *element_volume;
   }
 
+  /**
+   * @brief Get the multigrid info.
+   */
+  [[nodiscard]] const MGInfo<dim> &
+  get_multigrid_info() const
+  {
+    Assert(mg_info != nullptr, dealii::ExcNotInitialized());
+    return *mg_info;
+  }
+
 private:
   /**
    * @brief User-inputs.
@@ -235,6 +247,11 @@ private:
    * @brief Element volumes.
    */
   ElementVolume<dim, degree, number> *element_volume;
+
+  /**
+   * @brief Multigrid information
+   */
+  const MGInfo<dim> *mg_info;
 };
 
 PRISMS_PF_END_NAMESPACE

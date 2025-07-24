@@ -83,7 +83,8 @@ PDEProblem<dim, degree>::PDEProblem(
                          dof_handler,
                          fe_system,
                          mapping,
-                         element_volume)
+                         element_volume,
+                         mg_info)
   , grid_refiner(grid_refiner_context)
   , concurrent_constant_solver(solver_context)
   , concurrent_explicit_solver(solver_context)
@@ -150,9 +151,9 @@ PDEProblem<dim, degree>::init_system()
 
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
-  Timer::start_section("Initialize DoFHandlers");
+  Timer::start_section("reinitialize DoFHandlers");
   dof_handler.init(triangulation_handler, fe_system, mg_info);
-  Timer::end_section("Initialize DoFHandlers");
+  Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
   ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
@@ -177,7 +178,7 @@ PDEProblem<dim, degree>::init_system()
   // Reinit the matrix-free objects
   ConditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
                                    << std::flush;
-  Timer::start_section("Initialize matrix-free objects");
+  Timer::start_section("reinitialize matrix-free objects");
   matrix_free_handler.reinit(mapping,
                              dof_handler.get_dof_handlers(),
                              constraint_handler.get_constraints(),
@@ -199,66 +200,66 @@ PDEProblem<dim, degree>::init_system()
             dealii::QGaussLobatto<1>(degree + 1));
         }
     }
-  Timer::end_section("Initialize matrix-free objects");
+  Timer::end_section("reinitialize matrix-free objects");
 
-  // Initialize the solution set
+  // reinitialize the solution set
   ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
-  Timer::start_section("Initialize solution set");
+  Timer::start_section("reinitialize solution set");
   solution_handler.init(matrix_free_handler);
   if (mg_info.has_multigrid())
     {
       solution_handler.mg_init(multigrid_matrix_free_handler);
     }
-  Timer::end_section("Initialize solution set");
+  Timer::end_section("reinitialize solution set");
 
-  // Initialize the invm and compute it
+  // reinitialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
   // the output directory so we should create a separate flag and/or directory for this.
   ConditionalOStreams::pout_base() << "initializing invm...\n" << std::flush;
-  Timer::start_section("Initialize invm");
+  Timer::start_section("reinitialize invm");
   invm_handler.initialize(matrix_free_handler.get_matrix_free());
   invm_handler.compute_invm();
-  Timer::end_section("Initialize invm");
+  Timer::end_section("reinitialize invm");
 
-  // Initialize the element volumes and compute them
+  // reinitialize the element volumes and compute them
   // TODO (landinjm): Output the element volumes for debug mode. This will create a lot of
   // bloat in the output directory so we should create a separate flag and/or directory
   // for this.
   ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
-  Timer::start_section("Initialize element volumes");
+  Timer::start_section("reinitialize element volumes");
   element_volume.initialize(matrix_free_handler.get_matrix_free());
   element_volume.compute_element_volume(fe_system.begin()->second);
-  Timer::end_section("Initialize element volumes");
+  Timer::end_section("reinitialize element volumes");
 
-  // Initialize the solver types
+  // reinitialize the solver types
   ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
   Timer::start_section("Solver initialization");
   ConditionalOStreams::pout_base()
-    << "  trying to initialize concurrent constant solvers...\n"
+    << "  trying to reinitialize concurrent constant solvers...\n"
     << std::flush;
   concurrent_constant_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize concurrent explicit solvers...\n"
+    << "  trying to reinitialize concurrent explicit solvers...\n"
     << std::flush;
   concurrent_explicit_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize concurrent explicit postprocess solvers...\n"
+    << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
     << std::flush;
   concurrent_concurrent_explicit_postprocess_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize sequential auxiliary solvers...\n"
+    << "  trying to reinitialize sequential auxiliary solvers...\n"
     << std::flush;
   sequential_auxiliary_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize sequential linear solvers...\n"
+    << "  trying to reinitialize sequential linear solvers...\n"
     << std::flush;
   sequential_linear_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize sequential self-nonlinear solvers...\n"
+    << "  trying to reinitialize sequential self-nonlinear solvers...\n"
     << std::flush;
   sequential_self_nonlinear_solver.init();
   ConditionalOStreams::pout_base()
-    << "  trying to initialize sequential co-nonlinear solvers...\n"
+    << "  trying to reinitialize sequential co-nonlinear solvers...\n"
     << std::flush;
   sequential_co_nonlinear_solver.init();
   Timer::end_section("Solver initialization");
@@ -273,6 +274,44 @@ PDEProblem<dim, degree>::init_system()
   Timer::start_section("Grid refinement");
   grid_refiner.do_adaptive_refinement();
   Timer::end_section("Grid refinement");
+
+  // Reinitialize the solver types
+  ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
+  Timer::start_section("Solver initialization");
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize concurrent constant solvers...\n"
+    << std::flush;
+  concurrent_constant_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize concurrent explicit solvers...\n"
+    << std::flush;
+  concurrent_explicit_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
+    << std::flush;
+  concurrent_concurrent_explicit_postprocess_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize sequential auxiliary solvers...\n"
+    << std::flush;
+  sequential_auxiliary_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize sequential linear solvers...\n"
+    << std::flush;
+  sequential_linear_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize sequential self-nonlinear solvers...\n"
+    << std::flush;
+  sequential_self_nonlinear_solver.reinit();
+  ConditionalOStreams::pout_base()
+    << "  trying to reinitialize sequential co-nonlinear solvers...\n"
+    << std::flush;
+  sequential_co_nonlinear_solver.reinit();
+  Timer::end_section("Solver initialization");
+
+  // Update the ghosts
+  Timer::start_section("Update ghosts");
+  solution_handler.update_ghosts();
+  Timer::end_section("Update ghosts");
 
   // Solve the auxiliary fields at the 0th step
   ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"

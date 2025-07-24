@@ -99,6 +99,12 @@ public:
       {
         return;
       }
+
+    // Reinit the linear solvers
+    for (const auto &[index, variable] : this->get_subset_attributes())
+      {
+        this->reinit_linear_solver(variable);
+      }
   };
 
   /**

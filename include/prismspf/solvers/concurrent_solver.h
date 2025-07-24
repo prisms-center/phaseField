@@ -82,13 +82,6 @@ public:
         this->get_subset_attributes(),
         this->get_pde_operator());
 
-    // Apply constraints
-    for (const auto &[index, variable] : this->get_subset_attributes())
-      {
-        this->get_solution_handler()
-          .apply_constraints(index, this->get_constraint_handler().get_constraint(index));
-      }
-
     // Set up the user-implemented equations and create the residual vectors
     system_matrix->clear();
     system_matrix->initialize(this->get_matrix_free_handler().get_matrix_free());

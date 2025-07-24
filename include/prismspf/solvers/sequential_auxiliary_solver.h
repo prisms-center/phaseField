@@ -96,6 +96,12 @@ public:
       {
         return;
       }
+
+    // Reinit the explicit auxiliary solvers
+    for (const auto &[index, variable] : this->get_subset_attributes())
+      {
+        this->reinit_explicit_solver(variable);
+      }
   };
 
   /**
