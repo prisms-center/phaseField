@@ -45,6 +45,7 @@ MatrixfreeHandler<dim, number>::reinit(
   const dealii::Quadrature<1>             &quad)
 {
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
+  is_initialized = true;
 }
 
 template <unsigned int dim, typename number>
@@ -56,6 +57,7 @@ MatrixfreeHandler<dim, number>::reinit(
   const dealii::Quadrature<1>                                  &quad)
 {
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
+  is_initialized = true;
 }
 
 template <unsigned int dim, typename number>
@@ -67,12 +69,14 @@ MatrixfreeHandler<dim, number>::reinit(
   const std::vector<dealii::Quadrature<1>>                     &quad)
 {
   matrix_free_object->reinit(mapping, dof_handler, constraint, quad, additional_data);
+  is_initialized = true;
 }
 
 template <unsigned int dim, typename number>
 std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
 MatrixfreeHandler<dim, number>::get_matrix_free() const
 {
+  Assert(is_initialized, dealii::ExcNotInitialized());
   return matrix_free_object;
 }
 

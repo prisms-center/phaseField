@@ -5,7 +5,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/refinement_criterion.h>
+#include <prismspf/core/grid_refiner_criterion.h>
 
 #include <prismspf/utilities/utilities.h>
 

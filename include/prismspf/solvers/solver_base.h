@@ -92,6 +92,14 @@ public:
 
     // Set the initial condition
     set_initial_condition();
+
+    // Apply constraints. This part is neccessary so they are taken into account for
+    // adaptive meshing
+    for (const auto &[index, variable] : subset_attributes)
+      {
+        get_constraint_handler().get_constraint(index).distribute(
+          *(get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
+      }
   };
 
   /**

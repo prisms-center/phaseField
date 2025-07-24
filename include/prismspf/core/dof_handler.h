@@ -53,6 +53,19 @@ public:
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
   get_mg_dof_handlers(unsigned int level) const;
 
+  /**
+   * @brief Getter function for the DoFHandler (reference).
+   */
+  [[nodiscard]] const dealii::DoFHandler<dim> &
+  get_dof_handler(Types::Index index) const
+  {
+    Assert(dof_handlers.contains(index),
+           dealii::ExcMessage(
+             "Invalid index when trying to access a specific DoFHandler"));
+    Assert(dof_handlers.at(index) != nullptr, dealii::ExcNotInitialized());
+    return *dof_handlers.at(index);
+  };
+
 private:
   /**
    * @brief User-inputs.

@@ -94,6 +94,36 @@ public:
   void
   export_triangulation_as_vtk(const std::string &filename) const;
 
+  /**
+   * @brief Prepare the triangulation for grid refinement.
+   */
+  void
+  prepare_for_grid_refinement()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->prepare_coarsening_and_refinement();
+  }
+
+  /**
+   * @brief Execute grid refinement on the triangulation.
+   */
+  void
+  execute_grid_refinement()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->execute_coarsening_and_refinement();
+  }
+
+  /**
+   * @brief CLear all user flags.
+   */
+  void
+  clear_user_flags()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->clear_user_flags();
+  }
+
 private:
   /**
    * @brief Mark the domain ids on the triangulation to get the proper mapping of

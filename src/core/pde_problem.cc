@@ -73,6 +73,18 @@ PDEProblem<dim, degree>::PDEProblem(
                    multigrid_matrix_free_handler,
                    _pde_operator,
                    _pde_operator_float)
+  , grid_refiner_context(_user_inputs,
+                         triangulation_handler,
+                         constraint_handler,
+                         matrix_free_handler,
+                         multigrid_matrix_free_handler,
+                         invm_handler,
+                         solution_handler,
+                         dof_handler,
+                         fe_system,
+                         mapping,
+                         element_volume)
+  , grid_refiner(grid_refiner_context)
   , concurrent_constant_solver(solver_context)
   , concurrent_explicit_solver(solver_context)
   , concurrent_concurrent_explicit_postprocess_solver(solver_context)
@@ -255,6 +267,12 @@ PDEProblem<dim, degree>::init_system()
   Timer::start_section("Update ghosts");
   solution_handler.update_ghosts();
   Timer::end_section("Update ghosts");
+
+  // Perform grid refinement
+  ConditionalOStreams::pout_base() << "performing grid refinement...\n" << std::flush;
+  Timer::start_section("Grid refinement");
+  grid_refiner.do_adaptive_refinement();
+  Timer::end_section("Grid refinement");
 
   // Solve the auxiliary fields at the 0th step
   ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
