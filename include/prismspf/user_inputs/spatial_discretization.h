@@ -47,6 +47,15 @@ public:
   print_parameter_summary() const;
 
   /**
+   * @brief Whether the provided increment is a valid grid refinement step.
+   */
+  [[nodiscard]] bool
+  should_refine_mesh(unsigned int increment) const
+  {
+    return increment % remeshing_period == 0;
+  }
+
+  /**
    * @brief Get the domain extents in each cartesian direction
    */
   [[nodiscard]] const dealii::Tensor<1, dim, double> &

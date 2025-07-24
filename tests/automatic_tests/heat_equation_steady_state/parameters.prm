@@ -20,14 +20,3 @@ subsection linear solver parameters: T
     set smoother degree = 5
     set eigenvalue cg iterations = 20
 end
-
-set mesh adaptivity = true
-set max refinement = 3
-set min refinement = 2
-
-subsection refinement criterion: q
-    set type = value
-    set value lower bound = 2.0
-    set value upper bound = 20.0
-end
-

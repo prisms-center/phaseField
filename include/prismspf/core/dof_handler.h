@@ -74,6 +74,20 @@ public:
     return *dof_handlers.at(index);
   };
 
+  /**
+   * @brief Get the total DoFs excluding multigrid DoFs.
+   */
+  [[nodiscard]] dealii::types::global_dof_index
+  get_total_dofs() const
+  {
+    dealii::types::global_dof_index n_dofs = 0;
+    for (const auto &[index, dof_handler] : dof_handlers)
+      {
+        n_dofs += dof_handler->n_dofs();
+      }
+    return n_dofs;
+  };
+
 private:
   /**
    * @brief User-inputs.
