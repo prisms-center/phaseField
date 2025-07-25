@@ -254,7 +254,12 @@ private:
                 // TODO (landinjm): This is kinda bad. Also when dealing with multiple
                 // criterion we can automatically skip looking at cells if they've
                 // already been flaged to be refined.
-                if (should_refine && cell->level() < max_refinement)
+                Assert(cell->level() > 0,
+                       dealii::ExcMessage("Cell refinement level is less than one, which "
+                                          "will lead to underflow."));
+                const auto current_cell_refinement =
+                  static_cast<unsigned int>(cell->level());
+                if (should_refine && current_cell_refinement < max_refinement)
                   {
                     cell->set_user_flag();
                     cell->clear_coarsen_flag();
@@ -265,7 +270,7 @@ private:
                     cell->set_user_flag();
                     cell->clear_coarsen_flag();
                   }
-                if (!should_refine && cell->level() > min_refinement &&
+                if (!should_refine && current_cell_refinement > min_refinement &&
                     !cell->user_flag_set())
                   {
                     cell->set_coarsen_flag();
