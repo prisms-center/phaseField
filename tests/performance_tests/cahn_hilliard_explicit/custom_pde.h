@@ -21,7 +21,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-const unsigned int n_copies = 64;
+const unsigned int n_copies = 1;
 
 /**
  * @brief This is a derived class of `VariableAttributeLoader` where the user implements
