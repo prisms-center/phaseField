@@ -1,0 +1,85 @@
+set dim = 2
+set global refinement = 8
+set degree = 1
+
+subsection Rectangular mesh
+    set x size = 100
+    set y size = 100
+    set z size = 100
+    set x subdivisions = 1
+    set y subdivisions = 1
+    set z subdivisions = 1
+end
+
+set time step = 1.0e-2
+set number steps = 5000
+
+subsection output
+    set condition = EQUAL_SPACING
+    set number = 5
+end
+
+set boundary condition for phi0 = Natural
+set boundary condition for phi1 = Natural
+set boundary condition for phi2 = Natural
+set boundary condition for phi3 = Natural
+set boundary condition for phi4 = Natural
+set boundary condition for phi5 = Natural
+set boundary condition for phi6 = Natural
+set boundary condition for phi7 = Natural
+set boundary condition for phi8 = Natural
+set boundary condition for phi9 = Natural
+set boundary condition for phi10 = Natural
+set boundary condition for phi11 = Natural
+set boundary condition for phi12 = Natural
+set boundary condition for phi13 = Natural
+set boundary condition for phi14 = Natural
+set boundary condition for phi15 = Natural
+set boundary condition for phi16 = Natural
+set boundary condition for phi17 = Natural
+set boundary condition for phi18 = Natural
+set boundary condition for phi19 = Natural
+set boundary condition for phi20 = Natural
+set boundary condition for phi21 = Natural
+set boundary condition for phi22 = Natural
+set boundary condition for phi23 = Natural
+set boundary condition for phi24 = Natural
+set boundary condition for phi25 = Natural
+set boundary condition for phi26 = Natural
+set boundary condition for phi27 = Natural
+set boundary condition for phi28 = Natural
+set boundary condition for phi29 = Natural
+set boundary condition for phi30 = Natural
+set boundary condition for phi31 = Natural
+set boundary condition for phi32 = Natural
+set boundary condition for phi33 = Natural
+set boundary condition for phi34 = Natural
+set boundary condition for phi35 = Natural
+set boundary condition for phi36 = Natural
+set boundary condition for phi37 = Natural
+set boundary condition for phi38 = Natural
+set boundary condition for phi39 = Natural
+set boundary condition for phi40 = Natural
+set boundary condition for phi41 = Natural
+set boundary condition for phi42 = Natural
+set boundary condition for phi43 = Natural
+set boundary condition for phi44 = Natural
+set boundary condition for phi45 = Natural
+set boundary condition for phi46 = Natural
+set boundary condition for phi47 = Natural
+set boundary condition for phi48 = Natural
+set boundary condition for phi49 = Natural
+set boundary condition for phi50 = Natural
+set boundary condition for phi51 = Natural
+set boundary condition for phi52 = Natural
+set boundary condition for phi53 = Natural
+set boundary condition for phi54 = Natural
+set boundary condition for phi55 = Natural
+set boundary condition for phi56 = Natural
+set boundary condition for phi57 = Natural
+set boundary condition for phi58 = Natural
+set boundary condition for phi59 = Natural
+set boundary condition for phi60 = Natural
+set boundary condition for phi61 = Natural
+set boundary condition for phi62 = Natural
+set boundary condition for phi63 = Natural
