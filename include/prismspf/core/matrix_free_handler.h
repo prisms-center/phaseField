@@ -74,6 +74,11 @@ private:
    */
   typename dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>::
     AdditionalData additional_data;
+
+  /**
+   * @brief Whether the matrix-free object has been initialized.
+   */
+  bool is_initialized = false;
 };
 
 PRISMS_PF_END_NAMESPACE

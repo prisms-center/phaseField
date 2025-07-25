@@ -5,6 +5,7 @@
 
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/tria.h>
+#include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
 #include <prismspf/core/multigrid_info.h>
 
@@ -37,6 +38,40 @@ public:
    */
   TriangulationHandler(const UserInputParameters<dim> &_user_inputs,
                        const MGInfo<dim>              &mg_info);
+
+  /**
+   * @brief Reinitialize the triangulation handler.
+   *
+   * This is used for AMR with multigrid so the coarsened meshes can be reinitialized.
+   */
+  void
+  reinit()
+  {
+    // Create the triangulations for the coarser levels if we have at least one instance
+    // of multigrid for any of the fields
+    if (!has_multigrid)
+      {
+        return;
+      }
+
+    Assert(triangulation->n_global_levels() > 1,
+           dealii::ExcMessage(
+             "Multigrid preconditioners require multilevel triangulations"));
+
+    // Check that the initial global refinement matches the maximum adaptive refinement
+    Assert(user_inputs->get_spatial_discretization().get_global_refinement() ==
+             user_inputs->get_spatial_discretization().get_max_refinement(),
+           dealii::ExcMessage(
+             "Currently, we don't allow the initial refinement to be lower than the "
+             "maximum adpative refinement level when using multigrid. This is because we "
+             "have to create a sequence of coarser meshes."));
+
+    coarsened_triangulations =
+      dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
+        *triangulation);
+
+    // TODO (landinjm): p-multigrid
+  };
 
   /**
    * @brief Getter function for triangulation (constant reference).
@@ -93,6 +128,36 @@ public:
    */
   void
   export_triangulation_as_vtk(const std::string &filename) const;
+
+  /**
+   * @brief Prepare the triangulation for grid refinement.
+   */
+  void
+  prepare_for_grid_refinement()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->prepare_coarsening_and_refinement();
+  }
+
+  /**
+   * @brief Execute grid refinement on the triangulation.
+   */
+  void
+  execute_grid_refinement()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->execute_coarsening_and_refinement();
+  }
+
+  /**
+   * @brief CLear all user flags.
+   */
+  void
+  clear_user_flags()
+  {
+    Assert(triangulation != nullptr, dealii::ExcNotInitialized());
+    triangulation->clear_user_flags();
+  }
 
 private:
   /**

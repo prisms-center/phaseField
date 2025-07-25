@@ -178,6 +178,14 @@ TriangulationHandler<dim>::generate_mesh()
          dealii::ExcMessage(
            "Multigrid preconditioners require multilevel triangulations"));
 
+  // Check that the initial global refinement matches the maximum adaptive refinement
+  Assert(user_inputs->get_spatial_discretization().get_global_refinement() ==
+           user_inputs->get_spatial_discretization().get_max_refinement(),
+         dealii::ExcMessage(
+           "Currently, we don't allow the initial refinement to be lower than the "
+           "maximum adpative refinement level when using multigrid. This is because we "
+           "have to create a sequence of coarser meshes."));
+
   coarsened_triangulations =
     dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
       *triangulation);

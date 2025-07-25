@@ -11,6 +11,7 @@
 
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
+#include <prismspf/core/grid_refiner.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/multigrid_info.h>
@@ -158,6 +159,16 @@ private:
    * @brief Integrator utility.
    */
   Integrator<dim, degree, double> integrator;
+
+  /**
+   * @brief Grid refiner context.
+   */
+  GridRefinementContext<dim, degree> grid_refiner_context;
+
+  /**
+   * @brief Grid refiner.
+   */
+  GridRefiner<dim, degree> grid_refiner;
 
   /**
    * @brief Explicit constant field solver class.

@@ -109,6 +109,24 @@ public:
       {
         return;
       }
+
+    // Reinit the linear and auxiliary solvers
+    for (const auto &[index, variable] : this->get_subset_attributes())
+      {
+        if (variable.get_pde_type() == PDEType::Auxiliary)
+          {
+            this->reinit_explicit_solver(variable);
+          }
+        else if (variable.get_pde_type() == PDEType::ImplicitTimeDependent ||
+                 variable.get_pde_type() == PDEType::TimeIndependent)
+          {
+            this->reinit_linear_solver(variable);
+          }
+        else
+          {
+            AssertThrow(false, UnreachableCode());
+          }
+      }
   };
 
   /**
@@ -223,7 +241,7 @@ public:
    * @brief Print information about the solver to summary.log.
    */
   void
-  print()
+  print() override
   {
     // Print the base class information
     this->SequentialSolver<dim, degree, number>::print();

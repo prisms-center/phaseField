@@ -9,7 +9,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/refinement_criterion.h>
+#include <prismspf/core/grid_refiner_criterion.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -117,6 +117,7 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
         if (!boost::iequals(crit_type_string, "none"))
           {
             GridRefinement::RefinementCriterion new_criterion(
+              index,
               GridRefinement::RefinementFlags::Nothing,
               parameter_handler.get_double("value lower bound"),
               parameter_handler.get_double("value upper bound"),

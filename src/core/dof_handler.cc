@@ -162,6 +162,15 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
 }
 
 template <unsigned int dim>
+void
+DofHandler<dim>::reinit(const TriangulationHandler<dim> &triangulation_handler,
+                        const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
+                        const MGInfo<dim>                                &mg_info)
+{
+  this->init(triangulation_handler, fe_system, mg_info);
+}
+
+template <unsigned int dim>
 const std::vector<const dealii::DoFHandler<dim> *> &
 DofHandler<dim>::get_dof_handlers() const
 {
