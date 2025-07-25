@@ -20,11 +20,17 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
   endif()
 
   # Set the location of application source files
-  set(TARGET_SRC 
-    "${CMAKE_CURRENT_SOURCE_DIR}/main.cc" 
-    "${CMAKE_CURRENT_SOURCE_DIR}/equations.cc" 
-    "${CMAKE_CURRENT_SOURCE_DIR}/ICs_and_BCs.cc"
-  )
+  # Check if an override is specified otherwise 
+  # proceed with defaults
+  if(NOT DEFINED TARGET_SRC_OVERRIDE)
+    set(TARGET_SRC 
+      "${CMAKE_CURRENT_SOURCE_DIR}/main.cc" 
+      "${CMAKE_CURRENT_SOURCE_DIR}/equations.cc" 
+      "${CMAKE_CURRENT_SOURCE_DIR}/ICs_and_BCs.cc"
+    )
+  else()
+    set(TARGET_SRC ${TARGET_SRC_OVERRIDE})
+  endif()
 
   # Set targets & link libraries for the build type
   if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")

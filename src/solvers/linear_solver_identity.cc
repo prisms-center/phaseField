@@ -70,7 +70,14 @@ IdentitySolver<dim, degree>::init()
 template <unsigned int dim, unsigned int degree>
 void
 IdentitySolver<dim, degree>::reinit()
-{}
+{
+  // Apply constraints
+  this->get_constraint_handler()
+    .get_constraint(this->get_field_index())
+    .distribute(
+      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
+                                                         DependencyType::Normal)));
+}
 
 template <unsigned int dim, unsigned int degree>
 void

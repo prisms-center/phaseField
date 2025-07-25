@@ -5,6 +5,8 @@
 
 #include <deal.II/base/exceptions.h>
 
+#include <prismspf/core/types.h>
+
 #include <prismspf/config.h>
 
 #include <cfloat>
@@ -83,14 +85,26 @@ namespace GridRefinement
      * TODO (landinjm): Add some assertions here to make sure that nonsensical criteria
      * aren't specified
      */
-    explicit RefinementCriterion(const RefinementFlags &_criterion,
+    explicit RefinementCriterion(const Types::Index    &_global_field_index,
+                                 const RefinementFlags &_criterion,
                                  const double          &_value_lower_bound    = DBL_MAX,
                                  const double          &_value_upper_bound    = DBL_MAX,
                                  const double          &_gradient_lower_bound = DBL_MAX)
-      : criterion(_criterion)
+      : global_field_index(_global_field_index)
+      , criterion(_criterion)
       , value_lower_bound(_value_lower_bound)
       , value_upper_bound(_value_upper_bound)
       , gradient_lower_bound(_gradient_lower_bound) {};
+
+    /**
+     * @brief Set the global field index.
+     */
+    void
+    set_index(const Types::Index &_global_field_index)
+    {
+      // TODO (landinjm): Add assertions for nontrivial getters/setters
+      global_field_index = _global_field_index;
+    };
 
     /**
      * @brief Set the refinement criterion.
@@ -130,6 +144,16 @@ namespace GridRefinement
     {
       // TODO (landinjm): Add assertions for nontrivial getters/setters
       gradient_lower_bound = _gradient_lower_bound;
+    };
+
+    /**
+     * @brief Get the global field index.
+     */
+    [[nodiscard]] const Types::Index &
+    get_index() const
+    {
+      // TODO (landinjm): Add assertions for nontrivial getters/setters
+      return global_field_index;
     };
 
     /**
@@ -173,6 +197,25 @@ namespace GridRefinement
     };
 
     /**
+     * @brief Whether the provided value is in the open range for the value refinement
+     * criteria.
+     */
+    [[nodiscard]] bool
+    value_in_open_range(double value) const
+    {
+      return value > value_lower_bound && value < value_upper_bound;
+    }
+
+    /**
+     * @brief Whether the provided gradient magnitude is greater than the minimum value.
+     */
+    [[nodiscard]] bool
+    gradient_magnitude_above_threshold(double gradient_magnitude) const
+    {
+      return gradient_magnitude > gradient_lower_bound;
+    }
+
+    /**
      * @brief Convert refinement criterion type to string.
      */
     [[nodiscard]] std::string
@@ -200,6 +243,7 @@ namespace GridRefinement
     }
 
   private:
+    Types::Index    global_field_index   = Numbers::invalid_index;
     RefinementFlags criterion            = RefinementFlags::Nothing;
     double          value_lower_bound    = DBL_MAX;
     double          value_upper_bound    = DBL_MAX;
