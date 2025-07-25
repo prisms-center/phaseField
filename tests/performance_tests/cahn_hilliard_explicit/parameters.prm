@@ -19,5 +19,15 @@ subsection output
     set number = 5
 end
 
+set mesh adaptivity = true
+set max refinement = 7
+set min refinement = 3
+set remeshing period = 1000
+subsection refinement criterion: phi0
+    set type = value
+    set value lower bound = 0.01
+    set value upper bound = 0.99
+end
+
 set boundary condition for phi0 = Natural
 set boundary condition for mu0 = Natural

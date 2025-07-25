@@ -207,6 +207,15 @@ namespace GridRefinement
     }
 
     /**
+     * @brief Whether the provided gradient magnitude is greater than the minimum value.
+     */
+    [[nodiscard]] bool
+    gradient_magnitude_above_threshold(double gradient_magnitude) const
+    {
+      return gradient_magnitude > gradient_lower_bound;
+    }
+
+    /**
      * @brief Convert refinement criterion type to string.
      */
     [[nodiscard]] std::string

@@ -272,6 +272,8 @@ PDEProblem<dim, degree>::init_system()
 
   // Perform the initial grid refinement. For this one, we have to do a loop to sufficient
   // coarsen cells to the minimum level
+  ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
+  grid_refiner.init(fe_system);
   dealii::types::global_dof_index old_dofs = dof_handler.get_total_dofs();
   dealii::types::global_dof_index new_dofs = 0;
   for (unsigned int remesh_index = 0;

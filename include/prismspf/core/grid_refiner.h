@@ -82,6 +82,55 @@ public:
   operator=(GridRefiner &&grid_refiner) noexcept = delete;
 
   /**
+   * @brief Initialize the object.
+   */
+  void
+  init(const std::map<FieldType, dealii::FESystem<dim>> &fe_system)
+  {
+    // Return early if adaptive meshing is disabled
+    if (!grid_refinement_context.get_user_inputs()
+           .get_spatial_discretization()
+           .get_has_adaptivity())
+      {
+        ConditionalOStreams::pout_base() << "  grid refinment disabled...\n"
+                                         << std::flush;
+        return;
+      }
+
+    // Set quadrature rule
+    const dealii::QGaussLobatto<dim> quadrature(degree + 1);
+
+    for (const auto &[field_type, system] : fe_system)
+      {
+        const unsigned int spacedim = field_type == FieldType::Scalar ? 1 : dim;
+
+        // Recreate the FESystem for the field type. I hate to do this, but we have to
+        // ensure that this proper lifetime management and FESystem has it's copy
+        // constructor deleted.
+        fe_systems.try_emplace(field_type,
+                               dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)),
+                               spacedim);
+
+        // Create the FEValues using the stored FESystem
+        fe_values.try_emplace(field_type,
+                              fe_systems.at(field_type),
+                              quadrature,
+                              fe_values_flags[static_cast<Types::Index>(field_type)]);
+      }
+
+    // Get the number of quadrature points
+    num_quad_points = quadrature.size();
+
+    // Get the min and max global refinements
+    max_refinement = grid_refinement_context.get_user_inputs()
+                       .get_spatial_discretization()
+                       .get_max_refinement();
+    min_refinement = grid_refinement_context.get_user_inputs()
+                       .get_spatial_discretization()
+                       .get_min_refinement();
+  }
+
+  /**
    * @brief Do the adaptive refinement
    *
    * This function consists of a few steps.
@@ -104,6 +153,10 @@ public:
                                          << std::flush;
         return;
       }
+
+    Assert(num_quad_points != 0,
+           dealii::ExcMessage("The init() function must be called before trying to "
+                              "perform adaptive refinement"));
 
     // Step 1
     mark_cells_for_refinement_and_coarsening();
@@ -167,7 +220,7 @@ public:
     grid_refinement_context.get_solution_handler().execute_solution_transfer();
 
     // Step 6
-    grid_refinement_context.get_invm_handler().compute_invm();
+    grid_refinement_context.get_invm_handler().recompute_invm();
     grid_refinement_context.get_element_volumes().compute_element_volume(
       grid_refinement_context.get_finite_element_systems().begin()->second);
   };
@@ -179,24 +232,9 @@ private:
   void
   mark_cells_for_refinement_and_coarsening()
   {
-    // Set quadrature rule and FEValues
-    const dealii::QGaussLobatto<dim> quadrature(degree + 1);
-    // TODO (landinjm): Fix for scalar and vector fields
-    dealii::FESystem<dim> fe(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1);
-    dealii::FEValues<dim> fe_values(fe, quadrature, dealii::UpdateFlags::update_values);
-
-    // Get the number of quadrature points
-    const unsigned int num_quad_points = quadrature.size();
-
-    // Get the min and max global refinements
-    const unsigned int max_refinement = grid_refinement_context.get_user_inputs()
-                                          .get_spatial_discretization()
-                                          .get_max_refinement();
-    const unsigned int min_refinement = grid_refinement_context.get_user_inputs()
-                                          .get_spatial_discretization()
-                                          .get_min_refinement();
-
-    // Create the objects for the value and gradient refinements
+    // Create the an object for the refinement criterion at each of the quad points. This
+    // will either contain the value for scalar fields, the magnitude for vector fields,
+    // or the magnitude of the gradient for both of the fields.
     std::vector<double> values(num_quad_points, 0.0);
 
     // Clear user flags
@@ -209,6 +247,9 @@ private:
       {
         if (cell->is_locally_owned())
           {
+            // Whether we should refine the cell
+            bool should_refine = false;
+
             // TODO (landinjm): We can probably avoid checking some of the neighboring
             // cells when coarsening them
             for (const auto &criterion : grid_refinement_context.get_user_inputs()
@@ -216,65 +257,151 @@ private:
                                            .get_refinement_criteria())
               {
                 // Grab the index
-                Types::Index index = criterion.get_index();
+                const Types::Index index = criterion.get_index();
 
-                Assert(grid_refinement_context.get_user_inputs()
-                           .get_variable_attributes()
-                           .at(index)
-                           .get_field_type() != FieldType::Vector,
-                       FeatureNotImplemented("Vector AMR"));
-                Assert(criterion.get_criterion() !=
-                         GridRefinement::RefinementFlags::Gradient,
-                       FeatureNotImplemented("Gradient AMR criteria"));
+                // Grab the field type
+                const FieldType local_field_type =
+                  grid_refinement_context.get_user_inputs()
+                    .get_variable_attributes()
+                    .at(index)
+                    .get_field_type();
 
                 // Grab the DoFHandler iterator
                 const auto dof_iterator = cell->as_dof_handler_iterator(
                   grid_refinement_context.get_dof_handler().get_dof_handler(index));
 
                 // Reinit the cell
-                fe_values.reinit(dof_iterator);
+                fe_values.at(local_field_type).reinit(dof_iterator);
 
-                // Get the values
-                fe_values.get_function_values(
-                  *grid_refinement_context.get_solution_handler()
-                     .get_solution_vector(index, DependencyType::Normal),
-                  values);
-
-                // Check if any of the quadrature points meet the refinement criterion
-                bool should_refine = false;
-                for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
                   {
-                    if (criterion.value_in_open_range(values[q_point]))
+                    if (local_field_type == FieldType::Scalar)
                       {
-                        should_refine = true;
+                        // Get the values for a scalar field
+                        fe_values.at(local_field_type)
+                          .get_function_values(
+                            *grid_refinement_context.get_solution_handler()
+                               .get_solution_vector(index, DependencyType::Normal),
+                            values);
+                      }
+                    else
+                      {
+                        // Get the magnitude of the value for vector fields
+                        // TODO (landinjm): Should be zeroing this out?
+                        std::vector<dealii::Vector<double>> vector_values(
+                          num_quad_points,
+                          dealii::Vector<double>(dim));
+                        fe_values.at(local_field_type)
+                          .get_function_values(
+                            *grid_refinement_context.get_solution_handler()
+                               .get_solution_vector(index, DependencyType::Normal),
+                            vector_values);
+                        for (unsigned int q_point = 0; q_point < num_quad_points;
+                             ++q_point)
+                          {
+                            values[q_point] = vector_values[q_point].l2_norm();
+                          }
+                      }
+
+                    // Check if any of the quadrature points meet the refinement criterion
+                    for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                      {
+                        if (criterion.value_in_open_range(values[q_point]))
+                          {
+                            should_refine = true;
+                            break;
+                          }
+                      }
+
+                    // Exit if we've already determined that the cell has to be refined
+                    if (should_refine)
+                      {
                         break;
                       }
                   }
+                if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
+                  {
+                    if (local_field_type == FieldType::Scalar)
+                      {
+                        // Get the magnitude of the gradient for a scalar field
+                        // TODO (landinjm): Should be zeroing this out?
+                        std::vector<dealii::Tensor<1, dim, double>> scalar_gradients(
+                          num_quad_points);
+                        fe_values.at(local_field_type)
+                          .get_function_gradients(
+                            *grid_refinement_context.get_solution_handler()
+                               .get_solution_vector(index, DependencyType::Normal),
+                            scalar_gradients);
+                        for (unsigned int q_point = 0; q_point < num_quad_points;
+                             ++q_point)
+                          {
+                            values[q_point] = scalar_gradients[q_point].norm();
+                          }
+                      }
+                    else
+                      {
+                        // TODO (landinjm): Should be zeroing this out?
+                        std::vector<std::vector<dealii::Tensor<1, dim, double>>>
+                          vector_gradients(num_quad_points,
+                                           std::vector<dealii::Tensor<1, dim, double>>(
+                                             dim));
+                        fe_values.at(local_field_type)
+                          .get_function_gradients(
+                            *grid_refinement_context.get_solution_handler()
+                               .get_solution_vector(index, DependencyType::Normal),
+                            vector_gradients);
+                        for (unsigned int q_point = 0; q_point < num_quad_points;
+                             ++q_point)
+                          {
+                            dealii::Vector<double> vector_gradient_component_magnitude(
+                              dim);
+                            for (unsigned int dimension = 0; dimension < dim; dimension++)
+                              {
+                                vector_gradient_component_magnitude[dimension] =
+                                  vector_gradients[q_point][dimension].norm();
+                              }
+                            values[q_point] =
+                              vector_gradient_component_magnitude.l2_norm();
+                          }
+                      }
 
-                // TODO (landinjm): This is kinda bad. Also when dealing with multiple
-                // criterion we can automatically skip looking at cells if they've
-                // already been flaged to be refined.
-                Assert(cell->level() > 0,
-                       dealii::ExcMessage("Cell refinement level is less than one, which "
-                                          "will lead to underflow."));
-                const auto current_cell_refinement =
-                  static_cast<unsigned int>(cell->level());
-                if (should_refine && current_cell_refinement < max_refinement)
-                  {
-                    cell->set_user_flag();
-                    cell->clear_coarsen_flag();
-                    cell->set_refine_flag();
+                    // Check if any of the quadrature points meet the refinement criterion
+                    for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
+                      {
+                        if (criterion.gradient_magnitude_above_threshold(values[q_point]))
+                          {
+                            should_refine = true;
+                            break;
+                          }
+                      }
+
+                    // Exit if we've already determined that the cell has to be refined
+                    if (should_refine)
+                      {
+                        break;
+                      }
                   }
-                if (should_refine)
-                  {
-                    cell->set_user_flag();
-                    cell->clear_coarsen_flag();
-                  }
-                if (!should_refine && current_cell_refinement > min_refinement &&
-                    !cell->user_flag_set())
-                  {
-                    cell->set_coarsen_flag();
-                  }
+              }
+
+            Assert(cell->level() > 0,
+                   dealii::ExcMessage("Cell refinement level is less than one, which "
+                                      "will lead to underflow."));
+            const auto current_cell_refinement = static_cast<unsigned int>(cell->level());
+            if (should_refine && current_cell_refinement < max_refinement)
+              {
+                cell->set_user_flag();
+                cell->clear_coarsen_flag();
+                cell->set_refine_flag();
+              }
+            if (should_refine)
+              {
+                cell->set_user_flag();
+                cell->clear_coarsen_flag();
+              }
+            if (!should_refine && current_cell_refinement > min_refinement &&
+                !cell->user_flag_set())
+              {
+                cell->set_coarsen_flag();
               }
           }
       }
@@ -306,6 +433,31 @@ private:
    * criterion.
    */
   std::vector<dealii::UpdateFlags> fe_values_flags;
+
+  /**
+   * @brief Finite element systems for scalar and vector fields.
+   */
+  std::unordered_map<FieldType, dealii::FESystem<dim>> fe_systems;
+
+  /**
+   * @brief Finite element values for scalar and vector fields.
+   */
+  std::unordered_map<FieldType, dealii::FEValues<dim>> fe_values;
+
+  /**
+   * @brief Number of quadrature points.
+   */
+  unsigned int num_quad_points = 0;
+
+  /**
+   * @brief Maximum global refinement level.
+   */
+  unsigned int max_refinement = 0;
+
+  /**
+   * @brief Minimum global refinement level.
+   */
+  unsigned int min_refinement = 0;
 };
 
 PRISMS_PF_END_NAMESPACE
