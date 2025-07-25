@@ -4,22 +4,43 @@
 #pragma once
 
 #include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
+#include <prismspf/core/variable_container.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
-#include <algorithm>
 #include <cmath>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 const unsigned int n_copies = 64;
+
+/**
+ * @brief This is a derived class of `VariableAttributeLoader` where the user implements
+ * their variable attributes and field declarations.
+ */
+class CustomAttributeLoader : public VariableAttributeLoader
+{
+public:
+  /**
+   * @brief Destructor.
+   */
+  ~CustomAttributeLoader() override = default;
+
+  /**
+   * @brief User-implemented method where the variable attributes are set for all fields.
+   */
+  void
+  load_variable_attributes() override;
+};
 
 /**
  * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
@@ -30,7 +51,7 @@ const unsigned int n_copies = 64;
  * @tparam number Datatype to use. Either double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class CustomPDE : public MatrixFreeOperator<dim, degree, number>
+class CustomPDE : public PDEOperator<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
@@ -41,22 +62,10 @@ public:
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
 
   /**
-   * @brief Constructor for concurrent solves.
+   * @brief Constructor.
    */
-  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
-            const std::map<unsigned int, VariableAttributes> &subset_attributes)
-    : MatrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
-  {}
-
-  /**
-   * @brief Constructor for single solves.
-   */
-  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
-            const unsigned int                               &_current_index,
-            const std::map<unsigned int, VariableAttributes> &subset_attributes)
-    : MatrixFreeOperator<dim, degree, number>(_user_inputs,
-                                              _current_index,
-                                              subset_attributes)
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
+    : PDEOperator<dim, degree, number>(_user_inputs)
   {}
 
 private:
@@ -73,7 +82,7 @@ private:
   /**
    * @brief User-implemented class for nonuniform boundary conditions.
    */
-  virtual void
+  void
   set_nonuniform_dirichlet(const unsigned int       &index,
                            const unsigned int       &boundary_id,
                            const unsigned int       &component,
@@ -93,17 +102,19 @@ private:
    * @brief User-implemented class for the RHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  compute_nonexplicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the LHS of nonexplicit equations.
    */
   void
-  compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  compute_nonexplicit_lhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -131,9 +142,9 @@ CustomAttributeLoader::load_variable_attributes()
     }
 }
 
-template <unsigned int dim>
-inline void
-customInitialCondition<dim>::set_initial_condition(
+template <unsigned int dim, unsigned int degree, typename number>
+void
+CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
@@ -183,7 +194,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline void
+void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
@@ -194,9 +205,9 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue n  = variable_list.template get_value<Scalar>(i);
       ScalarGrad  nx = variable_list.template get_gradient<Scalar>(i);
 
-      ScalarValue fnV   = (4.0 * n * (n - 1.0) * (n - 0.5));
-      ScalarValue eq_n  = (n - (this->get_timestep() * fnV));
-      ScalarGrad  eqx_n = (-this->get_timestep() * 2.0 * nx);
+      ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
+      ScalarValue eq_n  = n - (this->get_timestep() * fnV);
+      ScalarGrad  eqx_n = -this->get_timestep() * 2.0 * nx;
 
       variable_list.template set_value_term<Scalar>(i, eq_n);
       variable_list.template set_gradient_term<Scalar>(i, eqx_n);
@@ -204,23 +215,23 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline void
+void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline void
+void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index current_index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline void
+void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
