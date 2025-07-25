@@ -623,6 +623,14 @@ template <unsigned int dim, unsigned int degree>
 void
 PDEProblem<dim, degree>::run()
 {
+#ifdef DEBUG
+  ConditionalOStreams::pout_summary()
+    << "\n\n================================================\n"
+       "  Warning: running in DEBUG mode \n"
+    << "================================================\n\n\n"
+    << std::flush;
+#endif
+
   solve();
 
   Timer::print_summary();
