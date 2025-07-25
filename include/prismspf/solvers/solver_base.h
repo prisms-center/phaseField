@@ -142,7 +142,7 @@ public:
    * @brief Print information about the solver to summary.log.
    */
   virtual void
-  print();
+  print() {};
 
   /**
    * @brief Whether the subset attributes is empty.
