@@ -141,7 +141,7 @@ public:
   /**
    * @brief Print information about the solver to summary.log.
    */
-  void
+  virtual void
   print();
 
   /**

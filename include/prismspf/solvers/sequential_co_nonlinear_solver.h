@@ -241,7 +241,7 @@ public:
    * @brief Print information about the solver to summary.log.
    */
   void
-  print()
+  print() override
   {
     // Print the base class information
     this->SequentialSolver<dim, degree, number>::print();
