@@ -3,6 +3,7 @@
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/types.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/fe/fe_q.h>

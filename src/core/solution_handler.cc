@@ -3,6 +3,7 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
+#include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
