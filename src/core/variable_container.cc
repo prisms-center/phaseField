@@ -575,7 +575,7 @@ VariableContainer<dim, degree, number>::get_n_q_points() const
             }
           else
             {
-              bool is_nullptr = std::visit(
+              const bool is_nullptr = std::visit(
                 [](const auto &ptr) -> bool
                 {
                   return ptr == nullptr;
@@ -622,7 +622,7 @@ VariableContainer<dim, degree, number>::get_q_point_location() const
             }
           else
             {
-              bool is_nullptr = std::visit(
+              const bool is_nullptr = std::visit(
                 [](const auto &ptr) -> bool
                 {
                   return ptr == nullptr;

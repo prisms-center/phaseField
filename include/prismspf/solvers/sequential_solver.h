@@ -129,7 +129,7 @@ public:
   init_linear_solver(const VariableAttributes &variable)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     if (this->get_user_inputs()
           .get_linear_solve_parameters()
@@ -174,7 +174,7 @@ public:
   init_explicit_solver(const VariableAttributes &variable)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     // Creating temporary map to match types
     std::map<Types::Index, VariableAttributes> temp;
@@ -255,7 +255,7 @@ public:
   reinit_linear_solver(const VariableAttributes &variable)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     if (this->get_user_inputs()
           .get_linear_solve_parameters()
@@ -290,7 +290,7 @@ public:
   solve_explicit_solver(const VariableAttributes &variable)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     // Compute the update
     system_matrix[global_field_index]->compute_nonexplicit_auxiliary_update(
@@ -327,7 +327,7 @@ public:
   solve_linear_solver(const VariableAttributes &variable)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
@@ -373,7 +373,7 @@ public:
   solve_linear_solver(const VariableAttributes &variable, const double &step_length)
   {
     // Grab the global field index
-    Types::Index global_field_index = variable.get_field_index();
+    const Types::Index global_field_index = variable.get_field_index();
 
     // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
