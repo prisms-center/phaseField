@@ -5,7 +5,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/refinement_criterion.h>
+#include <prismspf/core/grid_refiner_criterion.h>
 
 #include <prismspf/utilities/utilities.h>
 
@@ -45,6 +45,15 @@ public:
    */
   void
   print_parameter_summary() const;
+
+  /**
+   * @brief Whether the provided increment is a valid grid refinement step.
+   */
+  [[nodiscard]] bool
+  should_refine_mesh(unsigned int increment) const
+  {
+    return increment % remeshing_period == 0;
+  }
 
   /**
    * @brief Get the domain extents in each cartesian direction

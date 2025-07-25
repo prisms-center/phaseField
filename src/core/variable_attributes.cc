@@ -399,7 +399,7 @@ VariableAttributes::compute_dependency_set(
                    "The provided attributes does not have an entry for the index = " +
                    std::to_string(index)));
 
-          dependency_set_rhs[index][static_cast<Types::Index>(dep_index)] =
+          dependency_set_rhs[index][dep_index] =
             other_var_attributes.at(index).field_type;
 
           dep_index++;
@@ -428,7 +428,7 @@ VariableAttributes::compute_dependency_set(
                    "The provided attributes does not have an entry for the index = " +
                    std::to_string(index)));
 
-          dependency_set_lhs[index][static_cast<Types::Index>(dep_index)] =
+          dependency_set_lhs[index][dep_index] =
             other_var_attributes.at(index).field_type;
 
           dep_index++;

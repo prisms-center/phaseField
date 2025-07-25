@@ -31,11 +31,12 @@ VariableAttributeLoader::init_variable_attributes()
 
   // Determine the max number of fields that user has defined. This is used to determine
   // the length of the vector for the eval flag set at runtime.
-  Types::Index max_fields = var_attributes.size();
+  const Types::Index max_fields = var_attributes.size();
 
   // Determine the max numer of dependency types. This is used to determine the length of
   // the vector for the eval flag set at runtime.
-  Types::Index max_dependency_types = static_cast<Types::Index>(DependencyType::OldFour);
+  const Types::Index max_dependency_types =
+    static_cast<Types::Index>(DependencyType::OldFour);
 
   // Format the dependencies and add the max fields and dependency types
   for (auto &[index, variable] : var_attributes)
@@ -65,9 +66,9 @@ VariableAttributeLoader::init_variable_attributes()
     }
 
   // Compute the shared dependencies
-  for (FieldSolveType field_solve_type : {FieldSolveType::ExplicitConstant,
-                                          FieldSolveType::Explicit,
-                                          FieldSolveType::ExplicitPostprocess})
+  for (const FieldSolveType field_solve_type : {FieldSolveType::ExplicitConstant,
+                                                FieldSolveType::Explicit,
+                                                FieldSolveType::ExplicitPostprocess})
     {
       auto subset_attributes =
         compute_subset_attributes(var_attributes, field_solve_type);

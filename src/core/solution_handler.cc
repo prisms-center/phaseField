@@ -3,6 +3,7 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/mg_level_object.h>
+#include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
@@ -166,7 +167,10 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
         {
           solution_set[std::make_pair(index, DependencyType::Normal)] =
             std::make_unique<VectorType>();
-
+          solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
+            std::make_unique<
+              dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+              matrix_free_handler.get_matrix_free()->get_dof_handler(index));
           new_solution_set[index] = std::make_unique<VectorType>();
         }
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
@@ -186,6 +190,11 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
               solution_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
                 std::make_unique<VectorType>());
+              solution_transfer_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<
+                  dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+                  matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
             }
@@ -206,6 +215,11 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
               solution_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
                 std::make_unique<VectorType>());
+              solution_transfer_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<
+                  dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+                  matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
             }
@@ -214,6 +228,23 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
         }
     }
 
+  // Initialize the entries according to the corresponding matrix free index
+  for (const auto &[pair, solution] : solution_set)
+    {
+      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*solution, pair.first);
+      // TODO (landinjm): Should I ghost values here?
+    }
+  for (const auto &[index, new_solution] : new_solution_set)
+    {
+      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*new_solution, index);
+      // TODO (landinjm): Should I ghost values here?
+    }
+}
+
+template <unsigned int dim>
+void
+SolutionHandler<dim>::reinit(MatrixfreeHandler<dim, double> &matrix_free_handler)
+{
   // Initialize the entries according to the corresponding matrix free index
   for (const auto &[pair, solution] : solution_set)
     {
@@ -238,6 +269,24 @@ SolutionHandler<dim>::mg_init(
       for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
         {
           mg_solution_set[level][index] = std::make_unique<MGVectorType>();
+          mg_matrix_free_handler[level + global_min_level]
+            .get_matrix_free()
+            ->initialize_dof_vector(*mg_solution_set[level][index], index);
+          mg_solution_set[level][index]->update_ghost_values();
+        }
+    }
+}
+
+template <unsigned int dim>
+void
+SolutionHandler<dim>::mg_reinit(
+  const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler)
+{
+  // Loop over all entries and reinitialize them
+  for (unsigned int level = 0; level < mg_solution_set.size(); level++)
+    {
+      for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
+        {
           mg_matrix_free_handler[level + global_min_level]
             .get_matrix_free()
             ->initialize_dof_vector(*mg_solution_set[level][index], index);

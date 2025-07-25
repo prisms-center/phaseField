@@ -41,6 +41,14 @@ public:
        const MGInfo<dim>                                &mg_info);
 
   /**
+   * @brief Reinitialize the DoFHandlers
+   */
+  void
+  reinit(const TriangulationHandler<dim>                  &triangulation_handler,
+         const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
+         const MGInfo<dim>                                &mg_info);
+
+  /**
    * @brief Getter function for the DoFHandlers (constant reference).
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
@@ -52,6 +60,33 @@ public:
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
   get_mg_dof_handlers(unsigned int level) const;
+
+  /**
+   * @brief Getter function for the DoFHandler (reference).
+   */
+  [[nodiscard]] const dealii::DoFHandler<dim> &
+  get_dof_handler(Types::Index index) const
+  {
+    Assert(dof_handlers.contains(index),
+           dealii::ExcMessage(
+             "Invalid index when trying to access a specific DoFHandler"));
+    Assert(dof_handlers.at(index) != nullptr, dealii::ExcNotInitialized());
+    return *dof_handlers.at(index);
+  };
+
+  /**
+   * @brief Get the total DoFs excluding multigrid DoFs.
+   */
+  [[nodiscard]] dealii::types::global_dof_index
+  get_total_dofs() const
+  {
+    dealii::types::global_dof_index n_dofs = 0;
+    for (const auto &[index, dof_handler] : dof_handlers)
+      {
+        n_dofs += dof_handler->n_dofs();
+      }
+    return n_dofs;
+  };
 
 private:
   /**
