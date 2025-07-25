@@ -874,8 +874,7 @@ VariableContainer<dim, degree, number>::reinit(unsigned int        cell,
 
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant =
-              feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)];
+            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
