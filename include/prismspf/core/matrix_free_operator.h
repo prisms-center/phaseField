@@ -52,7 +52,7 @@ public:
   MatrixFreeOperator(
     std::map<unsigned int, VariableAttributes>              _attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-    Types::Index _current_index     = Numbers::invalid_index,
+    Types::Index _index             = Numbers::invalid_index,
     bool         _use_local_mapping = false);
 
   /**
@@ -242,9 +242,9 @@ private:
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
-   * @brief Current field index that is being evaluated.
+   * @brief Field index that is being evaluated.
    */
-  Types::Index current_index = Numbers::invalid_index;
+  Types::Index index = Numbers::invalid_index;
 
   /**
    * @brief Whether to use local mapping for the VariableContainer object.

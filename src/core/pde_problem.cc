@@ -385,7 +385,7 @@ PDEProblem<dim, degree>::init_system()
 
   // Print the l2-norms and integrals of each solution
   ConditionalOStreams::pout_base()
-    << "Iteration: " << user_inputs->get_temporal_discretization().get_current_increment()
+    << "Iteration: " << user_inputs->get_temporal_discretization().get_increment()
     << "\n";
   for (const auto &[index, vector] : solution_handler.get_solution_vector())
     {
@@ -502,18 +502,18 @@ PDEProblem<dim, degree>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->get_temporal_discretization().get_current_increment() <
+  while (user_inputs->get_temporal_discretization().get_increment() <
          user_inputs->get_temporal_discretization().get_total_increments())
     {
-      user_inputs->get_temporal_discretization().update_current_increment();
-      user_inputs->get_temporal_discretization().update_current_time();
+      user_inputs->get_temporal_discretization().update_increment();
+      user_inputs->get_temporal_discretization().update_time();
 
       Timer::start_section("Solve Increment");
       solve_increment();
       Timer::end_section("Solve Increment");
 
       if (user_inputs->get_spatial_discretization().should_refine_mesh(
-            user_inputs->get_temporal_discretization().get_current_increment()))
+            user_inputs->get_temporal_discretization().get_increment()))
         {
           // Perform grid refinement
           ConditionalOStreams::pout_base() << "performing grid refinement...\n"
@@ -562,7 +562,7 @@ PDEProblem<dim, degree>::solve()
         }
 
       if (user_inputs->get_output_parameters().should_output(
-            user_inputs->get_temporal_discretization().get_current_increment()))
+            user_inputs->get_temporal_discretization().get_increment()))
         {
           Timer::start_section("Postprocess solver");
           concurrent_concurrent_explicit_postprocess_solver.solve();
@@ -577,8 +577,8 @@ PDEProblem<dim, degree>::solve()
 
           // Print the l2-norms and integrals of each solution
           ConditionalOStreams::pout_base()
-            << "Iteration: "
-            << user_inputs->get_temporal_discretization().get_current_increment() << "\n";
+            << "Iteration: " << user_inputs->get_temporal_discretization().get_increment()
+            << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               ConditionalOStreams::pout_base()

@@ -55,9 +55,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 1)
+  if (index == 1)
     {
       ScalarValue c  = variable_list.template get_value<Scalar>(0);
       ScalarGrad  cx = variable_list.template get_gradient<Scalar>(0);
@@ -77,7 +77,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

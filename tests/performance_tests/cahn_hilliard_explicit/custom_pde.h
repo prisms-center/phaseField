@@ -105,7 +105,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    Types::Index current_index = Numbers::invalid_index) const override;
+    Types::Index index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the LHS of nonexplicit equations.
@@ -114,7 +114,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    Types::Index current_index = Numbers::invalid_index) const override;
+    Types::Index index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -229,11 +229,11 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {
-      if (current_index == n_copies + i)
+      if (index == n_copies + i)
         {
           ScalarValue n  = variable_list.template get_value<Scalar>(i);
           ScalarGrad  nx = variable_list.template get_gradient<Scalar>(i);
@@ -253,7 +253,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

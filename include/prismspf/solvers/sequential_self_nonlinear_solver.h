@@ -136,9 +136,7 @@ public:
         while (unconverged)
           {
             if (this->get_user_inputs().get_output_parameters().should_output(
-                  this->get_user_inputs()
-                    .get_temporal_discretization()
-                    .get_current_increment()))
+                  this->get_user_inputs().get_temporal_discretization().get_increment()))
               {
                 ConditionalOStreams::pout_summary()
                   << "Nonlinear solver step: " << iteration << "\n";
@@ -155,9 +153,7 @@ public:
 
             // Check the convergence of the nonlinear solve
             if (this->get_user_inputs().get_output_parameters().should_output(
-                  this->get_user_inputs()
-                    .get_temporal_discretization()
-                    .get_current_increment()))
+                  this->get_user_inputs().get_temporal_discretization().get_increment()))
               {
                 ConditionalOStreams::pout_summary()
                   << "  field: " << index << " Newton update norm: " << newton_update_norm

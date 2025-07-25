@@ -347,9 +347,9 @@ private:
   Types::Index max_dependency_types = Numbers::invalid_index;
 
   /**
-   * @brief A map of evaluation flags for the dependencies of the current variable's RHS.
-   * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
-   * the specified field.
+   * @brief A map of evaluation flags for the dependencies of the variable's RHS. This
+   * will tell deal.II whether to evaluate the value, gradient, and/or hessian for the
+   * specified field.
    *
    * The first dimension is the field index, the second dimension is the dependency type.
    * @remark Internally determined
@@ -357,9 +357,9 @@ private:
   std::vector<std::vector<EvalFlags>> eval_flag_set_rhs;
 
   /**
-   * @brief A map of evaluation flags for the dependencies of the current variable's LHS.
-   * This will tell deal.II whether to evaluate the value, gradient, and/or hessian for
-   * the specified field.
+   * @brief A map of evaluation flags for the dependencies of the variable's LHS. This
+   * will tell deal.II whether to evaluate the value, gradient, and/or hessian for the
+   * specified field.
    *
    * The first dimension is the field index, the second dimension is the dependency type.
    * @remark Internally determined
@@ -420,10 +420,10 @@ private:
   RawDependencies raw_dependencies;
 
   /**
-   * @brief A simplified set of evaluation flags for the dependencies of the current
-   * variable's LHS & RHS. This will help determine the FieldSolveType of the field.
-   * Fields indices where the evaluation flags are not 0 (not nothing) are included.
-   * Additionally, explicit fields are excluded to speed up the graph search.
+   * @brief A simplified set of evaluation flags for the dependencies of the variable's
+   * LHS & RHS. This will help determine the FieldSolveType of the field. Fields indices
+   * where the evaluation flags are not 0 (not nothing) are included. Additionally,
+   * explicit fields are excluded to speed up the graph search.
    * @remark Internally determined
    */
   std::set<unsigned int> simplified_dependency_set;
