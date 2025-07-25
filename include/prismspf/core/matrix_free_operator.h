@@ -50,7 +50,7 @@ public:
    * initialize? Need to pick one.
    */
   MatrixFreeOperator(
-    const std::map<unsigned int, VariableAttributes>       &_attributes_list,
+    std::map<unsigned int, VariableAttributes>              _attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
     Types::Index _current_index     = Numbers::invalid_index,
     bool         _use_local_mapping = false);
@@ -114,14 +114,14 @@ public:
    */
   void
   add_global_to_local_mapping(
-    const std::vector<std::vector<Types::Index>> &_global_to_local_solution);
+    std::vector<std::vector<Types::Index>> _global_to_local_solution);
 
   /**
    * @brief Add the solution subset for src vector.
    */
   void
   add_src_solution_subset(
-    const std::vector<VectorType *> &_src_solution_subset = std::vector<VectorType *>());
+    std::vector<VectorType *> _src_solution_subset = std::vector<VectorType *>());
 
   /**
    * @brief Matrix-vector multiplication.
@@ -234,7 +234,7 @@ private:
   /**
    * @brief The attribute list of the relevant variables.
    */
-  const std::map<unsigned int, VariableAttributes> *attributes_list = nullptr;
+  std::map<unsigned int, VariableAttributes> attributes_list;
 
   /**
    * @brief PDE operator object for user defined PDEs.

@@ -28,12 +28,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
-  const std::map<unsigned int, VariableAttributes>       &_attributes_list,
+  std::map<unsigned int, VariableAttributes>              _attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
   Types::Index                                            _current_index,
   bool                                                    _use_local_mapping)
   : Subscriptor()
-  , attributes_list(&_attributes_list)
+  , attributes_list(_attributes_list)
   , pde_operator(std::move(_pde_operator))
   , current_index(_current_index)
   , use_local_mapping(_use_local_mapping)
@@ -140,7 +140,7 @@ MatrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
-  const std::vector<std::vector<Types::Index>> &_global_to_local_solution)
+  std::vector<std::vector<Types::Index>> _global_to_local_solution)
 {
   global_to_local_solution = _global_to_local_solution;
 }
@@ -165,7 +165,7 @@ MatrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::add_src_solution_subset(
-  const std::vector<VectorType *> &_src_solution_subset)
+  std::vector<VectorType *> _src_solution_subset)
 {
   src_solution_subset = _src_solution_subset;
 }
@@ -296,7 +296,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::ExplicitRHS);
 
@@ -322,7 +322,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::Postprocess);
 
@@ -348,7 +348,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitRHS);
 
@@ -374,7 +374,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitRHS);
 
@@ -400,7 +400,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitLHS,
                                                        use_local_mapping);
@@ -453,7 +453,7 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
 {
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
-                                                       *attributes_list,
+                                                       attributes_list,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitLHS,
                                                        use_local_mapping);
