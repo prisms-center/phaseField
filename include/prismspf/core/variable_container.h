@@ -534,7 +534,26 @@ public:
         std::visit(
           [&](auto &feeval_ptr)
           {
-            feeval_ptr->submit_value(val, q_point);
+            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+            if constexpr (FEEvalType::n_components == 1)
+              {
+                static_assert(std::is_same_v<T, SizeType>,
+                              "Expected SizeType for scalar field.");
+                feeval_ptr->submit_value(val, q_point);
+              }
+            else if constexpr (FEEvalType::n_components == dim)
+              {
+                static_assert(
+                  std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>,
+                  "Expected dealii::Tensor<1, dim, SizeType> for vector field.");
+                feeval_ptr->submit_value(val, q_point);
+              }
+            else
+              {
+                static_assert(FEEvalType::n_components == 1 ||
+                                FEEvalType::n_components == dim,
+                              "Unexpected number of components");
+              }
           },
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
@@ -579,7 +598,27 @@ public:
         std::visit(
           [&](auto &feeval_ptr)
           {
-            feeval_ptr->submit_gradient(grad, q_point);
+            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
+            if constexpr (FEEvalType::n_components == 1)
+              {
+                static_assert(
+                  std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>,
+                  "Expected dealii::Tensor<1, dim, SizeType> for scalar field.");
+                feeval_ptr->submit_gradient(grad, q_point);
+              }
+            else if constexpr (FEEvalType::n_components == dim)
+              {
+                static_assert(
+                  std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>,
+                  "Expected dealii::Tensor<2, dim, SizeType> for vector field.");
+                feeval_ptr->submit_gradient(grad, q_point);
+              }
+            else
+              {
+                static_assert(FEEvalType::n_components == 1 ||
+                                FEEvalType::n_components == dim,
+                              "Unexpected number of components");
+              }
           },
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
