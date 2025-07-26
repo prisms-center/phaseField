@@ -61,8 +61,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  eq_grad_c = McV * this->get_timestep() *
                              (grad_gamma - (12.0 * c * c - 12.0 * c + 2.0) * grad_c);
 
-      variable_list.template set_value_term<Scalar>(0, eq_c);
-      variable_list.template set_gradient_term<Scalar>(0, eq_grad_c);
+      variable_list.set_value_term(0, eq_c);
+      variable_list.set_gradient_term(0, eq_grad_c);
     }
   if (index == 1)
     {
@@ -70,7 +70,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 
       ScalarGrad eqx_gamma = -KcV * cx;
 
-      variable_list.template set_gradient_term<Scalar>(1, eqx_gamma);
+      variable_list.set_gradient_term(1, eqx_gamma);
     }
 }
 
@@ -96,8 +96,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
            change_grad_c +
          (12.0 * change_c * change_c + 24.0 * c * change_c - 12.0 * change_c) * grad_c);
 
-      variable_list.template set_value_term<Scalar>(0, eq_c, Change);
-      variable_list.template set_gradient_term<Scalar>(0, eq_grad_c, Change);
+      variable_list.set_value_term(0, eq_c, Change);
+      variable_list.set_gradient_term(0, eq_grad_c, Change);
     }
 }
 
@@ -123,7 +123,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
         }
     }
   f_tot = f_chem + f_grad;
-  variable_list.template set_value_term<Scalar>(2, f_tot);
+  variable_list.set_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

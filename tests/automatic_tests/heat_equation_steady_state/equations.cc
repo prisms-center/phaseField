@@ -52,8 +52,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  Tx = variable_list.template get_gradient<Scalar>(0);
       ScalarValue q  = variable_list.template get_value<Scalar>(1);
 
-      variable_list.template set_value_term<Scalar>(0, q);
-      variable_list.template set_gradient_term<Scalar>(0, -Tx);
+      variable_list.set_value_term(0, q);
+      variable_list.set_gradient_term(0, -Tx);
     }
 }
 
@@ -68,7 +68,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
     {
       ScalarGrad change_Tx = variable_list.template get_gradient<Scalar>(0, Change);
 
-      variable_list.template set_gradient_term<Scalar>(0, change_Tx, Change);
+      variable_list.set_gradient_term(0, change_Tx, Change);
     }
 }
 
@@ -90,7 +90,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   ScalarValue error = (T - analytic) * (T - analytic);
 
-  variable_list.template set_value_term<Scalar>(2, error);
+  variable_list.set_value_term(2, error);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

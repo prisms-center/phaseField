@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
@@ -14,6 +15,7 @@
 
 #include <prismspf/config.h>
 
+#include <type_traits>
 #include <variant>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -494,24 +496,35 @@ public:
                   DependencyType dependency_type = DependencyType::Normal) const;
 
   /**
-   * @brief Set the residual value of the specified scalar field.
+   * @brief Set the residual value of the specified scalar/vector field.
    */
-  template <FieldType T>
+  template <typename T>
   void
   set_value_term(const unsigned int   &global_variable_index,
-                 const SizeType       &val,
+                 const T              &val,
                  const DependencyType &dependency_type = DependencyType::Normal)
-  requires(T == FieldType::Scalar)
+  requires(std::is_same_v<T, SizeType> ||
+           std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
   {
     // Some checks that make sure that we have a valid submission and that the
     // feevaluation exists
+    // TODO (Landinjm): Check that the feevaluation is the right type
 #ifdef DEBUG
     submission_valid(dependency_type);
     feevaluation_exists(global_variable_index, dependency_type);
 #endif
 
+    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
+    // Otherwise, use std::visit
     if constexpr (dim == 1)
       {
+        // Unwrap the vector value here
+        if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
+          {
+            return feeval_map[global_variable_index]
+                             [static_cast<Types::Index>(dependency_type)]
+                               ->submit_value(val[0], q_point);
+          }
         return feeval_map[global_variable_index]
                          [static_cast<Types::Index>(dependency_type)]
                            ->submit_value(val, q_point);
@@ -521,85 +534,42 @@ public:
         std::visit(
           [&](auto &feeval_ptr)
           {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                feeval_ptr->submit_value(val, q_point);
-              }
-            else
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              }
+            feeval_ptr->submit_value(val, q_point);
           },
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
   }
 
   /**
-   * @brief Set the residual value of the specified vector field.
+   * @brief Set the residual gradient of the specified scalar/vector field.
    */
-  template <FieldType T>
+  template <typename T>
   void
-  set_value_term(const unsigned int                     &global_variable_index,
-                 const dealii::Tensor<1, dim, SizeType> &val,
-                 const DependencyType &dependency_type = DependencyType::Normal)
-  requires(T == FieldType::Vector)
-  {
-    // Some checks that make sure that we have a valid submission and that the
-    // feevaluation exists
-#ifdef DEBUG
-    submission_valid(dependency_type);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    if constexpr (dim == 1)
-      {
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->submit_value(val, q_point);
-      }
-    else
-      {
-        std::visit(
-          [&](auto &feeval_ptr)
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                feeval_ptr->submit_value(val, q_point);
-              }
-            else
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              }
-          },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Set the residual gradient of the specified scalar field.
-   */
-  template <FieldType T>
-  void
-  set_gradient_term(const unsigned int                     &global_variable_index,
-                    const dealii::Tensor<1, dim, SizeType> &grad,
+  set_gradient_term(const unsigned int   &global_variable_index,
+                    const T              &grad,
                     const DependencyType &dependency_type = DependencyType::Normal)
-  requires(T == FieldType::Scalar)
+  requires(std::is_same_v<T, dealii::Tensor<1, dim, SizeType>> ||
+           std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
   {
     // Some checks that make sure that we have a valid submission and that the
     // feevaluation exists
+    // TODO (Landinjm): Check that the feevaluation is the right type
 #ifdef DEBUG
     submission_valid(dependency_type);
     feevaluation_exists(global_variable_index, dependency_type);
 #endif
 
+    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
+    // Otherwise, use std::visit
     if constexpr (dim == 1)
       {
+        // Unwrap the vector value here
+        if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
+          {
+            return feeval_map[global_variable_index]
+                             [static_cast<Types::Index>(dependency_type)]
+                               ->submit_gradient(grad[0], q_point);
+          }
         return feeval_map[global_variable_index]
                          [static_cast<Types::Index>(dependency_type)]
                            ->submit_gradient(grad, q_point);
@@ -609,61 +579,7 @@ public:
         std::visit(
           [&](auto &feeval_ptr)
           {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                feeval_ptr->submit_gradient(grad, q_point);
-              }
-            else
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "Expected ScalarFEEvaluation but got VectorFEEvaluation."));
-              }
-          },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Set the residual gradient of the specified vector field.
-   */
-  template <FieldType T>
-  void
-  set_gradient_term(const unsigned int                     &global_variable_index,
-                    const dealii::Tensor<2, dim, SizeType> &grad,
-                    const DependencyType &dependency_type = DependencyType::Normal)
-  requires(T == FieldType::Vector)
-  {
-    // Some checks that make sure that we have a valid submission and that the
-    // feevaluation exists
-#ifdef DEBUG
-    submission_valid(dependency_type);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    if constexpr (dim == 1)
-      {
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->submit_gradient(grad, q_point);
-      }
-    else
-      {
-        std::visit(
-          [&](auto &feeval_ptr)
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                feeval_ptr->submit_gradient(grad, q_point);
-              }
-            else
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "Expected VectorFEEvaluation but got ScalarFEEvaluation."));
-              }
+            feeval_ptr->submit_gradient(grad, q_point);
           },
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
@@ -731,7 +647,7 @@ private:
     FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
 
   /**
-   * @brief Typedef for the varaint evaluation objects. Note that the states become
+   * @brief Typedef for the variant evaluation objects. Note that the states become
    * degenerate at dim = 1, hence the use of std::conditional_t.
    */
   using VariantFEEvaluation =
@@ -751,7 +667,7 @@ private:
   using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, SizeType>>;
 
   /**
-   * @brief Typedef for the varaint diagonal matrix objects.
+   * @brief Typedef for the variant diagonal matrix objects.
    */
   using VariantDiagonal =
     std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;

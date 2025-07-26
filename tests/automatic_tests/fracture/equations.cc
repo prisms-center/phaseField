@@ -118,7 +118,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
     }
   ScalarValue eq_n = n - this->get_timestep() * Mn * dndt;
 
-  variable_list.template set_value_term<Scalar>(0, eq_n);
+  variable_list.set_value_term(0, eq_n);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -139,7 +139,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, ux, stress);
 
-      variable_list.template set_gradient_term<Vector>(1, -stress);
+      variable_list.set_gradient_term(1, -stress);
     }
   if (index == 2)
     {
@@ -164,8 +164,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
         (2.0 * (n - 1.0) * elastic_energy + Gc0 * Gx * 3.0 / 8.0 / ell) * Mn;
       ScalarGrad eqx_n = ell * nx * Gc0 * Gx * 3.0 / 8.0 * Mn;
 
-      variable_list.template set_value_term<Scalar>(2, eq_n);
-      variable_list.template set_gradient_term<Scalar>(2, eqx_n);
+      variable_list.set_value_term(2, eq_n);
+      variable_list.set_gradient_term(2, eqx_n);
     }
 }
 
@@ -187,7 +187,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, ux_change, stress);
 
-      variable_list.template set_gradient_term<Vector>(1, stress, Change);
+      variable_list.set_gradient_term(1, stress, Change);
     }
 }
 
@@ -226,13 +226,13 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   ScalarValue s22   = stress[1][1];
   ScalarValue e22   = ux[1][1];
 
-  variable_list.template set_value_term<Scalar>(5, f_tot);
-  variable_list.template set_value_term<Scalar>(6, s11);
-  variable_list.template set_value_term<Scalar>(7, s12);
-  variable_list.template set_value_term<Scalar>(8, s22);
-  variable_list.template set_value_term<Scalar>(9, e22);
-  variable_list.template set_value_term<Scalar>(10, f_int);
-  variable_list.template set_value_term<Scalar>(11, f_el);
+  variable_list.set_value_term(5, f_tot);
+  variable_list.set_value_term(6, s11);
+  variable_list.set_value_term(7, s12);
+  variable_list.set_value_term(8, s22);
+  variable_list.set_value_term(9, e22);
+  variable_list.set_value_term(10, f_int);
+  variable_list.set_value_term(11, f_el);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

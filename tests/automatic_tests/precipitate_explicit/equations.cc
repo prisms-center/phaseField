@@ -190,14 +190,14 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
   ScalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
 
-  variable_list.template set_value_term<Scalar>(0, eq_c);
-  variable_list.template set_gradient_term<Scalar>(0, eqx_c);
-  variable_list.template set_value_term<Scalar>(1, eq_n1);
-  variable_list.template set_gradient_term<Scalar>(1, eqx_n1);
-  variable_list.template set_value_term<Scalar>(2, eq_n2);
-  variable_list.template set_gradient_term<Scalar>(2, eqx_n2);
-  variable_list.template set_value_term<Scalar>(3, eq_n3);
-  variable_list.template set_gradient_term<Scalar>(3, eqx_n3);
+  variable_list.set_value_term(0, eq_c);
+  variable_list.set_gradient_term(0, eqx_c);
+  variable_list.set_value_term(1, eq_n1);
+  variable_list.set_gradient_term(1, eqx_n1);
+  variable_list.set_value_term(2, eq_n2);
+  variable_list.set_gradient_term(2, eqx_n2);
+  variable_list.set_value_term(3, eq_n3);
+  variable_list.set_gradient_term(3, eqx_n3);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -237,7 +237,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
           compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
-      variable_list.template set_gradient_term<Vector>(4, -stress);
+      variable_list.set_gradient_term(4, -stress);
     }
 }
 
@@ -277,7 +277,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
           compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
-      variable_list.template set_gradient_term<Vector>(4, stress, Change);
+      variable_list.set_gradient_term(4, stress, Change);
     }
 }
 
@@ -344,7 +344,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   ScalarValue f_tot = f_chem + f_grad + f_el;
 
-  variable_list.template set_value_term<Scalar>(5, f_tot);
+  variable_list.set_value_term(5, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

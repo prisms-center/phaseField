@@ -209,8 +209,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue eq_n  = n - (this->get_timestep() * fnV);
       ScalarGrad  eqx_n = -this->get_timestep() * 2.0 * nx;
 
-      variable_list.template set_value_term<Scalar>(i, eq_n);
-      variable_list.template set_gradient_term<Scalar>(i, eqx_n);
+      variable_list.set_value_term(i, eq_n);
+      variable_list.set_gradient_term(i, eqx_n);
     }
 }
 
