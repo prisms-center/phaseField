@@ -23,6 +23,18 @@ PRISMS_PF_BEGIN_NAMESPACE
 struct VariableAttributes;
 
 /**
+ * @brief Overload pattern for lambdas.
+ */
+template <class... Ts>
+struct Overload : Ts...
+{
+  using Ts::
+  operator()...;
+};
+template <class... Ts>
+Overload(Ts...) -> Overload<Ts...>;
+
+/**
  * @brief This class permits the access of a subset of indexed fields and gives an error
  * if any non-allowed fields are requested.
  *
@@ -531,30 +543,35 @@ public:
       }
     else
       {
-        std::visit(
-          [&](auto &feeval_ptr)
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (FEEvalType::n_components == 1)
-              {
-                static_assert(std::is_same_v<T, SizeType>,
-                              "Expected SizeType for scalar field.");
-                feeval_ptr->submit_value(val, q_point);
-              }
-            else if constexpr (FEEvalType::n_components == dim)
-              {
-                static_assert(
-                  std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>,
-                  "Expected dealii::Tensor<1, dim, SizeType> for vector field.");
-                feeval_ptr->submit_value(val, q_point);
-              }
-            else
-              {
-                static_assert(FEEvalType::n_components == 1 ||
-                                FEEvalType::n_components == dim,
-                              "Unexpected number of components");
-              }
-          },
+        std::visit<void>(
+          Overload {[&](std::unique_ptr<ScalarFEEvaluation> &feeval_ptr)
+                    {
+                      if constexpr (std::is_same_v<T, SizeType>)
+                        {
+                          feeval_ptr->submit_value(val, q_point);
+                        }
+                      else
+                        {
+                          Assert(false,
+                                 dealii::ExcMessage(
+                                   "Submitted type does not match the one expected for a "
+                                   "scalar FEEvaluation object."));
+                        }
+                    },
+                    [&](std::unique_ptr<VectorFEEvaluation> &feeval_ptr)
+                    {
+                      if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
+                        {
+                          feeval_ptr->submit_value(val, q_point);
+                        }
+                      else
+                        {
+                          Assert(false,
+                                 dealii::ExcMessage(
+                                   "Submitted type does not match the one expected for a "
+                                   "vector FEEvaluation object."));
+                        }
+                    }},
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
   }
@@ -595,31 +612,35 @@ public:
       }
     else
       {
-        std::visit(
-          [&](auto &feeval_ptr)
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-            if constexpr (FEEvalType::n_components == 1)
-              {
-                static_assert(
-                  std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>,
-                  "Expected dealii::Tensor<1, dim, SizeType> for scalar field.");
-                feeval_ptr->submit_gradient(grad, q_point);
-              }
-            else if constexpr (FEEvalType::n_components == dim)
-              {
-                static_assert(
-                  std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>,
-                  "Expected dealii::Tensor<2, dim, SizeType> for vector field.");
-                feeval_ptr->submit_gradient(grad, q_point);
-              }
-            else
-              {
-                static_assert(FEEvalType::n_components == 1 ||
-                                FEEvalType::n_components == dim,
-                              "Unexpected number of components");
-              }
-          },
+        std::visit<void>(
+          Overload {[&](std::unique_ptr<ScalarFEEvaluation> &feeval_ptr)
+                    {
+                      if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
+                        {
+                          feeval_ptr->submit_gradient(grad, q_point);
+                        }
+                      else
+                        {
+                          Assert(false,
+                                 dealii::ExcMessage(
+                                   "Submitted type does not match the one expected for a "
+                                   "scalar FEEvaluation object."));
+                        }
+                    },
+                    [&](std::unique_ptr<VectorFEEvaluation> &feeval_ptr)
+                    {
+                      if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
+                        {
+                          feeval_ptr->submit_gradient(grad, q_point);
+                        }
+                      else
+                        {
+                          Assert(false,
+                                 dealii::ExcMessage(
+                                   "Submitted type does not match the one expected for a "
+                                   "vector FEEvaluation object."));
+                        }
+                    }},
           feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
       }
   }
