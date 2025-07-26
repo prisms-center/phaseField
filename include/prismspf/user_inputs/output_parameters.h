@@ -25,7 +25,7 @@ struct OutputParameters
 {
 public:
   /**
-   * @brief Return is the current increment should be output.
+   * @brief Return if the increment should be outputted.
    */
   [[nodiscard]] bool
   should_output(unsigned int increment) const;

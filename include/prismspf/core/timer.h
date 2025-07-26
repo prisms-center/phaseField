@@ -27,7 +27,7 @@ public:
   start_section(const char *name);
 
   /**
-   * @brief End the current timer section.
+   * @brief End the timer section.
    */
   static void
   end_section(const char *name);

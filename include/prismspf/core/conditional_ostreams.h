@@ -28,6 +28,36 @@ public:
   ~ConditionalOStreams() = default;
 
   /**
+   * @brief Copy constructor.
+   *
+   * Deleted so ostream instances aren't copied.
+   */
+  ConditionalOStreams(const ConditionalOStreams &solver_base) = delete;
+
+  /**
+   * @brief Copy assignment.
+   *
+   * Deleted so ostream instances aren't copied.
+   */
+  ConditionalOStreams &
+  operator=(const ConditionalOStreams &solver_base) = delete;
+
+  /**
+   * @brief Move constructor.
+   *
+   * Deleted so ostream instances aren't moved.
+   */
+  ConditionalOStreams(ConditionalOStreams &&solver_base) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   *
+   * Deleted so ostream instances aren't moved.
+   */
+  ConditionalOStreams &
+  operator=(ConditionalOStreams &&solver_base) noexcept = delete;
+
+  /**
    * @brief Generic parallel output stream. Used for essential information in release and
    * debug mode.
    */

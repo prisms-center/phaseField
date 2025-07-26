@@ -213,8 +213,7 @@ public:
                             [static_cast<Types::Index>(DependencyType::Normal)] = 0;
 
     Types::Index variable_index = 0;
-    for (const auto &inner_dependency_set :
-         this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
+    for (const auto &inner_dependency_set : variable.get_dependency_set_rhs())
       {
         Types::Index dependency_type = 0;
         for (const auto &field_type : inner_dependency_set)
@@ -329,10 +328,9 @@ public:
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 
-    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    // Skip if the field type is ImplicitTimeDependent and the increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
-        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
-          0)
+        this->get_user_inputs().get_temporal_discretization().get_increment() == 0)
       {
         return;
       }
@@ -375,10 +373,9 @@ public:
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 
-    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    // Skip if the field type is ImplicitTimeDependent and the increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
-        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
-          0)
+        this->get_user_inputs().get_temporal_discretization().get_increment() == 0)
       {
         return 0.0;
       }

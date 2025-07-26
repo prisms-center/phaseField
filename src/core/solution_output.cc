@@ -59,8 +59,8 @@ SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solu
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
-  flags.time  = user_inputs.get_temporal_discretization().get_current_time();
-  flags.cycle = user_inputs.get_temporal_discretization().get_current_increment();
+  flags.time                = user_inputs.get_temporal_discretization().get_time();
+  flags.cycle               = user_inputs.get_temporal_discretization().get_increment();
   flags.print_date_and_time = true;
 #ifdef PRISMS_PF_WITH_ZLIB
   // TODO (landinjm): Make this a user input parameter so they can select between
@@ -72,7 +72,7 @@ SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solu
   // Write to file based on the user input.
   const std::string  directory = "./";
   const unsigned int increment =
-    user_inputs.get_temporal_discretization().get_current_increment();
+    user_inputs.get_temporal_discretization().get_increment();
 
   if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {
@@ -160,8 +160,8 @@ SolutionOutput<dim, number>::SolutionOutput(
 
   // Set some flags for data output
   dealii::DataOutBase::VtkFlags flags;
-  flags.time  = user_inputs.get_temporal_discretization().get_current_time();
-  flags.cycle = user_inputs.get_temporal_discretization().get_current_increment();
+  flags.time                = user_inputs.get_temporal_discretization().get_time();
+  flags.cycle               = user_inputs.get_temporal_discretization().get_increment();
   flags.print_date_and_time = true;
 #ifdef PRISMS_PF_WITH_ZLIB
   flags.compression_level = dealii::DataOutBase::CompressionLevel::best_speed;
@@ -171,7 +171,7 @@ SolutionOutput<dim, number>::SolutionOutput(
   // Write to file based on the user input.
   const std::string  directory = "./";
   const unsigned int increment =
-    user_inputs.get_temporal_discretization().get_current_increment();
+    user_inputs.get_temporal_discretization().get_increment();
 
   if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {

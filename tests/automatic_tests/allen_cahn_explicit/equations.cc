@@ -47,8 +47,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarValue eq_n  = n - this->get_timestep() * MnV * fnV;
   ScalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
 
-  variable_list.template set_value_term<Scalar>(0, eq_n);
-  variable_list.template set_gradient_term<Scalar>(0, eqx_n);
+  variable_list.set_value_term(0, eq_n);
+  variable_list.set_gradient_term(0, eqx_n);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -56,7 +56,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -64,7 +64,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -89,9 +89,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
     }
   f_tot = f_chem + f_grad;
 
-  variable_list.template set_value_term<Scalar>(1,
-                                                std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
-  variable_list.template set_value_term<Scalar>(2, f_tot);
+  variable_list.set_value_term(1, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
+  variable_list.set_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

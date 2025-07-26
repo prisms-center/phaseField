@@ -48,9 +48,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
       ScalarValue c          = variable_list.template get_value<Scalar>(0);
       ScalarValue old_c      = variable_list.template get_value<Scalar>(0, OldOne);
@@ -62,16 +62,16 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
         McV * this->get_timestep() *
         (grad_gamma - (12.0 * old_c * old_c - 12.0 * old_c + 2.0) * old_grad_c);
 
-      variable_list.template set_value_term<Scalar>(0, eq_c);
-      variable_list.template set_gradient_term<Scalar>(0, eq_grad_c);
+      variable_list.set_value_term(0, eq_c);
+      variable_list.set_gradient_term(0, eq_grad_c);
     }
-  if (current_index == 1)
+  if (index == 1)
     {
       ScalarGrad cx = variable_list.template get_gradient<Scalar>(0);
 
       ScalarGrad eqx_gamma = -KcV * cx;
 
-      variable_list.template set_gradient_term<Scalar>(1, eqx_gamma);
+      variable_list.set_gradient_term(1, eqx_gamma);
     }
 }
 
@@ -80,15 +80,15 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
       ScalarValue change_c = variable_list.template get_value<Scalar>(0, Change);
 
       ScalarValue eq_c = change_c;
 
-      variable_list.template set_value_term<Scalar>(0, eq_c, Change);
+      variable_list.set_value_term(0, eq_c, Change);
     }
 }
 
@@ -114,7 +114,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
         }
     }
   f_tot = f_chem + f_grad;
-  variable_list.template set_value_term<Scalar>(2, f_tot);
+  variable_list.set_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

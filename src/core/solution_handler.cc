@@ -162,7 +162,7 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
     {
-      // Add the current variable if it doesn't already exist
+      // Add the variable if it doesn't already exist
       if (!solution_set.contains(std::make_pair(index, DependencyType::Normal)))
         {
           solution_set[std::make_pair(index, DependencyType::Normal)] =

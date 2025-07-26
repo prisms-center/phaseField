@@ -51,13 +51,13 @@ ElementVolume<dim, degree, number>::compute_element_volume(
       for (unsigned int lane = 0; lane < data->n_active_entries_per_cell_batch(cell);
            lane++)
         {
-          // Get the iterator for the current cell
+          // Get the iterator for the cell
           auto cell_iterator = data->get_cell_iterator(cell, lane);
 
           // Reinitialize the cell
           fe_values.reinit(cell_iterator);
 
-          // Initialize volume to 0 for the current cell
+          // Initialize volume to 0 for the cell
           double cell_volume = 0.0;
 
           // Sum up the JxW values at each quadrature point to compute the element volume

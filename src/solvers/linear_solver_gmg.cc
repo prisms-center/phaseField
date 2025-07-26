@@ -366,7 +366,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
   // Compute the residual
   this->get_system_matrix()->compute_residual(*this->get_residual(), *solution);
   if (this->get_user_inputs().get_output_parameters().should_output(
-        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
+        this->get_user_inputs().get_temporal_discretization().get_increment()))
     {
       ConditionalOStreams::pout_summary()
         << "  field: " << this->get_field_index()
@@ -501,7 +501,7 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     .set_zero(*this->get_newton_update());
 
   if (this->get_user_inputs().get_output_parameters().should_output(
-        this->get_user_inputs().get_temporal_discretization().get_current_increment()))
+        this->get_user_inputs().get_temporal_discretization().get_increment()))
     {
       ConditionalOStreams::pout_summary()
         << " Final residual: " << this->get_solver_control().last_value()

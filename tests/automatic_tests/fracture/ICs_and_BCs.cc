@@ -67,7 +67,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   if (index == 1)
     {
       const number time =
-        this->get_user_inputs().get_temporal_discretization().get_current_time();
+        this->get_user_inputs().get_temporal_discretization().get_time();
 
       number x = (point[0] - (vel_nom * time) - clength);
       number y =
