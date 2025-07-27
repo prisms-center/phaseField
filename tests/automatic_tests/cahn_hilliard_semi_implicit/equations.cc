@@ -52,10 +52,10 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 0)
     {
-      ScalarValue c          = variable_list.template get_value<Scalar>(0);
-      ScalarValue old_c      = variable_list.template get_value<Scalar>(0, OldOne);
-      ScalarGrad  old_grad_c = variable_list.template get_gradient<Scalar>(0, OldOne);
-      ScalarGrad  grad_gamma = variable_list.template get_gradient<Scalar>(1);
+      ScalarValue c          = variable_list.template get_value<ScalarValue>(0);
+      ScalarValue old_c      = variable_list.template get_value<ScalarValue>(0, OldOne);
+      ScalarGrad  old_grad_c = variable_list.template get_gradient<ScalarGrad>(0, OldOne);
+      ScalarGrad  grad_gamma = variable_list.template get_gradient<ScalarGrad>(1);
 
       ScalarValue eq_c = old_c - c;
       ScalarGrad  eq_grad_c =
@@ -67,7 +67,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
     }
   if (index == 1)
     {
-      ScalarGrad cx = variable_list.template get_gradient<Scalar>(0);
+      ScalarGrad cx = variable_list.template get_gradient<ScalarGrad>(0);
 
       ScalarGrad eqx_gamma = -KcV * cx;
 
@@ -84,7 +84,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (index == 0)
     {
-      ScalarValue change_c = variable_list.template get_value<Scalar>(0, Change);
+      ScalarValue change_c = variable_list.template get_value<ScalarValue>(0, Change);
 
       ScalarValue eq_c = change_c;
 
@@ -99,8 +99,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c  = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  cx = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue c  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue f_tot  = 0.0;
   ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;

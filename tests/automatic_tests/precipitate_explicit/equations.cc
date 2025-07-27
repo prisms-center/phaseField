@@ -74,15 +74,15 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c   = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  cx  = variable_list.template get_gradient<Scalar>(0);
-  ScalarValue n1  = variable_list.template get_value<Scalar>(1);
-  ScalarGrad  n1x = variable_list.template get_gradient<Scalar>(1);
-  ScalarValue n2  = variable_list.template get_value<Scalar>(2);
-  ScalarGrad  n2x = variable_list.template get_gradient<Scalar>(2);
-  ScalarValue n3  = variable_list.template get_value<Scalar>(3);
-  ScalarGrad  n3x = variable_list.template get_gradient<Scalar>(3);
-  VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
+  ScalarValue c   = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  cx  = variable_list.template get_gradient<ScalarGrad>(0);
+  ScalarValue n1  = variable_list.template get_value<ScalarValue>(1);
+  ScalarGrad  n1x = variable_list.template get_gradient<ScalarGrad>(1);
+  ScalarValue n2  = variable_list.template get_value<ScalarValue>(2);
+  ScalarGrad  n2x = variable_list.template get_gradient<ScalarGrad>(2);
+  ScalarValue n3  = variable_list.template get_value<ScalarValue>(3);
+  ScalarGrad  n3x = variable_list.template get_gradient<ScalarGrad>(3);
+  VectorGrad  ux  = variable_list.template get_symmetric_gradient<VectorGrad>(4);
 
   // Free energy expressions and interpolation functions
   ScalarValue faV   = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;
@@ -209,10 +209,10 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 4)
     {
-      ScalarValue n1 = variable_list.template get_value<Scalar>(1);
-      ScalarValue n2 = variable_list.template get_value<Scalar>(2);
-      ScalarValue n3 = variable_list.template get_value<Scalar>(3);
-      VectorGrad  ux = variable_list.get_vector_symmetric_gradient(4);
+      ScalarValue n1 = variable_list.template get_value<ScalarValue>(1);
+      ScalarValue n2 = variable_list.template get_value<ScalarValue>(2);
+      ScalarValue n3 = variable_list.template get_value<ScalarValue>(3);
+      VectorGrad  ux = variable_list.template get_symmetric_gradient<VectorGrad>(4);
 
       // Interpolation functions
       ScalarValue h1V = compute_hV(n1);
@@ -250,10 +250,11 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (index == 4)
     {
-      ScalarValue n1        = variable_list.template get_value<Scalar>(1);
-      ScalarValue n2        = variable_list.template get_value<Scalar>(2);
-      ScalarValue n3        = variable_list.template get_value<Scalar>(3);
-      VectorGrad  change_ux = variable_list.get_vector_symmetric_gradient(4, Change);
+      ScalarValue n1 = variable_list.template get_value<ScalarValue>(1);
+      ScalarValue n2 = variable_list.template get_value<ScalarValue>(2);
+      ScalarValue n3 = variable_list.template get_value<ScalarValue>(3);
+      VectorGrad  change_ux =
+        variable_list.template get_symmetric_gradient<VectorGrad>(4, Change);
 
       // Interpolation functions
       ScalarValue h1V = compute_hV(n1);
@@ -288,14 +289,14 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c   = variable_list.template get_value<Scalar>(0);
-  ScalarValue n1  = variable_list.template get_value<Scalar>(1);
-  ScalarGrad  n1x = variable_list.template get_gradient<Scalar>(1);
-  ScalarValue n2  = variable_list.template get_value<Scalar>(2);
-  ScalarGrad  n2x = variable_list.template get_gradient<Scalar>(2);
-  ScalarValue n3  = variable_list.template get_value<Scalar>(3);
-  ScalarGrad  n3x = variable_list.template get_gradient<Scalar>(3);
-  VectorGrad  ux  = variable_list.get_vector_symmetric_gradient(4);
+  ScalarValue c   = variable_list.template get_value<ScalarValue>(0);
+  ScalarValue n1  = variable_list.template get_value<ScalarValue>(1);
+  ScalarGrad  n1x = variable_list.template get_gradient<ScalarGrad>(1);
+  ScalarValue n2  = variable_list.template get_value<ScalarValue>(2);
+  ScalarGrad  n2x = variable_list.template get_gradient<ScalarGrad>(2);
+  ScalarValue n3  = variable_list.template get_value<ScalarValue>(3);
+  ScalarGrad  n3x = variable_list.template get_gradient<ScalarGrad>(3);
+  VectorGrad  ux  = variable_list.template get_symmetric_gradient<VectorGrad>(4);
 
   // Free energy expressions and interpolation functions
   ScalarValue faV    = A0 + A1 * c + A2 * c * c + A3 * c * c * c + A4 * c * c * c * c;

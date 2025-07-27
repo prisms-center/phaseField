@@ -51,9 +51,9 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c   = variable_list.template get_value<Scalar>(0);
-  scalargradType  cx  = variable_list.template get_gradient<Scalar>(0);
-  scalarvalueType phi = variable_list.template get_value<Scalar>(2);
+  scalarvalueType c   = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  cx  = variable_list.template get_gradient<ScalarGrad>(0);
+  scalarvalueType phi = variable_list.template get_value<ScalarValue>(2);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

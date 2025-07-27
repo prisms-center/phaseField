@@ -91,20 +91,20 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.template get_value<Scalar>(0);
+  scalarvalueType c = variable_list.template get_value<ScalarValue>(0);
 
   // The chemical potential and its derivatives
-  scalargradType mux = variable_list.template get_gradient<Scalar>(1);
+  scalargradType mux = variable_list.template get_gradient<ScalarGrad>(1);
 
   // The order parameters and their derivatives
-  scalarvalueType n1  = variable_list.template get_value<Scalar>(2);
-  scalargradType  n1x = variable_list.template get_gradient<Scalar>(2);
-  scalarvalueType n2  = variable_list.template get_value<Scalar>(3);
-  scalargradType  n2x = variable_list.template get_gradient<Scalar>(3);
-  scalarvalueType n3  = variable_list.template get_value<Scalar>(4);
-  scalargradType  n3x = variable_list.template get_gradient<Scalar>(4);
-  scalarvalueType n4  = variable_list.template get_value<Scalar>(5);
-  scalargradType  n4x = variable_list.template get_gradient<Scalar>(5);
+  scalarvalueType n1  = variable_list.template get_value<ScalarValue>(2);
+  scalargradType  n1x = variable_list.template get_gradient<ScalarGrad>(2);
+  scalarvalueType n2  = variable_list.template get_value<ScalarValue>(3);
+  scalargradType  n2x = variable_list.template get_gradient<ScalarGrad>(3);
+  scalarvalueType n3  = variable_list.template get_value<ScalarValue>(4);
+  scalargradType  n3x = variable_list.template get_gradient<ScalarGrad>(4);
+  scalarvalueType n4  = variable_list.template get_value<ScalarValue>(5);
+  scalargradType  n4x = variable_list.template get_gradient<ScalarGrad>(5);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -192,14 +192,14 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
-  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType c  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // The order parameters and their derivatives
-  scalarvalueType n1 = variable_list.template get_value<Scalar>(2);
-  scalarvalueType n2 = variable_list.template get_value<Scalar>(3);
-  scalarvalueType n3 = variable_list.template get_value<Scalar>(4);
-  scalarvalueType n4 = variable_list.template get_value<Scalar>(5);
+  scalarvalueType n1 = variable_list.template get_value<ScalarValue>(2);
+  scalarvalueType n2 = variable_list.template get_value<ScalarValue>(3);
+  scalarvalueType n3 = variable_list.template get_value<ScalarValue>(4);
+  scalarvalueType n4 = variable_list.template get_value<ScalarValue>(5);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

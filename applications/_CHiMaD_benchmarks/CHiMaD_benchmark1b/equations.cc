@@ -59,10 +59,10 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.template get_value<Scalar>(0);
+  scalarvalueType c = variable_list.template get_value<ScalarValue>(0);
 
   // The chemical potential and its derivatives
-  scalargradType mux = variable_list.template get_gradient<Scalar>(1);
+  scalargradType mux = variable_list.template get_gradient<ScalarGrad>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -98,8 +98,8 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
-  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType c  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

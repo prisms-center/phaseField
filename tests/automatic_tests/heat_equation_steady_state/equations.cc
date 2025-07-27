@@ -49,8 +49,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 0)
     {
-      ScalarGrad  Tx = variable_list.template get_gradient<Scalar>(0);
-      ScalarValue q  = variable_list.template get_value<Scalar>(1);
+      ScalarGrad  Tx = variable_list.template get_gradient<ScalarGrad>(0);
+      ScalarValue q  = variable_list.template get_value<ScalarValue>(1);
 
       variable_list.set_value_term(0, q);
       variable_list.set_gradient_term(0, -Tx);
@@ -66,7 +66,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (index == 0)
     {
-      ScalarGrad change_Tx = variable_list.template get_gradient<Scalar>(0, Change);
+      ScalarGrad change_Tx = variable_list.template get_gradient<ScalarGrad>(0, Change);
 
       variable_list.set_gradient_term(0, change_Tx, Change);
     }
@@ -79,7 +79,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue T = variable_list.template get_value<Scalar>(0);
+  ScalarValue T = variable_list.template get_value<ScalarValue>(0);
 
   ScalarValue analytic =
     std::sin(M_PI * q_point_loc[0] /

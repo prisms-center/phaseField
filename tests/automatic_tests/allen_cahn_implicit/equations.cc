@@ -52,9 +52,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 0)
     {
-      ScalarValue n     = variable_list.template get_value<Scalar>(0);
-      ScalarValue old_n = variable_list.template get_value<Scalar>(0, OldOne);
-      ScalarGrad  nx    = variable_list.template get_gradient<Scalar>(0);
+      ScalarValue n     = variable_list.template get_value<ScalarValue>(0);
+      ScalarValue old_n = variable_list.template get_value<ScalarValue>(0, OldOne);
+      ScalarGrad  nx    = variable_list.template get_gradient<ScalarGrad>(0);
 
       ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
       ScalarValue eq_n  = old_n - n - this->get_timestep() * MnV * fnV;
@@ -74,8 +74,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (index == 0)
     {
-      ScalarValue change_n  = variable_list.template get_value<Scalar>(0, Change);
-      ScalarGrad  change_nx = variable_list.template get_gradient<Scalar>(0, Change);
+      ScalarValue change_n  = variable_list.template get_value<ScalarValue>(0, Change);
+      ScalarGrad  change_nx = variable_list.template get_gradient<ScalarGrad>(0, Change);
 
       ScalarValue fnV          = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
       ScalarValue eq_change_n  = change_n + this->get_timestep() * MnV * fnV;
@@ -93,8 +93,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue n  = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  nx = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue n  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue f_tot  = 0.0;
   ScalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;

@@ -65,7 +65,7 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // u
-  vectorgradType ux = variable_list.template get_gradient<Vector>(0);
+  vectorgradType ux = variable_list.template get_gradient<VectorGrad>(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
