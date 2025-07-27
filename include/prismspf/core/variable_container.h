@@ -22,17 +22,17 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 struct VariableAttributes;
 
+// clang-format off
+
 /**
  * @brief Overload pattern for lambdas.
  */
 template <class... Ts>
-struct Overload : Ts...
-{
-  using Ts::
-  operator()...;
-};
+struct Overload : Ts...{ using Ts::operator()...; };
 template <class... Ts>
 Overload(Ts...) -> Overload<Ts...>;
+
+// clang-format on
 
 /**
  * @brief This class permits the access of a subset of indexed fields and gives an error
