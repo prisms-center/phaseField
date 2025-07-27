@@ -37,16 +37,12 @@ VariableContainer<dim, degree, number>::VariableContainer(
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
 {
-  // Initialize the feeval_map
-  const Types::Index max_fields =
-    subset_attributes->begin()->second.get_dependency_set_rhs().size();
-  const Types::Index max_dependencies =
-    subset_attributes->begin()->second.get_dependency_set_rhs().begin()->size();
-  feeval_map.resize(max_fields);
-  for (auto &dependency_feeval_map : feeval_map)
-    {
-      dependency_feeval_map.resize(max_dependencies);
-    }
+  // Grab some data from the VariableAttributes
+  max_fields           = subset_attributes->begin()->second.get_max_fields();
+  max_dependency_types = subset_attributes->begin()->second.get_max_dependency_types();
+
+  // Initialize the feeval_vector
+  feeval_vector.resize(max_fields * max_dependency_types);
 
   auto construct_map = [&](const std::vector<std::vector<FieldType>> &dependency_set)
   {
@@ -69,7 +65,8 @@ VariableContainer<dim, degree, number>::VariableContainer(
               {
                 if (!use_local_mapping)
                   {
-                    feeval_map[dependency_index][dependency_type] =
+                    feeval_vector[dependency_index * max_dependency_types +
+                                  dependency_type] =
                       std::make_unique<ScalarFEEvaluation>(data, dependency_index);
                   }
                 else
@@ -80,7 +77,8 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
                     global_to_local_solution_exists(dependency_index, dependency_type);
-                    feeval_map[dependency_index][dependency_type] =
+                    feeval_vector[dependency_index * max_dependency_types +
+                                  dependency_type] =
                       std::make_unique<ScalarFEEvaluation>(data,
                                                            global_to_local_solution
                                                              ->at(dependency_index)
@@ -91,7 +89,8 @@ VariableContainer<dim, degree, number>::VariableContainer(
               {
                 if (!use_local_mapping)
                   {
-                    feeval_map[dependency_index][dependency_type] =
+                    feeval_vector[dependency_index * max_dependency_types +
+                                  dependency_type] =
                       std::make_unique<VectorFEEvaluation>(data, dependency_index);
                   }
                 else
@@ -102,7 +101,8 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
                     global_to_local_solution_exists(dependency_index, dependency_type);
-                    feeval_map[dependency_index][dependency_type] =
+                    feeval_vector[dependency_index * max_dependency_types +
+                                  dependency_type] =
                       std::make_unique<VectorFEEvaluation>(data,
                                                            global_to_local_solution
                                                              ->at(dependency_index)
@@ -361,8 +361,8 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
   const auto &global_var_index = subset_attributes->begin()->first;
   const auto &field_type       = subset_attributes->begin()->second.get_field_type();
   feevaluation_exists(global_var_index, DependencyType::Change);
-  auto &feeval_variant =
-    feeval_map[global_var_index][static_cast<Types::Index>(DependencyType::Change)];
+  auto &feeval_variant = feeval_vector[global_var_index * max_dependency_types +
+                                       static_cast<Types::Index>(DependencyType::Change)];
 
   auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
   {
@@ -430,13 +430,11 @@ VariableContainer<dim, degree, number>::feevaluation_size_valid(
   [[maybe_unused]] Types::Index dependency_index) const
 {
 #ifdef DEBUG
-  Assert(feeval_map.size() > field_index,
-         dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
-                            std::to_string(field_index)));
-  Assert(feeval_map.at(field_index).size() > dependency_index,
-         dealii::ExcMessage("The FEEvaluation object with global index = " +
-                            std::to_string(field_index) + " does not exist for type = " +
-                            to_string(static_cast<DependencyType>(dependency_index))));
+  Assert(feeval_vector.size() > field_index * max_dependency_types + dependency_index,
+         dealii::ExcMessage(
+           "The FEEvaluation object with global index = " + std::to_string(field_index) +
+           " and type = " + to_string(static_cast<DependencyType>(dependency_index)) +
+           " does not exist"));
 #endif
 }
 
@@ -453,8 +451,8 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
   bool is_nullptr = true;
   if constexpr (dim == 1)
     {
-      is_nullptr =
-        feeval_map[field_index][static_cast<Types::Index>(dependency_type)] == nullptr;
+      is_nullptr = feeval_vector[field_index * max_dependency_types +
+                                 static_cast<Types::Index>(dependency_type)] == nullptr;
     }
   else
     {
@@ -463,7 +461,8 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
         {
           return ptr == nullptr;
         },
-        feeval_map[field_index][static_cast<Types::Index>(dependency_type)]);
+        feeval_vector[field_index * max_dependency_types +
+                      static_cast<Types::Index>(dependency_type)]);
     }
   Assert(!is_nullptr,
          dealii::ExcMessage(
@@ -544,40 +543,37 @@ template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
 VariableContainer<dim, degree, number>::get_n_q_points() const
 {
-  for (const auto &dependency_feeval_map : feeval_map)
+  for (const auto &feeval_variant : feeval_vector)
     {
-      for (const auto &feeval_variant : dependency_feeval_map)
+      if constexpr (dim == 1)
         {
-          if constexpr (dim == 1)
+          if (feeval_variant == nullptr)
             {
-              if (feeval_variant == nullptr)
-                {
-                  continue;
-                }
-              return feeval_variant->n_q_points;
+              continue;
             }
-          else
+          return feeval_variant->n_q_points;
+        }
+      else
+        {
+          const bool is_nullptr = std::visit(
+            [](const auto &ptr) -> bool
             {
-              const bool is_nullptr = std::visit(
-                [](const auto &ptr) -> bool
-                {
-                  return ptr == nullptr;
-                },
-                feeval_variant);
+              return ptr == nullptr;
+            },
+            feeval_variant);
 
-              if (is_nullptr)
-                {
-                  continue;
-                }
-
-              return std::visit(
-                [&](const auto &feeval_ptr) -> unsigned int
-                {
-                  Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
-                  return feeval_ptr->n_q_points;
-                },
-                feeval_variant);
+          if (is_nullptr)
+            {
+              continue;
             }
+
+          return std::visit(
+            [&](const auto &feeval_ptr) -> unsigned int
+            {
+              Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
+              return feeval_ptr->n_q_points;
+            },
+            feeval_variant);
         }
     }
 
@@ -591,40 +587,37 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Point<dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_q_point_location() const
 {
-  for (const auto &dependency_feeval_map : feeval_map)
+  for (const auto &feeval_variant : feeval_vector)
     {
-      for (const auto &feeval_variant : dependency_feeval_map)
+      if constexpr (dim == 1)
         {
-          if constexpr (dim == 1)
+          if (feeval_variant == nullptr)
             {
-              if (feeval_variant == nullptr)
-                {
-                  continue;
-                }
-              return feeval_variant->quadrature_point(q_point);
+              continue;
             }
-          else
+          return feeval_variant->quadrature_point(q_point);
+        }
+      else
+        {
+          const bool is_nullptr = std::visit(
+            [](const auto &ptr) -> bool
             {
-              const bool is_nullptr = std::visit(
-                [](const auto &ptr) -> bool
-                {
-                  return ptr == nullptr;
-                },
-                feeval_variant);
+              return ptr == nullptr;
+            },
+            feeval_variant);
 
-              if (is_nullptr)
-                {
-                  continue;
-                }
-
-              return std::visit(
-                [&](const auto &feeval_ptr) -> dealii::Point<dim, SizeType>
-                {
-                  Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
-                  return feeval_ptr->quadrature_point(q_point);
-                },
-                feeval_variant);
+          if (is_nullptr)
+            {
+              continue;
             }
+
+          return std::visit(
+            [&](const auto &feeval_ptr) -> dealii::Point<dim, SizeType>
+            {
+              Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
+              return feeval_ptr->quadrature_point(q_point);
+            },
+            feeval_variant);
         }
     }
 
@@ -665,7 +658,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
             global_to_local_solution_exists(dependency_index, dependency_type);
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
+            auto &feeval_variant =
+              feeval_vector[dependency_index * max_dependency_types + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -701,7 +695,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                     static_assert(
                       std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                         std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                      "Unexpected type in feeval_map variant");
+                      "Unexpected type in feeval_vector variant");
                     process_feeval(ptr);
                   },
                   feeval_variant);
@@ -769,7 +763,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
 
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
+            auto &feeval_variant =
+              feeval_vector[dependency_index * max_dependency_types + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -791,7 +786,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
                     static_assert(
                       std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                         std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                      "Unexpected type in feeval_map variant");
+                      "Unexpected type in feeval_vector variant");
                     process_feeval(ptr);
                   },
                   feeval_variant);
@@ -841,7 +836,8 @@ VariableContainer<dim, degree, number>::reinit(unsigned int cell,
 
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
+            auto &feeval_variant =
+              feeval_vector[dependency_index * max_dependency_types + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -861,7 +857,7 @@ VariableContainer<dim, degree, number>::reinit(unsigned int cell,
                     static_assert(
                       std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                         std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                      "Unexpected type in feeval_map variant");
+                      "Unexpected type in feeval_vector variant");
                     process_feeval(ptr);
                   },
                   feeval_variant);
@@ -914,7 +910,8 @@ VariableContainer<dim, degree, number>::read_dof_values(
             global_to_local_solution_exists(dependency_index, dependency_type);
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
-            auto &feeval_variant = feeval_map[dependency_index][dependency_type];
+            auto &feeval_variant =
+              feeval_vector[dependency_index * max_dependency_types + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -947,7 +944,7 @@ VariableContainer<dim, degree, number>::read_dof_values(
                     static_assert(
                       std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                         std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                      "Unexpected type in feeval_map variant");
+                      "Unexpected type in feeval_vector variant");
                     process_feeval(ptr);
                   },
                   feeval_variant);
@@ -998,7 +995,8 @@ VariableContainer<dim, degree, number>::eval(Types::Index global_variable_index)
               }
 
             feevaluation_exists(index, static_cast<DependencyType>(dep_index));
-            auto &feeval_variant = feeval_map[index][dep_index];
+            auto &feeval_variant =
+              feeval_vector[index * max_dependency_types + dep_index];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -1018,7 +1016,7 @@ VariableContainer<dim, degree, number>::eval(Types::Index global_variable_index)
                     static_assert(
                       std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                         std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                      "Unexpected type in feeval_map variant");
+                      "Unexpected type in feeval_vector variant");
                     process_feeval(ptr);
                   },
                   feeval_variant);
@@ -1060,8 +1058,8 @@ VariableContainer<dim, degree, number>::integrate(Types::Index global_variable_i
     {
       feevaluation_exists(global_variable_index, DependencyType::Change);
       auto &feeval_variant =
-        feeval_map[global_variable_index]
-                  [static_cast<Types::Index>(DependencyType::Change)];
+        feeval_vector[global_variable_index * max_dependency_types +
+                      static_cast<Types::Index>(DependencyType::Change)];
 
       auto process_feeval = [&](auto &feeval_ptr)
       {
@@ -1080,7 +1078,7 @@ VariableContainer<dim, degree, number>::integrate(Types::Index global_variable_i
               using T = std::decay_t<decltype(ptr)>;
               static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                               std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                            "Unexpected type in feeval_map variant");
+                            "Unexpected type in feeval_vector variant");
               process_feeval(ptr);
             },
             feeval_variant);
@@ -1117,8 +1115,8 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
-    auto &feeval_variant =
-      feeval_map[residual_index][static_cast<Types::Index>(dependency_type)];
+    auto &feeval_variant = feeval_vector[residual_index * max_dependency_types +
+                                         static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)
     {
@@ -1137,7 +1135,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
             using T = std::decay_t<decltype(ptr)>;
             static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                             std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                          "Unexpected type in feeval_map variant");
+                          "Unexpected type in feeval_vector variant");
             process_feeval(ptr);
           },
           feeval_variant);
@@ -1175,8 +1173,8 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
-    auto &feeval_variant =
-      feeval_map[residual_index][static_cast<Types::Index>(dependency_type)];
+    auto &feeval_variant = feeval_vector[residual_index * max_dependency_types +
+                                         static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)
     {
@@ -1195,7 +1193,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
             using T = std::decay_t<decltype(ptr)>;
             static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
                             std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                          "Unexpected type in feeval_map variant");
+                          "Unexpected type in feeval_vector variant");
             process_feeval(ptr);
           },
           feeval_variant);

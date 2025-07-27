@@ -94,14 +94,14 @@ public:
         if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
           {
             dealii::Tensor<1, dim, SizeType> wrapper;
-            wrapper[0] = feeval_map[global_variable_index]
-                                   [static_cast<Types::Index>(dependency_type)]
-                                     ->get_value(q_point);
+            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
+                                       static_cast<Types::Index>(dependency_type)]
+                           ->get_value(q_point);
             return wrapper;
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_value(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_value(q_point);
       }
     else
       {
@@ -139,7 +139,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -170,14 +171,14 @@ public:
         if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
           {
             dealii::Tensor<2, dim, SizeType> wrapper;
-            wrapper[0] = feeval_map[global_variable_index]
-                                   [static_cast<Types::Index>(dependency_type)]
-                                     ->get_gradient(q_point);
+            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
+                                       static_cast<Types::Index>(dependency_type)]
+                           ->get_gradient(q_point);
             return wrapper;
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_gradient(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_gradient(q_point);
       }
     else
       {
@@ -215,7 +216,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -246,14 +248,14 @@ public:
         if constexpr (std::is_same_v<T, dealii::Tensor<3, dim, SizeType>>)
           {
             dealii::Tensor<3, dim, SizeType> wrapper;
-            wrapper[0] = feeval_map[global_variable_index]
-                                   [static_cast<Types::Index>(dependency_type)]
-                                     ->get_hessian(q_point);
+            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
+                                       static_cast<Types::Index>(dependency_type)]
+                           ->get_hessian(q_point);
             return wrapper;
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_hessian(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_hessian(q_point);
       }
     else
       {
@@ -291,7 +293,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -322,14 +325,14 @@ public:
         if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
           {
             dealii::Tensor<2, dim, SizeType> wrapper;
-            wrapper[0] = feeval_map[global_variable_index]
-                                   [static_cast<Types::Index>(dependency_type)]
-                                     ->get_hessian_diagonal(q_point);
+            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
+                                       static_cast<Types::Index>(dependency_type)]
+                           ->get_hessian_diagonal(q_point);
             return wrapper;
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_hessian_diagonal(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_hessian_diagonal(q_point);
       }
     else
       {
@@ -367,7 +370,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -398,14 +402,14 @@ public:
         if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
           {
             dealii::Tensor<1, dim, SizeType> wrapper;
-            wrapper[0] = feeval_map[global_variable_index]
-                                   [static_cast<Types::Index>(dependency_type)]
-                                     ->get_laplacian(q_point);
+            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
+                                       static_cast<Types::Index>(dependency_type)]
+                           ->get_laplacian(q_point);
             return wrapper;
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_laplacian(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_laplacian(q_point);
       }
     else
       {
@@ -443,7 +447,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -472,9 +477,9 @@ public:
         // Typically, we wrap the vector value for consistency with higher space
         // dimensions; however, the divergence of a vector field (n_components = dim),
         // always returns a SizeType.
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_divergence(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_divergence(q_point);
       }
     else
       {
@@ -505,7 +510,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -535,9 +541,9 @@ public:
         // Typically, we wrap the vector value for consistency with higher space
         // dimensions; however, the symmetric gradient of a vector field (n_components =
         // dim), always returns a dealii::SymmetricTensor<2, dim, SizeType>.
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->get_symmetric_gradient(q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->get_symmetric_gradient(q_point);
       }
     else
       {
@@ -570,7 +576,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -633,7 +640,8 @@ public:
                   }
               }
           },
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -662,13 +670,13 @@ public:
         // Unwrap the vector value here
         if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
           {
-            return feeval_map[global_variable_index]
-                             [static_cast<Types::Index>(dependency_type)]
-                               ->submit_value(val[0], q_point);
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->submit_value(val[0], q_point);
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->submit_value(val, q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->submit_value(val, q_point);
       }
     else
       {
@@ -701,7 +709,8 @@ public:
                                    "vector FEEvaluation object."));
                         }
                     }},
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -730,13 +739,13 @@ public:
         // Unwrap the vector value here
         if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
           {
-            return feeval_map[global_variable_index]
-                             [static_cast<Types::Index>(dependency_type)]
-                               ->submit_gradient(grad[0], q_point);
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->submit_gradient(grad[0], q_point);
           }
-        return feeval_map[global_variable_index]
-                         [static_cast<Types::Index>(dependency_type)]
-                           ->submit_gradient(grad, q_point);
+        return feeval_vector[(global_variable_index * max_dependency_types) +
+                             static_cast<Types::Index>(dependency_type)]
+          ->submit_gradient(grad, q_point);
       }
     else
       {
@@ -769,7 +778,8 @@ public:
                                    "vector FEEvaluation object."));
                         }
                     }},
-          feeval_map[global_variable_index][static_cast<Types::Index>(dependency_type)]);
+          feeval_vector[(global_variable_index * max_dependency_types) +
+                        static_cast<Types::Index>(dependency_type)]);
       }
   }
 
@@ -988,11 +998,23 @@ private:
     const std::vector<VectorType *> &src_subset);
 
   /**
-   * @brief Map of FEEvaluation objects for each active variable. The first mapping is
-   * for the global variable, the second is for the DependencyType, and the value is
-   * a variant that can hold either a scalar or vector FEEvaluation.
+   * @brief Max number of fields.
    */
-  std::vector<std::vector<VariantFEEvaluation>> feeval_map;
+  Types::Index max_fields = Numbers::invalid_index;
+
+  /**
+   * @brief Nax number of dependency types.
+   */
+  Types::Index max_dependency_types = Numbers::invalid_index;
+
+  /**
+   * @brief Vector of FEEvaluation objects for each active variable.
+   *
+   * The value is a variant that can hold either a ptr to a scalar or vector FEEvaluation.
+   * For performance reasons, we have a vector with length of max_fields *
+   * max_dependency_types. Consequently, most of the vector is filled with nullptr's.
+   */
+  std::vector<VariantFEEvaluation> feeval_vector;
 
   /**
    * @brief The attribute list of the relevant subset of variables.

@@ -207,6 +207,26 @@ struct VariableAttributes
   }
 
   /**
+   * @brief Get the max number of fields.
+   */
+  [[nodiscard]] Types::Index
+  get_max_fields() const
+  {
+    Assert(max_fields != Numbers::invalid_index, dealii::ExcNotInitialized());
+    return max_fields;
+  }
+
+  /**
+   * @brief Get the max number of dependency types.
+   */
+  [[nodiscard]] Types::Index
+  get_max_dependency_types() const
+  {
+    Assert(max_dependency_types != Numbers::invalid_index, dealii::ExcNotInitialized());
+    return max_dependency_types;
+  }
+
+  /**
    * @brief Print variable attributes to summary.log
    */
   void
