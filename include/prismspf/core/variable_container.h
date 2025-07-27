@@ -62,7 +62,7 @@ public:
    */
   VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const std::map<unsigned int, VariableAttributes> &_subset_attributes,
+    const std::map<Types::Index, VariableAttributes> &_subset_attributes,
     const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
     const SolveType                                  &_solve_type,
     bool                                              use_local_mapping = false);
@@ -452,7 +452,7 @@ public:
    */
   template <typename T>
   [[nodiscard]] T
-  get_divergence(unsigned int   global_variable_index,
+  get_divergence(Types::Index   global_variable_index,
                  DependencyType dependency_type = DependencyType::Normal) const
   requires(std::is_same_v<T, SizeType>)
   {
@@ -514,7 +514,7 @@ public:
    */
   template <typename T>
   [[nodiscard]] T
-  get_symmetric_gradient(unsigned int   global_variable_index,
+  get_symmetric_gradient(Types::Index   global_variable_index,
                          DependencyType dependency_type = DependencyType::Normal) const
   requires(std::is_same_v<T, dealii::Tensor<2, dim, SizeType>> ||
            std::is_same_v<T, dealii::SymmetricTensor<2, dim, SizeType>>)
@@ -582,7 +582,7 @@ public:
    */
   template <typename T>
   [[nodiscard]] T
-  get_vector_curl(unsigned int   global_variable_index,
+  get_vector_curl(Types::Index   global_variable_index,
                   DependencyType dependency_type = DependencyType::Normal) const
   requires(std::is_same_v<T, dealii::Tensor<1, 1, SizeType>> ||
            std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
@@ -642,9 +642,9 @@ public:
    */
   template <typename T>
   void
-  set_value_term(const unsigned int   &global_variable_index,
-                 const T              &val,
-                 const DependencyType &dependency_type = DependencyType::Normal)
+  set_value_term(Types::Index   global_variable_index,
+                 const T       &val,
+                 DependencyType dependency_type = DependencyType::Normal)
   requires(std::is_same_v<T, SizeType> ||
            std::is_same_v<T, dealii::Tensor<1, dim, SizeType>>)
   {
@@ -710,9 +710,9 @@ public:
    */
   template <typename T>
   void
-  set_gradient_term(const unsigned int   &global_variable_index,
-                    const T              &grad,
-                    const DependencyType &dependency_type = DependencyType::Normal)
+  set_gradient_term(Types::Index   global_variable_index,
+                    const T       &grad,
+                    DependencyType dependency_type = DependencyType::Normal)
   requires(std::is_same_v<T, dealii::Tensor<1, dim, SizeType>> ||
            std::is_same_v<T, dealii::Tensor<2, dim, SizeType>>)
   {
@@ -861,26 +861,33 @@ private:
     std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;
 
   /**
-   * @brief Check whether the map entry for the  FEEvaluation exists.
+   * @brief Check whether the entry for the FEEvaluation is within the bounds of the
+   * vector.
    */
   void
-  feevaluation_exists(const unsigned int   &dependency_index,
-                      const DependencyType &dependency_type) const;
+  feevaluation_size_valid(Types::Index field_index, Types::Index dependency_index) const;
+
+  /**
+   * @brief Check whether the entry for the FEEvaluation is within the bounds of the
+   * vector and not a nullptr.
+   */
+  void
+  feevaluation_exists(Types::Index field_index, DependencyType dependency_type) const;
 
   /**
    * @brief Check that a variable value/gradient/hessians was marked as needed and thus
    * properly initialized.
    */
   void
-  access_valid(const unsigned int                             &dependency_index,
-               const DependencyType                           &dependency_type,
-               const dealii::EvaluationFlags::EvaluationFlags &flag) const;
+  access_valid(Types::Index                             field_index,
+               DependencyType                           dependency_type,
+               dealii::EvaluationFlags::EvaluationFlags flag) const;
 
   /**
    * @brief Check that a value is valid for submission.
    */
   void
-  submission_valid(const DependencyType &dependency_type) const;
+  submission_valid(DependencyType dependency_type) const;
 
   /**
    * @brief Return the number of quadrature points.
@@ -910,7 +917,7 @@ private:
    * @brief Initialize the cell for all dependencies of a certain variable index.
    */
   void
-  reinit(unsigned int cell, const unsigned int &global_variable_index);
+  reinit(unsigned int cell, Types::Index global_variable_index);
 
   /**
    * @brief Read dofs values on the cell for all dependencies of a certain variable index.
@@ -923,7 +930,7 @@ private:
    * index.
    */
   void
-  eval(const unsigned int &global_variable_index);
+  eval(Types::Index global_variable_index);
 
   /**
    * @brief Integrate the residuals and distribute from local to global.
@@ -941,7 +948,7 @@ private:
    * @brief Integrate the residuals for a certain variable index.
    */
   void
-  integrate(const unsigned int &global_variable_index);
+  integrate(Types::Index global_variable_index);
 
   /**
    * @brief Get the FEEvaluation pointer from the variant.
@@ -966,7 +973,7 @@ private:
     FEEvaluationType *feeval_ptr,
     DiagonalType     *diagonal_ptr,
     unsigned int      cell,
-    unsigned int      global_var_index,
+    Types::Index      global_var_index,
     const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                     &func,
     VectorType                      &dst,
@@ -982,7 +989,7 @@ private:
   /**
    * @brief The attribute list of the relevant subset of variables.
    */
-  const std::map<unsigned int, VariableAttributes> *subset_attributes;
+  const std::map<Types::Index, VariableAttributes> *subset_attributes;
 
   /**
    * @brief Mapping from global solution vectors to the local ones

@@ -29,7 +29,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 VariableContainer<dim, degree, number>::VariableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-  const std::map<unsigned int, VariableAttributes> &_subset_attributes,
+  const std::map<Types::Index, VariableAttributes> &_subset_attributes,
   const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
   const SolveType                                  &_solve_type,
   bool                                              use_local_mapping)
@@ -63,17 +63,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
                 continue;
               }
 
-            // Ensure the indices are within bounds
-            Assert(dependency_index < feeval_map.size(),
-                   dealii::ExcMessage(
-                     "Dependency index " + std::to_string(dependency_index) +
-                     " exceeds feeval_map size " + std::to_string(feeval_map.size())));
-            Assert(dependency_type < feeval_map[dependency_index].size(),
-                   dealii::ExcMessage(
-                     "Dependency type index " +
-                     to_string(static_cast<DependencyType>(dependency_type)) +
-                     " exceeds feeval_map[dependency_index] size " +
-                     std::to_string(feeval_map[dependency_index].size())));
+            feevaluation_size_valid(dependency_index, dependency_type);
 
             if (field_type == FieldType::Scalar)
               {
@@ -319,7 +309,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
   FEEvaluationType *feeval_ptr,
   DiagonalType     *diagonal_ptr,
   unsigned int      cell,
-  unsigned int      global_var_index,
+  Types::Index      global_variable_index,
   const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
                                   &func,
   VectorType                      &dst,
@@ -359,7 +349,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
       }
   };
   // Reinit the cell for all the dependencies
-  reinit(cell, global_var_index);
+  reinit(cell, global_variable_index);
 
   for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
     {
@@ -370,7 +360,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
       read_dof_values(src_subset);
 
       // Evaluate the dependencies based on the flags
-      eval(global_var_index);
+      eval(global_variable_index);
 
       // Evaluate at each quadrature point
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
@@ -380,7 +370,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
         }
 
       // Integrate the diagonal
-      integrate(global_var_index);
+      integrate(global_variable_index);
       (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
     }
 
@@ -479,27 +469,36 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-VariableContainer<dim, degree, number>::feevaluation_exists(
-  [[maybe_unused]] const unsigned int   &dependency_index,
-  [[maybe_unused]] const DependencyType &dependency_type) const
+VariableContainer<dim, degree, number>::feevaluation_size_valid(
+  [[maybe_unused]] Types::Index field_index,
+  [[maybe_unused]] Types::Index dependency_index) const
 {
 #ifdef DEBUG
-  Assert(feeval_map.size() > dependency_index,
+  Assert(feeval_map.size() > field_index,
          dealii::ExcMessage("The FEEvaluation object does not exist for global index = " +
-                            std::to_string(dependency_index)));
-  Assert(feeval_map.at(dependency_index).size() >
-           static_cast<Types::Index>(dependency_type),
+                            std::to_string(field_index)));
+  Assert(feeval_map.at(field_index).size() > dependency_index,
          dealii::ExcMessage("The FEEvaluation object with global index = " +
-                            std::to_string(dependency_index) +
-                            " does not exist for type = " + to_string(dependency_type)));
+                            std::to_string(field_index) + " does not exist for type = " +
+                            to_string(static_cast<DependencyType>(dependency_index))));
+#endif
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+VariableContainer<dim, degree, number>::feevaluation_exists(
+  [[maybe_unused]] Types::Index   field_index,
+  [[maybe_unused]] DependencyType dependency_type) const
+{
+#ifdef DEBUG
+  feevaluation_size_valid(field_index, static_cast<Types::Index>(dependency_type));
+
   // Check if the feeval_variant is nullptr
   bool is_nullptr = true;
-
   if constexpr (dim == 1)
     {
       is_nullptr =
-        feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)] ==
-        nullptr;
+        feeval_map[field_index][static_cast<Types::Index>(dependency_type)] == nullptr;
     }
   else
     {
@@ -508,53 +507,54 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
         {
           return ptr == nullptr;
         },
-        feeval_map[dependency_index][static_cast<Types::Index>(dependency_type)]);
+        feeval_map[field_index][static_cast<Types::Index>(dependency_type)]);
     }
-
   Assert(!is_nullptr,
-         dealii::ExcMessage("The FEEvaluation object with global index = " +
-                            std::to_string(dependency_index) +
-                            " does not exist for type = " + to_string(dependency_type)));
+         dealii::ExcMessage(
+           "The FEEvaluation object with global index = " + std::to_string(field_index) +
+           " does not exist for type = " + to_string(dependency_type)));
 #endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::access_valid(
-  [[maybe_unused]] const unsigned int                             &dependency_index,
-  [[maybe_unused]] const DependencyType                           &dependency_type,
-  [[maybe_unused]] const dealii::EvaluationFlags::EvaluationFlags &flag) const
+  [[maybe_unused]] Types::Index                             field_index,
+  [[maybe_unused]] DependencyType                           dependency_type,
+  [[maybe_unused]] dealii::EvaluationFlags::EvaluationFlags flag) const
 {
-  for ([[maybe_unused]] const auto &[index, variable] : *subset_attributes)
+#ifdef DEBUG
+  for (const auto &[index, variable] : *subset_attributes)
     {
       if (solve_type == SolveType::NonexplicitLHS)
         {
-          Assert(
-            variable.get_eval_flag_set_lhs()[dependency_index][static_cast<Types::Index>(
-              dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
-            DependencyNotFound(dependency_index, to_string(dependency_type)));
+          Assert(variable.get_eval_flag_set_lhs()[field_index][static_cast<Types::Index>(
+                   dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
+                 DependencyNotFound(field_index, to_string(dependency_type)));
         }
       else
         {
-          Assert(
-            variable.get_eval_flag_set_rhs()[dependency_index][static_cast<Types::Index>(
-              dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
-            DependencyNotFound(dependency_index, to_string(dependency_type)));
+          Assert(variable.get_eval_flag_set_rhs()[field_index][static_cast<Types::Index>(
+                   dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
+                 DependencyNotFound(field_index, to_string(dependency_type)));
         }
     }
+#endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::submission_valid(
-  [[maybe_unused]] const DependencyType &dependency_type) const
+  [[maybe_unused]] DependencyType dependency_type) const
 {
+#ifdef DEBUG
   Assert(dependency_type == Normal || solve_type == SolveType::NonexplicitLHS,
          dealii::ExcMessage(
            "RHS residuals are only allowed to submit normal gradient terms."));
   Assert(dependency_type == Change || solve_type != SolveType::NonexplicitLHS,
          dealii::ExcMessage(
            "LHS residuals are only allowed to submit change gradient terms."));
+#endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -853,8 +853,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-VariableContainer<dim, degree, number>::reinit(unsigned int        cell,
-                                               const unsigned int &global_variable_index)
+VariableContainer<dim, degree, number>::reinit(unsigned int cell,
+                                               Types::Index global_variable_index)
 {
   auto reinit_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
@@ -1028,7 +1028,7 @@ VariableContainer<dim, degree, number>::read_dof_values(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-VariableContainer<dim, degree, number>::eval(const unsigned int &global_variable_index)
+VariableContainer<dim, degree, number>::eval(Types::Index global_variable_index)
 {
   auto eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
@@ -1097,8 +1097,7 @@ VariableContainer<dim, degree, number>::eval(const unsigned int &global_variable
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-VariableContainer<dim, degree, number>::integrate(
-  const unsigned int &global_variable_index)
+VariableContainer<dim, degree, number>::integrate(Types::Index global_variable_index)
 {
   Assert(subset_attributes->contains(global_variable_index),
          dealii::ExcMessage(
