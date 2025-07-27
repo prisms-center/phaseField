@@ -875,6 +875,14 @@ private:
   feevaluation_exists(Types::Index field_index, DependencyType dependency_type) const;
 
   /**
+   * @brief Check whether the entry for the global solution vector to local one is within
+   * the bounds of the vector and contains a valid entry.
+   */
+  void
+  global_to_local_solution_exists(Types::Index field_index,
+                                  Types::Index dependency_index) const;
+
+  /**
    * @brief Check that a variable value/gradient/hessians was marked as needed and thus
    * properly initialized.
    */
