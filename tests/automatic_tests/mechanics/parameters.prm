@@ -3,27 +3,25 @@ set global refinement = 4
 set degree = 1
 
 subsection Rectangular mesh
-    set x size = 100
-    set y size = 100
-    set z size = 100
-    set x subdivisions = 1
-    set y subdivisions = 1
-    set z subdivisions = 1
+  set x size = 100
+  set y size = 100
+  set z size = 100
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
 end
-
 set boundary condition for u, x component = Dirichlet: -1.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 set boundary condition for u, y component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 set boundary condition for u, z component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural, Natural, Natural
 
 subsection linear solver parameters: u
-    set tolerance type = AbsoluteResidual
-    set tolerance value = 1e-10
-    set max iterations = 1000 
-    set preconditioner type = GMG
-    set smoothing range = 20
-    set smoother degree = 5
-    set eigenvalue cg iterations = 20
-    set min mg level = 1
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 1e-10
+  set max iterations = 1000
+  set preconditioner type = GMG
+  set smoothing range = 20
+  set smoother degree = 5
+  set eigenvalue cg iterations = 20
+  set min mg level = 1
 end
-
 set Model constant compliance = (2.0,0.3), isotropic elastic constants

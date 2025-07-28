@@ -1,51 +1,31 @@
 set dim = 2
-
 set Domain size X = 51.2
 set Domain size Y = 51.2
 set Domain size Z = 100
-
 set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
-
 set global refinement = 8
-
 set degree = 1
-
 set Mesh adaptivity = true
-
 set Max refinement level = 8
 set Min refinement level = 2
-
 set Steps between remeshing operations = 2000
 
 subsection Refinement criterion: c
-    set Criterion type = VALUE
-    set Value lower bound = 0.01
-    set Value upper bound = 0.99
+  set Criterion type = VALUE
+  set Value lower bound = 0.01
+  set Value upper bound = 0.99
 end
-
 set Time step = 0.004
-
 set Number of time steps = 50000
-
-
 set Boundary condition for variable c = Periodic
 set Boundary condition for variable mu = Periodic
-
-
 set Model constant McV = 1.0, DOUBLE
-
 set Model constant KcV = 0.01, DOUBLE
-
 set Model constant WcV = 1.0, DOUBLE
-
 set Model constant c0 = 0.50, DOUBLE
-
 set Model constant icamplitude = 0.01, DOUBLE
-
 set Output condition = EQUAL_SPACING
-
 set Number of outputs = 50
-
 set Skip print steps = 1000

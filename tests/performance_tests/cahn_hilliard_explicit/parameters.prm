@@ -3,31 +3,29 @@ set global refinement = 7
 set degree = 2
 
 subsection Rectangular mesh
-    set x size = 100
-    set y size = 100
-    set z size = 100
-    set x subdivisions = 1
-    set y subdivisions = 1
-    set z subdivisions = 1
+  set x size = 100
+  set y size = 100
+  set z size = 100
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
 end
-
 set time step = 1.0e-4
 set number steps = 5000
 
 subsection output
-    set condition = EQUAL_SPACING
-    set number = 5
+  set condition = EQUAL_SPACING
+  set number = 5
 end
-
 set mesh adaptivity = true
 set max refinement = 7
 set min refinement = 3
 set remeshing period = 1000
-subsection refinement criterion: phi0
-    set type = value
-    set value lower bound = 0.01
-    set value upper bound = 0.99
-end
 
+subsection refinement criterion: phi0
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
 set boundary condition for phi0 = Natural
 set boundary condition for mu0 = Natural

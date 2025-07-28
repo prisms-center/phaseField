@@ -1,84 +1,55 @@
 set dim = 2
-
 set Domain size X = 800
 set Domain size Y = 800
 set Domain size Z = 800
-
 set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
-
 set global refinement = 2
-
 set degree = 2
-
 set Mesh adaptivity = true
-
 set Max refinement level = 10
 set Min refinement level = 2
-
 set Steps between remeshing operations = 500
 
 subsection Refinement criterion: n
-    set Criterion type = VALUE
-    set Value lower bound = 0.01
-    set Value upper bound = 0.99
+  set Criterion type = VALUE
+  set Value lower bound = 0.01
+  set Value upper bound = 0.99
 end
-
 set Time step = 0.011
-
 set Number of time steps = 50000
-
-
 set Boundary condition for variable c = Periodic
 set Boundary condition for variable n = Periodic
-
-
 set Time steps between nucleation attempts = 30
 set Minimum allowed distance between nuclei = 20.0
 set Order parameter cutoff value = 0.01
 
 subsection Nucleation parameters: n
-    set Nucleus semiaxes (x, y, z) = 5, 5, 5
-    set Freeze zone semiaxes (x, y, z) = 7.5, 7.5, 7.5
-    set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
-    set Freeze time following nucleation = 20
-    set Nucleation-free border thickness = 10
+  set Nucleus semiaxes (x, y, z) = 5, 5, 5
+  set Freeze zone semiaxes (x, y, z) = 7.5, 7.5, 7.5
+  set Nucleus rotation in degrees (x, y, z) = 0, 0, 0
+  set Freeze time following nucleation = 20
+  set Nucleation-free border thickness = 10
 end
-
-
 set Model constant c_avg = 0.2, DOUBLE
-
 set Model constant McV = 1.0, DOUBLE
-
 set Model constant MnV = 1.0, DOUBLE
-
 set Model constant KnV = 2.0, DOUBLE
-
 set Model constant W_barrier = 2.0, DOUBLE
-
 set Model constant A0 = 0.0, DOUBLE
 set Model constant A2 = 1.0, DOUBLE
 set Model constant calmin = 0.0, DOUBLE
 set Model constant B0 = 0.0, DOUBLE
 set Model constant B2 = 4.0, DOUBLE
 set Model constant cbtmin = 1.0, DOUBLE
-
 set Model constant k1 = 498.866, DOUBLE
 set Model constant k2 = 4.14465, DOUBLE
-
 set Model constant tau = 500.0, DOUBLE
-
 set Model constant epsilon = 1.0e-7, DOUBLE
-
 set Output condition = EQUAL_SPACING
-
 set Number of outputs = 20
-
 set Skip print steps = 1000
-
 set Load from a checkpoint = false
-
 set Checkpoint condition = EQUAL_SPACING
-
 set Number of checkpoints = 2
