@@ -186,7 +186,6 @@ if(DEAL_II_WITH_KOKKOS)
   find_package(Kokkos QUIET
   HINTS ${KOKKOS_DIR} $ENV{KOKKOS_DIR}
   )
-  message(STATUS "KOKKOS_DIR: ${KOKKOS_DIR}")
   if(Kokkos_FOUND AND Kokkos_DEVICES MATCHES "CUDA")
     set(KOKKOS_CUDA_BACKEND ON)
   endif()
