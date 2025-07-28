@@ -67,15 +67,15 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The temperature and its derivatives
-  scalarvalueType u  = variable_list.template get_value<Scalar>(0);
-  scalargradType  ux = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType u  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  ux = variable_list.template get_gradient<ScalarGrad>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType phi  = variable_list.template get_value<Scalar>(1);
-  scalargradType  phix = variable_list.template get_gradient<Scalar>(1);
+  scalarvalueType phi  = variable_list.template get_value<ScalarValue>(1);
+  scalargradType  phix = variable_list.template get_gradient<ScalarGrad>(1);
 
   // The order parameter chemical potential and its derivatives
-  scalarvalueType mu = variable_list.template get_value<Scalar>(2);
+  scalarvalueType mu = variable_list.template get_value<ScalarValue>(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -128,11 +128,11 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The temperature and its derivatives
-  scalarvalueType u = variable_list.template get_value<Scalar>(0);
+  scalarvalueType u = variable_list.template get_value<ScalarValue>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType phi  = variable_list.template get_value<Scalar>(1);
-  scalargradType  phix = variable_list.template get_gradient<Scalar>(1);
+  scalarvalueType phi  = variable_list.template get_value<ScalarValue>(1);
+  scalargradType  phix = variable_list.template get_gradient<ScalarGrad>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

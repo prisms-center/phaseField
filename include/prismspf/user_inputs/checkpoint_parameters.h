@@ -25,7 +25,7 @@ struct CheckpointParameters
 {
 public:
   /**
-   * @brief Return is the current increment should be checkpointed.
+   * @brief Return if the increment should be checkpointed.
    */
   [[nodiscard]] bool
   should_checkpoint(unsigned int increment) const;

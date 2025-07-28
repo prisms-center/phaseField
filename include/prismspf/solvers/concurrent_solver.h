@@ -86,18 +86,15 @@ public:
     system_matrix->clear();
     system_matrix->initialize(this->get_matrix_free_handler().get_matrix_free());
 
+    // Grab some data from the VariableAttributes
+    const Types::Index max_fields =
+      this->get_subset_attributes().begin()->second.get_max_fields();
+    const Types::Index max_dependency_types =
+      this->get_subset_attributes().begin()->second.get_max_dependency_types();
+
     // Resize the global to local solution vector
-    global_to_local_solution.resize(
-      this->get_subset_attributes().begin()->second.get_dependency_set_rhs().size());
-    for (auto &vector : global_to_local_solution)
-      {
-        vector.resize(this->get_subset_attributes()
-                        .begin()
-                        ->second.get_dependency_set_rhs()
-                        .begin()
-                        ->size(),
-                      Numbers::invalid_index);
-      }
+    global_to_local_solution.resize(max_fields * max_dependency_types,
+                                    Numbers::invalid_index);
 
     // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
     Types::Index dependency_index = 0;
@@ -110,8 +107,8 @@ public:
             // Skip if an invalid field type is found or the global_to_local_solution
             // already has an entry for this dependency index and dependency type
             if (field_type == Numbers::invalid_field_type ||
-                global_to_local_solution[dependency_index][dependency_type] !=
-                  Numbers::invalid_index)
+                global_to_local_solution[dependency_index * max_dependency_types +
+                                         dependency_type] != Numbers::invalid_index)
               {
                 dependency_type++;
                 continue;
@@ -122,8 +119,8 @@ public:
               static_cast<DependencyType>(dependency_type)));
             new_solution_subset.push_back(
               this->get_solution_handler().get_new_solution_vector(dependency_index));
-            global_to_local_solution[dependency_index][dependency_type] =
-              solution_subset.size() - 1;
+            global_to_local_solution[(dependency_index * max_dependency_types) +
+                                     dependency_type] = solution_subset.size() - 1;
 
             dependency_type++;
           }
@@ -239,7 +236,7 @@ public:
   /**
    * @brief Get the mapping from global solution vectors to the local ones.
    */
-  [[nodiscard]] const std::vector<std::vector<Types::Index>> &
+  [[nodiscard]] const std::vector<Types::Index> &
   get_global_to_local_solution_mapping()
   {
     return global_to_local_solution;
@@ -274,7 +271,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::vector<std::vector<Types::Index>> global_to_local_solution;
+  std::vector<Types::Index> global_to_local_solution;
 
   /**
    * @brief Subset of solutions fields that are necessary for concurrent solves.

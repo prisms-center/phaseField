@@ -53,15 +53,15 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue c  = variable_list.template get_value<Scalar>(0);
-  ScalarValue n1 = variable_list.template get_value<Scalar>(1);
-  ScalarValue n2 = variable_list.template get_value<Scalar>(2);
-  ScalarValue n3 = variable_list.template get_value<Scalar>(3);
+  ScalarValue c  = variable_list.template get_value<ScalarValue>(0);
+  ScalarValue n1 = variable_list.template get_value<ScalarValue>(1);
+  ScalarValue n2 = variable_list.template get_value<ScalarValue>(2);
+  ScalarValue n3 = variable_list.template get_value<ScalarValue>(3);
 
-  variable_list.template set_value_term<Scalar>(0, c);
-  variable_list.template set_value_term<Scalar>(1, n1);
-  variable_list.template set_value_term<Scalar>(2, n2);
-  variable_list.template set_value_term<Scalar>(3, n3);
+  variable_list.set_value_term(0, c);
+  variable_list.set_value_term(1, n1);
+  variable_list.set_value_term(2, n2);
+  variable_list.set_value_term(3, n3);
 }
 
 template <int dim, int degree, typename number>
@@ -73,9 +73,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (this->current_index == 4)
     {
-      VectorGrad grad_u = variable_list.template get_gradient<Vector>(4);
+      VectorGrad grad_u = variable_list.template get_gradient<VectorGrad>(4);
 
-      variable_list.template set_gradient_term<Vector>(4, -grad_u);
+      variable_list.set_gradient_term(4, -grad_u);
     }
 }
 
@@ -88,9 +88,10 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (this->current_index == 4)
     {
-      VectorGrad change_grad_u = variable_list.template get_gradient<Vector>(4, Change);
+      VectorGrad change_grad_u =
+        variable_list.template get_gradient<VectorGrad>(4, Change);
 
-      variable_list.template set_gradient_term<Vector>(4, change_grad_u, Change);
+      variable_list.set_gradient_term(4, change_grad_u, Change);
     }
 }
 

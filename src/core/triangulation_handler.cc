@@ -180,7 +180,8 @@ TriangulationHandler<dim>::generate_mesh()
 
   // Check that the initial global refinement matches the maximum adaptive refinement
   Assert(user_inputs->get_spatial_discretization().get_global_refinement() ==
-           user_inputs->get_spatial_discretization().get_max_refinement(),
+             user_inputs->get_spatial_discretization().get_max_refinement() ||
+           !user_inputs->get_spatial_discretization().get_has_adaptivity(),
          dealii::ExcMessage(
            "Currently, we don't allow the initial refinement to be lower than the "
            "maximum adpative refinement level when using multigrid. This is because we "

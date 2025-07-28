@@ -57,8 +57,8 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // --- Getting the values and derivatives of the model variables ---
-  scalarvalueType c   = variable_list.template get_value<Scalar>(0);
-  scalargradType  mux = variable_list.template get_gradient<Scalar>(1);
+  scalarvalueType c   = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  mux = variable_list.template get_gradient<ScalarGrad>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
   scalarvalueType eq_c  = c;
@@ -91,8 +91,8 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
 {
   // --- Getting the values and derivatives of the model variables ---
 
-  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
-  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType c  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
