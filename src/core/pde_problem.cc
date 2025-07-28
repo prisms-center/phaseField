@@ -515,6 +515,11 @@ PDEProblem<dim, degree>::solve()
       if (user_inputs->get_spatial_discretization().should_refine_mesh(
             user_inputs->get_temporal_discretization().get_increment()))
         {
+          // Update the postprocessed fields
+          Timer::start_section("Postprocess solver");
+          concurrent_explicit_postprocess_solver.solve();
+          Timer::end_section("Postprocess solver");
+
           // Perform grid refinement
           ConditionalOStreams::pout_base() << "performing grid refinement...\n"
                                            << std::flush;
