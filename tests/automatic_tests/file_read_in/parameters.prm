@@ -3,20 +3,19 @@ set global refinement = 4
 set degree = 1
 
 subsection Rectangular mesh
-    set x size = 10
-    set y size = 10
-    set z size = 10
-    set x subdivisions = 1
-    set y subdivisions = 1
-    set z subdivisions = 1
+  set x size = 10
+  set y size = 10
+  set z size = 10
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
 end
-
 set read initial conditions from file = true
 
 subsection initial condition file 1
-    set file name = test_2D_1degree
-    set file extension = vtk
-    set grid type = unstructured
-    set file variable names = n
-    set simulation variable names = n
+  set file name = test_2D_1degree
+  set file extension = vtk
+  set grid type = unstructured
+  set file variable names = n
+  set simulation variable names = n
 end
