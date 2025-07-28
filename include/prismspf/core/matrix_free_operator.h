@@ -113,8 +113,7 @@ public:
    * @brief Add the mappings from global to local solution vectors.
    */
   void
-  add_global_to_local_mapping(
-    std::vector<std::vector<Types::Index>> _global_to_local_solution);
+  add_global_to_local_mapping(std::vector<Types::Index> _global_to_local_solution);
 
   /**
    * @brief Add the solution subset for src vector.
@@ -269,7 +268,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::vector<std::vector<Types::Index>> global_to_local_solution;
+  std::vector<Types::Index> global_to_local_solution;
 
   /**
    * @brief Subset of fields that are necessary for the source.

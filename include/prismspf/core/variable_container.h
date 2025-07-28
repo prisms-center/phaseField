@@ -63,7 +63,7 @@ public:
   VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<Types::Index, VariableAttributes> &_subset_attributes,
-    const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
+    const std::vector<Types::Index>                  &_global_to_local_solution,
     const SolveType                                  &_solve_type,
     bool                                              use_local_mapping = false);
 
@@ -882,7 +882,7 @@ private:
    * vector and not a nullptr.
    */
   void
-  feevaluation_exists(Types::Index field_index, DependencyType dependency_type) const;
+  feevaluation_exists(Types::Index field_index, Types::Index dependency_index) const;
 
   /**
    * @brief Check whether the entry for the global solution vector to local one is within
@@ -891,6 +891,19 @@ private:
   void
   global_to_local_solution_exists(Types::Index field_index,
                                   Types::Index dependency_index) const;
+
+  /**
+   * @brief Get the local solution index for the given field index and dependency type.
+   */
+  [[nodiscard]] Types::Index
+  get_local_solution_index(Types::Index field_index, Types::Index dependency_index) const;
+
+  /**
+   * @brief Get the local solution index for the given field index and dependency type.
+   */
+  [[nodiscard]] Types::Index
+  get_local_solution_index(Types::Index   field_index,
+                           DependencyType dependency_type) const;
 
   /**
    * @brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -1024,7 +1037,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  const std::vector<std::vector<Types::Index>> *global_to_local_solution;
+  const std::vector<Types::Index> *global_to_local_solution;
 
   /**
    * @brief The solve type

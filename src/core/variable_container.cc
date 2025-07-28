@@ -19,6 +19,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <ranges>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -30,7 +31,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 VariableContainer<dim, degree, number>::VariableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<Types::Index, VariableAttributes> &_subset_attributes,
-  const std::vector<std::vector<Types::Index>>     &_global_to_local_solution,
+  const std::vector<Types::Index>                  &_global_to_local_solution,
   const SolveType                                  &_solve_type,
   bool                                              use_local_mapping)
   : subset_attributes(&_subset_attributes)
@@ -76,13 +77,11 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // variables to matrix free indices. For most cases, they are one and
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
-                    global_to_local_solution_exists(dependency_index, dependency_type);
+                    const Types::Index local_index =
+                      get_local_solution_index(dependency_index, dependency_type);
                     feeval_vector[dependency_index * max_dependency_types +
                                   dependency_type] =
-                      std::make_unique<ScalarFEEvaluation>(data,
-                                                           global_to_local_solution
-                                                             ->at(dependency_index)
-                                                             .at(dependency_type));
+                      std::make_unique<ScalarFEEvaluation>(data, local_index);
                   }
               }
             else
@@ -100,13 +99,11 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // variables to matrix free indices. For most cases, they are one and
                     // the same, but for multigrid they are different as not all fields
                     // have matrixfree data associated for the multigrid levels.
-                    global_to_local_solution_exists(dependency_index, dependency_type);
+                    const Types::Index local_index =
+                      get_local_solution_index(dependency_index, dependency_type);
                     feeval_vector[dependency_index * max_dependency_types +
                                   dependency_type] =
-                      std::make_unique<VectorFEEvaluation>(data,
-                                                           global_to_local_solution
-                                                             ->at(dependency_index)
-                                                             .at(dependency_type));
+                      std::make_unique<VectorFEEvaluation>(data, local_index);
                   }
               }
 
@@ -211,141 +208,6 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-template <typename FEEvaluationType>
-FEEvaluationType *
-VariableContainer<dim, degree, number>::extract_feeval_ptr(
-  VariantFEEvaluation &variant) const
-{
-  FEEvaluationType *return_ptr = nullptr;
-  std::visit(
-    [&return_ptr](auto &ptr)
-    {
-      using T = std::decay_t<decltype(ptr)>;
-      if constexpr (std::is_same_v<T, std::unique_ptr<FEEvaluationType>>)
-        {
-          return_ptr = ptr.get();
-        }
-      else
-        {
-          Assert(false, dealii::ExcNotInitialized());
-        }
-    },
-    variant);
-  return return_ptr;
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-template <typename DiagonalType>
-DiagonalType *
-VariableContainer<dim, degree, number>::extract_diagonal_ptr(
-  VariantDiagonal &variant) const
-{
-  DiagonalType *return_ptr = nullptr;
-  std::visit(
-    [&return_ptr](auto &ptr)
-    {
-      using T = std::decay_t<decltype(ptr)>;
-      if constexpr (std::is_same_v<T, std::unique_ptr<DiagonalType>>)
-        {
-          return_ptr = ptr.get();
-        }
-      else
-        {
-          Assert(false, dealii::ExcNotInitialized());
-        }
-    },
-    variant);
-  return return_ptr;
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-template <typename FEEvaluationType, typename DiagonalType>
-void
-VariableContainer<dim, degree, number>::eval_cell_diagonal(
-  FEEvaluationType *feeval_ptr,
-  DiagonalType     *diagonal_ptr,
-  unsigned int      cell,
-  Types::Index      global_variable_index,
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                  &func,
-  VectorType                      &dst,
-  const std::vector<VectorType *> &src_subset)
-{
-  using DiagonalValueType = typename DiagonalType::value_type;
-
-  // Helper function to submit the identity matrix
-  auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
-  {
-    for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
-      {
-        if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
-          {
-            feeval_ptr->submit_dof_value(SizeType(), j);
-          }
-        else
-          {
-            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
-          }
-      }
-
-    // Set the i-th value to 1.0
-    if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
-      {
-        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
-                                     dof_index);
-      }
-    else
-      {
-        DiagonalValueType one;
-        for (unsigned int dimension = 0; dimension < dim; ++dimension)
-          {
-            one[dimension] = dealii::make_vectorized_array<number>(1.0);
-          }
-        feeval_ptr->submit_dof_value(one, dof_index);
-      }
-  };
-  // Reinit the cell for all the dependencies
-  reinit(cell, global_variable_index);
-
-  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-    {
-      // Submit an identity matrix for the change term
-      submit_identity(feeval_ptr, i);
-
-      // Read plain dof values for non change src
-      read_dof_values(src_subset);
-
-      // Evaluate the dependencies based on the flags
-      eval(global_variable_index);
-
-      // Evaluate at each quadrature point
-      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
-        {
-          q_point = quad;
-          func(*this, get_q_point_location());
-        }
-
-      // Integrate the diagonal
-      integrate(global_variable_index);
-      (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
-    }
-
-  // Submit calculated diagonal values and distribute
-  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-    {
-      if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim != 1)
-        {
-          feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
-        }
-      else
-        {
-          feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
-        }
-    }
-  feeval_ptr->distribute_local_to_global(dst);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_diagonal(
   const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
@@ -441,18 +303,18 @@ VariableContainer<dim, degree, number>::feevaluation_size_valid(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::feevaluation_exists(
-  [[maybe_unused]] Types::Index   field_index,
-  [[maybe_unused]] DependencyType dependency_type) const
+  [[maybe_unused]] Types::Index field_index,
+  [[maybe_unused]] Types::Index dependency_index) const
 {
 #ifdef DEBUG
-  feevaluation_size_valid(field_index, static_cast<Types::Index>(dependency_type));
+  feevaluation_size_valid(field_index, dependency_index);
 
   // Check if the feeval_variant is nullptr
   bool is_nullptr = true;
   if constexpr (dim == 1)
     {
-      is_nullptr = feeval_vector[field_index * max_dependency_types +
-                                 static_cast<Types::Index>(dependency_type)] == nullptr;
+      is_nullptr =
+        feeval_vector[field_index * max_dependency_types + dependency_index] == nullptr;
     }
   else
     {
@@ -461,13 +323,12 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
         {
           return ptr == nullptr;
         },
-        feeval_vector[field_index * max_dependency_types +
-                      static_cast<Types::Index>(dependency_type)]);
+        feeval_vector[field_index * max_dependency_types + dependency_index]);
     }
   Assert(!is_nullptr,
-         dealii::ExcMessage(
-           "The FEEvaluation object with global index = " + std::to_string(field_index) +
-           " does not exist for type = " + to_string(dependency_type)));
+         dealii::ExcMessage("The FEEvaluation object with global index = " +
+                            std::to_string(field_index) + " does not exist for type = " +
+                            to_string(static_cast<DependencyType>(dependency_index))));
 #endif
 }
 
@@ -478,24 +339,44 @@ VariableContainer<dim, degree, number>::global_to_local_solution_exists(
   [[maybe_unused]] Types::Index dependency_index) const
 {
 #ifdef DEBUG
-  Assert(global_to_local_solution->size() > field_index,
-         dealii::ExcMessage("Global to local solution size " +
-                            std::to_string(global_to_local_solution->size()) +
-                            " is greater than dependency index " +
-                            std::to_string(field_index)));
-  Assert(global_to_local_solution->at(field_index).size() > dependency_index,
+  Assert(global_to_local_solution->size() >
+           field_index * max_dependency_types + dependency_index,
          dealii::ExcMessage(
-           "Global to local solution size at dependency index " +
-           std::to_string(field_index) + " " +
-           std::to_string(global_to_local_solution->at(field_index).size()) +
-           " is greater than dependency type " + std::to_string(dependency_index)));
-  Assert(global_to_local_solution->at(field_index).at(dependency_index) !=
-           Numbers::invalid_index,
+           "The global to local solution vector size " +
+           std::to_string(global_to_local_solution->size()) +
+           " is greater than index = " + std::to_string(field_index) +
+           " and type = " + to_string(static_cast<DependencyType>(dependency_index))));
+  Assert(global_to_local_solution->at(field_index * max_dependency_types +
+                                      dependency_index) != Numbers::invalid_index,
          dealii::ExcMessage("Global to local solution at dependency index " +
                             std::to_string(field_index) + " " +
                             std::to_string(dependency_index) + " is invalid"));
 
 #endif
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+Types::Index
+VariableContainer<dim, degree, number>::get_local_solution_index(
+  Types::Index field_index,
+  Types::Index dependency_index) const
+{
+  // Check that the local index exists and is valid first
+#ifdef DEBUG
+  global_to_local_solution_exists(field_index, dependency_index);
+#endif
+  return (
+    *global_to_local_solution)[field_index * max_dependency_types + dependency_index];
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+Types::Index
+VariableContainer<dim, degree, number>::get_local_solution_index(
+  Types::Index   field_index,
+  DependencyType dependency_type) const
+{
+  return get_local_solution_index(field_index,
+                                  static_cast<Types::Index>(dependency_type));
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -543,40 +424,42 @@ template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
 VariableContainer<dim, degree, number>::get_n_q_points() const
 {
-  for (const auto &feeval_variant : feeval_vector)
+  // For dim = 1, the scalar and vector FEEvaluation objects are degenerate.
+  if constexpr (dim == 1)
     {
-      if constexpr (dim == 1)
-        {
-          if (feeval_variant == nullptr)
-            {
-              continue;
-            }
-          return feeval_variant->n_q_points;
-        }
-      else
-        {
-          const bool is_nullptr = std::visit(
-            [](const auto &ptr) -> bool
-            {
-              return ptr == nullptr;
-            },
-            feeval_variant);
-
-          if (is_nullptr)
-            {
-              continue;
-            }
-
-          return std::visit(
-            [&](const auto &feeval_ptr) -> unsigned int
-            {
-              Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
-              return feeval_ptr->n_q_points;
-            },
-            feeval_variant);
-        }
+      auto iterator = std::ranges::find_if(feeval_vector,
+                                           [](const auto &ptr)
+                                           {
+                                             return ptr != nullptr;
+                                           });
+      Assert(iterator != feeval_vector.end(),
+             dealii::ExcMessage("All FEEvaluation objects were nullptr."));
+      return (*iterator)->n_q_points;
     }
-
+  else
+    {
+      // Create a filtered view that ignores nullptrs
+      auto filtered_view = feeval_vector | std::views::filter(
+                                             [](const auto &v)
+                                             {
+                                               return !std::visit(
+                                                 [](const auto &ptr)
+                                                 {
+                                                   return ptr == nullptr;
+                                                 },
+                                                 v);
+                                             });
+      // Grab the first iterator and return the number of quad points
+      auto iterator = filtered_view.begin();
+      Assert(iterator != filtered_view.end(),
+             dealii::ExcMessage("All FEEvaluation variants were nullptr."));
+      return std::visit(
+        [](const auto &ptr)
+        {
+          return ptr->n_q_points;
+        },
+        *iterator);
+    }
   Assert(false,
          dealii::ExcMessage("When trying to access the number of quadrature points, all "
                             "FEEvaluation object containers were empty."));
@@ -587,44 +470,45 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::Point<dim, typename VariableContainer<dim, degree, number>::SizeType>
 VariableContainer<dim, degree, number>::get_q_point_location() const
 {
-  for (const auto &feeval_variant : feeval_vector)
+  // For dim = 1, the scalar and vector FEEvaluation objects are degenerate.
+  if constexpr (dim == 1)
     {
-      if constexpr (dim == 1)
-        {
-          if (feeval_variant == nullptr)
-            {
-              continue;
-            }
-          return feeval_variant->quadrature_point(q_point);
-        }
-      else
-        {
-          const bool is_nullptr = std::visit(
-            [](const auto &ptr) -> bool
-            {
-              return ptr == nullptr;
-            },
-            feeval_variant);
-
-          if (is_nullptr)
-            {
-              continue;
-            }
-
-          return std::visit(
-            [&](const auto &feeval_ptr) -> dealii::Point<dim, SizeType>
-            {
-              Assert(feeval_ptr != nullptr, dealii::ExcNotInitialized());
-              return feeval_ptr->quadrature_point(q_point);
-            },
-            feeval_variant);
-        }
+      auto iterator = std::ranges::find_if(feeval_vector,
+                                           [](const auto &ptr)
+                                           {
+                                             return ptr != nullptr;
+                                           });
+      Assert(iterator != feeval_vector.end(),
+             dealii::ExcMessage("All FEEvaluation objects were nullptr."));
+      return (*iterator)->quadrature_point(q_point);
     }
-
+  else
+    {
+      // Create a filtered view that ignores nullptrs
+      auto filtered_view = feeval_vector | std::views::filter(
+                                             [](const auto &v)
+                                             {
+                                               return !std::visit(
+                                                 [](const auto &ptr)
+                                                 {
+                                                   return ptr == nullptr;
+                                                 },
+                                                 v);
+                                             });
+      // Grab the first iterator and return the number of quad points
+      auto iterator = filtered_view.begin();
+      Assert(iterator != filtered_view.end(),
+             dealii::ExcMessage("All FEEvaluation variants were nullptr."));
+      return std::visit(
+        [this](const auto &ptr)
+        {
+          return ptr->quadrature_point(q_point);
+        },
+        *iterator);
+    }
   Assert(false,
          dealii::ExcMessage("When trying to access the quadrature point location, all "
                             "FEEvaluation object containers were empty."));
-
   return dealii::Point<dim, SizeType>();
 }
 
@@ -655,7 +539,9 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                 continue;
               }
 
-            global_to_local_solution_exists(dependency_index, dependency_type);
+            const Types::Index local_index =
+              get_local_solution_index(dependency_index, dependency_type);
+
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
@@ -669,8 +555,6 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
                 {
                   return;
                 }
-              const Types::Index &local_index =
-                global_to_local_solution->at(dependency_index).at(dependency_type);
               Assert(src.size() > local_index,
                      dealii::ExcMessage(
                        "The provided src vector's size is below the given local "
@@ -907,7 +791,9 @@ VariableContainer<dim, degree, number>::read_dof_values(
                 continue;
               }
 
-            global_to_local_solution_exists(dependency_index, dependency_type);
+            const Types::Index local_index =
+              get_local_solution_index(dependency_index, dependency_type);
+
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
@@ -918,8 +804,6 @@ VariableContainer<dim, degree, number>::read_dof_values(
               if (eval_flag_set[dependency_index][dependency_type] !=
                   dealii::EvaluationFlags::EvaluationFlags::nothing)
                 {
-                  const Types::Index &local_index =
-                    global_to_local_solution->at(dependency_index).at(dependency_type);
                   Assert(src.size() > local_index,
                          dealii::ExcMessage(
                            "The provided src vector's size is below the given local "
@@ -1101,9 +985,9 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
         const DependencyType                           &dependency_type,
         const unsigned int                             &residual_index)
   {
-    global_to_local_solution_exists(residual_index, dependency_type);
-    const Types::Index &local_index =
-      global_to_local_solution->at(residual_index).at(dependency_type);
+    const Types::Index local_index =
+      get_local_solution_index(residual_index, dependency_type);
+
     Assert(dst.size() > local_index,
            dealii::ExcMessage(
              "The provided dst vector's size is below the given local index = " +
@@ -1218,6 +1102,141 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
         DependencyType::Normal,
         subset_attributes->begin()->first);
     }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename FEEvaluationType>
+FEEvaluationType *
+VariableContainer<dim, degree, number>::extract_feeval_ptr(
+  VariantFEEvaluation &variant) const
+{
+  FEEvaluationType *return_ptr = nullptr;
+  std::visit(
+    [&return_ptr](auto &ptr)
+    {
+      using T = std::decay_t<decltype(ptr)>;
+      if constexpr (std::is_same_v<T, std::unique_ptr<FEEvaluationType>>)
+        {
+          return_ptr = ptr.get();
+        }
+      else
+        {
+          Assert(false, dealii::ExcNotInitialized());
+        }
+    },
+    variant);
+  return return_ptr;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename DiagonalType>
+DiagonalType *
+VariableContainer<dim, degree, number>::extract_diagonal_ptr(
+  VariantDiagonal &variant) const
+{
+  DiagonalType *return_ptr = nullptr;
+  std::visit(
+    [&return_ptr](auto &ptr)
+    {
+      using T = std::decay_t<decltype(ptr)>;
+      if constexpr (std::is_same_v<T, std::unique_ptr<DiagonalType>>)
+        {
+          return_ptr = ptr.get();
+        }
+      else
+        {
+          Assert(false, dealii::ExcNotInitialized());
+        }
+    },
+    variant);
+  return return_ptr;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename FEEvaluationType, typename DiagonalType>
+void
+VariableContainer<dim, degree, number>::eval_cell_diagonal(
+  FEEvaluationType *feeval_ptr,
+  DiagonalType     *diagonal_ptr,
+  unsigned int      cell,
+  Types::Index      global_variable_index,
+  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
+                                  &func,
+  VectorType                      &dst,
+  const std::vector<VectorType *> &src_subset)
+{
+  using DiagonalValueType = typename DiagonalType::value_type;
+
+  // Helper function to submit the identity matrix
+  auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
+  {
+    for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+      {
+        if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
+          {
+            feeval_ptr->submit_dof_value(SizeType(), j);
+          }
+        else
+          {
+            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
+          }
+      }
+
+    // Set the i-th value to 1.0
+    if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
+      {
+        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
+                                     dof_index);
+      }
+    else
+      {
+        DiagonalValueType one;
+        for (unsigned int dimension = 0; dimension < dim; ++dimension)
+          {
+            one[dimension] = dealii::make_vectorized_array<number>(1.0);
+          }
+        feeval_ptr->submit_dof_value(one, dof_index);
+      }
+  };
+  // Reinit the cell for all the dependencies
+  reinit(cell, global_variable_index);
+
+  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+    {
+      // Submit an identity matrix for the change term
+      submit_identity(feeval_ptr, i);
+
+      // Read plain dof values for non change src
+      read_dof_values(src_subset);
+
+      // Evaluate the dependencies based on the flags
+      eval(global_variable_index);
+
+      // Evaluate at each quadrature point
+      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
+        {
+          q_point = quad;
+          func(*this, get_q_point_location());
+        }
+
+      // Integrate the diagonal
+      integrate(global_variable_index);
+      (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
+    }
+
+  // Submit calculated diagonal values and distribute
+  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+    {
+      if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim != 1)
+        {
+          feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
+        }
+      else
+        {
+          feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
+        }
+    }
+  feeval_ptr->distribute_local_to_global(dst);
 }
 
 INSTANTIATE_TRI_TEMPLATE(VariableContainer)
