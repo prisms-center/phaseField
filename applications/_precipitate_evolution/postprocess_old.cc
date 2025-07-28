@@ -45,22 +45,22 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c = variable_list.template get_value<Scalar>(0);
+  scalarvalueType c = variable_list.template get_value<ScalarValue>(0);
 
   // The first order parameter and its derivatives
-  scalarvalueType n1  = variable_list.template get_value<Scalar>(1);
-  scalargradType  n1x = variable_list.template get_gradient<Scalar>(1);
+  scalarvalueType n1  = variable_list.template get_value<ScalarValue>(1);
+  scalargradType  n1x = variable_list.template get_gradient<ScalarGrad>(1);
 
   // The second order parameter and its derivatives
-  scalarvalueType n2  = variable_list.template get_value<Scalar>(2);
-  scalargradType  n2x = variable_list.template get_gradient<Scalar>(2);
+  scalarvalueType n2  = variable_list.template get_value<ScalarValue>(2);
+  scalargradType  n2x = variable_list.template get_gradient<ScalarGrad>(2);
 
   // The third order parameter and its derivatives
-  scalarvalueType n3  = variable_list.template get_value<Scalar>(3);
-  scalargradType  n3x = variable_list.template get_gradient<Scalar>(3);
+  scalarvalueType n3  = variable_list.template get_value<ScalarValue>(3);
+  scalargradType  n3x = variable_list.template get_gradient<ScalarGrad>(3);
 
   // The derivative of the displacement vector
-  vectorgradType ux = variable_list.template get_gradient<Vector>(4);
+  vectorgradType ux = variable_list.template get_gradient<VectorGrad>(4);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

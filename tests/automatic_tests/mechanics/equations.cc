@@ -34,14 +34,14 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
-      VectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
+      VectorGrad ux = variable_list.template get_symmetric_gradient<VectorGrad>(0);
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, ux, stress);
-      variable_list.template set_gradient_term<Vector>(0, -stress);
+      variable_list.set_gradient_term(0, -stress);
     }
 }
 
@@ -50,14 +50,15 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
-      VectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
+      VectorGrad change_ux =
+        variable_list.template get_symmetric_gradient<VectorGrad>(0, Change);
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, change_ux, stress);
-      variable_list.template set_gradient_term<Vector>(0, stress, Change);
+      variable_list.set_gradient_term(0, stress, Change);
     }
 }
 

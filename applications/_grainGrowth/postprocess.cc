@@ -63,7 +63,7 @@ CustomPDE<dim, degree>::postProcessedFields(
   scalarvalueType max_op  = constV(100.0);
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
-      ni = variable_list.template get_value<Scalar>(i);
+      ni = variable_list.template get_value<ScalarValue>(i);
 
       for (unsigned int v = 0; v < ni.size(); v++)
         {
@@ -114,7 +114,7 @@ CustomPDE<dim, degree>::postProcessedFields(
   scalarvalueType sum_n = constV(0.0);
   for (unsigned int i = 0; i < userInputs.var_attributes.size(); i++)
     {
-      ni = variable_list.template get_value<Scalar>(i);
+      ni = variable_list.template get_value<ScalarValue>(i);
       sum_n += ni;
     }
   for (unsigned int v = 0; v < ni.size(); v++)

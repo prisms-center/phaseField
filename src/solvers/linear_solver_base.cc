@@ -55,30 +55,25 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   update_system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
 
-  // Resize the global to local solution vector
-  residual_global_to_local_solution.resize(
-    variable_attributes->get_dependency_set_rhs().size());
-  for (auto &vector : residual_global_to_local_solution)
-    {
-      vector.resize(variable_attributes->get_dependency_set_rhs().begin()->size(),
-                    Numbers::invalid_index);
-    }
+  // Grab some data from the VariableAttributes
+  const Types::Index max_fields = variable_attributes->get_max_fields();
+  const Types::Index max_dependency_types =
+    variable_attributes->get_max_dependency_types();
 
-  newton_update_global_to_local_solution.resize(
-    variable_attributes->get_dependency_set_lhs().size());
-  for (auto &vector : newton_update_global_to_local_solution)
-    {
-      vector.resize(variable_attributes->get_dependency_set_lhs().begin()->size(),
-                    Numbers::invalid_index);
-    }
+  // Resize the global to local solution vector
+  residual_global_to_local_solution.resize(max_fields * max_dependency_types,
+                                           Numbers::invalid_index);
+
+  newton_update_global_to_local_solution.resize(max_fields * max_dependency_types,
+                                                Numbers::invalid_index);
 
   // Create the residual subset of solution vectors and add the mapping to
   // MatrixFreeOperator
   residual_src.push_back(
     solution_handler->get_solution_vector(field_index, DependencyType::Normal));
-  residual_global_to_local_solution[field_index]
-                                   [static_cast<Types::Index>(DependencyType::Normal)] =
-                                     0;
+  residual_global_to_local_solution[field_index * max_dependency_types +
+                                    static_cast<Types::Index>(DependencyType::Normal)] =
+    0;
 
   Types::Index variable_index = 0;
   for (const auto &inner_dependency_set : variable_attributes->get_dependency_set_rhs())
@@ -89,7 +84,8 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
-              residual_global_to_local_solution[variable_index][dependency_type] !=
+              residual_global_to_local_solution[variable_index * max_dependency_types +
+                                                dependency_type] !=
                 Numbers::invalid_index)
             {
               dependency_type++;
@@ -99,8 +95,8 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           residual_src.push_back(solution_handler->get_solution_vector(
             variable_index,
             static_cast<DependencyType>(dependency_type)));
-          residual_global_to_local_solution[variable_index][dependency_type] =
-            residual_src.size() - 1;
+          residual_global_to_local_solution[variable_index * max_dependency_types +
+                                            dependency_type] = residual_src.size() - 1;
 
           dependency_type++;
         }
@@ -125,7 +121,9 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
-              newton_update_global_to_local_solution[variable_index][dependency_type] !=
+              newton_update_global_to_local_solution[variable_index *
+                                                       max_dependency_types +
+                                                     dependency_type] !=
                 Numbers::invalid_index)
             {
               dependency_type++;
@@ -141,7 +139,8 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           newton_update_src.push_back(solution_handler->get_solution_vector(
             variable_index,
             static_cast<DependencyType>(dependency_type)));
-          newton_update_global_to_local_solution[variable_index][dependency_type] =
+          newton_update_global_to_local_solution[variable_index * max_dependency_types +
+                                                 dependency_type] =
             newton_update_src.size() - 1;
 
           dependency_type++;

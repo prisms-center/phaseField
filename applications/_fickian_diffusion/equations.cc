@@ -51,8 +51,8 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // c
-  scalarvalueType c  = variable_list.template get_value<Scalar>(0);
-  scalargradType  cx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType c  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

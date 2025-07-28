@@ -42,15 +42,15 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue n  = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  nx = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue n  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
   ScalarValue eq_n  = n - this->get_timestep() * MnV * fnV;
   ScalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
 
-  variable_list.template set_value_term<Scalar>(0, eq_n);
-  variable_list.template set_gradient_term<Scalar>(0, eqx_n);
+  variable_list.set_value_term(0, eq_n);
+  variable_list.set_gradient_term(0, eqx_n);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -76,8 +76,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue n  = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  nx = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue n  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue f_tot  = 0.0;
   ScalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;
@@ -91,9 +91,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
     }
   f_tot = f_chem + f_grad;
 
-  variable_list.template set_value_term<Scalar>(1,
-                                                std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
-  variable_list.template set_value_term<Scalar>(2, f_tot);
+  variable_list.set_value_term(1, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
+  variable_list.set_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

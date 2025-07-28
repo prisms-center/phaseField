@@ -48,20 +48,20 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
-      ScalarValue n     = variable_list.template get_value<Scalar>(0);
-      ScalarValue old_n = variable_list.template get_value<Scalar>(0, OldOne);
-      ScalarGrad  nx    = variable_list.template get_gradient<Scalar>(0);
+      ScalarValue n     = variable_list.template get_value<ScalarValue>(0);
+      ScalarValue old_n = variable_list.template get_value<ScalarValue>(0, OldOne);
+      ScalarGrad  nx    = variable_list.template get_gradient<ScalarGrad>(0);
 
       ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
       ScalarValue eq_n  = old_n - n - this->get_timestep() * MnV * fnV;
       ScalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
 
-      variable_list.template set_value_term<Scalar>(0, eq_n);
-      variable_list.template set_gradient_term<Scalar>(0, eqx_n);
+      variable_list.set_value_term(0, eq_n);
+      variable_list.set_gradient_term(0, eqx_n);
     }
 }
 
@@ -70,19 +70,19 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {
-  if (current_index == 0)
+  if (index == 0)
     {
-      ScalarValue change_n  = variable_list.template get_value<Scalar>(0, Change);
-      ScalarGrad  change_nx = variable_list.template get_gradient<Scalar>(0, Change);
+      ScalarValue change_n  = variable_list.template get_value<ScalarValue>(0, Change);
+      ScalarGrad  change_nx = variable_list.template get_gradient<ScalarGrad>(0, Change);
 
       ScalarValue fnV          = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
       ScalarValue eq_change_n  = change_n + this->get_timestep() * MnV * fnV;
       ScalarGrad  eqx_change_n = this->get_timestep() * KnV * MnV * change_nx;
 
-      variable_list.template set_value_term<Scalar>(0, eq_change_n, Change);
-      variable_list.template set_gradient_term<Scalar>(0, eqx_change_n, Change);
+      variable_list.set_value_term(0, eq_change_n, Change);
+      variable_list.set_gradient_term(0, eqx_change_n, Change);
     }
 }
 
@@ -93,8 +93,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
   const
 {
-  ScalarValue n  = variable_list.template get_value<Scalar>(0);
-  ScalarGrad  nx = variable_list.template get_gradient<Scalar>(0);
+  ScalarValue n  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue f_tot  = 0.0;
   ScalarValue f_chem = n * n * n * n - 2.0 * n * n * n + n * n;
@@ -108,9 +108,8 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
     }
   f_tot = f_chem + f_grad;
 
-  variable_list.template set_value_term<Scalar>(1,
-                                                std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
-  variable_list.template set_value_term<Scalar>(2, f_tot);
+  variable_list.set_value_term(1, std::sqrt(nx[0] * nx[0] + nx[1] * nx[1]));
+  variable_list.set_value_term(2, f_tot);
 }
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

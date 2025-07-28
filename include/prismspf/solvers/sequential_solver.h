@@ -194,14 +194,15 @@ public:
     system_matrix[global_field_index]->initialize(
       this->get_matrix_free_handler().get_matrix_free());
 
+    // Grab some data from the VariableAttributes
+    const Types::Index max_fields =
+      this->get_subset_attributes().begin()->second.get_max_fields();
+    const Types::Index max_dependency_types =
+      this->get_subset_attributes().begin()->second.get_max_dependency_types();
+
     // Resize the global to local solution vector
-    global_to_local_solution[global_field_index].resize(
-      variable.get_dependency_set_rhs().size());
-    for (auto &vector : global_to_local_solution[global_field_index])
-      {
-        vector.resize(variable.get_dependency_set_rhs().begin()->size(),
-                      Numbers::invalid_index);
-      }
+    global_to_local_solution[global_field_index].resize(max_fields * max_dependency_types,
+                                                        Numbers::invalid_index);
 
     // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
     new_solution_subset[global_field_index].push_back(
@@ -209,12 +210,12 @@ public:
     solution_subset[global_field_index].push_back(
       this->get_solution_handler().get_solution_vector(global_field_index,
                                                        DependencyType::Normal));
-    global_to_local_solution[global_field_index][global_field_index]
-                            [static_cast<Types::Index>(DependencyType::Normal)] = 0;
+    global_to_local_solution[global_field_index]
+                            [global_field_index * max_dependency_types +
+                             static_cast<Types::Index>(DependencyType::Normal)] = 0;
 
     Types::Index variable_index = 0;
-    for (const auto &inner_dependency_set :
-         this->get_subset_attributes().begin()->second.get_dependency_set_rhs())
+    for (const auto &inner_dependency_set : variable.get_dependency_set_rhs())
       {
         Types::Index dependency_type = 0;
         for (const auto &field_type : inner_dependency_set)
@@ -222,8 +223,9 @@ public:
             // Skip if an invalid field type is found or the global_to_local_solution
             // already has an entry for this dependency index and dependency type
             if (field_type == Numbers::invalid_field_type ||
-                global_to_local_solution[global_field_index][variable_index]
-                                        [dependency_type] != Numbers::invalid_index)
+                global_to_local_solution[global_field_index]
+                                        [variable_index * max_dependency_types +
+                                         dependency_type] != Numbers::invalid_index)
               {
                 dependency_type++;
                 continue;
@@ -233,8 +235,9 @@ public:
               this->get_solution_handler().get_solution_vector(
                 variable_index,
                 static_cast<DependencyType>(dependency_type)));
-            global_to_local_solution[global_field_index][variable_index]
-                                    [dependency_type] =
+            global_to_local_solution[global_field_index]
+                                    [variable_index * max_dependency_types +
+                                     dependency_type] =
                                       solution_subset.at(global_field_index).size() - 1;
 
             dependency_type++;
@@ -329,10 +332,9 @@ public:
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 
-    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    // Skip if the field type is ImplicitTimeDependent and the increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
-        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
-          0)
+        this->get_user_inputs().get_temporal_discretization().get_increment() == 0)
       {
         return;
       }
@@ -375,10 +377,9 @@ public:
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 
-    // Skip if the field type is ImplicitTimeDependent and the current increment is 0.
+    // Skip if the field type is ImplicitTimeDependent and the increment is 0.
     if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
-        this->get_user_inputs().get_temporal_discretization().get_current_increment() ==
-          0)
+        this->get_user_inputs().get_temporal_discretization().get_increment() == 0)
       {
         return 0.0;
       }
@@ -436,7 +437,7 @@ public:
   /**
    * @brief Get the mapping from global solution vectors to the local ones.
    */
-  [[nodiscard]] const std::map<Types::Index, std::vector<std::vector<Types::Index>>> &
+  [[nodiscard]] const std::map<Types::Index, std::vector<Types::Index>> &
   get_global_to_local_solution_mapping()
   {
     return global_to_local_solution;
@@ -482,7 +483,7 @@ private:
   /**
    * @brief Mapping from global solution vectors to the local ones
    */
-  std::map<Types::Index, std::vector<std::vector<Types::Index>>> global_to_local_solution;
+  std::map<Types::Index, std::vector<Types::Index>> global_to_local_solution;
 
   /**
    * @brief Subset of solutions fields that are necessary for concurrent solves.

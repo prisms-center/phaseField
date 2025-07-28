@@ -157,9 +157,9 @@ VariableAttributes::parse_dependencies(
         // Loop through all known VariableAttributes
         for (auto &[other_index, other_variable] : other_var_attributes)
           {
-            // Grab the potential dependency for the current variable. For example, if we
-            // are in the variableAttributre for "phi" enumerate all possible dependencies
-            // for the variable, like "change(phi)".
+            // Grab the potential dependency for the variable. For example, if we are in
+            // the variableAttributre for "phi" enumerate all possible dependencies for
+            // the variable, like "change(phi)".
             const std::string possible_dependency =
               delimiter.first + other_variable.name + delimiter.second;
 

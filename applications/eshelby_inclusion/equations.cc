@@ -38,7 +38,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (current_index == 0)
     {
-      VectorGrad ux = variable_list.get_vector_symmetric_gradient(0);
+      VectorGrad ux = variable_list.template get_symmetric_gradient<VectorGrad>(0);
 
       ScalarValue dist_from_inclusion = 0.0;
       ScalarValue inclusion_radius    = 10.0;
@@ -70,7 +70,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
         }
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, ux - transformation_strain, stress);
-      variable_list.template set_gradient_term<Vector>(0, -stress);
+      variable_list.set_gradient_term(0, -stress);
     }
 }
 
@@ -83,10 +83,11 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (current_index == 0)
     {
-      VectorGrad change_ux = variable_list.get_vector_symmetric_gradient(0, Change);
+      VectorGrad change_ux =
+        variable_list.template get_symmetric_gradient<VectorGrad>(0, Change);
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(compliance, change_ux, stress);
-      variable_list.template set_gradient_term<Vector>(0, stress, Change);
+      variable_list.set_gradient_term(0, stress, Change);
     }
 }
 
