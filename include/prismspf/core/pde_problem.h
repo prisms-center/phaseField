@@ -184,7 +184,7 @@ private:
    * @brief Postprocessed explicit field solver class.
    */
   ConcurrentExplicitPostprocessSolver<dim, degree, double>
-    concurrent_concurrent_explicit_postprocess_solver;
+    concurrent_explicit_postprocess_solver;
 
   /**
    * @brief Nonexplicit auxiliary field solver class.
