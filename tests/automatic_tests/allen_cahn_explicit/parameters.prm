@@ -3,23 +3,20 @@ set global refinement = 7
 set degree = 1
 
 subsection Rectangular mesh
-    set x size = 50
-    set y size = 50
-    set z size = 50
-    set x subdivisions = 1
-    set y subdivisions = 1
-    set z subdivisions = 1
+  set x size = 50
+  set y size = 50
+  set z size = 50
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
 end
-
 set time step = 1.0e-2
 set number steps = 1500
 
 subsection output
-    set condition = EQUAL_SPACING
-    set number = 5
+  set condition = EQUAL_SPACING
+  set number = 5
 end
-
 set boundary condition for n = Natural
-
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE

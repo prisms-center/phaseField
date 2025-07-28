@@ -1,34 +1,19 @@
 set dim = 2
-
 set Domain size X = 100
 set Domain size Y = 100
 set Domain size Z = 100
-
 set Subdivisions X = 1
 set Subdivisions Y = 1
 set Subdivisions Z = 1
-
 set global refinement = 8
-
 set degree = 1
-
 set Time step = 1.0e-2
-
 set Number of time steps = 5000
-
 set Output condition = EQUAL_SPACING
-
 set Number of outputs = 5
-
 set Print timing information with output = true
-
 set Skip print steps = 1000
-
-
 set Boundary condition for variable n = Natural
 set Boundary condition for variable mu = Natural
-
-
 set Model constant MnV = 1.0, DOUBLE
-
 set Model constant KnV = 2.0, DOUBLE
