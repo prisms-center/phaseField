@@ -148,6 +148,12 @@ if(NOT DEALII_INSTALL_VALID)
     )
 endif()
 
+# Load deal.II cached variables
+deal_ii_initialize_cached_variables()
+
+# Declare the project
+project(prisms_pf CXX)
+
 # Optional deal.II packages
 
 # zlib should be required by p4est in deal.II, so its on by default
@@ -175,15 +181,25 @@ if(PRISMS_PF_WITH_HDF5)
 endif()
 
 set(PRISMS_PF_WITH_CUDA OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not.")
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_CUDA)
+set(KOKKOS_CUDA_BACKEND OFF CACHE BOOL "Whether the installed Kokkos version has a CUDA backend.")
+if(DEAL_II_WITH_KOKKOS)
+  find_package(Kokkos QUIET
+  HINTS ${KOKKOS_DIR} $ENV{KOKKOS_DIR}
+  )
+  message(STATUS "KOKKOS_DIR: ${KOKKOS_DIR}")
+  if(Kokkos_FOUND AND Kokkos_DEVICES MATCHES "CUDA")
+    set(KOKKOS_CUDA_BACKEND ON)
+  endif()
+endif()
+if(PRISMS_PF_AUTODETECTION AND KOKKOS_CUDA_BACKEND)
   set(PRISMS_PF_WITH_CUDA ON)
 endif()
 message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 if(PRISMS_PF_WITH_CUDA)
-  if(DEAL_II_WITH_CUDA)
-    message(STATUS "  Found deal.II installation with CUDA")
+  if(KOKKOS_CUDA_BACKEND)
+    message(STATUS "  Found Kokkos installation with CUDA")
   else()
-    message(FATAL_ERROR "deal.II installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with CUDA.")
+    message(FATAL_ERROR "Kokkos installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with Kokkos that has a CUDA backend.")
   endif()
 endif()
 
@@ -199,9 +215,6 @@ if(PRISMS_PF_WITH_SUNDIALS)
     message(FATAL_ERROR "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS.")
   endif()
 endif()
-
-# Load deal.II cached variables
-deal_ii_initialize_cached_variables()
 
 # Caliper
 set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
@@ -240,8 +253,6 @@ message(STATUS "=========================================================")
 message(STATUS "Configuring PRISMS-PF build targets")
 message(STATUS "=========================================================")
 message(STATUS "")
-
-project(prisms_pf CXX)
 
 # Grab flag for additional optimizations
 set(ADDITIONAL_OPTIMIZATIONS OFF CACHE BOOL "Whether the user wants to enable additional optimizations, or not.")
