@@ -95,6 +95,16 @@ private:
   dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
+   * @brief PDE operator but for floats!
+   */
+  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
+
+  /**
+   * @brief Multigrid information.
+   */
+  const MGInfo<dim> *mg_info;
+
+  /**
    * @brief Minimum multigrid level
    */
   unsigned int min_level = 0;
@@ -103,6 +113,11 @@ private:
    * @brief Maximum multigrid level
    */
   unsigned int max_level = 0;
+
+  /**
+   * @brief The local index of the change variable.
+   */
+  Types::Index change_local_index = Numbers::invalid_index;
 
   /**
    * @brief Mappings to and from reference cell.
@@ -132,16 +147,6 @@ private:
    */
   std::vector<std::shared_ptr<dealii::MGTransferGlobalCoarsening<dim, MGVectorType>>>
     mg_transfer;
-
-  /**
-   * @brief PDE operator but for floats!
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
-
-  /**
-   * @brief Multigrid information.
-   */
-  const MGInfo<dim> *mg_info;
 };
 
 PRISMS_PF_END_NAMESPACE

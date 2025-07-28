@@ -105,7 +105,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    Types::Index current_index = Numbers::invalid_index) const override;
+    Types::Index index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the LHS of nonexplicit equations.
@@ -114,7 +114,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    Types::Index current_index = Numbers::invalid_index) const override;
+    Types::Index index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -202,15 +202,15 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {
-      ScalarValue n  = variable_list.template get_value<Scalar>(i);
-      ScalarGrad  nx = variable_list.template get_gradient<Scalar>(i);
+      ScalarValue n  = variable_list.template get_value<ScalarValue>(i);
+      ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(i);
 
       ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
       ScalarValue eq_n  = n - (this->get_timestep() * fnV);
       ScalarGrad  eqx_n = -this->get_timestep() * 2.0 * nx;
 
-      variable_list.template set_value_term<Scalar>(i, eq_n);
-      variable_list.template set_gradient_term<Scalar>(i, eqx_n);
+      variable_list.set_value_term(i, eq_n);
+      variable_list.set_gradient_term(i, eqx_n);
     }
 }
 
@@ -219,7 +219,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -227,7 +227,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index current_index) const
+  [[maybe_unused]] Types::Index                                               index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

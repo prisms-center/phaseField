@@ -78,18 +78,18 @@ CustomPDE<dim, degree>::explicitEquationRHS(
 
   // The concentration and its derivatives (names here should match those in the
   // macros above)
-  scalarvalueType c = variable_list.template get_value<Scalar>(0);
+  scalarvalueType c = variable_list.template get_value<ScalarValue>(0);
 
-  scalargradType mux = variable_list.template get_gradient<Scalar>(1);
+  scalargradType mux = variable_list.template get_gradient<ScalarGrad>(1);
 
   // The first order parameter and its derivatives (names here should match
   // those in the macros above)
-  scalarvalueType n1  = variable_list.template get_value<Scalar>(2);
-  scalargradType  n1x = variable_list.template get_gradient<Scalar>(2);
+  scalarvalueType n1  = variable_list.template get_value<ScalarValue>(2);
+  scalargradType  n1x = variable_list.template get_gradient<ScalarGrad>(2);
 
   // The derivative of the displacement vector (names here should match those in
   // the macros above)
-  vectorgradType ux = variable_list.template get_gradient<Vector>(3);
+  vectorgradType ux = variable_list.template get_gradient<VectorGrad>(3);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -261,15 +261,15 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
 
   // The concentration and its derivatives (names here should match those in the
   // macros above)
-  scalarvalueType c = variable_list.template get_value<Scalar>(0);
+  scalarvalueType c = variable_list.template get_value<ScalarValue>(0);
 
   // The first order parameter and its derivatives (names here should match
   // those in the macros above)
-  scalarvalueType n1 = variable_list.template get_value<Scalar>(2);
+  scalarvalueType n1 = variable_list.template get_value<ScalarValue>(2);
 
   // The derivative of the displacement vector (names here should match those in
   // the macros above)
-  vectorgradType ux = variable_list.template get_gradient<Vector>(3);
+  vectorgradType ux = variable_list.template get_gradient<VectorGrad>(3);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
@@ -411,7 +411,7 @@ CustomPDE<dim, degree>::equationLHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // n1
-  scalarvalueType n1 = variable_list.template get_value<Scalar>(2);
+  scalarvalueType n1 = variable_list.template get_value<ScalarValue>(2);
 
   // --- Setting the expressions for the terms in the governing equations ---
 

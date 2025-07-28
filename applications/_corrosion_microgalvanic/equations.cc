@@ -135,29 +135,29 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType delt = constV(userInputs.dtValue);
 
   // The order parameter of the anodic phase
-  scalarvalueType nAnodic = variable_list.template get_value<Scalar>(0);
+  scalarvalueType nAnodic = variable_list.template get_value<ScalarValue>(0);
 
   // The gradient of the chemical potential of the anodic phase
-  scalargradType muAnodicx = variable_list.template get_gradient<Scalar>(1);
+  scalargradType muAnodicx = variable_list.template get_gradient<ScalarGrad>(1);
 
   // The order parameter of the cathodic phase
-  scalarvalueType nCathodic = variable_list.template get_value<Scalar>(2);
+  scalarvalueType nCathodic = variable_list.template get_value<ScalarValue>(2);
 
   // The gradient of the chemical potential of the cathodic phase
-  scalargradType muCathodicx = variable_list.template get_gradient<Scalar>(3);
+  scalargradType muCathodicx = variable_list.template get_gradient<ScalarGrad>(3);
 
   // The domain parameter of the electrolyte phase and its derivatives
-  scalarvalueType psi  = variable_list.template get_value<Scalar>(4);
-  scalargradType  psix = variable_list.template get_gradient<Scalar>(4);
+  scalarvalueType psi  = variable_list.template get_value<ScalarValue>(4);
+  scalargradType  psix = variable_list.template get_gradient<ScalarGrad>(4);
 
   // The derivative of the chemical potential of the electrolyte phase
-  scalargradType mupsix = variable_list.template get_gradient<Scalar>(5);
+  scalargradType mupsix = variable_list.template get_gradient<ScalarGrad>(5);
 
   // The electrolyte potential
-  scalarvalueType Phi = variable_list.template get_value<Scalar>(6);
+  scalarvalueType Phi = variable_list.template get_value<ScalarValue>(6);
 
   // The interpolation factor for the anodic phase
-  scalarvalueType xiAnodic = variable_list.template get_value<Scalar>(8);
+  scalarvalueType xiAnodic = variable_list.template get_value<ScalarValue>(8);
 
   // Ensuring that the domain and order parameters remain within [0 1]
 
@@ -265,24 +265,24 @@ CustomPDE<dim, degree>::nonExplicitEquationRHS(
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter of the anodic phase and its gradient
-  scalarvalueType nAnodic  = variable_list.template get_value<Scalar>(0);
-  scalargradType  nAnodicx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType nAnodic  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  nAnodicx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // The order parameter of the cathodic phase and its gradient
-  scalarvalueType nCathodic  = variable_list.template get_value<Scalar>(2);
-  scalargradType  nCathodicx = variable_list.template get_gradient<Scalar>(2);
+  scalarvalueType nCathodic  = variable_list.template get_value<ScalarValue>(2);
+  scalargradType  nCathodicx = variable_list.template get_gradient<ScalarGrad>(2);
 
   // The domain parameter of the electrolyte phase and its derivatives
-  scalarvalueType psi  = variable_list.template get_value<Scalar>(4);
-  scalargradType  psix = variable_list.template get_gradient<Scalar>(4);
+  scalarvalueType psi  = variable_list.template get_value<ScalarValue>(4);
+  scalargradType  psix = variable_list.template get_gradient<ScalarGrad>(4);
 
   // The electrolyte potential and its derivatives
-  scalarvalueType Phi  = variable_list.template get_value<Scalar>(6);
-  scalargradType  Phix = variable_list.template get_gradient<Scalar>(6);
+  scalarvalueType Phi  = variable_list.template get_value<ScalarValue>(6);
+  scalargradType  Phix = variable_list.template get_gradient<ScalarGrad>(6);
 
   // The reaction current density
-  scalarvalueType irxn     = variable_list.template get_value<Scalar>(7);
-  scalarvalueType xiAnodic = variable_list.template get_value<Scalar>(8);
+  scalarvalueType irxn     = variable_list.template get_value<ScalarValue>(7);
+  scalarvalueType xiAnodic = variable_list.template get_value<ScalarValue>(8);
 
   // Ensuring domain and order parameters are in the range [0 1]
   psi = min(psi, constV(1.0));
@@ -404,24 +404,24 @@ CustomPDE<dim, degree>::equationLHS(
   [[maybe_unused]] const VectorizedArray<double> element_volume) const
 {
   // The order parameter of the anodic phase
-  scalarvalueType nAnodic = variable_list.template get_value<Scalar>(0);
+  scalarvalueType nAnodic = variable_list.template get_value<ScalarValue>(0);
 
   // The order parameter of the cathodic phase
-  scalarvalueType nCathodic = variable_list.template get_value<Scalar>(2);
+  scalarvalueType nCathodic = variable_list.template get_value<ScalarValue>(2);
 
   // The domain parameter of the electrolyt phase and its derivatives
-  scalarvalueType psi  = variable_list.template get_value<Scalar>(4);
-  scalargradType  psix = variable_list.template get_gradient<Scalar>(4);
+  scalarvalueType psi  = variable_list.template get_value<ScalarValue>(4);
+  scalargradType  psix = variable_list.template get_gradient<ScalarGrad>(4);
 
   // The electrolyte potential and its derivatives
-  scalarvalueType Phi = variable_list.template get_value<Scalar>(6);
+  scalarvalueType Phi = variable_list.template get_value<ScalarValue>(6);
 
   // The change in potential in the electrode and its derivatives
   scalarvalueType DPhi  = variable_list.get_change_in_scalar_value(6);
   scalargradType  DPhix = variable_list.get_change_in_scalar_gradient(6);
 
   // The interpolation factor for the anodic phase
-  scalarvalueType xiAnodic = variable_list.template get_value<Scalar>(8);
+  scalarvalueType xiAnodic = variable_list.template get_value<ScalarValue>(8);
 
   // Ensuring that the domain and order parameters remain within the range
   // [0 1]

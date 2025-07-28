@@ -78,8 +78,8 @@ CustomPDE<dim, degree>::postProcessedFields(
   // --- Getting the values and derivatives of the model variables ---
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.template get_value<Scalar>(0);
-  scalargradType  nx = variable_list.template get_gradient<Scalar>(0);
+  scalarvalueType n  = variable_list.template get_value<ScalarValue>(0);
+  scalargradType  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // --- Setting the expressions for the terms in the postprocessing expressions
   // ---

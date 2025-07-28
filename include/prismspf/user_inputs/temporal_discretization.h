@@ -48,21 +48,21 @@ public:
   }
 
   /**
-   * @brief Get the current time.
+   * @brief Get the time.
    */
   double
-  get_current_time() const
+  get_time() const
   {
     return time;
   }
 
   /**
-   * @brief Update the current time with the current timestep.
+   * @brief Update the time with the timestep.
    *
-   * Note that this function is const even though it does increment the current timestep.
+   * Note that this function is const even though it does increment the timestep.
    */
   void
-  update_current_time() const
+  update_time() const
   {
     time += dt;
   }
@@ -86,27 +86,27 @@ public:
   }
 
   /**
-   * @brief Get the current increment.
+   * @brief Get the increment.
    */
   unsigned int
-  get_current_increment() const
+  get_increment() const
   {
     return increment;
   }
 
   /**
-   * @brief Update the current increment by one.
+   * @brief Update the increment by one.
    *
-   * Note that this function is const even though it does increment the current increment.
+   * Note that this function is const even though it does increment the increment.
    */
   void
-  update_current_increment() const
+  update_increment() const
   {
     increment++;
   }
 
   /**
-   * @brief Get the current timestep.
+   * @brief Get the timestep.
    */
   double
   get_timestep() const
@@ -124,7 +124,7 @@ public:
   }
 
 private:
-  // The current increment
+  // The increment
   mutable unsigned int increment = 0;
 
   // Total number of increments
@@ -133,7 +133,7 @@ private:
   // Timestep
   mutable double dt = 0.0;
 
-  // The current time
+  // The time
   mutable double time = 0.0;
 
   // Final time
