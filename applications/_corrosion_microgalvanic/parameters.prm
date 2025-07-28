@@ -1,68 +1,49 @@
 set dim = 2
-
 set Domain size X = 1e-6
 set Domain size Y = 1e-6
-
 set Subdivisions X = 4
 set Subdivisions Y = 4
-
 set global refinement = 5
-
 set degree = 1
-
 set Mesh adaptivity = true
-
-
-set Max refinement level = 6 
+set Max refinement level = 6
 set Min refinement level = 2
 
-
 subsection Refinement criterion: psi
-set Criterion type = VALUE
-set Value lower bound = 1e-3
-set Value upper bound = 0.999
+  set Criterion type = VALUE
+  set Value lower bound = 1e-3
+  set Value upper bound = 0.999
 end
 
 subsection Refinement criterion: nAnodic
-set Criterion type = VALUE
-set Value lower bound = 1e-3
-set Value upper bound = 0.999
+  set Criterion type = VALUE
+  set Value lower bound = 1e-3
+  set Value upper bound = 0.999
 end
 
 subsection Refinement criterion: nCathodic
-set Criterion type = VALUE
-set Value lower bound = 1e-3
-set Value upper bound = 0.999
+  set Criterion type = VALUE
+  set Value lower bound = 1e-3
+  set Value upper bound = 0.999
 end
-
 set Steps between remeshing operations = 2000
 set Time step = 0.01
-
-
 set Simulation end time = 400
 
-
 subsection Linear solver parameters: Phi
-	set Tolerance type = AbsoluteResidual
-
-  	
-	set Tolerance value = 1.0e-7
-
-	set Maximum linear solver iterations = 1000000
+  set Tolerance type = AbsoluteResidual
+  set Tolerance value = 1.0e-7
+  set Maximum linear solver iterations = 1000000
 end
-
-
 set Maximum nonlinear solver iterations = 1000
 
 subsection Nonlinear solver parameters: Phi
-    set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
-    set Tolerance value = 1.0e-10
-    set Use backtracking line search damping = false
-    set Constant damping value = 0.3
-    set Use Laplace's equation to determine the initial guess = true
+  set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
+  set Tolerance value = 1.0e-10
+  set Use backtracking line search damping = false
+  set Constant damping value = 0.3
+  set Use Laplace's equation to determine the initial guess = true
 end
-
-
 set Boundary condition for variable nAnodic = Natural
 set Boundary condition for variable muAnodic = Natural
 set Boundary condition for variable nCathodic = Natural
@@ -72,52 +53,26 @@ set Boundary condition for variable mupsi = Natural
 set Boundary condition for variable Phi = Natural
 set Boundary condition for variable irxn = Natural
 set Boundary condition for variable xiAnodic = Natural
-
 set Output condition = EQUAL_SPACING
-
-
 set Number of outputs = 20
-
 set Skip print steps = 1000
-
 set Load from a checkpoint = false
-
 set Checkpoint condition = EQUAL_SPACING
-
 set Number of checkpoints = 5
-
-
 set Model constant VMV= 1.3736e-5, DOUBLE
-
 set Model constant zMV = 2.0, DOUBLE
-
 set Model constant epssqV = 0.31e-16, DOUBLE
-
 set Model constant EcorrAnodic = -1.424, DOUBLE
-
 set Model constant EcorrCathodic = -1.151, DOUBLE
-
 set Model constant AAnodic = 0.003474, DOUBLE
-
 set Model constant ACathodic = -0.03626, DOUBLE
-
 set Model constant i0Anodic = 0.081, DOUBLE
-
 set Model constant i0Cathodic = 0.017, DOUBLE
-
 set Model constant VsV = 0.0, DOUBLE
-
 set Model constant lthresh = 1.0e-3, DOUBLE
-
 set Model constant gamma = 1.5, DOUBLE
-
 set Model constant kappa = 0.001, DOUBLE
-
 set Model constant iMax = 100.0, DOUBLE
-
 set Model constant tStepStartForV = 0000.0, DOUBLE
-
 set Model constant cathodeThickness = 0.2e-6, DOUBLE
-
-set Model constant guessValPhi = 1.409, DOUBLE 
- 
+set Model constant guessValPhi = 1.409, DOUBLE

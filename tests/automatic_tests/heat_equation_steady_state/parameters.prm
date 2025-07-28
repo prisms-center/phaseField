@@ -3,20 +3,19 @@ set global refinement = 5
 set degree = 2
 
 subsection Rectangular mesh
-    set x size = 2
-    set y size = 1
-    set x subdivisions = 1
-    set y subdivisions = 1
+  set x size = 2
+  set y size = 1
+  set x subdivisions = 1
+  set y subdivisions = 1
 end
-
 set boundary condition for T = Dirichlet: 0.0
 
 subsection linear solver parameters: T
-    set tolerance type = AbsoluteResidual
-    set tolerance value = 1e-10
-    set max iterations = 1000 
-    set preconditioner type = GMG
-    set smoothing range = 20
-    set smoother degree = 5
-    set eigenvalue cg iterations = 20
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 1e-10
+  set max iterations = 1000
+  set preconditioner type = GMG
+  set smoothing range = 20
+  set smoother degree = 5
+  set eigenvalue cg iterations = 20
 end
