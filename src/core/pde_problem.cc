@@ -89,7 +89,7 @@ PDEProblem<dim, degree>::PDEProblem(
   , grid_refiner(grid_refiner_context)
   , concurrent_constant_solver(solver_context)
   , concurrent_explicit_solver(solver_context)
-  , concurrent_concurrent_explicit_postprocess_solver(solver_context)
+  , concurrent_explicit_postprocess_solver(solver_context)
   , sequential_auxiliary_solver(solver_context)
   , sequential_linear_solver(solver_context)
   , sequential_self_nonlinear_solver(solver_context)
@@ -246,7 +246,7 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base()
     << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
     << std::flush;
-  concurrent_concurrent_explicit_postprocess_solver.init();
+  concurrent_explicit_postprocess_solver.init();
   ConditionalOStreams::pout_base()
     << "  trying to reinitialize sequential auxiliary solvers...\n"
     << std::flush;
@@ -301,7 +301,7 @@ PDEProblem<dim, degree>::init_system()
       ConditionalOStreams::pout_base()
         << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
         << std::flush;
-      concurrent_concurrent_explicit_postprocess_solver.reinit();
+      concurrent_explicit_postprocess_solver.reinit();
       ConditionalOStreams::pout_base()
         << "  trying to reinitialize sequential auxiliary solvers...\n"
         << std::flush;
@@ -371,7 +371,7 @@ PDEProblem<dim, degree>::init_system()
     << "solving postprocessed variables in 0th timestep...\n"
     << std::flush;
   Timer::start_section("Postprocess solver");
-  concurrent_concurrent_explicit_postprocess_solver.solve();
+  concurrent_explicit_postprocess_solver.solve();
   Timer::end_section("Postprocess solver");
 
   // Output initial condition
@@ -536,7 +536,7 @@ PDEProblem<dim, degree>::solve()
           ConditionalOStreams::pout_base()
             << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
             << std::flush;
-          concurrent_concurrent_explicit_postprocess_solver.reinit();
+          concurrent_explicit_postprocess_solver.reinit();
           ConditionalOStreams::pout_base()
             << "  trying to reinitialize sequential auxiliary solvers...\n"
             << std::flush;
@@ -565,7 +565,7 @@ PDEProblem<dim, degree>::solve()
             user_inputs->get_temporal_discretization().get_increment()))
         {
           Timer::start_section("Postprocess solver");
-          concurrent_concurrent_explicit_postprocess_solver.solve();
+          concurrent_explicit_postprocess_solver.solve();
           Timer::end_section("Postprocess solver");
 
           Timer::start_section("Output");
