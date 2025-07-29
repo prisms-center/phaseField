@@ -39,13 +39,21 @@ public:
     // Create the map of solvers according to each solve block
     for (const auto &solve_block : solve_blocks)
       {
-        concurrent_constant_solver.emplace(solve_block, _solver_context);
-        concurrent_explicit_solver.emplace(solve_block, _solver_context);
-        concurrent_explicit_postprocess_solver.emplace(solve_block, _solver_context);
-        sequential_auxiliary_solver.emplace(solve_block, _solver_context);
-        sequential_linear_solver.emplace(solve_block, _solver_context);
-        sequential_self_nonlinear_solver.emplace(solve_block, _solver_context);
-        sequential_co_nonlinear_solver.emplace(solve_block, _solver_context);
+        concurrent_constant_solver.try_emplace(solve_block, _solver_context, solve_block);
+        concurrent_explicit_solver.try_emplace(solve_block, _solver_context, solve_block);
+        concurrent_explicit_postprocess_solver.try_emplace(solve_block,
+                                                           _solver_context,
+                                                           solve_block);
+        sequential_auxiliary_solver.try_emplace(solve_block,
+                                                _solver_context,
+                                                solve_block);
+        sequential_linear_solver.try_emplace(solve_block, _solver_context, solve_block);
+        sequential_self_nonlinear_solver.try_emplace(solve_block,
+                                                     _solver_context,
+                                                     solve_block);
+        sequential_co_nonlinear_solver.try_emplace(solve_block,
+                                                   _solver_context,
+                                                   solve_block);
       }
   };
 
