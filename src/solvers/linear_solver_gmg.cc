@@ -140,6 +140,7 @@ GMGSolver<dim, degree>::init()
     max_level,
     this->get_subset_attributes(),
     pde_operator_float,
+    this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
 
@@ -242,6 +243,7 @@ GMGSolver<dim, degree>::reinit()
     max_level,
     this->get_subset_attributes(),
     pde_operator_float,
+    this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
 

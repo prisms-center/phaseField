@@ -54,12 +54,12 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes,
                                        pde_operator,
-                                       _variable_attributes.get_solve_block(),
+                                       variable_attributes->get_solve_block(),
                                        field_index);
   update_system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes,
                                        pde_operator,
-                                       _variable_attributes.get_solve_block(),
+                                       variable_attributes->get_solve_block(),
                                        field_index);
 
   // Grab some data from the VariableAttributes
