@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <deal.II/base/subscriptor.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
@@ -13,6 +12,14 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
+
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/enable_observer_pointer.h>
+#  define MATRIX_FREE_OPERATOR_BASE dealii::EnableObserverPointer
+#else
+#  include <deal.II/base/subscriptor.h>
+#  define MATRIX_FREE_OPERATOR_BASE dealii::Subscriptor
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -37,7 +44,7 @@ class PDEOperator;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class MatrixFreeOperator : public dealii::Subscriptor
+class MatrixFreeOperator : public MATRIX_FREE_OPERATOR_BASE
 {
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;

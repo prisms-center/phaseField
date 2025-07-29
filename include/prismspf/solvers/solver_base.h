@@ -8,6 +8,7 @@
 
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -168,13 +169,11 @@ public:
   {
     std::map<Types::Index, VariableAttributes> local_subset_attributes;
 
-    // TODO (landinjm): Use the solve priority
-    (void) solve_priority;
-
     for (const auto &[index, variable] :
          solver_context->get_user_inputs().get_variable_attributes())
       {
-        if (variable.get_field_solve_type() == field_solve_type)
+        if (variable.get_field_solve_type() == field_solve_type &&
+            variable.get_solve_block() == solve_priority)
           {
             local_subset_attributes.emplace(index, variable);
           }

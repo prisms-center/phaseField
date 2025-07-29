@@ -97,6 +97,15 @@ protected:
   set_is_postprocessed_field(const unsigned int &index, const bool &is_postprocess);
 
   /**
+   * @brief Set the solve block of the field.
+   *
+   * @param index Index of variable
+   * @param solve_block Solve block.
+   */
+  void
+  set_solve_block(const unsigned int &index, const Types::Index &solve_block);
+
+  /**
    * @brief Add dependencies for the value term of the RHS equation of the variable at
    * `index`.
    *
@@ -270,7 +279,7 @@ private:
   compute_subset_attributes(
     std::map<Types::Index, VariableAttributes> &variable_attributes,
     FieldSolveType                              field_solve_type,
-    Types::Index                                solve_priority = 0) const;
+    Types::Index                                solve_priority) const;
 
   /**
    * @brief Compute the shared dependencies for a subset of VariableAttributes that belong

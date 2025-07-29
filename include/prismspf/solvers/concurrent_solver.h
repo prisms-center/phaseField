@@ -191,6 +191,11 @@ public:
            const std::vector<typename SolverBase<dim, degree, number>::VectorType *> &)>
       &function)
   {
+    // Zero out the ghosts
+    Timer::start_section("Zero ghosts");
+    this->get_solution_handler().zero_out_ghosts();
+    Timer::end_section("Zero ghosts");
+
     // Compute the update with the provided function
     function(new_solution_subset, solution_subset);
 
