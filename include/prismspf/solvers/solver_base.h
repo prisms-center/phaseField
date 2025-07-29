@@ -394,6 +394,15 @@ public:
     return field_solve_type;
   }
 
+  /**
+   * @brief Get the solve block.
+   */
+  [[nodiscard]] Types::Index
+  get_solve_block() const
+  {
+    return solve_priority;
+  }
+
 private:
   /**
    * @brief Solver context.

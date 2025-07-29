@@ -80,7 +80,8 @@ public:
     system_matrix =
       std::make_unique<typename SolverBase<dim, degree, number>::SystemMatrixType>(
         this->get_subset_attributes(),
-        this->get_pde_operator());
+        this->get_pde_operator(),
+        this->get_solve_block());
 
     // Set up the user-implemented equations and create the residual vectors
     system_matrix->clear();

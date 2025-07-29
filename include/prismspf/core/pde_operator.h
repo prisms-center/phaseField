@@ -58,7 +58,8 @@ public:
    */
   virtual void
   compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
+                       const dealii::Point<dim, SizeType>     &q_point_loc,
+                       Types::Index                            solve_block) const = 0;
 
   /**
    * @brief User-implemented class for the RHS of nonexplicit equations.
@@ -66,6 +67,7 @@ public:
   virtual void
   compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index                            solve_block,
                           Types::Index index = Numbers::invalid_index) const = 0;
 
   /**
@@ -74,15 +76,16 @@ public:
   virtual void
   compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
                           const dealii::Point<dim, SizeType>     &q_point_loc,
+                          Types::Index                            solve_block,
                           Types::Index index = Numbers::invalid_index) const = 0;
 
   /**
    * @brief User-implemented class for the RHS of postprocessed explicit equations.
    */
   virtual void
-  compute_postprocess_explicit_rhs(
-    VariableContainer<dim, degree, number> &variable_list,
-    const dealii::Point<dim, SizeType>     &q_point_loc) const = 0;
+  compute_postprocess_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
+                                   const dealii::Point<dim, SizeType>     &q_point_loc,
+                                   Types::Index solve_block) const = 0;
 
   /**
    * @brief Get the user inputs (constant reference).

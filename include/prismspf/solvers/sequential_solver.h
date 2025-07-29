@@ -187,6 +187,7 @@ public:
       std::make_unique<typename SolverBase<dim, degree, number>::SystemMatrixType>(
         subset_attributes_list.back(),
         this->get_pde_operator(),
+        this->get_solve_block(),
         global_field_index);
 
     // Set up the user-implemented equations and create the residual vectors

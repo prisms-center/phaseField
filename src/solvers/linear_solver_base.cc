@@ -52,9 +52,15 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   // Create the implementation of MatrixFreeOperator with the subset of variable
   // attributes
   system_matrix =
-    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
+    std::make_unique<SystemMatrixType>(subset_attributes,
+                                       pde_operator,
+                                       _variable_attributes.get_solve_block(),
+                                       field_index);
   update_system_matrix =
-    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
+    std::make_unique<SystemMatrixType>(subset_attributes,
+                                       pde_operator,
+                                       _variable_attributes.get_solve_block(),
+                                       field_index);
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields = variable_attributes->get_max_fields();
