@@ -200,11 +200,19 @@ private:
     solution_set;
 
   /**
+   * @brief Typedef for the solution transfer object.
+   */
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+  using SolutionTransfer = dealii::SolutionTransfer<dim, VectorType>;
+#else
+  using SolutionTransfer =
+    dealii::parallel::distributed::SolutionTransfer<dim, VectorType>;
+#endif
+
+  /**
    * @brief The collection of solution transfer objects at the current timestep.
    */
-  std::map<
-    std::pair<unsigned int, DependencyType>,
-    std::unique_ptr<dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>>
+  std::map<std::pair<unsigned int, DependencyType>, std::unique_ptr<SolutionTransfer>>
     solution_transfer_set;
 
   /**
