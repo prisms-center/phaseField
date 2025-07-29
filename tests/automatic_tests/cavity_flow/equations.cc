@@ -20,6 +20,7 @@ CustomAttributeLoader::load_variable_attributes()
 
   set_dependencies_value_term_rhs(0, "u, grad(P)");
   set_dependencies_gradient_term_rhs(0, "");
+  set_solve_block(0, 1);
 
   set_variable_name(1, "u_star");
   set_variable_type(1, Vector);
@@ -27,6 +28,7 @@ CustomAttributeLoader::load_variable_attributes()
 
   set_dependencies_value_term_rhs(1, "u, grad(u)");
   set_dependencies_gradient_term_rhs(1, "grad(u)");
+  set_solve_block(1, 0);
 
   set_variable_name(2, "P");
   set_variable_type(2, Scalar);
@@ -36,6 +38,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_gradient_term_rhs(2, "grad(P)");
   set_dependencies_value_term_lhs(2, "");
   set_dependencies_gradient_term_lhs(2, "grad(change(P))");
+  set_solve_block(2, 0);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
