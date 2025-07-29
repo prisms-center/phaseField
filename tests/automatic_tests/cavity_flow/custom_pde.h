@@ -120,7 +120,7 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     Types::Index solve_block) const override;
 
-  number Re = 100.0;
+  number Re = 1000.0;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -36,7 +36,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
 {
-  if (index == 0 && boundary_id == 3 && component == 0)
+  if (boundary_id == 3 && component == 0)
     {
       double x0 =
         0.1 * this->get_user_inputs().get_spatial_discretization().get_size()[1];
