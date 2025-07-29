@@ -8,6 +8,7 @@
 
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 

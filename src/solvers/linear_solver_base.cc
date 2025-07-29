@@ -62,12 +62,10 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
     variable_attributes->get_max_dependency_types();
 
   // Resize the global to local solution vector
-  residual_global_to_local_solution.resize(static_cast<size_type>(max_fields *
-                                                                  max_dependency_types),
+  residual_global_to_local_solution.resize(max_fields * max_dependency_types,
                                            Numbers::invalid_index);
 
-  newton_update_global_to_local_solution.resize(static_cast<size_type>(
-                                                  max_fields * max_dependency_types),
+  newton_update_global_to_local_solution.resize(max_fields * max_dependency_types,
                                                 Numbers::invalid_index);
 
   // Create the residual subset of solution vectors and add the mapping to

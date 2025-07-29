@@ -17,21 +17,13 @@
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_handler.h>
+#include <prismspf/core/solver_handler.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/solvers/concurrent_constant_solver.h>
-#include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
-#include <prismspf/solvers/concurrent_explicit_solver.h>
-#include <prismspf/solvers/sequential_auxiliary_solver.h>
-#include <prismspf/solvers/sequential_co_nonlinear_solver.h>
-#include <prismspf/solvers/sequential_linear_solver.h>
-#include <prismspf/solvers/sequential_self_nonlinear_solver.h>
-#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>
@@ -171,40 +163,9 @@ private:
   GridRefiner<dim, degree> grid_refiner;
 
   /**
-   * @brief Explicit constant field solver class.
+   * @brief Solver handler.
    */
-  ConcurrentConstantSolver<dim, degree, double> concurrent_constant_solver;
-
-  /**
-   * @brief Explicit field solver class.
-   */
-  ConcurrentExplicitSolver<dim, degree, double> concurrent_explicit_solver;
-
-  /**
-   * @brief Postprocessed explicit field solver class.
-   */
-  ConcurrentExplicitPostprocessSolver<dim, degree, double>
-    concurrent_explicit_postprocess_solver;
-
-  /**
-   * @brief Nonexplicit auxiliary field solver class.
-   */
-  SequentialAuxiliarySolver<dim, degree, double> sequential_auxiliary_solver;
-
-  /**
-   * @brief Nonexplicit linear field solver class.
-   */
-  SequentialLinearSolver<dim, degree, double> sequential_linear_solver;
-
-  /**
-   * @brief Nonexplicit self-nonlinear field solver class.
-   */
-  SequentialSelfNonlinearSolver<dim, degree, double> sequential_self_nonlinear_solver;
-
-  /**
-   * @brief Nonexplicit co-nonlinear field solver class.
-   */
-  SequentialCoNonlinearSolver<dim, degree, double> sequential_co_nonlinear_solver;
+  SolverHandler<dim, degree, double> solver_handler;
 };
 
 PRISMS_PF_END_NAMESPACE
