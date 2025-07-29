@@ -123,6 +123,15 @@ struct VariableAttributes
     return is_postprocessed_variable;
   }
 
+  /**
+   * @brief Get the solve block.
+   */
+  [[nodiscard]] Types::Index
+  get_solve_block() const
+  {
+    return solve_block;
+  }
+
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
    * @brief Set the duplicate field index.
@@ -339,6 +348,12 @@ private:
    * @remark User-set
    */
   bool is_postprocessed_variable = false;
+
+  /**
+   * @brief Solve block
+   * @remark User-set
+   */
+  Types::Index solve_block = 0;
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**

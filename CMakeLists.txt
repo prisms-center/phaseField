@@ -87,6 +87,10 @@ endif()
 set(PRISMS_PF_AUTODETECTION ON CACHE BOOL "Autodetection of deal.II dependencies.")
 message(STATUS "PRISMS_PF_AUTODETECTION = '${PRISMS_PF_AUTODETECTION}'")
 
+# Create compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
+
 # =========================================================
 # External libraries
 # =========================================================
@@ -111,6 +115,12 @@ endif()
 
 message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
 
+# Load deal.II cached variables
+deal_ii_initialize_cached_variables()
+
+# Declare the project
+project(prisms_pf CXX)
+
 set(DEALII_INSTALL_VALID ON)
 
 if(NOT DEAL_II_WITH_LAPACK)
@@ -120,13 +130,38 @@ if(NOT DEAL_II_WITH_LAPACK)
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
-if(NOT DEAL_II_WITH_VTK)
-    message(SEND_ERROR
-      "\n**deal.II was built without support for VTK!\n"
-      )
-    set(DEALII_INSTALL_VALID OFF)
+# Check that deal.II was built with vtk or we can find the package ourselves
+set(VTK_BUILT_SEPARATELY OFF CACHE BOOL "Whether the installed VTK library was built outside of deal.II.")
+if(NOT DEAL_II_WITH_VTK) 
+    find_package(VTK QUIET
+    HINTS ${VTK_DIR} $ENV{VTK_DIR}
+    )
+    if(NOT VTK_FOUND)
+      message(SEND_ERROR
+        "\n**deal.II was built without support for VTK!\n"
+        )
+      set(DEALII_INSTALL_VALID OFF)
+    endif()
+    set(VTK_VERSION "${VTK_VERSION}")
+    set(VTK_MAJOR_VERSION "${VTK_MAJOR_VERSION}")
+    set(VTK_MINOR_VERSION "${VTK_MINOR_VERSION}")
+    set(VTK_INCLUDE_DIR ${VTK_PREFIX_PATH}/include/vtk-${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION})
+    # Filter the included libraries
+    set(_libraries)
+    foreach(_library ${VTK_LIBRARIES})
+      if(NOT ${_library} MATCHES "Python" AND NOT ${_library} MATCHES "MPI4Py")
+        get_target_property(_configurations ${_library} IMPORTED_CONFIGURATIONS)
+        if(_configurations)
+          foreach(_configuration ${_configurations})
+              get_target_property(_imported_location ${_library} IMPORTED_LOCATION_${_configuration})
+              list(APPEND _libraries ${_imported_location})
+          endforeach()
+        endif()
+      endif()
+    endforeach()
+    set(VTK_NEW_LIBRARIES ${_libraries})
+    set(VTK_BUILT_SEPARATELY ON)
 endif()
-
 
 if(NOT DEAL_II_WITH_P4EST)
     message(SEND_ERROR
@@ -175,15 +210,24 @@ if(PRISMS_PF_WITH_HDF5)
 endif()
 
 set(PRISMS_PF_WITH_CUDA OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not.")
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_CUDA)
+set(KOKKOS_CUDA_BACKEND OFF CACHE BOOL "Whether the installed Kokkos version has a CUDA backend.")
+if(DEAL_II_WITH_KOKKOS)
+  find_package(Kokkos QUIET
+  HINTS ${KOKKOS_DIR} $ENV{KOKKOS_DIR}
+  )
+  if(Kokkos_FOUND AND Kokkos_DEVICES MATCHES "CUDA")
+    set(KOKKOS_CUDA_BACKEND ON)
+  endif()
+endif()
+if(PRISMS_PF_AUTODETECTION AND KOKKOS_CUDA_BACKEND)
   set(PRISMS_PF_WITH_CUDA ON)
 endif()
 message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 if(PRISMS_PF_WITH_CUDA)
-  if(DEAL_II_WITH_CUDA)
-    message(STATUS "  Found deal.II installation with CUDA")
+  if(KOKKOS_CUDA_BACKEND)
+    message(STATUS "  Found Kokkos installation with CUDA")
   else()
-    message(FATAL_ERROR "deal.II installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with CUDA.")
+    message(FATAL_ERROR "Kokkos installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with Kokkos that has a CUDA backend.")
   endif()
 endif()
 
@@ -199,9 +243,6 @@ if(PRISMS_PF_WITH_SUNDIALS)
     message(FATAL_ERROR "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS.")
   endif()
 endif()
-
-# Load deal.II cached variables
-deal_ii_initialize_cached_variables()
 
 # Caliper
 set(PRISMS_PF_WITH_CALIPER OFF CACHE BOOL "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not.")
@@ -227,10 +268,6 @@ if(PRISMS_PF_WITH_CALIPER)
   endif()
 endif()
 
-# Create compile_commands.json
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
-
 # =========================================================
 # Configure PRISMS-PF Targets
 # =========================================================
@@ -240,8 +277,6 @@ message(STATUS "=========================================================")
 message(STATUS "Configuring PRISMS-PF build targets")
 message(STATUS "=========================================================")
 message(STATUS "")
-
-project(prisms_pf CXX)
 
 # Grab flag for additional optimizations
 set(ADDITIONAL_OPTIMIZATIONS OFF CACHE BOOL "Whether the user wants to enable additional optimizations, or not.")
@@ -373,11 +408,16 @@ if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
   add_library(${LIBRARY_NAME_DEBUG} STATIC ${PRISMS_PF_SOURCE_FILES})
   set_property(TARGET ${LIBRARY_NAME_DEBUG} PROPERTY OUTPUT_NAME prisms-pf-debug)
   target_include_directories(${LIBRARY_NAME_DEBUG} PRIVATE ${CMAKE_BINARY_DIR}/include include)
-  deal_ii_setup_target(${LIBRARY_NAME_DEBUG} DEBUG)
-
+  
+  if(${VTK_BUILT_SEPARATELY})
+  include_directories(SYSTEM ${VTK_INCLUDE_DIR})
+    target_link_libraries(${LIBRARY_NAME_DEBUG} ${VTK_NEW_LIBRARIES})
+  endif()
   if(${PRISMS_PF_WITH_CALIPER})
     target_link_libraries(${LIBRARY_NAME_DEBUG} caliper)
   endif()
+
+  deal_ii_setup_target(${LIBRARY_NAME_DEBUG} DEBUG)
 endif()
 
 if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
@@ -385,11 +425,16 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   add_library(${LIBRARY_NAME_RELEASE} STATIC ${PRISMS_PF_SOURCE_FILES})
   set_property(TARGET ${LIBRARY_NAME_RELEASE} PROPERTY OUTPUT_NAME prisms-pf-release)
   target_include_directories(${LIBRARY_NAME_RELEASE} PRIVATE ${CMAKE_BINARY_DIR}/include include)
-  deal_ii_setup_target(${LIBRARY_NAME_RELEASE} RELEASE)
 
+  if(${VTK_BUILT_SEPARATELY})
+    include_directories(SYSTEM ${VTK_INCLUDE_DIR})
+    target_link_libraries(${LIBRARY_NAME_RELEASE} ${VTK_NEW_LIBRARIES})
+  endif()
   if(${PRISMS_PF_WITH_CALIPER})
     target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
   endif()
+
+  deal_ii_setup_target(${LIBRARY_NAME_RELEASE} RELEASE)
 endif()
 
 # Unwrap the compiler compile_commands.json after the build

@@ -32,7 +32,7 @@ MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
   Types::Index                                            _index,
   bool                                                    _use_local_mapping)
-  : Subscriptor()
+  : MATRIX_FREE_OPERATOR_BASE()
   , attributes_list(_attributes_list)
   , pde_operator(std::move(_pde_operator))
   , index(_index)

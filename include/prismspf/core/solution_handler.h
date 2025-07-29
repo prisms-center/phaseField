@@ -119,6 +119,15 @@ public:
   update_ghosts() const;
 
   /**
+   * @brief Zero out the ghost values.
+   *
+   * TODO (landinjm): Fix so this isn't as wasteful in zeroing ghost values for all
+   * solution vectors.
+   */
+  void
+  zero_out_ghosts() const;
+
+  /**
    * @brief Apply the given constraints to a solution vector of a given field index.
    *
    * Note this applies constraints for all dependencyTypes of the given index.
@@ -200,11 +209,19 @@ private:
     solution_set;
 
   /**
+   * @brief Typedef for the solution transfer object.
+   */
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+  using SolutionTransfer = dealii::SolutionTransfer<dim, VectorType>;
+#else
+  using SolutionTransfer =
+    dealii::parallel::distributed::SolutionTransfer<dim, VectorType>;
+#endif
+
+  /**
    * @brief The collection of solution transfer objects at the current timestep.
    */
-  std::map<
-    std::pair<unsigned int, DependencyType>,
-    std::unique_ptr<dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>>
+  std::map<std::pair<unsigned int, DependencyType>, std::unique_ptr<SolutionTransfer>>
     solution_transfer_set;
 
   /**

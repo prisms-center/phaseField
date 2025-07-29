@@ -168,8 +168,7 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
           solution_set[std::make_pair(index, DependencyType::Normal)] =
             std::make_unique<VectorType>();
           solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
-            std::make_unique<
-              dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+            std::make_unique<SolutionTransfer>(
               matrix_free_handler.get_matrix_free()->get_dof_handler(index));
           new_solution_set[index] = std::make_unique<VectorType>();
         }
@@ -192,8 +191,7 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
                 std::make_unique<VectorType>());
               solution_transfer_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<
-                  dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+                std::make_unique<SolutionTransfer>(
                   matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
@@ -217,8 +215,7 @@ SolutionHandler<dim>::init(MatrixfreeHandler<dim, double> &matrix_free_handler)
                 std::make_unique<VectorType>());
               solution_transfer_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<
-                  dealii::parallel::distributed::SolutionTransfer<dim, VectorType>>(
+                std::make_unique<SolutionTransfer>(
                   matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
@@ -309,6 +306,16 @@ SolutionHandler<dim>::update_ghosts() const
         {
           solution->update_ghost_values();
         }
+    }
+}
+
+template <unsigned int dim>
+void
+SolutionHandler<dim>::zero_out_ghosts() const
+{
+  for (const auto &[index, solution] : new_solution_set)
+    {
+      solution->zero_out_ghost_values();
     }
 }
 
