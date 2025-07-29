@@ -35,7 +35,12 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const dealii::Point<dim> &point,
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
-{}
+{
+  if (index == 0 && boundary_id == 3 && component == 0)
+    {
+      vector_component_value = 1.0;
+    }
+}
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 

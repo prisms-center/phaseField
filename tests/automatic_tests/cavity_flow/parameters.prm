@@ -1,14 +1,12 @@
-set dim = 3
+set dim = 2
 set global refinement = 4
-set degree = 1
+set degree = 2
 
 subsection Rectangular mesh
   set x size = 1
   set y size = 1
-  set z size = 1
   set x subdivisions = 1
   set y subdivisions = 1
-  set z subdivisions = 1
 end
 set time step = 1.0e-3
 set number steps = 50
@@ -18,13 +16,17 @@ subsection output
   set number = 5
 end
 
-set boundary condition for u, x component = Dirichlet: 0.0
+set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, NonuniformDirichlet
 set boundary condition for u, y component = Dirichlet: 0.0
-set boundary condition for u, z component = Dirichlet: 0.0
-set boundary condition for u_star, x component = Dirichlet: 0.0
-set boundary condition for u_star, y component = Dirichlet: 0.0
-set boundary condition for u_star, z component = Dirichlet: 0.0
+set boundary condition for u_star, x component = Natural
+set boundary condition for u_star, y component = Natural
 set boundary condition for P = Natural
+
+subsection pinning point for P
+  set value = 0.0
+  set x = 0.0
+  set y = 0.0
+end
 
 subsection linear solver parameters: P
   set tolerance type = AbsoluteResidual

@@ -116,6 +116,8 @@ private:
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
     const override;
+
+  number Re = 1.0;
 };
 
 PRISMS_PF_END_NAMESPACE
