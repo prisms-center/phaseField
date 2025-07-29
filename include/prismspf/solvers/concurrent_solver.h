@@ -212,7 +212,8 @@ public:
       }
 
     // Update the solutions
-    this->get_solution_handler().update(this->get_field_solve_type());
+    this->get_solution_handler().update(this->get_field_solve_type(),
+                                        this->get_solve_block());
 
     // Apply constraints
     // TODO (landinjm): This applies the constraints even to the old fields, which is

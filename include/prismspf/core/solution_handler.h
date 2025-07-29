@@ -150,7 +150,9 @@ public:
    * variants on which solutions to swap based on the FieldSolveType.
    */
   void
-  update(const FieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
+  update(FieldSolveType field_solve_type,
+         Types::Index   solve_block,
+         Types::Index   variable_index = 0);
 
   /**
    * @brief Prepare for solution transfer

@@ -352,11 +352,12 @@ SolutionHandler<dim>::apply_initial_condition_for_old_fields()
 
 template <unsigned int dim>
 void
-SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
-                             const unsigned int   &variable_index)
+SolutionHandler<dim>::update(FieldSolveType field_solve_type,
+                             Types::Index   solve_block,
+                             Types::Index   variable_index)
 {
   // Helper function to swap vectors for all dependency types
-  auto swap_all_dependency_vectors = [this](unsigned int index, auto &new_vector)
+  auto swap_all_dependency_vectors = [this](Types::Index index, auto &new_vector)
   {
     // Always swap the Normal dependency
     new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::Normal))));
@@ -382,6 +383,12 @@ SolutionHandler<dim>::update(const FieldSolveType &field_solve_type,
   for (auto &[index, new_vector] : new_solution_set)
     {
       const auto &attr_field_type = attributes_list->at(index).get_field_solve_type();
+
+      // Skip if the solve block is wrong
+      if (attributes_list->at(index).get_solve_block() != solve_block)
+        {
+          continue;
+        }
 
       // Skip if field solve types don't match
       if (attr_field_type != field_solve_type)

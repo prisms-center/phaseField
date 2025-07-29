@@ -38,7 +38,27 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
 {
   if (index == 0 && boundary_id == 3 && component == 0)
     {
-      vector_component_value = 1.0;
+      double x0 =
+        0.1 * this->get_user_inputs().get_spatial_discretization().get_size()[1];
+
+      if (point[0] <= x0)
+        {
+          vector_component_value = 1.0 - 0.25 *
+                                           (1.0 - std::cos(M_PI * (x0 - point[0]) / x0)) *
+                                           (1.0 - std::cos(M_PI * (x0 - point[0]) / x0));
+        }
+      else if (point[0] > x0 &&
+               point[0] <
+                 this->get_user_inputs().get_spatial_discretization().get_size()[1] - x0)
+        {
+          vector_component_value = 1.0;
+        }
+      else
+        {
+          vector_component_value =
+            1.0 - 0.25 * (1.0 - std::cos(M_PI * (point[0] - (1.0 - x0)) / x0)) *
+                    (1.0 - std::cos(M_PI * (point[0] - (1.0 - x0)) / x0));
+        }
     }
 }
 

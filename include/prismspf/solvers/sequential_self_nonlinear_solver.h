@@ -186,7 +186,9 @@ public:
           }
 
         // Update the solutions
-        this->get_solution_handler().update(this->get_field_solve_type(), index);
+        this->get_solution_handler().update(this->get_field_solve_type(),
+                                            this->get_solve_block(),
+                                            index);
 
         // Update the ghosts
         Timer::start_section("Update ghosts");

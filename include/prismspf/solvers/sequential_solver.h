@@ -312,7 +312,9 @@ public:
       ->scale(this->get_invm_handler().get_invm(global_field_index));
 
     // Update the solutions
-    this->get_solution_handler().update(this->get_field_solve_type(), global_field_index);
+    this->get_solution_handler().update(this->get_field_solve_type(),
+                                        this->get_solve_block(),
+                                        global_field_index);
 
     // Apply constraints
     this->get_constraint_handler()
@@ -363,7 +365,9 @@ public:
       }
 
     // Update the solutions
-    this->get_solution_handler().update(this->get_field_solve_type(), global_field_index);
+    this->get_solution_handler().update(this->get_field_solve_type(),
+                                        this->get_solve_block(),
+                                        global_field_index);
 
     // Update the ghosts
     Timer::start_section("Update ghosts");

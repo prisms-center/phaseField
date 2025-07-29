@@ -8,8 +8,8 @@ subsection Rectangular mesh
   set x subdivisions = 1
   set y subdivisions = 1
 end
-set time step = 1.0e-3
-set number steps = 50
+set time step = 1.0e-4
+set number steps = 10000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -30,7 +30,7 @@ end
 
 subsection linear solver parameters: P
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1e-5
+  set tolerance value = 1e-8
   set max iterations = 1000
   set preconditioner type = GMG
   set smoothing range = 20
