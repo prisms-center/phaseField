@@ -4,6 +4,7 @@ Checks: >
   -*,
   boost-*,
   bugprone-*,
+  -bugprone-easily-swappable-parameters,
   cert-*,
   cppcoreguidelines-*,
   hicpp-*,

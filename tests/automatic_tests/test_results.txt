@@ -977,3 +977,90 @@ Time: 4.454085350036621
  
 Tests Passed: 8/8
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-07-28 23:04
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 1.983210563659668
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 22.81018352508545
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 10.711738109588623
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 2.691553831100464
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3885493278503418
+ 
+Application: mechanics
+Result: Pass
+Time: 0.4998478889465332
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 6.246465682983398
+ 
+Application: fracture
+Result: Pass
+Time: 5.943583965301514
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 
+Regression test on 2025-07-28 23:46
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 4
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 0.8656556606292725
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 6.842243432998657
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 2.63828182220459
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 1.5442440509796143
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3873107433319092
+ 
+Application: mechanics
+Result: Pass
+Time: 0.43381214141845703
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 2.8163516521453857
+ 
+Application: fracture
+Result: Pass
+Time: 2.2483696937561035
+ 
+Tests Passed: 8/8
+--------------------------------------------------------- 

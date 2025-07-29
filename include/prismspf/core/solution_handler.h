@@ -119,6 +119,15 @@ public:
   update_ghosts() const;
 
   /**
+   * @brief Zero out the ghost values.
+   *
+   * TODO (landinjm): Fix so this isn't as wasteful in zeroing ghost values for all
+   * solution vectors.
+   */
+  void
+  zero_out_ghosts() const;
+
+  /**
    * @brief Apply the given constraints to a solution vector of a given field index.
    *
    * Note this applies constraints for all dependencyTypes of the given index.

@@ -311,6 +311,16 @@ SolutionHandler<dim>::update_ghosts() const
 
 template <unsigned int dim>
 void
+SolutionHandler<dim>::zero_out_ghosts() const
+{
+  for (const auto &[index, solution] : new_solution_set)
+    {
+      solution->zero_out_ghost_values();
+    }
+}
+
+template <unsigned int dim>
+void
 SolutionHandler<dim>::apply_constraints(
   unsigned int                             index,
   const dealii::AffineConstraints<double> &constraints)
