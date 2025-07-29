@@ -223,7 +223,10 @@ PDEProblem<dim, degree>::init_system()
   ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
   Timer::start_section("reinitialize element volumes");
   element_volume.initialize(matrix_free_handler.get_matrix_free());
-  element_volume.compute_element_volume(fe_system.begin()->second);
+  // Get the field type of the first field so that MatrixFree data matches the fe_system
+  FieldType first_field =
+    user_inputs->get_variable_attributes().begin()->second.get_field_type();
+  element_volume.compute_element_volume(fe_system.at(first_field));
   Timer::end_section("reinitialize element volumes");
 
   // Initialize the solver types
