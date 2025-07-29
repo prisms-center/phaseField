@@ -39,6 +39,15 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_value_term_lhs(2, "");
   set_dependencies_gradient_term_lhs(2, "grad(change(P))");
   set_solve_block(2, 0);
+
+  set_variable_name(3, "continuity");
+  set_variable_type(3, Scalar);
+  set_variable_equation_type(3, ExplicitTimeDependent);
+
+  set_dependencies_value_term_rhs(3, "div(u)");
+  set_dependencies_gradient_term_rhs(3, "");
+  set_solve_block(3, 1);
+  set_is_postprocessed_field(3, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -119,7 +128,11 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index solve_block) const
-{}
+{
+  ScalarValue div_u = variable_list.template get_divergence<ScalarValue>(0);
+
+  variable_list.set_value_term(3, div_u);
+}
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
