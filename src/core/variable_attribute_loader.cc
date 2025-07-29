@@ -65,14 +65,23 @@ VariableAttributeLoader::init_variable_attributes()
       variable.determine_field_solve_type(var_attributes);
     }
 
+  // Compute the set of solve blocks
+  std::set<Types::Index> solve_block_collection;
+  for (auto &[index, variable] : var_attributes)
+    {
+      solve_block_collection.insert(variable.solve_block);
+    }
   // Compute the shared dependencies
   for (const FieldSolveType field_solve_type : {FieldSolveType::ExplicitConstant,
                                                 FieldSolveType::Explicit,
                                                 FieldSolveType::ExplicitPostprocess})
     {
-      auto subset_attributes =
-        compute_subset_attributes(var_attributes, field_solve_type);
-      compute_shared_dependencies(subset_attributes);
+      for (const Types::Index solve_block : solve_block_collection)
+        {
+          auto subset_attributes =
+            compute_subset_attributes(var_attributes, field_solve_type, solve_block);
+          compute_shared_dependencies(subset_attributes);
+        }
     }
 
   // Print variable attributes to summary.log
@@ -136,6 +145,13 @@ VariableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
                                                     const bool         &is_postprocess)
 {
   var_attributes[index].is_postprocessed_variable = is_postprocess;
+}
+
+void
+VariableAttributeLoader::set_solve_block(const unsigned int &index,
+                                         const Types::Index &solve_block)
+{
+  var_attributes[index].solve_block = solve_block;
 }
 
 void
@@ -502,12 +518,10 @@ VariableAttributeLoader::compute_subset_attributes(
 {
   std::map<Types::Index, VariableAttributes *> local_subset_attributes;
 
-  // TODO (landinjm): Use the solve priority
-  (void) solve_priority;
-
   for (auto &[index, variable] : variable_attributes)
     {
-      if (variable.field_solve_type == field_solve_type)
+      if (variable.field_solve_type == field_solve_type &&
+          variable.solve_block == solve_priority)
         {
           local_subset_attributes.emplace(index, &variable);
         }

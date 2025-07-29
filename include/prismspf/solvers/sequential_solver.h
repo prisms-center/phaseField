@@ -292,6 +292,11 @@ public:
   void
   solve_explicit_solver(const VariableAttributes &variable)
   {
+    // Zero out the ghosts
+    Timer::start_section("Zero ghosts");
+    this->get_solution_handler().zero_out_ghosts();
+    Timer::end_section("Zero ghosts");
+
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 
@@ -329,6 +334,11 @@ public:
   void
   solve_linear_solver(const VariableAttributes &variable)
   {
+    // Zero out the ghosts
+    Timer::start_section("Zero ghosts");
+    this->get_solution_handler().zero_out_ghosts();
+    Timer::end_section("Zero ghosts");
+
     // Grab the global field index
     const Types::Index global_field_index = variable.get_field_index();
 

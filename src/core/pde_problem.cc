@@ -87,13 +87,7 @@ PDEProblem<dim, degree>::PDEProblem(
                          element_volume,
                          mg_info)
   , grid_refiner(grid_refiner_context)
-  , concurrent_constant_solver(solver_context)
-  , concurrent_explicit_solver(solver_context)
-  , concurrent_explicit_postprocess_solver(solver_context)
-  , sequential_auxiliary_solver(solver_context)
-  , sequential_linear_solver(solver_context)
-  , sequential_self_nonlinear_solver(solver_context)
-  , sequential_co_nonlinear_solver(solver_context)
+  , solver_handler(solver_context)
 {}
 
 template <unsigned int dim, unsigned int degree>
@@ -233,37 +227,7 @@ PDEProblem<dim, degree>::init_system()
   Timer::end_section("reinitialize element volumes");
 
   // Initialize the solver types
-  ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
-  Timer::start_section("Solver initialization");
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize concurrent constant solvers...\n"
-    << std::flush;
-  concurrent_constant_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize concurrent explicit solvers...\n"
-    << std::flush;
-  concurrent_explicit_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
-    << std::flush;
-  concurrent_explicit_postprocess_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize sequential auxiliary solvers...\n"
-    << std::flush;
-  sequential_auxiliary_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize sequential linear solvers...\n"
-    << std::flush;
-  sequential_linear_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize sequential self-nonlinear solvers...\n"
-    << std::flush;
-  sequential_self_nonlinear_solver.init();
-  ConditionalOStreams::pout_base()
-    << "  trying to reinitialize sequential co-nonlinear solvers...\n"
-    << std::flush;
-  sequential_co_nonlinear_solver.init();
-  Timer::end_section("Solver initialization");
+  solver_handler.init();
 
   // Update the ghosts
   Timer::start_section("Update ghosts");
@@ -288,37 +252,7 @@ PDEProblem<dim, degree>::init_system()
       Timer::end_section("Grid refinement");
 
       // Reinitialize the solver types
-      ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
-      Timer::start_section("Solver initialization");
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent constant solvers...\n"
-        << std::flush;
-      concurrent_constant_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent explicit solvers...\n"
-        << std::flush;
-      concurrent_explicit_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
-        << std::flush;
-      concurrent_explicit_postprocess_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential auxiliary solvers...\n"
-        << std::flush;
-      sequential_auxiliary_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential linear solvers...\n"
-        << std::flush;
-      sequential_linear_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential self-nonlinear solvers...\n"
-        << std::flush;
-      sequential_self_nonlinear_solver.reinit();
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential co-nonlinear solvers...\n"
-        << std::flush;
-      sequential_co_nonlinear_solver.reinit();
-      Timer::end_section("Solver initialization");
+      solver_handler.reinit();
 
       // Update the ghosts
       Timer::start_section("Update ghosts");
@@ -335,44 +269,8 @@ PDEProblem<dim, degree>::init_system()
       old_dofs = new_dofs;
     }
 
-  // Solve the auxiliary fields at the 0th step
-  ConditionalOStreams::pout_base() << "solving auxiliary variables in 0th timestep...\n"
-                                   << std::flush;
-  Timer::start_section("Auxiliary solver");
-  sequential_auxiliary_solver.solve();
-  Timer::end_section("Auxiliary solver");
-
-  // Solve the linear time-independent fields at the 0th step
-  ConditionalOStreams::pout_base()
-    << "solving linear time-independent variables in 0th timestep...\n"
-    << std::flush;
-  Timer::start_section("Nonexplicit linear solver");
-  sequential_linear_solver.solve();
-  Timer::end_section("Nonexplicit linear solver");
-
-  // Solve the self-nonlinear time-independent fields at the 0th step
-  ConditionalOStreams::pout_base()
-    << "solving self-nonlinear time-independent variables in 0th timestep...\n"
-    << std::flush;
-  Timer::start_section("Nonexplicit self-nonlinear solver");
-  sequential_self_nonlinear_solver.solve();
-  Timer::end_section("Nonexplicit self-nonlinear solver");
-
-  // Solve the co-nonlinear time-independent fields at the 0th step
-  ConditionalOStreams::pout_base()
-    << "solving co-nonlinear time-independent variables in 0th timestep...\n"
-    << std::flush;
-  Timer::start_section("Nonexplicit co-nonlinear solver");
-  sequential_co_nonlinear_solver.solve();
-  Timer::end_section("Nonexplicit co-nonlinear solver");
-
-  // Solve the postprocessed fields at the 0th step
-  ConditionalOStreams::pout_base()
-    << "solving postprocessed variables in 0th timestep...\n"
-    << std::flush;
-  Timer::start_section("Postprocess solver");
-  concurrent_explicit_postprocess_solver.solve();
-  Timer::end_section("Postprocess solver");
+  // Solve the 0th timestep
+  solver_handler.solve(0, true);
 
   // Output initial condition
   Timer::start_section("Output");
@@ -452,27 +350,15 @@ PDEProblem<dim, degree>::solve_increment()
   // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
   // apparent in an application that includes multiple of these solve types. Also only
   // update ghosts that need to be. It's wasteful to over communicate.
+  bool update_postprocssed =
+    user_inputs->get_spatial_discretization().should_refine_mesh(
+      user_inputs->get_temporal_discretization().get_increment()) ||
+    user_inputs->get_output_parameters().should_output(
+      user_inputs->get_temporal_discretization().get_increment());
 
   // Solve a single increment
-  Timer::start_section("Explicit solver");
-  concurrent_explicit_solver.solve();
-  Timer::end_section("Explicit solver");
-
-  Timer::start_section("Nonexplicit auxiliary solver");
-  sequential_auxiliary_solver.solve();
-  Timer::end_section("Nonexplicit auxiliary solver");
-
-  Timer::start_section("Nonexplicit linear solver");
-  sequential_linear_solver.solve();
-  Timer::end_section("Nonexplicit linear solver");
-
-  Timer::start_section("Nonexplicit self-nonlinear solver");
-  sequential_self_nonlinear_solver.solve();
-  Timer::end_section("Nonexplicit self-nonlinear solver");
-
-  Timer::start_section("Nonexplicit co-nonlinear solver");
-  sequential_co_nonlinear_solver.solve();
-  Timer::end_section("Nonexplicit co-nonlinear solver");
+  solver_handler.solve(user_inputs->get_temporal_discretization().get_increment(),
+                       update_postprocssed);
 }
 
 template <unsigned int dim, unsigned int degree>
@@ -515,11 +401,6 @@ PDEProblem<dim, degree>::solve()
       if (user_inputs->get_spatial_discretization().should_refine_mesh(
             user_inputs->get_temporal_discretization().get_increment()))
         {
-          // Update the postprocessed fields
-          Timer::start_section("Postprocess solver");
-          concurrent_explicit_postprocess_solver.solve();
-          Timer::end_section("Postprocess solver");
-
           // Perform grid refinement
           ConditionalOStreams::pout_base() << "performing grid refinement...\n"
                                            << std::flush;
@@ -528,51 +409,16 @@ PDEProblem<dim, degree>::solve()
           Timer::end_section("Grid refinement");
 
           // Reinitialize the solver types
-          ConditionalOStreams::pout_base() << "initializing solvers...\n" << std::flush;
-          Timer::start_section("Solver initialization");
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize concurrent constant solvers...\n"
-            << std::flush;
-          concurrent_constant_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize concurrent explicit solvers...\n"
-            << std::flush;
-          concurrent_explicit_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
-            << std::flush;
-          concurrent_explicit_postprocess_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize sequential auxiliary solvers...\n"
-            << std::flush;
-          sequential_auxiliary_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize sequential linear solvers...\n"
-            << std::flush;
-          sequential_linear_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize sequential self-nonlinear solvers...\n"
-            << std::flush;
-          sequential_self_nonlinear_solver.reinit();
-          ConditionalOStreams::pout_base()
-            << "  trying to reinitialize sequential co-nonlinear solvers...\n"
-            << std::flush;
-          sequential_co_nonlinear_solver.reinit();
-          Timer::end_section("Solver initialization");
+          solver_handler.reinit();
 
           // Update the ghosts
           Timer::start_section("Update ghosts");
           solution_handler.update_ghosts();
           Timer::end_section("Update ghosts");
         }
-
       if (user_inputs->get_output_parameters().should_output(
             user_inputs->get_temporal_discretization().get_increment()))
         {
-          Timer::start_section("Postprocess solver");
-          concurrent_explicit_postprocess_solver.solve();
-          Timer::end_section("Postprocess solver");
-
           Timer::start_section("Output");
           SolutionOutput<dim>(solution_handler.get_solution_vector(),
                               dof_handler.get_dof_handlers(),

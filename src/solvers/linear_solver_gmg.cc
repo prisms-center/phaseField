@@ -111,8 +111,8 @@ GMGSolver<dim, degree>::init()
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[field_index *
-                                                                 max_dependency_types +
+            this->get_newton_update_global_to_local_solution()[(field_index *
+                                                                max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
           if (local_index == Numbers::invalid_index)
@@ -169,8 +169,8 @@ GMGSolver<dim, degree>::init()
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[field_index *
-                                                                 max_dependency_types +
+            this->get_newton_update_global_to_local_solution()[(field_index *
+                                                                max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
           if (local_index == Numbers::invalid_index)
@@ -271,8 +271,8 @@ GMGSolver<dim, degree>::reinit()
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[field_index *
-                                                                 max_dependency_types +
+            this->get_newton_update_global_to_local_solution()[(field_index *
+                                                                max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
           if (local_index == Numbers::invalid_index)
@@ -356,8 +356,8 @@ GMGSolver<dim, degree>::solve(const double &step_length)
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[field_index *
-                                                                 max_dependency_types +
+            this->get_newton_update_global_to_local_solution()[(field_index *
+                                                                max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
           if (local_index == Numbers::invalid_index)

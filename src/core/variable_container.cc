@@ -66,7 +66,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
               {
                 if (!use_local_mapping)
                   {
-                    feeval_vector[dependency_index * max_dependency_types +
+                    feeval_vector[(dependency_index * max_dependency_types) +
                                   dependency_type] =
                       std::make_unique<ScalarFEEvaluation>(data, dependency_index);
                   }
@@ -79,7 +79,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // have matrixfree data associated for the multigrid levels.
                     const Types::Index local_index =
                       get_local_solution_index(dependency_index, dependency_type);
-                    feeval_vector[dependency_index * max_dependency_types +
+                    feeval_vector[(dependency_index * max_dependency_types) +
                                   dependency_type] =
                       std::make_unique<ScalarFEEvaluation>(data, local_index);
                   }
@@ -88,7 +88,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
               {
                 if (!use_local_mapping)
                   {
-                    feeval_vector[dependency_index * max_dependency_types +
+                    feeval_vector[(dependency_index * max_dependency_types) +
                                   dependency_type] =
                       std::make_unique<VectorFEEvaluation>(data, dependency_index);
                   }
@@ -101,7 +101,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
                     // have matrixfree data associated for the multigrid levels.
                     const Types::Index local_index =
                       get_local_solution_index(dependency_index, dependency_type);
-                    feeval_vector[dependency_index * max_dependency_types +
+                    feeval_vector[(dependency_index * max_dependency_types) +
                                   dependency_type] =
                       std::make_unique<VectorFEEvaluation>(data, local_index);
                   }
@@ -223,7 +223,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
   const auto &global_var_index = subset_attributes->begin()->first;
   const auto &field_type       = subset_attributes->begin()->second.get_field_type();
   feevaluation_exists(global_var_index, DependencyType::Change);
-  auto &feeval_variant = feeval_vector[global_var_index * max_dependency_types +
+  auto &feeval_variant = feeval_vector[(global_var_index * max_dependency_types) +
                                        static_cast<Types::Index>(DependencyType::Change)];
 
   auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
@@ -314,7 +314,7 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
   if constexpr (dim == 1)
     {
       is_nullptr =
-        feeval_vector[field_index * max_dependency_types + dependency_index] == nullptr;
+        feeval_vector[(field_index * max_dependency_types) + dependency_index] == nullptr;
     }
   else
     {
@@ -323,7 +323,7 @@ VariableContainer<dim, degree, number>::feevaluation_exists(
         {
           return ptr == nullptr;
         },
-        feeval_vector[field_index * max_dependency_types + dependency_index]);
+        feeval_vector[(field_index * max_dependency_types) + dependency_index]);
     }
   Assert(!is_nullptr,
          dealii::ExcMessage("The FEEvaluation object with global index = " +
@@ -346,7 +346,7 @@ VariableContainer<dim, degree, number>::global_to_local_solution_exists(
            std::to_string(global_to_local_solution->size()) +
            " is greater than index = " + std::to_string(field_index) +
            " and type = " + to_string(static_cast<DependencyType>(dependency_index))));
-  Assert(global_to_local_solution->at(field_index * max_dependency_types +
+  Assert(global_to_local_solution->at((field_index * max_dependency_types) +
                                       dependency_index) != Numbers::invalid_index,
          dealii::ExcMessage("Global to local solution at dependency index " +
                             std::to_string(field_index) + " " +
@@ -366,7 +366,7 @@ VariableContainer<dim, degree, number>::get_local_solution_index(
   global_to_local_solution_exists(field_index, dependency_index);
 #endif
   return (
-    *global_to_local_solution)[field_index * max_dependency_types + dependency_index];
+    *global_to_local_solution)[(field_index * max_dependency_types) + dependency_index];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -545,7 +545,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
-              feeval_vector[dependency_index * max_dependency_types + dependency_type];
+              feeval_vector[(dependency_index * max_dependency_types) + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -648,7 +648,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
-              feeval_vector[dependency_index * max_dependency_types + dependency_type];
+              feeval_vector[(dependency_index * max_dependency_types) + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -721,7 +721,7 @@ VariableContainer<dim, degree, number>::reinit(unsigned int cell,
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
-              feeval_vector[dependency_index * max_dependency_types + dependency_type];
+              feeval_vector[(dependency_index * max_dependency_types) + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -797,7 +797,7 @@ VariableContainer<dim, degree, number>::read_dof_values(
             feevaluation_exists(dependency_index,
                                 static_cast<DependencyType>(dependency_type));
             auto &feeval_variant =
-              feeval_vector[dependency_index * max_dependency_types + dependency_type];
+              feeval_vector[(dependency_index * max_dependency_types) + dependency_type];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -880,7 +880,7 @@ VariableContainer<dim, degree, number>::eval(Types::Index global_variable_index)
 
             feevaluation_exists(index, static_cast<DependencyType>(dep_index));
             auto &feeval_variant =
-              feeval_vector[index * max_dependency_types + dep_index];
+              feeval_vector[(index * max_dependency_types) + dep_index];
 
             auto process_feeval = [&](auto &feeval_ptr)
             {
@@ -942,7 +942,7 @@ VariableContainer<dim, degree, number>::integrate(Types::Index global_variable_i
     {
       feevaluation_exists(global_variable_index, DependencyType::Change);
       auto &feeval_variant =
-        feeval_vector[global_variable_index * max_dependency_types +
+        feeval_vector[(global_variable_index * max_dependency_types) +
                       static_cast<Types::Index>(DependencyType::Change)];
 
       auto process_feeval = [&](auto &feeval_ptr)
@@ -999,7 +999,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
-    auto &feeval_variant = feeval_vector[residual_index * max_dependency_types +
+    auto &feeval_variant = feeval_vector[(residual_index * max_dependency_types) +
                                          static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)
@@ -1057,7 +1057,7 @@ VariableContainer<dim, degree, number>::integrate_and_distribute(VectorType &dst
              "The subset attribute entry does not exists for global index = " +
              std::to_string(residual_index)));
     feevaluation_exists(residual_index, dependency_type);
-    auto &feeval_variant = feeval_vector[residual_index * max_dependency_types +
+    auto &feeval_variant = feeval_vector[(residual_index * max_dependency_types) +
                                          static_cast<Types::Index>(dependency_type)];
 
     auto process_feeval = [&](auto &feeval_ptr)

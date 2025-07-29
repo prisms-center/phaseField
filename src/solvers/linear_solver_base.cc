@@ -18,6 +18,7 @@
 
 #include <prismspf/config.h>
 
+#include <cstddef>
 #include <memory>
 #include <utility>
 
@@ -71,7 +72,7 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   // MatrixFreeOperator
   residual_src.push_back(
     solution_handler->get_solution_vector(field_index, DependencyType::Normal));
-  residual_global_to_local_solution[field_index * max_dependency_types +
+  residual_global_to_local_solution[(field_index * max_dependency_types) +
                                     static_cast<Types::Index>(DependencyType::Normal)] =
     0;
 
@@ -84,7 +85,7 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
-              residual_global_to_local_solution[variable_index * max_dependency_types +
+              residual_global_to_local_solution[(variable_index * max_dependency_types) +
                                                 dependency_type] !=
                 Numbers::invalid_index)
             {
@@ -95,7 +96,7 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           residual_src.push_back(solution_handler->get_solution_vector(
             variable_index,
             static_cast<DependencyType>(dependency_type)));
-          residual_global_to_local_solution[variable_index * max_dependency_types +
+          residual_global_to_local_solution[(variable_index * max_dependency_types) +
                                             dependency_type] = residual_src.size() - 1;
 
           dependency_type++;
@@ -121,9 +122,8 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
-              newton_update_global_to_local_solution[variable_index *
-                                                       max_dependency_types +
-                                                     dependency_type] !=
+              newton_update_global_to_local_solution
+                  [(variable_index * max_dependency_types) + dependency_type] !=
                 Numbers::invalid_index)
             {
               dependency_type++;
@@ -139,7 +139,7 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
           newton_update_src.push_back(solution_handler->get_solution_vector(
             variable_index,
             static_cast<DependencyType>(dependency_type)));
-          newton_update_global_to_local_solution[variable_index * max_dependency_types +
+          newton_update_global_to_local_solution[(variable_index * max_dependency_types) +
                                                  dependency_type] =
             newton_update_src.size() - 1;
 
