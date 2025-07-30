@@ -683,6 +683,6 @@ ConstraintHandler<dim, degree>::apply_constraints(
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(ConstraintHandler)
+#include "core/constraint_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

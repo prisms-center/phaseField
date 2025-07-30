@@ -84,7 +84,6 @@ ReadInitialCondition<dim>::vector_value(const dealii::Point<dim> &p,
 
 // NOLINTEND(readability-identifier-length)
 
-INSTANTIATE_BI_TEMPLATE(InitialCondition)
-INSTANTIATE_UNI_TEMPLATE(ReadInitialCondition)
+#include "core/initial_conditions.inst"
 
 PRISMS_PF_END_NAMESPACE

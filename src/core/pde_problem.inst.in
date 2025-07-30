@@ -1,0 +1,4 @@
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE)
+  {
+    template class PDEProblem<dimension, degree>;
+  }

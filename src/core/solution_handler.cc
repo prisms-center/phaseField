@@ -443,6 +443,6 @@ SolutionHandler<dim>::update(FieldSolveType field_solve_type,
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(SolutionHandler)
+#include "core/solution_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

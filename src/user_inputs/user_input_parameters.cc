@@ -428,6 +428,6 @@ UserInputParameters<dim>::load_model_constants(
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(UserInputParameters)
+#include "user_inputs/user_input_parameters.inst"
 
 PRISMS_PF_END_NAMESPACE

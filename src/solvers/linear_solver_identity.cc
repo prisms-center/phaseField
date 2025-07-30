@@ -140,6 +140,6 @@ IdentitySolver<dim, degree>::solve(const double &step_length)
     .distribute(*solution);
 }
 
-INSTANTIATE_BI_TEMPLATE(IdentitySolver)
+#include "solvers/linear_solver_identity.inst"
 
 PRISMS_PF_END_NAMESPACE

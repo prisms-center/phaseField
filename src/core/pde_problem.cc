@@ -489,6 +489,6 @@ PDEProblem<dim, degree>::run()
   Timer::print_summary();
 }
 
-INSTANTIATE_BI_TEMPLATE(PDEProblem)
+#include "core/pde_problem.inst"
 
 PRISMS_PF_END_NAMESPACE

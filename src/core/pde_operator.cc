@@ -33,6 +33,6 @@ PDEOperator<dim, degree, number>::get_timestep() const
   return user_inputs->get_temporal_discretization().get_timestep();
 }
 
-INSTANTIATE_TRI_TEMPLATE(PDEOperator)
+#include "core/pde_operator.inst"
 
 PRISMS_PF_END_NAMESPACE

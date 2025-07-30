@@ -483,6 +483,6 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     .distribute(*solution);
 }
 
-INSTANTIATE_BI_TEMPLATE(GMGSolver)
+#include "solvers/linear_solver_gmg.inst"
 
 PRISMS_PF_END_NAMESPACE

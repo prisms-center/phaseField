@@ -1,0 +1,9 @@
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE)
+  {
+    template class InitialCondition<dimension, degree>;
+  }
+
+  for ( dimension : SPACE_DIMENSIONS)
+    {
+      template class ReadInitialCondition<dimension>;
+    }

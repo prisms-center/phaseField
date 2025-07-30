@@ -84,6 +84,6 @@ ElementVolume<dim, degree, number>::get_element_volumes() const
   return element_volume;
 };
 
-INSTANTIATE_TRI_TEMPLATE(ElementVolume)
+#include "utilities/element_volume.inst"
 
 PRISMS_PF_END_NAMESPACE

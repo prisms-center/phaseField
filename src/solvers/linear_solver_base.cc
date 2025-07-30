@@ -172,6 +172,6 @@ LinearSolverBase<dim, degree>::compute_solver_tolerance()
                     .tolerance;
 }
 
-INSTANTIATE_BI_TEMPLATE(LinearSolverBase)
+#include "solvers/linear_solver_base.inst"
 
 PRISMS_PF_END_NAMESPACE

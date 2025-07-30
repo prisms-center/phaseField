@@ -72,6 +72,7 @@ endif()
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" OR 
    "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
   set(PRISMS_PF_BUILD_DEBUG "ON")
+  list(APPEND PRISMS_PF_BUILD_TYPES "Debug")
 else()
   set(PRISMS_PF_BUILD_DEBUG "OFF")
 endif()
@@ -79,6 +80,7 @@ endif()
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Release" OR 
    "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease")
   set(PRISMS_PF_BUILD_RELEASE "ON")
+  list(APPEND PRISMS_PF_BUILD_TYPES "Release")
 else()
   set(PRISMS_PF_BUILD_RELEASE "OFF")
 endif()
@@ -306,6 +308,9 @@ configure_file(
   ${CMAKE_BINARY_DIR}/cmake/templates
 )
 
+# Add the script files
+add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/scripts")
+
 # Collect source files
 add_subdirectory(src)
 
@@ -418,12 +423,25 @@ endif()
 
 if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
   set(LIBRARY_NAME_DEBUG "prisms_pf_debug")
-  add_library(${LIBRARY_NAME_DEBUG} STATIC ${PRISMS_PF_SOURCE_FILES})
-  set_property(TARGET ${LIBRARY_NAME_DEBUG} PROPERTY OUTPUT_NAME prisms-pf-debug)
-  target_include_directories(${LIBRARY_NAME_DEBUG} PRIVATE ${CMAKE_BINARY_DIR}/include include)
+  add_library(${LIBRARY_NAME_DEBUG} STATIC)
+  target_sources(${LIBRARY_NAME_DEBUG} PRIVATE ${PRISMS_PF_SOURCE_FILES})
+  set_property(TARGET ${LIBRARY_NAME_DEBUG} 
+    PROPERTY OUTPUT_NAME prisms-pf-debug
+  )
+  target_link_libraries(${LIBRARY_NAME_DEBUG}
+    prisms_pf_core_debug
+    prisms_pf_solvers_debug
+    prisms_pf_user_inputs_debug
+    prisms_pf_utilities_debug
+  )
+  target_include_directories(${LIBRARY_NAME_DEBUG} PRIVATE 
+    ${CMAKE_BINARY_DIR}/include 
+    ${CMAKE_BINARY_DIR}/src
+    include
+  )
   
   if(${VTK_BUILT_SEPARATELY})
-  include_directories(SYSTEM ${VTK_INCLUDE_DIR})
+    include_directories(SYSTEM ${VTK_INCLUDE_DIR})
     target_link_libraries(${LIBRARY_NAME_DEBUG} ${VTK_NEW_LIBRARIES})
   endif()
   if(${PRISMS_PF_WITH_CALIPER})
@@ -435,9 +453,22 @@ endif()
 
 if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
   set(LIBRARY_NAME_RELEASE "prisms_pf_release")
-  add_library(${LIBRARY_NAME_RELEASE} STATIC ${PRISMS_PF_SOURCE_FILES})
-  set_property(TARGET ${LIBRARY_NAME_RELEASE} PROPERTY OUTPUT_NAME prisms-pf-release)
-  target_include_directories(${LIBRARY_NAME_RELEASE} PRIVATE ${CMAKE_BINARY_DIR}/include include)
+  add_library(${LIBRARY_NAME_RELEASE} STATIC)
+  target_sources(${LIBRARY_NAME_RELEASE} PRIVATE ${PRISMS_PF_SOURCE_FILES})
+  set_property(TARGET ${LIBRARY_NAME_RELEASE}
+    PROPERTY OUTPUT_NAME prisms-pf-release
+  )
+  target_link_libraries(${LIBRARY_NAME_DEBUG}
+    prisms_pf_core_release
+    prisms_pf_solvers_release
+    prisms_pf_user_inputs_release
+    prisms_pf_utilities_release
+  )
+  target_include_directories(${LIBRARY_NAME_RELEASE} PRIVATE 
+    ${CMAKE_BINARY_DIR}/include 
+    ${CMAKE_BINARY_DIR}/src
+    include
+  )
 
   if(${VTK_BUILT_SEPARATELY})
     include_directories(SYSTEM ${VTK_INCLUDE_DIR})

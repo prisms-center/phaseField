@@ -486,6 +486,6 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
     cell_range);
 }
 
-INSTANTIATE_TRI_TEMPLATE(MatrixFreeOperator)
+#include "core/matrix_free_operator.inst"
 
 PRISMS_PF_END_NAMESPACE

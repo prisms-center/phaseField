@@ -6,6 +6,8 @@ cmake_install.cmake
 Makefile
 *.ninja*
 CTest*
+cmake/scripts/expand_template_instantiations_exe
+**.inst
 
 # Config files
 include/prismspf/config.h
