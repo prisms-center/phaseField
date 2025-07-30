@@ -1,9 +1,5 @@
 #pragma once
 
-// TODO (landinjm): Remove the no lint and change how template instantiations are done
-
-// NOLINTBEGIN
-
 #cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
 
 // Optional features:
@@ -71,5 +67,3 @@
   template class class_name<1>;              \
   template class class_name<2>;              \
   template class class_name<3>;
-
-// NOLINTEND

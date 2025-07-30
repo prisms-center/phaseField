@@ -27,11 +27,11 @@ public:
                                    .get_refinement_criteria())
       {
         // Grab the index and field type
-        Types::Index index            = criterion.get_index();
-        FieldType    local_field_type = grid_refinement_context.get_user_inputs()
-                                       .get_variable_attributes()
-                                       .at(index)
-                                       .get_field_type();
+        const Types::Index index            = criterion.get_index();
+        const FieldType    local_field_type = grid_refinement_context.get_user_inputs()
+                                             .get_variable_attributes()
+                                             .at(index)
+                                             .get_field_type();
 
         if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
           {
@@ -221,10 +221,10 @@ public:
 
     // Step 6
     grid_refinement_context.get_invm_handler().recompute_invm();
-    FieldType first_field = grid_refinement_context.get_user_inputs()
-                              .get_variable_attributes()
-                              .begin()
-                              ->second.get_field_type();
+    const FieldType first_field = grid_refinement_context.get_user_inputs()
+                                    .get_variable_attributes()
+                                    .begin()
+                                    ->second.get_field_type();
     grid_refinement_context.get_element_volumes().compute_element_volume(
       grid_refinement_context.get_finite_element_systems().at(first_field));
   };
