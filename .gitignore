@@ -18,6 +18,9 @@ compile_commands.json
 # IDE files
 **/.vscode
 
+# Python virtual environments
+**/venv
+
 # clangd
 **/.cache
 **/.clangd
