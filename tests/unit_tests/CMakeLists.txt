@@ -11,10 +11,13 @@ cmake_minimum_required(VERSION 3.8.0)
 
 # Check that a prior CMakeCache is not located in the build directory
 if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
-  message(FATAL_ERROR "Detected the file:\n"
-  "${CMAKE_SOURCE_DIR}/CMakeCache.txt\n"
-  "in your source directory, which may be leftover from prior builds. " 
-  "Please delete the file before running cmake again.")
+    message(
+        FATAL_ERROR
+        "Detected the file:\n"
+        "${CMAKE_SOURCE_DIR}/CMakeCache.txt\n"
+        "in your source directory, which may be leftover from prior builds. "
+        "Please delete the file before running cmake again."
+    )
 endif()
 
 # Set the standard to C++20
@@ -27,31 +30,33 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # =========================================================
 
 # Find deal.II installation
-find_package(deal.II 9.6.0 QUIET
-	HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR}
-  )
+find_package(deal.II 9.6.0 QUIET HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
 if(NOT ${deal.II_FOUND})
-  message(FATAL_ERROR "\n*** Could not find a recent version of deal.II. ***\n"
-  "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake "
-  "or set an environment variable \"DEAL_II_DIR\" that contains a path to a "
-  "recent version of deal.II."
-  )
+    message(
+        FATAL_ERROR
+        "\n*** Could not find a recent version of deal.II. ***\n"
+        "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake "
+        "or set an environment variable \"DEAL_II_DIR\" that contains a path to a "
+        "recent version of deal.II."
+    )
 endif()
 
-message(STATUS "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'")
+message(
+    STATUS
+    "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'"
+)
 
 set(DEALII_INSTALL_VALID ON)
 
 if(NOT DEAL_II_WITH_P4EST)
-    message(SEND_ERROR
-      "\n**deal.II was built without support for p4est!\n"
-      )
+    message(SEND_ERROR "\n**deal.II was built without support for p4est!\n")
     set(DEALII_INSTALL_VALID OFF)
 endif()
 
 if(NOT DEALII_INSTALL_VALID)
-  message(FATAL_ERROR
-    "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
+    message(
+        FATAL_ERROR
+        "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
     )
 endif()
 
@@ -61,40 +66,42 @@ project(prisms_pf_unit_tests)
 
 # Create compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(FORCE_COLORED_OUTPUT ON CACHE BOOL "Forces colored output when compiling with gcc and clang.")
+set(FORCE_COLORED_OUTPUT
+    ON
+    CACHE BOOL
+    "Forces colored output when compiling with gcc and clang."
+)
 
 # Setting up tests
-MESSAGE(STATUS "Setting up tests with CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
+message(STATUS "Setting up tests with CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
 
 enable_testing()
 
 add_custom_target(tests)
 
 # diff tool
-find_program(DIFF_EXECUTABLE
-  NAMES diff
-  HINTS ${DIFF_DIR}
-  PATH_SUFFIXES bin  
-  )
-find_program(NUMDIFF_EXECUTABLE
-  NAMES numdiff
-  HINTS ${NUMDIFF_DIR}
-  PATH_SUFFIXES bin  
-  )
+find_program(DIFF_EXECUTABLE NAMES diff HINTS ${DIFF_DIR} PATH_SUFFIXES bin)
+find_program(
+    NUMDIFF_EXECUTABLE
+    NAMES numdiff
+    HINTS ${NUMDIFF_DIR}
+    PATH_SUFFIXES bin
+)
 
 mark_as_advanced(DIFF_EXECUTABLE NUMDIFF_EXECUTABLE)
 
 if("${TEST_DIFF}" STREQUAL "")
-  if(NOT NUMDIFF_EXECUTABLE MATCHES "-NOTFOUND")
-    set(TEST_DIFF ${NUMDIFF_EXECUTABLE})
-  elseif(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
-    set(TEST_DIFF ${DIFF_EXECUTABLE})
-  else()
-    message(FATAL_ERROR
-      "Could not find diff or numdiff. One of those must be installed for running the testsuite./n"
-      "Please specify TEST_DIFF by hand."
-      )
-  endif()
+    if(NOT NUMDIFF_EXECUTABLE MATCHES "-NOTFOUND")
+        set(TEST_DIFF ${NUMDIFF_EXECUTABLE})
+    elseif(NOT DIFF_EXECUTABLE MATCHES "-NOTFOUND")
+        set(TEST_DIFF ${DIFF_EXECUTABLE})
+    else()
+        message(
+            FATAL_ERROR
+            "Could not find diff or numdiff. One of those must be installed for running the testsuite./n"
+            "Please specify TEST_DIFF by hand."
+        )
+    endif()
 endif()
 
 # Set the name of the project and target:
@@ -109,10 +116,7 @@ include_directories(${CMAKE_SOURCE_DIR}/../../contrib/catch/)
 include_directories(${CMAKE_SOURCE_DIR}/../../include)
 
 # Declare all source files the target consists of:
-set(TARGET_SRC
-  main.cc
-  ${TEST_SOURCES}
-  )
+set(TARGET_SRC main.cc ${TEST_SOURCES})
 
 # Set targets & link libraries for the build type
 add_executable(main ${TARGET_SRC})
@@ -120,5 +124,5 @@ set_property(TARGET main PROPERTY OUTPUT_NAME main)
 deal_ii_setup_target(main DEBUG)
 target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../libprisms-pf-debug.a)
 
-# CTest 
+# CTest
 add_test(NAME PRISMS_PF_Testsuite COMMAND main)

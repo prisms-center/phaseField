@@ -27,7 +27,8 @@ write_to_both(
 #    Git tag:               ${PRISMS_PF_GIT_TAG}
 #    Git branch:            ${PRISMS_PF_GIT_BRANCH}
 #    Git short revision:    ${PRISMS_PF_GIT_SHORTREV}
-")
+"
+)
 write_to_detailed("#    Git revision:          ${PRISMS_PF_GIT_REVISION}\n")
 write_to_both("#    Git timestamp:         ${PRISMS_PF_GIT_TIMESTAMP}
 #
@@ -37,17 +38,20 @@ write_to_both("#    Git timestamp:         ${PRISMS_PF_GIT_TIMESTAMP}
 #    CMAKE_BINARY_DIR:      ${CMAKE_BINARY_DIR}
 #    CMAKE_CXX_COMPILER:    ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} on platform ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}
 #                           ${CMAKE_CXX_COMPILER}
-")
+"
+)
 write_to_detailed("#    CMAKE_GENERATOR:       ${CMAKE_GENERATOR}\n"
 )
 write_to_both("#
 #    C++ standard:          ${CMAKE_CXX_STANDARD}
-")
+"
+)
 write_to_detailed("#
 #    CXX_FLAGS:             ${DEAL_II_CXX_FLAGS}
 #    CXX_FLAGS_DEBUG:       ${DEAL_II_CXX_FLAGS_DEBUG}
 #    CXX_FLAGS_RELEASE:     ${DEAL_II_CXX_FLAGS_RELEASE}
-#    ADDITIONAL_CXX_FLAGS:  ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}\n")
+#    ADDITIONAL_CXX_FLAGS:  ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}\n"
+)
 write_to_both("#
 #    DEAL_II_DIR:           ${deal.II_DIR}
 #    DEAL_II_VERSION:       ${DEAL_II_PACKAGE_VERSION}
@@ -63,4 +67,5 @@ write_to_both("#
 #    ADDITIONAL_OPTIMIZATIONS: ${ADDITIONAL_OPTIMIZATIONS}
 #    ADDITIONAL_DEGREES:       ${ADDITIONAL_DEGREES}
 #    UNWRAP_COMPILER:          ${UNWRAP_COMPILER}
-#")
+#"
+)

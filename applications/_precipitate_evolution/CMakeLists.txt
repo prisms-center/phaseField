@@ -18,36 +18,46 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 # Find Caliper if enabled
 if(${PRISMS_PF_WITH_CALIPER})
-  find_package(caliper REQUIRED)
-  include_directories(${CALIPER_INCLUDE_DIR})
-  message(STATUS "PRISMS_WITH_CALIPER = ON")
+    find_package(caliper REQUIRED)
+    include_directories(${CALIPER_INCLUDE_DIR})
+    message(STATUS "PRISMS_WITH_CALIPER = ON")
 else()
-  message(STATUS "PRISMS_WITH_CALIPER = OFF")
+    message(STATUS "PRISMS_WITH_CALIPER = OFF")
 endif()
-  message(STATUS "")
+message(STATUS "")
 
 # Set the location of the main.cc file
-set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../../src/main.cc" "${CMAKE_SOURCE_DIR}/equations.cc" "${CMAKE_SOURCE_DIR}/ICs_and_BCs.cc")
+set(TARGET_SRC
+    "${CMAKE_SOURCE_DIR}/../../src/main.cc"
+    "${CMAKE_SOURCE_DIR}/equations.cc"
+    "${CMAKE_SOURCE_DIR}/ICs_and_BCs.cc"
+)
 
 # Set targets & link libraries for the build type
 if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
-  add_executable(main_debug ${TARGET_SRC})
-  set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
-  deal_ii_setup_target(main_debug DEBUG)
-  target_link_libraries(main_debug ${CMAKE_SOURCE_DIR}/../../libprisms-pf-debug.a)
+    add_executable(main_debug ${TARGET_SRC})
+    set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
+    deal_ii_setup_target(main_debug DEBUG)
+    target_link_libraries(
+        main_debug
+        ${CMAKE_SOURCE_DIR}/../../libprisms-pf-debug.a
+    )
 
-  if(${PRISMS_PF_WITH_CALIPER})
-    target_link_libraries(main_debug caliper)
-  endif()
+    if(${PRISMS_PF_WITH_CALIPER})
+        target_link_libraries(main_debug caliper)
+    endif()
 endif()
 
 if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
-  add_executable(main_release ${TARGET_SRC})
-  set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
-  deal_ii_setup_target(main_release RELEASE)
-  target_link_libraries(main_release ${CMAKE_SOURCE_DIR}/../../libprisms-pf-release.a)
+    add_executable(main_release ${TARGET_SRC})
+    set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
+    deal_ii_setup_target(main_release RELEASE)
+    target_link_libraries(
+        main_release
+        ${CMAKE_SOURCE_DIR}/../../libprisms-pf-release.a
+    )
 
-  if(${PRISMS_PF_WITH_CALIPER})
-    target_link_libraries(main_release caliper)
-  endif()
+    if(${PRISMS_PF_WITH_CALIPER})
+        target_link_libraries(main_release caliper)
+    endif()
 endif()
