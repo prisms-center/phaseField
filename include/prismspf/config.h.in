@@ -24,11 +24,6 @@
 #  define CALI_MARK_END(region_name)
 #endif
 
-// Templating parameters
-#define PRISMS_PF_DIMS {1, 2, 3}
-#define PRISMS_PF_DEGREES {1, 2, 3, 4, 5, 6}
-#define PRISMS_PF_NUMBERS {float, double}
-
 // Macro for template instantations with <dim, degree, number>
 #define INSTANTIATE_TRI_TEMPLATE(class_name) \
   template class class_name<1, 1, float>;    \

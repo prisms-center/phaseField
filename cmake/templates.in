@@ -1,0 +1,11 @@
+// Input file that is used with expand_template_instantations.cc 
+// to process .inst.in files into .in files
+
+// Scalar types
+REAL_SCALARS := { double; float }
+
+// Space dimensions
+SPACE_DIMENSIONS := { 1; 2; 3 }
+
+// Element degrees
+ELEMENT_DEGREE := { 1; 2@EXPAND_DEGREES@ }

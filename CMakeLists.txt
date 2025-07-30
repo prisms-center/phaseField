@@ -285,6 +285,13 @@ if(ADDITIONAL_OPTIMIZATIONS)
   message(WARNING "ADDITIONAL_OPTIMIZATIONS is enabled. Procede with caution.")
 endif()
 
+# Grab flag for additional element degrees
+set(ADDITIONAL_DEGREES OFF CACHE BOOL "Wether the user wants to enable the compilation of additional element degrees or not.")
+message(STATUS "ADDITIONAL_DEGREES = '${ADDITIONAL_DEGREES}'")
+if(ADDITIONAL_DEGREES)
+  set(EXPAND_DEGREES "; 3; 4; 5; 6")
+endif()
+
 # Generate config.h to enable and disable certain features within the source code.
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
@@ -292,6 +299,12 @@ configure_file(
   ${CMAKE_SOURCE_DIR}/include/prismspf/config.h.in
   ${CMAKE_BINARY_DIR}/include/prismspf/config.h
   )
+
+# Configure the template arguments file
+configure_file(
+  ${CMAKE_SOURCE_DIR}/cmake/templates.in
+  ${CMAKE_BINARY_DIR}/cmake/templates
+)
 
 # Collect source files
 add_subdirectory(src)
