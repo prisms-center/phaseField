@@ -51,3 +51,34 @@ set(FORCE_COLORED_OUTPUT
     CACHE BOOL
     "Forces colored output when compiling with gcc and clang."
 )
+
+# Features
+option(
+    PRISMS_PF_WITH_ZLIB
+    "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not."
+    ON
+)
+
+option(
+    PRISMS_PF_WITH_HDF5
+    "Whether the user wants to compile PRISMS-PF with deal.II's HDF5 dependency, or not."
+    OFF
+)
+
+option(
+    PRISMS_PF_WITH_SUNDIALS
+    "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not."
+    OFF
+)
+
+option(
+    PRISMS_PF_WITH_CUDA
+    "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not."
+    OFF
+)
+
+option(
+    PRISMS_PF_WITH_CALIPER
+    "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
+    OFF
+)

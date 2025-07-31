@@ -66,53 +66,13 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Process each of the modules
-set(PRISMS_PF_MODULES
-DEAL_II
-VTK
-CALIPER
-)
+set(PRISMS_PF_MODULES DEAL_II VTK CALIPER)
 foreach(_module ${PRISMS_PF_MODULES})
-include(${CMAKE_SOURCE_DIR}/cmake/modules/FindPRISMS_PF_${_module}.cmake)
+    include(${CMAKE_SOURCE_DIR}/cmake/modules/FindPRISMS_PF_${_module}.cmake)
 endforeach()
 
-message(FATAL_ERROR "DASD")
-
-# Find deal.II installation
-find_package(deal.II 9.6.0 QUIET HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
-if(NOT ${deal.II_FOUND})
-    message(
-        FATAL_ERROR
-        "\n*** Could not find a recent version of deal.II. ***\n"
-        "You may want to either pass a flag -DDEAL_II_DIR=/path/to/deal.II to cmake "
-        "or set an environment variable \"DEAL_II_DIR\" that contains a path to a "
-        "recent version of deal.II."
-    )
-endif()
-
-message(
-    STATUS
-    "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'"
-)
-
-set(DEALII_INSTALL_VALID ON)
-
-if(NOT DEAL_II_WITH_LAPACK)
-    message(SEND_ERROR "\n**deal.II was built without support for lapack!\n")
-    set(DEALII_INSTALL_VALID OFF)
-endif()
-
-# Check that deal.II was built with vtk or we can find the package ourselves
-set(VTK_BUILT_SEPARATELY
-    OFF
-    CACHE BOOL
-    "Whether the installed VTK library was built outside of deal.II."
-)
 if(NOT DEAL_II_WITH_VTK)
     find_package(VTK QUIET HINTS ${VTK_DIR} $ENV{VTK_DIR})
-    if(NOT VTK_FOUND)
-        message(SEND_ERROR "\n**deal.II was built without support for VTK!\n")
-        set(DEALII_INSTALL_VALID OFF)
-    endif()
     set(VTK_VERSION "${VTK_VERSION}")
     set(VTK_MAJOR_VERSION "${VTK_MAJOR_VERSION}")
     set(VTK_MINOR_VERSION "${VTK_MINOR_VERSION}")
@@ -144,143 +104,13 @@ if(NOT DEAL_II_WITH_VTK)
         endif()
     endforeach()
     set(VTK_NEW_LIBRARIES ${_libraries})
-    set(VTK_BUILT_SEPARATELY ON)
 endif()
 
-if(NOT DEAL_II_WITH_P4EST)
-    message(SEND_ERROR "\n**deal.II was built without support for p4est!\n")
-    set(DEALII_INSTALL_VALID OFF)
-endif()
-
-if(NOT DEAL_II_WITH_MPI)
-    message(SEND_ERROR "\n**deal.II was built without support for MPI!\n")
-    set(DEALII_INSTALL_VALID OFF)
-endif()
-
-if(NOT DEALII_INSTALL_VALID)
-    message(
-        FATAL_ERROR
-        "\nPRISMS-PF requires a deal.II installation with certain features enabled!\n"
-    )
-endif()
-
-# Optional deal.II packages
-
-# zlib should be required by p4est in deal.II, so its on by default
-set(PRISMS_PF_WITH_ZLIB
-    ON
-    CACHE BOOL
-    "Whether the user wants to compile PRISMS-PF with deal.II's zlib dependency, or not."
-)
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
-if(PRISMS_PF_WITH_ZLIB)
-    if(DEAL_II_WITH_ZLIB)
-        message(STATUS "  Found deal.II installation with zlib")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with zlib not found. Disable PRISMS_PF_WITH_ZLIB or recompile deal.II with zlib."
-        )
-    endif()
-endif()
-
-set(PRISMS_PF_WITH_HDF5
-    OFF
-    CACHE BOOL
-    "Whether the user wants to compile PRISMS-PF with deal.II's HDF5 dependency, or not."
-)
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_HDF5)
-    set(PRISMS_PF_WITH_HDF5 ON)
-endif()
 message(STATUS "Using PRISMS_PF_WITH_HDF5 = '${PRISMS_PF_WITH_HDF5}'")
-if(PRISMS_PF_WITH_HDF5)
-    if(DEAL_II_WITH_HDF5)
-        message(STATUS "  Found deal.II installation with HDF5")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with HDF5 not found. Disable PRISMS_PF_WITH_HDF5 or recompile deal.II with HDF5."
-        )
-    endif()
-endif()
-
-set(PRISMS_PF_WITH_CUDA
-    OFF
-    CACHE BOOL
-    "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not."
-)
-set(KOKKOS_CUDA_BACKEND
-    OFF
-    CACHE BOOL
-    "Whether the installed Kokkos version has a CUDA backend."
-)
-if(DEAL_II_WITH_KOKKOS)
-    find_package(Kokkos QUIET HINTS ${KOKKOS_DIR} $ENV{KOKKOS_DIR})
-    if(Kokkos_FOUND AND Kokkos_DEVICES MATCHES "CUDA")
-        set(KOKKOS_CUDA_BACKEND ON)
-    endif()
-endif()
-if(PRISMS_PF_AUTODETECTION AND KOKKOS_CUDA_BACKEND)
-    set(PRISMS_PF_WITH_CUDA ON)
-endif()
-message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
-if(PRISMS_PF_WITH_CUDA)
-    if(KOKKOS_CUDA_BACKEND)
-        message(STATUS "  Found Kokkos installation with CUDA")
-    else()
-        message(
-            FATAL_ERROR
-            "Kokkos installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with Kokkos that has a CUDA backend."
-        )
-    endif()
-endif()
-
-set(PRISMS_PF_WITH_SUNDIALS
-    OFF
-    CACHE BOOL
-    "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not."
-)
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_SUNDIALS)
-    set(PRISMS_PF_WITH_SUNDIALS ON)
-endif()
 message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
-if(PRISMS_PF_WITH_SUNDIALS)
-    if(DEAL_II_WITH_SUNDIALS)
-        message(STATUS "  Found deal.II installation with SUNDIALS")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS."
-        )
-    endif()
-endif()
-
-# Caliper
-set(PRISMS_PF_WITH_CALIPER
-    OFF
-    CACHE BOOL
-    "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
-)
-if(PRISMS_PF_AUTODETECTION)
-    find_package(CALIPER QUIET HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
-    if(${CALIPER_FOUND})
-        set(PRISMS_PF_WITH_CALIPER ON)
-    endif()
-endif()
+message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
-if(PRISMS_PF_WITH_CALIPER)
-    find_package(CALIPER QUIET HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
-    message(STATUS "CALIPER_DIR: ${CALIPER_DIR}")
-    if(${CALIPER_FOUND})
-        include_directories(${CALIPER_INCLUDE_DIR})
-        message(STATUS "  Caliper found at ${CALIPER_DIR}")
-    else()
-        message(
-            FATAL_ERROR
-            "Caliper not found. Disable PRISMS_PF_WITH_CALIPER or specify a hint to your installation directory with CALIPER_DIR"
-        )
-    endif()
-endif()
 
 # =========================================================
 # Configure PRISMS-PF Targets

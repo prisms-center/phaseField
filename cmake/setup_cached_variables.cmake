@@ -115,41 +115,45 @@ endforeach()
 
 # Set compiler flags into the respective PRISMS-PF variable
 foreach(_flag CXX_FLAG CXX_FLAGS_DEBUG CXX_FLAGS_RELEASE)
-if(NOT "${CMAKE_SHARED_${_flag}}" STREQUAL "")
-message(STATUS
-  "Prepending \${CMAKE_SHARED_${_flag}} to \${PRISMS_PF_${_flag}}"
-  )
-set(PRISMS_PF_${_flag} "${CMAKE_${_flag}} ${PRISMS_PF_${_flag}}")
-endif()
+    if(NOT "${CMAKE_SHARED_${_flag}}" STREQUAL "")
+        message(
+            STATUS
+            "Prepending \${CMAKE_SHARED_${_flag}} to \${PRISMS_PF_${_flag}}"
+        )
+        set(PRISMS_PF_${_flag} "${CMAKE_${_flag}} ${PRISMS_PF_${_flag}}")
+    endif()
 endforeach()
 
 # Do the same for linker flags
 foreach(_flag LINKER_FLAGS LINKER_FLAGS_DEBUG LINKER_FLAGS_RELEASE)
-  if(NOT "${CMAKE_SHARED_${_flag}}" STREQUAL "")
-    message(STATUS
-      "Prepending \${CMAKE_SHARED_${_flag}} to \${PRISMS_PF_${_flag}}"
-      )
-    set(PRISMS_PF_${_flag} "${CMAKE_${_flag}} ${PRISMS_PF_${_flag}}")
-  endif()
+    if(NOT "${CMAKE_SHARED_${_flag}}" STREQUAL "")
+        message(
+            STATUS
+            "Prepending \${CMAKE_SHARED_${_flag}} to \${PRISMS_PF_${_flag}}"
+        )
+        set(PRISMS_PF_${_flag} "${CMAKE_${_flag}} ${PRISMS_PF_${_flag}}")
+    endif()
 endforeach()
 
-# Store these flags into a SAVED variable so we can 
-# cross-reference with the deal.II ones that we inherit 
+# Store these flags into a SAVED variable so we can
+# cross-reference with the deal.II ones that we inherit
 # later. Also, set to empty string.
 foreach(_flag ${PRISMS_PF_FLAGS})
-  set(${_flag}_SAVED ${${_flag}})
-  set(${_flag} "")
+    set(${_flag}_SAVED ${${_flag}})
+    set(${_flag} "")
 endforeach()
 
 # Also set the removed flags to empty
 foreach(_flag ${PRISMS_PF_REMOVED_FLAGS})
-  set(${_flag} "")
+    set(${_flag} "")
 endforeach()
 
 # Read the environmental flags and add them to the saved variables
 set(PRISMS_PF_CXX_FLAGS_SAVED "$ENV{CXXFLAGS} ${PRISMS_PF_CXX_FLAGS_SAVED}")
 string(STRIP "${PRISMS_PF_CXX_FLAGS_SAVED}" PRISMS_PF_CXX_FLAGS_SAVED)
-set(PRISMS_PF_LINKER_FLAGS_SAVED "$ENV{LDFLAGS} ${PRISMS_PF_LINKER_FLAGS_SAVED}")
+set(PRISMS_PF_LINKER_FLAGS_SAVED
+    "$ENV{LDFLAGS} ${PRISMS_PF_LINKER_FLAGS_SAVED}"
+)
 string(STRIP "${PRISMS_PF_LINKER_FLAGS_SAVED}" PRISMS_PF_LINKER_FLAGS_SAVED)
 unset(ENV{CXXFLAGS})
 unset(ENV{LDFLAGS})
