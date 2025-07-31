@@ -46,19 +46,14 @@ endif()
 # Grab git information
 prisms_pf_git_version()
 
-# Set the standard to C++20
-set_cpp_standard(20)
-
 # Include configuration options
 include(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
 
-# Create compile_commands.json
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(FORCE_COLORED_OUTPUT
-    ON
-    CACHE BOOL
-    "Forces colored output when compiling with gcc and clang."
-)
+# Declare the project
+project(prisms_pf CXX)
+
+# Include the PRISMS-PF setup
+include(${CMAKE_SOURCE_DIR}/cmake/setup_prisms_pf.cmake)
 
 # =========================================================
 # External libraries
@@ -69,6 +64,18 @@ message(STATUS "=========================================================")
 message(STATUS "Configuring external libraries")
 message(STATUS "=========================================================")
 message(STATUS "")
+
+# Process each of the modules
+set(PRISMS_PF_MODULES
+DEAL_II
+VTK
+CALIPER
+)
+foreach(_module ${PRISMS_PF_MODULES})
+include(${CMAKE_SOURCE_DIR}/cmake/modules/FindPRISMS_PF_${_module}.cmake)
+endforeach()
+
+message(FATAL_ERROR "DASD")
 
 # Find deal.II installation
 find_package(deal.II 9.6.0 QUIET HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
@@ -86,12 +93,6 @@ message(
     STATUS
     "Found deal.II version ${DEAL_II_PACKAGE_VERSION} at '${deal.II_DIR}'"
 )
-
-# Load deal.II cached variables
-deal_ii_initialize_cached_variables()
-
-# Declare the project
-project(prisms_pf CXX)
 
 set(DEALII_INSTALL_VALID ON)
 

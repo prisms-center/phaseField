@@ -1,6 +1,3 @@
-# Set the c++20 standard
-set(CMAKE_CXX_STANDARD 20)
-
 # Add the script to an executable
 add_executable(
     expand_template_instantiations_exe

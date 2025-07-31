@@ -31,3 +31,23 @@ string(
     PRISMS_PF_VERSION_SUBMINOR
     "${PRISMS_PF_VERSION}"
 )
+
+# List of build types
+if("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+    list(APPEND PRISMS_PF_BUILD_TYPES "Debug")
+endif()
+
+if("${CMAKE_BUILD_TYPE}" MATCHES "Release")
+    list(APPEND PRISMS_PF_BUILD_TYPES "Release")
+endif()
+
+# Set the standard to C++20
+set_cpp_standard(20)
+
+# Create compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(FORCE_COLORED_OUTPUT
+    ON
+    CACHE BOOL
+    "Forces colored output when compiling with gcc and clang."
+)
