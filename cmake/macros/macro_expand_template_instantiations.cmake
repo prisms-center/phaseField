@@ -19,6 +19,15 @@ macro(expand_template_instantiations _target _inst_in_files)
         set(_command expand_template_instantiations_exe)
         set(_dependency expand_template_instantiations_exe)
 
+        # Get the main build directory path
+        if(DEFINED PRISMS_PF_CORE_DIR)
+            # We're in an application context, use the main build directory
+            set(_main_build_dir ${PRISMS_PF_CORE_DIR})
+        else()
+            # We're in the main project context, use current binary dir
+            set(_main_build_dir ${CMAKE_BINARY_DIR})
+        endif()
+
         # Create a tmp inst file in case the command fails to
         # execute. This two level thing is necessary so that
         # we don't try and compile with incomplete instantiations
@@ -26,11 +35,11 @@ macro(expand_template_instantiations _target _inst_in_files)
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}
             DEPENDS
                 ${_dependency}
-                ${CMAKE_BINARY_DIR}/cmake/templates
+                ${_main_build_dir}/cmake/templates
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file}
             COMMAND ${_command}
             ARGS
-                ${CMAKE_BINARY_DIR}/cmake/templates <
+                ${_main_build_dir}/cmake/templates <
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_file}.tmp
             COMMAND ${CMAKE_COMMAND}

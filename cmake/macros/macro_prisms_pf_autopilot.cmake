@@ -3,6 +3,9 @@
 #
 
 macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
+    # Add the script files
+    add_subdirectory("${PRISMS_PF_CORE_DIR}/cmake/scripts" "${CMAKE_BINARY_DIR}/scripts_build")
+
     # Enable compile commands export
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -85,6 +88,7 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
         add_executable(main_debug ${TARGET_SRC})
         set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
+        expand_template_instantiations(main_debug "custom_pde.inst.in")
         deal_ii_setup_target(main_debug DEBUG)
         target_link_libraries(
             main_debug
@@ -103,6 +107,7 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
         add_executable(main_release ${TARGET_SRC})
         set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
+        expand_template_instantiations(main_release "custom_pde.inst.in")
         deal_ii_setup_target(main_release RELEASE)
         target_link_libraries(
             main_release

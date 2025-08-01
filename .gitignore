@@ -6,7 +6,7 @@ cmake_install.cmake
 Makefile
 *.ninja*
 CTest*
-cmake/scripts/expand_template_instantiations_exe
+**expand_template_instantiations_exe
 **.inst
 
 # Config files

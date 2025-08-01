@@ -21,8 +21,5 @@ include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
 # Create a project for the application
 project(myapp CXX)
 
-# Include the autopilot macro
-include(${PRISMS_PF_CORE_DIR}/cmake/macros/macro_prisms_pf_autopilot.cmake)
-
 # Set up the application
 prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})

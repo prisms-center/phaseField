@@ -1,15 +1,29 @@
 # General setup for a PRISMS-PF application
 
+# Check that PRISMS_PF_CORE_DIR is set
+if(PRISMS_PF_CORE_DIR STREQUAL "")
+    message(FATAL_ERROR "PRISMS_PF_CORE_DIR is not set")
+endif()
+
+# Load macros
+file(GLOB macro_files "${PRISMS_PF_CORE_DIR}/cmake/macros/*.cmake")
+foreach(file ${macro_files})
+    message(STATUS "Include ${file}")
+    include(${file})
+endforeach()
+
+# Grab the version of PRISMS-PF
+file(STRINGS "${PRISMS_PF_CORE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
+
+
 message(STATUS "")
 message(STATUS "=========================================================")
-message(STATUS "Configuring PRISMS-PF application")
+message(STATUS "Configuring application with PRISMS-PF v${PRISMS_PF_VERSION}")
 message(STATUS "=========================================================")
 message(STATUS "")
 
 # Set the standard to C++20
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set_cpp_standard(20)
 
 # Setup the build type (debug, release, debugrelease)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
