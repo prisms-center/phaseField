@@ -273,7 +273,8 @@ if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
         prisms_pf_utilities_debug
     )
     # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(${LIBRARY_NAME_DEBUG}
+    add_dependencies(
+        ${LIBRARY_NAME_DEBUG}
         prisms_pf_core_debug
         prisms_pf_solvers_debug
         prisms_pf_user_inputs_debug
@@ -311,7 +312,8 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
         prisms_pf_utilities_release
     )
     # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(${LIBRARY_NAME_RELEASE}
+    add_dependencies(
+        ${LIBRARY_NAME_RELEASE}
         prisms_pf_core_release
         prisms_pf_solvers_release
         prisms_pf_user_inputs_release
