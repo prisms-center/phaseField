@@ -272,6 +272,13 @@ if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
         prisms_pf_user_inputs_debug
         prisms_pf_utilities_debug
     )
+    # Add explicit dependencies to ensure proper build order with Ninja
+    add_dependencies(${LIBRARY_NAME_DEBUG}
+        prisms_pf_core_debug
+        prisms_pf_solvers_debug
+        prisms_pf_user_inputs_debug
+        prisms_pf_utilities_debug
+    )
     target_include_directories(
         ${LIBRARY_NAME_DEBUG}
         PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
@@ -297,7 +304,14 @@ if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
         PROPERTY OUTPUT_NAME prisms-pf-release
     )
     target_link_libraries(
-        ${LIBRARY_NAME_DEBUG}
+        ${LIBRARY_NAME_RELEASE}
+        prisms_pf_core_release
+        prisms_pf_solvers_release
+        prisms_pf_user_inputs_release
+        prisms_pf_utilities_release
+    )
+    # Add explicit dependencies to ensure proper build order with Ninja
+    add_dependencies(${LIBRARY_NAME_RELEASE}
         prisms_pf_core_release
         prisms_pf_solvers_release
         prisms_pf_user_inputs_release
