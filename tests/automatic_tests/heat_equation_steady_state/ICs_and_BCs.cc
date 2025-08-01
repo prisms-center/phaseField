@@ -47,6 +47,4 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                   &vector_component_value) const
 {}
 
-INSTANTIATE_TRI_TEMPLATE(CustomPDE)
-
 PRISMS_PF_END_NAMESPACE

@@ -53,6 +53,4 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] Types::Index solve_block) const
 {}
 
-INSTANTIATE_TRI_TEMPLATE(CustomPDE)
-
 PRISMS_PF_END_NAMESPACE
