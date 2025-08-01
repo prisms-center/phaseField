@@ -8,4 +8,4 @@ REAL_SCALARS := { double; float }
 SPACE_DIMENSIONS := { 1; 2; 3 }
 
 // Element degrees
-ELEMENT_DEGREE := { 1; 2@EXPAND_DEGREES@ }
+ELEMENT_DEGREE := { 1; 2; 3@EXPAND_DEGREES@ }

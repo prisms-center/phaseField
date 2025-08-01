@@ -91,7 +91,7 @@ message(STATUS "")
 set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
 if(ADDITIONAL_DEGREES)
-    set(EXPAND_DEGREES "; 3; 4; 5; 6")
+    set(EXPAND_DEGREES "; 4; 5; 6")
 endif()
 
 configure_file(
