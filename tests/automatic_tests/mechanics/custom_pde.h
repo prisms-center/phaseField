@@ -68,8 +68,8 @@ private:
   set_initial_condition(const unsigned int       &index,
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const override;
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const override;
 
   /**
    * @brief User-implemented class for nonuniform boundary conditions.
@@ -86,9 +86,10 @@ private:
    * @brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, dealii::VectorizedArray<number>>
-                         &q_point_loc) const override;
+  compute_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   /**
    * @brief User-implemented class for the RHS of nonexplicit equations.
@@ -97,6 +98,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
   /**
@@ -106,6 +108,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
   /**
@@ -114,8 +117,8 @@ private:
   void
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-    const override;
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   dealii::Tensor<2, voigt_tensor_size<dim>, number> compliance =
     this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(

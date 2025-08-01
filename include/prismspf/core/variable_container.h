@@ -99,9 +99,12 @@ public:
                            ->get_value(q_point);
             return wrapper;
           }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_value(q_point);
+        else
+          {
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->get_value(q_point);
+          }
       }
     else
       {
@@ -176,9 +179,12 @@ public:
                            ->get_gradient(q_point);
             return wrapper;
           }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_gradient(q_point);
+        else
+          {
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->get_gradient(q_point);
+          }
       }
     else
       {
@@ -253,9 +259,12 @@ public:
                            ->get_hessian(q_point);
             return wrapper;
           }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_hessian(q_point);
+        else
+          {
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->get_hessian(q_point);
+          }
       }
     else
       {
@@ -330,9 +339,12 @@ public:
                            ->get_hessian_diagonal(q_point);
             return wrapper;
           }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_hessian_diagonal(q_point);
+        else
+          {
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->get_hessian_diagonal(q_point);
+          }
       }
     else
       {
@@ -407,9 +419,12 @@ public:
                            ->get_laplacian(q_point);
             return wrapper;
           }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_laplacian(q_point);
+        else
+          {
+            return feeval_vector[(global_variable_index * max_dependency_types) +
+                                 static_cast<Types::Index>(dependency_type)]
+              ->get_laplacian(q_point);
+          }
       }
     else
       {

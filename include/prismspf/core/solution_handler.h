@@ -25,11 +25,11 @@ struct VariableAttributes;
 /**
  * @brief Class that manages solution initialization and swapping with old solutions.
  */
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 class SolutionHandler
 {
 public:
-  using VectorType   = dealii::LinearAlgebra::distributed::Vector<double>;
+  using VectorType   = dealii::LinearAlgebra::distributed::Vector<number>;
   using MGVectorType = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
@@ -87,13 +87,13 @@ public:
    * @brief Initialize the solution set.
    */
   void
-  init(MatrixfreeHandler<dim, double> &matrix_free_handler);
+  init(MatrixfreeHandler<dim, number> &matrix_free_handler);
 
   /**
    * @brief Reinitialize the solution set.
    */
   void
-  reinit(MatrixfreeHandler<dim, double> &matrix_free_handler);
+  reinit(MatrixfreeHandler<dim, number> &matrix_free_handler);
 
   /**
    * @brief Initialize the multigrid solution set.
@@ -134,7 +134,7 @@ public:
    */
   void
   apply_constraints(unsigned int                             index,
-                    const dealii::AffineConstraints<double> &constraints);
+                    const dealii::AffineConstraints<number> &constraints);
 
   /**
    * @brief Apply intial condition to the old fields. For now, this simply copies the
@@ -150,7 +150,9 @@ public:
    * variants on which solutions to swap based on the FieldSolveType.
    */
   void
-  update(const FieldSolveType &field_solve_type, const unsigned int &variable_index = 0);
+  update(FieldSolveType field_solve_type,
+         Types::Index   solve_block,
+         Types::Index   variable_index = 0);
 
   /**
    * @brief Prepare for solution transfer

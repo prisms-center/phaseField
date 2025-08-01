@@ -133,6 +133,6 @@ Integrator<dim, degree, number>::compute_integral(
   integral_value = value;
 }
 
-INSTANTIATE_TRI_TEMPLATE(Integrator)
+#include "utilities/integrator.inst"
 
 PRISMS_PF_END_NAMESPACE

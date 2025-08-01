@@ -17,7 +17,7 @@ class UserInputParameters;
 /**
  * @brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
-template <unsigned int dim, typename number = double>
+template <unsigned int dim, typename number>
 class SolutionOutput
 {
 public:

@@ -36,7 +36,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * @brief This is the main class that handles the construction and solving of
  * user-specified PDEs.
  */
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 class PDEProblem
 {
 public:
@@ -45,7 +45,7 @@ public:
    */
   PDEProblem(
     const UserInputParameters<dim>                                &_user_inputs,
-    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
@@ -98,12 +98,12 @@ private:
   /**
    * @brief Constraint handler.
    */
-  ConstraintHandler<dim, degree> constraint_handler;
+  ConstraintHandler<dim, degree, number> constraint_handler;
 
   /**
    * @brief Matrix-free object handler for non-multigrid data.
    */
-  MatrixfreeHandler<dim, double> matrix_free_handler;
+  MatrixfreeHandler<dim, number> matrix_free_handler;
 
   /**
    * @brief Matrix-free object handler for multigrid data.
@@ -113,12 +113,12 @@ private:
   /**
    * @brief invm handler.
    */
-  InvmHandler<dim, degree, double> invm_handler;
+  InvmHandler<dim, degree, number> invm_handler;
 
   /**
    * @brief Solution handler.
    */
-  SolutionHandler<dim> solution_handler;
+  SolutionHandler<dim, number> solution_handler;
 
   /**
    * @brief DoF handler.
@@ -140,32 +140,32 @@ private:
   /**
    * @brief Solver context.
    */
-  SolverContext<dim, degree> solver_context;
+  SolverContext<dim, degree, number> solver_context;
 
   /**
    * @brief Element volumes.
    */
-  ElementVolume<dim, degree, double> element_volume;
+  ElementVolume<dim, degree, number> element_volume;
 
   /**
    * @brief Integrator utility.
    */
-  Integrator<dim, degree, double> integrator;
+  Integrator<dim, degree, number> integrator;
 
   /**
    * @brief Grid refiner context.
    */
-  GridRefinementContext<dim, degree> grid_refiner_context;
+  GridRefinementContext<dim, degree, number> grid_refiner_context;
 
   /**
    * @brief Grid refiner.
    */
-  GridRefiner<dim, degree> grid_refiner;
+  GridRefiner<dim, degree, number> grid_refiner;
 
   /**
    * @brief Solver handler.
    */
-  SolverHandler<dim, degree, double> solver_handler;
+  SolverHandler<dim, degree, number> solver_handler;
 };
 
 PRISMS_PF_END_NAMESPACE

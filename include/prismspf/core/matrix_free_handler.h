@@ -19,7 +19,7 @@ class UserInputParameters;
 /**
  * @brief This class handlers the management and access of the matrix-free objects.
  */
-template <unsigned int dim, typename number = double>
+template <unsigned int dim, typename number>
 class MatrixfreeHandler
 {
 public:

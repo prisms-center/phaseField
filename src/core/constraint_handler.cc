@@ -34,18 +34,18 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-ConstraintHandler<dim, degree>::ConstraintHandler(
+template <unsigned int dim, unsigned int degree, typename number>
+ConstraintHandler<dim, degree, number>::ConstraintHandler(
   const UserInputParameters<dim>                                &_user_inputs,
   const MGInfo<dim>                                             &_mg_info,
-  const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+  const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
   , mg_info(&_mg_info)
   , pde_operator(_pde_operator)
   , pde_operator_float(_pde_operator_float)
   , constraints(_user_inputs.get_variable_attributes().size(),
-                dealii::AffineConstraints<double>())
+                dealii::AffineConstraints<number>())
 {
   // If we don't have multigrid, we can return early
   if (!_mg_info.has_multigrid())
@@ -62,17 +62,17 @@ ConstraintHandler<dim, degree>::ConstraintHandler(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
-std::vector<const dealii::AffineConstraints<double> *>
-ConstraintHandler<dim, degree>::get_constraints()
+template <unsigned int dim, unsigned int degree, typename number>
+std::vector<const dealii::AffineConstraints<number> *>
+ConstraintHandler<dim, degree, number>::get_constraints()
 {
-  std::vector<const dealii::AffineConstraints<double> *> temp;
+  std::vector<const dealii::AffineConstraints<number> *> temp;
   temp.reserve(constraints.size());
 
   std::transform(constraints.begin(),
                  constraints.end(),
                  std::back_inserter(temp),
-                 [](const dealii::AffineConstraints<double> &constraint)
+                 [](const dealii::AffineConstraints<number> &constraint)
                  {
                    return &constraint;
                  });
@@ -80,9 +80,9 @@ ConstraintHandler<dim, degree>::get_constraints()
   return temp;
 }
 
-template <unsigned int dim, unsigned int degree>
-const dealii::AffineConstraints<double> &
-ConstraintHandler<dim, degree>::get_constraint(unsigned int index) const
+template <unsigned int dim, unsigned int degree, typename number>
+const dealii::AffineConstraints<number> &
+ConstraintHandler<dim, degree, number>::get_constraint(unsigned int index) const
 {
   Assert(constraints.size() > index,
          dealii::ExcMessage("The constraint set does not contain index = " +
@@ -90,9 +90,9 @@ ConstraintHandler<dim, degree>::get_constraint(unsigned int index) const
   return constraints.at(index);
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 std::vector<const dealii::AffineConstraints<float> *>
-ConstraintHandler<dim, degree>::get_mg_constraints(unsigned int level)
+ConstraintHandler<dim, degree, number>::get_mg_constraints(unsigned int level)
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 
@@ -115,10 +115,10 @@ ConstraintHandler<dim, degree>::get_mg_constraints(unsigned int level)
   return temp;
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 const dealii::AffineConstraints<float> &
-ConstraintHandler<dim, degree>::get_mg_constraint(unsigned int level,
-                                                  unsigned int index) const
+ConstraintHandler<dim, degree, number>::get_mg_constraint(unsigned int level,
+                                                          unsigned int index) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
   // Convert the absolute level to a relative level.
@@ -134,9 +134,9 @@ ConstraintHandler<dim, degree>::get_mg_constraint(unsigned int level,
   return mg_constraints[relative_level][index];
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::make_constraints(
+ConstraintHandler<dim, degree, number>::make_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
@@ -146,9 +146,9 @@ ConstraintHandler<dim, degree>::make_constraints(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::make_mg_constraints(
+ConstraintHandler<dim, degree, number>::make_mg_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   unsigned int                                        level)
@@ -168,9 +168,9 @@ ConstraintHandler<dim, degree>::make_mg_constraints(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::update_time_dependent_constraints(
+ConstraintHandler<dim, degree, number>::update_time_dependent_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
 {
@@ -188,9 +188,9 @@ ConstraintHandler<dim, degree>::update_time_dependent_constraints(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::update_time_dependent_mg_constraints(
+ConstraintHandler<dim, degree, number>::update_time_dependent_mg_constraints(
   const dealii::Mapping<dim>                         &mapping,
   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers,
   unsigned int                                        level)
@@ -216,10 +216,10 @@ ConstraintHandler<dim, degree>::update_time_dependent_mg_constraints(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::ComponentMask
-ConstraintHandler<dim, degree>::create_component_mask(unsigned int component,
-                                                      bool         is_vector_field) const
+ConstraintHandler<dim, degree, number>::create_component_mask(unsigned int component,
+                                                              bool is_vector_field) const
 {
   if (!is_vector_field)
     {
@@ -231,42 +231,42 @@ ConstraintHandler<dim, degree>::create_component_mask(unsigned int component,
   return temp_mask;
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::apply_natural_constraints() const
+ConstraintHandler<dim, degree, number>::apply_natural_constraints() const
 {
   // Do nothing because they are naturally enforced.
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num>
 void
-ConstraintHandler<dim, degree>::apply_dirichlet_constraints(
-  const dealii::Mapping<dim>        &mapping,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  const unsigned int                &boundary_id,
-  const bool                        &is_vector_field,
-  const number                      &value,
-  dealii::AffineConstraints<number> &constraints,
-  const dealii::ComponentMask       &mask) const
+ConstraintHandler<dim, degree, number>::apply_dirichlet_constraints(
+  const dealii::Mapping<dim>     &mapping,
+  const dealii::DoFHandler<dim>  &dof_handler,
+  const unsigned int             &boundary_id,
+  const bool                     &is_vector_field,
+  const num                      &value,
+  dealii::AffineConstraints<num> &constraints,
+  const dealii::ComponentMask    &mask) const
 {
   dealii::VectorTools::interpolate_boundary_values(
     mapping,
     dof_handler,
     boundary_id,
-    dealii::Functions::ConstantFunction<dim, number>(value, is_vector_field ? dim : 1),
+    dealii::Functions::ConstantFunction<dim, num>(value, is_vector_field ? dim : 1),
     constraints,
     mask);
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num>
 void
-ConstraintHandler<dim, degree>::apply_periodic_constraints(
-  const dealii::DoFHandler<dim>     &dof_handler,
-  const unsigned int                &boundary_id,
-  dealii::AffineConstraints<number> &constraints,
-  const dealii::ComponentMask       &mask) const
+ConstraintHandler<dim, degree, number>::apply_periodic_constraints(
+  const dealii::DoFHandler<dim>  &dof_handler,
+  const unsigned int             &boundary_id,
+  dealii::AffineConstraints<num> &constraints,
+  const dealii::ComponentMask    &mask) const
 {
   // Create a vector of matched pairs that we fill and enforce upon the
   // constaints
@@ -285,29 +285,29 @@ ConstraintHandler<dim, degree>::apply_periodic_constraints(
                                             periodicity_vector);
 
   // Set constraints
-  dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(periodicity_vector,
-                                                                   constraints,
-                                                                   mask);
+  dealii::DoFTools::make_periodicity_constraints<dim, dim, num>(periodicity_vector,
+                                                                constraints,
+                                                                mask);
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num>
 void
-ConstraintHandler<dim, degree>::apply_nonuniform_dirichlet_constraints(
-  const dealii::Mapping<dim>        &mapping,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  const unsigned int                &boundary_id,
-  const unsigned int                &index,
-  const bool                        &is_vector_field,
-  dealii::AffineConstraints<number> &constraints,
-  const dealii::ComponentMask       &mask,
-  bool                               is_change_term) const
+ConstraintHandler<dim, degree, number>::apply_nonuniform_dirichlet_constraints(
+  const dealii::Mapping<dim>     &mapping,
+  const dealii::DoFHandler<dim>  &dof_handler,
+  const unsigned int             &boundary_id,
+  const unsigned int             &index,
+  const bool                     &is_vector_field,
+  dealii::AffineConstraints<num> &constraints,
+  const dealii::ComponentMask    &mask,
+  bool                            is_change_term) const
 {
   if (!is_change_term)
     {
       const auto desired_pde_operator = [this]() -> const auto &
       {
-        if constexpr (std::is_same_v<number, double>)
+        if constexpr (std::is_same_v<num, number>)
           {
             return pde_operator;
           }
@@ -321,10 +321,10 @@ ConstraintHandler<dim, degree>::apply_nonuniform_dirichlet_constraints(
         mapping,
         dof_handler,
         boundary_id,
-        NonuniformDirichlet<dim, degree, number>(index,
-                                                 boundary_id,
-                                                 desired_pde_operator,
-                                                 is_vector_field ? dim : 1),
+        NonuniformDirichlet<dim, degree, num>(index,
+                                              boundary_id,
+                                              desired_pde_operator,
+                                              is_vector_field ? dim : 1),
         constraints,
         mask);
       return;
@@ -334,14 +334,14 @@ ConstraintHandler<dim, degree>::apply_nonuniform_dirichlet_constraints(
     mapping,
     dof_handler,
     boundary_id,
-    dealii::Functions::ZeroFunction<dim, number>(is_vector_field ? dim : 1),
+    dealii::Functions::ZeroFunction<dim, num>(is_vector_field ? dim : 1),
     constraints,
     mask);
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::make_constraint(
+ConstraintHandler<dim, degree, number>::make_constraint(
   const dealii::Mapping<dim>    &mapping,
   const dealii::DoFHandler<dim> &dof_handler,
   unsigned int                   index)
@@ -352,7 +352,7 @@ ConstraintHandler<dim, degree>::make_constraint(
                             std::to_string(index)));
   auto &local_constraint = constraints[index];
 
-  apply_generic_constraints<double>(dof_handler, local_constraint);
+  apply_generic_constraints<number>(dof_handler, local_constraint);
 
   // First check the normal boundary conditions
   const auto &boundary_condition =
@@ -365,7 +365,7 @@ ConstraintHandler<dim, degree>::make_constraint(
           if (user_inputs->get_variable_attributes().at(index).get_field_type() !=
               FieldType::Vector)
             {
-              apply_constraints<double, 1>(mapping,
+              apply_constraints<number, 1>(mapping,
                                            dof_handler,
                                            local_constraint,
                                            condition,
@@ -375,7 +375,7 @@ ConstraintHandler<dim, degree>::make_constraint(
                                            index);
               continue;
             }
-          apply_constraints<double, dim>(mapping,
+          apply_constraints<number, dim>(mapping,
                                          dof_handler,
                                          local_constraint,
                                          condition,
@@ -389,16 +389,16 @@ ConstraintHandler<dim, degree>::make_constraint(
   // Second check for pinned points, if they exist
   if (user_inputs->get_boundary_parameters().has_pinned_point(index))
     {
-      set_pinned_point<double>(dof_handler, local_constraint, index, false);
+      set_pinned_point<number>(dof_handler, local_constraint, index, false);
     }
 
   // Close constraints
   local_constraint.close();
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintHandler<dim, degree>::make_mg_constraint(
+ConstraintHandler<dim, degree, number>::make_mg_constraint(
   const dealii::Mapping<dim>    &mapping,
   const dealii::DoFHandler<dim> &dof_handler,
   unsigned int                   index,
@@ -515,21 +515,21 @@ ConstraintHandler<dim, degree>::make_mg_constraint(
   local_constraint.close();
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num>
 void
-ConstraintHandler<dim, degree>::set_pinned_point(
-  const dealii::DoFHandler<dim>     &dof_handler,
-  dealii::AffineConstraints<number> &constraints,
-  unsigned int                       index,
-  bool                               is_change_term) const
+ConstraintHandler<dim, degree, number>::set_pinned_point(
+  const dealii::DoFHandler<dim>  &dof_handler,
+  dealii::AffineConstraints<num> &constraints,
+  unsigned int                    index,
+  bool                            is_change_term) const
 {
-  const number tolerance = 1.0e-2;
+  const num tolerance = 1.0e-2;
   const auto &[value, target_point] =
     user_inputs->get_boundary_parameters().get_pinned_point(index);
 
   // Helper function to set inhomogeneity for a single DOF
-  auto set_inhomogeneity = [&](unsigned int dof_index, number value)
+  auto set_inhomogeneity = [&](unsigned int dof_index, num value)
   {
     constraints.add_line(dof_index);
     constraints.set_inhomogeneity(dof_index, is_change_term ? value : 0.0);
@@ -581,12 +581,12 @@ ConstraintHandler<dim, degree>::set_pinned_point(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num>
 void
-ConstraintHandler<dim, degree>::apply_generic_constraints(
-  const dealii::DoFHandler<dim>     &dof_handler,
-  dealii::AffineConstraints<number> &constraints) const
+ConstraintHandler<dim, degree, number>::apply_generic_constraints(
+  const dealii::DoFHandler<dim>  &dof_handler,
+  dealii::AffineConstraints<num> &constraints) const
 {
   // Clear constraints
   constraints.clear();
@@ -599,19 +599,19 @@ ConstraintHandler<dim, degree>::apply_generic_constraints(
   dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraints);
 }
 
-template <unsigned int dim, unsigned int degree>
-template <typename number, int spacedim>
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename num, int spacedim>
 void
-ConstraintHandler<dim, degree>::apply_constraints(
-  const dealii::Mapping<dim>        &mapping,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  dealii::AffineConstraints<number> &constraints,
-  const BoundaryCondition           &boundary_condition,
-  BoundaryCondition::Type            boundary_type,
-  unsigned int                       boundary_id,
-  unsigned int                       component,
-  unsigned int                       index,
-  bool                               is_change_term) const
+ConstraintHandler<dim, degree, number>::apply_constraints(
+  const dealii::Mapping<dim>     &mapping,
+  const dealii::DoFHandler<dim>  &dof_handler,
+  dealii::AffineConstraints<num> &constraints,
+  const BoundaryCondition        &boundary_condition,
+  BoundaryCondition::Type         boundary_type,
+  unsigned int                    boundary_id,
+  unsigned int                    component,
+  unsigned int                    index,
+  bool                            is_change_term) const
 {
   constexpr bool              is_vector_field = spacedim != 1;
   const dealii::ComponentMask mask = create_component_mask(component, is_vector_field);
@@ -626,7 +626,7 @@ ConstraintHandler<dim, degree>::apply_constraints(
         }
       case BoundaryCondition::Type::Dirichlet:
         {
-          apply_dirichlet_constraints<number>(
+          apply_dirichlet_constraints<num>(
             mapping,
             dof_handler,
             boundary_id,
@@ -643,7 +643,7 @@ ConstraintHandler<dim, degree>::apply_constraints(
             {
               break;
             }
-          apply_periodic_constraints<number>(dof_handler, boundary_id, constraints, mask);
+          apply_periodic_constraints<num>(dof_handler, boundary_id, constraints, mask);
           break;
         }
       case BoundaryCondition::Type::Neumann:
@@ -654,14 +654,14 @@ ConstraintHandler<dim, degree>::apply_constraints(
       case BoundaryCondition::Type::NonuniformDirichlet:
       case BoundaryCondition::Type::TimeDependentNonuniformDirichlet:
         {
-          apply_nonuniform_dirichlet_constraints<number>(mapping,
-                                                         dof_handler,
-                                                         boundary_id,
-                                                         index,
-                                                         is_vector_field,
-                                                         constraints,
-                                                         mask,
-                                                         is_change_term);
+          apply_nonuniform_dirichlet_constraints<num>(mapping,
+                                                      dof_handler,
+                                                      boundary_id,
+                                                      index,
+                                                      is_vector_field,
+                                                      constraints,
+                                                      mask,
+                                                      is_change_term);
           break;
         }
       case BoundaryCondition::Type::NonuniformNeumann:
@@ -683,6 +683,6 @@ ConstraintHandler<dim, degree>::apply_constraints(
     }
 }
 
-INSTANTIATE_BI_TEMPLATE(ConstraintHandler)
+#include "core/constraint_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

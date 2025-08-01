@@ -6,14 +6,20 @@ cmake_install.cmake
 Makefile
 *.ninja*
 CTest*
+**expand_template_instantiations_exe
+**.inst
 
 # Config files
 include/prismspf/config.h
 cmake/prisms_pf_config.cmake
+cmake/templates
 compile_commands.json
 
 # IDE files
 **/.vscode
+
+# Python virtual environments
+**/venv
 
 # clangd
 **/.cache

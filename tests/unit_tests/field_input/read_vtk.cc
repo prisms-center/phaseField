@@ -12,7 +12,7 @@ TEST_CASE("Read vtk file")
 {
   SECTION("2D Scalar fields with quadrature degree 1")
   {
-    ReadUnstructuredVTK<2> reader("field_input/test_2D_1degree.vtk");
+    ReadUnstructuredVTK<2, double> reader("field_input/test_2D_1degree.vtk");
 
     // Check that the number of points and cells are correct
     REQUIRE(reader.get_n_points() == 16);
@@ -31,7 +31,7 @@ TEST_CASE("Read vtk file")
   }
   SECTION("2D Scalar fields with quadrature degree 2")
   {
-    ReadUnstructuredVTK<2> reader("field_input/test_2D_2degree.vtk");
+    ReadUnstructuredVTK<2, double> reader("field_input/test_2D_2degree.vtk");
 
     // Check that the number of points and cells are correct
     REQUIRE(reader.get_n_points() == 36);
@@ -50,7 +50,7 @@ TEST_CASE("Read vtk file")
   }
   SECTION("3D Scalar fields with quadrature degree 1")
   {
-    ReadUnstructuredVTK<3> reader("field_input/test_3D_1degree.vtk");
+    ReadUnstructuredVTK<3, double> reader("field_input/test_3D_1degree.vtk");
 
     // Check that the number of points and cells are correct
     REQUIRE(reader.get_n_points() == 64);
@@ -72,11 +72,11 @@ TEST_CASE("Read vtk file")
   }
   SECTION("Nonexistent file")
   {
-    REQUIRE_THROWS(ReadUnstructuredVTK<2>("nonexistent.vtk"));
+    REQUIRE_THROWS(ReadUnstructuredVTK<2, double>("nonexistent.vtk"));
   }
   SECTION("Invalid cell type due to mismatched dimensions")
   {
-    REQUIRE_THROWS(ReadUnstructuredVTK<3>("field_input/test_2D_1degree.vtk"));
+    REQUIRE_THROWS(ReadUnstructuredVTK<3, double>("field_input/test_2D_1degree.vtk"));
   }
 }
 

@@ -22,7 +22,7 @@ class UserInputParameters;
  * @brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
  */
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 class ConstraintHandler
 {
 public:
@@ -32,19 +32,19 @@ public:
   ConstraintHandler(
     const UserInputParameters<dim>                                &_user_inputs,
     const MGInfo<dim>                                             &_mg_info,
-    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
   /**
    * @brief Getter function for the constraints.
    */
-  [[nodiscard]] std::vector<const dealii::AffineConstraints<double> *>
+  [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
   get_constraints();
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
    */
-  [[nodiscard]] const dealii::AffineConstraints<double> &
+  [[nodiscard]] const dealii::AffineConstraints<number> &
   get_constraint(unsigned int index) const;
 
   /**
@@ -113,38 +113,38 @@ private:
   /**
    * @brief Apply dirichlet constraints.
    */
-  template <typename number>
+  template <typename num>
   void
-  apply_dirichlet_constraints(const dealii::Mapping<dim>        &mapping,
-                              const dealii::DoFHandler<dim>     &dof_handler,
-                              const unsigned int                &boundary_id,
-                              const bool                        &is_vector_field,
-                              const number                      &value,
-                              dealii::AffineConstraints<number> &constraints,
-                              const dealii::ComponentMask       &mask) const;
+  apply_dirichlet_constraints(const dealii::Mapping<dim>     &mapping,
+                              const dealii::DoFHandler<dim>  &dof_handler,
+                              const unsigned int             &boundary_id,
+                              const bool                     &is_vector_field,
+                              const num                      &value,
+                              dealii::AffineConstraints<num> &constraints,
+                              const dealii::ComponentMask    &mask) const;
 
   /**
    * @brief Apply periodic constraints.
    */
-  template <typename number>
+  template <typename num>
   void
-  apply_periodic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
-                             const unsigned int                &boundary_id,
-                             dealii::AffineConstraints<number> &constraints,
-                             const dealii::ComponentMask       &mask) const;
+  apply_periodic_constraints(const dealii::DoFHandler<dim>  &dof_handler,
+                             const unsigned int             &boundary_id,
+                             dealii::AffineConstraints<num> &constraints,
+                             const dealii::ComponentMask    &mask) const;
 
   /**
    * @brief Apply nonuniform dirichlet constraints.
    */
-  template <typename number>
+  template <typename num>
   void
-  apply_nonuniform_dirichlet_constraints(const dealii::Mapping<dim>    &mapping,
-                                         const dealii::DoFHandler<dim> &dof_handler,
-                                         const unsigned int            &boundary_id,
-                                         const unsigned int            &index,
-                                         const bool                    &is_vector_field,
-                                         dealii::AffineConstraints<number> &constraints,
-                                         const dealii::ComponentMask       &mask,
+  apply_nonuniform_dirichlet_constraints(const dealii::Mapping<dim>     &mapping,
+                                         const dealii::DoFHandler<dim>  &dof_handler,
+                                         const unsigned int             &boundary_id,
+                                         const unsigned int             &index,
+                                         const bool                     &is_vector_field,
+                                         dealii::AffineConstraints<num> &constraints,
+                                         const dealii::ComponentMask    &mask,
                                          bool is_change_term = false) const;
 
   /**
@@ -168,49 +168,49 @@ private:
   /**
    * @brief Set the dirichlet constraint for the pinned point.
    */
-  template <typename number>
+  template <typename num>
   void
-  set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
-                   dealii::AffineConstraints<number> &constraints,
-                   unsigned int                       index,
-                   bool                               is_change_term = false) const;
+  set_pinned_point(const dealii::DoFHandler<dim>  &dof_handler,
+                   dealii::AffineConstraints<num> &constraints,
+                   unsigned int                    index,
+                   bool                            is_change_term = false) const;
 
   /**
    * @brief Clear, reinitialize and make hanging node constraints
    */
-  template <typename number>
+  template <typename num>
   void
-  apply_generic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
-                            dealii::AffineConstraints<number> &constraints) const;
+  apply_generic_constraints(const dealii::DoFHandler<dim>  &dof_handler,
+                            dealii::AffineConstraints<num> &constraints) const;
 
   /**
    * @brief Apply constraints for common boundary conditions.
    */
-  template <typename number, int spacedim>
+  template <typename num, int spacedim>
   void
-  apply_constraints(const dealii::Mapping<dim>        &mapping,
-                    const dealii::DoFHandler<dim>     &dof_handler,
-                    dealii::AffineConstraints<number> &constraints,
-                    const BoundaryCondition           &boundary_condition,
-                    BoundaryCondition::Type            boundary_type,
-                    unsigned int                       boundary_id,
-                    unsigned int                       component,
-                    unsigned int                       index,
-                    bool                               is_change_term = false) const;
+  apply_constraints(const dealii::Mapping<dim>     &mapping,
+                    const dealii::DoFHandler<dim>  &dof_handler,
+                    dealii::AffineConstraints<num> &constraints,
+                    const BoundaryCondition        &boundary_condition,
+                    BoundaryCondition::Type         boundary_type,
+                    unsigned int                    boundary_id,
+                    unsigned int                    component,
+                    unsigned int                    index,
+                    bool                            is_change_term = false) const;
 
   /**
    * @brief Apply multigrid constraints for common boundary conditions. The only
    * difference between this function and the previous one is that an dirichlet boundary
    * conditions are constrained to 0.
    */
-  template <typename number, int spacedim>
+  template <typename num, int spacedim>
   void
-  apply_mg_constraints(const dealii::Mapping<dim>        &mapping,
-                       const dealii::DoFHandler<dim>     &dof_handler,
-                       dealii::AffineConstraints<number> &constraints,
-                       BoundaryCondition::Type            boundary_type,
-                       unsigned int                       boundary_id,
-                       unsigned int                       component) const;
+  apply_mg_constraints(const dealii::Mapping<dim>     &mapping,
+                       const dealii::DoFHandler<dim>  &dof_handler,
+                       dealii::AffineConstraints<num> &constraints,
+                       BoundaryCondition::Type         boundary_type,
+                       unsigned int                    boundary_id,
+                       unsigned int                    component) const;
 
   /**
    * @brief User-inputs.
@@ -223,9 +223,9 @@ private:
   const MGInfo<dim> *mg_info;
 
   /**
-   * @brief PDE operator double.
+   * @brief PDE operator number.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
    * @brief PDE operator float.
@@ -245,7 +245,7 @@ private:
   /**
    * @brief Constraints.
    */
-  std::vector<dealii::AffineConstraints<double>> constraints;
+  std::vector<dealii::AffineConstraints<number>> constraints;
 
   /**
    * @brief Multigrid constraints.

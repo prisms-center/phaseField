@@ -80,11 +80,6 @@ MatrixfreeHandler<dim, number>::get_matrix_free() const
   return matrix_free_object;
 }
 
-template class MatrixfreeHandler<1, double>;
-template class MatrixfreeHandler<2, double>;
-template class MatrixfreeHandler<3, double>;
-template class MatrixfreeHandler<1, float>;
-template class MatrixfreeHandler<2, float>;
-template class MatrixfreeHandler<3, float>;
+#include "core/matrix_free_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

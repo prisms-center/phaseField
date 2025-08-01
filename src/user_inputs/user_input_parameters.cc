@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/exceptions.h>
+#include <deal.II/base/config.h>
 #include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/utilities.h>
@@ -24,6 +24,12 @@
 #include <cmath>
 #include <string>
 #include <vector>
+
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/exception_macros.h>
+#else
+#  include <deal.II/base/exceptions.h>
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -380,7 +386,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
   load_ic_parameters.set_read_initial_conditions_from_file(
     parameter_handler.get_bool("read initial conditions from file"));
 
-  for (unsigned int i = 0; i < 8; i++)
+  for (unsigned int i = 0; i < Numbers::max_subsections; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
       {
@@ -422,6 +428,6 @@ UserInputParameters<dim>::load_model_constants(
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(UserInputParameters)
+#include "user_inputs/user_input_parameters.inst"
 
 PRISMS_PF_END_NAMESPACE

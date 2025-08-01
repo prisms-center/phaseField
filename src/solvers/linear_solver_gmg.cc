@@ -38,25 +38,25 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-GMGSolver<dim, degree>::GMGSolver(
+template <unsigned int dim, unsigned int degree, typename number>
+GMGSolver<dim, degree, number>::GMGSolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
+  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
+  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
   const TriangulationHandler<dim>                        &_triangulation_handler,
   const DofHandler<dim>                                  &_dof_handler,
   dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+  SolutionHandler<dim, number>                           &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
   std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
   const MGInfo<dim>                                      &_mg_info)
-  : LinearSolverBase<dim, degree>(_user_inputs,
-                                  _variable_attributes,
-                                  _matrix_free_handler,
-                                  _constraint_handler,
-                                  _solution_handler,
-                                  std::move(_pde_operator))
+  : LinearSolverBase<dim, degree, number>(_user_inputs,
+                                          _variable_attributes,
+                                          _matrix_free_handler,
+                                          _constraint_handler,
+                                          _solution_handler,
+                                          std::move(_pde_operator))
   , triangulation_handler(&_triangulation_handler)
   , dof_handler(&_dof_handler)
   , mg_matrix_free_handler(&_mg_matrix_free_handler)
@@ -66,9 +66,9 @@ GMGSolver<dim, degree>::GMGSolver(
   , max_level(_mg_info.get_mg_max_level())
 {}
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-GMGSolver<dim, degree>::init()
+GMGSolver<dim, degree, number>::init()
 {
   // Basic intialization that is the same as the identity solve.
   this->get_system_matrix()->clear();
@@ -140,6 +140,7 @@ GMGSolver<dim, degree>::init()
     max_level,
     this->get_subset_attributes(),
     pde_operator_float,
+    this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
 
@@ -215,9 +216,9 @@ GMGSolver<dim, degree>::init()
 #endif
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-GMGSolver<dim, degree>::reinit()
+GMGSolver<dim, degree, number>::reinit()
 {
   // Apply constraints
   this->get_constraint_handler()
@@ -242,6 +243,7 @@ GMGSolver<dim, degree>::reinit()
     max_level,
     this->get_subset_attributes(),
     pde_operator_float,
+    this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
 
@@ -317,9 +319,9 @@ GMGSolver<dim, degree>::reinit()
 #endif
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-GMGSolver<dim, degree>::solve(const double &step_length)
+GMGSolver<dim, degree, number>::solve(const number &step_length)
 {
   const auto *current_dof_handler =
     dof_handler->get_dof_handlers().at(this->get_field_index());
@@ -481,6 +483,6 @@ GMGSolver<dim, degree>::solve(const double &step_length)
     .distribute(*solution);
 }
 
-INSTANTIATE_BI_TEMPLATE(GMGSolver)
+#include "solvers/linear_solver_gmg.inst"
 
 PRISMS_PF_END_NAMESPACE
