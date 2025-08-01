@@ -80,7 +80,7 @@ VariableAttributeLoader::init_variable_attributes()
                                                 FieldSolveType::Explicit,
                                                 FieldSolveType::ExplicitPostprocess})
     {
-      for (const [[maybe_unused]] Types::Index solve_block : solve_block_collection)
+      for (const Types::Index solve_block : solve_block_collection)
         {
           auto subset_attributes =
             compute_subset_attributes(var_attributes, field_solve_type, solve_block);
