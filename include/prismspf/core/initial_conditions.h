@@ -23,8 +23,8 @@ class UserInputParameters;
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
-template <unsigned int dim, unsigned int degree>
-class InitialCondition : public dealii::Function<dim, double>
+template <unsigned int dim, unsigned int degree, typename number>
+class InitialCondition : public dealii::Function<dim, number>
 {
 public:
   /**
@@ -33,7 +33,7 @@ public:
   InitialCondition(
     const unsigned int                                            &_index,
     const FieldType                                               &field_type,
-    const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator);
+    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
 
@@ -41,14 +41,14 @@ public:
    * @brief Scalar/Vector value.
    */
   void
-  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+  vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
 
   // NOLINTEND(readability-identifier-length)
 
 private:
   unsigned int index;
 
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 };
 
 /**
@@ -56,8 +56,8 @@ private:
  * for explicit time dependent fields and implicit time dependent, as all others are
  * calculated at runtime.
  */
-template <unsigned int dim>
-class ReadInitialCondition : public dealii::Function<dim, double>
+template <unsigned int dim, typename number>
+class ReadInitialCondition : public dealii::Function<dim, number>
 {
 public:
   /**
@@ -73,7 +73,7 @@ public:
    * @brief Scalar/Vector value.
    */
   void
-  vector_value(const dealii::Point<dim> &p, dealii::Vector<double> &value) const override;
+  vector_value(const dealii::Point<dim> &p, dealii::Vector<number> &value) const override;
 
   // NOLINTEND(readability-identifier-length)
 
@@ -82,7 +82,7 @@ private:
 
   FieldType field_type;
 
-  std::shared_ptr<ReadUnstructuredVTK<dim>> reader;
+  std::shared_ptr<ReadUnstructuredVTK<dim, number>> reader;
 };
 
 PRISMS_PF_END_NAMESPACE

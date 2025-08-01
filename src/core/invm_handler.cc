@@ -212,6 +212,6 @@ InvmHandler<dim, degree, number>::compute_vector_invm()
     }
 }
 
-INSTANTIATE_TRI_TEMPLATE(InvmHandler)
+#include "core/invm_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

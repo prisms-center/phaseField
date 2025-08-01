@@ -20,13 +20,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class UserInputParameters;
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 class ConstraintHandler;
 
 template <unsigned int dim, typename number>
 class MatrixfreeHandler;
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 class SolutionHandler;
 
 template <unsigned int dim>
@@ -37,22 +37,22 @@ struct VariableAttributes;
 /**
  * @brief Base class that handles the assembly and linear solving of a field.
  */
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 class LinearSolverBase
 {
 public:
-  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
-  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<number>;
 
   /**
    * @brief Constructor.
    */
-  LinearSolverBase(const UserInputParameters<dim>       &_user_inputs,
-                   const VariableAttributes             &_variable_attributes,
-                   const MatrixfreeHandler<dim, double> &_matrix_free_handler,
-                   const ConstraintHandler<dim, degree> &_constraint_handler,
-                   SolutionHandler<dim>                 &_solution_handler,
-                   std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  LinearSolverBase(const UserInputParameters<dim>               &_user_inputs,
+                   const VariableAttributes                     &_variable_attributes,
+                   const MatrixfreeHandler<dim, number>         &_matrix_free_handler,
+                   const ConstraintHandler<dim, degree, number> &_constraint_handler,
+                   SolutionHandler<dim, number>                 &_solution_handler,
+                   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator);
 
   /**
    * @brief Destructor.
@@ -75,12 +75,12 @@ public:
    * @brief Solve the system Ax=b.
    */
   virtual void
-  solve(const double &step_length = 1.0) = 0;
+  solve(const number &step_length = 1.0) = 0;
 
   /**
    * @brief Get the l2-norm of the newton update.
    */
-  [[nodiscard]] double
+  [[nodiscard]] number
   get_newton_update_l2_norm() const
   {
     AssertThrow(newton_update != nullptr, dealii::ExcNotInitialized());
@@ -115,7 +115,7 @@ protected:
   /**
    * @brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const MatrixfreeHandler<dim, double> &
+  [[nodiscard]] const MatrixfreeHandler<dim, number> &
   get_matrix_free_handler() const
   {
     return *matrix_free_handler;
@@ -124,7 +124,7 @@ protected:
   /**
    * @brief Get the constraint handler.
    */
-  [[nodiscard]] const ConstraintHandler<dim, degree> &
+  [[nodiscard]] const ConstraintHandler<dim, degree, number> &
   get_constraint_handler() const
   {
     return *constraint_handler;
@@ -133,7 +133,7 @@ protected:
   /**
    * @brief Get the solution handler.
    */
-  [[nodiscard]] SolutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim, number> &
   get_solution_handler() const
   {
     return *solution_handler;
@@ -209,7 +209,7 @@ protected:
   /**
    * @brief Get the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
   {
     return pde_operator;
@@ -254,7 +254,7 @@ protected:
   /**
    * @brief Get the solver tolerance.
    */
-  [[nodiscard]] double
+  [[nodiscard]] number
   get_tolerance() const
   {
     return tolerance;
@@ -274,17 +274,17 @@ private:
   /**
    * @brief Matrix-free object handler for non-multigrid data.
    */
-  const MatrixfreeHandler<dim, double> *matrix_free_handler;
+  const MatrixfreeHandler<dim, number> *matrix_free_handler;
 
   /**
    * @brief Constraint handler.
    */
-  const ConstraintHandler<dim, degree> *constraint_handler;
+  const ConstraintHandler<dim, degree, number> *constraint_handler;
 
   /**
    * @brief Solution handler.
    */
-  SolutionHandler<dim> *solution_handler;
+  SolutionHandler<dim, number> *solution_handler;
 
   /**
    * @brief The field index we are solving.
@@ -324,7 +324,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
    * @brief Matrix-free operator for the residual side.
@@ -349,7 +349,7 @@ private:
   /**
    * @brief Solver tolerance
    */
-  double tolerance = 0.0;
+  number tolerance = 0.0;
 };
 
 PRISMS_PF_END_NAMESPACE

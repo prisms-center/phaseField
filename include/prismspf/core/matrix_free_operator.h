@@ -59,6 +59,7 @@ public:
   MatrixFreeOperator(
     std::map<unsigned int, VariableAttributes>              _attributes_list,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
+    Types::Index                                            _solve_block,
     Types::Index _index             = Numbers::invalid_index,
     bool         _use_local_mapping = false);
 
@@ -246,6 +247,11 @@ private:
    * @brief PDE operator object for user defined PDEs.
    */
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+
+  /**
+   * @brief The solve block that is being evaluated
+   */
+  Types::Index solve_block = 0;
 
   /**
    * @brief Field index that is being evaluated.

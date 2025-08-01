@@ -284,6 +284,7 @@ private:
   validate_dependency(const std::string  &variation,
                       DependencyType      dep_type,
                       const unsigned int &other_index,
+                      const FieldType    &other_field_type,
                       const std::string  &context) const;
 
   /**

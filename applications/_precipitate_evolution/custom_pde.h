@@ -56,16 +56,17 @@ private:
   set_initial_condition(const unsigned int       &index,
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const override;
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const override;
 
   /**
    * @brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, dealii::VectorizedArray<number>>
-                         &q_point_loc) const override;
+  compute_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   /**
    * @brief User-implemented class for the RHS of nonexplicit equations.
@@ -89,8 +90,8 @@ private:
   void
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-    const override;
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   number McV  = this->user_inputs.user_constants.get_model_constant_double("McV");
   number Mn1V = this->user_inputs.user_constants.get_model_constant_double("Mn1V");

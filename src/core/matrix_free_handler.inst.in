@@ -1,0 +1,4 @@
+for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+  {
+    template class MatrixfreeHandler<dimension, number>;
+  }

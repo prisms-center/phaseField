@@ -58,7 +58,7 @@ ElementVolume<dim, degree, number>::compute_element_volume(
           fe_values.reinit(cell_iterator);
 
           // Initialize volume to 0 for the cell
-          double cell_volume = 0.0;
+          number cell_volume = 0.0;
 
           // Sum up the JxW values at each quadrature point to compute the element volume
           // in 3D or area in 2D.
@@ -84,6 +84,6 @@ ElementVolume<dim, degree, number>::get_element_volumes() const
   return element_volume;
 };
 
-INSTANTIATE_TRI_TEMPLATE(ElementVolume)
+#include "utilities/element_volume.inst"
 
 PRISMS_PF_END_NAMESPACE

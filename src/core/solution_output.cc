@@ -211,11 +211,6 @@ SolutionOutput<dim, number>::SolutionOutput(
     }
 }
 
-template class SolutionOutput<1, float>;
-template class SolutionOutput<1, double>;
-template class SolutionOutput<2, float>;
-template class SolutionOutput<2, double>;
-template class SolutionOutput<3, float>;
-template class SolutionOutput<3, double>;
+#include "core/solution_output.inst"
 
 PRISMS_PF_END_NAMESPACE

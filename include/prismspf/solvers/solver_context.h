@@ -29,7 +29,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * fields. For example, it contains the triangulation handler and pde operator that
  * evaluates the user-specified PDEs.
  */
-template <unsigned int dim, unsigned int degree, typename number = double>
+template <unsigned int dim, unsigned int degree, typename number>
 class SolverContext
 {
 public:
@@ -38,16 +38,16 @@ public:
    */
   SolverContext(
     const UserInputParameters<dim>                         &_user_inputs,
-    const MatrixfreeHandler<dim, double>                   &_matrix_free_handler,
+    const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
     const TriangulationHandler<dim>                        &_triangulation_handler,
-    const InvmHandler<dim, degree, double>                 &_invm_handler,
-    const ConstraintHandler<dim, degree>                   &_constraint_handler,
+    const InvmHandler<dim, degree, number>                 &_invm_handler,
+    const ConstraintHandler<dim, degree, number>           &_constraint_handler,
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
     const MGInfo<dim>                                      &_mg_info,
-    SolutionHandler<dim>                                   &_solution_handler,
+    SolutionHandler<dim, number>                           &_solution_handler,
     dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-    std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+    std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
     std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
     : user_inputs(&_user_inputs)
     , matrix_free_handler(&_matrix_free_handler)
@@ -80,7 +80,7 @@ public:
   /**
    * @brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const MatrixfreeHandler<dim, double> &
+  [[nodiscard]] const MatrixfreeHandler<dim, number> &
   get_matrix_free_handler() const
   {
     Assert(matrix_free_handler != nullptr, dealii::ExcNotInitialized());
@@ -100,7 +100,7 @@ public:
   /**
    * @brief Get the invm handler.
    */
-  [[nodiscard]] const InvmHandler<dim, degree, double> &
+  [[nodiscard]] const InvmHandler<dim, degree, number> &
   get_invm_handler() const
   {
     Assert(invm_handler != nullptr, dealii::ExcNotInitialized());
@@ -110,7 +110,7 @@ public:
   /**
    * @brief Get the constraint handler.
    */
-  [[nodiscard]] const ConstraintHandler<dim, degree> &
+  [[nodiscard]] const ConstraintHandler<dim, degree, number> &
   get_constraint_handler() const
   {
     Assert(constraint_handler != nullptr, dealii::ExcNotInitialized());
@@ -150,7 +150,7 @@ public:
   /**
    * @brief Get the solution handler.
    */
-  [[nodiscard]] SolutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim, number> &
   get_solution_handler() const
   {
     Assert(solution_handler != nullptr, dealii::ExcNotInitialized());
@@ -170,7 +170,7 @@ public:
   /**
    * @brief Get the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
   {
     Assert(pde_operator != nullptr, dealii::ExcNotInitialized());
@@ -196,7 +196,7 @@ private:
   /**
    * @brief Matrix-free object handler for non-multigrid data.
    */
-  const MatrixfreeHandler<dim, double> *matrix_free_handler;
+  const MatrixfreeHandler<dim, number> *matrix_free_handler;
 
   /**
    * @brief Triangulation handler.
@@ -206,12 +206,12 @@ private:
   /**
    * @brief invm handler.
    */
-  const InvmHandler<dim, degree, double> *invm_handler;
+  const InvmHandler<dim, degree, number> *invm_handler;
 
   /**
    * @brief Constraint handler.
    */
-  const ConstraintHandler<dim, degree> *constraint_handler;
+  const ConstraintHandler<dim, degree, number> *constraint_handler;
 
   /**
    * @brief DoF handler.
@@ -231,7 +231,7 @@ private:
   /**
    * @brief Solution handler.
    */
-  SolutionHandler<dim> *solution_handler;
+  SolutionHandler<dim, number> *solution_handler;
 
   /**
    * @brief Matrix-free object handler for multigrid data.
@@ -241,7 +241,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, double>> pde_operator;
+  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
    * @brief PDE operator for float precision.

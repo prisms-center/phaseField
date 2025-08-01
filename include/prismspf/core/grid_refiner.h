@@ -9,14 +9,15 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 class GridRefiner
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit GridRefiner(GridRefinementContext<dim, degree> &grid_refinement_context)
+  explicit GridRefiner(
+    GridRefinementContext<dim, degree, number> &grid_refinement_context)
     : grid_refinement_context(grid_refinement_context)
   {
     fe_values_flags.resize(static_cast<Types::Index>(FieldType::Vector) + 1,
@@ -27,11 +28,11 @@ public:
                                    .get_refinement_criteria())
       {
         // Grab the index and field type
-        Types::Index index            = criterion.get_index();
-        FieldType    local_field_type = grid_refinement_context.get_user_inputs()
-                                       .get_variable_attributes()
-                                       .at(index)
-                                       .get_field_type();
+        const Types::Index index            = criterion.get_index();
+        const FieldType    local_field_type = grid_refinement_context.get_user_inputs()
+                                             .get_variable_attributes()
+                                             .at(index)
+                                             .get_field_type();
 
         if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
           {
@@ -221,8 +222,12 @@ public:
 
     // Step 6
     grid_refinement_context.get_invm_handler().recompute_invm();
+    const FieldType first_field = grid_refinement_context.get_user_inputs()
+                                    .get_variable_attributes()
+                                    .begin()
+                                    ->second.get_field_type();
     grid_refinement_context.get_element_volumes().compute_element_volume(
-      grid_refinement_context.get_finite_element_systems().begin()->second);
+      grid_refinement_context.get_finite_element_systems().at(first_field));
   };
 
 private:
@@ -235,7 +240,7 @@ private:
     // Create the an object for the refinement criterion at each of the quad points. This
     // will either contain the value for scalar fields, the magnitude for vector fields,
     // or the magnitude of the gradient for both of the fields.
-    std::vector<double> values(num_quad_points, 0.0);
+    std::vector<number> values(num_quad_points, 0.0);
 
     // Clear user flags
     grid_refinement_context.get_triangulation_handler().clear_user_flags();
@@ -288,9 +293,9 @@ private:
                       {
                         // Get the magnitude of the value for vector fields
                         // TODO (landinjm): Should be zeroing this out?
-                        std::vector<dealii::Vector<double>> vector_values(
+                        std::vector<dealii::Vector<number>> vector_values(
                           num_quad_points,
-                          dealii::Vector<double>(dim));
+                          dealii::Vector<number>(dim));
                         fe_values.at(local_field_type)
                           .get_function_values(
                             *grid_refinement_context.get_solution_handler()
@@ -325,7 +330,7 @@ private:
                       {
                         // Get the magnitude of the gradient for a scalar field
                         // TODO (landinjm): Should be zeroing this out?
-                        std::vector<dealii::Tensor<1, dim, double>> scalar_gradients(
+                        std::vector<dealii::Tensor<1, dim, number>> scalar_gradients(
                           num_quad_points);
                         fe_values.at(local_field_type)
                           .get_function_gradients(
@@ -341,9 +346,9 @@ private:
                     else
                       {
                         // TODO (landinjm): Should be zeroing this out?
-                        std::vector<std::vector<dealii::Tensor<1, dim, double>>>
+                        std::vector<std::vector<dealii::Tensor<1, dim, number>>>
                           vector_gradients(num_quad_points,
-                                           std::vector<dealii::Tensor<1, dim, double>>(
+                                           std::vector<dealii::Tensor<1, dim, number>>(
                                              dim));
                         fe_values.at(local_field_type)
                           .get_function_gradients(
@@ -353,7 +358,7 @@ private:
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
-                            dealii::Vector<double> vector_gradient_component_magnitude(
+                            dealii::Vector<number> vector_gradient_component_magnitude(
                               dim);
                             for (unsigned int dimension = 0; dimension < dim; dimension++)
                               {
@@ -426,7 +431,7 @@ private:
   /**
    * @brief Grid refinement context.
    */
-  GridRefinementContext<dim, degree> grid_refinement_context;
+  GridRefinementContext<dim, degree, number> grid_refinement_context;
 
   /**
    * @brief Update flags for the FEValues object as determined by the grid refinement

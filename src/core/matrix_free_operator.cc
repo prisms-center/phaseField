@@ -30,11 +30,13 @@ template <unsigned int dim, unsigned int degree, typename number>
 MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
   std::map<unsigned int, VariableAttributes>              _attributes_list,
   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
+  Types::Index                                            _solve_block,
   Types::Index                                            _index,
   bool                                                    _use_local_mapping)
   : MATRIX_FREE_OPERATOR_BASE()
   , attributes_list(_attributes_list)
   , pde_operator(std::move(_pde_operator))
+  , solve_block(_solve_block)
   , index(_index)
   , use_local_mapping(_use_local_mapping)
 {}
@@ -305,7 +307,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_explicit_rhs(var_list, q_point_loc);
+      this->pde_operator->compute_explicit_rhs(var_list, q_point_loc, solve_block);
     },
     dst,
     src,
@@ -331,7 +333,9 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_postprocess_explicit_rhs(var_list, q_point_loc);
+      this->pde_operator->compute_postprocess_explicit_rhs(var_list,
+                                                           q_point_loc,
+                                                           solve_block);
     },
     dst,
     src,
@@ -357,7 +361,10 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list,
+                                                  q_point_loc,
+                                                  solve_block,
+                                                  index);
     },
     dst,
     src,
@@ -383,7 +390,10 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_rhs(var_list, q_point_loc, index);
+      this->pde_operator->compute_nonexplicit_rhs(var_list,
+                                                  q_point_loc,
+                                                  solve_block,
+                                                  index);
     },
     dst,
     src_solution_subset,
@@ -411,7 +421,10 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list,
+                                                  q_point_loc,
+                                                  solve_block,
+                                                  index);
     },
     dst,
     src,
@@ -463,13 +476,16 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
     [this](VariableContainer<dim, degree, number> &var_list,
            const dealii::Point<dim, SizeType>     &q_point_loc)
     {
-      this->pde_operator->compute_nonexplicit_lhs(var_list, q_point_loc, index);
+      this->pde_operator->compute_nonexplicit_lhs(var_list,
+                                                  q_point_loc,
+                                                  solve_block,
+                                                  index);
     },
     dst,
     src_solution_subset,
     cell_range);
 }
 
-INSTANTIATE_TRI_TEMPLATE(MatrixFreeOperator)
+#include "core/matrix_free_operator.inst"
 
 PRISMS_PF_END_NAMESPACE

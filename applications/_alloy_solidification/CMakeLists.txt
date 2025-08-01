@@ -3,37 +3,23 @@
 #  Adapted from the ASPECT CMake file
 ##
 
-cmake_minimum_required(VERSION 3.8.0)
+cmake_minimum_required(VERSION 3.13.4)
 
-include(${CMAKE_SOURCE_DIR}/../../cmake/setup_application.cmake)
+# Get the core library's directory (3 levels up from the macro file)
+get_filename_component(
+    PRISMS_PF_CORE_DIR
+    ${CMAKE_CURRENT_LIST_DIR}/../../..
+    ABSOLUTE
+)
 
+# Include core library's configuration
+include(${PRISMS_PF_CORE_DIR}/cmake/prisms_pf_config.cmake)
+
+# Include setup script
+include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
+
+# Create a project for the application
 project(myapp CXX)
 
-# Set location of files
-include_directories(${CMAKE_SOURCE_DIR}/../../include)
-include_directories(${CMAKE_SOURCE_DIR}/../../src)
-include_directories(${CMAKE_SOURCE_DIR})
-
-# Set the location of the main.cc file
-set(TARGET_SRC "${CMAKE_SOURCE_DIR}/../main.cc")
-
-# Check if there has been updates to main library
-set(dir ${PROJECT_SOURCE_DIR}/../..)
-EXECUTE_PROCESS(COMMAND "rm" "CMakeCache.txt" WORKING_DIRECTORY ${dir})
-EXECUTE_PROCESS(COMMAND "cmake" "CMakeLists.txt" WORKING_DIRECTORY ${dir})
-EXECUTE_PROCESS(COMMAND "make" WORKING_DIRECTORY ${dir})
-
-# Set targets & link libraries for the build type
-if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
-  add_executable(main_debug ${TARGET_SRC})
-  set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
-  deal_ii_setup_target(main_debug DEBUG)
-  target_link_libraries(main_debug ${CMAKE_SOURCE_DIR}/../../libprisms-pf-debug.a)
-endif()
-
-if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
-  add_executable(main_release ${TARGET_SRC})
-  set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
-  deal_ii_setup_target(main_release RELEASE)
-  target_link_libraries(main_release ${CMAKE_SOURCE_DIR}/../../libprisms-pf-release.a)
-endif()
+# Set up the application
+prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})

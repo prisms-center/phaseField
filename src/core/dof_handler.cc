@@ -190,6 +190,6 @@ DofHandler<dim>::get_mg_dof_handlers(unsigned int level) const
   return const_mg_dof_handlers[level - global_min_level];
 }
 
-INSTANTIATE_UNI_TEMPLATE(DofHandler)
+#include "core/dof_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

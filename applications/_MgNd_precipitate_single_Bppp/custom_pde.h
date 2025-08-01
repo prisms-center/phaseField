@@ -1,122 +1,130 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#pragma once
+#include <core/matrixFreePDE.h>
 
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/variable_attributes.h>
+using namespace dealii;
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-PRISMS_PF_BEGIN_NAMESPACE
-
-/**
- * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
- * PDEs.
- *
- * @tparam dim The number of dimensions in the problem.
- * @tparam degree The polynomial degree of the shape functions.
- * @tparam number Datatype to use. Either double or float.
- */
-template <int dim, int degree, typename number>
-class CustomPDE : public MatrixFreeOperator<dim, degree, number>
+template <int dim, int degree>
+class CustomPDE : public MatrixFreePDE<dim, degree>
 {
 public:
-  using ScalarValue = dealii::VectorizedArray<number>;
-  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  CustomPDE(UserInputParameters<dim> _userInputs)
+    : MatrixFreePDE<dim, degree>(_userInputs)
+    , userInputs(_userInputs)
+  {
+    c_dependent_misfit = false;
+    for (unsigned int i = 0; i < dim; i++)
+      {
+        for (unsigned int j = 0; j < dim; j++)
+          {
+            if (std::abs(sfts_linear1[i][j]) > 1.0e-12)
+              {
+                c_dependent_misfit = true;
+              }
+          }
+      }
+  };
 
-  /**
-   * @brief Constructor for concurrent solves.
-   */
-  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
-            const std::map<unsigned int, VariableAttributes> &subset_attributes)
-    : MatrixFreeOperator<dim, degree, number>(_user_inputs, subset_attributes)
-  {}
+  // Function to set the initial conditions (in ICs_and_BCs.h)
+  void
+  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
+                      [[maybe_unused]] const unsigned int index,
+                      [[maybe_unused]] number            &scalar_IC,
+                      [[maybe_unused]] Vector<double>    &vector_IC) override;
 
-  /**
-   * @brief Constructor for single solves.
-   */
-  CustomPDE(const UserInputParameters<dim>                   &_user_inputs,
-            const unsigned int                               &_current_index,
-            const std::map<unsigned int, VariableAttributes> &subset_attributes)
-    : MatrixFreeOperator<dim, degree, number>(_user_inputs,
-                                              _current_index,
-                                              subset_attributes)
-  {}
+  // Function to set the non-uniform Dirichlet boundary conditions (in
+  // ICs_and_BCs.h)
+  void
+  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
+                            [[maybe_unused]] const unsigned int index,
+                            [[maybe_unused]] const unsigned int direction,
+                            [[maybe_unused]] const number       time,
+                            [[maybe_unused]] number            &scalar_BC,
+                            [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
-  /**
-   * @brief User-implemented class for the initial conditions.
-   */
+#include <core/typeDefs.h>
+
+  const UserInputParameters<dim> userInputs;
+
+  // Function to set the RHS of the governing equations for explicit time
+  // dependent equations (in equations.h)
   void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const override;
+  explicitEquationRHS(
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
-  /**
-   * @brief User-implemented class for the RHS of explicit equations.
-   */
+  // Function to set the RHS of the governing equations for all other equations
+  // (in equations.h)
   void
-  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, dealii::VectorizedArray<number>>
-                         &q_point_loc) const override;
+  nonExplicitEquationRHS(
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
-  /**
-   * @brief User-implemented class for the RHS of nonexplicit equations.
-   */
+  // Function to set the LHS of the governing equations (in equations.h)
   void
-  compute_nonexplicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  equationLHS(
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
+                                                              &variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
 
-  /**
-   * @brief User-implemented class for the LHS of nonexplicit equations.
-   */
+// Function to set postprocessing expressions (in postprocess.h)
+#ifdef POSTPROCESS_FILE_EXISTS
   void
-  compute_nonexplicit_lhs(VariableContainer<dim, degree, number> &variable_list,
-                          const dealii::Point<dim, dealii::VectorizedArray<number>>
-                            &q_point_loc) const override;
+  postProcessedFields(
+    [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
+      &variable_list,
+    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
+                                                              &pp_variable_list,
+    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
+    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
+#endif
 
-  /**
-   * @brief User-implemented class for the RHS of postprocessed explicit equations.
-   */
-  void
-  compute_postprocess_explicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-    const override;
+// Function to set the nucleation probability (in nucleation.h)
+#ifdef NUCLEATION_FILE_EXISTS
+  double
+  getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
+                           [[maybe_unused]] number                 dV) const override;
+#endif
 
-  number McV  = this->user_inputs.user_constants.get_model_constant_double("McV");
-  number Mn1V = this->user_inputs.user_constants.get_model_constant_double("Mn1V");
-  dealii::Tensor<2, dim, number> Kn1 =
-    this->user_inputs.user_constants.get_model_constant_rank_2_tensor("Kn1");
-  number W = this->user_inputs.user_constants.get_model_constant_double("W");
-  bool   n_dependent_stiffness =
-    this->user_inputs.user_constants.get_model_constant_bool("n_dependent_stiffness");
-  dealii::Tensor<2, dim, number> sfts_linear1 =
-    this->user_inputs.user_constants.get_model_constant_rank_2_tensor("sfts_linear1");
-  dealii::Tensor<2, dim, number> sfts_const1 =
-    this->user_inputs.user_constants.get_model_constant_rank_2_tensor("sfts_const1");
+  // ================================================================
+  // Methods specific to this subclass
+  // ================================================================
 
-  number A2 = this->user_inputs.user_constants.get_model_constant_double("A2");
-  number A1 = this->user_inputs.user_constants.get_model_constant_double("A1");
-  number A0 = this->user_inputs.user_constants.get_model_constant_double("A0");
-  number B2 = this->user_inputs.user_constants.get_model_constant_double("B2");
-  number B1 = this->user_inputs.user_constants.get_model_constant_double("B1");
-  number B0 = this->user_inputs.user_constants.get_model_constant_double("B0");
+  // ================================================================
+  // Model constants specific to this subclass
+  // ================================================================
 
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3), number> CIJ_Mg =
-    this->user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_Mg");
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3), number> CIJ_Beta =
-    this->user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_Beta");
+  number         McV  = userInputs.get_model_constant_double("McV");
+  number         Mn1V = userInputs.get_model_constant_double("Mn1V");
+  Tensor<2, dim> Kn1  = userInputs.get_model_constant_rank_2_tensor("Kn1");
+  number         W    = userInputs.get_model_constant_double("W");
+  bool           n_dependent_stiffness =
+    userInputs.get_model_constant_bool("n_dependent_stiffness");
+  Tensor<2, dim> sfts_linear1 =
+    userInputs.get_model_constant_rank_2_tensor("sfts_linear1");
+  Tensor<2, dim> sfts_const1 = userInputs.get_model_constant_rank_2_tensor("sfts_const1");
+
+  double A2 = userInputs.get_model_constant_double("A2");
+  double A1 = userInputs.get_model_constant_double("A1");
+  double A0 = userInputs.get_model_constant_double("A0");
+  double B2 = userInputs.get_model_constant_double("B2");
+  double B1 = userInputs.get_model_constant_double("B1");
+  double B0 = userInputs.get_model_constant_double("B0");
+
+  const static unsigned int  CIJ_tensor_size = 2 * dim - 1 + dim / 3;
+  Tensor<2, CIJ_tensor_size> CIJ_Mg =
+    userInputs.get_model_constant_elasticity_tensor("CIJ_Mg");
+  Tensor<2, CIJ_tensor_size> CIJ_Beta =
+    userInputs.get_model_constant_elasticity_tensor("CIJ_Beta");
 
   bool c_dependent_misfit;
-};
 
-PRISMS_PF_END_NAMESPACE
+  // ================================================================
+};
