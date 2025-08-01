@@ -146,6 +146,10 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/scripts")
 # Collect source files
 add_subdirectory(src)
 
+# Grab the source and include files
+get_property(PRISMS_PF_SOURCE_FILES GLOBAL PROPERTY PRISMS_PF_SOURCE_FILES)
+get_property(PRISMS_PF_HEADER_FILES GLOBAL PROPERTY PRISMS_PF_HEADER_FILES)
+
 # Test stuff goes here
 
 # Make and ninja build options

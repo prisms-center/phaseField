@@ -26,8 +26,12 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     deal_ii_setup_target(prisms_pf_utilities_${_build_lowercase} DEBUG)
 endforeach()
 
+file(
+    GLOB _header
+    CONFIGURE_DEPENDS
+    ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h
+)
+
 expand_template_instantiations(prisms_pf_utilities "${_inst}")
 
-list(APPEND PRISMS_PF_SOURCE_FILES ${_src})
-
-set(PRISMS_PF_SOURCE_FILES ${PRISMS_PF_SOURCE_FILES} PARENT_SCOPE)
+collect_header_and_src_files("${_src}" "${_header}")
