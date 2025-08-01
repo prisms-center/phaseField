@@ -68,8 +68,8 @@ private:
   set_initial_condition(const unsigned int       &index,
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const override;
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const override;
 
   /**
    * @brief User-implemented class for nonuniform boundary conditions.

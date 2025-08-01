@@ -30,7 +30,7 @@ public:
   void
   setInitialCondition([[maybe_unused]] const Point<dim>  &p,
                       [[maybe_unused]] const unsigned int index,
-                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] number            &scalar_IC,
                       [[maybe_unused]] Vector<double>    &vector_IC) override;
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
@@ -39,8 +39,8 @@ public:
   setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
                             [[maybe_unused]] const unsigned int index,
                             [[maybe_unused]] const unsigned int direction,
-                            [[maybe_unused]] const double       time,
-                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] const number       time,
+                            [[maybe_unused]] number            &scalar_BC,
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
@@ -90,7 +90,7 @@ private:
 #ifdef NUCLEATION_FILE_EXISTS
   double
   getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
-                           [[maybe_unused]] double                 dV) const override;
+                           [[maybe_unused]] number                 dV) const override;
 #endif
 
   // ================================================================
@@ -101,10 +101,10 @@ private:
   // Model constants specific to this subclass
   // ================================================================
 
-  double         McV  = userInputs.get_model_constant_double("McV");
-  double         Mn1V = userInputs.get_model_constant_double("Mn1V");
+  number         McV  = userInputs.get_model_constant_double("McV");
+  number         Mn1V = userInputs.get_model_constant_double("Mn1V");
   Tensor<2, dim> Kn1  = userInputs.get_model_constant_rank_2_tensor("Kn1");
-  double         W    = userInputs.get_model_constant_double("W");
+  number         W    = userInputs.get_model_constant_double("W");
   bool           n_dependent_stiffness =
     userInputs.get_model_constant_bool("n_dependent_stiffness");
   Tensor<2, dim> sfts_linear1 =

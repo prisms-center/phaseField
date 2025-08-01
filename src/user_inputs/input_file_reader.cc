@@ -521,7 +521,7 @@ InputFileReader::declare_load_ic_parameters()
                                   dealii::Patterns::Bool(),
                                   "Whether to read any initial conditions from file.");
 
-  for (unsigned int i = 0; i < LoadInitialConditionParameters::max_files; i++)
+  for (unsigned int i = 0; i < Numbers::max_subsections; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
       {

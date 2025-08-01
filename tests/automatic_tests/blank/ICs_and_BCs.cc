@@ -22,8 +22,8 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
-  [[maybe_unused]] double                   &scalar_value,
-  [[maybe_unused]] double                   &vector_component_value) const
+  [[maybe_unused]] number                   &scalar_value,
+  [[maybe_unused]] number                   &vector_component_value) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

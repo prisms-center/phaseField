@@ -19,7 +19,7 @@ public:
   void
   setInitialCondition([[maybe_unused]] const dealii::Point<dim> &p,
                       [[maybe_unused]] const unsigned int        index,
-                      [[maybe_unused]] double                   &scalar_IC,
+                      [[maybe_unused]] number                   &scalar_IC,
                       [[maybe_unused]] dealii::Vector<double>   &vector_IC) override;
 
   // Function to set the non-uniform Dirichlet
@@ -28,8 +28,8 @@ public:
   setNonUniformDirichletBCs([[maybe_unused]] const dealii::Point<dim> &p,
                             [[maybe_unused]] const unsigned int        index,
                             [[maybe_unused]] const unsigned int        direction,
-                            [[maybe_unused]] const double              time,
-                            [[maybe_unused]] double                   &scalar_BC,
+                            [[maybe_unused]] const number              time,
+                            [[maybe_unused]] number                   &scalar_BC,
                             [[maybe_unused]] dealii::Vector<double> &vector_BC) override;
 
 private:
@@ -82,7 +82,7 @@ private:
 #ifdef NUCLEATION_FILE_EXISTS
   double
   getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
-                           [[maybe_unused]] double                 dV) const override;
+                           [[maybe_unused]] number                 dV) const override;
 #endif
 
   // ================================================================

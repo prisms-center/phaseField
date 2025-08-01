@@ -21,7 +21,7 @@ public:
   void
   setInitialCondition([[maybe_unused]] const Point<dim>  &p,
                       [[maybe_unused]] const unsigned int index,
-                      [[maybe_unused]] double            &scalar_IC,
+                      [[maybe_unused]] number            &scalar_IC,
                       [[maybe_unused]] Vector<double>    &vector_IC) override;
 
   // Function to set the non-uniform Dirichlet boundary conditions (in
@@ -30,8 +30,8 @@ public:
   setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
                             [[maybe_unused]] const unsigned int index,
                             [[maybe_unused]] const unsigned int direction,
-                            [[maybe_unused]] const double       time,
-                            [[maybe_unused]] double            &scalar_BC,
+                            [[maybe_unused]] const number       time,
+                            [[maybe_unused]] number            &scalar_BC,
                             [[maybe_unused]] Vector<double>    &vector_BC) override;
 
 private:
@@ -81,7 +81,7 @@ private:
 #ifdef NUCLEATION_FILE_EXISTS
   double
   getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
-                           [[maybe_unused]] double                 dV) const override;
+                           [[maybe_unused]] number                 dV) const override;
 #endif
 
   // ================================================================
@@ -198,7 +198,7 @@ CustomPDE<dim, degree>::create_triangulation(
   for (const auto &cell : tria.active_cell_iterators())
     {
       const Point<dim> cell_center          = cell->center();
-      const double     distance_from_center = cell_center.distance(semicircle_origin);
+      const number     distance_from_center = cell_center.distance(semicircle_origin);
 
       if (cell_center[0] > userInputs.size[0] + 1.0e-10 &&
           distance_from_center > 0.1 * userInputs.size[1])
