@@ -53,7 +53,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
 
       scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
     }
-  scalar_value = std::min(scalar_value, 1.0);
+  scalar_value = std::min(scalar_value, static_cast<number>(1.0));
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

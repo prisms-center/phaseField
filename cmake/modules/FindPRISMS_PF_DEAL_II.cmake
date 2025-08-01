@@ -21,7 +21,8 @@ message(
 )
 
 # Check the deal.II build types match the ones we are requesting
-if(NOT "${CMAKE_BUILD_TYPE}" MATCHES "${DEAL_II_BUILD_TYPE}")
+string(FIND "${DEAL_II_BUILD_TYPE}" "${CMAKE_BUILD_TYPE}" _pos)
+if(_pos EQUAL -1)
     message(
         FATAL_ERROR
         "Mismatch between the build types that deal.II was built with and "
