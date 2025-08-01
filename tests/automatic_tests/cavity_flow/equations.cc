@@ -55,7 +55,8 @@ void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  Types::Index                                                                solve_block,
+  [[maybe_unused]] [[maybe_unused]] Types::Index solve_block) const
 {
   if (solve_block == 1)
     {
@@ -96,6 +97,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index                                                                solve_block,
   [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
@@ -117,6 +119,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index                                                                solve_block,
   [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
@@ -133,7 +136,8 @@ void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  Types::Index                                                                solve_block,
+  [[maybe_unused]] [[maybe_unused]] Types::Index solve_block) const
 {
   ScalarValue div_u = variable_list.template get_divergence<ScalarValue>(0);
 

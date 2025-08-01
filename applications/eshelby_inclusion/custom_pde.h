@@ -97,6 +97,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
@@ -106,6 +107,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
@@ -114,8 +116,8 @@ private:
   void
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-    const override;
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
   dealii::Tensor<2, CIJ_tensor_size, number> compliance =

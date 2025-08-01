@@ -89,6 +89,7 @@ private:
   compute_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index solve_block) const override;
 
   /**
@@ -98,6 +99,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
@@ -109,6 +111,7 @@ private:
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     Types::Index                                               solve_block,
+    Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
   /**
@@ -118,6 +121,7 @@ private:
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index solve_block) const override;
 
   number Re = 1000.0;
