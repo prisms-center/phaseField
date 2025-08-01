@@ -4,7 +4,10 @@
 
 macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     # Add the script files
-    add_subdirectory("${PRISMS_PF_CORE_DIR}/cmake/scripts" "${CMAKE_BINARY_DIR}/scripts_build")
+    add_subdirectory(
+        "${PRISMS_PF_CORE_DIR}/cmake/scripts"
+        "${CMAKE_BINARY_DIR}/scripts_build"
+    )
 
     # Enable compile commands export
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

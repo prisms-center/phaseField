@@ -15,7 +15,6 @@ endforeach()
 # Grab the version of PRISMS-PF
 file(STRINGS "${PRISMS_PF_CORE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
 
-
 message(STATUS "")
 message(STATUS "=========================================================")
 message(STATUS "Configuring application with PRISMS-PF v${PRISMS_PF_VERSION}")

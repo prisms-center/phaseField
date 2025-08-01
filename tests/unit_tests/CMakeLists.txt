@@ -64,6 +64,52 @@ deal_ii_initialize_cached_variables()
 
 project(prisms_pf_unit_tests)
 
+# Check that deal.II was built with vtk or we can find the package ourselves
+set(VTK_BUILT_SEPARATELY
+    OFF
+    CACHE BOOL
+    "Whether the installed VTK library was built outside of deal.II."
+)
+if(NOT DEAL_II_WITH_VTK)
+    find_package(VTK QUIET HINTS ${VTK_DIR} $ENV{VTK_DIR})
+    if(NOT VTK_FOUND)
+        message(SEND_ERROR "\n**deal.II was built without support for VTK!\n")
+        set(DEALII_INSTALL_VALID OFF)
+    endif()
+    set(VTK_VERSION "${VTK_VERSION}")
+    set(VTK_MAJOR_VERSION "${VTK_MAJOR_VERSION}")
+    set(VTK_MINOR_VERSION "${VTK_MINOR_VERSION}")
+    set(VTK_INCLUDE_DIR
+        ${VTK_PREFIX_PATH}/include/vtk-${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}
+    )
+    # Filter the included libraries
+    set(_libraries)
+    foreach(_library ${VTK_LIBRARIES})
+        if(
+            NOT ${_library} MATCHES "Python"
+            AND NOT ${_library} MATCHES "MPI4Py"
+        )
+            get_target_property(
+                _configurations
+                ${_library}
+                IMPORTED_CONFIGURATIONS
+            )
+            if(_configurations)
+                foreach(_configuration ${_configurations})
+                    get_target_property(
+                        _imported_location
+                        ${_library}
+                        IMPORTED_LOCATION_${_configuration}
+                    )
+                    list(APPEND _libraries ${_imported_location})
+                endforeach()
+            endif()
+        endif()
+    endforeach()
+    set(VTK_NEW_LIBRARIES ${_libraries})
+    set(VTK_BUILT_SEPARATELY ON)
+endif()
+
 # Create compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(FORCE_COLORED_OUTPUT
@@ -123,6 +169,10 @@ add_executable(main ${TARGET_SRC})
 set_property(TARGET main PROPERTY OUTPUT_NAME main)
 deal_ii_setup_target(main DEBUG)
 target_link_libraries(main ${CMAKE_SOURCE_DIR}/../../libprisms-pf-debug.a)
+if(${VTK_BUILT_SEPARATELY})
+    include_directories(SYSTEM ${VTK_INCLUDE_DIR})
+    target_link_libraries(main ${VTK_NEW_LIBRARIES})
+endif()
 
 # CTest
 add_test(NAME PRISMS_PF_Testsuite COMMAND main)
