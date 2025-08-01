@@ -15,6 +15,7 @@ if test ! -d src -o ! -d include -o ! -d applications; then
 	exit 1
 fi
 
+# Check that a file was provided
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <file_to_copy>"
     exit 1
@@ -22,6 +23,7 @@ fi
 
 file_to_copy=$1
 
+# Check that the file exists
 if [ ! -f "$file_to_copy" ]; then
     echo "File '$file_to_copy' does not exist."
     exit 1
@@ -29,6 +31,7 @@ fi
 
 filename=$(basename "$file_to_copy")
 
+# These are the required files for a valid application
 required_files=("main.cc" "custom_pde.h")
 
 copy_to_valid_apps_in_dir() {
