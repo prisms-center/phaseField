@@ -33,11 +33,7 @@ public:
    */
   SolverBase(const SolverContext<dim, degree> &_solver_context,
              const FieldSolveType             &_field_solve_type,
-             Types::Index                      _solve_priority = 0)
-    : solver_context(std::make_shared<SolverContext<dim, degree>>(_solver_context))
-    , field_solve_type(_field_solve_type)
-    , solve_priority(_solve_priority)
-  {}
+             Types::Index                      _solve_priority = 0);
 
   /**
    * @brief Destructor.
@@ -78,72 +74,25 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init()
-  {
-    // Update the subset of variable attributes
-    update_subset_attributes(field_solve_type, solve_priority);
-
-    // If the subset attribute is empty return early
-    if (solver_is_empty())
-      {
-        ConditionalOStreams::pout_base() << "  no fields for this solver exist\n"
-                                         << std::flush;
-        return;
-      }
-
-    // Set the initial condition
-    set_initial_condition();
-
-    // Apply constraints. This part is neccessary so they are taken into account for
-    // adaptive meshing
-    for (const auto &[index, variable] : subset_attributes)
-      {
-        get_constraint_handler().get_constraint(index).distribute(
-          *(get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
-      }
-  };
+  init();
 
   /**
    * @brief Reinitialize the solver.
    */
   virtual void
-  reinit()
-  {
-    // If the subset attribute is empty return early
-    if (solver_is_empty())
-      {
-        return;
-      }
-
-    // Apply constraints. This part is neccessary so they are taken into account for
-    // adaptive meshing
-    for (const auto &[index, variable] : subset_attributes)
-      {
-        get_constraint_handler().get_constraint(index).distribute(
-          *(get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
-      }
-  };
+  reinit();
 
   /**
    * @brief Solve for a single update step.
    */
   virtual void
-  solve()
-  {
-    // If the subset attribute is empty return early
-    if (solver_is_empty())
-      {
-        return;
-      }
-
-    // Do nothing
-  };
+  solve();
 
   /**
    * @brief Print information about the solver to summary.log.
    */
   virtual void
-  print() {};
+  print();
 
   /**
    * @brief Whether the subset attributes is empty.

@@ -12,6 +12,7 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/pde_problem.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_handler.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver_handler.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/triangulation_handler.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/variable_attribute_loader.cc
@@ -31,6 +32,7 @@ set(_inst
     pde_problem.inst.in
     solution_handler.inst.in
     solution_output.inst.in
+    solver_handler.inst.in
     triangulation_handler.inst.in
     variable_container.inst.in
 )

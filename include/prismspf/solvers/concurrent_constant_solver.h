@@ -20,10 +20,7 @@ public:
    * @brief Constructor.
    */
   explicit ConcurrentConstantSolver(const SolverContext<dim, degree> &_solver_context,
-                                    Types::Index                      _solve_priority = 0)
-    : ConcurrentSolver<dim, degree, number>(_solver_context,
-                                            FieldSolveType::ExplicitConstant,
-                                            _solve_priority) {};
+                                    Types::Index _solve_priority = 0);
 
   /**
    * @brief Destructor.
@@ -64,47 +61,25 @@ public:
    * @brief Initialize the solver.
    */
   void
-  init() override
-  {
-    // Call the base class init
-    this->ConcurrentSolver<dim, degree, number>::init();
-
-    // Do nothing
-  };
+  init() override;
 
   /**
    * @brief Reinitialize the solver.
    */
   void
-  reinit() override
-  {
-    // Call the base class reinit
-    this->ConcurrentSolver<dim, degree, number>::reinit();
-
-    // Do nothing
-  };
+  reinit() override;
 
   /**
    * @brief Solve for a single update step.
    */
   void
-  solve() override
-  {
-    // Call the base class solve
-    this->ConcurrentSolver<dim, degree, number>::solve();
-
-    // Do nothing
-  };
+  solve() override;
 
   /**
    * @brief Print information about the solver to summary.log.
    */
   void
-  print() override
-  {
-    // Print the base class information
-    this->ConcurrentSolver<dim, degree, number>::print();
-  }
+  print() override;
 };
 
 PRISMS_PF_END_NAMESPACE
