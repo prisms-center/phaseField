@@ -84,11 +84,16 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
         set(TARGET_SRC ${TARGET_SRC_OVERRIDE})
     endif()
 
+    foreach(_build ${PRISMS_PF_BUILD_TYPES})
+        string(TOLOWER ${_build} _build_lowercase)
+        add_executable(main_${_build_lowercase} ${TARGET_SRC})
+    endforeach()
+
+    expand_template_instantiations(main "custom_pde.inst.in")
+
     # Set targets & link libraries for the build type
     if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
-        add_executable(main_debug ${TARGET_SRC})
         set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
-        expand_template_instantiations(main_debug "custom_pde.inst.in")
         deal_ii_setup_target(main_debug DEBUG)
         target_link_libraries(
             main_debug
@@ -105,9 +110,7 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     endif()
 
     if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
-        add_executable(main_release ${TARGET_SRC})
         set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
-        expand_template_instantiations(main_release "custom_pde.inst.in")
         deal_ii_setup_target(main_release RELEASE)
         target_link_libraries(
             main_release

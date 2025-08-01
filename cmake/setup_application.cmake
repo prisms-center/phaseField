@@ -215,3 +215,12 @@ add_custom_target(
         *.vtk *.vtu *.pvtu
     COMMENT "distclean invoked"
 )
+
+# List of build types
+if("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+    list(APPEND PRISMS_PF_BUILD_TYPES "Debug")
+endif()
+
+if("${CMAKE_BUILD_TYPE}" MATCHES "Release")
+    list(APPEND PRISMS_PF_BUILD_TYPES "Release")
+endif()
