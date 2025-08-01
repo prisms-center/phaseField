@@ -72,4 +72,6 @@ customNonuniformDirichlet<dim>::set_nonuniform_dirichlet(
 INSTANTIATE_UNI_TEMPLATE(customInitialCondition)
 INSTANTIATE_UNI_TEMPLATE(customNonuniformDirichlet)
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

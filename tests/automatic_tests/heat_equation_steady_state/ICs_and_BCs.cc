@@ -47,4 +47,6 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] number                   &vector_component_value) const
 {}
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

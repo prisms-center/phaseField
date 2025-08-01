@@ -126,6 +126,4 @@ private:
     this->get_user_inputs().get_user_constants().get_model_constant_double("KnV");
 };
 
-#include "custom_pde.inst"
-
 PRISMS_PF_END_NAMESPACE

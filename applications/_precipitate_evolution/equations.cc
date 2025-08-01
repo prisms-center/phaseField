@@ -103,4 +103,6 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] Types::Index solve_block) const
 {}
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

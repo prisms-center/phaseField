@@ -114,4 +114,6 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   variable_list.set_value_term(2, f_tot);
 }
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

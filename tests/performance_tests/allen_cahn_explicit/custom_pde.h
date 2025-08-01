@@ -245,6 +245,4 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)
 
-#include "custom_pde.inst"
-
 PRISMS_PF_END_NAMESPACE

@@ -55,8 +55,7 @@ void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] Types::Index solve_block) const
 {
   if (solve_block == 1)
     {
@@ -98,7 +97,6 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
   if (index == 2)
@@ -120,7 +118,6 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
   if (index == 2)
@@ -136,12 +133,13 @@ void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] Types::Index solve_block) const
 {
   ScalarValue div_u = variable_list.template get_divergence<ScalarValue>(0);
 
   variable_list.set_value_term(3, div_u);
 }
+
+#include "custom_pde.inst"
 
 PRISMS_PF_END_NAMESPACE

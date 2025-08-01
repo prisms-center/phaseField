@@ -95,4 +95,6 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
     }
 }
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE
