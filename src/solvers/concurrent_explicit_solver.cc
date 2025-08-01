@@ -7,8 +7,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 ConcurrentExplicitSolver<dim, degree, number>::ConcurrentExplicitSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  Types::Index                              _solve_priority)
   : ConcurrentSolver<dim, degree, number>(_solver_context,
                                           FieldSolveType::Explicit,
                                           _solve_priority)

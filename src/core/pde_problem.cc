@@ -48,10 +48,10 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-PDEProblem<dim, degree>::PDEProblem(
+template <unsigned int dim, unsigned int degree, typename number>
+PDEProblem<dim, degree, number>::PDEProblem(
   const UserInputParameters<dim>                                &_user_inputs,
-  const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator,
+  const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
   , mg_info(_user_inputs)
@@ -90,16 +90,16 @@ PDEProblem<dim, degree>::PDEProblem(
   , solver_handler(solver_context)
 {}
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-PDEProblem<dim, degree>::init_system()
+PDEProblem<dim, degree, number>::init_system()
 {
   const unsigned int n_proc = dealii::Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
   ConditionalOStreams::pout_base() << "number of processes: " << n_proc << "\n"
                                    << std::flush;
 
-  const unsigned int n_vect_doubles = dealii::VectorizedArray<double>::size();
-  const unsigned int n_vect_bits    = 8 * sizeof(double) * n_vect_doubles;
+  const unsigned int n_vect_doubles = dealii::VectorizedArray<number>::size();
+  const unsigned int n_vect_bits    = 8 * sizeof(number) * n_vect_doubles;
 
   ConditionalOStreams::pout_base()
     << "vectorization over " << n_vect_doubles << " doubles = " << n_vect_bits
@@ -278,11 +278,11 @@ PDEProblem<dim, degree>::init_system()
   // Output initial condition
   Timer::start_section("Output");
   ConditionalOStreams::pout_base() << "outputting initial condition...\n" << std::flush;
-  SolutionOutput<dim>(solution_handler.get_solution_vector(),
-                      dof_handler.get_dof_handlers(),
-                      degree,
-                      "solution",
-                      *user_inputs);
+  SolutionOutput<dim, number>(solution_handler.get_solution_vector(),
+                              dof_handler.get_dof_handlers(),
+                              degree,
+                              "solution",
+                              *user_inputs);
 
   // Print the l2-norms and integrals of each solution
   ConditionalOStreams::pout_base()
@@ -299,7 +299,7 @@ PDEProblem<dim, degree>::init_system()
 
       if (local_field_type == FieldType::Vector)
         {
-          std::vector<double> integrated_values(dim, 0.0);
+          std::vector<number> integrated_values(dim, 0.0);
           integrator.compute_integral(integrated_values,
                                       *dof_handler.get_dof_handlers()[index],
                                       *vector);
@@ -311,7 +311,7 @@ PDEProblem<dim, degree>::init_system()
         }
       else
         {
-          double integrated_value = 0.0;
+          number integrated_value = 0.0;
           integrator.compute_integral(integrated_value,
                                       *dof_handler.get_dof_handlers()[index],
                                       *vector);
@@ -325,9 +325,9 @@ PDEProblem<dim, degree>::init_system()
   Timer::end_section("Output");
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-PDEProblem<dim, degree>::solve_increment()
+PDEProblem<dim, degree, number>::solve_increment()
 {
   Timer::start_section("Update time-dependent constraints");
   // Update the time-dependent constraints
@@ -364,9 +364,9 @@ PDEProblem<dim, degree>::solve_increment()
                        update_postprocssed);
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-PDEProblem<dim, degree>::solve()
+PDEProblem<dim, degree, number>::solve()
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"
@@ -423,11 +423,11 @@ PDEProblem<dim, degree>::solve()
             user_inputs->get_temporal_discretization().get_increment()))
         {
           Timer::start_section("Output");
-          SolutionOutput<dim>(solution_handler.get_solution_vector(),
-                              dof_handler.get_dof_handlers(),
-                              degree,
-                              "solution",
-                              *user_inputs);
+          SolutionOutput<dim, number>(solution_handler.get_solution_vector(),
+                                      dof_handler.get_dof_handlers(),
+                                      degree,
+                                      "solution",
+                                      *user_inputs);
 
           // Print the l2-norms and integrals of each solution
           ConditionalOStreams::pout_base()
@@ -444,7 +444,7 @@ PDEProblem<dim, degree>::solve()
 
               if (local_field_type == FieldType::Vector)
                 {
-                  std::vector<double> integrated_values(dim, 0.0);
+                  std::vector<number> integrated_values(dim, 0.0);
                   integrator.compute_integral(integrated_values,
                                               *dof_handler.get_dof_handlers()[index],
                                               *vector);
@@ -457,7 +457,7 @@ PDEProblem<dim, degree>::solve()
                 }
               else
                 {
-                  double integrated_value = 0.0;
+                  number integrated_value = 0.0;
                   integrator.compute_integral(integrated_value,
                                               *dof_handler.get_dof_handlers()[index],
                                               *vector);
@@ -473,9 +473,9 @@ PDEProblem<dim, degree>::solve()
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-PDEProblem<dim, degree>::run()
+PDEProblem<dim, degree, number>::run()
 {
   // Print a warning if running in DEBUG mode
   ConditionalOStreams::pout_verbose()

@@ -7,9 +7,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 ConcurrentSolver<dim, degree, number>::ConcurrentSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  const FieldSolveType             &_field_solve_type,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  const FieldSolveType                     &_field_solve_type,
+  Types::Index                              _solve_priority)
   : SolverBase<dim, degree, number>(_solver_context, _field_solve_type, _solve_priority)
 {}
 

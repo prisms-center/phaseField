@@ -23,25 +23,25 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-IdentitySolver<dim, degree>::IdentitySolver(
+template <unsigned int dim, unsigned int degree, typename number>
+IdentitySolver<dim, degree, number>::IdentitySolver(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
-  : LinearSolverBase<dim, degree>(_user_inputs,
-                                  _variable_attributes,
-                                  _matrix_free_handler,
-                                  _constraint_handler,
-                                  _solution_handler,
-                                  std::move(_pde_operator))
+  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
+  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
+  SolutionHandler<dim, number>                           &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
+  : LinearSolverBase<dim, degree, number>(_user_inputs,
+                                          _variable_attributes,
+                                          _matrix_free_handler,
+                                          _constraint_handler,
+                                          _solution_handler,
+                                          std::move(_pde_operator))
 {}
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-IdentitySolver<dim, degree>::init()
+IdentitySolver<dim, degree, number>::init()
 {
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
@@ -67,9 +67,9 @@ IdentitySolver<dim, degree>::init()
                                                          DependencyType::Normal)));
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-IdentitySolver<dim, degree>::reinit()
+IdentitySolver<dim, degree, number>::reinit()
 {
   // Apply constraints
   this->get_constraint_handler()
@@ -79,9 +79,9 @@ IdentitySolver<dim, degree>::reinit()
                                                          DependencyType::Normal)));
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-IdentitySolver<dim, degree>::solve(const double &step_length)
+IdentitySolver<dim, degree, number>::solve(const number &step_length)
 {
   auto *solution =
     this->get_solution_handler().get_solution_vector(this->get_field_index(),

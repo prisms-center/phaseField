@@ -7,8 +7,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SequentialCoNonlinearSolver<dim, degree, number>::SequentialCoNonlinearSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  Types::Index                              _solve_priority)
   : SequentialSolver<dim, degree, number>(_solver_context,
                                           FieldSolveType::NonexplicitCononlinear,
                                           _solve_priority)
@@ -110,13 +110,13 @@ SequentialCoNonlinearSolver<dim, degree, number>::solve()
       for (const auto &[index, variable] : this->get_subset_attributes())
         {
           // Set the step length
-          const double step_length = this->get_user_inputs()
+          const number step_length = this->get_user_inputs()
                                        .get_nonlinear_solve_parameters()
                                        .get_nonlinear_solve_parameters(index)
                                        .step_length;
 
           // Set the norm of the newton update
-          double newton_update_norm = 0.0;
+          number newton_update_norm = 0.0;
 
           if (variable.get_pde_type() == PDEType::Auxiliary)
             {

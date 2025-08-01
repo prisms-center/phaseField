@@ -18,7 +18,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class UserInputParameters;
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 class SolutionHandler;
 
 /**

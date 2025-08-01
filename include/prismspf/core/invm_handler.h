@@ -21,7 +21,7 @@ struct VariableAttributes;
  * @brief This class handles the computation and access of the inverted mass matrix for
  * explicit solves.
  */
-template <unsigned int dim, unsigned int degree, typename number = double>
+template <unsigned int dim, unsigned int degree, typename number>
 class InvmHandler
 {
 public:

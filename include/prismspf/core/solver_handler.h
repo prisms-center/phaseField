@@ -20,14 +20,14 @@ PRISMS_PF_BEGIN_NAMESPACE
  * @brief The class handles the initialization and solving of the various types of solvers
  * in PRISMS-PF.
  */
-template <unsigned int dim, unsigned int degree, typename number = double>
+template <unsigned int dim, unsigned int degree, typename number>
 class SolverHandler
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit SolverHandler(const SolverContext<dim, degree> &_solver_context);
+  explicit SolverHandler(const SolverContext<dim, degree, number> &_solver_context);
 
   /**
    * @brief Destructor.

@@ -39,8 +39,8 @@ public:
   set_initial_condition(const unsigned int       &index,
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const = 0;
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const = 0;
 
   /**
    * @brief User-implemented class for the setting nonuniform boundary conditions.

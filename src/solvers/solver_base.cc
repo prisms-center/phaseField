@@ -7,10 +7,10 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SolverBase<dim, degree, number>::SolverBase(
-  const SolverContext<dim, degree> &_solver_context,
-  const FieldSolveType             &_field_solve_type,
-  Types::Index                      _solve_priority)
-  : solver_context(std::make_shared<SolverContext<dim, degree>>(_solver_context))
+  const SolverContext<dim, degree, number> &_solver_context,
+  const FieldSolveType                     &_field_solve_type,
+  Types::Index                              _solve_priority)
+  : solver_context(std::make_shared<SolverContext<dim, degree, number>>(_solver_context))
   , field_solve_type(_field_solve_type)
   , solve_priority(_solve_priority)
 {}

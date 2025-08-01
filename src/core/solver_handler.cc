@@ -9,7 +9,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SolverHandler<dim, degree, number>::SolverHandler(
-  const SolverContext<dim, degree> &_solver_context)
+  const SolverContext<dim, degree, number> &_solver_context)
 {
   // Create a set of the solve blocks
   for (const auto &[index, variable] :

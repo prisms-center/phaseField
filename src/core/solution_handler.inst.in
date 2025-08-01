@@ -1,4 +1,4 @@
-for ( dimension : SPACE_DIMENSIONS)
+for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
   {
-    template class SolutionHandler<dimension>;
+    template class SolutionHandler<dimension, number>;
   }

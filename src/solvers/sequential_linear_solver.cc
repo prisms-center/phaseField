@@ -7,8 +7,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SequentialLinearSolver<dim, degree, number>::SequentialLinearSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  Types::Index                              _solve_priority)
   : SequentialSolver<dim, degree, number>(_solver_context,
                                           FieldSolveType::NonexplicitLinear,
                                           _solve_priority)

@@ -7,9 +7,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SequentialSolver<dim, degree, number>::SequentialSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  const FieldSolveType             &_field_solve_type,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  const FieldSolveType                     &_field_solve_type,
+  Types::Index                              _solve_priority)
   : SolverBase<dim, degree, number>(_solver_context, _field_solve_type, _solve_priority)
 {}
 
@@ -76,31 +76,31 @@ SequentialSolver<dim, degree, number>::init_linear_solver(
         .get_linear_solve_parameters(global_field_index)
         .preconditioner == PreconditionerType::GMG)
     {
-      gmg_solvers.emplace(
-        global_field_index,
-        std::make_unique<GMGSolver<dim, degree>>(this->get_user_inputs(),
-                                                 variable,
-                                                 this->get_matrix_free_handler(),
-                                                 this->get_constraint_handler(),
-                                                 this->get_triangulation_handler(),
-                                                 this->get_dof_handler(),
-                                                 this->get_mg_matrix_free_handler(),
-                                                 this->get_solution_handler(),
-                                                 this->get_pde_operator(),
-                                                 this->get_pde_operator_float(),
-                                                 this->get_mg_info()));
+      gmg_solvers.emplace(global_field_index,
+                          std::make_unique<GMGSolver<dim, degree, number>>(
+                            this->get_user_inputs(),
+                            variable,
+                            this->get_matrix_free_handler(),
+                            this->get_constraint_handler(),
+                            this->get_triangulation_handler(),
+                            this->get_dof_handler(),
+                            this->get_mg_matrix_free_handler(),
+                            this->get_solution_handler(),
+                            this->get_pde_operator(),
+                            this->get_pde_operator_float(),
+                            this->get_mg_info()));
       gmg_solvers.at(global_field_index)->init();
     }
   else
     {
-      identity_solvers.emplace(
-        global_field_index,
-        std::make_unique<IdentitySolver<dim, degree>>(this->get_user_inputs(),
-                                                      variable,
-                                                      this->get_matrix_free_handler(),
-                                                      this->get_constraint_handler(),
-                                                      this->get_solution_handler(),
-                                                      this->get_pde_operator()));
+      identity_solvers.emplace(global_field_index,
+                               std::make_unique<IdentitySolver<dim, degree, number>>(
+                                 this->get_user_inputs(),
+                                 variable,
+                                 this->get_matrix_free_handler(),
+                                 this->get_constraint_handler(),
+                                 this->get_solution_handler(),
+                                 this->get_pde_operator()));
       identity_solvers.at(global_field_index)->init();
     }
 }
@@ -301,10 +301,10 @@ SequentialSolver<dim, degree, number>::solve_linear_solver(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-double
+number
 SequentialSolver<dim, degree, number>::solve_linear_solver(
   const VariableAttributes &variable,
-  const double             &step_length)
+  const number             &step_length)
 {
   // Grab the global field index
   const Types::Index global_field_index = variable.get_field_index();

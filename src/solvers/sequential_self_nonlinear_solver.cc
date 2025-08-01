@@ -7,8 +7,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 SequentialSelfNonlinearSolver<dim, degree, number>::SequentialSelfNonlinearSolver(
-  const SolverContext<dim, degree> &_solver_context,
-  Types::Index                      _solve_priority)
+  const SolverContext<dim, degree, number> &_solver_context,
+  Types::Index                              _solve_priority)
   : SequentialSolver<dim, degree, number>(_solver_context,
                                           FieldSolveType::NonexplicitSelfnonlinear,
                                           _solve_priority)
@@ -73,7 +73,7 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
       // Set the convergence bool, iteration counter, and step length
       bool         unconverged = true;
       unsigned int iteration   = 0;
-      const double step_length = this->get_user_inputs()
+      const number step_length = this->get_user_inputs()
                                    .get_nonlinear_solve_parameters()
                                    .get_nonlinear_solve_parameters(index)
                                    .step_length;
@@ -91,7 +91,7 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
           unconverged = false;
 
           // Set the norm of the newton update
-          double newton_update_norm = 0.0;
+          number newton_update_norm = 0.0;
 
           // Perform the linear solve with the step length
           newton_update_norm = this->solve_linear_solver(variable, step_length);

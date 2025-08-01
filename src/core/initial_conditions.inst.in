@@ -1,9 +1,9 @@
-for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE)
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
   {
-    template class InitialCondition<dimension, degree>;
+    template class InitialCondition<dimension, degree, number>;
   }
 
-  for ( dimension : SPACE_DIMENSIONS)
+  for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
     {
-      template class ReadInitialCondition<dimension>;
+      template class ReadInitialCondition<dimension, number>;
     }

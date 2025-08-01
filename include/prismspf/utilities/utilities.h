@@ -166,17 +166,25 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
   return result;
 }
 
-template <unsigned int dim>
-inline std::array<double, 3>
-dealii_point_to_c_array(const dealii::Point<dim> &point)
+template <unsigned int dim, typename number>
+inline std::array<number, 3>
+dealii_point_to_c_array(const dealii::Point<dim, number> &point)
 {
-  std::array<double, 3> arr = {
+  static_assert(dim < 4, "We only allow 3 space dimensions");
+
+  std::array<number, 3> arr = {
     {0.0, 0.0, 0.0}
   };
+
+  // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+
   for (unsigned int i = 0; i < dim; ++i)
     {
       arr[i] = point[i];
     }
+
+  // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
+
   return arr;
 }
 

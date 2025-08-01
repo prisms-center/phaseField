@@ -31,9 +31,9 @@ public:
   /**
    * @brief Constructor.
    */
-  SolverBase(const SolverContext<dim, degree> &_solver_context,
-             const FieldSolveType             &_field_solve_type,
-             Types::Index                      _solve_priority = 0);
+  SolverBase(const SolverContext<dim, degree, number> &_solver_context,
+             const FieldSolveType                     &_field_solve_type,
+             Types::Index                              _solve_priority = 0);
 
   /**
    * @brief Destructor.
@@ -185,7 +185,7 @@ public:
                     dealii::VectorTools::interpolate(
                       solver_context->get_mapping(),
                       *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-                      ReadInitialCondition<dim>(
+                      ReadInitialCondition<dim, number>(
                         initial_condition_file.filename + "." +
                           initial_condition_file.file_extension,
                         initial_condition_file.file_variable_names
@@ -202,9 +202,10 @@ public:
             dealii::VectorTools::interpolate(
               solver_context->get_mapping(),
               *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-              InitialCondition<dim, degree>(index,
-                                            subset_attributes.at(index).get_field_type(),
-                                            solver_context->get_pde_operator()),
+              InitialCondition<dim, degree, number>(
+                index,
+                subset_attributes.at(index).get_field_type(),
+                solver_context->get_pde_operator()),
               *(solver_context->get_solution_handler()
                   .get_solution_vector(index, DependencyType::Normal)));
           }
@@ -227,7 +228,7 @@ public:
   /**
    * @brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const MatrixfreeHandler<dim, double> &
+  [[nodiscard]] const MatrixfreeHandler<dim, number> &
   get_matrix_free_handler() const
   {
     return solver_context->get_matrix_free_handler();
@@ -245,7 +246,7 @@ public:
   /**
    * @brief Get the invm handler.
    */
-  [[nodiscard]] const InvmHandler<dim, degree, double> &
+  [[nodiscard]] const InvmHandler<dim, degree, number> &
   get_invm_handler() const
   {
     return solver_context->get_invm_handler();
@@ -254,7 +255,7 @@ public:
   /**
    * @brief Get the constraint handler.
    */
-  [[nodiscard]] const ConstraintHandler<dim, degree> &
+  [[nodiscard]] const ConstraintHandler<dim, degree, number> &
   get_constraint_handler() const
   {
     return solver_context->get_constraint_handler();
@@ -299,7 +300,7 @@ public:
   /**
    * @brief Get the solution handler.
    */
-  [[nodiscard]] SolutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim, number> &
   get_solution_handler() const
   {
     return solver_context->get_solution_handler();
@@ -317,7 +318,7 @@ public:
   /**
    * @brief Get the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, double>> &
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
   {
     return solver_context->get_pde_operator();
@@ -356,7 +357,7 @@ private:
   /**
    * @brief Solver context.
    */
-  const std::shared_ptr<SolverContext<dim, degree>> solver_context;
+  const std::shared_ptr<SolverContext<dim, degree, number>> solver_context;
 
   /**
    * @brief Field solve type.

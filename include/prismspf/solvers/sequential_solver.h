@@ -20,9 +20,9 @@ public:
   /**
    * @brief Constructor.
    */
-  SequentialSolver(const SolverContext<dim, degree> &_solver_context,
-                   const FieldSolveType             &_field_solve_type,
-                   Types::Index                      _solve_priority = 0);
+  SequentialSolver(const SolverContext<dim, degree, number> &_solver_context,
+                   const FieldSolveType                     &_field_solve_type,
+                   Types::Index                              _solve_priority = 0);
 
   /**
    * @brief Destructor.
@@ -142,8 +142,8 @@ public:
    * @param[in] step_length The step length of the linear solve. This is only used for
    * nonlinear solves when we don't want to use the entire solution.
    */
-  double
-  solve_linear_solver(const VariableAttributes &variable, const double &step_length);
+  number
+  solve_linear_solver(const VariableAttributes &variable, const number &step_length);
 
   /**
    * @brief Get the matrix-free operator for the residual side.
@@ -240,12 +240,13 @@ private:
   /**
    * @brief Map of identity linear solvers
    */
-  std::map<Types::Index, std::unique_ptr<IdentitySolver<dim, degree>>> identity_solvers;
+  std::map<Types::Index, std::unique_ptr<IdentitySolver<dim, degree, number>>>
+    identity_solvers;
 
   /**
    * @brief Map of geometric multigrid linear solvers
    */
-  std::map<Types::Index, std::unique_ptr<GMGSolver<dim, degree>>> gmg_solvers;
+  std::map<Types::Index, std::unique_ptr<GMGSolver<dim, degree, number>>> gmg_solvers;
 };
 
 PRISMS_PF_END_NAMESPACE

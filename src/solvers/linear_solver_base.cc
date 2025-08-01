@@ -24,14 +24,14 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-LinearSolverBase<dim, degree>::LinearSolverBase(
+template <unsigned int dim, unsigned int degree, typename number>
+LinearSolverBase<dim, degree, number>::LinearSolverBase(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
+  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
+  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
+  SolutionHandler<dim, number>                           &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
   : user_inputs(&_user_inputs)
   , variable_attributes(&_variable_attributes)
   , matrix_free_handler(&_matrix_free_handler)
@@ -156,9 +156,9 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-LinearSolverBase<dim, degree>::compute_solver_tolerance()
+LinearSolverBase<dim, degree, number>::compute_solver_tolerance()
 {
   tolerance = user_inputs->get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)

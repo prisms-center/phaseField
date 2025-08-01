@@ -22,7 +22,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 class ReadUnstructuredVTK
 {
 public:
@@ -75,13 +75,13 @@ public:
   /**
    * @brief Get scalar value for a given point
    */
-  double
+  number
   get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name);
 
   /**
    * @brief Get vector value for a given point
    */
-  dealii::Vector<double>
+  dealii::Vector<number>
   get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name);
 
 private:
@@ -111,8 +111,8 @@ private:
   unsigned int n_vectors;
 };
 
-template <unsigned int dim>
-ReadUnstructuredVTK<dim>::ReadUnstructuredVTK(const std::string &filename)
+template <unsigned int dim, typename number>
+ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const std::string &filename)
 {
   // Check that the filename exists
   if (!std::filesystem::exists(filename))
@@ -180,38 +180,38 @@ ReadUnstructuredVTK<dim>::ReadUnstructuredVTK(const std::string &filename)
   n_vectors = reader->GetNumberOfVectorsInFile();
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline vtkUnstructuredGrid *
-ReadUnstructuredVTK<dim>::get_output()
+ReadUnstructuredVTK<dim, number>::get_output()
 {
   return reader->GetOutput();
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline dealii::types::global_dof_index
-ReadUnstructuredVTK<dim>::get_n_points() const
+ReadUnstructuredVTK<dim, number>::get_n_points() const
 {
   return n_points;
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline dealii::types::global_dof_index
-ReadUnstructuredVTK<dim>::get_n_cells() const
+ReadUnstructuredVTK<dim, number>::get_n_cells() const
 {
   return n_cells;
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline void
-ReadUnstructuredVTK<dim>::print_vtk_file()
+ReadUnstructuredVTK<dim, number>::print_vtk_file()
 {
   // TODO (landinjm): Should we print only on rank 0?.
   reader->GetOutput()->PrintSelf(std::cout, vtkIndent());
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline std::vector<std::string>
-ReadUnstructuredVTK<dim>::get_scalars_names()
+ReadUnstructuredVTK<dim, number>::get_scalars_names()
 {
   std::vector<std::string> scalars_names(n_scalars);
   for (unsigned int i = 0; i < n_scalars; ++i)
@@ -221,9 +221,9 @@ ReadUnstructuredVTK<dim>::get_scalars_names()
   return scalars_names;
 }
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 inline std::vector<std::string>
-ReadUnstructuredVTK<dim>::get_vectors_names()
+ReadUnstructuredVTK<dim, number>::get_vectors_names()
 {
   std::vector<std::string> vectors_names(n_vectors);
   for (unsigned int i = 0; i < n_vectors; ++i)
@@ -233,10 +233,10 @@ ReadUnstructuredVTK<dim>::get_vectors_names()
   return vectors_names;
 }
 
-template <unsigned int dim>
-inline double
-ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
-                                           const std::string        &scalar_name)
+template <unsigned int dim, typename number>
+inline number
+ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &point,
+                                                   const std::string        &scalar_name)
 {
   // Check that the scalar name is in the vtk file
   auto scalars_names = get_scalars_names();
@@ -247,7 +247,7 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
                 scalar_name));
 
   // Convet the dealii point to an array
-  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim>(point);
+  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim, double>(point);
 
   // Set the active scalar and update the reader
   reader->SetScalarsName(scalar_name.c_str());
@@ -305,7 +305,7 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
 
       // Interpolate scalar value using weights and nodal values
       vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
-      double     interpolated_value = 0.0;
+      number     interpolated_value = 0.0;
       for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
         {
           const vtkIdType pt_id = point_ids->GetId(i);
@@ -319,10 +319,10 @@ ReadUnstructuredVTK<dim>::get_scalar_value(const dealii::Point<dim> &point,
   return data_array->GetComponent(point_id, 0);
 }
 
-template <unsigned int dim>
-inline dealii::Vector<double>
-ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
-                                           const std::string        &vector_name)
+template <unsigned int dim, typename number>
+inline dealii::Vector<number>
+ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &point,
+                                                   const std::string        &vector_name)
 {
   // Check that the scalar name is in the vtk file
   auto vectors_names = get_vectors_names();
@@ -333,7 +333,7 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
                 vector_name));
 
   // Convet the dealii point to an array
-  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim>(point);
+  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim, double>(point);
 
   // Set the active vector and update the reader
   reader->SetVectorsName(vector_name.c_str());
@@ -368,7 +368,7 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
               dealii::ExcMessage(std::string("Data array not found: ") + vector_name));
 
   // Get the value of the vector at the point
-  dealii::Vector<double> vector_value(dim);
+  dealii::Vector<number> vector_value(dim);
 
   for (unsigned int i = 0; i < dim; i++)
     {
@@ -395,7 +395,7 @@ ReadUnstructuredVTK<dim>::get_vector_value(const dealii::Point<dim> &point,
 
           // Interpolate scalar value using weights and nodal values
           vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
-          double     interpolated_value = 0.0;
+          number     interpolated_value = 0.0;
           for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
             {
               const vtkIdType pt_id = point_ids->GetId(id);

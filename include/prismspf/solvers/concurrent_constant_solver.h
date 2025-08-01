@@ -19,8 +19,9 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit ConcurrentConstantSolver(const SolverContext<dim, degree> &_solver_context,
-                                    Types::Index _solve_priority = 0);
+  explicit ConcurrentConstantSolver(
+    const SolverContext<dim, degree, number> &_solver_context,
+    Types::Index                              _solve_priority = 0);
 
   /**
    * @brief Destructor.
