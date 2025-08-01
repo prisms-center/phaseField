@@ -78,6 +78,6 @@ NonuniformDirichlet<dim, degree, number>::vector_value(
 
 // NOLINTEND(readability-identifier-length)
 
-INSTANTIATE_TRI_TEMPLATE(NonuniformDirichlet)
+#include "core/nonuniform_dirichlet.inst"
 
 PRISMS_PF_END_NAMESPACE

@@ -31,13 +31,13 @@ class DofHandler;
 /**
  * @brief Class that handles the assembly and solving of a field with a GMG preconditioner
  */
-template <unsigned int dim, unsigned int degree>
-class GMGSolver : public LinearSolverBase<dim, degree>
+template <unsigned int dim, unsigned int degree, typename number>
+class GMGSolver : public LinearSolverBase<dim, degree, number>
 {
 public:
-  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
   using LevelMatrixType  = MatrixFreeOperator<dim, degree, float>;
-  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<number>;
   using MGVectorType     = dealii::LinearAlgebra::distributed::Vector<float>;
 
   /**
@@ -45,13 +45,13 @@ public:
    */
   GMGSolver(const UserInputParameters<dim>                       &_user_inputs,
             const VariableAttributes                             &_variable_attributes,
-            const MatrixfreeHandler<dim, double>                 &_matrix_free_handler,
-            const ConstraintHandler<dim, degree>                 &_constraint_handler,
+            const MatrixfreeHandler<dim, number>                 &_matrix_free_handler,
+            const ConstraintHandler<dim, degree, number>         &_constraint_handler,
             const TriangulationHandler<dim>                      &_triangulation_handler,
             const DofHandler<dim>                                &_dof_handler,
             dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-            SolutionHandler<dim>                                 &_solution_handler,
-            std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator,
+            SolutionHandler<dim, number>                         &_solution_handler,
+            std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
             std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
             const MGInfo<dim>                                      &_mg_info);
 
@@ -76,7 +76,7 @@ public:
    * @brief Solve the system Ax=b.
    */
   void
-  solve(const double &step_length = 1.0) override;
+  solve(const number &step_length = 1.0) override;
 
 private:
   /**

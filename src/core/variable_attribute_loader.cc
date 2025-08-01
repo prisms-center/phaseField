@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
@@ -21,6 +22,10 @@
 #include <utility>
 #include <vector>
 
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/exception_macros.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 void
@@ -35,8 +40,7 @@ VariableAttributeLoader::init_variable_attributes()
 
   // Determine the max numer of dependency types. This is used to determine the length of
   // the vector for the eval flag set at runtime.
-  const Types::Index max_dependency_types =
-    static_cast<Types::Index>(DependencyType::OldFour);
+  const auto max_dependency_types = static_cast<Types::Index>(DependencyType::OldFour);
 
   // Format the dependencies and add the max fields and dependency types
   for (auto &[index, variable] : var_attributes)

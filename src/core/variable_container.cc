@@ -1239,6 +1239,6 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
   feeval_ptr->distribute_local_to_global(dst);
 }
 
-INSTANTIATE_TRI_TEMPLATE(VariableContainer)
+#include "core/variable_container.inst"
 
 PRISMS_PF_END_NAMESPACE

@@ -99,8 +99,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index solve_block) const
 {
   ScalarValue n    = variable_list.template get_value<ScalarValue>(0);
   ScalarValue dndt = variable_list.template get_value<ScalarValue>(2);
@@ -126,6 +126,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
   if (index == 1)
@@ -174,6 +175,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index                                               solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
   if (index == 1)
@@ -196,8 +198,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] Types::Index solve_block) const
 {
   ScalarValue n  = variable_list.template get_value<ScalarValue>(0);
   ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
@@ -236,6 +238,6 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   variable_list.set_value_term(11, f_el);
 }
 
-INSTANTIATE_TRI_TEMPLATE(CustomPDE)
+#include "custom_pde.inst"
 
 PRISMS_PF_END_NAMESPACE

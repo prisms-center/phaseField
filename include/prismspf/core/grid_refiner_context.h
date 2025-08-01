@@ -30,7 +30,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * the grid and solutions. For example, it contains the triangulation handler and the DoF
  * handler.
  */
-template <unsigned int dim, unsigned int degree, typename number = double>
+template <unsigned int dim, unsigned int degree, typename number>
 class GridRefinementContext
 {
 public:
@@ -40,11 +40,11 @@ public:
   GridRefinementContext(
     const UserInputParameters<dim>                       &_user_inputs,
     TriangulationHandler<dim>                            &_triangulation_handler,
-    ConstraintHandler<dim, degree>                       &_constraint_handler,
+    ConstraintHandler<dim, degree, number>               &_constraint_handler,
     MatrixfreeHandler<dim, number>                       &_matrix_free_handler,
     dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &_multigrid_matrix_free_handler,
     InvmHandler<dim, degree, number>                     &_invm_handler,
-    SolutionHandler<dim>                                 &_solution_handler,
+    SolutionHandler<dim, number>                         &_solution_handler,
     DofHandler<dim>                                      &_dof_handler,
     std::map<FieldType, dealii::FESystem<dim>>           &_fe_system,
     const dealii::MappingQ1<dim>                         &_mapping,
@@ -81,7 +81,7 @@ public:
   /**
    * @brief Get the constraint handler.
    */
-  [[nodiscard]] ConstraintHandler<dim, degree> &
+  [[nodiscard]] ConstraintHandler<dim, degree, number> &
   get_constraint_handler() const
   {
     Assert(constraint_handler != nullptr, dealii::ExcNotInitialized());
@@ -141,7 +141,7 @@ public:
   /**
    * @brief Get the solution handler.
    */
-  [[nodiscard]] SolutionHandler<dim> &
+  [[nodiscard]] SolutionHandler<dim, number> &
   get_solution_handler() const
   {
     Assert(solution_handler != nullptr, dealii::ExcNotInitialized());
@@ -204,7 +204,7 @@ private:
   /**
    * @brief Constraint handler.
    */
-  ConstraintHandler<dim, degree> *constraint_handler;
+  ConstraintHandler<dim, degree, number> *constraint_handler;
 
   /**
    * @brief Matrix-free object handler for non-multigrid data.
@@ -224,7 +224,7 @@ private:
   /**
    * @brief Solution handler.
    */
-  SolutionHandler<dim> *solution_handler;
+  SolutionHandler<dim, number> *solution_handler;
 
   /**
    * @brief DoF handler.

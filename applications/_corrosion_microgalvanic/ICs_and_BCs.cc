@@ -13,7 +13,7 @@ void
 CustomPDE<dim, degree>::setInitialCondition(
   [[maybe_unused]] const dealii::Point<dim> &p,
   [[maybe_unused]] const unsigned int        index,
-  [[maybe_unused]] double                   &scalar_IC,
+  [[maybe_unused]] number                   &scalar_IC,
   [[maybe_unused]] dealii::Vector<double>   &vector_IC)
 {
   // ---------------------------------------------------------------------
@@ -99,8 +99,8 @@ CustomPDE<dim, degree>::setNonUniformDirichletBCs(
   [[maybe_unused]] const dealii::Point<dim> &p,
   [[maybe_unused]] const unsigned int        index,
   [[maybe_unused]] const unsigned int        direction,
-  [[maybe_unused]] const double              time,
-  [[maybe_unused]] double                   &scalar_BC,
+  [[maybe_unused]] const number              time,
+  [[maybe_unused]] number                   &scalar_BC,
   [[maybe_unused]] dealii::Vector<double>   &vector_BC)
 {
   // --------------------------------------------------------------------------

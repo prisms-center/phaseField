@@ -24,14 +24,14 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-LinearSolverBase<dim, degree>::LinearSolverBase(
+template <unsigned int dim, unsigned int degree, typename number>
+LinearSolverBase<dim, degree, number>::LinearSolverBase(
   const UserInputParameters<dim>                         &_user_inputs,
   const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim>                           &_matrix_free_handler,
-  const ConstraintHandler<dim, degree>                   &_constraint_handler,
-  SolutionHandler<dim>                                   &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator)
+  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
+  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
+  SolutionHandler<dim, number>                           &_solution_handler,
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
   : user_inputs(&_user_inputs)
   , variable_attributes(&_variable_attributes)
   , matrix_free_handler(&_matrix_free_handler)
@@ -52,9 +52,15 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
   // Create the implementation of MatrixFreeOperator with the subset of variable
   // attributes
   system_matrix =
-    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
+    std::make_unique<SystemMatrixType>(subset_attributes,
+                                       pde_operator,
+                                       variable_attributes->get_solve_block(),
+                                       field_index);
   update_system_matrix =
-    std::make_unique<SystemMatrixType>(subset_attributes, pde_operator, field_index);
+    std::make_unique<SystemMatrixType>(subset_attributes,
+                                       pde_operator,
+                                       variable_attributes->get_solve_block(),
+                                       field_index);
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields = variable_attributes->get_max_fields();
@@ -150,9 +156,9 @@ LinearSolverBase<dim, degree>::LinearSolverBase(
     }
 }
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-LinearSolverBase<dim, degree>::compute_solver_tolerance()
+LinearSolverBase<dim, degree, number>::compute_solver_tolerance()
 {
   tolerance = user_inputs->get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
@@ -166,6 +172,6 @@ LinearSolverBase<dim, degree>::compute_solver_tolerance()
                     .tolerance;
 }
 
-INSTANTIATE_BI_TEMPLATE(LinearSolverBase)
+#include "solvers/linear_solver_base.inst"
 
 PRISMS_PF_END_NAMESPACE

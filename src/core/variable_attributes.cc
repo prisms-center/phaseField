@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
@@ -19,6 +20,10 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/exception_macros.h>
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -168,8 +173,13 @@ VariableAttributes::parse_dependencies(
               {
                 const DependencyType dep_type = relevant_flag.at(variation).first;
                 const EvalFlags      flags    = relevant_flag.at(variation).second;
+                const FieldType      other_field_type = other_variable.get_field_type();
 
-                validate_dependency(variation, dep_type, other_index, context);
+                validate_dependency(variation,
+                                    dep_type,
+                                    other_index,
+                                    other_field_type,
+                                    context);
 
                 eval_flag_set[other_index][static_cast<Types::Index>(dep_type)] |= flags;
               }
@@ -329,10 +339,12 @@ VariableAttributes::print() const
 }
 
 void
-VariableAttributes::validate_dependency([[maybe_unused]] const std::string  &variation,
-                                        [[maybe_unused]] DependencyType      dep_type,
-                                        [[maybe_unused]] const unsigned int &other_index,
-                                        [[maybe_unused]] const std::string &context) const
+VariableAttributes::validate_dependency(
+  [[maybe_unused]] const std::string  &variation,
+  [[maybe_unused]] DependencyType      dep_type,
+  [[maybe_unused]] const unsigned int &other_index,
+  [[maybe_unused]] const FieldType    &other_field_type,
+  [[maybe_unused]] const std::string  &context) const
 {
   AssertThrow(context != "RHS" || dep_type != DependencyType::Change,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
@@ -347,15 +359,15 @@ VariableAttributes::validate_dependency([[maybe_unused]] const std::string  &var
                 "Dependencies with the delimiter change(var) are only allowed as "
                 "dependencies for the same field (e.g, change(phi) is only "
                 "allowed as a dependency for phi)."));
-  AssertThrow(field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldType::Vector ||
                 variation.find("divergence") == std::string::npos,
               dealii::ExcMessage("Dependencies with the divergence delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldType::Vector ||
                 variation.find("symmetric_gradient") == std::string::npos,
               dealii::ExcMessage("Dependencies with the symmetric gradient delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldType::Vector ||
                 variation.find("curl") == std::string::npos,
               dealii::ExcMessage("Dependencies with the curl delimiter are "
                                  "only allowed on vector fields."));

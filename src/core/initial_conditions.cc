@@ -17,25 +17,25 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree>
-InitialCondition<dim, degree>::InitialCondition(
+template <unsigned int dim, unsigned int degree, typename number>
+InitialCondition<dim, degree, number>::InitialCondition(
   const unsigned int                                            &_index,
   const FieldType                                               &field_type,
-  const std::shared_ptr<const PDEOperator<dim, degree, double>> &_pde_operator)
-  : dealii::Function<dim>((field_type == FieldType::Vector) ? dim : 1)
+  const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator)
+  : dealii::Function<dim, number>((field_type == FieldType::Vector) ? dim : 1)
   , index(_index)
   , pde_operator(_pde_operator)
 {}
 
 // NOLINTBEGIN(readability-identifier-length)
 
-template <unsigned int dim, unsigned int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-InitialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
-                                            dealii::Vector<double>   &value) const
+InitialCondition<dim, degree, number>::vector_value(const dealii::Point<dim> &p,
+                                                    dealii::Vector<number>   &value) const
 {
   // Initialize passed variables to zero
-  dealii::Vector<double> vector_value(dim);
+  dealii::Vector<number> vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
   // TODO (landinjm): This is redoing the scalar field calculation.
@@ -49,25 +49,25 @@ InitialCondition<dim, degree>::vector_value(const dealii::Point<dim> &p,
 
 // NOLINTEND(readability-identifier-length)
 
-template <unsigned int dim>
-ReadInitialCondition<dim>::ReadInitialCondition(const std::string &file_name,
-                                                std::string        _field_name,
-                                                const FieldType   &_field_type)
-  : dealii::Function<dim>((_field_type == FieldType::Vector) ? dim : 1)
+template <unsigned int dim, typename number>
+ReadInitialCondition<dim, number>::ReadInitialCondition(const std::string &file_name,
+                                                        std::string        _field_name,
+                                                        const FieldType   &_field_type)
+  : dealii::Function<dim, number>((_field_type == FieldType::Vector) ? dim : 1)
   , field_name(std::move(_field_name))
   , field_type(_field_type)
-  , reader(std::make_shared<ReadUnstructuredVTK<dim>>(file_name))
+  , reader(std::make_shared<ReadUnstructuredVTK<dim, number>>(file_name))
 {}
 
 // NOLINTBEGIN(readability-identifier-length)
 
-template <unsigned int dim>
+template <unsigned int dim, typename number>
 void
-ReadInitialCondition<dim>::vector_value(const dealii::Point<dim> &p,
-                                        dealii::Vector<double>   &value) const
+ReadInitialCondition<dim, number>::vector_value(const dealii::Point<dim> &p,
+                                                dealii::Vector<number>   &value) const
 {
   // Initialize passed variables to zero
-  dealii::Vector<double> vector_value(dim);
+  dealii::Vector<number> vector_value(dim);
 
   // Get the value of the field at the point
   if (field_type == FieldType::Scalar)
@@ -84,7 +84,6 @@ ReadInitialCondition<dim>::vector_value(const dealii::Point<dim> &p,
 
 // NOLINTEND(readability-identifier-length)
 
-INSTANTIATE_BI_TEMPLATE(InitialCondition)
-INSTANTIATE_UNI_TEMPLATE(ReadInitialCondition)
+#include "core/initial_conditions.inst"
 
 PRISMS_PF_END_NAMESPACE

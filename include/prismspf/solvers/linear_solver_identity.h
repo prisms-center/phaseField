@@ -17,22 +17,22 @@ PRISMS_PF_BEGIN_NAMESPACE
  * @brief Class that handles the assembly and solving of a field with the identity
  * preconditioner (no preconditioner)
  */
-template <unsigned int dim, unsigned int degree>
-class IdentitySolver : public LinearSolverBase<dim, degree>
+template <unsigned int dim, unsigned int degree, typename number>
+class IdentitySolver : public LinearSolverBase<dim, degree, number>
 {
 public:
-  using SystemMatrixType = MatrixFreeOperator<dim, degree, double>;
-  using VectorType       = dealii::LinearAlgebra::distributed::Vector<double>;
+  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
+  using VectorType       = dealii::LinearAlgebra::distributed::Vector<number>;
 
   /**
    * @brief Constructor.
    */
-  IdentitySolver(const UserInputParameters<dim>       &_user_inputs,
-                 const VariableAttributes             &_variable_attributes,
-                 const MatrixfreeHandler<dim, double> &_matrix_free_handler,
-                 const ConstraintHandler<dim, degree> &_constraint_handler,
-                 SolutionHandler<dim>                 &_solution_handler,
-                 std::shared_ptr<const PDEOperator<dim, degree, double>> _pde_operator);
+  IdentitySolver(const UserInputParameters<dim>               &_user_inputs,
+                 const VariableAttributes                     &_variable_attributes,
+                 const MatrixfreeHandler<dim, number>         &_matrix_free_handler,
+                 const ConstraintHandler<dim, degree, number> &_constraint_handler,
+                 SolutionHandler<dim, number>                 &_solution_handler,
+                 std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator);
 
   /**
    * @brief Destructor.
@@ -55,7 +55,7 @@ public:
    * @brief Solve the system Ax=b.
    */
   void
-  solve(const double &step_length = 1.0) override;
+  solve(const number &step_length = 1.0) override;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -33,6 +33,31 @@ public:
   virtual ~VariableAttributeLoader() = default;
 
   /**
+   * @brief Copy constructor.
+   */
+  VariableAttributeLoader(const VariableAttributeLoader &variable_attribute_loader) =
+    delete;
+
+  /**
+   * @brief Copy assignment.
+   */
+  VariableAttributeLoader &
+  operator=(const VariableAttributeLoader &variable_attribute_loader) = delete;
+
+  /**
+   * @brief Move constructor.
+   */
+  VariableAttributeLoader(VariableAttributeLoader &&variable_attribute_loader) noexcept =
+    delete;
+
+  /**
+   * @brief Move assignment.
+
+   */
+  VariableAttributeLoader &
+  operator=(VariableAttributeLoader &&variable_attribute_loader) noexcept = delete;
+
+  /**
    * @brief Initialize the variable attributes from the two user-facing methods
    * `load_variable_attributes()` and `loadPostProcessorVariableAttributes()`. This must
    * be called after the default constructor for derived classes.
@@ -44,6 +69,9 @@ public:
 
   /**
    * @brief getter function for variable attributes list (copy).
+   *
+   * This must be a copy because we don't need the class after the VariableAttributes are
+   * processed.
    */
   [[nodiscard]] std::map<unsigned int, VariableAttributes>
   get_var_attributes() const;

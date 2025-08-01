@@ -281,6 +281,6 @@ TriangulationHandler<dim>::mark_periodic()
     }
 }
 
-INSTANTIATE_UNI_TEMPLATE(TriangulationHandler)
+#include "core/triangulation_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

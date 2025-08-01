@@ -76,8 +76,8 @@ private:
   set_initial_condition(const unsigned int       &index,
                         const unsigned int       &component,
                         const dealii::Point<dim> &point,
-                        double                   &scalar_value,
-                        double                   &vector_component_value) const override;
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const override;
 
   /**
    * @brief User-implemented class for nonuniform boundary conditions.
@@ -94,9 +94,10 @@ private:
    * @brief User-implemented class for the RHS of explicit equations.
    */
   void
-  compute_explicit_rhs(VariableContainer<dim, degree, number> &variable_list,
-                       const dealii::Point<dim, dealii::VectorizedArray<number>>
-                         &q_point_loc) const override;
+  compute_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 
   /**
    * @brief User-implemented class for the RHS of nonexplicit equations.
@@ -105,6 +106,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
   /**
@@ -114,6 +116,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
   /**
@@ -122,8 +125,8 @@ private:
   void
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-    const override;
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    Types::Index solve_block) const override;
 };
 
 inline void
@@ -156,8 +159,8 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &component,
   [[maybe_unused]] const dealii::Point<dim> &point,
-  [[maybe_unused]] double                   &scalar_value,
-  [[maybe_unused]] double                   &vector_component_value) const
+  [[maybe_unused]] number                   &scalar_value,
+  [[maybe_unused]] number                   &vector_component_value) const
 {
   if (index < n_copies)
     {
@@ -189,7 +192,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
 
           scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
         }
-      scalar_value = std::min(scalar_value, 1.0);
+      scalar_value = std::min(scalar_value, static_cast<number>(1.0));
     }
 }
 
@@ -208,8 +211,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index solve_block) const
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {
@@ -229,6 +232,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index                                                                solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {
   for (unsigned int i = 0; i < n_copies; i++)
@@ -253,6 +257,7 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index                                                                solve_block,
   [[maybe_unused]] Types::Index                                               index) const
 {}
 
@@ -260,8 +265,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
-  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc)
-  const
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  Types::Index solve_block) const
 {}
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)
