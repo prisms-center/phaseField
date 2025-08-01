@@ -130,4 +130,6 @@ private:
     this->user_inputs.user_constants.get_model_constant_elasticity_tensor("CIJ_Beta");
 };
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

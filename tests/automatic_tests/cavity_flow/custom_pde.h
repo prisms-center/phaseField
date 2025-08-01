@@ -127,4 +127,6 @@ private:
   number Re = 1000.0;
 };
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

@@ -174,4 +174,6 @@ private:
       "CIJ_Beta");
 };
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

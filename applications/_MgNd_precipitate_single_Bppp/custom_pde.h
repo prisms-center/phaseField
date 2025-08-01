@@ -119,4 +119,6 @@ private:
   bool c_dependent_misfit;
 };
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE

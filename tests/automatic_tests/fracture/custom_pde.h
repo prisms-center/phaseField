@@ -142,4 +142,6 @@ private:
       this->get_user_inputs().get_spatial_discretization().get_global_refinement());
 };
 
+#include "custom_pde.inst"
+
 PRISMS_PF_END_NAMESPACE
