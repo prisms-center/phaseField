@@ -22,10 +22,21 @@ option(
 message(STATUS "ADDITIONAL_OPTIMIZATIONS = ${ADDITIONAL_OPTIMIZATIONS}")
 
 option(
+    REDUCED_TEMPLATES
+    "Wether the user wants to enable the reduced templates or not."
+    OFF
+)
+message(STATUS "REDUCED_TEMPLATES = ${REDUCED_TEMPLATES}")
+mark_as_advanced(REDUCED_TEMPLATES)
+
+option(
     ADDITIONAL_DEGREES
     "Wether the user wants to enable the compilation of additional element degrees or not."
     OFF
 )
+if(REDUCED_TEMPLATES)
+    set(ADDITIONAL_DEGREES OFF)
+endif()
 message(STATUS "ADDITIONAL_DEGREES = ${ADDITIONAL_DEGREES}")
 
 option(

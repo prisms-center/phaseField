@@ -2,10 +2,10 @@
 // to process .inst.in files into .in files
 
 // Scalar types
-REAL_SCALARS := { double; float }
+REAL_SCALARS := { float@EXPAND_NUMBERS@ }
 
 // Space dimensions
-SPACE_DIMENSIONS := { 1; 2; 3 }
+SPACE_DIMENSIONS := { 1; 2@EXPAND_DIMENSIONS@ }
 
 // Element degrees
-ELEMENT_DEGREE := { 1; 2; 3@EXPAND_DEGREES@ }
+ELEMENT_DEGREE := { 1; 2@EXPAND_DEGREES@ }

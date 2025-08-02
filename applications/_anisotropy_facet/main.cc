@@ -103,20 +103,6 @@ main(int argc, char *argv[])
                       problem.run();
                       break;
                     }
-                  case 3:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<1, 3, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<1, 3, double>>(user_inputs);
-                      std::shared_ptr<prisms::PDEOperator<1, 3, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<1, 3, float>>(user_inputs);
-
-                      prisms::PDEProblem<1, 3, double> problem(user_inputs,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
                   default:
                     throw std::runtime_error("Invalid element degree");
                 }
@@ -157,20 +143,6 @@ main(int argc, char *argv[])
                       problem.run();
                       break;
                     }
-                  case 3:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<2, 3, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<2, 3, double>>(user_inputs);
-                      std::shared_ptr<prisms::PDEOperator<2, 3, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<2, 3, float>>(user_inputs);
-
-                      prisms::PDEProblem<2, 3, double> problem(user_inputs,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
                   default:
                     throw std::runtime_error("Invalid element degree");
                 }
@@ -206,20 +178,6 @@ main(int argc, char *argv[])
                           std::make_shared<prisms::CustomPDE<3, 2, float>>(user_inputs);
 
                       prisms::PDEProblem<3, 2, double> problem(user_inputs,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  case 3:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<3, 3, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<3, 3, double>>(user_inputs);
-                      std::shared_ptr<prisms::PDEOperator<3, 3, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<3, 3, float>>(user_inputs);
-
-                      prisms::PDEProblem<3, 3, double> problem(user_inputs,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();

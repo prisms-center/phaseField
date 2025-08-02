@@ -6,8 +6,9 @@
 #
 #
 # Usage:
-# ./contrib/utilities/clang_tidy.sh CMAKE_ARGS
+# ./contrib/utilities/clang_tidy.sh -jN CMAKE_ARGS
 #   with:
+#	  N as the number of parallel build jobs
 #     CMAKE_ARGS are the optional arguments passed to cmake
 #
 
@@ -25,8 +26,20 @@ else
 	exit 1
 fi
 
+# Parse the arguments
+BUILD_JOBS=""
+CMAKE_ARGS=()
+
+for arg in "$@"; do
+	if [[ "$arg" == -j* ]]; then
+		BUILD_JOBS="$arg"
+	else
+		CMAKE_ARGS+=("$arg")
+	fi
+done
+
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Wpedantic -Wall -Wextra" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "UNWRAP_COMPILER=ON" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Wpedantic -Wall -Wextra" "${CMAKE_ARGS[@]}")
 
 # Compile
 if [ -f CMakeCache.txt ]; then
@@ -36,7 +49,12 @@ cmake "${ARGS[@]}" . || (
 	echo "cmake failed!"
 	false
 ) || exit 2
-cmake --build . || exit 3
+
+if [ -n "$BUILD_JOBS" ]; then
+	cmake --build . -- "$BUILD_JOBS" || exit 3
+else
+	cmake --build . || exit 3
+fi
 
 # Try to run unwrap_compile_commands
 if [ -x "$(command -v contrib/utilities/unwrap_compile_commands.sh)" ]; then
