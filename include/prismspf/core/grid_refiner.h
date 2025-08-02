@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/fe/fe_values.h>
+
 #include <prismspf/core/grid_refiner_context.h>
 
 #include <prismspf/config.h>

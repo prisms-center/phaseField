@@ -15,6 +15,8 @@
 #include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
 
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/config.h>
 
 #include <map>

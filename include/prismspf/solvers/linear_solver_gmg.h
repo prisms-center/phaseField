@@ -17,7 +17,7 @@
 #include <deal.II/multigrid/mg_transfer_matrix_free.h>
 #include <deal.II/multigrid/multigrid.h>
 
-#include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/solvers/linear_solver_base.h>
 
@@ -27,6 +27,32 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 class DofHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class MatrixFreeOperator;
+
+template <unsigned int dim>
+class UserInputParameters;
+
+struct VariableAttributes;
+
+template <unsigned int dim, typename number>
+class MatrixfreeHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ConstraintHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
+
+template <unsigned int dim, typename number>
+class SolutionHandler;
+
+template <unsigned int dim>
+class TriangulationHandler;
+
+template <unsigned int dim>
+class MGInfo;
 
 /**
  * @brief Class that handles the assembly and solving of a field with a GMG preconditioner

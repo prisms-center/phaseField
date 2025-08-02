@@ -8,7 +8,6 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
@@ -19,6 +18,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 class MatrixfreeHandler;
+
+template <unsigned int dim>
+class MGInfo;
 
 struct VariableAttributes;
 

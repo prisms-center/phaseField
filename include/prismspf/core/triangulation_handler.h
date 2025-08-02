@@ -7,8 +7,6 @@
 #include <deal.II/grid/tria.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
-#include <prismspf/core/multigrid_info.h>
-
 #include <prismspf/config.h>
 
 #include <string>
@@ -20,6 +18,9 @@ class UserInputParameters;
 
 template <unsigned int dim, typename number>
 class SolutionHandler;
+
+template <unsigned int dim>
+class MGInfo;
 
 /**
  * @brief This class handlers the generation and manipulation of triangulations.

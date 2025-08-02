@@ -12,13 +12,16 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_handler.h>
 #include <prismspf/core/dof_handler.h>
+#include <prismspf/core/grid_refiner.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
+#include <prismspf/core/solver_handler.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
@@ -28,9 +31,12 @@
 #include <prismspf/solvers/concurrent_constant_solver.h>
 #include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
 #include <prismspf/solvers/concurrent_explicit_solver.h>
+#include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/sequential_auxiliary_solver.h>
 #include <prismspf/solvers/sequential_linear_solver.h>
 #include <prismspf/solvers/sequential_self_nonlinear_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>

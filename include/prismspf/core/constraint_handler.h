@@ -8,8 +8,9 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
-#include <prismspf/core/multigrid_info.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -17,6 +18,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 class UserInputParameters;
+
+template <unsigned int dim>
+class MGInfo;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
 
 /**
  * @brief The class handles the generation and application of boundary conditions based on

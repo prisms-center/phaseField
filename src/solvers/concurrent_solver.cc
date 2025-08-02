@@ -1,5 +1,9 @@
 
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/timer.h>
+
 #include <prismspf/solvers/concurrent_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 

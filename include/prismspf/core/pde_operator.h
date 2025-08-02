@@ -5,13 +5,17 @@
 
 #include <deal.II/base/point.h>
 
-#include <prismspf/core/variable_container.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim>
+class UserInputParameters;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class VariableContainer;
 
 /**
  * @brief This class contains the user implementation of each PDE operator.

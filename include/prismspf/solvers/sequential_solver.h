@@ -3,17 +3,31 @@
 
 #pragma once
 
-#include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
-#include <prismspf/solvers/linear_solver_gmg.h>
-#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
 
+#include <map>
+#include <memory>
+#include <vector>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <Types::Index dim, Types::Index degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class GMGSolver;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class IdentitySolver;
+
+struct VariableAttributes;
+
+template <unsigned int dim, unsigned int degree, typename number>
 class SequentialSolver : public SolverBase<dim, degree, number>
 {
 public:

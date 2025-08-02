@@ -7,16 +7,20 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
-#include <prismspf/field_input/read_vtk.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 class UserInputParameters;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
+
+template <unsigned int dim, typename number>
+class ReadUnstructuredVTK;
 
 /**
  * @brief Function for user-implemented initial conditions. These are only ever calculated

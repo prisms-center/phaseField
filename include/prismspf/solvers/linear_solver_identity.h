@@ -13,6 +13,26 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+template <unsigned int dim, unsigned int degree, typename number>
+class MatrixFreeOperator;
+
+template <unsigned int dim>
+class UserInputParameters;
+
+struct VariableAttributes;
+
+template <unsigned int dim, typename number>
+class MatrixfreeHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ConstraintHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
+
+template <unsigned int dim, typename number>
+class SolutionHandler;
+
 /**
  * @brief Class that handles the assembly and solving of a field with the identity
  * preconditioner (no preconditioner)

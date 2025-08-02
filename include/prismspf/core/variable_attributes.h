@@ -3,12 +3,11 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-
-#include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
 
@@ -16,6 +15,7 @@
 #include <set>
 #include <string>
 #include <utility>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

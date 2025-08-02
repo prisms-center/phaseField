@@ -6,13 +6,8 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/vector_tools.h>
 
-#include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/solvers/solver_context.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
@@ -20,6 +15,44 @@
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
+
+struct VariableAttributes;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class InitialCondition;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class MatrixFreeOperator;
+
+template <unsigned int dim>
+class UserInputParameters;
+
+template <unsigned int dim, typename number>
+class MatrixfreeHandler;
+
+template <unsigned int dim>
+class TriangulationHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class InvmHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ConstraintHandler;
+
+template <unsigned int dim>
+class DofHandler;
+
+template <unsigned int dim>
+class MGInfo;
+
+template <unsigned int dim, typename number>
+class SolutionHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class SolverBase
@@ -100,10 +133,7 @@ public:
    * This function is used so we can return early.
    */
   [[nodiscard]] bool
-  solver_is_empty() const
-  {
-    return subset_attributes.empty();
-  }
+  solver_is_empty() const;
 
   /**
    * @brief Compute the subset of VariableAttributes that belongs to a given
@@ -114,22 +144,7 @@ public:
    */
   [[nodiscard]] std::map<Types::Index, VariableAttributes>
   compute_subset_attributes(const FieldSolveType &field_solve_type,
-                            Types::Index          solve_priority) const
-  {
-    std::map<Types::Index, VariableAttributes> local_subset_attributes;
-
-    for (const auto &[index, variable] :
-         solver_context->get_user_inputs().get_variable_attributes())
-      {
-        if (variable.get_field_solve_type() == field_solve_type &&
-            variable.get_solve_block() == solve_priority)
-          {
-            local_subset_attributes.emplace(index, variable);
-          }
-      }
-
-    return local_subset_attributes;
-  };
+                            Types::Index          solve_priority) const;
 
   /**
    * @brief Compute and update the subset of VariableAttributes that belongs to a given
@@ -140,10 +155,7 @@ public:
    */
   void
   update_subset_attributes(const FieldSolveType &field_solve_type,
-                           Types::Index          solve_priority)
-  {
-    subset_attributes = compute_subset_attributes(field_solve_type, solve_priority);
-  };
+                           Types::Index          solve_priority);
 
   /**
    * @brief Set the initial condition according to subset_attributes.
@@ -152,69 +164,7 @@ public:
    * ImplicitTimeDependent, TimeIndependent, and Constant fields.
    */
   void
-  set_initial_condition()
-  {
-    for (const auto &[index, variable] : subset_attributes)
-      {
-        // TODO (landinjm): Skip certain fields for initial conditions
-
-        Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
-               dealii::ExcMessage(
-                 "The const DoFHandler set is smaller than the given index = " +
-                 std::to_string(index)));
-        Assert(subset_attributes.contains(index),
-               dealii::ExcMessage(
-                 "There is no entry in the attribute subset for the given index = " +
-                 std::to_string(index)));
-
-        if (solver_context->get_user_inputs()
-              .get_load_initial_condition_parameters()
-              .get_read_initial_conditions_from_file())
-          {
-            auto &initial_condition_parameters =
-              solver_context->get_user_inputs().get_load_initial_condition_parameters();
-            for (const auto &initial_condition_file :
-                 initial_condition_parameters.get_initial_condition_files())
-              {
-                auto iterator =
-                  std::find(initial_condition_file.simulation_variable_names.begin(),
-                            initial_condition_file.simulation_variable_names.end(),
-                            variable.get_name());
-                if (iterator != initial_condition_file.simulation_variable_names.end())
-                  {
-                    dealii::VectorTools::interpolate(
-                      solver_context->get_mapping(),
-                      *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-                      ReadInitialCondition<dim, number>(
-                        initial_condition_file.filename + "." +
-                          initial_condition_file.file_extension,
-                        initial_condition_file.file_variable_names
-                          [iterator -
-                           initial_condition_file.simulation_variable_names.begin()],
-                        subset_attributes.at(index).get_field_type()),
-                      *(solver_context->get_solution_handler()
-                          .get_solution_vector(index, DependencyType::Normal)));
-                  }
-              }
-          }
-        else
-          {
-            dealii::VectorTools::interpolate(
-              solver_context->get_mapping(),
-              *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-              InitialCondition<dim, degree, number>(
-                index,
-                subset_attributes.at(index).get_field_type(),
-                solver_context->get_pde_operator()),
-              *(solver_context->get_solution_handler()
-                  .get_solution_vector(index, DependencyType::Normal)));
-          }
-
-        // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
-        // vector for all types.
-        solver_context->get_solution_handler().apply_initial_condition_for_old_fields();
-      }
-  };
+  set_initial_condition();
 
   /**
    * @brief Get the user-inputs.

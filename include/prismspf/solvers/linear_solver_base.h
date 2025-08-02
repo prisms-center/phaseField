@@ -9,9 +9,8 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/solver_control.h>
 
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
@@ -33,6 +32,12 @@ template <unsigned int dim>
 class TriangulationHandler;
 
 struct VariableAttributes;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class MatrixFreeOperator;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
 
 /**
  * @brief Base class that handles the assembly and linear solving of a field.
