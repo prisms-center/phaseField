@@ -205,12 +205,7 @@ public:
 
     // Step 6
     grid_refinement_context.get_invm_handler().recompute_invm();
-    const FieldType first_field = grid_refinement_context.get_user_inputs()
-                                    .get_variable_attributes()
-                                    .begin()
-                                    ->second.get_field_type();
-    grid_refinement_context.get_element_volumes().compute_element_volume(
-      grid_refinement_context.get_finite_element_systems().at(first_field));
+    grid_refinement_context.get_element_volume_container().recompute_element_volume();
   };
 
 private:

@@ -55,7 +55,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class SolverContext;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class ElementVolume;
+class ElementVolumeContainer;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class Integrator;
@@ -161,14 +161,14 @@ private:
   dealii::MappingQ1<dim> mapping;
 
   /**
+   * @brief Element volume container.
+   */
+  ElementVolumeContainer<dim, degree, number> element_volume_container;
+
+  /**
    * @brief Solver context.
    */
   SolverContext<dim, degree, number> solver_context;
-
-  /**
-   * @brief Element volumes.
-   */
-  ElementVolume<dim, degree, number> element_volume;
 
   /**
    * @brief Integrator utility.

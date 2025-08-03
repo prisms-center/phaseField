@@ -17,6 +17,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -44,6 +46,7 @@ public:
     const ConstraintHandler<dim, degree, number>           &_constraint_handler,
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
+    const ElementVolumeContainer<dim, degree, number>      &_element_volume_container,
     const MGInfo<dim>                                      &_mg_info,
     SolutionHandler<dim, number>                           &_solution_handler,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
@@ -55,6 +58,7 @@ public:
     , constraint_handler(&_constraint_handler)
     , dof_handler(&_dof_handler)
     , mapping(&_mapping)
+    , element_volume_container(&_element_volume_container)
     , mg_info(&_mg_info)
     , solution_handler(&_solution_handler)
     , pde_operator(std::move(_pde_operator))
@@ -136,6 +140,16 @@ public:
   }
 
   /**
+   * @brief Get the element volume container.
+   */
+  [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
+  get_element_volume_container() const
+  {
+    Assert(element_volume_container != nullptr, dealii::ExcNotInitialized());
+    return *element_volume_container;
+  }
+
+  /**
    * @brief Get the multigrid info.
    */
   [[nodiscard]] const MGInfo<dim> &
@@ -210,6 +224,11 @@ private:
    * @brief Mappings to and from reference cell.
    */
   const dealii::MappingQ1<dim> *mapping;
+
+  /**
+   * @brief Element volume container.
+   */
+  const ElementVolumeContainer<dim, degree, number> *element_volume_container;
 
   /**
    * @brief Multigrid information

@@ -37,17 +37,18 @@ public:
   /**
    * @brief Constructor.
    */
-  GridRefinementContext(const UserInputParameters<dim>         &_user_inputs,
-                        TriangulationHandler<dim>              &_triangulation_handler,
-                        ConstraintHandler<dim, degree, number> &_constraint_handler,
-                        MatrixFreeContainer<dim, number>       &_matrix_free_container,
-                        InvmHandler<dim, degree, number>       &_invm_handler,
-                        SolutionHandler<dim, number>           &_solution_handler,
-                        DofHandler<dim>                        &_dof_handler,
-                        std::map<FieldType, dealii::FESystem<dim>> &_fe_system,
-                        const dealii::MappingQ1<dim>               &_mapping,
-                        ElementVolume<dim, degree, number>         &_element_volume,
-                        const MGInfo<dim>                          &_mg_info)
+  GridRefinementContext(
+    const UserInputParameters<dim>              &_user_inputs,
+    TriangulationHandler<dim>                   &_triangulation_handler,
+    ConstraintHandler<dim, degree, number>      &_constraint_handler,
+    MatrixFreeContainer<dim, number>            &_matrix_free_container,
+    InvmHandler<dim, degree, number>            &_invm_handler,
+    SolutionHandler<dim, number>                &_solution_handler,
+    DofHandler<dim>                             &_dof_handler,
+    std::map<FieldType, dealii::FESystem<dim>>  &_fe_system,
+    const dealii::MappingQ1<dim>                &_mapping,
+    ElementVolumeContainer<dim, degree, number> &_element_volume_container,
+    const MGInfo<dim>                           &_mg_info)
     : user_inputs(&_user_inputs)
     , triangulation_handler(&_triangulation_handler)
     , constraint_handler(&_constraint_handler)
@@ -57,7 +58,7 @@ public:
     , dof_handler(&_dof_handler)
     , fe_system(&_fe_system)
     , mapping(&_mapping)
-    , element_volume(&_element_volume)
+    , element_volume_container(&_element_volume_container)
     , mg_info(&_mg_info) {};
 
   /**
@@ -158,13 +159,13 @@ public:
   }
 
   /**
-   * @brief Get the element volumes.
+   * @brief Get the element volume container.
    */
-  [[nodiscard]] ElementVolume<dim, degree, number> &
-  get_element_volumes() const
+  [[nodiscard]] ElementVolumeContainer<dim, degree, number> &
+  get_element_volume_container() const
   {
-    Assert(element_volume != nullptr, dealii::ExcNotInitialized());
-    return *element_volume;
+    Assert(element_volume_container != nullptr, dealii::ExcNotInitialized());
+    return *element_volume_container;
   }
 
   /**
@@ -226,9 +227,9 @@ private:
   const dealii::MappingQ1<dim> *mapping;
 
   /**
-   * @brief Element volumes.
+   * @brief Element volume container.
    */
-  ElementVolume<dim, degree, number> *element_volume;
+  ElementVolumeContainer<dim, degree, number> *element_volume_container;
 
   /**
    * @brief Multigrid information

@@ -67,6 +67,7 @@ PDEProblem<dim, degree, number>::PDEProblem(
   , invm_handler(_user_inputs.get_variable_attributes())
   , solution_handler(_user_inputs.get_variable_attributes(), mg_info)
   , dof_handler(_user_inputs, mg_info)
+  , element_volume_container(mg_info)
   , solver_context(_user_inputs,
                    matrix_free_container,
                    triangulation_handler,
@@ -74,6 +75,7 @@ PDEProblem<dim, degree, number>::PDEProblem(
                    constraint_handler,
                    dof_handler,
                    mapping,
+                   element_volume_container,
                    mg_info,
                    solution_handler,
                    _pde_operator,
@@ -87,7 +89,7 @@ PDEProblem<dim, degree, number>::PDEProblem(
                          dof_handler,
                          fe_system,
                          mapping,
-                         element_volume,
+                         element_volume_container,
                          mg_info)
   , grid_refiner(grid_refiner_context)
   , solver_handler(solver_context)
@@ -192,17 +194,8 @@ PDEProblem<dim, degree, number>::init_system()
   Timer::end_section("reinitialize invm");
 
   // reinitialize the element volumes and compute them
-  // TODO (landinjm): Output the element volumes for debug mode. This will create a lot of
-  // bloat in the output directory so we should create a separate flag and/or directory
-  // for this.
-  ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
-  Timer::start_section("reinitialize element volumes");
-  element_volume.initialize(matrix_free_container.get_matrix_free());
-  // Get the field type of the first field so that MatrixFree data matches the fe_system
-  FieldType first_field =
-    user_inputs->get_variable_attributes().begin()->second.get_field_type();
-  element_volume.compute_element_volume(fe_system.at(first_field));
-  Timer::end_section("reinitialize element volumes");
+  element_volume_container.initialize(matrix_free_container);
+  element_volume_container.compute_element_volume();
 
   // Initialize the solver types
   solver_handler.init();
