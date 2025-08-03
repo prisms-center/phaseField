@@ -146,6 +146,8 @@ MatrixFreeOperator<dim, degree, number>::set_constrained_entries_to_one(
     }
 }
 
+// cppcheck-suppress-begin passedByValue
+
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
@@ -153,6 +155,8 @@ MatrixFreeOperator<dim, degree, number>::add_global_to_local_mapping(
 {
   global_to_local_solution = _global_to_local_solution;
 }
+
+// cppcheck-suppress-end passedByValue
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::shared_ptr<const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
@@ -171,6 +175,8 @@ MatrixFreeOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
   return inverse_diagonal_entries;
 }
 
+// cppcheck-suppress-begin passedByValue
+
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::add_src_solution_subset(
@@ -178,6 +184,8 @@ MatrixFreeOperator<dim, degree, number>::add_src_solution_subset(
 {
   src_solution_subset = _src_solution_subset;
 }
+
+// cppcheck-suppress-end passedByValue
 
 template <unsigned int dim, unsigned int degree, typename number>
 void

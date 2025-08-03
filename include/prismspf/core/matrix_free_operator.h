@@ -117,6 +117,8 @@ public:
   const std::shared_ptr<dealii::DiagonalMatrix<VectorType>> &
   get_matrix_diagonal_inverse() const;
 
+  // cppcheck-suppress-begin passedByValue
+
   /**
    * @brief Add the mappings from global to local solution vectors.
    */
@@ -129,6 +131,8 @@ public:
   void
   add_src_solution_subset(
     std::vector<VectorType *> _src_solution_subset = std::vector<VectorType *>());
+
+  // cppcheck-suppress-end passedByValue
 
   /**
    * @brief Matrix-vector multiplication.
