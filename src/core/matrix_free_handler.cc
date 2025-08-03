@@ -122,7 +122,7 @@ MatrixFreeContainer<dim, number>::reinit(
                      quad);
 
   // Reinit the multigrid matrix-free objects if we have multigrid
-  if (multigrid_matrix_free.n_levels() != 0)
+  if (multigrid_matrix_free.n_levels() > 1)
     {
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
