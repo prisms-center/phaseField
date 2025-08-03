@@ -1,13 +1,18 @@
 
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/sequential_solver.h>
+#include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -155,7 +160,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
     this->get_solution_handler().get_solution_vector(global_field_index,
                                                      DependencyType::Normal));
   global_to_local_solution[global_field_index]
-                          [global_field_index * max_dependency_types +
+                          [(global_field_index * max_dependency_types) +
                            static_cast<Types::Index>(DependencyType::Normal)] = 0;
 
   Types::Index variable_index = 0;
@@ -168,7 +173,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
               global_to_local_solution[global_field_index]
-                                      [variable_index * max_dependency_types +
+                                      [(variable_index * max_dependency_types) +
                                        dependency_type] != Numbers::invalid_index)
             {
               dependency_type++;
@@ -180,7 +185,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
                                                              static_cast<DependencyType>(
                                                                dependency_type)));
           global_to_local_solution[global_field_index]
-                                  [variable_index * max_dependency_types +
+                                  [(variable_index * max_dependency_types) +
                                    dependency_type] =
                                     solution_subset.at(global_field_index).size() - 1;
 

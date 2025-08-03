@@ -1,11 +1,16 @@
 
 #include <prismspf/core/matrix_free_operator.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/solvers/concurrent_solver.h>
+#include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include <functional>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

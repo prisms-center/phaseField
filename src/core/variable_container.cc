@@ -16,6 +16,7 @@
 
 #include <prismspf/config.h>
 
+#include <algorithm>
 #include <functional>
 #include <map>
 #include <memory>

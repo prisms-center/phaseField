@@ -1,10 +1,19 @@
 
+#include <deal.II/base/exceptions.h>
+
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/initial_conditions.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include <map>
+#include <ostream>
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

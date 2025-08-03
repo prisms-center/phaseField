@@ -18,7 +18,6 @@
 
 #include <prismspf/config.h>
 
-#include <cstddef>
 #include <memory>
 #include <utility>
 

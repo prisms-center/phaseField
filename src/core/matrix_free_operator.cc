@@ -3,7 +3,6 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
-#include <deal.II/base/subscriptor.h>
 #include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/lac/diagonal_matrix.h>
@@ -25,6 +24,12 @@
 #include <memory>
 #include <utility>
 #include <vector>
+
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/enable_observer_pointer.h>
+#else
+#  include <deal.II/base/subscriptor.h>
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 

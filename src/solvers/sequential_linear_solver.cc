@@ -4,6 +4,7 @@
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/sequential_linear_solver.h>
+#include <prismspf/solvers/sequential_solver.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
