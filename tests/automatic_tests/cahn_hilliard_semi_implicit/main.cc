@@ -3,13 +3,28 @@
 
 #include "custom_pde.h"
 
+#include <prismspf/core/dof_handler.h>
+#include <prismspf/core/grid_refiner.h>
+#include <prismspf/core/invm_handler.h>
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/solution_handler.h>
+#include <prismspf/core/solver_handler.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/linear_solver_identity.h>
+#include <prismspf/solvers/solver_context.h>
+
+#include <prismspf/utilities/element_volume.h>
+#include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
 
