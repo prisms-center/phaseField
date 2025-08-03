@@ -55,10 +55,10 @@ GMGSolver<dim, degree, number>::init()
   // Basic intialization that is the same as the identity solve.
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
-    this->get_matrix_free_handler().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free());
   this->get_update_system_matrix()->clear();
   this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_handler().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free());
 
   this->get_system_matrix()->add_global_to_local_mapping(
     this->get_residual_global_to_local_solution());
@@ -131,7 +131,7 @@ GMGSolver<dim, degree, number>::init()
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       (*mg_operators)[level].initialize(
-        this->get_mg_matrix_free_handler()[level].get_matrix_free(),
+        this->get_matrix_free_container().get_mg_matrix_free(level),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(
@@ -235,7 +235,7 @@ GMGSolver<dim, degree, number>::reinit()
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       (*mg_operators)[level].initialize(
-        this->get_mg_matrix_free_handler()[level].get_matrix_free(),
+        this->get_matrix_free_container().get_mg_matrix_free(level),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(

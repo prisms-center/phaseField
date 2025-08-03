@@ -45,7 +45,7 @@ ConcurrentSolver<dim, degree, number>::init()
 
   // Set up the user-implemented equations and create the residual vectors
   system_matrix->clear();
-  system_matrix->initialize(this->get_matrix_free_handler().get_matrix_free());
+  system_matrix->initialize(this->get_matrix_free_container().get_matrix_free());
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields =

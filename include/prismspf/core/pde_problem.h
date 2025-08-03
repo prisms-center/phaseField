@@ -34,7 +34,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class InvmHandler;
 
 template <unsigned int dim, typename number>
-class MatrixfreeHandler;
+class MatrixFreeContainer;
 
 template <unsigned int dim>
 class MGInfo;
@@ -129,14 +129,9 @@ private:
   ConstraintHandler<dim, degree, number> constraint_handler;
 
   /**
-   * @brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object container.
    */
-  MatrixfreeHandler<dim, number> matrix_free_handler;
-
-  /**
-   * @brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
+  MatrixFreeContainer<dim, number> matrix_free_container;
 
   /**
    * @brief invm handler.

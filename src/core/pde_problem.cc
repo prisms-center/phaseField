@@ -63,13 +63,12 @@ PDEProblem<dim, degree, number>::PDEProblem(
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
   , constraint_handler(_user_inputs, mg_info, _pde_operator, _pde_operator_float)
-  , matrix_free_handler()
-  , multigrid_matrix_free_handler(0, 0)
+  , matrix_free_container(mg_info)
   , invm_handler(_user_inputs.get_variable_attributes())
   , solution_handler(_user_inputs.get_variable_attributes(), mg_info)
   , dof_handler(_user_inputs, mg_info)
   , solver_context(_user_inputs,
-                   matrix_free_handler,
+                   matrix_free_container,
                    triangulation_handler,
                    invm_handler,
                    constraint_handler,
@@ -77,14 +76,12 @@ PDEProblem<dim, degree, number>::PDEProblem(
                    mapping,
                    mg_info,
                    solution_handler,
-                   multigrid_matrix_free_handler,
                    _pde_operator,
                    _pde_operator_float)
   , grid_refiner_context(_user_inputs,
                          triangulation_handler,
                          constraint_handler,
-                         matrix_free_handler,
-                         multigrid_matrix_free_handler,
+                         matrix_free_container,
                          invm_handler,
                          solution_handler,
                          dof_handler,
@@ -177,48 +174,20 @@ PDEProblem<dim, degree, number>::init_system()
   Timer::end_section("Create constraints");
 
   // Reinit the matrix-free objects
-  ConditionalOStreams::pout_base() << "initializing matrix-free objects...\n"
-                                   << std::flush;
-  Timer::start_section("reinitialize matrix-free objects");
-  matrix_free_handler.reinit(mapping,
-                             dof_handler.get_dof_handlers(),
-                             constraint_handler.get_constraints(),
-                             dealii::QGaussLobatto<1>(degree + 1));
-  if (mg_info.has_multigrid())
-    {
-      const unsigned int min_level = mg_info.get_mg_min_level();
-      const unsigned int max_level = mg_info.get_mg_max_level();
-      multigrid_matrix_free_handler.resize(min_level, max_level);
-      for (unsigned int level = min_level; level <= max_level; ++level)
-        {
-          ConditionalOStreams::pout_base()
-            << "initializing multgrid matrix-free object at level " << level << "...\n"
-            << std::flush;
-          multigrid_matrix_free_handler[level].reinit(
-            mapping,
-            dof_handler.get_mg_dof_handlers(level),
-            constraint_handler.get_mg_constraints(level),
-            dealii::QGaussLobatto<1>(degree + 1));
-        }
-    }
-  Timer::end_section("reinitialize matrix-free objects");
+  matrix_free_container.template reinit<degree, 1>(mapping,
+                                                   dof_handler,
+                                                   constraint_handler,
+                                                   dealii::QGaussLobatto<1>(degree + 1));
 
   // reinitialize the solution set
-  ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
-  Timer::start_section("reinitialize solution set");
-  solution_handler.init(matrix_free_handler);
-  if (mg_info.has_multigrid())
-    {
-      solution_handler.mg_init(multigrid_matrix_free_handler);
-    }
-  Timer::end_section("reinitialize solution set");
+  solution_handler.init(matrix_free_container);
 
   // reinitialize the invm and compute it
   // TODO (landinjm): Output the invm for debug mode. This will create a lot of bloat in
   // the output directory so we should create a separate flag and/or directory for this.
   ConditionalOStreams::pout_base() << "initializing invm...\n" << std::flush;
   Timer::start_section("reinitialize invm");
-  invm_handler.initialize(matrix_free_handler.get_matrix_free());
+  invm_handler.initialize(matrix_free_container.get_matrix_free());
   invm_handler.compute_invm();
   Timer::end_section("reinitialize invm");
 
@@ -228,7 +197,7 @@ PDEProblem<dim, degree, number>::init_system()
   // for this.
   ConditionalOStreams::pout_base() << "initializing element volumes...\n" << std::flush;
   Timer::start_section("reinitialize element volumes");
-  element_volume.initialize(matrix_free_handler.get_matrix_free());
+  element_volume.initialize(matrix_free_container.get_matrix_free());
   // Get the field type of the first field so that MatrixFree data matches the fe_system
   FieldType first_field =
     user_inputs->get_variable_attributes().begin()->second.get_field_type();

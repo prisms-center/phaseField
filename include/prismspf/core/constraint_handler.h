@@ -46,7 +46,7 @@ public:
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
-  get_constraints();
+  get_constraints() const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
@@ -58,7 +58,7 @@ public:
    * @brief Getter function for the multigrid constraints of a certain level.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<float> *>
-  get_mg_constraints(unsigned int level);
+  get_mg_constraints(unsigned int level) const;
 
   /**
    * @brief Getter function for the multigrid constraint of a certain level and index

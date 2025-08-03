@@ -31,7 +31,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 template <unsigned int dim, typename number>
-class MatrixfreeHandler;
+class MatrixFreeContainer;
 
 template <unsigned int dim>
 class TriangulationHandler;
@@ -176,12 +176,12 @@ public:
   }
 
   /**
-   * @brief Get the matrix-free object handler for non-multigrid data.
+   * @brief Get the matrix-free container.
    */
-  [[nodiscard]] const MatrixfreeHandler<dim, number> &
-  get_matrix_free_handler() const
+  [[nodiscard]] const MatrixFreeContainer<dim, number> &
+  get_matrix_free_container() const
   {
-    return solver_context->get_matrix_free_handler();
+    return solver_context->get_matrix_free_container();
   }
 
   /**
@@ -236,15 +236,6 @@ public:
   get_mg_info() const
   {
     return solver_context->get_mg_info();
-  }
-
-  /**
-   * @brief Get the mg matrix-free handler.
-   */
-  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
-  get_mg_matrix_free_handler()
-  {
-    return solver_context->get_mg_matrix_free_handler();
   }
 
   /**

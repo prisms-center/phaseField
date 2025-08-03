@@ -190,34 +190,15 @@ public:
               level);
           }
       }
-    grid_refinement_context.get_matrix_free_handler().reinit(
+
+    grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
       grid_refinement_context.get_mapping(),
-      grid_refinement_context.get_dof_handler().get_dof_handlers(),
-      grid_refinement_context.get_constraint_handler().get_constraints(),
+      grid_refinement_context.get_dof_handler(),
+      grid_refinement_context.get_constraint_handler(),
       dealii::QGaussLobatto<1>(degree + 1));
-    if (grid_refinement_context.get_multigrid_info().has_multigrid())
-      {
-        const unsigned int min_level =
-          grid_refinement_context.get_multigrid_info().get_mg_min_level();
-        const unsigned int max_level =
-          grid_refinement_context.get_multigrid_info().get_mg_max_level();
-        grid_refinement_context.get_mg_matrix_free_handler().resize(min_level, max_level);
-        for (unsigned int level = min_level; level <= max_level; ++level)
-          {
-            grid_refinement_context.get_mg_matrix_free_handler()[level].reinit(
-              grid_refinement_context.get_mapping(),
-              grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
-              grid_refinement_context.get_constraint_handler().get_mg_constraints(level),
-              dealii::QGaussLobatto<1>(degree + 1));
-          }
-      }
+
     grid_refinement_context.get_solution_handler().reinit(
-      grid_refinement_context.get_matrix_free_handler());
-    if (grid_refinement_context.get_multigrid_info().has_multigrid())
-      {
-        grid_refinement_context.get_solution_handler().mg_reinit(
-          grid_refinement_context.get_mg_matrix_free_handler());
-      }
+      grid_refinement_context.get_matrix_free_container());
 
     // Step 4
     grid_refinement_context.get_solution_handler().execute_solution_transfer();

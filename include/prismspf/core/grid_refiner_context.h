@@ -37,24 +37,21 @@ public:
   /**
    * @brief Constructor.
    */
-  GridRefinementContext(
-    const UserInputParameters<dim>                       &_user_inputs,
-    TriangulationHandler<dim>                            &_triangulation_handler,
-    ConstraintHandler<dim, degree, number>               &_constraint_handler,
-    MatrixfreeHandler<dim, number>                       &_matrix_free_handler,
-    dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &_multigrid_matrix_free_handler,
-    InvmHandler<dim, degree, number>                     &_invm_handler,
-    SolutionHandler<dim, number>                         &_solution_handler,
-    DofHandler<dim>                                      &_dof_handler,
-    std::map<FieldType, dealii::FESystem<dim>>           &_fe_system,
-    const dealii::MappingQ1<dim>                         &_mapping,
-    ElementVolume<dim, degree, number>                   &_element_volume,
-    const MGInfo<dim>                                    &_mg_info)
+  GridRefinementContext(const UserInputParameters<dim>         &_user_inputs,
+                        TriangulationHandler<dim>              &_triangulation_handler,
+                        ConstraintHandler<dim, degree, number> &_constraint_handler,
+                        MatrixFreeContainer<dim, number>       &_matrix_free_container,
+                        InvmHandler<dim, degree, number>       &_invm_handler,
+                        SolutionHandler<dim, number>           &_solution_handler,
+                        DofHandler<dim>                        &_dof_handler,
+                        std::map<FieldType, dealii::FESystem<dim>> &_fe_system,
+                        const dealii::MappingQ1<dim>               &_mapping,
+                        ElementVolume<dim, degree, number>         &_element_volume,
+                        const MGInfo<dim>                          &_mg_info)
     : user_inputs(&_user_inputs)
     , triangulation_handler(&_triangulation_handler)
     , constraint_handler(&_constraint_handler)
-    , matrix_free_handler(&_matrix_free_handler)
-    , multigrid_matrix_free_handler(&_multigrid_matrix_free_handler)
+    , matrix_free_container(&_matrix_free_container)
     , invm_handler(&_invm_handler)
     , solution_handler(&_solution_handler)
     , dof_handler(&_dof_handler)
@@ -89,13 +86,13 @@ public:
   }
 
   /**
-   * @brief Get the matrix-free object handler for non-multigrid data.
+   * @brief Get the matrix-free container.
    */
-  [[nodiscard]] MatrixfreeHandler<dim, number> &
-  get_matrix_free_handler() const
+  [[nodiscard]] MatrixFreeContainer<dim, number> &
+  get_matrix_free_container() const
   {
-    Assert(matrix_free_handler != nullptr, dealii::ExcNotInitialized());
-    return *matrix_free_handler;
+    Assert(matrix_free_container != nullptr, dealii::ExcNotInitialized());
+    return *matrix_free_container;
   }
 
   /**
@@ -149,16 +146,6 @@ public:
   }
 
   /**
-   * @brief Get the mg matrix-free handler.
-   */
-  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
-  get_mg_matrix_free_handler() const
-  {
-    Assert(multigrid_matrix_free_handler != nullptr, dealii::ExcNotInitialized());
-    return *multigrid_matrix_free_handler;
-  }
-
-  /**
    * @brief Get the collection of finite element systems.
    */
   [[nodiscard]] const std::map<FieldType, dealii::FESystem<dim>> &
@@ -207,14 +194,9 @@ private:
   ConstraintHandler<dim, degree, number> *constraint_handler;
 
   /**
-   * @brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object container.
    */
-  MatrixfreeHandler<dim, number> *matrix_free_handler;
-
-  /**
-   * @brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *multigrid_matrix_free_handler;
+  MatrixFreeContainer<dim, number> *matrix_free_container;
 
   /**
    * @brief invm handler.
