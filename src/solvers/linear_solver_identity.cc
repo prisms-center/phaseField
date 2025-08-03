@@ -25,18 +25,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 IdentitySolver<dim, degree, number>::IdentitySolver(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
-  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
-  SolutionHandler<dim, number>                           &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
-  : LinearSolverBase<dim, degree, number>(_user_inputs,
-                                          _variable_attributes,
-                                          _matrix_free_handler,
-                                          _constraint_handler,
-                                          _solution_handler,
-                                          std::move(_pde_operator))
+  const SolverContext<dim, degree, number> &_solver_context,
+  const VariableAttributes                 &_variable_attributes)
+  : LinearSolverBase<dim, degree, number>(_solver_context, _variable_attributes)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

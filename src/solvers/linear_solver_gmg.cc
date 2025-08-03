@@ -30,6 +30,7 @@
 
 #include <prismspf/solvers/linear_solver_base.h>
 #include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
@@ -40,30 +41,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 GMGSolver<dim, degree, number>::GMGSolver(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
-  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
-  const TriangulationHandler<dim>                        &_triangulation_handler,
-  const DofHandler<dim>                                  &_dof_handler,
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
-  SolutionHandler<dim, number>                           &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
-  const MGInfo<dim>                                      &_mg_info)
-  : LinearSolverBase<dim, degree, number>(_user_inputs,
-                                          _variable_attributes,
-                                          _matrix_free_handler,
-                                          _constraint_handler,
-                                          _solution_handler,
-                                          std::move(_pde_operator))
-  , triangulation_handler(&_triangulation_handler)
-  , dof_handler(&_dof_handler)
-  , mg_matrix_free_handler(&_mg_matrix_free_handler)
-  , pde_operator_float(std::move(_pde_operator_float))
-  , mg_info(&_mg_info)
-  , min_level(_mg_info.get_mg_min_level())
-  , max_level(_mg_info.get_mg_max_level())
+  const SolverContext<dim, degree, number> &_solver_context,
+  const VariableAttributes                 &_variable_attributes)
+  : LinearSolverBase<dim, degree, number>(_solver_context, _variable_attributes)
+  , min_level(_solver_context.get_mg_info().get_mg_min_level())
+  , max_level(_solver_context.get_mg_info().get_mg_max_level())
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -126,7 +108,8 @@ GMGSolver<dim, degree, number>::init()
             }
           for (unsigned int level = min_level; level <= max_level; ++level)
             {
-              Assert(local_index == mg_info->get_local_index(field_index, level),
+              Assert(local_index ==
+                       this->get_mg_info().get_local_index(field_index, level),
                      dealii::ExcMessage(
                        "The multigrid info indexing must match the local to "
                        "global ones in this solver. "));
@@ -139,7 +122,7 @@ GMGSolver<dim, degree, number>::init()
     min_level,
     max_level,
     this->get_subset_attributes(),
-    pde_operator_float,
+    this->get_pde_operator_float(),
     this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
@@ -148,7 +131,7 @@ GMGSolver<dim, degree, number>::init()
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       (*mg_operators)[level].initialize(
-        (*mg_matrix_free_handler)[level].get_matrix_free(),
+        this->get_mg_matrix_free_handler()[level].get_matrix_free(),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(
@@ -184,8 +167,8 @@ GMGSolver<dim, degree, number>::init()
           for (unsigned int level = min_level; level < max_level; ++level)
             {
               mg_transfer_operators[local_index][level + 1].reinit(
-                *dof_handler->get_mg_dof_handlers(level + 1)[local_index],
-                *dof_handler->get_mg_dof_handlers(level)[local_index],
+                (*this->get_dof_handler().get_mg_dof_handlers(level + 1)[local_index]),
+                *(this->get_dof_handler().get_mg_dof_handlers(level)[local_index]),
                 this->get_constraint_handler().get_mg_constraint(level + 1, local_index),
                 this->get_constraint_handler().get_mg_constraint(level, local_index));
             }
@@ -207,10 +190,11 @@ GMGSolver<dim, degree, number>::init()
     << "  Max level: " << max_level << "\n"
     << "  MG vertical communication efficiency: "
     << dealii::MGTools::vertical_communication_efficiency(
-         triangulation_handler->get_mg_triangulation())
+         this->get_triangulation_handler().get_mg_triangulation())
     << "\n"
     << "  MG workload imbalance: "
-    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
+    << dealii::MGTools::workload_imbalance(
+         this->get_triangulation_handler().get_mg_triangulation())
     << "\n\n"
     << std::flush;
 #endif
@@ -242,7 +226,7 @@ GMGSolver<dim, degree, number>::reinit()
     min_level,
     max_level,
     this->get_subset_attributes(),
-    pde_operator_float,
+    this->get_pde_operator_float(),
     this->get_variable_attributes().get_solve_block(),
     this->get_field_index(),
     true);
@@ -251,7 +235,7 @@ GMGSolver<dim, degree, number>::reinit()
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
       (*mg_operators)[level].initialize(
-        (*mg_matrix_free_handler)[level].get_matrix_free(),
+        this->get_mg_matrix_free_handler()[level].get_matrix_free(),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(
@@ -287,8 +271,8 @@ GMGSolver<dim, degree, number>::reinit()
           for (unsigned int level = min_level; level < max_level; ++level)
             {
               mg_transfer_operators[local_index][level + 1].reinit(
-                *dof_handler->get_mg_dof_handlers(level + 1)[local_index],
-                *dof_handler->get_mg_dof_handlers(level)[local_index],
+                *(this->get_dof_handler().get_mg_dof_handlers(level + 1)[local_index]),
+                *(this->get_dof_handler().get_mg_dof_handlers(level)[local_index]),
                 this->get_constraint_handler().get_mg_constraint(level + 1, local_index),
                 this->get_constraint_handler().get_mg_constraint(level, local_index));
             }
@@ -310,10 +294,11 @@ GMGSolver<dim, degree, number>::reinit()
     << "  Max level: " << max_level << "\n"
     << "  MG vertical communication efficiency: "
     << dealii::MGTools::vertical_communication_efficiency(
-         triangulation_handler->get_mg_triangulation())
+         this->get_triangulation_handler().get_mg_triangulation())
     << "\n"
     << "  MG workload imbalance: "
-    << dealii::MGTools::workload_imbalance(triangulation_handler->get_mg_triangulation())
+    << dealii::MGTools::workload_imbalance(
+         this->get_triangulation_handler().get_mg_triangulation())
     << "\n\n"
     << std::flush;
 #endif
@@ -324,7 +309,7 @@ void
 GMGSolver<dim, degree, number>::solve(const number &step_length)
 {
   const auto *current_dof_handler =
-    dof_handler->get_dof_handlers().at(this->get_field_index());
+    this->get_dof_handler().get_dof_handlers().at(this->get_field_index());
   auto *solution =
     this->get_solution_handler().get_solution_vector(this->get_field_index(),
                                                      DependencyType::Normal);
@@ -384,7 +369,7 @@ GMGSolver<dim, degree, number>::solve(const number &step_length)
 
           // Interpolate
           mg_transfer[local_index]->interpolate_to_mg(
-            *dof_handler->get_dof_handlers().at(field_index),
+            *(this->get_dof_handler().get_dof_handlers().at(field_index)),
             mg_src_subset,
             *this->get_newton_update_src()[local_index]);
 

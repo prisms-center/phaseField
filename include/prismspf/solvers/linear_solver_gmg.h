@@ -25,34 +25,8 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim>
-class DofHandler;
-
 template <unsigned int dim, unsigned int degree, typename number>
-class MatrixFreeOperator;
-
-template <unsigned int dim>
-class UserInputParameters;
-
-struct VariableAttributes;
-
-template <unsigned int dim, typename number>
-class MatrixfreeHandler;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class ConstraintHandler;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class PDEOperator;
-
-template <unsigned int dim, typename number>
-class SolutionHandler;
-
-template <unsigned int dim>
-class TriangulationHandler;
-
-template <unsigned int dim>
-class MGInfo;
+class SolverContext;
 
 /**
  * @brief Class that handles the assembly and solving of a field with a GMG preconditioner
@@ -69,22 +43,43 @@ public:
   /**
    * @brief Constructor.
    */
-  GMGSolver(const UserInputParameters<dim>                       &_user_inputs,
-            const VariableAttributes                             &_variable_attributes,
-            const MatrixfreeHandler<dim, number>                 &_matrix_free_handler,
-            const ConstraintHandler<dim, degree, number>         &_constraint_handler,
-            const TriangulationHandler<dim>                      &_triangulation_handler,
-            const DofHandler<dim>                                &_dof_handler,
-            dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &_mg_matrix_free_handler,
-            SolutionHandler<dim, number>                         &_solution_handler,
-            std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-            std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float,
-            const MGInfo<dim>                                      &_mg_info);
+  GMGSolver(const SolverContext<dim, degree, number> &_solver_context,
+            const VariableAttributes                 &_variable_attributes);
 
   /**
    * @brief Destructor.
    */
   ~GMGSolver() override = default;
+
+  /**
+   * @brief Copy constructor.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  GMGSolver(const GMGSolver &solver) = delete;
+
+  /**
+   * @brief Copy assignment.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  GMGSolver &
+  operator=(const GMGSolver &solver) = delete;
+
+  /**
+   * @brief Move constructor.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  GMGSolver(GMGSolver &&solver) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  GMGSolver &
+  operator=(GMGSolver &&solver) noexcept = delete;
 
   /**
    * @brief Initialize the system.
@@ -105,31 +100,6 @@ public:
   solve(const number &step_length = 1.0) override;
 
 private:
-  /**
-   * @brief Triangulation handler.
-   */
-  const TriangulationHandler<dim> *triangulation_handler;
-
-  /**
-   * @brief DoF handler.
-   */
-  const DofHandler<dim> *dof_handler;
-
-  /**
-   * @brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
-
-  /**
-   * @brief PDE operator but for floats!
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
-
-  /**
-   * @brief Multigrid information.
-   */
-  const MGInfo<dim> *mg_info;
-
   /**
    * @brief Minimum multigrid level
    */

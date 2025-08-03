@@ -303,6 +303,16 @@ public:
     return solve_priority;
   }
 
+  /**
+   * @brief Get the solver context.
+   */
+  [[nodiscard]] const SolverContext<dim, degree, number> &
+  get_solver_context() const
+  {
+    Assert(solver_context != nullptr, dealii::ExcNotInitialized());
+    return *solver_context;
+  }
+
 private:
   /**
    * @brief Solver context.

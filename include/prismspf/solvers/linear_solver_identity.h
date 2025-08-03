@@ -14,24 +14,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class MatrixFreeOperator;
-
-template <unsigned int dim>
-class UserInputParameters;
-
-struct VariableAttributes;
-
-template <unsigned int dim, typename number>
-class MatrixfreeHandler;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class ConstraintHandler;
-
-template <unsigned int dim, unsigned int degree, typename number>
-class PDEOperator;
-
-template <unsigned int dim, typename number>
-class SolutionHandler;
+class SolverContext;
 
 /**
  * @brief Class that handles the assembly and solving of a field with the identity
@@ -47,17 +30,43 @@ public:
   /**
    * @brief Constructor.
    */
-  IdentitySolver(const UserInputParameters<dim>               &_user_inputs,
-                 const VariableAttributes                     &_variable_attributes,
-                 const MatrixfreeHandler<dim, number>         &_matrix_free_handler,
-                 const ConstraintHandler<dim, degree, number> &_constraint_handler,
-                 SolutionHandler<dim, number>                 &_solution_handler,
-                 std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator);
+  IdentitySolver(const SolverContext<dim, degree, number> &_solver_context,
+                 const VariableAttributes                 &_variable_attributes);
 
   /**
    * @brief Destructor.
    */
   ~IdentitySolver() override = default;
+
+  /**
+   * @brief Copy constructor.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  IdentitySolver(const IdentitySolver &solver) = delete;
+
+  /**
+   * @brief Copy assignment.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  IdentitySolver &
+  operator=(const IdentitySolver &solver) = delete;
+
+  /**
+   * @brief Move constructor.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  IdentitySolver(IdentitySolver &&solver) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  IdentitySolver &
+  operator=(IdentitySolver &&solver) noexcept = delete;
 
   /**
    * @brief Initialize the system.

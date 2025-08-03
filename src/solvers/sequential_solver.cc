@@ -87,31 +87,18 @@ SequentialSolver<dim, degree, number>::init_linear_solver(
         .get_linear_solve_parameters(global_field_index)
         .preconditioner == PreconditionerType::GMG)
     {
-      gmg_solvers.emplace(global_field_index,
-                          std::make_unique<GMGSolver<dim, degree, number>>(
-                            this->get_user_inputs(),
-                            variable,
-                            this->get_matrix_free_handler(),
-                            this->get_constraint_handler(),
-                            this->get_triangulation_handler(),
-                            this->get_dof_handler(),
-                            this->get_mg_matrix_free_handler(),
-                            this->get_solution_handler(),
-                            this->get_pde_operator(),
-                            this->get_pde_operator_float(),
-                            this->get_mg_info()));
+      gmg_solvers.emplace(
+        global_field_index,
+        std::make_unique<GMGSolver<dim, degree, number>>(this->get_solver_context(),
+                                                         variable));
       gmg_solvers.at(global_field_index)->init();
     }
   else
     {
-      identity_solvers.emplace(global_field_index,
-                               std::make_unique<IdentitySolver<dim, degree, number>>(
-                                 this->get_user_inputs(),
-                                 variable,
-                                 this->get_matrix_free_handler(),
-                                 this->get_constraint_handler(),
-                                 this->get_solution_handler(),
-                                 this->get_pde_operator()));
+      identity_solvers.emplace(
+        global_field_index,
+        std::make_unique<IdentitySolver<dim, degree, number>>(this->get_solver_context(),
+                                                              variable));
       identity_solvers.at(global_field_index)->init();
     }
 }

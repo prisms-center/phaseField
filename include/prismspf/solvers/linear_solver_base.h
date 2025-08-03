@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/mapping_q1.h>
@@ -12,29 +13,46 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/solvers/solver_context.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim>
-class UserInputParameters;
-
 template <unsigned int dim, unsigned int degree, typename number>
-class ConstraintHandler;
-
-template <unsigned int dim, typename number>
-class MatrixfreeHandler;
-
-template <unsigned int dim, typename number>
-class SolutionHandler;
-
-template <unsigned int dim>
-class TriangulationHandler;
+class SolverContext;
 
 struct VariableAttributes;
 
 template <unsigned int dim, unsigned int degree, typename number>
+class InitialCondition;
+
+template <unsigned int dim, unsigned int degree, typename number>
 class MatrixFreeOperator;
+
+template <unsigned int dim>
+class UserInputParameters;
+
+template <unsigned int dim, typename number>
+class MatrixfreeHandler;
+
+template <unsigned int dim>
+class TriangulationHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class InvmHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ConstraintHandler;
+
+template <unsigned int dim>
+class DofHandler;
+
+template <unsigned int dim>
+class MGInfo;
+
+template <unsigned int dim, typename number>
+class SolutionHandler;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
@@ -52,17 +70,43 @@ public:
   /**
    * @brief Constructor.
    */
-  LinearSolverBase(const UserInputParameters<dim>               &_user_inputs,
-                   const VariableAttributes                     &_variable_attributes,
-                   const MatrixfreeHandler<dim, number>         &_matrix_free_handler,
-                   const ConstraintHandler<dim, degree, number> &_constraint_handler,
-                   SolutionHandler<dim, number>                 &_solution_handler,
-                   std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator);
+  LinearSolverBase(const SolverContext<dim, degree, number> &_solver_context,
+                   const VariableAttributes                 &_variable_attributes);
 
   /**
    * @brief Destructor.
    */
   virtual ~LinearSolverBase() = default;
+
+  /**
+   * @brief Copy constructor.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  LinearSolverBase(const LinearSolverBase &solver) = delete;
+
+  /**
+   * @brief Copy assignment.
+   *
+   * Deleted so solver instances aren't copied.
+   */
+  LinearSolverBase &
+  operator=(const LinearSolverBase &solver) = delete;
+
+  /**
+   * @brief Move constructor.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  LinearSolverBase(LinearSolverBase &&solver) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   *
+   * Deleted so solver instances aren't moved.
+   */
+  LinearSolverBase &
+  operator=(LinearSolverBase &&solver) noexcept = delete;
 
   /**
    * @brief Initialize the system.
@@ -105,7 +149,7 @@ protected:
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
-    return *user_inputs;
+    return solver_context->get_user_inputs();
   }
 
   /**
@@ -118,12 +162,21 @@ protected:
   }
 
   /**
+   * @brief Get the dof handler.
+   */
+  [[nodiscard]] const DofHandler<dim> &
+  get_dof_handler() const
+  {
+    return solver_context->get_dof_handler();
+  }
+
+  /**
    * @brief Get the matrix-free object handler for non-multigrid data.
    */
   [[nodiscard]] const MatrixfreeHandler<dim, number> &
   get_matrix_free_handler() const
   {
-    return *matrix_free_handler;
+    return solver_context->get_matrix_free_handler();
   }
 
   /**
@@ -132,7 +185,7 @@ protected:
   [[nodiscard]] const ConstraintHandler<dim, degree, number> &
   get_constraint_handler() const
   {
-    return *constraint_handler;
+    return solver_context->get_constraint_handler();
   }
 
   /**
@@ -141,7 +194,7 @@ protected:
   [[nodiscard]] SolutionHandler<dim, number> &
   get_solution_handler() const
   {
-    return *solution_handler;
+    return solver_context->get_solution_handler();
   }
 
   /**
@@ -217,7 +270,16 @@ protected:
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
   {
-    return pde_operator;
+    return solver_context->get_pde_operator();
+  }
+
+  /**
+   * @brief Get the pde operator for float.
+   */
+  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
+  get_pde_operator_float() const
+  {
+    return solver_context->get_pde_operator_float();
   }
 
   /**
@@ -265,31 +327,43 @@ protected:
     return tolerance;
   }
 
+  /**
+   * @brief Get the multigrid info.
+   */
+  [[nodiscard]] const MGInfo<dim> &
+  get_mg_info() const
+  {
+    return solver_context->get_mg_info();
+  }
+
+  /**
+   * @brief Get the triangulation handler.
+   */
+  [[nodiscard]] const TriangulationHandler<dim> &
+  get_triangulation_handler() const
+  {
+    return solver_context->get_triangulation_handler();
+  }
+
+  /**
+   * @brief Get the mg matrix-free handler.
+   */
+  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
+  get_mg_matrix_free_handler()
+  {
+    return solver_context->get_mg_matrix_free_handler();
+  }
+
 private:
   /**
-   * @brief User-inputs.
+   * @brief Solver context.
    */
-  const UserInputParameters<dim> *user_inputs;
+  const SolverContext<dim, degree, number> *solver_context;
 
   /**
    * @brief Variable attributes for field.
    */
   const VariableAttributes *variable_attributes;
-
-  /**
-   * @brief Matrix-free object handler for non-multigrid data.
-   */
-  const MatrixfreeHandler<dim, number> *matrix_free_handler;
-
-  /**
-   * @brief Constraint handler.
-   */
-  const ConstraintHandler<dim, degree, number> *constraint_handler;
-
-  /**
-   * @brief Solution handler.
-   */
-  SolutionHandler<dim, number> *solution_handler;
 
   /**
    * @brief The field index we are solving.
@@ -325,11 +399,6 @@ private:
    * @brief Newton update vector.
    */
   VectorType *newton_update;
-
-  /**
-   * @brief PDE operator.
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
    * @brief Matrix-free operator for the residual side.
