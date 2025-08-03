@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
+// NOLINTBEGIN
+
 using TemplateExpansionMap = std::unordered_map<std::string, std::vector<std::string>>;
 
 /**
@@ -268,7 +270,7 @@ do_substitutions(
     }
 
   // Grab the key value pairs
-  auto              &substitution_pair = substitution_list.back();
+  const auto        &substitution_pair = substitution_list.back();
   const std::string &value             = substitution_pair.first;
   const std::string &key               = substitution_pair.second;
 
@@ -485,10 +487,13 @@ process_templates()
           const std::vector<std::string> values =
             split_string_to_vector(value_key[0], ",");
 
-          for (const auto &value : values)
-            {
-              substitution_combinations.emplace_back(value, value_key[1]);
-            }
+          std::transform(values.begin(),
+                         values.end(),
+                         std::back_inserter(substitution_combinations),
+                         [&value_key](const auto &value)
+                         {
+                           return std::make_pair(value, value_key[1]);
+                         });
         }
 
       // Now that we have the for loop bit sorted, read the interior
@@ -552,3 +557,5 @@ main(int argc, char **argv)
   // Process the template instantations
   process_templates();
 }
+
+// NOLINTEND

@@ -11,6 +11,7 @@
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/grid_refiner_criterion.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
