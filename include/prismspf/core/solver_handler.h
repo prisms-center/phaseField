@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <prismspf/core/types.h>
+
 #include <prismspf/solvers/concurrent_constant_solver.h>
 #include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
 #include <prismspf/solvers/concurrent_explicit_solver.h>
@@ -10,11 +12,16 @@
 #include <prismspf/solvers/sequential_co_nonlinear_solver.h>
 #include <prismspf/solvers/sequential_linear_solver.h>
 #include <prismspf/solvers/sequential_self_nonlinear_solver.h>
-#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
+#include <map>
+#include <set>
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
 
 /**
  * @brief The class handles the initialization and solving of the various types of solvers

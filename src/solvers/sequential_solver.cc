@@ -1,7 +1,18 @@
 
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
+#include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/sequential_solver.h>
+#include <prismspf/solvers/solver_base.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -76,31 +87,18 @@ SequentialSolver<dim, degree, number>::init_linear_solver(
         .get_linear_solve_parameters(global_field_index)
         .preconditioner == PreconditionerType::GMG)
     {
-      gmg_solvers.emplace(global_field_index,
-                          std::make_unique<GMGSolver<dim, degree, number>>(
-                            this->get_user_inputs(),
-                            variable,
-                            this->get_matrix_free_handler(),
-                            this->get_constraint_handler(),
-                            this->get_triangulation_handler(),
-                            this->get_dof_handler(),
-                            this->get_mg_matrix_free_handler(),
-                            this->get_solution_handler(),
-                            this->get_pde_operator(),
-                            this->get_pde_operator_float(),
-                            this->get_mg_info()));
+      gmg_solvers.emplace(
+        global_field_index,
+        std::make_unique<GMGSolver<dim, degree, number>>(this->get_solver_context(),
+                                                         variable));
       gmg_solvers.at(global_field_index)->init();
     }
   else
     {
-      identity_solvers.emplace(global_field_index,
-                               std::make_unique<IdentitySolver<dim, degree, number>>(
-                                 this->get_user_inputs(),
-                                 variable,
-                                 this->get_matrix_free_handler(),
-                                 this->get_constraint_handler(),
-                                 this->get_solution_handler(),
-                                 this->get_pde_operator()));
+      identity_solvers.emplace(
+        global_field_index,
+        std::make_unique<IdentitySolver<dim, degree, number>>(this->get_solver_context(),
+                                                              variable));
       identity_solvers.at(global_field_index)->init();
     }
 }
@@ -130,7 +128,8 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
   // Set up the user-implemented equations and create the residual vectors
   system_matrix[global_field_index]->clear();
   system_matrix[global_field_index]->initialize(
-    this->get_matrix_free_handler().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields =
@@ -149,7 +148,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
     this->get_solution_handler().get_solution_vector(global_field_index,
                                                      DependencyType::Normal));
   global_to_local_solution[global_field_index]
-                          [global_field_index * max_dependency_types +
+                          [(global_field_index * max_dependency_types) +
                            static_cast<Types::Index>(DependencyType::Normal)] = 0;
 
   Types::Index variable_index = 0;
@@ -162,7 +161,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
           // already has an entry for this dependency index and dependency type
           if (field_type == Numbers::invalid_field_type ||
               global_to_local_solution[global_field_index]
-                                      [variable_index * max_dependency_types +
+                                      [(variable_index * max_dependency_types) +
                                        dependency_type] != Numbers::invalid_index)
             {
               dependency_type++;
@@ -174,7 +173,7 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
                                                              static_cast<DependencyType>(
                                                                dependency_type)));
           global_to_local_solution[global_field_index]
-                                  [variable_index * max_dependency_types +
+                                  [(variable_index * max_dependency_types) +
                                    dependency_type] =
                                     solution_subset.at(global_field_index).size() - 1;
 

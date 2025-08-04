@@ -9,28 +9,56 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
-#include <prismspf/core/constraint_handler.h>
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/grid_refiner.h>
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/multigrid_info.h>
-#include <prismspf/core/pde_operator.h>
-#include <prismspf/core/solution_handler.h>
-#include <prismspf/core/solver_handler.h>
-#include <prismspf/core/timer.h>
-#include <prismspf/core/triangulation_handler.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/utilities/element_volume.h>
-#include <prismspf/utilities/integrator.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim>
+class UserInputParameters;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ConstraintHandler;
+
+template <unsigned int dim>
+class DofHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class GridRefiner;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class InvmHandler;
+
+template <unsigned int dim, typename number>
+class MatrixFreeContainer;
+
+template <unsigned int dim>
+class MGInfo;
+
+template <unsigned int dim, typename number>
+class SolutionHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverHandler;
+
+template <unsigned int dim>
+class TriangulationHandler;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class GridRefinementContext;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class ElementVolumeContainer;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class Integrator;
 
 /**
  * @brief This is the main class that handles the construction and solving of
@@ -101,14 +129,9 @@ private:
   ConstraintHandler<dim, degree, number> constraint_handler;
 
   /**
-   * @brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object container.
    */
-  MatrixfreeHandler<dim, number> matrix_free_handler;
-
-  /**
-   * @brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> multigrid_matrix_free_handler;
+  MatrixFreeContainer<dim, number> matrix_free_container;
 
   /**
    * @brief invm handler.
@@ -138,14 +161,14 @@ private:
   dealii::MappingQ1<dim> mapping;
 
   /**
+   * @brief Element volume container.
+   */
+  ElementVolumeContainer<dim, degree, number> element_volume_container;
+
+  /**
    * @brief Solver context.
    */
   SolverContext<dim, degree, number> solver_context;
-
-  /**
-   * @brief Element volumes.
-   */
-  ElementVolume<dim, degree, number> element_volume;
 
   /**
    * @brief Integrator utility.

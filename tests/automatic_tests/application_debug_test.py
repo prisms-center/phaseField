@@ -61,7 +61,9 @@ def set_timestep(number, app_dir, new_parameter_file):
 
     # Check if the file exists, if not return early
     if not os.path.exists(parameter_file_path):
-        print(f"Warning: {parameter_file_path} does not exist, skipping parameter modification")
+        print(
+            f"Warning: {parameter_file_path} does not exist, skipping parameter modification"
+        )
         return
 
     # Make a copy of the original parameters file
@@ -91,7 +93,9 @@ def set_timestep(number, app_dir, new_parameter_file):
     )
 
 
-def compile_and_run(app_name, new_parameter_file, test_dir, n_threads=1, run_application=True):
+def compile_and_run(
+    app_name, new_parameter_file, test_dir, n_threads=1, run_application=True
+):
     """Function that compile and runs the application in debug mode
 
     Args:
@@ -131,7 +135,14 @@ def compile_and_run(app_name, new_parameter_file, test_dir, n_threads=1, run_app
         if run_application:
             print(f"Running {app_dir} with parameter file {new_parameter_file}")
             run_result = subprocess.run(
-                ["mpirun", "-n", str(n_threads), "./main-debug", "-i", new_parameter_file],
+                [
+                    "mpirun",
+                    "-n",
+                    str(n_threads),
+                    "./main-debug",
+                    "-i",
+                    new_parameter_file,
+                ],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -167,7 +178,9 @@ def compile_and_run(app_name, new_parameter_file, test_dir, n_threads=1, run_app
         return (app_name, f"Failed: {str(exc)}", "")
 
 
-def run_tests_in_parallel(application_list, n_processes, n_threads, run_application=True):
+def run_tests_in_parallel(
+    application_list, n_processes, n_threads, run_application=True
+):
     """Run each test in parallel
 
     Args:
@@ -199,7 +212,14 @@ def run_tests_in_parallel(application_list, n_processes, n_threads, run_applicat
     # Run each task in parallel
     with ProcessPoolExecutor(max_workers=n_processes) as executor:
         futures = [
-            executor.submit(compile_and_run, app_name, new_parameter_file, test_dir, n_threads, run_application)
+            executor.submit(
+                compile_and_run,
+                app_name,
+                new_parameter_file,
+                test_dir,
+                n_threads,
+                run_application,
+            )
             for app_name in application_list
         ]
         for future in futures:
@@ -229,18 +249,26 @@ n_processes = args.ntasks
 n_threads = args.nthreads
 run_application = not args.no_run
 
-print(f"Running application debug tests with {n_processes} processes and {n_threads} threads.")
+print(
+    f"Running application debug tests with {n_processes} processes and {n_threads} threads."
+)
 if not run_application:
     print("Only compiling applications, not running them.")
 
 # Application list
 application_list = [
     "allen_cahn_explicit",
+    "cahn_hilliard_explicit",
+    "alloy_solidification",
+    "precipitate_evolution",
+    "coupled_allen_cahn_cahn_hilliard",
     "eshelby_inclusion",
 ]
 
 # Run tests in parallel
-results = run_tests_in_parallel(application_list, n_processes, n_threads, run_application)
+results = run_tests_in_parallel(
+    application_list, n_processes, n_threads, run_application
+)
 
 # Print the results
 print("\n\nCompilation and Execution Results:")

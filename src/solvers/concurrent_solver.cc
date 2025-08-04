@@ -1,7 +1,16 @@
 
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
 #include <prismspf/solvers/concurrent_solver.h>
+#include <prismspf/solvers/solver_base.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include <functional>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -36,7 +45,8 @@ ConcurrentSolver<dim, degree, number>::init()
 
   // Set up the user-implemented equations and create the residual vectors
   system_matrix->clear();
-  system_matrix->initialize(this->get_matrix_free_handler().get_matrix_free());
+  system_matrix->initialize(this->get_matrix_free_container().get_matrix_free(),
+                            this->get_element_volume_container().get_element_volume());
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields =

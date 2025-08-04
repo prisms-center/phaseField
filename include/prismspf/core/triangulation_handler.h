@@ -7,8 +7,6 @@
 #include <deal.II/grid/tria.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
-#include <prismspf/core/multigrid_info.h>
-
 #include <prismspf/config.h>
 
 #include <string>
@@ -20,6 +18,9 @@ class UserInputParameters;
 
 template <unsigned int dim, typename number>
 class SolutionHandler;
+
+template <unsigned int dim>
+class MGInfo;
 
 /**
  * @brief This class handlers the generation and manipulation of triangulations.
@@ -93,12 +94,6 @@ public:
   get_mg_triangulation(unsigned int level) const;
 
   /**
-   * @brief Return the global maximum level of the triangulation.
-   */
-  [[nodiscard]] unsigned int
-  get_n_global_levels() const;
-
-  /**
    * @brief Return the maximum multigrid level.
    */
   [[nodiscard]] unsigned int
@@ -109,12 +104,6 @@ public:
    */
   [[nodiscard]] unsigned int
   get_mg_max_level() const;
-
-  /**
-   * @brief Whether multigrid has been setup.
-   */
-  [[nodiscard]] bool
-  has_setup_multigrid() const;
 
   /**
    * @brief Generate mesh based on the inputs provided by the user.

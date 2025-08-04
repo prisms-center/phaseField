@@ -10,6 +10,7 @@
 #include <prismspf/core/matrix_free_handler.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solution_handler.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
@@ -158,8 +159,12 @@ SolutionHandler<dim, number>::get_mg_solution_vector(unsigned int level,
 
 template <unsigned int dim, typename number>
 void
-SolutionHandler<dim, number>::init(MatrixfreeHandler<dim, number> &matrix_free_handler)
+SolutionHandler<dim, number>::init(
+  MatrixFreeContainer<dim, number> &matrix_free_container)
 {
+  ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
+  Timer::start_section("reinitialize solution set");
+
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
     {
@@ -170,7 +175,7 @@ SolutionHandler<dim, number>::init(MatrixfreeHandler<dim, number> &matrix_free_h
             std::make_unique<VectorType>();
           solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
             std::make_unique<SolutionTransfer>(
-              matrix_free_handler.get_matrix_free()->get_dof_handler(index));
+              matrix_free_container.get_matrix_free()->get_dof_handler(index));
           new_solution_set[index] = std::make_unique<VectorType>();
         }
       new_solution_set.try_emplace(index, std::make_unique<VectorType>());
@@ -193,7 +198,7 @@ SolutionHandler<dim, number>::init(MatrixfreeHandler<dim, number> &matrix_free_h
               solution_transfer_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
                 std::make_unique<SolutionTransfer>(
-                  matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
+                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
             }
@@ -217,7 +222,7 @@ SolutionHandler<dim, number>::init(MatrixfreeHandler<dim, number> &matrix_free_h
               solution_transfer_set.try_emplace(
                 std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
                 std::make_unique<SolutionTransfer>(
-                  matrix_free_handler.get_matrix_free()->get_dof_handler(field_index)));
+                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
 
               dep_index++;
             }
@@ -229,64 +234,56 @@ SolutionHandler<dim, number>::init(MatrixfreeHandler<dim, number> &matrix_free_h
   // Initialize the entries according to the corresponding matrix free index
   for (const auto &[pair, solution] : solution_set)
     {
-      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*solution, pair.first);
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
+                                                                     pair.first);
       // TODO (landinjm): Should I ghost values here?
     }
   for (const auto &[index, new_solution] : new_solution_set)
     {
-      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*new_solution, index);
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
+                                                                     index);
       // TODO (landinjm): Should I ghost values here?
     }
-}
 
-template <unsigned int dim, typename number>
-void
-SolutionHandler<dim, number>::reinit(MatrixfreeHandler<dim, number> &matrix_free_handler)
-{
-  // Initialize the entries according to the corresponding matrix free index
-  for (const auto &[pair, solution] : solution_set)
-    {
-      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*solution, pair.first);
-      // TODO (landinjm): Should I ghost values here?
-    }
-  for (const auto &[index, new_solution] : new_solution_set)
-    {
-      matrix_free_handler.get_matrix_free()->initialize_dof_vector(*new_solution, index);
-      // TODO (landinjm): Should I ghost values here?
-    }
-}
-
-template <unsigned int dim, typename number>
-void
-SolutionHandler<dim, number>::mg_init(
-  const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler)
-{
   // Create all entries and initialize them
   for (unsigned int level = 0; level < mg_solution_set.size(); level++)
     {
       for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
         {
           mg_solution_set[level][index] = std::make_unique<MGVectorType>();
-          mg_matrix_free_handler[level + global_min_level]
-            .get_matrix_free()
+          matrix_free_container.get_mg_matrix_free(level + global_min_level)
             ->initialize_dof_vector(*mg_solution_set[level][index], index);
           mg_solution_set[level][index]->update_ghost_values();
         }
     }
+  Timer::end_section("reinitialize solution set");
 }
 
 template <unsigned int dim, typename number>
 void
-SolutionHandler<dim, number>::mg_reinit(
-  const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler)
+SolutionHandler<dim, number>::reinit(
+  MatrixFreeContainer<dim, number> &matrix_free_container)
 {
+  // Initialize the entries according to the corresponding matrix free index
+  for (const auto &[pair, solution] : solution_set)
+    {
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
+                                                                     pair.first);
+      // TODO (landinjm): Should I ghost values here?
+    }
+  for (const auto &[index, new_solution] : new_solution_set)
+    {
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
+                                                                     index);
+      // TODO (landinjm): Should I ghost values here?
+    }
+
   // Loop over all entries and reinitialize them
   for (unsigned int level = 0; level < mg_solution_set.size(); level++)
     {
       for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
         {
-          mg_matrix_free_handler[level + global_min_level]
-            .get_matrix_free()
+          matrix_free_container.get_mg_matrix_free(level + global_min_level)
             ->initialize_dof_vector(*mg_solution_set[level][index], index);
           mg_solution_set[level][index]->update_ghost_values();
         }

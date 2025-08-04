@@ -1,5 +1,13 @@
 
+#include <prismspf/core/matrix_free_operator.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
+#include <prismspf/solvers/linear_solver_gmg.h>
+#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/sequential_auxiliary_solver.h>
+#include <prismspf/solvers/sequential_solver.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 

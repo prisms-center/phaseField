@@ -11,7 +11,6 @@
 #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
-#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 
 #include <prismspf/config.h>
 

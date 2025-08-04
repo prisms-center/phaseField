@@ -1,0 +1,73 @@
+# The dimension in the problem
+set dim = 2
+
+# The initial global refinement
+set global refinement = 6
+
+# The element degree
+set degree = 1
+
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 3
+  set y subdivisions = 3
+  set z subdivisions = 3
+end
+
+# Mesh adaptivity parameters
+set mesh adaptivity = false
+set max refinement = 6
+set min refinement = 3
+set remeshing period = 5000
+
+subsection refinement criterion: n
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+subsection refinement criterion: c
+  set type = value
+  set value lower bound = 0.02
+  set value upper bound = 0.1
+end
+
+# The timestep
+set time step = 8.0e-4
+
+# The total number of timesteps to take
+set number steps = 150000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for c = Natural
+set boundary condition for n = Natural
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
+set Model constant Mc = 1.0, DOUBLE
+set Model constant Mn = 150.0, DOUBLE
+set Model constant Kn = 0.3, DOUBLE
+set Model constant center1 = (33.3333333333,33.3333333333,33.3333333333), TENSOR
+set Model constant center2 = (75,75,75), TENSOR
+set Model constant radius1 = 20.0, DOUBLE
+set Model constant radius2 = 8.33333333333, DOUBLE
+set Model constant matrix_concentration = 0.009, DOUBLE
+

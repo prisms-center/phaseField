@@ -1,0 +1,4 @@
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
+  {
+    template class CustomPDE<dimension, degree, number>;
+  }

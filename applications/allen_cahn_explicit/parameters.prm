@@ -1,20 +1,48 @@
+# The dimension in the problem
 set dim = 2
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
+
+# The initial global refinement
 set global refinement = 8
+
+# The element degree
 set degree = 1
-set Time step = 1.0e-2
-set Number of time steps = 5000
-set Output condition = EQUAL_SPACING
-set Number of outputs = 5
-set Print timing information with output = true
-set Skip print steps = 1000
-set Boundary condition for variable n = Natural
-set Boundary condition for variable mg_n = Natural
-set Boundary condition for variable f_tot = Natural
+
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+# The timestep
+set time step = 1.0e-2
+
+# The total number of timesteps to take
+set number steps = 5000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 5
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for n = Natural
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE

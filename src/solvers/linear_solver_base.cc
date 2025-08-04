@@ -15,10 +15,10 @@
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/linear_solver_base.h>
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
-#include <cstddef>
 #include <memory>
 #include <utility>
 
@@ -26,23 +26,17 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 LinearSolverBase<dim, degree, number>::LinearSolverBase(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
-  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
-  SolutionHandler<dim, number>                           &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
-  : user_inputs(&_user_inputs)
+  const SolverContext<dim, degree, number> &_solver_context,
+  const VariableAttributes                 &_variable_attributes)
+  : solver_context(&_solver_context)
   , variable_attributes(&_variable_attributes)
-  , matrix_free_handler(&_matrix_free_handler)
-  , constraint_handler(&_constraint_handler)
-  , solution_handler(&_solution_handler)
   , field_index(_variable_attributes.get_field_index())
-  , residual(_solution_handler.get_new_solution_vector(field_index))
+  , residual(_solver_context.get_solution_handler().get_new_solution_vector(field_index))
   , newton_update(
-      _solution_handler.get_solution_vector(field_index, DependencyType::Change))
-  , pde_operator(std::move(_pde_operator))
-  , solver_control(_user_inputs.get_linear_solve_parameters()
+      _solver_context.get_solution_handler().get_solution_vector(field_index,
+                                                                 DependencyType::Change))
+  , solver_control(_solver_context.get_user_inputs()
+                     .get_linear_solve_parameters()
                      .get_linear_solve_parameters(field_index)
                      .max_iterations)
 {
@@ -53,12 +47,12 @@ LinearSolverBase<dim, degree, number>::LinearSolverBase(
   // attributes
   system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes,
-                                       pde_operator,
+                                       _solver_context.get_pde_operator(),
                                        variable_attributes->get_solve_block(),
                                        field_index);
   update_system_matrix =
     std::make_unique<SystemMatrixType>(subset_attributes,
-                                       pde_operator,
+                                       _solver_context.get_pde_operator(),
                                        variable_attributes->get_solve_block(),
                                        field_index);
 
@@ -77,7 +71,8 @@ LinearSolverBase<dim, degree, number>::LinearSolverBase(
   // Create the residual subset of solution vectors and add the mapping to
   // MatrixFreeOperator
   residual_src.push_back(
-    solution_handler->get_solution_vector(field_index, DependencyType::Normal));
+    _solver_context.get_solution_handler().get_solution_vector(field_index,
+                                                               DependencyType::Normal));
   residual_global_to_local_solution[(field_index * max_dependency_types) +
                                     static_cast<Types::Index>(DependencyType::Normal)] =
     0;
@@ -99,9 +94,10 @@ LinearSolverBase<dim, degree, number>::LinearSolverBase(
               continue;
             }
 
-          residual_src.push_back(solution_handler->get_solution_vector(
-            variable_index,
-            static_cast<DependencyType>(dependency_type)));
+          residual_src.push_back(
+            _solver_context.get_solution_handler().get_solution_vector(
+              variable_index,
+              static_cast<DependencyType>(dependency_type)));
           residual_global_to_local_solution[(variable_index * max_dependency_types) +
                                             dependency_type] = residual_src.size() - 1;
 
@@ -142,9 +138,10 @@ LinearSolverBase<dim, degree, number>::LinearSolverBase(
                      dealii::ExcMessage("The change type should have the same type as "
                                         "the field we're solving."));
             }
-          newton_update_src.push_back(solution_handler->get_solution_vector(
-            variable_index,
-            static_cast<DependencyType>(dependency_type)));
+          newton_update_src.push_back(
+            _solver_context.get_solution_handler().get_solution_vector(
+              variable_index,
+              static_cast<DependencyType>(dependency_type)));
           newton_update_global_to_local_solution[(variable_index * max_dependency_types) +
                                                  dependency_type] =
             newton_update_src.size() - 1;
@@ -160,14 +157,17 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 LinearSolverBase<dim, degree, number>::compute_solver_tolerance()
 {
-  tolerance = user_inputs->get_linear_solve_parameters()
+  tolerance = solver_context->get_user_inputs()
+                    .get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
                     .tolerance_type == SolverToleranceType::RelativeResidualChange
-                ? user_inputs->get_linear_solve_parameters()
+                ? solver_context->get_user_inputs()
+                      .get_linear_solve_parameters()
                       .get_linear_solve_parameters(field_index)
                       .tolerance *
                     residual->l2_norm()
-                : user_inputs->get_linear_solve_parameters()
+                : solver_context->get_user_inputs()
+                    .get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
                     .tolerance;
 }
