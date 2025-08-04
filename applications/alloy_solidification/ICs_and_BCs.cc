@@ -23,38 +23,35 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
 {
-  double center[1][3] = {
+  const std::array<double, 3> center = {
     {0.0, 0.0, 0.0}
   };
-  double rad[1] = {5};
-  double dist;
+  const double rad  = 5.0;
+  double       dist = 0.0;
 
-  // Initial condition for the concentration field
   if (index == 0)
     {
+      // For the concentration field, we just set the initial condition
+      // to have uniform undercooling everywhere.
       scalar_value = U0;
     }
-  // Initial condition for the order parameter field
   else if (index == 1)
     {
-      // Initial condition for the order parameter field
-      for (unsigned int i = 0; i < 1; i++)
+      // For the order parameter, we just place a small seed. Note that
+      // the order parameter ranges from -1 to 1 in thi model.
+      for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist = 0.0;
-          for (unsigned int dir = 0; dir < dim; dir++)
-            {
-              dist +=
-                (point[dir] -
-                 center[i][dir] *
-                   this->get_user_inputs().get_spatial_discretization().get_size()[dir]) *
-                (point[dir] -
-                 center[i][dir] *
-                   this->get_user_inputs().get_spatial_discretization().get_size()[dir]);
-            }
-          dist = std::sqrt(dist);
-
-          scalar_value += (-std::tanh((dist - rad[i]) / (sqrt(2))));
+          dist +=
+            (point[dir] -
+             center[dir] *
+               this->get_user_inputs().get_spatial_discretization().get_size()[dir]) *
+            (point[dir] -
+             center[dir] *
+               this->get_user_inputs().get_spatial_discretization().get_size()[dir]);
         }
+      dist = std::sqrt(dist);
+
+      scalar_value = -std::tanh((dist - rad) / std::sqrt(2));
     }
 }
 
