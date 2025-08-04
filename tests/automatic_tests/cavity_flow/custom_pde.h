@@ -148,8 +148,8 @@ private:
                                                      effective_cell_diameter));
   }
 
-  const ScalarValue rho = 1.0;
-  const ScalarValue mu  = 0.1;
+  const ScalarValue rho = 100.0;
+  const ScalarValue mu  = 1.0;
 
   const ScalarValue nu = mu / rho;
   const ScalarValue dt = this->get_timestep();
