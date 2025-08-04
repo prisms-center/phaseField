@@ -97,6 +97,7 @@ private:
   compute_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 
   /**
@@ -106,6 +107,7 @@ private:
   compute_nonexplicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
@@ -116,6 +118,7 @@ private:
   compute_nonexplicit_lhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index                                               solve_block,
     Types::Index index = Numbers::invalid_index) const override;
 
@@ -126,6 +129,7 @@ private:
   compute_postprocess_explicit_rhs(
     VariableContainer<dim, degree, number>                    &variable_list,
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 };
 
@@ -201,7 +205,8 @@ void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  Types::Index solve_block) const
+  const dealii::VectorizedArray<number> &element_volume,
+  Types::Index                           solve_block) const
 {
   for (unsigned int i = 0; i < n_copies; i++)
     {
@@ -222,8 +227,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  Types::Index                                                                solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  const dealii::VectorizedArray<number> &element_volume,
+  Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index          index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -231,8 +237,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  Types::Index                                                                solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  const dealii::VectorizedArray<number> &element_volume,
+  Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index          index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -240,7 +247,8 @@ void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  Types::Index solve_block) const
+  const dealii::VectorizedArray<number> &element_volume,
+  Types::Index                           solve_block) const
 {}
 
 INSTANTIATE_TRI_TEMPLATE(CustomPDE)

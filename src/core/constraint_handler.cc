@@ -64,7 +64,7 @@ ConstraintHandler<dim, degree, number>::ConstraintHandler(
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<const dealii::AffineConstraints<number> *>
-ConstraintHandler<dim, degree, number>::get_constraints()
+ConstraintHandler<dim, degree, number>::get_constraints() const
 {
   std::vector<const dealii::AffineConstraints<number> *> temp;
   temp.reserve(constraints.size());
@@ -92,7 +92,7 @@ ConstraintHandler<dim, degree, number>::get_constraint(unsigned int index) const
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<const dealii::AffineConstraints<float> *>
-ConstraintHandler<dim, degree, number>::get_mg_constraints(unsigned int level)
+ConstraintHandler<dim, degree, number>::get_mg_constraints(unsigned int level) const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
 

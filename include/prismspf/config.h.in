@@ -1,5 +1,7 @@
 #pragma once
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+
 #cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
 
 // Optional features:
@@ -23,3 +25,5 @@
 #  define CALI_MARK_BEGIN(region_name)
 #  define CALI_MARK_END(region_name)
 #endif
+
+// NOLINTEND(cppcoreguidelines-macro-usage)

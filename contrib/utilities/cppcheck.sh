@@ -6,8 +6,9 @@
 #
 #
 # Usage:
-# ./contrib/utilities/cppcheck.sh CMAKE_ARGS
+# ./contrib/utilities/cppcheck.sh -jN CMAKE_ARGS
 #   with:
+#	  N as the number of parallel build jobs
 #     CMAKE_ARGS are the optional arguments passed to cmake
 #
 
@@ -21,8 +22,20 @@ if ! [ -x "$(command -v cppcheck)" ]; then
 	exit 1
 fi
 
+# Parse the arguments
+BUILD_JOBS=""
+CMAKE_ARGS=()
+
+for arg in "$@"; do
+	if [[ "$arg" == -j* ]]; then
+		BUILD_JOBS="$arg"
+	else
+		CMAKE_ARGS+=("$arg")
+	fi
+done
+
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "$@")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "${CMAKE_ARGS[@]}")
 
 # Compile
 if [ -f CMakeCache.txt ]; then
@@ -32,7 +45,12 @@ cmake "${ARGS[@]}" . || (
 	echo "cmake failed!"
 	false
 ) || exit 2
-cmake --build . || exit 3
+
+if [ -n "$BUILD_JOBS" ]; then
+	cmake --build . -- "$BUILD_JOBS" || exit 3
+else
+	cmake --build . || exit 3
+fi
 
 # Create a file that contains all the headers to ensure that cppcheck runs on all headers
 (

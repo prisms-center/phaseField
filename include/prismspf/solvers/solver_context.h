@@ -17,6 +17,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -38,27 +40,27 @@ public:
    */
   SolverContext(
     const UserInputParameters<dim>                         &_user_inputs,
-    const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
+    const MatrixFreeContainer<dim, number>                 &_matrix_free_container,
     const TriangulationHandler<dim>                        &_triangulation_handler,
     const InvmHandler<dim, degree, number>                 &_invm_handler,
     const ConstraintHandler<dim, degree, number>           &_constraint_handler,
     const DofHandler<dim>                                  &_dof_handler,
     const dealii::MappingQ1<dim>                           &_mapping,
+    const ElementVolumeContainer<dim, degree, number>      &_element_volume_container,
     const MGInfo<dim>                                      &_mg_info,
     SolutionHandler<dim, number>                           &_solution_handler,
-    dealii::MGLevelObject<MatrixfreeHandler<dim, float>>   &_mg_matrix_free_handler,
     std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
     std::shared_ptr<const PDEOperator<dim, degree, float>>  _pde_operator_float)
     : user_inputs(&_user_inputs)
-    , matrix_free_handler(&_matrix_free_handler)
+    , matrix_free_container(&_matrix_free_container)
     , triangulation_handler(&_triangulation_handler)
     , invm_handler(&_invm_handler)
     , constraint_handler(&_constraint_handler)
     , dof_handler(&_dof_handler)
     , mapping(&_mapping)
+    , element_volume_container(&_element_volume_container)
     , mg_info(&_mg_info)
     , solution_handler(&_solution_handler)
-    , mg_matrix_free_handler(&_mg_matrix_free_handler)
     , pde_operator(std::move(_pde_operator))
     , pde_operator_float(std::move(_pde_operator_float)) {};
 
@@ -80,11 +82,11 @@ public:
   /**
    * @brief Get the matrix-free object handler for non-multigrid data.
    */
-  [[nodiscard]] const MatrixfreeHandler<dim, number> &
-  get_matrix_free_handler() const
+  [[nodiscard]] const MatrixFreeContainer<dim, number> &
+  get_matrix_free_container() const
   {
-    Assert(matrix_free_handler != nullptr, dealii::ExcNotInitialized());
-    return *matrix_free_handler;
+    Assert(matrix_free_container != nullptr, dealii::ExcNotInitialized());
+    return *matrix_free_container;
   }
 
   /**
@@ -138,6 +140,16 @@ public:
   }
 
   /**
+   * @brief Get the element volume container.
+   */
+  [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
+  get_element_volume_container() const
+  {
+    Assert(element_volume_container != nullptr, dealii::ExcNotInitialized());
+    return *element_volume_container;
+  }
+
+  /**
    * @brief Get the multigrid info.
    */
   [[nodiscard]] const MGInfo<dim> &
@@ -155,16 +167,6 @@ public:
   {
     Assert(solution_handler != nullptr, dealii::ExcNotInitialized());
     return *solution_handler;
-  }
-
-  /**
-   * @brief Get the mg matrix-free handler.
-   */
-  [[nodiscard]] dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &
-  get_mg_matrix_free_handler() const
-  {
-    Assert(mg_matrix_free_handler != nullptr, dealii::ExcNotInitialized());
-    return *mg_matrix_free_handler;
   }
 
   /**
@@ -194,9 +196,9 @@ private:
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * @brief Matrix-free object handler for non-multigrid data.
+   * @brief Matrix-free object container.
    */
-  const MatrixfreeHandler<dim, number> *matrix_free_handler;
+  const MatrixFreeContainer<dim, number> *matrix_free_container;
 
   /**
    * @brief Triangulation handler.
@@ -224,6 +226,11 @@ private:
   const dealii::MappingQ1<dim> *mapping;
 
   /**
+   * @brief Element volume container.
+   */
+  const ElementVolumeContainer<dim, degree, number> *element_volume_container;
+
+  /**
    * @brief Multigrid information
    */
   const MGInfo<dim> *mg_info;
@@ -232,11 +239,6 @@ private:
    * @brief Solution handler.
    */
   SolutionHandler<dim, number> *solution_handler;
-
-  /**
-   * @brief Matrix-free object handler for multigrid data.
-   */
-  dealii::MGLevelObject<MatrixfreeHandler<dim, float>> *mg_matrix_free_handler;
 
   /**
    * @brief PDE operator.

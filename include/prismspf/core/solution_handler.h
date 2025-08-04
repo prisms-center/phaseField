@@ -8,7 +8,6 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
@@ -18,7 +17,10 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
-class MatrixfreeHandler;
+class MatrixFreeContainer;
+
+template <unsigned int dim>
+class MGInfo;
 
 struct VariableAttributes;
 
@@ -87,27 +89,13 @@ public:
    * @brief Initialize the solution set.
    */
   void
-  init(MatrixfreeHandler<dim, number> &matrix_free_handler);
+  init(MatrixFreeContainer<dim, number> &matrix_free_container);
 
   /**
    * @brief Reinitialize the solution set.
    */
   void
-  reinit(MatrixfreeHandler<dim, number> &matrix_free_handler);
-
-  /**
-   * @brief Initialize the multigrid solution set.
-   */
-  void
-  mg_init(
-    const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler);
-
-  /**
-   * @brief Reinitialize the multigrid solution set.
-   */
-  void
-  mg_reinit(
-    const dealii::MGLevelObject<MatrixfreeHandler<dim, float>> &mg_matrix_free_handler);
+  reinit(MatrixFreeContainer<dim, number> &matrix_free_container);
 
   /**
    * @brief Update the ghost values.

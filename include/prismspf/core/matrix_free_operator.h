@@ -34,6 +34,9 @@ class VariableContainer;
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
+template <unsigned int dim, unsigned int degree, typename number>
+class ElementVolume;
+
 /**
  * @brief This is the abstract base class for the matrix-free implementation of some
  * PDE.
@@ -68,7 +71,8 @@ public:
    */
   void
   initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
-             const std::vector<unsigned int> &selected_field_indexes =
+             const ElementVolume<dim, degree, number> &_element_volume_handler,
+             const std::vector<unsigned int>          &selected_field_indexes =
                std::vector<unsigned int>());
 
   /**
@@ -117,6 +121,8 @@ public:
   const std::shared_ptr<dealii::DiagonalMatrix<VectorType>> &
   get_matrix_diagonal_inverse() const;
 
+  // cppcheck-suppress-begin passedByValue
+
   /**
    * @brief Add the mappings from global to local solution vectors.
    */
@@ -129,6 +135,8 @@ public:
   void
   add_src_solution_subset(
     std::vector<VectorType *> _src_solution_subset = std::vector<VectorType *>());
+
+  // cppcheck-suppress-end passedByValue
 
   /**
    * @brief Matrix-vector multiplication.
@@ -242,6 +250,11 @@ private:
    * @brief The attribute list of the relevant variables.
    */
   std::map<unsigned int, VariableAttributes> attributes_list;
+
+  /**
+   * @brief The element volume container
+   */
+  const ElementVolume<dim, degree, number> *element_volume_handler;
 
   /**
    * @brief PDE operator object for user defined PDEs.

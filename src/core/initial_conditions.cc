@@ -10,6 +10,7 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
+#include <prismspf/field_input/read_vtk.h>
 
 #include <memory>
 #include <string>

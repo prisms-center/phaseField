@@ -3,11 +3,16 @@
 
 #pragma once
 
+#include <prismspf/core/types.h>
+
 #include <prismspf/solvers/sequential_solver.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
 
 /**
  * @brief This class handles all auxiliary solves.

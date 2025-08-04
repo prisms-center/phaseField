@@ -22,6 +22,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 struct VariableAttributes;
 
+template <unsigned int dim, unsigned int degree, typename number>
+class ElementVolume;
+
 // clang-format off
 
 /**
@@ -63,6 +66,7 @@ public:
   VariableContainer(
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const std::map<Types::Index, VariableAttributes> &_subset_attributes,
+    const ElementVolume<dim, degree, number>         &_element_volume,
     const std::vector<Types::Index>                  &_global_to_local_solution,
     const SolveType                                  &_solve_type,
     bool                                              use_local_mapping = false);
@@ -803,48 +807,48 @@ public:
    * some destination vector.
    */
   void
-  eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                                &func,
-    std::vector<VectorType *>                   &dst,
-    const std::vector<VectorType *>             &src,
-    const std::pair<unsigned int, unsigned int> &cell_range);
+  eval_local_operator(const std::function<void(VariableContainer &,
+                                               const dealii::Point<dim, SizeType> &,
+                                               const SizeType &)> &func,
+                      std::vector<VectorType *>                   &dst,
+                      const std::vector<VectorType *>             &src,
+                      const std::pair<unsigned int, unsigned int> &cell_range);
 
   /**
    * @brief Apply some operator function for a given cell range and source vector to
    * some destination vector.
    */
   void
-  eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                                &func,
-    VectorType                                  &dst,
-    const std::vector<VectorType *>             &src,
-    const std::pair<unsigned int, unsigned int> &cell_range);
+  eval_local_operator(const std::function<void(VariableContainer &,
+                                               const dealii::Point<dim, SizeType> &,
+                                               const SizeType &)> &func,
+                      VectorType                                  &dst,
+                      const std::vector<VectorType *>             &src,
+                      const std::pair<unsigned int, unsigned int> &cell_range);
 
   /**
    * @brief Apply some operator function for a given cell range and source vector to
    * some destination vector.
    */
   void
-  eval_local_operator(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                                &func,
-    VectorType                                  &dst,
-    const VectorType                            &src,
-    const std::vector<VectorType *>             &src_subset,
-    const std::pair<unsigned int, unsigned int> &cell_range);
+  eval_local_operator(const std::function<void(VariableContainer &,
+                                               const dealii::Point<dim, SizeType> &,
+                                               const SizeType &)> &func,
+                      VectorType                                  &dst,
+                      const VectorType                            &src,
+                      const std::vector<VectorType *>             &src_subset,
+                      const std::pair<unsigned int, unsigned int> &cell_range);
 
   /**
    * @brief TODO (landinjm): Add comments
    */
   void
-  eval_local_diagonal(
-    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                                &func,
-    VectorType                                  &dst,
-    const std::vector<VectorType *>             &src_subset,
-    const std::pair<unsigned int, unsigned int> &cell_range);
+  eval_local_diagonal(const std::function<void(VariableContainer &,
+                                               const dealii::Point<dim, SizeType> &,
+                                               const SizeType &)> &func,
+                      VectorType                                  &dst,
+                      const std::vector<VectorType *>             &src_subset,
+                      const std::pair<unsigned int, unsigned int> &cell_range);
 
 private:
   /**
@@ -1015,15 +1019,15 @@ private:
    */
   template <typename FEEvaluationType, typename DiagonalType>
   void
-  eval_cell_diagonal(
-    FEEvaluationType *feeval_ptr,
-    DiagonalType     *diagonal_ptr,
-    unsigned int      cell,
-    Types::Index      global_var_index,
-    const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                    &func,
-    VectorType                      &dst,
-    const std::vector<VectorType *> &src_subset);
+  eval_cell_diagonal(FEEvaluationType                            *feeval_ptr,
+                     DiagonalType                                *diagonal_ptr,
+                     unsigned int                                 cell,
+                     Types::Index                                 global_var_index,
+                     const std::function<void(VariableContainer &,
+                                              const dealii::Point<dim, SizeType> &,
+                                              const SizeType &)> &func,
+                     VectorType                                  &dst,
+                     const std::vector<VectorType *>             &src_subset);
 
   /**
    * @brief Max number of fields.
@@ -1048,6 +1052,11 @@ private:
    * @brief The attribute list of the relevant subset of variables.
    */
   const std::map<Types::Index, VariableAttributes> *subset_attributes;
+
+  /**
+   * @brief The element volume container
+   */
+  const ElementVolume<dim, degree, number> *element_volume_handler;
 
   /**
    * @brief Mapping from global solution vectors to the local ones

@@ -37,6 +37,28 @@ public:
   ~ReadUnstructuredVTK() = default;
 
   /**
+   * @brief Copy constructor.
+   */
+  ReadUnstructuredVTK(const ReadUnstructuredVTK &read_vtk) = delete;
+
+  /**
+   * @brief Copy assignment.
+   */
+  ReadUnstructuredVTK &
+  operator=(const ReadUnstructuredVTK &read_vtk) = delete;
+
+  /**
+   * @brief Move constructor.
+   */
+  ReadUnstructuredVTK(ReadUnstructuredVTK &&read_vtk) noexcept = delete;
+
+  /**
+   * @brief Move assignment.
+   */
+  ReadUnstructuredVTK &
+  operator=(ReadUnstructuredVTK &&read_vtk) noexcept = delete;
+
+  /**
    * @brief Get the vtk output
    */
   vtkUnstructuredGrid *
@@ -109,6 +131,16 @@ private:
    * @brief Number of vectors in file.
    */
   unsigned int n_vectors;
+
+  /**
+   * @brief Number of points in a hex cell.
+   */
+  const unsigned int n_points_per_hex_cell = 8;
+
+  /**
+   * @brief Number of space coordinates in a point.
+   */
+  const unsigned int n_space_coordinates = 3;
 };
 
 template <unsigned int dim, typename number>
@@ -246,8 +278,8 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
                 "The provided vtk dataset does not contain a field named " +
                 scalar_name));
 
-  // Convet the dealii point to an array
-  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim, double>(point);
+  // Convet the dealii point to a vector
+  std::vector<double> point_vector = dealii_point_to_vector<dim, double>(point);
 
   // Set the active scalar and update the reader
   reader->SetScalarsName(scalar_name.c_str());
@@ -258,22 +290,24 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
   vtkPointData        *point_data = output->GetPointData();
 
   // Find the point id in the vtk file
-  const vtkIdType point_id = output->FindPoint(point_c_array.data());
+  const vtkIdType point_id = output->FindPoint(point_vector.data());
 
   // Check that point is inside the grid
   AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
 
   // Check that the point is within some tolerance to know whether we have to interpolate
   // or not
-  std::array<double, 3> point_in_dataset {};
+  std::vector<double> point_in_dataset(n_space_coordinates);
   output->GetPoint(point_id, point_in_dataset.data());
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      if (std::abs(point_in_dataset[i] - point_c_array[i]) > Defaults::mesh_tolerance)
+      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
         {
           interpolate = true;
         }
+      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
   // Get the data array
@@ -288,17 +322,20 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
       cell_locator->SetDataSet(output);
       cell_locator->BuildLocator();
 
-      double pcoords[3];
-      double weights[8];
-      int    sub_id;
+      std::vector<double> pcoords(n_space_coordinates);
+      std::vector<double> weights(n_points_per_hex_cell);
 
-      vtkGenericCell *cell    = vtkGenericCell::New();
-      const vtkIdType cell_id = cell_locator->FindCell(point_c_array.data(),
+      int sub_id = 0;
+
+      vtkGenericCell *cell = vtkGenericCell::New();
+      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+      const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
                                                        Defaults::mesh_tolerance,
                                                        cell,
                                                        sub_id,
-                                                       pcoords,
-                                                       weights);
+                                                       pcoords.data(),
+                                                       weights.data());
+      // NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
       AssertThrow(cell_id >= 0,
                   dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -306,10 +343,12 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
       // Interpolate scalar value using weights and nodal values
       vtkIdList *point_ids          = output->GetCell(cell_id)->GetPointIds();
       number     interpolated_value = 0.0;
-      for (vtkIdType i = 0; i < point_ids->GetNumberOfIds(); ++i)
+      for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
         {
-          const vtkIdType pt_id = point_ids->GetId(i);
-          interpolated_value += weights[i] * data_array->GetComponent(pt_id, 0);
+          const vtkIdType pt_id = point_ids->GetId(id);
+          // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+          interpolated_value += weights[id] * data_array->GetComponent(pt_id, 0);
+          // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
         }
 
       return interpolated_value;
@@ -332,8 +371,8 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
                 "The provided vtk dataset does not contain a field named " +
                 vector_name));
 
-  // Convet the dealii point to an array
-  std::array<double, 3> point_c_array = dealii_point_to_c_array<dim, double>(point);
+  // Convet the dealii point to a vector
+  std::vector<double> point_vector = dealii_point_to_vector<dim, double>(point);
 
   // Set the active vector and update the reader
   reader->SetVectorsName(vector_name.c_str());
@@ -344,22 +383,24 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
   vtkPointData        *point_data = output->GetPointData();
 
   // Find the point id in the vtk file
-  vtkIdType point_id = output->FindPoint(point_c_array.data());
+  vtkIdType point_id = output->FindPoint(point_vector.data());
 
   // Check that point is inside the grid
   AssertThrow(point_id >= 0, dealii::ExcMessage("No matching point found in VTK grid"));
 
   // Check that the point is within some tolerance to know whether we have to interpolate
   // or not
-  std::array<double, 3> point_in_dataset;
+  std::vector<double> point_in_dataset(n_space_coordinates);
   output->GetPoint(point_id, point_in_dataset.data());
   bool interpolate = false;
   for (unsigned int i = 0; i < dim; i++)
     {
-      if (std::abs(point_in_dataset[i] - point_c_array[i]) > Defaults::mesh_tolerance)
+      // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+      if (std::abs(point_in_dataset[i] - point_vector[i]) > Defaults::mesh_tolerance)
         {
           interpolate = true;
         }
+      // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
     }
 
   // Get the data array
@@ -378,17 +419,20 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
           cell_locator->SetDataSet(output);
           cell_locator->BuildLocator();
 
-          double pcoords[3];
-          double weights[8];
-          int    sub_id;
+          std::vector<double> pcoords(n_space_coordinates);
+          std::vector<double> weights(n_points_per_hex_cell);
 
-          vtkGenericCell *cell    = vtkGenericCell::New();
-          const vtkIdType cell_id = cell_locator->FindCell(point_c_array.data(),
+          int sub_id = 0;
+
+          vtkGenericCell *cell = vtkGenericCell::New();
+          // NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
+          const vtkIdType cell_id = cell_locator->FindCell(point_vector.data(),
                                                            Defaults::mesh_tolerance,
                                                            cell,
                                                            sub_id,
-                                                           pcoords,
-                                                           weights);
+                                                           pcoords.data(),
+                                                           weights.data());
+          // NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 
           AssertThrow(cell_id >= 0,
                       dealii::ExcMessage("Point not inside any cell for interpolation"));
@@ -398,8 +442,13 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
           number     interpolated_value = 0.0;
           for (vtkIdType id = 0; id < point_ids->GetNumberOfIds(); ++id)
             {
+              Assert(id < data_array->GetNumberOfComponents(),
+                     dealii::ExcMessage("Index out of bounds for data array components"));
               const vtkIdType pt_id = point_ids->GetId(id);
-              interpolated_value += weights[id] * data_array->GetComponent(pt_id, id);
+              // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
+              interpolated_value +=
+                weights[id] * data_array->GetComponent(pt_id, static_cast<int>(id));
+              // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
             }
 
           vector_value[i] = interpolated_value;

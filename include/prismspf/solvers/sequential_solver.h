@@ -3,17 +3,31 @@
 
 #pragma once
 
-#include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
-#include <prismspf/solvers/linear_solver_gmg.h>
-#include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
 
+#include <map>
+#include <memory>
+#include <vector>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <Types::Index dim, Types::Index degree, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class GMGSolver;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class IdentitySolver;
+
+struct VariableAttributes;
+
+template <unsigned int dim, unsigned int degree, typename number>
 class SequentialSolver : public SolverBase<dim, degree, number>
 {
 public:
@@ -165,37 +179,6 @@ public:
   get_update_system_matrix()
   {
     return update_system_matrix;
-  }
-
-  /**
-   * @brief Get the mapping from global solution vectors to the local ones.
-   */
-  [[nodiscard]] const std::map<Types::Index, std::vector<Types::Index>> &
-  get_global_to_local_solution_mapping()
-  {
-    return global_to_local_solution;
-  }
-
-  /**
-   * @brief Get the src solution subset.
-   */
-  [[nodiscard]] const std::map<
-    Types::Index,
-    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
-  get_src_solution_subset()
-  {
-    return solution_subset;
-  }
-
-  /**
-   * @brief Get the dst solution subset.
-   */
-  [[nodiscard]] std::map<
-    Types::Index,
-    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
-  get_dst_solution_subset()
-  {
-    return new_solution_subset;
   }
 
 private:

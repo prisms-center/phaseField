@@ -1,0 +1,61 @@
+# The dimension in the problem
+set dim = 2
+
+# The initial global refinement
+set global refinement = 6
+
+# The element degree
+set degree = 2
+
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+# Mesh adaptivity parameters
+set mesh adaptivity = true
+set max refinement = 6
+set min refinement = 4
+set remeshing period = 1000
+
+subsection refinement criterion: c
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+
+# The timestep
+set time step = 1.0e-3
+
+# The total number of timesteps to take
+set number steps = 100000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for c = Natural
+set boundary condition for mu = Natural
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
+set Model constant McV = 1.0, DOUBLE
+set Model constant KcV = 1.5, DOUBLE
