@@ -72,4 +72,4 @@ r_{\eta x} = -\Delta t M \kappa\nabla \eta^{n}
 \end{align}
 $$
 
-The above values of $r_{\eta}$ and $r_{\eta x}$ are used to define the residuals in `applications/allenCahn/equations.cc`.
+The above values of $r_{\eta}$ and $r_{\eta x}$ are used to define the residuals in `applications/allen_cahn/equations.cc`.

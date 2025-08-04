@@ -74,7 +74,6 @@ ElementVolume<dim, degree, number>::compute_element_volume()
             }
 
           // Store the element volume
-          std::cout << cell_volume << std::endl;
           element_volume[cell][lane] = cell_volume;
         }
     }
