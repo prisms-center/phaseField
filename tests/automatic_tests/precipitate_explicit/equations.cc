@@ -72,7 +72,8 @@ void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
 {
   ScalarValue c   = variable_list.template get_value<ScalarValue>(0);
   ScalarGrad  cx  = variable_list.template get_gradient<ScalarGrad>(0);
@@ -205,8 +206,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           index) const
 {
   if (index == 4)
     {
@@ -247,8 +249,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           index) const
 {
   if (index == 4)
     {
@@ -289,7 +292,8 @@ void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
 {
   ScalarValue c   = variable_list.template get_value<ScalarValue>(0);
   ScalarValue n1  = variable_list.template get_value<ScalarValue>(1);
