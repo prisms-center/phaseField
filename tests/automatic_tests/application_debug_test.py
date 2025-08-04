@@ -260,7 +260,12 @@ application_list = [
     "allen_cahn_explicit",
     "cahn_hilliard_explicit",
     "mechanics",
+    "dendritic_solidification",
+    "alloy_solidification",
+    "alloy_solidification_uniform",
     "precipitate_evolution",
+    "coupled_allen_cahn_cahn_hilliard",
+    "spinodal_decomposition",
     "eshelby_inclusion",
 ]
 
