@@ -1,7 +1,16 @@
+# The dimension in the problem
 set dim = 3
+
+# The initial global refinement
 set global refinement = 6
+
+# The element degree
 set degree = 1
 
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
 subsection Rectangular mesh
   set x size = 100.0
   set y size = 100.0
@@ -11,6 +20,10 @@ subsection Rectangular mesh
   set z subdivisions = 1
 end
 
+# The linear solve parameters. The type of residual can either be AbsoluteResidual or 
+# RelativeResidual. The preconditioner type can either be none or geometric multigrid
+# (GMG). The parameters smoothing range, degree, eigenvalue cg iterations, and min
+# multigrid level are specific to GMG and can be changed to suite your problem.
 subsection linear solver parameters: u
   set tolerance type = AbsoluteResidual
   set tolerance value = 1e-10
@@ -21,7 +34,18 @@ subsection linear solver parameters: u
   set eigenvalue cg iterations = 20
   set min mg level = 0
 end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
 set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
 set boundary condition for u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
 set boundary condition for u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
 set Model constant compliance = (22.5,0.3), isotropic elastic constants

@@ -167,25 +167,23 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
 }
 
 template <unsigned int dim, typename number>
-inline std::array<number, 3>
-dealii_point_to_c_array(const dealii::Point<dim, number> &point)
+inline std::vector<number>
+dealii_point_to_vector(const dealii::Point<dim, number> &point)
 {
   static_assert(dim < 4, "We only allow 3 space dimensions");
 
-  std::array<number, 3> arr = {
-    {0.0, 0.0, 0.0}
-  };
+  std::vector<number> vec(3, 0.0);
 
   // NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)
 
   for (unsigned int i = 0; i < dim; ++i)
     {
-      arr[i] = point[i];
+      vec[i] = point[i];
     }
 
   // NOLINTEND(cppcoreguidelines-pro-bounds-constant-array-index)
 
-  return arr;
+  return vec;
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -20,7 +20,8 @@ void
 CustomPDE<dim, degree, number>::compute_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -28,8 +29,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -37,8 +39,9 @@ void
 CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index                                               solve_block,
-  [[maybe_unused]] Types::Index                                               index) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           index) const
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -46,7 +49,8 @@ void
 CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-  [[maybe_unused]] Types::Index solve_block) const
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
 {}
 
 #include "custom_pde.inst"

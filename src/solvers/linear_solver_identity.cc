@@ -17,6 +17,8 @@
 #include <prismspf/solvers/linear_solver_base.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 #include <memory>
@@ -25,18 +27,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 IdentitySolver<dim, degree, number>::IdentitySolver(
-  const UserInputParameters<dim>                         &_user_inputs,
-  const VariableAttributes                               &_variable_attributes,
-  const MatrixfreeHandler<dim, number>                   &_matrix_free_handler,
-  const ConstraintHandler<dim, degree, number>           &_constraint_handler,
-  SolutionHandler<dim, number>                           &_solution_handler,
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
-  : LinearSolverBase<dim, degree, number>(_user_inputs,
-                                          _variable_attributes,
-                                          _matrix_free_handler,
-                                          _constraint_handler,
-                                          _solution_handler,
-                                          std::move(_pde_operator))
+  const SolverContext<dim, degree, number> &_solver_context,
+  const VariableAttributes                 &_variable_attributes)
+  : LinearSolverBase<dim, degree, number>(_solver_context, _variable_attributes)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -45,10 +38,12 @@ IdentitySolver<dim, degree, number>::init()
 {
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
-    this->get_matrix_free_handler().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
   this->get_update_system_matrix()->clear();
   this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_handler().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
 
   this->get_system_matrix()->add_global_to_local_mapping(
     this->get_residual_global_to_local_solution());

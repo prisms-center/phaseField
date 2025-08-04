@@ -8,8 +8,9 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
-#include <prismspf/core/multigrid_info.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/type_enums.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -17,6 +18,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
 class UserInputParameters;
+
+template <unsigned int dim>
+class MGInfo;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperator;
 
 /**
  * @brief The class handles the generation and application of boundary conditions based on
@@ -39,7 +46,7 @@ public:
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
-  get_constraints();
+  get_constraints() const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
@@ -51,7 +58,7 @@ public:
    * @brief Getter function for the multigrid constraints of a certain level.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<float> *>
-  get_mg_constraints(unsigned int level);
+  get_mg_constraints(unsigned int level) const;
 
   /**
    * @brief Getter function for the multigrid constraint of a certain level and index

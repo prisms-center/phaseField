@@ -7,8 +7,8 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
 
@@ -19,6 +19,9 @@ class UserInputParameters;
 
 template <unsigned int dim>
 class TriangulationHandler;
+
+template <unsigned int dim>
+class MGInfo;
 
 /**
  * @brief Class that manages the deal.II DoFHandlers

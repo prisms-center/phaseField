@@ -3,13 +3,20 @@
 
 #pragma once
 
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+
 #include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
 
 #include <functional>
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim, unsigned int degree, typename number>
+class SolverContext;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class ConcurrentSolver : public SolverBase<dim, degree, number>
