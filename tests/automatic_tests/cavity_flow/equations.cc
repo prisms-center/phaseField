@@ -35,7 +35,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(2, TimeIndependent);
 
   set_dependencies_value_term_rhs(2, "div(u_star)");
-  set_dependencies_gradient_term_rhs(2, "grad(P)");
+  set_dependencies_gradient_term_rhs(2, "grad(P), u_star, grad(u_star), lap(u_star), u");
   set_dependencies_value_term_lhs(2, "");
   set_dependencies_gradient_term_lhs(2, "grad(change(P))");
   set_solve_block(2, 0);
@@ -63,7 +63,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       VectorValue u  = variable_list.template get_value<VectorValue>(0);
       ScalarGrad  Px = variable_list.template get_gradient<ScalarGrad>(2);
 
-      VectorValue eq_u = u - (this->get_timestep() * Px);
+      VectorValue eq_u = u - (dt * Px);
 
       variable_list.set_value_term(0, eq_u);
     }
@@ -84,8 +84,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       // Add the skew-symmetric contribution
       advection_term += 0.5 * div_u * u;
 
-      VectorValue eq_u  = u - (this->get_timestep() * advection_term);
-      VectorGrad  eqx_u = -this->get_timestep() / Re * ux;
+      VectorValue eq_u  = u - (dt * advection_term);
+      VectorGrad  eqx_u = -dt * ux * nu;
 
       variable_list.set_value_term(1, eq_u);
       variable_list.set_gradient_term(1, eqx_u);
@@ -103,11 +103,35 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 2)
     {
-      ScalarValue div_u_star = variable_list.template get_divergence<ScalarValue>(1);
-      ScalarGrad  Px         = variable_list.template get_gradient<ScalarGrad>(2);
+      VectorValue u           = variable_list.template get_value<VectorValue>(0);
+      VectorValue u_star      = variable_list.template get_value<VectorValue>(1);
+      VectorGrad  grad_u_star = variable_list.template get_gradient<VectorGrad>(1);
+      ScalarValue div_u_star  = variable_list.template get_divergence<ScalarValue>(1);
+      VectorValue lap_u_star  = variable_list.template get_laplacian<VectorValue>(1);
+      ScalarGrad  Px          = variable_list.template get_gradient<ScalarGrad>(2);
 
-      ScalarValue eq_P  = -div_u_star / this->get_timestep();
+      ScalarValue stabilization_parameter =
+        compute_stabilization_parameter(u_star, element_volume);
+
+      ScalarValue eq_P  = -div_u_star / (dt + stabilization_parameter);
       ScalarGrad  eqx_P = -Px;
+
+      VectorValue advection_term;
+      for (unsigned int i = 0; i < dim; i++)
+        {
+          for (unsigned int j = 0; j < dim; j++)
+            {
+              advection_term[i] += u_star[j] * grad_u_star[i][j];
+            }
+        }
+      // Add the skew-symmetric contribution
+      advection_term += 0.5 * div_u_star * u_star;
+
+      // Calculate the residual
+      ScalarGrad residual = (u_star - u) / dt + advection_term - (nu * lap_u_star);
+
+      // Add the residual to the poisson solve
+      eqx_P -= residual * stabilization_parameter / (dt + stabilization_parameter);
 
       variable_list.set_value_term(2, eq_P);
       variable_list.set_gradient_term(2, eqx_P);

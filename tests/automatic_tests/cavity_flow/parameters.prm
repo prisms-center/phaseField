@@ -8,8 +8,8 @@ subsection Rectangular mesh
   set x subdivisions = 1
   set y subdivisions = 1
 end
-set time step = 4.0e-3
-set number steps = 100000
+set time step = 4.0e-8
+set number steps = 100
 
 subsection output
   set condition = EQUAL_SPACING
