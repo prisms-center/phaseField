@@ -1,106 +1,151 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <core/matrixFreePDE.h>
+#pragma once
 
-using namespace dealii;
+#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_attributes.h>
 
-template <int dim, int degree>
-class CustomPDE : public MatrixFreePDE<dim, degree>
+#include <prismspf/user_inputs/user_input_parameters.h>
+
+#include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
+
+PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief This is a derived class of `VariableAttributeLoader` where the user implements
+ * their variable attributes and field declarations.
+ */
+class CustomAttributeLoader : public VariableAttributeLoader
 {
 public:
-  // Constructor
-  CustomPDE(UserInputParameters<dim> _userInputs)
-    : MatrixFreePDE<dim, degree>(_userInputs)
-    , userInputs(_userInputs) {};
+  /**
+   * @brief Destructor.
+   */
+  ~CustomAttributeLoader() override = default;
 
-  // Function to set the initial conditions (in ICs_and_BCs.h)
+  /**
+   * @brief User-implemented method where the variable attributes are set for all fields.
+   */
   void
-  setInitialCondition([[maybe_unused]] const Point<dim>  &p,
-                      [[maybe_unused]] const unsigned int index,
-                      [[maybe_unused]] number            &scalar_IC,
-                      [[maybe_unused]] Vector<double>    &vector_IC) override;
+  load_variable_attributes() override;
+};
 
-  // Function to set the non-uniform Dirichlet boundary conditions (in
-  // ICs_and_BCs.h)
-  void
-  setNonUniformDirichletBCs([[maybe_unused]] const Point<dim>  &p,
-                            [[maybe_unused]] const unsigned int index,
-                            [[maybe_unused]] const unsigned int direction,
-                            [[maybe_unused]] const number       time,
-                            [[maybe_unused]] number            &scalar_BC,
-                            [[maybe_unused]] Vector<double>    &vector_BC) override;
+/**
+ * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
+ * PDEs.
+ *
+ * @tparam dim The number of dimensions in the problem.
+ * @tparam degree The polynomial degree of the shape functions.
+ * @tparam number Datatype to use. Either double or float.
+ */
+template <unsigned int dim, unsigned int degree, typename number>
+class CustomPDE : public PDEOperator<dim, degree, number>
+{
+public:
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+
+  /**
+   * @brief Constructor.
+   */
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
+    : PDEOperator<dim, degree, number>(_user_inputs)
+  {}
 
 private:
-#include <core/typeDefs.h>
-
-  const UserInputParameters<dim> userInputs;
-
-  // Function to set the RHS of the governing equations for explicit time
-  // dependent equations (in equations.h)
+  /**
+   * @brief User-implemented class for the initial conditions.
+   */
   void
-  explicitEquationRHS(
-    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
+  set_initial_condition(const unsigned int       &index,
+                        const unsigned int       &component,
+                        const dealii::Point<dim> &point,
+                        number                   &scalar_value,
+                        number                   &vector_component_value) const override;
 
-  // Function to set the RHS of the governing equations for all other equations
-  // (in equations.h)
+  /**
+   * @brief User-implemented class for nonuniform boundary conditions.
+   */
   void
-  nonExplicitEquationRHS(
-    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
+  set_nonuniform_dirichlet(const unsigned int       &index,
+                           const unsigned int       &boundary_id,
+                           const unsigned int       &component,
+                           const dealii::Point<dim> &point,
+                           number                   &scalar_value,
+                           number &vector_component_value) const override;
 
-  // Function to set the LHS of the governing equations (in equations.h)
+  /**
+   * @brief User-implemented class for the RHS of explicit equations.
+   */
   void
-  equationLHS(
-    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
-                                                              &variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
+  compute_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
+    Types::Index solve_block) const override;
 
-// Function to set postprocessing expressions (in postprocess.h)
-#ifdef POSTPROCESS_FILE_EXISTS
+  /**
+   * @brief User-implemented class for the RHS of nonexplicit equations.
+   */
   void
-  postProcessedFields(
-    [[maybe_unused]] const VariableContainer<dim, degree, VectorizedArray<double>>
-      &variable_list,
-    [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>>
-                                                              &pp_variable_list,
-    [[maybe_unused]] const Point<dim, VectorizedArray<double>> q_point_loc,
-    [[maybe_unused]] const VectorizedArray<double> element_volume) const override;
-#endif
+  compute_nonexplicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
+    Types::Index                                               solve_block,
+    Types::Index index = Numbers::invalid_index) const override;
 
-// Function to set the nucleation probability (in nucleation.h)
-#ifdef NUCLEATION_FILE_EXISTS
-  double
-  getNucleationProbability([[maybe_unused]] variableValueContainer variable_value,
-                           [[maybe_unused]] number                 dV) const override;
-#endif
+  /**
+   * @brief User-implemented class for the LHS of nonexplicit equations.
+   */
+  void
+  compute_nonexplicit_lhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
+    Types::Index                                               solve_block,
+    Types::Index index = Numbers::invalid_index) const override;
 
-  // ================================================================
-  // Methods specific to this subclass
-  // ================================================================
+  /**
+   * @brief User-implemented class for the RHS of postprocessed explicit equations.
+   */
+  void
+  compute_postprocess_explicit_rhs(
+    VariableContainer<dim, degree, number>                    &variable_list,
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+    const dealii::VectorizedArray<number>                     &element_volume,
+    Types::Index solve_block) const override;
 
-  // ================================================================
-  // Model constants specific to this subclass
-  // ================================================================
+  number Mc =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mc");
+  number Mn =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn");
+  number Kn =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Kn");
 
-  double Mc = userInputs.get_model_constant_double("Mc");
-  double Mn = userInputs.get_model_constant_double("Mn");
-  double Kn = userInputs.get_model_constant_double("Kn");
+  dealii::Tensor<1, dim, number> center1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_1_tensor(
+      "center1");
+  dealii::Tensor<1, dim, number> center2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_1_tensor(
+      "center2");
 
-  Tensor<1, dim> center1 = userInputs.get_model_constant_rank_1_tensor("center1");
-  Tensor<1, dim> center2 = userInputs.get_model_constant_rank_1_tensor("center2");
+  number radius1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("radius1");
+  number radius2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("radius2");
 
-  double radius1 = userInputs.get_model_constant_double("radius1");
-  double radius2 = userInputs.get_model_constant_double("radius2");
-
-  double matrix_concentration =
-    userInputs.get_model_constant_double("matrix_concentration");
-
-  // ================================================================
+  number matrix_concentration =
+    this->get_user_inputs().get_user_constants().get_model_constant_double(
+      "matrix_concentration");
 };
+
+PRISMS_PF_END_NAMESPACE

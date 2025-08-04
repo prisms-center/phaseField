@@ -1,32 +1,67 @@
+# The dimension in the problem
 set dim = 2
-set Domain size X = 100
-set Domain size Y = 100
-set Domain size Z = 100
-set Subdivisions X = 3
-set Subdivisions Y = 3
-set Subdivisions Z = 3
+
+# The initial global refinement
 set global refinement = 6
+
+# The element degree
 set degree = 1
-set Mesh adaptivity = true
-set Max refinement level = 6
-set Min refinement level = 3
-set Steps between remeshing operations = 5000
 
-subsection Refinement criterion: n
-  set Criterion type = VALUE
-  set Value lower bound = 0.01
-  set Value upper bound = 0.99
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 3
+  set y subdivisions = 3
+  set z subdivisions = 3
 end
 
-subsection Refinement criterion: c
-  set Criterion type = VALUE
-  set Value lower bound = 0.02
-  set Value upper bound = 0.1
+# Mesh adaptivity parameters
+set mesh adaptivity = false
+set max refinement = 6
+set min refinement = 3
+set remeshing period = 5000
+
+subsection refinement criterion: n
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
 end
-set Time step = 8.0e-4
-set Number of time steps = 150000
-set Boundary condition for variable c = Natural
-set Boundary condition for variable n = Natural
+subsection refinement criterion: c
+  set type = value
+  set value lower bound = 0.02
+  set value upper bound = 0.1
+end
+
+# The timestep
+set time step = 8.0e-4
+
+# The total number of timesteps to take
+set number steps = 150000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for c = Natural
+set boundary condition for n = Natural
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
 set Model constant Mc = 1.0, DOUBLE
 set Model constant Mn = 150.0, DOUBLE
 set Model constant Kn = 0.3, DOUBLE
@@ -35,6 +70,4 @@ set Model constant center2 = (75,75,75), TENSOR
 set Model constant radius1 = 20.0, DOUBLE
 set Model constant radius2 = 8.33333333333, DOUBLE
 set Model constant matrix_concentration = 0.009, DOUBLE
-set Output condition = EQUAL_SPACING
-set Number of outputs = 10
-set Skip print steps = 1000
+

@@ -125,4 +125,4 @@ r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \
 $$
 
 The above values of $r_{\eta}$, $r_{\eta x}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file:
-`applications/coupledCahnHilliardAllenCahn/parameters.h`
+`applications/coupled_allen_cahn_cahn_hilliard/equations.cc`

@@ -137,4 +137,4 @@ r_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n})
 $$
 
 The above values of $r_{mu}$, $r_{mux}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file: 
-`applications/cahnHilliard/parameters.h`
+`applications/cahn_hilliard/equations.cc`

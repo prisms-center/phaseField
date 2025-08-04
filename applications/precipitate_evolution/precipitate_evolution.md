@@ -359,7 +359,7 @@ r_{ux} &= \sigma
 $$
 
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file: 
-`applications/precipitateEvolution/equations.h`
+`applications/precipitate_evolution/equations.cc`
 
 ## Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $H(\eta_p)$ 
 

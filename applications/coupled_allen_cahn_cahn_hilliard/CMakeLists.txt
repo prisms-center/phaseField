@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.13.4)
 # Get the core library's directory (3 levels up from the macro file)
 get_filename_component(
     PRISMS_PF_CORE_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/../../..
+    ${CMAKE_CURRENT_LIST_DIR}/../..
     ABSOLUTE
 )
 

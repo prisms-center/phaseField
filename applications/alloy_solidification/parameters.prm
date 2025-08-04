@@ -2,7 +2,7 @@
 set dim = 2
 
 # The initial global refinement
-set global refinement = 5
+set global refinement = 7
 
 # The element degree
 set degree = 2
@@ -21,7 +21,7 @@ subsection Rectangular mesh
 end
 
 # Mesh adaptivity parameters
-set mesh adaptivity = true
+set mesh adaptivity = false
 set max refinement = 7
 set min refinement = 2
 set remeshing period = 250

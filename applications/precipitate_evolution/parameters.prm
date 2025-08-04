@@ -1,7 +1,16 @@
+# The dimension in the problem
 set dim = 2
+
+# The initial global refinement
 set global refinement = 5
+
+# The element degree
 set degree = 2
 
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
 subsection Rectangular mesh
   set x size = 40.0
   set y size = 40.0
@@ -10,13 +19,49 @@ subsection Rectangular mesh
   set y subdivisions = 3
   set z subdivisions = 3
 end
+
+# Mesh adaptivity parameters
+set mesh adaptivity = false
+set max refinement = 5
+set min refinement = 1
+set remeshing period = 1000
+
+subsection refinement criterion: n1
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+subsection refinement criterion: n2
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+subsection refinement criterion: n3
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+
+# The timestep
 set time step = 6.0e-4
+
+# The total number of timesteps to take
 set number steps = 20000
 
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
 subsection output
   set condition = EQUAL_SPACING
   set number = 10
 end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
 set boundary condition for c = Natural
 set boundary condition for n1 = Natural
 set boundary condition for n2 = Natural
@@ -25,15 +70,22 @@ set boundary condition for u, x component = Dirichlet: 0.0
 set boundary condition for u, y component = Dirichlet: 0.0
 set boundary condition for u, z component = Dirichlet: 0.0
 
+# The linear solve parameters. The type of residual can either be AbsoluteResidual or 
+# RelativeResidual. The preconditioner type can either be none or geometric multigrid
+# (GMG). The parameters smoothing range, degree, eigenvalue cg iterations, and min
+# multigrid level are specific to GMG and can be changed to suite your problem.
 subsection linear solver parameters: u
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1e-10
+  set tolerance value = 1e-5
   set max iterations = 1000
   set preconditioner type = GMG
   set smoothing range = 20
   set smoother degree = 5
   set eigenvalue cg iterations = 20
 end
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
 set Model constant McV = 1.0, double
 set Model constant Mn1V = 100.0, double
 set Model constant Mn2V = 100.0, double
