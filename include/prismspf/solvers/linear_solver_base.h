@@ -328,6 +328,15 @@ protected:
   }
 
   /**
+   * @brief Get the element volume container.
+   */
+  [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
+  get_element_volume_container() const
+  {
+    return solver_context->get_element_volume_container();
+  }
+
+  /**
    * @brief Get the multigrid info.
    */
   [[nodiscard]] const MGInfo<dim> &

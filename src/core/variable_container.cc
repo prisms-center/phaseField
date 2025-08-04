@@ -14,6 +14,8 @@
 #include <prismspf/core/variable_attributes.h>
 #include <prismspf/core/variable_container.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 #include <algorithm>
@@ -32,10 +34,12 @@ template <unsigned int dim, unsigned int degree, typename number>
 VariableContainer<dim, degree, number>::VariableContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::map<Types::Index, VariableAttributes> &_subset_attributes,
+  const ElementVolume<dim, degree, number>         &_element_volume,
   const std::vector<Types::Index>                  &_global_to_local_solution,
   const SolveType                                  &_solve_type,
   bool                                              use_local_mapping)
   : subset_attributes(&_subset_attributes)
+  , element_volume_handler(&_element_volume)
   , global_to_local_solution(&_global_to_local_solution)
   , solve_type(_solve_type)
 {
@@ -131,14 +135,18 @@ VariableContainer<dim, degree, number>::VariableContainer(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                              &func,
+  const std::function<void(VariableContainer &,
+                           const dealii::Point<dim, SizeType> &,
+                           const SizeType &)> &func,
   std::vector<VectorType *>                   &dst,
   const std::vector<VectorType *>             &src,
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
+      // Grab the element volume
+      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
@@ -146,7 +154,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           q_point = quad;
-          func(*this, get_q_point_location());
+          func(*this, get_q_point_location(), element_volume);
         }
 
       // Integrate and add to global vector dst
@@ -157,14 +165,18 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                              &func,
+  const std::function<void(VariableContainer &,
+                           const dealii::Point<dim, SizeType> &,
+                           const SizeType &)> &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src,
   const std::pair<unsigned int, unsigned int> &cell_range)
 {
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
+      // Grab the element volume
+      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
 
@@ -172,7 +184,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           q_point = quad;
-          func(*this, get_q_point_location());
+          func(*this, get_q_point_location(), element_volume);
         }
 
       // Integrate and add to global vector dst
@@ -183,8 +195,9 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_operator(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                              &func,
+  const std::function<void(VariableContainer &,
+                           const dealii::Point<dim, SizeType> &,
+                           const SizeType &)> &func,
   VectorType                                  &dst,
   const VectorType                            &src,
   const std::vector<VectorType *>             &src_subset,
@@ -192,6 +205,9 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 {
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
+      // Grab the element volume
+      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
       reinit_and_eval(src_subset, cell);
@@ -200,7 +216,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           q_point = quad;
-          func(*this, get_q_point_location());
+          func(*this, get_q_point_location(), element_volume);
         }
 
       // Integrate and add to global vector dst
@@ -211,8 +227,9 @@ VariableContainer<dim, degree, number>::eval_local_operator(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 VariableContainer<dim, degree, number>::eval_local_diagonal(
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                              &func,
+  const std::function<void(VariableContainer &,
+                           const dealii::Point<dim, SizeType> &,
+                           const SizeType &)> &func,
   VectorType                                  &dst,
   const std::vector<VectorType *>             &src_subset,
   const std::pair<unsigned int, unsigned int> &cell_range)
@@ -1157,16 +1174,20 @@ template <unsigned int dim, unsigned int degree, typename number>
 template <typename FEEvaluationType, typename DiagonalType>
 void
 VariableContainer<dim, degree, number>::eval_cell_diagonal(
-  FEEvaluationType *feeval_ptr,
-  DiagonalType     *diagonal_ptr,
-  unsigned int      cell,
-  Types::Index      global_variable_index,
-  const std::function<void(VariableContainer &, const dealii::Point<dim, SizeType> &)>
-                                  &func,
-  VectorType                      &dst,
-  const std::vector<VectorType *> &src_subset)
+  FEEvaluationType                            *feeval_ptr,
+  DiagonalType                                *diagonal_ptr,
+  unsigned int                                 cell,
+  Types::Index                                 global_variable_index,
+  const std::function<void(VariableContainer &,
+                           const dealii::Point<dim, SizeType> &,
+                           const SizeType &)> &func,
+  VectorType                                  &dst,
+  const std::vector<VectorType *>             &src_subset)
 {
   using DiagonalValueType = typename DiagonalType::value_type;
+
+  // Grab the element volume
+  SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
   // Helper function to submit the identity matrix
   auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
@@ -1217,7 +1238,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
       for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
         {
           q_point = quad;
-          func(*this, get_q_point_location());
+          func(*this, get_q_point_location(), element_volume);
         }
 
       // Integrate the diagonal

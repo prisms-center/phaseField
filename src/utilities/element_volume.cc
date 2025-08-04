@@ -81,17 +81,6 @@ ElementVolume<dim, degree, number>::compute_element_volume()
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const dealii::AlignedVector<dealii::VectorizedArray<number>> &
-ElementVolume<dim, degree, number>::get_element_volumes() const
-{
-  Assert(data != nullptr, dealii::ExcNotInitialized());
-  Assert(!element_volume.empty(),
-         dealii::ExcMessage("The vector of element volumes is empty. Make sure to call "
-                            "`compute_element_volume` beforehand"));
-  return element_volume;
-};
-
-template <unsigned int dim, unsigned int degree, typename number>
 const dealii::VectorizedArray<number> &
 ElementVolume<dim, degree, number>::get_element_volume(unsigned cell) const
 {
@@ -170,6 +159,25 @@ void
 ElementVolumeContainer<dim, degree, number>::recompute_element_volume()
 {
   this->compute_element_volume();
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const ElementVolume<dim, degree, number> &
+ElementVolumeContainer<dim, degree, number>::get_element_volume() const
+{
+  return element_volume;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const ElementVolume<dim, degree, float> &
+ElementVolumeContainer<dim, degree, number>::get_mg_element_volume(
+  unsigned int level) const
+{
+  Assert(multigrid_element_volume.n_levels() > level,
+         dealii::ExcMessage(
+           "The multigrid element volume object does not contain level = " +
+           std::to_string(level)));
+  return multigrid_element_volume[level];
 }
 
 #include "utilities/element_volume.inst"

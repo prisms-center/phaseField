@@ -17,6 +17,8 @@
 #include <prismspf/solvers/linear_solver_base.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 #include <memory>
@@ -36,10 +38,12 @@ IdentitySolver<dim, degree, number>::init()
 {
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
   this->get_update_system_matrix()->clear();
   this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
 
   this->get_system_matrix()->add_global_to_local_mapping(
     this->get_residual_global_to_local_solution());

@@ -128,7 +128,8 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
   // Set up the user-implemented equations and create the residual vectors
   system_matrix[global_field_index]->clear();
   system_matrix[global_field_index]->initialize(
-    this->get_matrix_free_container().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
 
   // Grab some data from the VariableAttributes
   const Types::Index max_fields =

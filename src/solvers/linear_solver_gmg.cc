@@ -32,6 +32,8 @@
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/solver_context.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 #include <functional>
@@ -55,10 +57,12 @@ GMGSolver<dim, degree, number>::init()
   // Basic intialization that is the same as the identity solve.
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
   this->get_update_system_matrix()->clear();
   this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free());
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
 
   this->get_system_matrix()->add_global_to_local_mapping(
     this->get_residual_global_to_local_solution());
@@ -132,6 +136,7 @@ GMGSolver<dim, degree, number>::init()
     {
       (*mg_operators)[level].initialize(
         this->get_matrix_free_container().get_mg_matrix_free(level),
+        this->get_element_volume_container().get_mg_element_volume(level),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(
@@ -236,6 +241,7 @@ GMGSolver<dim, degree, number>::reinit()
     {
       (*mg_operators)[level].initialize(
         this->get_matrix_free_container().get_mg_matrix_free(level),
+        this->get_element_volume_container().get_mg_element_volume(level),
         {change_local_index});
 
       (*mg_operators)[level].add_global_to_local_mapping(

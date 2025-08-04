@@ -48,6 +48,9 @@ class DofHandler;
 template <unsigned int dim>
 class MGInfo;
 
+template <unsigned int dim, unsigned int degree, typename number>
+class ElementVolumeContainer;
+
 template <unsigned int dim, typename number>
 class SolutionHandler;
 
@@ -245,6 +248,15 @@ public:
   get_solution_handler() const
   {
     return solver_context->get_solution_handler();
+  }
+
+  /**
+   * @brief Get the element volume container.
+   */
+  [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
+  get_element_volume_container() const
+  {
+    return solver_context->get_element_volume_container();
   }
 
   /**

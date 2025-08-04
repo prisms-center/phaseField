@@ -18,6 +18,8 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/element_volume.h>
+
 #include <prismspf/config.h>
 
 #include <map>
@@ -52,9 +54,11 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::initialize(
   std::shared_ptr<const dealii::MatrixFree<dim, number, SizeType>> _data,
-  const std::vector<unsigned int>                                 &selected_field_indexes)
+  const ElementVolume<dim, degree, number> &_element_volume_handler,
+  const std::vector<unsigned int>          &selected_field_indexes)
 {
-  data = std::move(_data);
+  data                   = std::move(_data);
+  element_volume_handler = &_element_volume_handler;
 
   selected_fields.clear();
   if (selected_field_indexes.empty())
@@ -314,15 +318,20 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::ExplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
-      this->pde_operator->compute_explicit_rhs(var_list, q_point_loc, solve_block);
+      this->pde_operator->compute_explicit_rhs(var_list,
+                                               q_point_loc,
+                                               element_volume,
+                                               solve_block);
     },
     dst,
     src,
@@ -340,16 +349,19 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::Postprocess);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
       this->pde_operator->compute_postprocess_explicit_rhs(var_list,
                                                            q_point_loc,
+                                                           element_volume,
                                                            solve_block);
     },
     dst,
@@ -368,16 +380,19 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
       this->pde_operator->compute_nonexplicit_rhs(var_list,
                                                   q_point_loc,
+                                                  element_volume,
                                                   solve_block,
                                                   index);
     },
@@ -397,16 +412,19 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
       this->pde_operator->compute_nonexplicit_rhs(var_list,
                                                   q_point_loc,
+                                                  element_volume,
                                                   solve_block,
                                                   index);
     },
@@ -426,6 +444,7 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitLHS,
                                                        use_local_mapping);
@@ -434,10 +453,12 @@ MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
   // subset must not include the src vector.
   variable_list.eval_local_operator(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
       this->pde_operator->compute_nonexplicit_lhs(var_list,
                                                   q_point_loc,
+                                                  element_volume,
                                                   solve_block,
                                                   index);
     },
@@ -482,6 +503,7 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   // Constructor for FEEvaluation objects
   VariableContainer<dim, degree, number> variable_list(data,
                                                        attributes_list,
+                                                       *element_volume_handler,
                                                        global_to_local_solution,
                                                        SolveType::NonexplicitLHS,
                                                        use_local_mapping);
@@ -489,10 +511,12 @@ MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
   // Initialize, evaluate, and submit diagonal based on user function.
   variable_list.eval_local_diagonal(
     [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, SizeType>     &q_point_loc)
+           const dealii::Point<dim, SizeType>     &q_point_loc,
+           const SizeType                         &element_volume)
     {
       this->pde_operator->compute_nonexplicit_lhs(var_list,
                                                   q_point_loc,
+                                                  element_volume,
                                                   solve_block,
                                                   index);
     },

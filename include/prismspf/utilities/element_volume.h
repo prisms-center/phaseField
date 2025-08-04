@@ -46,12 +46,6 @@ public:
   compute_element_volume();
 
   /**
-   * @brief Get the vector of element volumes (const reference).
-   */
-  [[nodiscard]] const dealii::AlignedVector<dealii::VectorizedArray<number>> &
-  get_element_volumes() const;
-
-  /**
    * @brief Get the element volume of a certain cell (const reference).
    */
   [[nodiscard]] const dealii::VectorizedArray<number> &
@@ -99,6 +93,18 @@ public:
    */
   void
   recompute_element_volume();
+
+  /**
+   * @brief Get the element volume.
+   */
+  [[nodiscard]] const ElementVolume<dim, degree, number> &
+  get_element_volume() const;
+
+  /**
+   * @brief Get the element volume at a multigrid level.
+   */
+  [[nodiscard]] const ElementVolume<dim, degree, float> &
+  get_mg_element_volume(unsigned int level) const;
 
 private:
   /**
