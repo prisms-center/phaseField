@@ -373,8 +373,10 @@ PDEProblem<dim, degree, number>::solve()
             user_inputs->get_temporal_discretization().get_increment()))
         {
           // Perform grid refinement
-          ConditionalOStreams::pout_base() << "performing grid refinement...\n"
-                                           << std::flush;
+          ConditionalOStreams::pout_base()
+            << "performing grid refinement at increment "
+            << user_inputs->get_temporal_discretization().get_increment() << "...\n"
+            << std::flush;
           Timer::start_section("Grid refinement");
           grid_refiner.do_adaptive_refinement();
           Timer::end_section("Grid refinement");

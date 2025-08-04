@@ -55,9 +55,9 @@ SolverHandler<dim, degree, number>::init()
 
   for (const auto &solve_block : solve_blocks)
     {
-      ConditionalOStreams::pout_base()
-        << "initializing solvers for solve block " << std::to_string(solve_block)
-        << " ...\n " << std::flush;
+      ConditionalOStreams::pout_base() << "initializing solvers for solve block "
+                                       << std::to_string(solve_block) << " ...\n"
+                                       << std::flush;
 
       ConditionalOStreams::pout_base()
         << "  trying to initialize concurrent constant solvers...\n"
@@ -106,43 +106,18 @@ SolverHandler<dim, degree, number>::reinit()
 
   for (const auto &solve_block : solve_blocks)
     {
-      ConditionalOStreams::pout_base()
-        << "reinitializing solvers for solve block " << std::to_string(solve_block)
-        << " ...\n " << std::flush;
-
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent constant solvers...\n"
-        << std::flush;
       concurrent_constant_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent explicit solvers...\n"
-        << std::flush;
       concurrent_explicit_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize concurrent explicit postprocess solvers...\n"
-        << std::flush;
       concurrent_explicit_postprocess_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential auxiliary solvers...\n"
-        << std::flush;
       sequential_auxiliary_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential linear solvers...\n"
-        << std::flush;
       sequential_linear_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential self-nonlinear solvers...\n"
-        << std::flush;
       sequential_self_nonlinear_solver.at(solve_block).reinit();
 
-      ConditionalOStreams::pout_base()
-        << "  trying to reinitialize sequential co-nonlinear solvers...\n"
-        << std::flush;
       sequential_co_nonlinear_solver.at(solve_block).reinit();
     }
 
