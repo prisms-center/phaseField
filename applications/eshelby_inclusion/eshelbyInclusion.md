@@ -129,4 +129,4 @@ r_{ux} &= \sigma
 $$
 
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file:
-`applications/eschelbyInclusion/equations.h`
+`applications/eschelby_inclusion/equations.cc`

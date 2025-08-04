@@ -380,7 +380,7 @@ $$
 
 
 The above values of $r_{\phi}$, $r_{U}$, $r_{Ux}$,  $r_{\xi}$ and  $r_{\xi x}$ are used to define the residuals in the following parameters file:
-`\textit{applications/alloySolification/equations.cc}`
+`\textit{applications/alloy_solification/equations.cc}`
 
 ## References
 [1] Developed by Zhenjie Yao, Department of Material Science and Engineering, University of Michigan (2021).

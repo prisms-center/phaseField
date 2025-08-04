@@ -12,9 +12,9 @@ set degree = 1
 # subdivisions to apply to each of those. This is useful when dealing with a domain
 # that is not square.
 subsection Rectangular mesh
-  set x size = 100
-  set y size = 100
-  set z size = 100
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
   set x subdivisions = 1
   set y subdivisions = 1
   set z subdivisions = 1

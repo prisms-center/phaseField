@@ -1,27 +1,63 @@
+# The dimension in the problem
 set dim = 2
-set Domain size X = 100
-set Domain size Y = 300
-set Domain size Z = 300
-set Subdivisions X = 1
-set Subdivisions Y = 3
-set Subdivisions Z = 3
-set global refinement = 5
-set degree = 2
-set Mesh adaptivity = true
-set Max refinement level = 7
-set Min refinement level = 2
-set Steps between remeshing operations = 250
 
-subsection Refinement criterion: phi
-  set Criterion type = VALUE
-  set Value lower bound = -0.99
-  set Value upper bound = 0.99
+# The initial global refinement
+set global refinement = 5
+
+# The element degree
+set degree = 2
+
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 300.0
+  set z size = 300.0
+  set x subdivisions = 1
+  set y subdivisions = 3
+  set z subdivisions = 3
 end
-set Time step = 0.002
-set Number of time steps = 200000
-set Boundary condition for variable U =  Natural
-set Boundary condition for variable phi =  Natural
-set Boundary condition for variable xi =  Natural
+
+# Mesh adaptivity parameters
+set mesh adaptivity = true
+set max refinement = 7
+set min refinement = 2
+set remeshing period = 250
+
+subsection refinement criterion: phi
+  set type = value
+  set value lower bound = -0.99
+  set value upper bound = 0.99
+end
+
+# The timestep
+set time step = 0.002
+
+# The total number of timesteps to take
+set number steps = 200000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 50
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for U =  Natural
+set boundary condition for phi =  Natural
+set boundary condition for xi =  Natural
+
+# Model constants that are defined and accessed through CustomPDE. These constants 
+# are particular useful when defining system parameters that you may sweep over.
 set Model constant epsilon = 0.01, DOUBLE
 set Model constant k = 0.14, DOUBLE
 set Model constant c0 = 3.0, DOUBLE
@@ -33,9 +69,3 @@ set Model constant U0 = -1.0, DOUBLE
 set Model constant U_off = 0.9, DOUBLE
 set Model constant y0 = 5.0, DOUBLE
 set Model constant regval = 1.0e-10, DOUBLE
-set Output condition = EQUAL_SPACING
-set Number of outputs = 50
-set Skip print steps = 10000
-set Load from a checkpoint = false
-set Checkpoint condition = EQUAL_SPACING
-set Number of checkpoints = 2
