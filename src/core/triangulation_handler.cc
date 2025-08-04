@@ -88,14 +88,6 @@ TriangulationHandler<dim>::get_mg_triangulation(unsigned int level) const
 
 template <unsigned int dim>
 unsigned int
-TriangulationHandler<dim>::get_n_global_levels() const
-{
-  Assert(triangulation != nullptr, dealii::ExcNotInitialized());
-  return triangulation->n_global_levels();
-}
-
-template <unsigned int dim>
-unsigned int
 TriangulationHandler<dim>::get_mg_min_level() const
 {
   Assert(has_multigrid, dealii::ExcNotInitialized());
@@ -110,13 +102,6 @@ TriangulationHandler<dim>::get_mg_max_level() const
   Assert(has_multigrid, dealii::ExcNotInitialized());
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
   return max_level;
-}
-
-template <unsigned int dim>
-bool
-TriangulationHandler<dim>::has_setup_multigrid() const
-{
-  return has_multigrid;
 }
 
 template <unsigned int dim>

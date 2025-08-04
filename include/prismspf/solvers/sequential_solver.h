@@ -181,37 +181,6 @@ public:
     return update_system_matrix;
   }
 
-  /**
-   * @brief Get the mapping from global solution vectors to the local ones.
-   */
-  [[nodiscard]] const std::map<Types::Index, std::vector<Types::Index>> &
-  get_global_to_local_solution_mapping()
-  {
-    return global_to_local_solution;
-  }
-
-  /**
-   * @brief Get the src solution subset.
-   */
-  [[nodiscard]] const std::map<
-    Types::Index,
-    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
-  get_src_solution_subset()
-  {
-    return solution_subset;
-  }
-
-  /**
-   * @brief Get the dst solution subset.
-   */
-  [[nodiscard]] std::map<
-    Types::Index,
-    std::vector<typename SolverBase<dim, degree, number>::VectorType *>> &
-  get_dst_solution_subset()
-  {
-    return new_solution_subset;
-  }
-
 private:
   /**
    * @brief Matrix-free operator for the residual side.
