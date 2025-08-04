@@ -112,13 +112,13 @@ public:
    * @brief Initialize the system.
    */
   virtual void
-  init() = 0;
+  init();
 
   /**
    * @brief Reinitialize the system.
    */
   virtual void
-  reinit() = 0;
+  reinit();
 
   /**
    * @brief Solve the system Ax=b.

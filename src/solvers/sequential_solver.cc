@@ -212,7 +212,73 @@ void
 SequentialSolver<dim, degree, number>::reinit_explicit_solver(
   [[maybe_unused]] const VariableAttributes &variable)
 {
-  // Do nothing
+  // Grab the global field index
+  const Types::Index global_field_index = variable.get_field_index();
+
+  // Clear some objects
+  global_to_local_solution[global_field_index].clear();
+  solution_subset[global_field_index].clear();
+  new_solution_subset[global_field_index].clear();
+
+  // Set up the user-implemented equations and create the residual vectors
+  system_matrix[global_field_index]->clear();
+  system_matrix[global_field_index]->initialize(
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
+
+  // Grab some data from the VariableAttributes
+  const Types::Index max_fields =
+    this->get_subset_attributes().begin()->second.get_max_fields();
+  const Types::Index max_dependency_types =
+    this->get_subset_attributes().begin()->second.get_max_dependency_types();
+
+  // Resize the global to local solution vector
+  global_to_local_solution[global_field_index].resize(max_fields * max_dependency_types,
+                                                      Numbers::invalid_index);
+
+  // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
+  new_solution_subset[global_field_index].push_back(
+    this->get_solution_handler().get_new_solution_vector(global_field_index));
+  solution_subset[global_field_index].push_back(
+    this->get_solution_handler().get_solution_vector(global_field_index,
+                                                     DependencyType::Normal));
+  global_to_local_solution[global_field_index]
+                          [(global_field_index * max_dependency_types) +
+                           static_cast<Types::Index>(DependencyType::Normal)] = 0;
+
+  Types::Index variable_index = 0;
+  for (const auto &inner_dependency_set : variable.get_dependency_set_rhs())
+    {
+      Types::Index dependency_type = 0;
+      for (const auto &field_type : inner_dependency_set)
+        {
+          // Skip if an invalid field type is found or the global_to_local_solution
+          // already has an entry for this dependency index and dependency type
+          if (field_type == Numbers::invalid_field_type ||
+              global_to_local_solution[global_field_index]
+                                      [(variable_index * max_dependency_types) +
+                                       dependency_type] != Numbers::invalid_index)
+            {
+              dependency_type++;
+              continue;
+            }
+
+          solution_subset[global_field_index].push_back(
+            this->get_solution_handler().get_solution_vector(variable_index,
+                                                             static_cast<DependencyType>(
+                                                               dependency_type)));
+          global_to_local_solution[global_field_index]
+                                  [(variable_index * max_dependency_types) +
+                                   dependency_type] =
+                                    solution_subset.at(global_field_index).size() - 1;
+
+          dependency_type++;
+        }
+
+      variable_index++;
+    }
+  system_matrix[global_field_index]->add_global_to_local_mapping(
+    global_to_local_solution[global_field_index]);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
