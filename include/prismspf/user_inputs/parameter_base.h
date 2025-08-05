@@ -4,6 +4,7 @@
 #pragma once
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -30,7 +31,8 @@ public:
    * @brief Postprocess and validate parameters.
    */
   virtual void
-  postprocess_and_validate() = 0;
+  postprocess_and_validate(
+    const std::map<unsigned int, VariableAttributes> &var_attributes) = 0;
 
   /**
    * @brief Print parameters to summary.log
