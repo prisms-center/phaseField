@@ -126,13 +126,3 @@ if(PRISMS_PF_WITH_CUDA)
 endif()
 
 # Grab some compiler flags that would otherwise be provided by deal_ii_initialize_cached_variables()
-message(STATUS ${DEAL_II_CXX_COMPILER})
-message(STATUS ${DEAL_II_CXX_FLAGS})
-message(STATUS ${DEAL_II_CXX_FLAGS_DEBUG})
-message(STATUS ${DEAL_II_CXX_FLAGS_RELEASE})
-
-message(STATUS ${DEAL_II_LINKER_FLAGS})
-message(STATUS ${DEAL_II_LINKER_FLAGS_DEBUG})
-message(STATUS ${DEAL_II_LINKER_FLAGS_RELEASE})
-
-message(STATUS ${DEAL_II_WARNING_FLAGS})
