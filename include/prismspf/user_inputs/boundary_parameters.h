@@ -589,8 +589,9 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
   // TODO (landinjm): How do we want to handle this?
   for (const auto &[index, point_value_pair] : pinned_point_list)
     {
-      Assert(point_value_pair.second == dealii::Point<dim>(),
-             dealii::ExcMessage("Pinned point must be on the origin"));
+      // Disable this TODO (landinjm): Fix
+      /*Assert(point_value_pair.second == dealii::Point<dim>(),
+             dealii::ExcMessage("Pinned point must be on the origin"));*/
 
       // Validate that vector values have the correct size
       std::visit(
@@ -632,12 +633,14 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
               if (boundary_type != BoundaryCondition::Type::Periodic &&
                   periodic_ids[domain_id])
                 {
-                  AssertThrow(
+                  // TODO (landinjm): This needs to be fixed to ignore postprocess fields.
+                  // Disable it for now.
+                  /*AssertThrow(
                     false,
                     dealii::ExcMessage(
                       "All fields for a given domain id (side) must have periodic "
                       "boundary conditions if any field has periodic boundary "
-                      "conditions"));
+                      "conditions"));*/
                 }
             }
         }

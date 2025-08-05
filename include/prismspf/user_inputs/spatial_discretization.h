@@ -3,15 +3,405 @@
 
 #pragma once
 
+#include <deal.II/distributed/tria.h>
+#include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/grid_tools.h>
+#include <deal.II/grid/tria.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/grid_refiner_criterion.h>
+#include <prismspf/core/types.h>
+
+#include <prismspf/user_inputs/boundary_parameters.h>
 
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief Base class for mesh parameters with a generator functions.
+ */
+template <unsigned int dim>
+class Mesh
+{
+public:
+  using Triangulation =
+    std::conditional_t<dim == 1,
+                       dealii::Triangulation<dim>,
+                       dealii::parallel::distributed::Triangulation<dim>>;
+
+  /**
+   * @brief Constructor.
+   */
+  Mesh() = default;
+
+  /**
+   * @brief Virtual destructor.
+   */
+  virtual ~Mesh() = default;
+
+  /**
+   * @brief Generate the mesh.
+   */
+  virtual void
+  generate_mesh([[maybe_unused]] std::shared_ptr<Triangulation> triangulation)
+  {
+    AssertThrow(
+      is_initialized,
+      dealii::ExcMessage(
+        "Mesh parameters not initialized correctly. You tried to generate a mesh that "
+        "has default parameters. Typically this yields a mesh with size 0.0."));
+    AssertThrow(
+      triangulation->n_cells() == 0,
+      dealii::ExcMessage(
+        "Mesh triangulation is not empty. This is likely because you "
+        "tried to generate a mesh without setting the parameters first. "
+        "Please ensure that you have set the parameters before generating "
+        "the mesh. Another possibility is that you tried to generate multiple meshes. "
+        "Check that you only have one subsection in the parameters file for the mesh."));
+    is_generated = true;
+  };
+
+  /**
+   * @brief Mark the boundaries of the mesh.
+   */
+  void
+  mark_boundaries(
+    [[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
+    [[maybe_unused]] const typename BoundaryParameters<dim>::BoundaryConditionMap
+      &boundary_condition_list)
+  {
+    AssertThrow(is_generated,
+                dealii::ExcMessage(
+                  "Mesh must be generated before marking boundary ids."));
+    boundaries_marked = true;
+  };
+
+  /**
+   * @brief Mark the periodic faces of the mesh.
+   */
+  void
+  mark_periodic(
+    [[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
+    [[maybe_unused]] const typename BoundaryParameters<dim>::BoundaryConditionMap
+      &boundary_condition_list)
+  {
+    AssertThrow(is_generated,
+                dealii::ExcMessage(
+                  "Mesh must be generated before marking periodic boundaries."));
+    AssertThrow(boundaries_marked,
+                dealii::ExcMessage(
+                  "Mesh boundaries must be marked before marking periodic boundaries."));
+  };
+
+  /**
+   * @brief Set that the mesh parameters are initialized correctly.
+   */
+  void
+  set_initialized()
+  {
+    is_initialized = true;
+  };
+
+private:
+  /**
+   * @brief Whether the class is initialized correctly.
+   *
+   * This is necessary because the parameters are determined at runtime, leading to the
+   * generation of a bunch of empty mesh objects.
+   */
+  bool is_initialized = false;
+
+  /**
+   * @brief Whether the mesh has been generated.
+   */
+  bool is_generated = false;
+
+  /**
+   * @brief Whether the boundaries have been marked.
+   */
+  bool boundaries_marked = false;
+};
+
+/**
+ * @brief Class for rectangular mesh parameters.
+ */
+template <unsigned int dim>
+class RectangularMesh : public Mesh<dim>
+{
+  /**
+   * @brief Constructor.
+   */
+  RectangularMesh(dealii::Tensor<1, dim, double> _size,
+                  std::vector<unsigned int>      _subdivisions)
+    : size(_size)
+  {
+    Assert(_subdivisions.size() == dim,
+           dealii::ExcMessage(
+             "Subdivisions vector size must match the number of dimensions"));
+    subdivisions = std::move(_subdivisions);
+
+    // If the x direction is greater than 0, we set the mesh as initialized.
+    // TODO (landinjm): Check that the other directions are also greater than 0.
+    if (size[0] > 0.0)
+      {
+        this->Mesh<dim>::set_initialized();
+      }
+  };
+
+  /**
+   * @brief Generate the mesh.
+   */
+  void
+  generate_mesh(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation) override
+  {
+    // Call base class generate mesh to check initialization
+    this->Mesh<dim>::generate_mesh(triangulation);
+
+    dealii::GridGenerator::subdivided_hyper_rectangle(*triangulation,
+                                                      subdivisions,
+                                                      dealii::Point<dim>(),
+                                                      dealii::Point<dim>(size));
+  };
+
+  /**
+   * @brief Mark the boundaries of the mesh.
+   */
+  void
+  mark_boundaries(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
+                  const typename BoundaryParameters<dim>::BoundaryConditionMap
+                    &boundary_condition_list) override
+  {
+    // Call base class mark boundaries to check that the mesh has been generated
+    this->Mesh<dim>::mark_boundaries(triangulation, boundary_condition_list);
+
+    // Check that the user has not specified extra boundary conditions
+    for (const auto &[index, boundary_conditions] : boundary_condition_list)
+      {
+        AssertThrow(boundary_conditions.get_boundary_condition_map().size() == (2 * dim),
+                    dealii::ExcMessage(
+                      "Rectangular meshes only have 2*dim boundaries. Please ensure that "
+                      "you have not specified extra boundary conditions."));
+      }
+
+    // Loop through the cells
+    for (const auto &cell : triangulation->active_cell_iterators())
+      {
+        // Mark the faces (faces_per_cell = 2*dim)
+        for (unsigned int face_number = 0;
+             face_number < dealii::GeometryInfo<dim>::faces_per_cell;
+             ++face_number)
+          {
+            // Direction for quad and hex cells
+            auto direction = static_cast<unsigned int>(std::floor(face_number / 2));
+
+            // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
+            if (std::fabs(cell->face(face_number)->center()(direction) - 0) <
+                  Defaults::mesh_tolerance ||
+                std::fabs(cell->face(face_number)->center()(direction) -
+                          (size[direction])) < Defaults::mesh_tolerance)
+              {
+                cell->face(face_number)->set_boundary_id(face_number);
+              }
+          }
+      }
+  };
+
+  /**
+   * @brief Mark the periodic faces of the mesh.
+   */
+  void
+  mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
+                const typename BoundaryParameters<dim>::BoundaryConditionMap
+                  &boundary_condition_list) override
+  {
+    // Call base class mark boundaries to check that the mesh has been generated and
+    // boundaries marked
+    this->Mesh<dim>::mark_periodic(triangulation, boundary_condition_list);
+
+    // TODO (landinjm): Add some assertions here
+
+    // Add periodicity in the triangulation where specified in the boundary conditions.
+    // Note
+    // that if one field is periodic all others should be as well.
+    for (const auto &[index, boundary_conditions] : boundary_condition_list)
+      {
+        for (const auto &[component, condition] : boundary_conditions)
+          {
+            for (const auto &[boundary_id, boundary_type] :
+                 condition.get_boundary_condition_map())
+              {
+                if (boundary_type == BoundaryCondition::Type::Periodic)
+                  {
+                    // Skip boundary ids that are odd since those map to the even faces
+                    if (boundary_id % 2 != 0)
+                      {
+                        continue;
+                      }
+
+                    // Create a vector of matched pairs that we fill and enforce upon the
+                    // constaints
+                    std::vector<dealii::GridTools::PeriodicFacePair<
+                      typename Mesh<dim>::Triangulation::cell_iterator>>
+                      periodicity_vector;
+
+                    // Determine the direction
+                    const auto direction =
+                      static_cast<unsigned int>(std::floor(boundary_id / dim));
+
+                    // Collect the matched pairs on the coarsest level of the mesh
+                    dealii::GridTools::collect_periodic_faces(*triangulation,
+                                                              boundary_id,
+                                                              boundary_id + 1,
+                                                              direction,
+                                                              periodicity_vector);
+
+                    // Set constraints
+                    triangulation->add_periodicity(periodicity_vector);
+                  }
+              }
+          }
+      }
+  };
+
+  /**
+   * @brief Get the size in a certain direction.
+   */
+  [[nodiscard]] double
+  get_size(unsigned int direction) const
+  {
+    Assert(direction < dim,
+           dealii::ExcMessage("Direction must be less than the number of dimensions"));
+    Assert(size[direction] > 0.0,
+           dealii::ExcMessage("Size in the specified direction must be greater than zero "
+                              "for rectangular meshes"));
+    return size[direction];
+  };
+
+  /**
+   * @brief Get the subdivisions in a certain direction.
+   */
+  [[nodiscard]] unsigned int
+  get_subdivisions(unsigned int direction) const
+  {
+    Assert(direction < dim,
+           dealii::ExcMessage("Direction must be less than the number of dimensions"));
+    Assert(subdivisions[direction] > 0,
+           dealii::ExcMessage(
+             "Subdivisions in the specified direction must be greater than zero "
+             "for rectangular meshes"));
+    return subdivisions[direction];
+  }
+
+private:
+  /**
+   * @brief Domain extents in each cartesian direction.
+   */
+  dealii::Tensor<1, dim, double> size;
+
+  /**
+   * @brief Mesh subdivisions in each cartesian direction.
+   */
+  std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
+};
+
+/**
+ * @brief Class for spherical mesh parameters.
+ */
+template <unsigned int dim>
+class SphericalMesh
+{
+public:
+  /**
+   * @brief Constructor.
+   */
+  explicit SphericalMesh(double _radius)
+    : radius(_radius)
+  {
+    if (radius > 0.0)
+      {
+        this->Mesh<dim>::set_initialized();
+      }
+  };
+
+  /**
+   * @brief Generate the mesh.
+   */
+  void
+  generate_mesh(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation) override
+  {
+    // Call base class generate mesh to check initialization
+    this->Mesh<dim>::generate_mesh(triangulation);
+
+    AssertThrow(dim != 1, dealii::ExcMessage("Spherical mesh not valid in 1D"));
+    dealii::GridGenerator::hyper_ball(*triangulation, dealii::Point<dim>(), radius);
+  };
+
+  /**
+   * @brief Mark the boundaries of the mesh.
+   */
+  void
+  mark_boundaries(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
+                  const typename BoundaryParameters<dim>::BoundaryConditionMap
+                    &boundary_condition_list) override
+  {
+    // Call base class mark boundaries to check that the mesh has been generated
+    this->Mesh<dim>::mark_boundaries(triangulation, boundary_condition_list);
+
+    for (const auto &[index, boundary_conditions] : boundary_condition_list)
+      {
+        // There are no special boundary ids to mark for a spherical mesh. Check that the
+        // user has specified extra boundary conditions.
+        AssertThrow(boundary_conditions.get_boundary_condition_map().size() == 1,
+                    dealii::ExcMessage("Spherical meshes only have one boundary. Please "
+                                       "ensure that you have not specified "
+                                       "extra boundary conditions."));
+      }
+  };
+
+  /**
+   * @brief Mark the periodic faces of the mesh.
+   */
+  void
+  mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
+                const typename BoundaryParameters<dim>::BoundaryConditionMap
+                  &boundary_condition_list) override
+  {
+    // Call base class mark boundaries to check that the mesh has been generated and
+    // boundaries marked
+    this->Mesh<dim>::mark_periodic(triangulation, boundary_condition_list);
+
+    // There are no periodic boundaries for a spherical mesh. Check that the user has not
+    // specified any.
+    for (const auto &[index, boundary_conditions] : boundary_condition_list)
+      {
+        AssertThrow(boundary_conditions.get_boundary_condition_map().begin()->second !=
+                      BoundaryCondition::Type::Periodic,
+                    dealii::ExcMessage("Spherical meshes cannot have periodic boundary "
+                                       "conditions."));
+      }
+  };
+
+  /**
+   * @brief Get the radius of the spherical domain.
+   */
+  [[nodiscard]] double
+  get_radius() const
+  {
+    Assert(radius > 0.0,
+           dealii::ExcMessage("Spherical mesh radius must be greater than zero."));
+    return radius;
+  }
+
+private:
+  /**
+   * @brief Radius of the spherical domain.
+   */
+  double radius = 0.0;
+};
 
 /**
  * @brief Struct that holds spatial discretization parameters.

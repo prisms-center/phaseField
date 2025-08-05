@@ -137,15 +137,11 @@ ElementVolumeContainer<dim, degree, number>::compute_element_volume()
 {
   Timer::start_section("compute element volumes");
 
-  ConditionalOStreams::pout_base() << "computing element volumes...\n" << std::flush;
   element_volume.compute_element_volume();
   if (multigrid_element_volume.n_levels() > 1)
     {
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
-          ConditionalOStreams::pout_base()
-            << "computing multgrid element volumes at level " << level << "...\n"
-            << std::flush;
           multigrid_element_volume[level].compute_element_volume();
         }
     }

@@ -236,13 +236,11 @@ SolutionHandler<dim, number>::init(
     {
       matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
                                                                      pair.first);
-      // TODO (landinjm): Should I ghost values here?
     }
   for (const auto &[index, new_solution] : new_solution_set)
     {
       matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
                                                                      index);
-      // TODO (landinjm): Should I ghost values here?
     }
 
   // Create all entries and initialize them
@@ -269,13 +267,11 @@ SolutionHandler<dim, number>::reinit(
     {
       matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
                                                                      pair.first);
-      // TODO (landinjm): Should I ghost values here?
     }
   for (const auto &[index, new_solution] : new_solution_set)
     {
       matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
                                                                      index);
-      // TODO (landinjm): Should I ghost values here?
     }
 
   // Loop over all entries and reinitialize them
