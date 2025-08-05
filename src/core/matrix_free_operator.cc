@@ -121,6 +121,8 @@ MatrixFreeOperator<dim, degree, number>::clear()
   data.reset();
   inverse_diagonal_entries.reset();
   global_to_local_solution.clear();
+  src_solution_subset.clear();
+  element_volume_handler = nullptr;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

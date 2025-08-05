@@ -36,6 +36,10 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 IdentitySolver<dim, degree, number>::init()
 {
+  // Call the base class init
+  this->LinearSolverBase<dim, degree, number>::init();
+
+  // Add some stuff to the matrix free operator
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
     this->get_matrix_free_container().get_matrix_free(),
@@ -66,6 +70,28 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 IdentitySolver<dim, degree, number>::reinit()
 {
+  // Call the base class reinit
+  this->LinearSolverBase<dim, degree, number>::reinit();
+
+  // Add some stuff to the matrix free operator
+  this->get_system_matrix()->clear();
+  this->get_system_matrix()->initialize(
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
+  this->get_update_system_matrix()->clear();
+  this->get_update_system_matrix()->initialize(
+    this->get_matrix_free_container().get_matrix_free(),
+    this->get_element_volume_container().get_element_volume());
+
+  this->get_system_matrix()->add_global_to_local_mapping(
+    this->get_residual_global_to_local_solution());
+  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
+
+  this->get_update_system_matrix()->add_global_to_local_mapping(
+    this->get_newton_update_global_to_local_solution());
+  this->get_update_system_matrix()->add_src_solution_subset(
+    this->get_newton_update_src());
+
   // Apply constraints
   this->get_constraint_handler()
     .get_constraint(this->get_field_index())
@@ -91,6 +117,13 @@ IdentitySolver<dim, degree, number>::solve(const number &step_length)
         << "  field: " << this->get_field_index()
         << " Initial residual: " << this->get_residual()->l2_norm() << std::flush;
     }
+
+  ConditionalOStreams::pout_summary()
+    << "\n Field: " << this->get_field_index()
+    << " Initial Residual: " << this->get_residual()->l2_norm() << " size "
+    << this->get_residual()->size()
+    << " Initial Newton Update: " << this->get_newton_update()->l2_norm() << " size "
+    << this->get_newton_update()->size() << std::flush;
 
   // Determine the residual tolerance
   this->compute_solver_tolerance();

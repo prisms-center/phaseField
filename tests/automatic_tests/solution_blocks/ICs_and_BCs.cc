@@ -35,15 +35,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
   [[maybe_unused]] const dealii::Point<dim> &point,
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
-{
-  if (index == 0 || index == 1)
-    {
-      if (component == 0)
-        {
-          vector_component_value = -0.001 * (point[1] - 3) * (point[1] - 3) + 0.009;
-        }
-    }
-}
+{}
 
 #include "custom_pde.inst"
 

@@ -54,6 +54,9 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 GMGSolver<dim, degree, number>::init()
 {
+  // Call the base class init
+  this->LinearSolverBase<dim, degree, number>::init();
+
   // Basic intialization that is the same as the identity solve.
   this->get_system_matrix()->clear();
   this->get_system_matrix()->initialize(
@@ -209,6 +212,14 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 GMGSolver<dim, degree, number>::reinit()
 {
+  // Call the base class reinit
+  this->LinearSolverBase<dim, degree, number>::reinit();
+
+  // Update the src solution subset
+  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
+  this->get_update_system_matrix()->add_src_solution_subset(
+    this->get_newton_update_src());
+
   // Apply constraints
   this->get_constraint_handler()
     .get_constraint(this->get_field_index())
