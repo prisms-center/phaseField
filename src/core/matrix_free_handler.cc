@@ -113,8 +113,6 @@ MatrixFreeContainer<dim, number>::reinit(
 {
   Timer::start_section("reinitialize matrix-free objects");
 
-  ConditionalOStreams::pout_base() << "initializing matrix-free object...\n"
-                                   << std::flush;
   // Reinit the matrix-free object
   matrix_free.reinit(mapping,
                      dof_container.get_dof_handlers(),
@@ -126,9 +124,6 @@ MatrixFreeContainer<dim, number>::reinit(
     {
       for (unsigned int level = min_level; level <= max_level; ++level)
         {
-          ConditionalOStreams::pout_base()
-            << "initializing multgrid matrix-free object at level " << level << "...\n"
-            << std::flush;
           multigrid_matrix_free[level].reinit(mapping,
                                               dof_container.get_mg_dof_handlers(level),
                                               constraint_container.get_mg_constraints(
