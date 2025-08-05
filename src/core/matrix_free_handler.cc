@@ -39,8 +39,8 @@ MatrixFreeHandler<dim, number>::MatrixFreeHandler()
   // excess data being evaluated for the shape functions. Note that this applies to all
   // PDEs, so it might now be too wasteful.
   additional_data.mapping_update_flags =
-    (dealii::update_values | dealii::update_gradients | dealii::update_JxW_values |
-     dealii::update_quadrature_points);
+    (dealii::update_values | dealii::update_gradients | dealii::update_hessians |
+     dealii::update_JxW_values | dealii::update_quadrature_points);
 }
 
 template <unsigned int dim, typename number>

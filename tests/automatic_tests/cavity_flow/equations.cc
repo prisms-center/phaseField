@@ -18,7 +18,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_type(0, Vector);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
-  set_dependencies_value_term_rhs(0, "u, grad(P)");
+  set_dependencies_value_term_rhs(0, "u_star, grad(P)");
   set_dependencies_gradient_term_rhs(0, "");
   set_solve_block(0, 1);
 
@@ -51,10 +51,10 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 {
   if (solve_block == 1)
     {
-      VectorValue u  = variable_list.template get_value<VectorValue>(0);
-      ScalarGrad  Px = variable_list.template get_gradient<ScalarGrad>(2);
+      VectorValue u_star = variable_list.template get_value<VectorValue>(1);
+      ScalarGrad  Px     = variable_list.template get_gradient<ScalarGrad>(2);
 
-      VectorValue eq_u = u - (dt * Px);
+      VectorValue eq_u = u_star - (dt * Px);
 
       variable_list.set_value_term(0, eq_u);
     }
@@ -65,6 +65,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue div_u = variable_list.template get_divergence<ScalarValue>(0);
 
       VectorValue advection_term;
+      advection_term = 0.0 * advection_term;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -108,6 +109,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  eqx_P = -Px;
 
       VectorValue advection_term;
+      advection_term = 0.0 * advection_term;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
