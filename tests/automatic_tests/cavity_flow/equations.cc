@@ -65,7 +65,6 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue div_u = variable_list.template get_divergence<ScalarValue>(0);
 
       VectorValue advection_term;
-      advection_term = 0.0 * advection_term;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
@@ -109,7 +108,6 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  eqx_P = -Px;
 
       VectorValue advection_term;
-      advection_term = 0.0 * advection_term;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
