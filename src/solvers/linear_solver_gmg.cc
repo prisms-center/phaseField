@@ -58,30 +58,12 @@ GMGSolver<dim, degree, number>::init()
   this->LinearSolverBase<dim, degree, number>::init();
 
   // Basic intialization that is the same as the identity solve.
-  this->get_system_matrix()->clear();
-  this->get_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-  this->get_update_system_matrix()->clear();
-  this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-
-  this->get_system_matrix()->add_global_to_local_mapping(
-    this->get_residual_global_to_local_solution());
-  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
-
-  this->get_update_system_matrix()->add_global_to_local_mapping(
-    this->get_newton_update_global_to_local_solution());
-  this->get_update_system_matrix()->add_src_solution_subset(
-    this->get_newton_update_src());
+  this->clear_system_matrices();
+  this->initialize_system_matrices();
+  this->finalize_system_matrices();
 
   // Apply constraints
-  this->get_constraint_handler()
-    .get_constraint(this->get_field_index())
-    .distribute(
-      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         DependencyType::Normal)));
+  this->apply_constraints();
 
   // We solve the system with a global coarsening approach. There are two options when
   // doing this: geometric coarsening and polynomial coarsening. We only support geometric
@@ -215,17 +197,13 @@ GMGSolver<dim, degree, number>::reinit()
   // Call the base class reinit
   this->LinearSolverBase<dim, degree, number>::reinit();
 
-  // Update the src solution subset
-  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
-  this->get_update_system_matrix()->add_src_solution_subset(
-    this->get_newton_update_src());
+  // Basic intialization that is the same as the identity solve.
+  this->clear_system_matrices();
+  this->initialize_system_matrices();
+  this->finalize_system_matrices();
 
   // Apply constraints
-  this->get_constraint_handler()
-    .get_constraint(this->get_field_index())
-    .distribute(
-      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         DependencyType::Normal)));
+  this->apply_constraints();
 
   // We solve the system with a global coarsening approach. There are two options when
   // doing this: geometric coarsening and polynomial coarsening. We only support geometric

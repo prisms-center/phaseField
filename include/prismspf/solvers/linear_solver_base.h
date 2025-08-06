@@ -144,6 +144,57 @@ protected:
   compute_solver_tolerance();
 
   /**
+   * @brief Clear the system matrix and update system matrix.
+   */
+  void
+  clear_system_matrices()
+  {
+    system_matrix->clear();
+    update_system_matrix->clear();
+  }
+
+  /**
+   * @brief Initialize the system matrix and update system matrix.
+   */
+  void
+  initialize_system_matrices()
+  {
+    system_matrix->initialize(
+      solver_context->get_matrix_free_container().get_matrix_free(),
+      solver_context->get_element_volume_container().get_element_volume());
+    update_system_matrix->initialize(
+      solver_context->get_matrix_free_container().get_matrix_free(),
+      solver_context->get_element_volume_container().get_element_volume());
+  }
+
+  /**
+   * @brief Initialize the residual and newton update src and global to local solution
+   * vectors.
+   */
+  void
+  finalize_system_matrices()
+  {
+    system_matrix->add_global_to_local_mapping(residual_global_to_local_solution);
+    system_matrix->add_src_solution_subset(residual_src);
+
+    update_system_matrix->add_global_to_local_mapping(
+      newton_update_global_to_local_solution);
+    update_system_matrix->add_src_solution_subset(newton_update_src);
+  }
+
+  /**
+   * @brief Apply constraints to the solution vector.
+   */
+  void
+  apply_constraints()
+  {
+    solver_context->get_constraint_handler()
+      .get_constraint(field_index)
+      .distribute(*(solver_context->get_solution_handler()
+                      .get_solution_vector(field_index, DependencyType::Normal)));
+  }
+
+  /**
    * @brief Get the user-inputs.
    */
   [[nodiscard]] const UserInputParameters<dim> &

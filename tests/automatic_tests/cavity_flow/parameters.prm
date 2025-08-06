@@ -7,7 +7,7 @@ subsection Rectangular mesh
   set y size = 1
 end
 set time step = 1.0e-3
-set number steps = 1
+set number steps = 1000
 
 subsection output
   set condition = EQUAL_SPACING

@@ -40,30 +40,12 @@ IdentitySolver<dim, degree, number>::init()
   this->LinearSolverBase<dim, degree, number>::init();
 
   // Add some stuff to the matrix free operator
-  this->get_system_matrix()->clear();
-  this->get_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-  this->get_update_system_matrix()->clear();
-  this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-
-  this->get_system_matrix()->add_global_to_local_mapping(
-    this->get_residual_global_to_local_solution());
-  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
-
-  this->get_update_system_matrix()->add_global_to_local_mapping(
-    this->get_newton_update_global_to_local_solution());
-  this->get_update_system_matrix()->add_src_solution_subset(
-    this->get_newton_update_src());
+  this->clear_system_matrices();
+  this->initialize_system_matrices();
+  this->finalize_system_matrices();
 
   // Apply constraints
-  this->get_constraint_handler()
-    .get_constraint(this->get_field_index())
-    .distribute(
-      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         DependencyType::Normal)));
+  this->apply_constraints();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -74,30 +56,12 @@ IdentitySolver<dim, degree, number>::reinit()
   this->LinearSolverBase<dim, degree, number>::reinit();
 
   // Add some stuff to the matrix free operator
-  this->get_system_matrix()->clear();
-  this->get_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-  this->get_update_system_matrix()->clear();
-  this->get_update_system_matrix()->initialize(
-    this->get_matrix_free_container().get_matrix_free(),
-    this->get_element_volume_container().get_element_volume());
-
-  this->get_system_matrix()->add_global_to_local_mapping(
-    this->get_residual_global_to_local_solution());
-  this->get_system_matrix()->add_src_solution_subset(this->get_residual_src());
-
-  this->get_update_system_matrix()->add_global_to_local_mapping(
-    this->get_newton_update_global_to_local_solution());
-  this->get_update_system_matrix()->add_src_solution_subset(
-    this->get_newton_update_src());
+  this->clear_system_matrices();
+  this->initialize_system_matrices();
+  this->finalize_system_matrices();
 
   // Apply constraints
-  this->get_constraint_handler()
-    .get_constraint(this->get_field_index())
-    .distribute(
-      *(this->get_solution_handler().get_solution_vector(this->get_field_index(),
-                                                         DependencyType::Normal)));
+  this->apply_constraints();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
