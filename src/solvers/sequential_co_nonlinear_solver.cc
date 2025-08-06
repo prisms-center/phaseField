@@ -105,6 +105,18 @@ SequentialCoNonlinearSolver<dim, degree, number>::solve()
       return;
     }
 
+  // Grab the old solution fields in temporary variables
+  std::map<Types::Index, typename SolutionHandler<dim, number>::VectorType> old_solutions;
+  for (const auto &[index, variable] : this->get_subset_attributes())
+    {
+      if (variable.get_pde_type() != PDEType::Auxiliary)
+        {
+          old_solutions[index] =
+            *(this->get_solution_handler().get_solution_vector(index,
+                                                               DependencyType::Normal));
+        }
+    }
+
   // Set the convergence bool and iteration counter
   bool         unconverged = true;
   unsigned int iteration   = 0;
@@ -185,6 +197,18 @@ SequentialCoNonlinearSolver<dim, degree, number>::solve()
   // Update the solutions
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
+      if (variable.get_pde_type() != PDEType::Auxiliary)
+        {
+          // The solve will have updated the "old solution" vector with the newton update
+          // so it's technically the new solution. In order to update the solutions and
+          // perserve the old states we copy the old solution from above and swap.
+          *(this->get_solution_handler().get_new_solution_vector(index)) =
+            old_solutions[index];
+          this->get_solution_handler()
+            .get_solution_vector(index, DependencyType::Normal)
+            ->swap(*this->get_solution_handler().get_new_solution_vector(index));
+        }
+
       this->get_solution_handler().update(this->get_field_solve_type(),
                                           this->get_solve_block(),
                                           index);

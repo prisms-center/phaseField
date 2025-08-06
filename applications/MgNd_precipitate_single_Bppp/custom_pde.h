@@ -58,7 +58,19 @@ public:
    */
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
     : PDEOperator<dim, degree, number>(_user_inputs)
-  {}
+  {
+    c_dependent_misfit = false;
+    for (unsigned int i = 0; i < dim; i++)
+      {
+        for (unsigned int j = 0; j < dim; j++)
+          {
+            if (std::abs(sfts_linear1[i][j]) > 1.0e-12)
+              {
+                c_dependent_misfit = true;
+              }
+          }
+      }
+  }
 
 private:
   /**
@@ -101,7 +113,7 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index                                               solve_block,
-    Types::Index index = Numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the LHS of nonexplicit equations.
@@ -112,7 +124,7 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index                                               solve_block,
-    Types::Index index = Numbers::invalid_index) const override;
+    Types::Index current_index = Numbers::invalid_index) const override;
 
   /**
    * @brief User-implemented class for the RHS of postprocessed explicit equations.
@@ -124,36 +136,46 @@ private:
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 
-  const ScalarValue rho = 100.0;
-  const ScalarValue mu  = 0.01;
+  number McV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  number Mn1V =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn1V");
+  dealii::Tensor<2, dim, number> Kn1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn1");
+  number W = this->get_user_inputs().get_user_constants().get_model_constant_double("W");
 
-  const ScalarValue nu = mu / rho;
-  const ScalarValue dt = this->get_timestep();
+  bool n_dependent_stiffness =
+    this->get_user_inputs().get_user_constants().get_model_constant_bool(
+      "n_dependent_stiffness");
 
-  // Values for stabilization term
-  const ScalarValue size_modifier = std::sqrt(4.0 / M_PI) / degree;
-  const ScalarValue time_contribution =
-    dealii::Utilities::fixed_power<2>(1.0 / this->get_timestep());
+  dealii::Tensor<2, dim, number> sfts_linear1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
+      "sfts_linear1");
+  dealii::Tensor<2, dim, number> sfts_const1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
+      "sfts_const1");
 
-  /**
-   * @brief Compute the stabilization paramters
-   */
-  ScalarValue
-  compute_stabilization_parameter(const VectorValue &velocity,
-                                  const ScalarValue &element_volume) const
-  {
-    // Norm of the local velocity
-    ScalarValue u_l2norm = 1.0e-12 + velocity.norm_square();
+  double A2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A2");
+  double A1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A1");
+  double A0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("A0");
+  double B2 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B2");
+  double B1 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B1");
+  double B0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("B0");
 
-    // Stabilization parameter
-    ScalarValue h = std::sqrt(element_volume) * size_modifier;
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Mg =
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+      "CIJ_Mg");
+  dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Beta =
+    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+      "CIJ_Beta");
 
-    ScalarValue stabilization_parameter =
-      1.0 / std::sqrt(time_contribution + 4.0 * u_l2norm / h / h +
-                      9.0 * dealii::Utilities::fixed_power<2>(4.0 * nu / h / h));
-
-    return stabilization_parameter;
-  }
+  bool c_dependent_misfit;
 };
 
 PRISMS_PF_END_NAMESPACE

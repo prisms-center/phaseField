@@ -393,6 +393,7 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
       switch (field_solve_type)
         {
           case FieldSolveType::ExplicitConstant:
+            // For ExplicitConstant we don't do anything
             break;
           case FieldSolveType::Explicit:
           case FieldSolveType::ExplicitPostprocess:
@@ -401,34 +402,13 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
             swap_all_dependency_vectors(index, new_vector);
             break;
           case FieldSolveType::NonexplicitLinear:
-            if (variable_index == index)
-              {
-                swap_all_dependency_vectors(index, new_vector);
-                // Additional swap for NonexplicitLinear since the change term is the NEW
-                // vector and the Normal vector is the old one
-                new_vector->swap(
-                  *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
-              }
-            break;
           case FieldSolveType::NonexplicitAuxiliary:
-            if (variable_index == index)
-              {
-                swap_all_dependency_vectors(index, new_vector);
-              }
-            break;
           case FieldSolveType::NonexplicitSelfnonlinear:
           case FieldSolveType::NonexplicitCononlinear:
+            // For Nonexplicit types we swap all dependency types if the index matches
             if (variable_index == index)
               {
                 swap_all_dependency_vectors(index, new_vector);
-
-                if (attributes_list->at(index).get_pde_type() != PDEType::Auxiliary)
-                  {
-                    // Additional swap for NONEXPLICIT_LINEAR since the change term is the
-                    // NEW vector and the NORMAL vector is the old one
-                    new_vector->swap(
-                      *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
-                  }
               }
             break;
           default:

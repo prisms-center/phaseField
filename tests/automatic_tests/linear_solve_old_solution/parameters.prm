@@ -1,0 +1,22 @@
+set dim = 2
+set global refinement = 2
+set degree = 1
+
+subsection Rectangular mesh
+  set x size = 100
+  set y size = 100
+  set z size = 100
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set time step = 4.0e-8
+set number steps = 1
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 1
+end
+
+set boundary condition for u = Dirichlet: 0.0, Dirichlet: 1.0, Natural, Natural

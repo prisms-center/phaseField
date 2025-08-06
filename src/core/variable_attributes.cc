@@ -455,9 +455,10 @@ VariableAttributes::compute_simplified_dependency_set(
   const std::map<unsigned int, VariableAttributes> &other_var_attributes)
 {
   // Compute dependencies for a given eval_flag_set. Change and old flags are irrelevant,
-  // so ignore those. If we have EvalFlags::nothing ignore
-  // it. If the dependency is explicit or constant ignore it. If the dependency is itself
-  // ignore it so it doesn't interfere with the map and flag circularity.
+  // so ignore those. If we have EvalFlags::nothing ignore it. If the dependency is
+  // explicit or constant ignore it. If the dependency is itself ignore it so it doesn't
+  // interfere with the map and flag circularity. If the dependencys have different solve
+  // blocks ignore those as well.
   auto compute_dependencies = [&](const auto &eval_flag_set)
   {
     Types::Index index = 0;
@@ -471,7 +472,9 @@ VariableAttributes::compute_simplified_dependency_set(
                 other_var_attributes.at(index).pde_type ==
                   PDEType::ExplicitTimeDependent ||
                 other_var_attributes.at(index).pde_type == PDEType::Constant ||
-                index == field_index)
+                index == field_index ||
+                other_var_attributes.at(index).solve_block !=
+                  other_var_attributes.at(dep_index).solve_block)
               {
                 dep_index++;
                 continue;

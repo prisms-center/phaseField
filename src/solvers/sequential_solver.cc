@@ -327,6 +327,11 @@ void
 SequentialSolver<dim, degree, number>::solve_linear_solver(
   const VariableAttributes &variable)
 {
+  // Grab the old solution in a temporary variable
+  const auto old_solution =
+    *(this->get_solution_handler().get_solution_vector(variable.get_field_index(),
+                                                       DependencyType::Normal));
+
   // Zero out the ghosts
   Timer::start_section("Zero ghosts");
   this->get_solution_handler().zero_out_ghosts();
@@ -353,6 +358,16 @@ SequentialSolver<dim, degree, number>::solve_linear_solver(
     {
       identity_solvers.at(global_field_index)->solve();
     }
+
+  // The solve will have updated the "old solution" vector with the newton update so it's
+  // technically the new solution. In order to update the solutions and perserve the old
+  // states we copy the old solution from above and swap.
+  *(this->get_solution_handler().get_new_solution_vector(variable.get_field_index())) =
+    old_solution;
+  this->get_solution_handler()
+    .get_solution_vector(variable.get_field_index(), DependencyType::Normal)
+    ->swap(
+      *this->get_solution_handler().get_new_solution_vector(variable.get_field_index()));
 
   // Update the solutions
   this->get_solution_handler().update(this->get_field_solve_type(),
