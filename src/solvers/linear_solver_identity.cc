@@ -118,13 +118,6 @@ IdentitySolver<dim, degree, number>::solve(const number &step_length)
         << " Initial residual: " << this->get_residual()->l2_norm() << std::flush;
     }
 
-  ConditionalOStreams::pout_summary()
-    << "\n Field: " << this->get_field_index()
-    << " Initial Residual: " << this->get_residual()->l2_norm() << " size "
-    << this->get_residual()->size()
-    << " Initial Newton Update: " << this->get_newton_update()->l2_norm() << " size "
-    << this->get_newton_update()->size() << std::flush;
-
   // Determine the residual tolerance
   this->compute_solver_tolerance();
 

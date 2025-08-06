@@ -7,7 +7,7 @@ subsection Rectangular mesh
   set y size = 1
 end
 set time step = 1.0e-3
-set number steps = 10000
+set number steps = 1
 
 subsection output
   set condition = EQUAL_SPACING
@@ -18,15 +18,27 @@ set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Diri
 set boundary condition for u, y component = Dirichlet: 0.0
 set boundary condition for u_star, x component = Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, NonuniformDirichlet
 set boundary condition for u_star, y component = Dirichlet: 0.0
-set boundary condition for P = Natural
+set boundary condition for p = Natural
 
-subsection pinning point for P
+subsection pinning point for p
   set value = 0.0
   set x = 0.0
   set y = 0.0
 end
 
-subsection linear solver parameters: P
+subsection linear solver parameters: u
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 1.0e-6
+  set max iterations = 1000
+  set preconditioner type = None
+end
+subsection linear solver parameters: u_star
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 1.0e-6
+  set max iterations = 1000
+  set preconditioner type = None
+end
+subsection linear solver parameters: p
   set tolerance type = AbsoluteResidual
   set tolerance value = 1.0e-8
   set max iterations = 1000
