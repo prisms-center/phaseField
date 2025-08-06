@@ -7,7 +7,7 @@ subsection Rectangular mesh
   set y size = 1
 end
 set time step = 1.0e-3
-set number steps = 1000
+set number steps = 10000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -28,13 +28,13 @@ end
 
 subsection linear solver parameters: u
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1.0e-6
+  set tolerance value = 1.0e-8
   set max iterations = 1000
   set preconditioner type = None
 end
 subsection linear solver parameters: u_star
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1.0e-6
+  set tolerance value = 1.0e-8
   set max iterations = 1000
   set preconditioner type = None
 end

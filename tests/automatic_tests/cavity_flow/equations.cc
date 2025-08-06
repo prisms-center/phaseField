@@ -154,7 +154,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
         compute_stabilization_parameter(u_old_1, element_volume);
 
       // Calculate the residual
-      ScalarGrad residual = (u_star - u) - (dt * grad_p);
+      ScalarGrad residual = u_star - u - (dt * grad_p);
 
       // Compute the SUPG term which is the dot product of the the velocity and the
       // gradient of the shape function. The shape function is not directly accessible in
@@ -170,7 +170,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
         }
       eq_grad_u *= stabilization_parameter;
 
-      VectorValue eq_u = u_star - (dt * grad_p);
+      VectorValue eq_u = u_star - u - (dt * grad_p);
 
       variable_list.set_value_term(0, eq_u);
       variable_list.set_gradient_term(0, eq_grad_u);
@@ -241,8 +241,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
         }
       eq_change_grad_u *= stabilization_parameter;
 
-      variable_list.set_value_term(1, change_u, Change);
-      variable_list.set_gradient_term(1, eq_change_grad_u, Change);
+      variable_list.set_value_term(0, change_u, Change);
+      variable_list.set_gradient_term(0, eq_change_grad_u, Change);
     }
 }
 
