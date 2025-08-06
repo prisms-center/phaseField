@@ -223,6 +223,9 @@ template <unsigned int dim>
 void
 TriangulationHandler<dim>::mark_periodic()
 {
+  // Create a little set of boundary ids we've already marked
+  std::set<unsigned int> periodic_ids;
+
   // Add periodicity in the triangulation where specified in the boundary conditions. Note
   // that if one field is periodic all others should be as well.
   for (const auto &[index, boundary_condition] :
@@ -240,6 +243,15 @@ TriangulationHandler<dim>::mark_periodic()
                     {
                       continue;
                     }
+
+                  // Skip the id if we've already added periodic boundaries to id
+                  if (periodic_ids.contains(boundary_id))
+                    {
+                      continue;
+                    }
+
+                  // Insert in the set
+                  periodic_ids.insert(boundary_id);
 
                   // Create a vector of matched pairs that we fill and enforce upon the
                   // constaints
