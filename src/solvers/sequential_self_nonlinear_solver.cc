@@ -82,6 +82,10 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
   // Solve each field
   for (const auto &[index, variable] : this->get_subset_attributes())
     {
+      // Grab the old solution in a temporary variable
+      const auto old_solution = *(
+        this->get_solution_handler().get_solution_vector(index, DependencyType::Normal));
+
       // Set the convergence bool, iteration counter, and step length
       bool         unconverged = true;
       unsigned int iteration   = 0;
@@ -141,6 +145,14 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
           // Update the iteration counter
           iteration++;
         }
+
+      // The solve will have updated the "old solution" vector with the newton update so
+      // it's technically the new solution. In order to update the solutions and perserve
+      // the old states we copy the old solution from above and swap.
+      *(this->get_solution_handler().get_new_solution_vector(index)) = old_solution;
+      this->get_solution_handler()
+        .get_solution_vector(index, DependencyType::Normal)
+        ->swap(*this->get_solution_handler().get_new_solution_vector(index));
 
       // Update the solutions
       this->get_solution_handler().update(this->get_field_solve_type(),

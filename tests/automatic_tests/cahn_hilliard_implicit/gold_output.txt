@@ -1,5 +1,4 @@
 Using the input parameter file: parameters.prm
-Using the caliper configuration: runtime-report
 Number of constants: 2
 Number of variables: 3
 number of processes: 1
@@ -9,40 +8,81 @@ creating triangulation...
 creating DoFHandlers...
   number of degrees of freedom: 49923
 creating constraints...
-initializing matrix-free objects...
 initializing solution set...
 initializing invm...
 initializing element volumes...
-initializing solvers...
-solving auxiliary variables in 0th timestep...
-solving linear time-independent variables in 0th timestep...
-solving self-nonlinear time-independent variables in 0th timestep...
-solving co-nonlinear time-independent variables in 0th timestep...
-solving postprocessed variables in 0th timestep...
+initializing solvers for solve block 0 ...
+  trying to initialize concurrent constant solvers...
+  no fields for this solver exist
+  trying to initialize concurrent explicit solvers...
+  no fields for this solver exist
+  trying to initialize concurrent explicit postprocess solvers...
+  trying to initialize sequential auxiliary solvers...
+  no fields for this solver exist
+  trying to initialize sequential linear solvers...
+  no fields for this solver exist
+  trying to initialize sequential self-nonlinear solvers...
+  no fields for this solver exist
+  trying to initialize sequential co-nonlinear solvers...
+initializing grid refiner...  grid refinment disabled...
+solving 0th timestep for solve block 0 ...
+   solving auxiliary variables...
+  solving linear time-independent variables...
+  solving self-nonlinear time-independent variables...
+  solving co-nonlinear time-independent variables...
+  solving postprocessed variables...
 outputting initial condition...
+Iteration: 0
+  Solution index 0 l2-norm: 114.242 integrated value: 2009.14
+  Solution index 1 l2-norm: 0 integrated value: 0
+  Solution index 2 l2-norm: 10.5593 integrated value: 47.4855
+
 
 Iteration: 2
   Solution index 0 l2-norm: 114.236 integrated value: 2009.14
-  Solution index 1 l2-norm: 32.498 integrated value: 1.44202e-15
+  Solution index 1 l2-norm: 37.5223 integrated value: -2.11584e-15
   Solution index 2 l2-norm: 9.73982 integrated value: 44.9844
 
 Iteration: 4
-  Solution index 0 l2-norm: 114.228 integrated value: 2009.14
-  Solution index 1 l2-norm: 28.8077 integrated value: -2.8949e-14
-  Solution index 2 l2-norm: 9.14455 integrated value: 43.3646
+  Solution index 0 l2-norm: 114.232 integrated value: 2009.14
+  Solution index 1 l2-norm: 32.498 integrated value: 1.81565e-14
+  Solution index 2 l2-norm: 9.38962 integrated value: 44.0013
 
 Iteration: 6
-  Solution index 0 l2-norm: 114.222 integrated value: 2009.14
-  Solution index 1 l2-norm: 27.0348 integrated value: 3.44725e-14
-  Solution index 2 l2-norm: 8.78787 integrated value: 42.4773
+  Solution index 0 l2-norm: 114.228 integrated value: 2009.14
+  Solution index 1 l2-norm: 30.2033 integrated value: -3.65166e-15
+  Solution index 2 l2-norm: 9.14455 integrated value: 43.3646
 
 Iteration: 8
-  Solution index 0 l2-norm: 114.216 integrated value: 2009.14
-  Solution index 1 l2-norm: 25.8477 integrated value: 9.24196e-16
-  Solution index 2 l2-norm: 8.52791 integrated value: 41.8378
+  Solution index 0 l2-norm: 114.225 integrated value: 2009.14
+  Solution index 1 l2-norm: 28.8077 integrated value: 6.33136e-15
+  Solution index 2 l2-norm: 8.94998 integrated value: 42.8774
 
 Iteration: 10
-  Solution index 0 l2-norm: 114.21 integrated value: 2009.14
-  Solution index 1 l2-norm: 24.9495 integrated value: 3.60868e-14
-  Solution index 2 l2-norm: 8.32444 integrated value: 41.3336
+  Solution index 0 l2-norm: 114.222 integrated value: 2009.14
+  Solution index 1 l2-norm: 27.8123 integrated value: -8.87548e-15
+  Solution index 2 l2-norm: 8.78787 integrated value: 42.4773
 
+Serial: Auxiliary solver - 8.35e-07s (8.35e-07s/call, 1 calls)
+Serial: Create FESystem - 0.000854593s (0.000854593s/call, 1 calls)
+Serial: Create constraints - 0.00050462s (0.00050462s/call, 1 calls)
+Serial: Explicit solver - 1.7697e-05s (1.7697e-06s/call, 10 calls)
+Serial: Generate mesh - 0.00728955s (0.00728955s/call, 1 calls)
+Serial: Initialization - 0.0603501s (0.0603501s/call, 1 calls)
+Serial: Nonexplicit auxiliary solver - 1.2744e-05s (1.2744e-06s/call, 10 calls)
+Serial: Nonexplicit co-nonlinear solver - 1.66515s (0.151377s/call, 11 calls)
+Serial: Nonexplicit linear solver - 1.0471e-05s (9.51909e-07s/call, 11 calls)
+Serial: Nonexplicit self-nonlinear solver - 1.324e-05s (1.20364e-06s/call, 11 calls)
+Serial: Output - 0.176053s (0.0293422s/call, 6 calls)
+Serial: Postprocess solver - 0.00164329s (0.000273881s/call, 6 calls)
+Serial: Solve Increment - 1.66631s (0.166631s/call, 10 calls)
+Serial: Solver initialization - 0.0146612s (0.0146612s/call, 1 calls)
+Serial: Update ghosts - 0.000593931s (6.39323e-07s/call, 929 calls)
+Serial: Update time-dependent constraints - 5.538e-06s (5.538e-07s/call, 10 calls)
+Serial: Zero ghosts - 0.000411175s (8.89989e-07s/call, 462 calls)
+Serial: compute element volumes - 0.000573s (0.000573s/call, 1 calls)
+Serial: reinitialize DoFHandlers - 0.0022079s (0.0022079s/call, 1 calls)
+Serial: reinitialize element volumes - 1.6863e-05s (1.6863e-05s/call, 1 calls)
+Serial: reinitialize invm - 0.000113843s (0.000113843s/call, 1 calls)
+Serial: reinitialize matrix-free objects - 0.00613522s (0.00613522s/call, 1 calls)
+Serial: reinitialize solution set - 0.000246959s (0.000246959s/call, 1 calls)

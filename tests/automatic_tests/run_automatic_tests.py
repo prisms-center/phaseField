@@ -158,7 +158,8 @@ def run_regression_test(application, new_gold_standard, test_dir, n_threads=1):
         for index in gold_norms:
             if index in test_norms:
                 rel_diff = abs(
-                    (gold_norms[index] - test_norms[index]) / gold_norms[index]
+                    (gold_norms[index] - test_norms[index])
+                    / (gold_norms[index] + 1e-12)
                 )
                 if rel_diff >= tolerance:
                     test_passed = False
@@ -171,7 +172,9 @@ def run_regression_test(application, new_gold_standard, test_dir, n_threads=1):
     test_result = (
         "New Gold Standard"
         if test_passed and new_gold_standard
-        else "Pass" if test_passed else "Fail"
+        else "Pass"
+        if test_passed
+        else "Fail"
     )
 
     # Print the results to the screen
@@ -249,8 +252,14 @@ applicationList = [
     "mechanics",
     "precipitate_explicit",
     "fracture",
+    "solution_blocks",
+    "linear_solve_old_solution",
+    "cavity_flow",
 ]
 getNewGoldStandardList = [
+    False,
+    False,
+    False,
     False,
     False,
     False,
