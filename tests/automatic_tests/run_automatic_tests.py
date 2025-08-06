@@ -171,7 +171,9 @@ def run_regression_test(application, new_gold_standard, test_dir, n_threads=1):
     test_result = (
         "New Gold Standard"
         if test_passed and new_gold_standard
-        else "Pass" if test_passed else "Fail"
+        else "Pass"
+        if test_passed
+        else "Fail"
     )
 
     # Print the results to the screen
@@ -249,8 +251,12 @@ applicationList = [
     "mechanics",
     "precipitate_explicit",
     "fracture",
+    "solution_blocks",
+    "linear_solve_old_solution",
 ]
 getNewGoldStandardList = [
+    False,
+    False,
     False,
     False,
     False,
