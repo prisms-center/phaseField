@@ -123,37 +123,6 @@ private:
     const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
-
-  const ScalarValue rho = 100.0;
-  const ScalarValue mu  = 0.01;
-
-  const ScalarValue nu = mu / rho;
-  const ScalarValue dt = this->get_timestep();
-
-  // Values for stabilization term
-  const ScalarValue size_modifier = std::sqrt(4.0 / M_PI) / degree;
-  const ScalarValue time_contribution =
-    dealii::Utilities::fixed_power<2>(1.0 / this->get_timestep());
-
-  /**
-   * @brief Compute the stabilization paramters
-   */
-  ScalarValue
-  compute_stabilization_parameter(const VectorValue &velocity,
-                                  const ScalarValue &element_volume) const
-  {
-    // Norm of the local velocity
-    ScalarValue u_l2norm = 1.0e-12 + velocity.norm_square();
-
-    // Stabilization parameter
-    ScalarValue h = std::sqrt(element_volume) * size_modifier;
-
-    ScalarValue stabilization_parameter =
-      1.0 / std::sqrt(time_contribution + 4.0 * u_l2norm / h / h +
-                      9.0 * dealii::Utilities::fixed_power<2>(4.0 * nu / h / h));
-
-    return stabilization_parameter;
-  }
 };
 
 PRISMS_PF_END_NAMESPACE

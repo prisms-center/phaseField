@@ -1068,3 +1068,111 @@ Application: fracture
 Result: Pass
 Time: 5.524836778640747
  
+--------------------------------------------------------- 
+Regression test on 2025-08-06 12:20
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 1.9235553741455078
+ 
+Application: allen_cahn_implicit
+Result: New Gold Standard
+Time: 21.58185315132141
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 11.028154850006104
+ 
+Application: cahn_hilliard_implicit
+Result: New Gold Standard
+Time: 2.215787649154663
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.4040379524230957
+ 
+Application: mechanics
+Result: Pass
+Time: 0.5115482807159424
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 7.6789939403533936
+ 
+Application: fracture
+Result: Pass
+Time: 4.470328330993652
+ 
+Application: solution_blocks
+Result: New Gold Standard
+Time: 0.34969186782836914
+ 
+Application: linear_solve_old_solution
+Result: New Gold Standard
+Time: 0.36141276359558105
+ 
+Tests Passed: 10/10
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-08-06 12:49
+Architecture: x86_64
+Model name: AMD Ryzen 9 7900X 12-Core Processor
+CPU(s): 24
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 1.924391508102417
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 20.732794761657715
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 10.661015033721924
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 2.1884281635284424
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.3844313621520996
+ 
+Application: mechanics
+Result: Pass
+Time: 0.5071010589599609
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 7.405323505401611
+ 
+Application: fracture
+Result: Pass
+Time: 6.121920347213745
+ 
+Application: solution_blocks
+Result: Pass
+Time: 0.34284305572509766
+ 
+Application: linear_solve_old_solution
+Result: Pass
+Time: 0.35759425163269043
+ 
+Application: cavity_flow
+Result: Pass
+Time: 36.64751100540161
+ 
+Tests Passed: 11/11
+--------------------------------------------------------- 
