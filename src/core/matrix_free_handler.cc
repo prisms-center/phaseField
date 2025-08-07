@@ -145,7 +145,7 @@ template <unsigned int dim, typename number>
 std::shared_ptr<dealii::MatrixFree<dim, float, dealii::VectorizedArray<float>>>
 MatrixFreeContainer<dim, number>::get_mg_matrix_free(unsigned int level) const
 {
-  Assert(multigrid_matrix_free.n_levels() > level,
+  Assert(multigrid_matrix_free.n_levels() > (level - min_level),
          dealii::ExcMessage("The multigrid matrix-free object does not contain level = " +
                             std::to_string(level)));
   return multigrid_matrix_free[level].get_matrix_free();

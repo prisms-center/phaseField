@@ -168,7 +168,7 @@ const ElementVolume<dim, degree, float> &
 ElementVolumeContainer<dim, degree, number>::get_mg_element_volume(
   unsigned int level) const
 {
-  Assert(multigrid_element_volume.n_levels() > level,
+  Assert(multigrid_element_volume.n_levels() > (level - min_level),
          dealii::ExcMessage(
            "The multigrid element volume object does not contain level = " +
            std::to_string(level)));
