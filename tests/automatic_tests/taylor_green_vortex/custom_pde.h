@@ -125,10 +125,13 @@ private:
     Types::Index solve_block) const override;
 
   const number _rho = 10.0;
-  const number _mu  = 0.01;
+  const number _mu  = 0.00625;
 
   const ScalarValue rho = _rho;
   const ScalarValue mu  = _mu;
+
+  const ScalarValue total_domain_size = dealii::Utilities::fixed_power<3>(
+    this->get_user_inputs().get_spatial_discretization().get_size()[0]);
 
   const ScalarValue nu = mu / rho;
   const ScalarValue dt = this->get_timestep();

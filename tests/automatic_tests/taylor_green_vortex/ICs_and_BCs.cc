@@ -25,18 +25,43 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
 {
-  const double x = point[0];
-  const double y = point[1];
-
-  if (index == 0 || index == 1)
+  if constexpr (dim == 2)
     {
-      if (component == 0)
+      const double x = point[0];
+      const double y = point[1];
+
+      if (index == 0 || index == 1)
         {
-          vector_component_value = std::sin(x) * std::cos(y);
+          if (component == 0)
+            {
+              vector_component_value = std::sin(x) * std::cos(y);
+            }
+          if (component == 1)
+            {
+              vector_component_value = -std::cos(x) * std::sin(y);
+            }
         }
-      if (component == 1)
+    }
+  else if constexpr (dim == 3)
+    {
+      const double x = point[0];
+      const double y = point[1];
+      const double z = point[2];
+
+      if (index == 0 || index == 1)
         {
-          vector_component_value = -std::cos(x) * std::sin(y);
+          if (component == 0)
+            {
+              vector_component_value = std::sin(x) * std::cos(y) * std::cos(z);
+            }
+          if (component == 1)
+            {
+              vector_component_value = -std::cos(x) * std::sin(y) * std::cos(z);
+            }
+          if (component == 2)
+            {
+              vector_component_value = 0;
+            }
         }
     }
 }

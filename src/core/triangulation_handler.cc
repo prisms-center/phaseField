@@ -261,14 +261,20 @@ TriangulationHandler<dim>::mark_periodic()
 
                   // Determine the direction
                   const auto direction =
-                    static_cast<unsigned int>(std::floor(boundary_id / dim));
+                    static_cast<unsigned int>(std::floor(boundary_id / 2));
+
+                  // Grab the offset vector from one vertices to another
+                  dealii::Tensor<1, dim> offset;
+                  offset[direction] =
+                    user_inputs->get_spatial_discretization().get_size()[direction];
 
                   // Collect the matched pairs on the coarsest level of the mesh
                   dealii::GridTools::collect_periodic_faces(*triangulation,
                                                             boundary_id,
                                                             boundary_id + 1,
                                                             direction,
-                                                            periodicity_vector);
+                                                            periodicity_vector,
+                                                            offset);
 
                   // Set constraints
                   triangulation->add_periodicity(periodicity_vector);
