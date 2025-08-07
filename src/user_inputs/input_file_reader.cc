@@ -699,6 +699,23 @@ InputFileReader::declare_pinning_parameters()
 void
 InputFileReader::declare_nucleation_parameters()
 {
+  parameter_handler.enter_subsection("nucleation");
+  parameter_handler.declare_entry("nucleus exclusion distance",
+                                  "0.0",
+                                  dealii::Patterns::Double(),
+                                  "The minimum distance between nuclei.");
+  parameter_handler.declare_alias("nucleus exclusion distance",
+                                  "nucleus_exclusion_distance");
+  parameter_handler.declare_alias("nucleus exclusion distance",
+                                  "nucleus exclusion radius");
+  parameter_handler.declare_alias("nucleus exclusion distance",
+                                  "nucleus_exclusion_radius");
+  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion distance");
+  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
+  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
+  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
+
+  parameter_handler.leave_subsection();
   // parameter_handler.declare_entry(
   //   "Enable evolution before nucleation",
   //   "false",

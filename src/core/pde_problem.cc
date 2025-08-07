@@ -298,6 +298,8 @@ void
 PDEProblem<dim, degree, number>::solve_increment()
 {
   Timer::start_section("Update time-dependent constraints");
+  unsigned int increment = user_inputs->get_temporal_discretization().get_increment();
+
   // Update the time-dependent constraints
   if (user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
@@ -318,18 +320,24 @@ PDEProblem<dim, degree, number>::solve_increment()
     }
   Timer::end_section("Update time-dependent constraints");
 
-  // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
+  // TODO (landinjm): I think I have to update the ghosts after each solve. This should be
   // apparent in an application that includes multiple of these solve types. Also only
   // update ghosts that need to be. It's wasteful to over communicate.
-  bool update_postprocssed =
-    user_inputs->get_spatial_discretization().should_refine_mesh(
-      user_inputs->get_temporal_discretization().get_increment()) ||
-    user_inputs->get_output_parameters().should_output(
-      user_inputs->get_temporal_discretization().get_increment());
+  bool update_postprocessed =
+    user_inputs->get_spatial_discretization().should_refine_mesh(increment) ||
+    user_inputs->get_output_parameters().should_output(increment) ||
+    (user_inputs->get_nucleation_parameters().postprocessed_nucleation_rate_exists &&
+     user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment));
 
   // Solve a single increment
   solver_handler.solve(user_inputs->get_temporal_discretization().get_increment(),
-                       update_postprocssed);
+                       update_postprocessed);
+  if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
+    {
+      nucleation_handler.attempt_nucleation(user_inputs->get_nucleation_parameters(),
+                                            solver_context,
+                                            pde_operator->phase_field_utils.nucleation);
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

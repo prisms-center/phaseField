@@ -10,6 +10,7 @@
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
+#include <prismspf/user_inputs/nucleation_parameters.h>
 #include <prismspf/user_inputs/output_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
@@ -228,6 +229,9 @@ private:
 
   // Load IC parameters
   LoadInitialConditionParameters load_ic_parameters;
+
+  // Nucleation parameters
+  NucleationParameters nucleation_parameters;
 
   // User constants
   UserConstants<dim> user_constants;

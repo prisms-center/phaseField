@@ -1,0 +1,147 @@
+// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
+// SPDX-License-Identifier: GNU Lesser General Public Version 2.1
+
+#pragma once
+
+#include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/exceptions.h>
+
+#include <prismspf/user_inputs/temporal_discretization.h>
+
+#include <prismspf/utilities/utilities.h>
+
+#include <prismspf/config.h>
+
+#include "prismspf/core/variable_attributes.h"
+
+#include <climits>
+#include <set>
+#include <string>
+
+PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief Struct that holds nucleation parameters.
+ */
+struct NucleationParameters
+{
+public:
+  /**
+   * @brief Return if the increment should be nucleationted.
+   */
+  [[nodiscard]] bool
+  should_attempt_nucleation(unsigned int increment) const;
+
+  /**
+   * @brief Postprocess and validate parameters.
+   */
+  void
+  postprocess_and_validate(
+    const std::map<unsigned int, VariableAttributes> &var_attributes);
+
+  /**
+   * @brief Print parameters to summary.log
+   */
+  void
+  print_parameter_summary() const;
+
+  /**
+   * @brief Set the print nucleation period
+   */
+  void
+  set_nucleation_period(const unsigned int &_nucleation_period)
+  {
+    nucleation_period = _nucleation_period;
+  }
+
+  /**
+   * @brief Get the nucleation period
+   */
+  [[nodiscard]] unsigned int
+  get_nucleation_period() const
+  {
+    return nucleation_period;
+  }
+
+  /**
+   * @brief Set the nucleus exclusion distance
+   */
+  void
+  set_nucleus_exclusion_distance(const double &_nucleus_exclusion_distance)
+  {
+    nucleus_exclusion_distance = _nucleus_exclusion_distance;
+  }
+
+  /**
+   * @brief Get the nucleus exclusion distance
+   */
+  [[nodiscard]] double
+  get_nucleus_exclusion_distance() const
+  {
+    return nucleus_exclusion_distance;
+  }
+
+  /**
+   * @brief Whether to print timing information with nucleation
+   */
+  void
+  set_print_timing_with_nucleation(const bool &_print_timing_with_nucleation)
+  {
+    print_timing_with_nucleation = _print_timing_with_nucleation;
+  }
+
+private:
+  // The number of steps between nucleationting relevant information to screen
+  unsigned int nucleation_period = UINT_MAX;
+
+  // Whether a postprocess field is being used for nucleation
+  bool postprocessed_nucleation_rate_exists = false;
+
+  // The radius around a nucleus to exclude other nuclei
+  double nucleus_exclusion_distance = 0.0;
+
+  // Whether to print timing information with nucleation
+  // TODO (landinjm): Implement this.
+  bool print_timing_with_nucleation = false;
+};
+
+inline bool
+nucleationParameters::should_attempt_nucleation(unsigned int increment) const
+{
+  return !(increment % print_nucleation_period);
+}
+
+inline void
+nucleationParameters::postprocess_and_validate(
+  const std::map<unsigned int, VariableAttributes> &var_attributes)
+{
+  // Check if the nucleation period is valid
+  AssertThrow(nucleation_period > 0, InvalidParameter());
+
+  // Check if the postprocessed nucleation rate exists
+  for (const auto &[index, variable] : var_attributes)
+    {
+      if (variable.is_postprocess() && variable.is_nucleation_rate)
+        {
+          postprocessed_nucleation_rate_exists = true;
+          break;
+        }
+    }
+  // Check if the print timing option is valid
+  AssertThrow(print_timing_with_nucleation, InvalidParameter());
+}
+
+inline void
+nucleationParameters::print_parameter_summary() const
+{
+  ConditionalOStreams::pout_summary()
+    << "================================================\n"
+    << "  Nucleation Parameters\n"
+    << "================================================\n"
+    << "Nucleation period: " << nucleation_period << "\n"
+    << "Print nucleation timing info: " << bool_to_string(print_timing_with_nucleation)
+    << "\n\n"
+    << std::flush;
+}
+
+PRISMS_PF_END_NAMESPACE

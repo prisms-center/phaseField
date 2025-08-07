@@ -48,6 +48,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   assign_checkpoint_parameters(parameter_handler);
   assign_boundary_parameters(parameter_handler);
   assign_load_initial_condition_parameters(parameter_handler);
+  assign_nucleation_parameters(parameter_handler);
   load_model_constants(input_file_reader, parameter_handler);
 
   // Perform and postprocessing of user inputs and run checks
@@ -58,6 +59,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   output_parameters.postprocess_and_validate(temporal_discretization);
   checkpoint_parameters.postprocess_and_validate(temporal_discretization);
   boundary_parameters.postprocess_and_validate(var_attributes);
+  nucleation_parameters.postprocess_and_validate();
   load_ic_parameters.postprocess_and_validate();
 
   // Print all the parameters to summary.log
@@ -69,6 +71,7 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   checkpoint_parameters.print_parameter_summary();
   boundary_parameters.print_parameter_summary();
   load_ic_parameters.print_parameter_summary();
+  nucleation_parameters.print_parameter_summary();
   user_constants.print();
 }
 
@@ -430,6 +433,17 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
       }
       parameter_handler.leave_subsection();
     }
+}
+
+template <unsigned int dim>
+void
+UserInputParameters<dim>::assign_nucleation_parameters(
+  dealii::ParameterHandler &parameter_handler)
+{
+  parameter_handler.enter_subsection("nucleation");
+  nucleation_parameters.set_nucleus_exclusion_distance(
+    parameter_handler.get_double("nucleus exclusion distance"));
+  parameter_handler.leave_subsection();
 }
 
 template <unsigned int dim>
