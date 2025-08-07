@@ -43,6 +43,24 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_value_term_lhs(2, "");
   set_dependencies_gradient_term_lhs(2, "grad(change(p))");
   set_solve_block(2, 0);
+
+  set_variable_name(3, "kinetic_energy");
+  set_variable_type(3, Scalar);
+  set_variable_equation_type(3, ExplicitTimeDependent);
+  set_is_postprocessed_field(3, true);
+
+  set_dependencies_value_term_rhs(3, "u");
+  set_dependencies_gradient_term_rhs(3, "");
+  set_solve_block(3, 0);
+
+  set_variable_name(4, "enstrophy");
+  set_variable_type(4, Scalar);
+  set_variable_equation_type(4, ExplicitTimeDependent);
+  set_is_postprocessed_field(4, true);
+
+  set_dependencies_value_term_rhs(4, "curl(u)");
+  set_dependencies_gradient_term_rhs(4, "");
+  set_solve_block(4, 0);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -253,7 +271,18 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
   [[maybe_unused]] Types::Index                           solve_block) const
-{}
+{
+  VectorValue u = variable_list.template get_value<VectorValue>(0);
+  auto        curl_u =
+    variable_list
+      .template get_vector_curl<dealii::Tensor<1, 1, dealii::VectorizedArray<number>>>(0);
+
+  ScalarValue kinetic_energy_density = u * u / (2.0 * element_volume);
+  ScalarValue enstrophy_density      = curl_u * curl_u / (2.0 * element_volume);
+
+  variable_list.set_value_term(3, kinetic_energy_density);
+  variable_list.set_value_term(4, enstrophy_density);
+}
 
 #include "custom_pde.inst"
 
