@@ -48,3 +48,5 @@ subsection linear solver parameters: p
   set eigenvalue cg iterations = 20
   set min mg level = 0
 end
+
+set Model constant Re = 10000.0, DOUBLE
