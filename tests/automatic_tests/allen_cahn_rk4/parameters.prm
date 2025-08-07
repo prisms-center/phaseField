@@ -10,7 +10,7 @@ subsection Rectangular mesh
   set y subdivisions = 1
   set z subdivisions = 1
 end
-set time step = 2.0e-2
+set time step = 2.5e-2
 set end time = 15
 
 subsection output

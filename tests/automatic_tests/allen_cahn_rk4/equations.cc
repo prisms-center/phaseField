@@ -64,11 +64,11 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue k_3_bulk_energy = 4.0 * n_3 * (n_3 - 1.0) * (n_3 - 0.5);
       ScalarValue k_4_bulk_energy = 4.0 * n_4 * (n_4 - 1.0) * (n_4 - 0.5);
 
-      ScalarValue eq_n =
-        n - (this->get_timestep() * MnV / 6.0 *
-             (k_1_bulk_energy + k_2_bulk_energy + k_3_bulk_energy + k_4_bulk_energy));
-      ScalarGrad eq_grad_n = -this->get_timestep() * KnV * MnV / 6.0 *
-                             (grad_n + grad_n_2 + grad_n_3 + grad_n_4);
+      ScalarValue eq_n      = n - (this->get_timestep() * MnV / 6.0 *
+                              (k_1_bulk_energy + 2.0 * k_2_bulk_energy +
+                               2.0 * k_3_bulk_energy + k_4_bulk_energy));
+      ScalarGrad  eq_grad_n = -this->get_timestep() * KnV * MnV / 6.0 *
+                             (grad_n + 2.0 * grad_n_2 + 2.0 * grad_n_3 + grad_n_4);
 
       variable_list.set_value_term(0, eq_n);
       variable_list.set_gradient_term(0, eq_grad_n);
