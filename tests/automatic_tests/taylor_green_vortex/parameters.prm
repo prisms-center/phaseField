@@ -8,7 +8,7 @@ subsection Rectangular mesh
   set z size = 6.28318530718
 end
 set time step = 5.0e-4
-set number steps = 10000
+set number steps = 1000
 
 subsection output
   set condition = EQUAL_SPACING
