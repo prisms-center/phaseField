@@ -19,9 +19,13 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(0, ImplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "u, u_star, grad(p)");
-  set_dependencies_gradient_term_rhs(0, "u, u_star, grad(p), old_1(u)");
+  set_dependencies_gradient_term_rhs(
+    0,
+    "u, u_star, grad(p), old_1(u), grad(u), grad(u_star), lap(u), lap(u_star)");
   set_dependencies_value_term_lhs(0, "change(u)");
-  set_dependencies_gradient_term_lhs(0, "change(u), old_1(u)");
+  set_dependencies_gradient_term_lhs(
+    0,
+    "change(u), old_1(u), grad(change(u)), lap(change(u))");
   set_solve_block(0, 1);
 
   set_variable_name(1, "u_star");
@@ -29,9 +33,11 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(1, ImplicitTimeDependent);
 
   set_dependencies_value_term_rhs(1, "u_star, u, grad(u), div(u)");
-  set_dependencies_gradient_term_rhs(1, "u_star, u, grad(u), lap(u)");
+  set_dependencies_gradient_term_rhs(1, "u_star, u, grad(u), grad(u_star), lap(u_star)");
   set_dependencies_value_term_lhs(1, "change(u_star)");
-  set_dependencies_gradient_term_lhs(1, "change(u_star), u");
+  set_dependencies_gradient_term_lhs(
+    1,
+    "change(u_star), u, grad(change(u_star)), lap(change(u_star))");
   set_solve_block(1, 0);
 
   set_variable_name(2, "p");
@@ -39,7 +45,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(2, TimeIndependent);
 
   set_dependencies_value_term_rhs(2, "div(u_star)");
-  set_dependencies_gradient_term_rhs(2, "grad(p), u_star, u, grad(u), lap(u)");
+  set_dependencies_gradient_term_rhs(2, "grad(p), u_star, u, grad(u), lap(u_star)");
   set_dependencies_value_term_lhs(2, "");
   set_dependencies_gradient_term_lhs(2, "grad(change(p))");
   set_solve_block(2, 0);
@@ -83,11 +89,12 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
 {
   if (index == 1 && solve_block == 0)
     {
-      VectorValue u      = variable_list.template get_value<VectorValue>(0);
-      VectorGrad  grad_u = variable_list.template get_gradient<VectorGrad>(0);
-      ScalarValue div_u  = variable_list.template get_divergence<ScalarValue>(0);
-      VectorValue lap_u  = variable_list.template get_laplacian<VectorValue>(0);
-      VectorValue u_star = variable_list.template get_value<VectorValue>(1);
+      VectorValue u           = variable_list.template get_value<VectorValue>(0);
+      VectorGrad  grad_u      = variable_list.template get_gradient<VectorGrad>(0);
+      ScalarValue div_u       = variable_list.template get_divergence<ScalarValue>(0);
+      VectorValue u_star      = variable_list.template get_value<VectorValue>(1);
+      VectorGrad  grad_u_star = variable_list.template get_gradient<VectorGrad>(1);
+      VectorValue lap_u_star  = variable_list.template get_laplacian<VectorValue>(1);
 
       ScalarValue stabilization_parameter =
         compute_stabilization_parameter(u, element_volume);
@@ -104,7 +111,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       advection_term += 0.5 * div_u * u;
 
       // Calculate the residual
-      ScalarGrad residual = (u - u_star) - (dt * advection_term) + (dt * nu * lap_u);
+      ScalarGrad residual = (u - u_star) - (dt * advection_term) + (dt * nu * lap_u_star);
 
       // Compute the SUPG term which is the dot product of the the velocity and the
       // gradient of the shape function. The shape function is not directly accessible in
@@ -121,7 +128,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       supg_term *= stabilization_parameter;
 
       VectorValue eq_u      = u - u_star - (dt * advection_term);
-      VectorGrad  eq_grad_u = (-dt * grad_u * nu) + supg_term;
+      VectorGrad  eq_grad_u = (-dt * grad_u_star * nu) + supg_term;
 
       variable_list.set_value_term(1, eq_u);
       variable_list.set_gradient_term(1, eq_grad_u);
@@ -130,7 +137,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
     {
       VectorValue u          = variable_list.template get_value<VectorValue>(0);
       VectorGrad  grad_u     = variable_list.template get_gradient<VectorGrad>(0);
-      VectorValue lap_u      = variable_list.template get_laplacian<VectorValue>(0);
+      VectorValue lap_u_star = variable_list.template get_laplacian<VectorValue>(1);
       VectorValue u_star     = variable_list.template get_value<VectorValue>(1);
       ScalarValue div_u_star = variable_list.template get_divergence<ScalarValue>(1);
       ScalarGrad  grad_p     = variable_list.template get_gradient<ScalarGrad>(2);
@@ -153,7 +160,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       advection_term += 0.5 * div_u_star * u_star;
 
       // Calculate the residual
-      ScalarGrad residual = ((u_star - u) / dt) + advection_term - (nu * lap_u);
+      ScalarGrad residual = ((u_star - u) / dt) + advection_term - (nu * lap_u_star);
 
       // Add the residual to the poisson solve
       eq_grad_p -= residual * stabilization_parameter / (dt + stabilization_parameter);
@@ -163,16 +170,20 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
     }
   if (index == 0 && solve_block == 1)
     {
-      VectorValue u       = variable_list.template get_value<VectorValue>(0);
-      VectorValue u_old_1 = variable_list.template get_value<VectorValue>(0, OldOne);
-      VectorValue u_star  = variable_list.template get_value<VectorValue>(1);
-      ScalarGrad  grad_p  = variable_list.template get_gradient<ScalarGrad>(2);
+      VectorValue u           = variable_list.template get_value<VectorValue>(0);
+      VectorValue u_old_1     = variable_list.template get_value<VectorValue>(0, OldOne);
+      VectorValue u_star      = variable_list.template get_value<VectorValue>(1);
+      ScalarGrad  grad_p      = variable_list.template get_gradient<ScalarGrad>(2);
+      VectorGrad  grad_u_star = variable_list.template get_gradient<VectorGrad>(1);
+      VectorValue lap_u_star  = variable_list.template get_laplacian<VectorValue>(1);
+      VectorGrad  grad_u      = variable_list.template get_gradient<VectorGrad>(0);
+      VectorValue lap_u       = variable_list.template get_laplacian<VectorValue>(0);
 
       ScalarValue stabilization_parameter =
         compute_stabilization_parameter(u_old_1, element_volume);
 
       // Calculate the residual
-      ScalarGrad residual = u_star - u - (dt * grad_p);
+      ScalarGrad residual = u_star - u - (dt * nu * (lap_u_star - lap_u)) - (dt * grad_p);
 
       // Compute the SUPG term which is the dot product of the the velocity and the
       // gradient of the shape function. The shape function is not directly accessible in
@@ -187,6 +198,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
             }
         }
       eq_grad_u *= stabilization_parameter;
+
+      eq_grad_u += dt * nu * (grad_u_star - grad_u);
 
       VectorValue eq_u = u_star - u - (dt * grad_p);
 
@@ -209,6 +222,10 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
       VectorValue u = variable_list.template get_value<VectorValue>(0);
       VectorValue change_u_star =
         variable_list.template get_value<VectorValue>(1, Change);
+      VectorGrad change_grad_u_star =
+        variable_list.template get_gradient<VectorGrad>(1, Change);
+      VectorValue change_lap_u_star =
+        variable_list.template get_laplacian<VectorValue>(1, Change);
 
       ScalarValue stabilization_parameter =
         compute_stabilization_parameter(u, element_volume);
@@ -222,10 +239,13 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
         {
           for (unsigned int j = 0; j < dim; j++)
             {
-              eq_change_grad_u_star[i][j] = change_u_star[i] * u[j];
+              eq_change_grad_u_star[i][j] =
+                (change_u_star[i] - dt * nu * change_lap_u_star[i]) * u[j];
             }
         }
       eq_change_grad_u_star *= stabilization_parameter;
+
+      eq_change_grad_u_star += dt * nu * change_grad_u_star;
 
       variable_list.set_value_term(1, change_u_star, Change);
       variable_list.set_gradient_term(1, eq_change_grad_u_star, Change);
@@ -241,6 +261,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
     {
       VectorValue u_old_1  = variable_list.template get_value<VectorValue>(0, OldOne);
       VectorValue change_u = variable_list.template get_value<VectorValue>(0, Change);
+      VectorGrad  grad_u   = variable_list.template get_gradient<VectorGrad>(0, Change);
+      VectorValue lap_u    = variable_list.template get_laplacian<VectorValue>(0, Change);
 
       ScalarValue stabilization_parameter =
         compute_stabilization_parameter(u_old_1, element_volume);
@@ -254,10 +276,12 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
         {
           for (unsigned int j = 0; j < dim; j++)
             {
-              eq_change_grad_u[i][j] = change_u[i] * u_old_1[j];
+              eq_change_grad_u[i][j] = (change_u[i] - dt * nu * lap_u[i]) * u_old_1[j];
             }
         }
       eq_change_grad_u *= stabilization_parameter;
+
+      eq_change_grad_u += dt * nu * grad_u;
 
       variable_list.set_value_term(0, change_u, Change);
       variable_list.set_gradient_term(0, eq_change_grad_u, Change);
