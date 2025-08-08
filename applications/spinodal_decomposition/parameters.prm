@@ -1,0 +1,40 @@
+set dim = 3
+set global refinement = 7
+set degree = 1
+
+subsection Rectangular mesh
+  set x size = 51.2
+  set y size = 51.2
+  set z size = 51.2
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set mesh adaptivity = true
+set max refinement = 7
+set min refinement = 2
+set remeshing period = 2000
+
+subsection refinement criterion: c
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+
+set time step = 0.0008
+set number steps = 250000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 5
+end
+
+set boundary condition for c = Periodic
+set boundary condition for mu = Periodic
+
+set Model constant McV = 1.0, DOUBLE
+set Model constant KcV = 0.01, DOUBLE
+set Model constant WcV = 1.0, DOUBLE
+set Model constant c0 = 0.50, DOUBLE
+set Model constant icamplitude = 0.01, DOUBLE

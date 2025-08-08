@@ -1,29 +1,33 @@
-set dim = 2
-set global refinement = 6
+set dim = 3
+set global refinement = 5
 set degree = 2
 
 subsection Rectangular mesh
-  set x size = 1
-  set y size = 1
+  set x size = 6.28318530718
+  set y size = 6.28318530718
+  set z size = 6.28318530718
 end
-set time step = 4.0e-3
-set number steps = 1000
+set time step = 1.0e-3
+set end time = 10
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 10
+  set number = 100
 end
 
-set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, NonuniformDirichlet
-set boundary condition for u, y component = Dirichlet: 0.0
-set boundary condition for u_star, x component = Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, NonuniformDirichlet
-set boundary condition for u_star, y component = Dirichlet: 0.0
-set boundary condition for p = Natural
+set boundary condition for u, x component = Periodic
+set boundary condition for u, y component = Periodic
+set boundary condition for u, z component = Periodic
+set boundary condition for u_star, x component = Periodic
+set boundary condition for u_star, y component = Periodic
+set boundary condition for u_star, z component = Periodic
+set boundary condition for p = Periodic
 
 subsection pinning point for p
   set value = 0.0
-  set x = 0.0
-  set y = 0.0
+  set x = 3.14159265359
+  set y = 3.14159265359
+  set z = 3.14159265359
 end
 
 subsection linear solver parameters: u
@@ -46,7 +50,5 @@ subsection linear solver parameters: p
   set smoothing range = 20
   set smoother degree = 5
   set eigenvalue cg iterations = 20
-  set min mg level = 0
+  set min mg level = 1
 end
-
-set Model constant Re = 10000.0, DOUBLE

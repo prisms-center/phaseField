@@ -124,11 +124,16 @@ private:
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 
-  const ScalarValue Re =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("Re");
+  const number _rho = 10.0;
+  const number _mu  = 0.00625;
 
-  // Calculate the dynamic viscosity based on the user-inputted Reynolds number
-  const ScalarValue nu = 1.0 / Re;
+  const ScalarValue rho = _rho;
+  const ScalarValue mu  = _mu;
+
+  const ScalarValue total_domain_size = dealii::Utilities::fixed_power<3>(
+    this->get_user_inputs().get_spatial_discretization().get_size()[0]);
+
+  const ScalarValue nu = mu / rho;
   const ScalarValue dt = this->get_timestep();
 
   // Values for stabilization term

@@ -1,51 +1,79 @@
+# The dimension in the problem
 set dim = 3
-set Domain size X = 12.5
-set Domain size Y = 12.5
-set Domain size Z = 12.5
-set Subdivisions X = 1
-set Subdivisions Y = 1
-set Subdivisions Z = 1
-set global refinement = 4
+
+# The initial global refinement
+set global refinement = 8
+
+# The element degree
 set degree = 2
-set Mesh adaptivity = true
-set Max refinement level = 6
-set Min refinement level = 0
-set Steps between remeshing operations = 1000
 
-subsection Refinement criterion: n1
-  set Criterion type = VALUE
-  set Value lower bound = 0.001
-  set Value upper bound = 0.99
+# The type of mesh, its size, and other information. For example, a rectangular mesh
+# will have parameters for each of the three cartesians directions and the number of
+# subdivisions to apply to each of those. This is useful when dealing with a domain
+# that is not square.
+subsection Rectangular mesh
+  set x size = 25.0
+  set y size = 25.0
+  set z size = 25.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
 end
-set Time step = 4.0e-5
-set Number of time steps = 20000
 
-subsection Linear solver parameters: u
-  set Tolerance type = AbsoluteResidual
-  set Tolerance value = 5e-3
-  set Maximum linear solver iterations = 10000
-end
-set Maximum nonlinear solver iterations = 100
+# Mesh adaptivity parameters
+set mesh adaptivity = false
+set max refinement = 8
+set min refinement = 0
+set remeshing period = 1000
 
-subsection Nonlinear solver parameters: mu
-  set Tolerance type = ABSOLUTE_SOLUTION_CHANGE
-  set Tolerance value = 1e-5
-  set Use backtracking line search damping = false
-  set Constant damping value = 1.0
-  set Use Laplace's equation to determine the initial guess = false
+subsection refinement criterion: n1
+  set type = value
+  set value lower bound = 0.001
+  set value upper bound = 0.99
 end
-set Output condition =  EQUAL_SPACING
-set Number of outputs = 10
-set Skip print steps = 1000
-set Load from a checkpoint = false
-set Checkpoint condition = EQUAL_SPACING
-set Number of checkpoints = 10
-set Boundary condition for variable c = Natural
-set Boundary condition for variable mu = Natural
-set Boundary condition for variable n1 = Natural
-set Boundary condition for variable u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
-set Boundary condition for variable u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
-set Boundary condition for variable u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
+
+# The timestep
+set time step = 1.0e-5
+
+# The total number of timesteps to take
+set number steps = 5000
+
+# The number of ouputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+end
+
+# The boundary conditions for the variables. The available boundary conditions are
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# files.
+set boundary condition for c = Natural
+set boundary condition for mu = Natural
+set boundary condition for n1 = Natural
+set boundary condition for u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set boundary condition for u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set boundary condition for u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
+
+# The linear solve parameters. The type of residual can either be AbsoluteResidual or 
+# RelativeResidual. The preconditioner type can either be none or geometric multigrid
+# (GMG). The parameters smoothing range, degree, eigenvalue cg iterations, and min
+# multigrid level are specific to GMG and can be changed to suite your problem.
+subsection linear solver parameters: u
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 5e-3
+  set max iterations = 1000
+  set preconditioner type = GMG
+  set smoothing range = 20
+  set smoother degree = 5
+  set eigenvalue cg iterations = 20
+  set min mg level = 0
+end
+
 set Model constant McV = 1.0, double
 set Model constant Mn1V = 300.0, double
 set Model constant Kn1 = ((0.01141,0,0),(0,0.01426,0),(0,0,0.004326)), tensor

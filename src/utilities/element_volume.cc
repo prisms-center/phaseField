@@ -27,7 +27,7 @@ void
 ElementVolume<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
 {
-  data = std::move(_data);
+  data = _data;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -168,7 +168,7 @@ const ElementVolume<dim, degree, float> &
 ElementVolumeContainer<dim, degree, number>::get_mg_element_volume(
   unsigned int level) const
 {
-  Assert(multigrid_element_volume.n_levels() > level,
+  Assert(multigrid_element_volume.n_levels() > (level - min_level),
          dealii::ExcMessage(
            "The multigrid element volume object does not contain level = " +
            std::to_string(level)));

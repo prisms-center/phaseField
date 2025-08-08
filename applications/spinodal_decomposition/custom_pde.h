@@ -13,6 +13,8 @@
 
 #include <prismspf/config.h>
 
+#include <random>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -124,37 +126,17 @@ private:
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 
-  const ScalarValue Re =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("Re");
+  ScalarValue McV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  ScalarValue KcV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("KcV");
+  ScalarValue WcV =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("WcV");
 
-  // Calculate the dynamic viscosity based on the user-inputted Reynolds number
-  const ScalarValue nu = 1.0 / Re;
-  const ScalarValue dt = this->get_timestep();
-
-  // Values for stabilization term
-  const ScalarValue size_modifier = std::sqrt(4.0 / M_PI) / degree;
-  const ScalarValue time_contribution =
-    dealii::Utilities::fixed_power<2>(1.0 / this->get_timestep());
-
-  /**
-   * @brief Compute the stabilization paramters
-   */
-  ScalarValue
-  compute_stabilization_parameter(const VectorValue &velocity,
-                                  const ScalarValue &element_volume) const
-  {
-    // Norm of the local velocity
-    ScalarValue u_l2norm = 1.0e-12 + velocity.norm_square();
-
-    // Stabilization parameter
-    ScalarValue h = std::sqrt(element_volume) * size_modifier;
-
-    ScalarValue stabilization_parameter =
-      1.0 / std::sqrt(time_contribution + 4.0 * u_l2norm / h / h +
-                      9.0 * dealii::Utilities::fixed_power<2>(4.0 * nu / h / h));
-
-    return stabilization_parameter;
-  }
+  number c0 =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("c0");
+  number icamplitude =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("icamplitude");
 };
 
 PRISMS_PF_END_NAMESPACE

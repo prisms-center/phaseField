@@ -275,7 +275,7 @@ ConstraintHandler<dim, degree, number>::apply_periodic_constraints(
     periodicity_vector;
 
   // Determine the direction
-  const auto direction = static_cast<unsigned int>(std::floor(boundary_id / dim));
+  const auto direction = static_cast<unsigned int>(std::floor(boundary_id / 2));
 
   // Collect the matched pairs on the coarsest level of the mesh
   dealii::GridTools::collect_periodic_faces(dof_handler,
