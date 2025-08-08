@@ -204,6 +204,9 @@ public:
 
     // Step 4
     grid_refinement_context.get_solution_handler().execute_solution_transfer();
+    grid_refinement_context.get_solution_handler().free_solution_transfer();
+    grid_refinement_context.get_solution_handler().reinit_solution_transfer(
+      grid_refinement_context.get_matrix_free_container());
 
     // Step 6
     grid_refinement_context.get_invm_handler().recompute_invm();

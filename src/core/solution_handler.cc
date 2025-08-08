@@ -262,6 +262,35 @@ void
 SolutionHandler<dim, number>::reinit(
   MatrixFreeContainer<dim, number> &matrix_free_container)
 {
+  // Initialize the entries according to the corresponding matrix free index
+  for (const auto &[pair, solution] : solution_set)
+    {
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
+                                                                     pair.first);
+    }
+  for (const auto &[index, new_solution] : new_solution_set)
+    {
+      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
+                                                                     index);
+    }
+
+  // Loop over all entries and reinitialize them
+  for (unsigned int level = 0; level < mg_solution_set.size(); level++)
+    {
+      for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
+        {
+          matrix_free_container.get_mg_matrix_free(level + global_min_level)
+            ->initialize_dof_vector(*mg_solution_set[level][index], index);
+          mg_solution_set[level][index]->update_ghost_values();
+        }
+    }
+}
+
+template <unsigned int dim, typename number>
+void
+SolutionHandler<dim, number>::reinit_solution_transfer(
+  MatrixFreeContainer<dim, number> &matrix_free_container)
+{
   // Create all entries
   for (const auto &[index, variable] : *attributes_list)
     {
@@ -317,29 +346,6 @@ SolutionHandler<dim, number>::reinit(
             }
 
           field_index++;
-        }
-    }
-
-  // Initialize the entries according to the corresponding matrix free index
-  for (const auto &[pair, solution] : solution_set)
-    {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
-                                                                     pair.first);
-    }
-  for (const auto &[index, new_solution] : new_solution_set)
-    {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
-                                                                     index);
-    }
-
-  // Loop over all entries and reinitialize them
-  for (unsigned int level = 0; level < mg_solution_set.size(); level++)
-    {
-      for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
-        {
-          matrix_free_container.get_mg_matrix_free(level + global_min_level)
-            ->initialize_dof_vector(*mg_solution_set[level][index], index);
-          mg_solution_set[level][index]->update_ghost_values();
         }
     }
 }
