@@ -598,6 +598,18 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   break;
                 }
               case Anisotropic:
+                {
+                  compliance[xx_dir][xx_dir] = constants.at(0);
+                  compliance[yy_dir][yy_dir] = constants.at(1);
+                  compliance[xy_dir][xy_dir] = constants.at(2);
+                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] =
+                    constants.at(3);
+                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] =
+                    constants.at(4);
+                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] =
+                    constants.at(5);
+                  break;
+                }
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
@@ -633,9 +645,33 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                       compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;
                   break;
                 }
+              case Anisotropic:
+                {
+                  compliance[xx_dir][xx_dir] = constants[0];
+                  compliance[yy_dir][yy_dir] = constants[1];
+                  compliance[zz_dir][zz_dir] = constants[2];
+                  compliance[yz_dir][yz_dir] = constants[3];
+                  compliance[xz_dir][xz_dir] = constants[4];
+                  compliance[xy_dir][xy_dir] = constants[5];
+                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = constants[6];
+                  compliance[xx_dir][zz_dir] = compliance[zz_dir][xx_dir] = constants[7];
+                  compliance[xx_dir][yz_dir] = compliance[yz_dir][xx_dir] = constants[8];
+                  compliance[xx_dir][xz_dir] = compliance[xz_dir][xx_dir] = constants[9];
+                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] = constants[10];
+                  compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = constants[11];
+                  compliance[yy_dir][yz_dir] = compliance[yz_dir][yy_dir] = constants[12];
+                  compliance[yy_dir][xz_dir] = compliance[xz_dir][yy_dir] = constants[13];
+                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] = constants[14];
+                  compliance[zz_dir][yz_dir] = compliance[yz_dir][zz_dir] = constants[15];
+                  compliance[zz_dir][xz_dir] = compliance[xz_dir][zz_dir] = constants[16];
+                  compliance[zz_dir][xy_dir] = compliance[xy_dir][zz_dir] = constants[17];
+                  compliance[yz_dir][xz_dir] = compliance[xz_dir][yz_dir] = constants[18];
+                  compliance[yz_dir][xy_dir] = compliance[xy_dir][yz_dir] = constants[19];
+                  compliance[xz_dir][xy_dir] = compliance[xy_dir][xz_dir] = constants[20];
+                  break;
+                }
               case Transverse:
               case Orthotropic:
-              case Anisotropic:
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }

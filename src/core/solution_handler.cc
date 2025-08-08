@@ -288,6 +288,70 @@ SolutionHandler<dim, number>::reinit(
 
 template <unsigned int dim, typename number>
 void
+SolutionHandler<dim, number>::reinit_solution_transfer(
+  MatrixFreeContainer<dim, number> &matrix_free_container)
+{
+  // Create all entries
+  for (const auto &[index, variable] : *attributes_list)
+    {
+      // Add the variable if it doesn't already exist
+      if (!solution_transfer_set.contains(std::make_pair(index, DependencyType::Normal)))
+        {
+          solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
+            std::make_unique<SolutionTransfer>(
+              matrix_free_container.get_matrix_free()->get_dof_handler(index));
+        }
+
+      // Add dependencies if they don't exist
+      Types::Index field_index = 0;
+      for (const auto &dependency_set : variable.get_eval_flag_set_rhs())
+        {
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
+            {
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+
+              solution_transfer_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<SolutionTransfer>(
+                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
+
+              dep_index++;
+            }
+
+          field_index++;
+        }
+      field_index = 0;
+      for (const auto &dependency_set : variable.get_eval_flag_set_lhs())
+        {
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
+            {
+              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
+                {
+                  dep_index++;
+                  continue;
+                }
+
+              solution_transfer_set.try_emplace(
+                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
+                std::make_unique<SolutionTransfer>(
+                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
+
+              dep_index++;
+            }
+
+          field_index++;
+        }
+    }
+}
+
+template <unsigned int dim, typename number>
+void
 SolutionHandler<dim, number>::update_ghosts() const
 {
   for (const auto &[pair, solution] : solution_set)
