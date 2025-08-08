@@ -230,6 +230,10 @@ GMGSolver<dim, degree, number>::reinit()
   // Setup transfer operators
   // For now I'll just make a bunch of them based on the local indices.
   // TODO (landinjm): This is awful please fix.
+  mg_transfer_operators.clear();
+  mg_transfer.clear();
+  mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
+  mg_transfer.resize(mg_transfer_operators.size());
   for (Types::Index field_index = 0; field_index < max_fields; field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
@@ -244,6 +248,8 @@ GMGSolver<dim, degree, number>::reinit()
             {
               continue;
             }
+
+          mg_transfer_operators[local_index].resize(min_level, max_level);
 
           for (unsigned int level = min_level; level < max_level; ++level)
             {

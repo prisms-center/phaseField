@@ -54,7 +54,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
     {
       r += (point(i) - center[i]) * (point(i) - center[i]) / ellipsoid_denoms[i];
     }
-  r = sqrt(r);
+  r = std::sqrt(r);
 
   if (index == 0)
     {

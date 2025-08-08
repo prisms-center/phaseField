@@ -263,46 +263,20 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarValue n1     = variable_list.template get_value<ScalarValue>(2);
       VectorGrad  grad_u = variable_list.template get_symmetric_gradient<VectorGrad>(3);
 
-      ScalarValue h1V  = (3.0 * n1 * n1 - 2.0 * n1 * n1 * n1);
-      ScalarValue hn1V = (6.0 * n1 - 6.0 * n1 * n1);
+      ScalarValue h1V = (3.0 * n1 * n1 - 2.0 * n1 * n1 * n1);
 
       // Calculate c_alpha and c_beta from c
-      ScalarValue c_alpha =
-        ((B2 * c + 0.5 * (B1 - A1) * h1V) / (A2 * h1V + B2 * (1.0 - h1V)));
       ScalarValue c_beta =
         ((A2 * c + 0.5 * (A1 - B1) * (1.0 - h1V)) / (A2 * h1V + B2 * (1.0 - h1V)));
 
-      ScalarValue facV  = (2.0 * A2 * c_alpha + A1);
-      ScalarValue faccV = (2.0 * A2);
-      ScalarValue fbcV  = (2.0 * B2 * c_beta + B1);
-      ScalarValue fbccV = (2.0 * B2);
-
-      // Calculate the derivatives of c_beta (derivatives of c_alpha aren't needed)
-      ScalarValue cacV, canV, cbnV, cbcV, cbcnV;
-
-      cacV = fbccV / ((1.0 - h1V) * fbccV + h1V * faccV);
-      canV = hn1V * (c_alpha - c_beta) * cacV;
-
-      cbcV  = faccV / ((1.0 - h1V) * fbccV + h1V * faccV);
-      cbnV  = hn1V * (c_alpha - c_beta) * cbcV;
-      cbcnV = (faccV * (fbccV - faccV) * hn1V) /
-              (((1.0 - h1V) * fbccV + h1V * faccV) * ((1.0 - h1V) * fbccV + h1V * faccV));
-
       // Calculate the stress-free transformation strain and its derivatives at the
       // quadrature point
-      VectorGrad sfts1, sfts1c, sfts1cc, sfts1n, sfts1cn;
-
+      VectorGrad sfts1;
       for (unsigned int i = 0; i < dim; i++)
         {
           for (unsigned int j = 0; j < dim; j++)
             {
-              // Polynomial fits for the stress-free transformation strains, of the
-              // form: sfts = a_p * c_beta + b_p
-              sfts1[i][j]   = sfts_linear1[i][j] * c_beta + sfts_const1[i][j];
-              sfts1c[i][j]  = sfts_linear1[i][j] * cbcV;
-              sfts1cc[i][j] = 0.0;
-              sfts1n[i][j]  = sfts_linear1[i][j] * cbnV;
-              sfts1cn[i][j] = sfts_linear1[i][j] * cbcnV;
+              sfts1[i][j] = sfts_linear1[i][j] * c_beta + sfts_const1[i][j];
             }
         }
 
@@ -322,16 +296,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
           compute_stress<dim, ScalarValue>(CIJ_Mg, strain, stress);
         }
 
-      VectorGrad eqx_u;
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          for (unsigned int j = 0; j < dim; j++)
-            {
-              eqx_u[i][j] = -stress[i][j];
-            }
-        }
-
-      variable_list.set_gradient_term(3, eqx_u);
+      variable_list.set_gradient_term(3, -stress);
     }
 }
 
