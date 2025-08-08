@@ -22,7 +22,7 @@ end
 
 # Mesh adaptivity parameters
 set mesh adaptivity = false
-set max refinement = 6
+set max refinement = 8
 set min refinement = 0
 set remeshing period = 1000
 
@@ -55,9 +55,9 @@ end
 set boundary condition for c = Natural
 set boundary condition for mu = Natural
 set boundary condition for n1 = Natural
-set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0
-set boundary condition for u, y component = Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0, Natural, Dirichlet: 0.0
-set boundary condition for u, z component = Natural, Dirichlet: 0.0, Natural, Dirichlet: 0.0, Dirichlet: 0.0, Dirichlet: 0.0
+set boundary condition for u, x component = DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set boundary condition for u, y component = NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0
+set boundary condition for u, z component = NATURAL, DIRICHLET: 0.0, NATURAL, DIRICHLET: 0.0, DIRICHLET: 0.0, DIRICHLET: 0.0
 
 # The linear solve parameters. The type of residual can either be AbsoluteResidual or 
 # RelativeResidual. The preconditioner type can either be none or geometric multigrid
@@ -71,6 +71,7 @@ subsection linear solver parameters: u
   set smoothing range = 20
   set smoother degree = 5
   set eigenvalue cg iterations = 20
+  set min mg level = 0
 end
 
 set Model constant McV = 1.0, double
