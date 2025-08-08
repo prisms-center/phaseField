@@ -1,5 +1,5 @@
-set dim = 2
-set global refinement = 8
+set dim = 3
+set global refinement = 7
 set degree = 1
 
 subsection Rectangular mesh
@@ -12,7 +12,7 @@ subsection Rectangular mesh
 end
 
 set mesh adaptivity = true
-set max refinement = 8
+set max refinement = 7
 set min refinement = 2
 set remeshing period = 2000
 
@@ -22,8 +22,8 @@ subsection refinement criterion: c
   set value upper bound = 0.99
 end
 
-set time step = 0.004
-set number steps = 50000
+set time step = 0.0008
+set number steps = 250000
 
 subsection output
   set condition = EQUAL_SPACING

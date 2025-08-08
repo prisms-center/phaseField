@@ -152,7 +152,9 @@ public:
            dealii::ExcInternalError());
     for (auto &[pair, solution] : solution_set)
       {
-        solution_transfer_set.at(pair)->prepare_for_coarsening_and_refinement(*solution);
+        auto &transfer = solution_transfer_set.at(pair);
+        Assert(transfer, dealii::ExcInternalError());
+        transfer->prepare_for_coarsening_and_refinement(*solution);
       }
   }
 
@@ -182,6 +184,7 @@ public:
       {
         ptr.reset();
       }
+    solution_transfer_set.clear();
   }
 
   /**

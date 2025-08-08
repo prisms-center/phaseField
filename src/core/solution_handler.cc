@@ -295,7 +295,7 @@ SolutionHandler<dim, number>::reinit_solution_transfer(
   for (const auto &[index, variable] : *attributes_list)
     {
       // Add the variable if it doesn't already exist
-      if (!solution_set.contains(std::make_pair(index, DependencyType::Normal)))
+      if (!solution_transfer_set.contains(std::make_pair(index, DependencyType::Normal)))
         {
           solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
             std::make_unique<SolutionTransfer>(
