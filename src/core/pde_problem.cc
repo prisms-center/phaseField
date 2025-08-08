@@ -334,9 +334,7 @@ PDEProblem<dim, degree, number>::solve_increment()
                        update_postprocessed);
   if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
     {
-      nucleation_handler.attempt_nucleation(user_inputs->get_nucleation_parameters(),
-                                            solver_context,
-                                            pde_operator->phase_field_utils.nucleation);
+      nucleation_handler.attempt_nucleation(solver_context);
     }
 }
 

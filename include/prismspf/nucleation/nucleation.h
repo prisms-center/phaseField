@@ -5,8 +5,14 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/config.h>
+#include <prismspf/user_inputs/nucleation_parameters.h>
 
+#include <prismspf/solvers/solver_context.h>
+
+#include <prismspf/config.h>
+#include <prismspf/nucleation/nucleus.h>
+
+#include <list>
 #include <map>
 #include <set>
 
@@ -31,8 +37,7 @@ public:
   ~NucleationHandler();
 
   void
-  attempt_nucleation(const NucleationParameters               &nucleation_parameters,
-                     const SolverContext<dim, degree, number> &solver_context,
+  attempt_nucleation(const SolverContext<dim, degree, number> &solver_context,
                      std::vector<Nucleus<dim>>                &nuclei);
 
 private:
@@ -41,9 +46,31 @@ private:
 
 inline void
 NucleationHandler::attempt_nucleation(
-  const NucleationParameters               &nucleation_parameters,
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
-{}
+{
+  NucleationParameters &nucleation_parameters =
+    solver_context.user_inputs->get_nucleation_parameters();
+  for (const auto &[index, variable] :
+       solver_context.user_inputs->get_variable_attributes())
+    {
+      if (variable.is_nucleation_rate)
+        {
+          std::list<Nucleus<dim>> new_nuclei;
+          // Perform nucleation logic here
+          // This is where you would check conditions and create nuclei
+          // for (const auto& cell)
+
+          dealii::Point<dim> nucleus_location; // Determine the location based on your
+                                               // logic
+          double seed_time =
+            solver_context.user_inputs->get_temporal_discretization().get_time();
+          unsigned int seed_increment =
+            solver_context.user_inputs->get_temporal_discretization().get_increment();
+
+          nuclei.emplace_back(index, nucleus_location, seed_time, seed_increment);
+        }
+    }
+}
 
 PRISMS_PF_END_NAMESPACE

@@ -25,15 +25,18 @@ public:
 
   Nucleus(const unsigned int       &_field_index,
           const dealii::Point<dim> &_location,
-          const double             &_seed_time)
+          const double             &_seed_time,
+          const unsigned int       &_seed_increment)
     : field_index(_field_index)
     , location(_location)
     , seed_time(_seed_time)
+    , seed_increment(_seed_increment)
   {}
 
   unsigned int       field_index = 0;
   dealii::Point<dim> location;
-  double             seed_time = 0.0;
+  double             seed_time      = 0.0;
+  unsigned int       seed_increment = 0;
 };
 
 PRISMS_PF_END_NAMESPACE
