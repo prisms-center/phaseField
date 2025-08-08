@@ -57,7 +57,7 @@ MatrixFreeOperator<dim, degree, number>::initialize(
   const ElementVolume<dim, degree, number> &_element_volume_handler,
   const std::vector<unsigned int>          &selected_field_indexes)
 {
-  data                   = std::move(_data);
+  data                   = _data;
   element_volume_handler = &_element_volume_handler;
 
   selected_fields.clear();
@@ -119,6 +119,7 @@ void
 MatrixFreeOperator<dim, degree, number>::clear()
 {
   data.reset();
+  diagonal_entries.reset();
   inverse_diagonal_entries.reset();
   global_to_local_solution.clear();
   src_solution_subset.clear();

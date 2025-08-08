@@ -173,7 +173,6 @@ GMGSolver<dim, degree, number>::init()
         }
     }
 
-#ifdef DEBUG
   ConditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->get_field_index() << ":\n"
     << "  Min level: " << min_level << "\n"
@@ -187,7 +186,6 @@ GMGSolver<dim, degree, number>::init()
          this->get_triangulation_handler().get_mg_triangulation())
     << "\n\n"
     << std::flush;
-#endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -214,28 +212,16 @@ GMGSolver<dim, degree, number>::reinit()
   const Types::Index max_dependency_types =
     this->get_variable_attributes().get_max_dependency_types();
 
-  // TODO (landinjm): Can I remove some of this stuff?
-  // Init the multilevel operator objects
-  mg_operators = std::make_unique<dealii::MGLevelObject<LevelMatrixType>>(
-    min_level,
-    max_level,
-    this->get_subset_attributes(),
-    this->get_pde_operator_float(),
-    this->get_variable_attributes().get_solve_block(),
-    this->get_field_index(),
-    true);
-
   // Setup operator on each level
   for (unsigned int level = min_level; level <= max_level; ++level)
     {
+      (*mg_operators)[level].clear();
       (*mg_operators)[level].initialize(
         this->get_matrix_free_container().get_mg_matrix_free(level),
         this->get_element_volume_container().get_mg_element_volume(level),
         {change_local_index});
-
       (*mg_operators)[level].add_global_to_local_mapping(
         this->get_newton_update_global_to_local_solution());
-
       (*mg_operators)[level].add_src_solution_subset(
         this->get_solution_handler().get_mg_solution_vector(level));
     }
@@ -244,8 +230,6 @@ GMGSolver<dim, degree, number>::reinit()
   // Setup transfer operators
   // For now I'll just make a bunch of them based on the local indices.
   // TODO (landinjm): This is awful please fix.
-  mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
-  mg_transfer.resize(mg_transfer_operators.size());
   for (Types::Index field_index = 0; field_index < max_fields; field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
@@ -260,8 +244,6 @@ GMGSolver<dim, degree, number>::reinit()
             {
               continue;
             }
-
-          mg_transfer_operators[local_index].resize(min_level, max_level);
 
           for (unsigned int level = min_level; level < max_level; ++level)
             {
@@ -282,7 +264,6 @@ GMGSolver<dim, degree, number>::reinit()
         }
     }
 
-#ifdef DEBUG
   ConditionalOStreams::pout_summary()
     << "\nMultigrid Setup Information for index " << this->get_field_index() << ":\n"
     << "  Min level: " << min_level << "\n"
@@ -296,7 +277,6 @@ GMGSolver<dim, degree, number>::reinit()
          this->get_triangulation_handler().get_mg_triangulation())
     << "\n\n"
     << std::flush;
-#endif
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

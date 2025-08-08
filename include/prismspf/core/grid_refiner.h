@@ -195,6 +195,10 @@ public:
       grid_refinement_context.get_constraint_handler(),
       dealii::QGaussLobatto<1>(degree + 1));
 
+    // Clear the ghosts
+    grid_refinement_context.get_solution_handler().zero_out_ghosts();
+
+    // Reinit the solution vectors
     grid_refinement_context.get_solution_handler().reinit(
       grid_refinement_context.get_matrix_free_container());
 
@@ -204,6 +208,9 @@ public:
     // Step 6
     grid_refinement_context.get_invm_handler().recompute_invm();
     grid_refinement_context.get_element_volume_container().recompute_element_volume();
+
+    // Update the ghosts
+    grid_refinement_context.get_solution_handler().update_ghosts();
   };
 
 private:

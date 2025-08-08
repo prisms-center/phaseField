@@ -167,6 +167,7 @@ public:
     for (auto &[pair, solution] : solution_set)
       {
         solution_transfer_set.at(pair)->interpolate(*solution);
+        solution_transfer_set.at(pair).reset();
       }
   };
 

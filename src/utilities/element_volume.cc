@@ -27,7 +27,7 @@ void
 ElementVolume<dim, degree, number>::initialize(
   std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
 {
-  data = std::move(_data);
+  data = _data;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
