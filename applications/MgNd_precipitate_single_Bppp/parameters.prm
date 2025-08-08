@@ -2,7 +2,7 @@
 set dim = 3
 
 # The initial global refinement
-set global refinement = 6
+set global refinement = 8
 
 # The element degree
 set degree = 2
@@ -12,16 +12,16 @@ set degree = 2
 # subdivisions to apply to each of those. This is useful when dealing with a domain
 # that is not square.
 subsection Rectangular mesh
-  set x size = 12.5
-  set y size = 12.5
-  set z size = 12.5
+  set x size = 25.0
+  set y size = 25.0
+  set z size = 25.0
   set x subdivisions = 1
   set y subdivisions = 1
   set z subdivisions = 1
 end
 
 # Mesh adaptivity parameters
-set mesh adaptivity = true
+set mesh adaptivity = false
 set max refinement = 6
 set min refinement = 0
 set remeshing period = 1000
@@ -33,10 +33,10 @@ subsection refinement criterion: n1
 end
 
 # The timestep
-set time step = 4.0e-5
+set time step = 1.0e-5
 
 # The total number of timesteps to take
-set number steps = 20000
+set number steps = 5000
 
 # The number of ouputs and the frequency at which they output. The potential options
 # for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
