@@ -60,6 +60,7 @@ NucleationHandler::attempt_nucleation(
   double delta_t =
     nucleation_parameters.get_nucleation_period() *
     solver_context.user_inputs->get_temporal_discretization().get_delta_t();
+  auto &rng = solver_context.user_inputs->get_miscellaneous_parameters().rng;
   for (const auto &[index, variable] :
        solver_context.user_inputs->get_variable_attributes())
     {
@@ -82,8 +83,8 @@ NucleationHandler::attempt_nucleation(
                   fe_values.reinit(dof_iterator);
                   // Get the values for a scalar field
                   fe_values.get_function_values(
-                    *grid_refinement_context.get_solution_handler()
-                       .get_solution_vector(index, DependencyType::Normal),
+                    solver_context.get_solution_handler()
+                      .get_solution_vector(index, DependencyType::Normal),
                     values);
                   for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                     {
@@ -102,11 +103,22 @@ NucleationHandler::attempt_nucleation(
                       unsigned int seed_increment =
                         solver_context.user_inputs->get_temporal_discretization()
                           .get_increment();
-
-                      nuclei.emplace_back(index,
-                                          nucleus_location,
-                                          seed_time,
-                                          seed_increment);
+                      unsigned int nucleating_index =
+                        0; // pick randomly from allowed indices
+                      if (randombool)
+                        {
+                          new_nuclei.emplace_back(nucleating_index,
+                                                  nucleus_location,
+                                                  seed_time,
+                                                  seed_increment);
+                        }
+                      else
+                        {
+                          new_nuclei.emplace_front(nucleating_index,
+                                                   nucleus_location,
+                                                   seed_time,
+                                                   seed_increment);
+                        }
                     }
                 }
             }

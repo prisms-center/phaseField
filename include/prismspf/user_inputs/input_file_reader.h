@@ -166,6 +166,12 @@ public:
   declare_grain_loading_parameters();
 
   /**
+   * @brief Declare parameters for rng.
+   */
+  void
+  declare_miscellaneous_parameters();
+
+  /**
    * @brief Declare parameters for user-defined model constants.
    */
   void

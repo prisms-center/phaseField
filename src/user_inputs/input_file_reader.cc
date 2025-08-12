@@ -887,6 +887,21 @@ InputFileReader::declare_grain_loading_parameters()
 }
 
 void
+InputFileReader::declare_miscellaneous_parameters()
+{
+  parameter_handler.enter_subsection("miscellaneous");
+  {
+    parameter_handler.declare_entry(
+      "random seed",
+      "2025",
+      dealii::Patterns::Integer(0, INT_MAX),
+      "The random seed for the simulation. "
+      "This is used to initialize the random number generator.");
+  }
+  parameter_handler.leave_subsection();
+}
+
+void
 InputFileReader::declare_model_constants()
 {
   for (const std::string &constant_name : model_constant_names)
