@@ -14,6 +14,7 @@
 
 #include <list>
 #include <map>
+#include <random>
 #include <set>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -27,31 +28,31 @@ class NucleationHandler
 {
 public:
   /**
-   * @brief Construct a new Nucleation Handler object
+   * @brief Construct a Nucleation Handler object
    */
   NucleationHandler();
-
-  /**
-   * @brief Destroy the Nucleation Handler object
-   */
-  ~NucleationHandler();
 
   void
   attempt_nucleation(const SolverContext<dim, degree, number> &solver_context,
                      std::vector<Nucleus<dim>>                &nuclei);
 
   static double
-  calculate_nucleation_probability(const double &nucleation_rate, const double &delta_t)
+  calculate_nucleation_probability(const double &nucleation_rate,
+                                   const double &delta_t,
+                                   const double &volume)
   {
-    return 1.0 - std::exp(-nucleation_rate * delta_t);
+    return 1.0 - std::exp(-nucleation_rate * delta_t * volume);
   }
 
 private:
   // Add private member variables and functions as needed
+  std::uniform_real_distribution<double> uniform_positive_interval(0.0, 1.0);
+  std::uniform_real_distribution<double> uniform_unit_interval(-1.0, 1.0);
+  std::bernoulli_distribution            random_bool(0.5);
 };
 
 inline void
-NucleationHandler::attempt_nucleation(
+NucleationHandler<dim, degree, number>::attempt_nucleation(
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
 {
@@ -66,6 +67,9 @@ NucleationHandler::attempt_nucleation(
     {
       if (variable.is_nucleation_rate)
         {
+          std::uniform_int_distribution<unsigned int> nucleating_index_dist(
+            0,
+            variable.nucleating_indices.size() - 1);
           std::list<Nucleus<dim>> new_nuclei;
           // Perform nucleation logic here
           // This is where you would check conditions and create nuclei
@@ -92,8 +96,11 @@ NucleationHandler::attempt_nucleation(
                         values[q_point] * fe_values.get_quadrature().weight(q_point);
                     }
                   double nuc_probability =
-                    nucleation_parameters.calculate_nucleation_probability(nuc_rate,
-                                                                           delta_t);
+                    nucleation_parameters.calculate_nucleation_probability(
+                      nuc_rate,
+                      delta_t,
+                      solver_context.get_element_volume_container().get_volume(
+                        dof_iterator));
                   if (random() < nuc_probability)
                     {
                       dealii::Point<dim> nucleus_location; // mapping(Random)
@@ -104,8 +111,8 @@ NucleationHandler::attempt_nucleation(
                         solver_context.user_inputs->get_temporal_discretization()
                           .get_increment();
                       unsigned int nucleating_index =
-                        0; // pick randomly from allowed indices
-                      if (randombool)
+                        variable.nucleating_indices[nucleating_index_dist(rng)];
+                      if (random_bool(rng))
                         {
                           new_nuclei.emplace_back(nucleating_index,
                                                   nucleus_location,

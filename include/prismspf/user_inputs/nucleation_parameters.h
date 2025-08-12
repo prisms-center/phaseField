@@ -69,6 +69,7 @@ public:
   void
   set_nucleus_exclusion_distance(const double &_nucleus_exclusion_distance)
   {
+    AssertThrow(_nucleus_exclusion_distance >= 0.0, InvalidParameter());
     nucleus_exclusion_distance = _nucleus_exclusion_distance;
   }
 
@@ -79,6 +80,25 @@ public:
   get_nucleus_exclusion_distance() const
   {
     return nucleus_exclusion_distance;
+  }
+
+  /**
+   * @brief Set the refinement radius
+   */
+  void
+  set_refinement_radius(const double &_refinement_radius)
+  {
+    AssertThrow(_refinement_radius >= 0.0, InvalidParameter());
+    refinement_radius = _refinement_radius;
+  }
+
+  /**
+   * @brief Get the refinement radius
+   */
+  [[nodiscard]] double
+  get_refinement_radius() const
+  {
+    return refinement_radius;
   }
 
   /**
@@ -100,19 +120,22 @@ private:
   // The radius around a nucleus to exclude other nuclei
   double nucleus_exclusion_distance = 0.0;
 
+  // The radius around a nucleus to refine the mesh
+  double refinement_radius = 0.0;
+
   // Whether to print timing information with nucleation
   // TODO (landinjm): Implement this.
   bool print_timing_with_nucleation = false;
 };
 
 inline bool
-nucleationParameters::should_attempt_nucleation(unsigned int increment) const
+NucleationParameters::should_attempt_nucleation(unsigned int increment) const
 {
   return !(increment % print_nucleation_period);
 }
 
 inline void
-nucleationParameters::postprocess_and_validate(
+NucleationParameters::postprocess_and_validate(
   const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   // Check if the nucleation period is valid
