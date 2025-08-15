@@ -65,6 +65,8 @@ struct RawDependencies
   std::set<std::string> dependencies_lhs;
 };
 
+// TODO: Fix style. This struct needn't be over 100 lines. Validation can occur in a
+// separate function.
 /**
  * @brief Structure to hold the variable attributes of a field. This includes things like
  * the name, equation type, whether it's nonlinear, and its dependence on other variables.
@@ -349,6 +351,18 @@ private:
    * @remark User-set
    */
   bool is_postprocessed_variable = false;
+
+  /**
+   * @brief Is a nucleation rate
+   * @remark User-set
+   */
+  bool is_nucleation_rate = false;
+
+  /**
+   * @brief If this is a nucleation rate, the indices of the nucleating fields
+   * @remark User-set
+   */
+  std::vector<unsigned int> nucleation_indices;
 
   /**
    * @brief Solve block

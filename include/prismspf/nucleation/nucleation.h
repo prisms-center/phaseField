@@ -12,6 +12,7 @@
 #include <prismspf/config.h>
 #include <prismspf/nucleation/nucleus.h>
 
+#include <algorithm>
 #include <list>
 #include <map>
 #include <random>
@@ -27,31 +28,26 @@ template <unsigned int dim, unsigned int degree, typename number>
 class NucleationHandler
 {
 public:
-  /**
-   * @brief Construct a Nucleation Handler object
-   */
-  NucleationHandler();
-
-  void
+  static void
   attempt_nucleation(const SolverContext<dim, degree, number> &solver_context,
                      std::vector<Nucleus<dim>>                &nuclei);
 
   static double
-  calculate_nucleation_probability(const double &nucleation_rate,
-                                   const double &delta_t,
-                                   const double &volume)
+  calculate_number_of_events(const double &rate,
+                             const double &delta_t,
+                             const double &volume)
   {
-    return 1.0 - std::exp(-nucleation_rate * delta_t * volume);
+    std::poisson_distribution<unsigned int> distribution(rate * delta_t * volume);
+    return distribution(rng);
   }
 
 private:
   // Add private member variables and functions as needed
-  std::uniform_real_distribution<double> uniform_positive_interval(0.0, 1.0);
-  std::uniform_real_distribution<double> uniform_unit_interval(-1.0, 1.0);
-  std::bernoulli_distribution            random_bool(0.5);
+  static std::uniform_real_distribution<double> uniform_unit_interval(-1.0, 1.0);
 };
 
-inline void
+template <unsigned int dim, unsigned int degree, typename number>
+inline static void
 NucleationHandler<dim, degree, number>::attempt_nucleation(
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
@@ -95,16 +91,23 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                       nuc_rate +=
                         values[q_point] * fe_values.get_quadrature().weight(q_point);
                     }
-                  double nuc_probability =
-                    nucleation_parameters.calculate_nucleation_probability(
+                  unsigned int num_nuclei_in_cell =
+                    nucleation_parameters.calculate_number_of_events(
                       nuc_rate,
                       delta_t,
                       solver_context.get_element_volume_container().get_volume(
                         dof_iterator));
-                  if (random() < nuc_probability)
+                  for (unsigned int i = 0; i < num_nuclei_in_cell; ++i)
                     {
-                      dealii::Point<dim> nucleus_location; // mapping(Random)
-                      double             seed_time =
+                      dealii::Point<dim> nucleus_location_unit_cell;
+                      for (unsigned int d = 0; d < dim; ++d)
+                        {
+                          nucleus_location_unit_cell[d] = uniform_unit_interval(rng);
+                        }
+                      dealii::Point<dim> nucleus_location =
+                        dealii::transform_unit_to_real_cell(cell,
+                                                            nucleus_location_unit_cell);
+                      double seed_time =
                         solver_context.user_inputs->get_temporal_discretization()
                           .get_time();
                       unsigned int seed_increment =
@@ -112,21 +115,37 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                           .get_increment();
                       unsigned int nucleating_index =
                         variable.nucleating_indices[nucleating_index_dist(rng)];
-                      if (random_bool(rng))
-                        {
-                          new_nuclei.emplace_back(nucleating_index,
-                                                  nucleus_location,
-                                                  seed_time,
-                                                  seed_increment);
-                        }
-                      else
-                        {
-                          new_nuclei.emplace_front(nucleating_index,
-                                                   nucleus_location,
-                                                   seed_time,
-                                                   seed_increment);
-                        }
+
+                      new_nuclei.emplace_back(nucleating_index,
+                                              nucleus_location,
+                                              seed_time,
+                                              seed_increment);
                     }
+                }
+            }
+          // Remove nuclei within their exclusion distance and add to nuclei list
+          std::shuffle(new_nuclei.begin(), new_nuclei.end(), rng); // remove bias
+
+          while (!new_nuclei.empty())
+            {
+              auto it = new_nuclei.begin();
+              for (const auto &existing_nucleus : nuclei)
+                {
+                  if (it->location.distance(existing_nucleus.location) <
+                        nucleation_parameters.get_exclusion_distance() ||
+                      (it->field_index == existing_nucleus.field_index &&
+                       it->location.distance(existing_nucleus.location) <
+                         nucleation_parameters.get_same_field_exclusion_distance()))
+                    {
+                      new_nuclei.erase(it);
+                      it = new_nuclei.end();
+                      break;
+                    }
+                }
+              if (it != new_nuclei.end())
+                {
+                  nuclei.push_back(*it);
+                  new_nuclei.erase(it);
                 }
             }
         }

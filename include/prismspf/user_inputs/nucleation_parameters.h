@@ -67,9 +67,10 @@ public:
    * @brief Set the nucleus exclusion distance
    */
   void
-  set_nucleus_exclusion_distance(const double &_nucleus_exclusion_distance)
+  set_exclusion_distance(const double &_nucleus_exclusion_distance)
   {
-    AssertThrow(_nucleus_exclusion_distance >= 0.0, InvalidParameter());
+    AssertThrow(_nucleus_exclusion_distance >= 0.0,
+                dealii::ExcMessage("Nucleus exclusion distance must be non-negative."));
     nucleus_exclusion_distance = _nucleus_exclusion_distance;
   }
 
@@ -77,9 +78,29 @@ public:
    * @brief Get the nucleus exclusion distance
    */
   [[nodiscard]] double
-  get_nucleus_exclusion_distance() const
+  get_exclusion_distance() const
   {
     return nucleus_exclusion_distance;
+  }
+
+  /**
+   * @brief Set the nucleus exclusion distance
+   */
+  void
+  set_same_field_exclusion_distance(const double &exclusion_distance)
+  {
+    AssertThrow(exclusion_distance >= 0.0,
+                dealii::ExcMessage("Nucleus exclusion distance must be non-negative."));
+    same_field_nucleus_exclusion_distance = exclusion_distance;
+  }
+
+  /**
+   * @brief Get the nucleus exclusion distance
+   */
+  [[nodiscard]] double
+  get_same_field_exclusion_distance() const
+  {
+    return same_field_nucleus_exclusion_distance;
   }
 
   /**
@@ -88,7 +109,8 @@ public:
   void
   set_refinement_radius(const double &_refinement_radius)
   {
-    AssertThrow(_refinement_radius >= 0.0, InvalidParameter());
+    AssertThrow(_refinement_radius >= 0.0,
+                dealii::ExcMessage("Nucleation refinement radius must be non-negative."));
     refinement_radius = _refinement_radius;
   }
 
@@ -120,6 +142,9 @@ private:
   // The radius around a nucleus to exclude other nuclei
   double nucleus_exclusion_distance = 0.0;
 
+  // The radius around a nucleus to exclude other nuclei in the same field
+  double same_field_nucleus_exclusion_distance = 0.0;
+
   // The radius around a nucleus to refine the mesh
   double refinement_radius = 0.0;
 
@@ -131,7 +156,7 @@ private:
 inline bool
 NucleationParameters::should_attempt_nucleation(unsigned int increment) const
 {
-  return !(increment % print_nucleation_period);
+  return !bool(increment % nucleation_period);
 }
 
 inline void
@@ -139,7 +164,8 @@ NucleationParameters::postprocess_and_validate(
   const std::map<unsigned int, VariableAttributes> &var_attributes)
 {
   // Check if the nucleation period is valid
-  AssertThrow(nucleation_period > 0, InvalidParameter());
+  AssertThrow(nucleation_period > 0,
+              dealii::ExcMessage("Nucleation period must be positive."));
 
   // Check if the postprocessed nucleation rate exists
   for (const auto &[index, variable] : var_attributes)
@@ -151,11 +177,11 @@ NucleationParameters::postprocess_and_validate(
         }
     }
   // Check if the print timing option is valid
-  AssertThrow(print_timing_with_nucleation, InvalidParameter());
+  AssertThrow(print_timing_with_nucleation, dealii::ExcMessage(""));
 }
 
 inline void
-nucleationParameters::print_parameter_summary() const
+NucleationParameters::print_parameter_summary() const
 {
   ConditionalOStreams::pout_summary()
     << "================================================\n"

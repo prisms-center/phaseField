@@ -9,6 +9,8 @@
 
 #include <prismspf/config.h>
 
+#include <ostream>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**

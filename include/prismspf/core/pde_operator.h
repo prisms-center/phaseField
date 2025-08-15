@@ -17,6 +17,14 @@ class UserInputParameters;
 template <unsigned int dim, unsigned int degree, typename number>
 class VariableContainer;
 
+template <unsigned int dim, typename number>
+class PhaseFieldUtilities;
+
+// TODO: Pass pf_utils into the operators rather than having it as a member variable.
+// TODO: Remove user_inputs as a member, consider passing into operator. Users should get
+// necessary information from user_inputs using the constructor.
+// TODO: Move element volume and q_point_loc into variable container
+
 /**
  * @brief This class contains the user implementation of each PDE operator.
  */
@@ -107,11 +115,22 @@ public:
   [[nodiscard]] number
   get_timestep() const;
 
+  /**
+   * @brief Get the phase-field utilities (reference).
+   */
+  [[nodiscard]] PhaseFieldUtilities<dim, number> &
+  phase_field_utils();
+
 private:
   /**
    * @brief The user-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
+
+  /**
+   * Phase-Field utilities.
+   */
+  PhaseFieldUtilities<dim, number> pf_utils;
 };
 
 PRISMS_PF_END_NAMESPACE

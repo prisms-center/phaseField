@@ -170,7 +170,7 @@ public:
   }
 
   /**
-   * @brief Get the pde operator.
+   * @brief Get a shared pointer to the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
@@ -180,7 +180,7 @@ public:
   }
 
   /**
-   * @brief Get the pde operator for float precision.
+   * @brief Get a shared pointer to the pde operator for float precision.
    */
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, float>> &
   get_pde_operator_float() const

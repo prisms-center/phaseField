@@ -34,6 +34,13 @@ PDEOperator<dim, degree, number>::get_timestep() const
   return user_inputs->get_temporal_discretization().get_timestep();
 }
 
+template <unsigned int dim, unsigned int degree, typename number>
+PhaseFieldUtilities<dim, number> &
+PDEOperator<dim, degree, number>::phase_field_utils()
+{
+  return pf_utils;
+}
+
 #include "core/pde_operator.inst"
 
 PRISMS_PF_END_NAMESPACE

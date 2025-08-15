@@ -704,6 +704,12 @@ InputFileReader::declare_nucleation_parameters()
                                   "0.0",
                                   dealii::Patterns::Double(),
                                   "The minimum distance between nuclei.");
+  parameter_handler.declare_entry("same field nucleus exclusion distance",
+                                  "0.0",
+                                  dealii::Patterns::Double(),
+                                  "The minimum distance between nuclei.");
+  // Declare aliases for the two parameters
+  //
   parameter_handler.declare_alias("nucleus exclusion distance",
                                   "nucleus_exclusion_distance");
   parameter_handler.declare_alias("nucleus exclusion distance",
@@ -714,7 +720,21 @@ InputFileReader::declare_nucleation_parameters()
   parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
   parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
   parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
-
+  //
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same_field_nucleus_exclusion_distance");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same field nucleus exclusion radius");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same_field_nucleus_exclusion_radius");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same field exclusion distance");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same_field_exclusion_distance");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same field exclusion radius");
+  parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                  "same_field_exclusion_radius");
   parameter_handler.leave_subsection();
   // parameter_handler.declare_entry(
   //   "Enable evolution before nucleation",

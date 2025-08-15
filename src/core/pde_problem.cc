@@ -42,6 +42,7 @@
 #include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
+#include <prismspf/nucleation/nucleation.h>
 
 #include <memory>
 #include <mpi.h>
@@ -330,12 +331,7 @@ PDEProblem<dim, degree, number>::solve_increment()
      user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment));
 
   // Solve a single increment
-  solver_handler.solve(user_inputs->get_temporal_discretization().get_increment(),
-                       update_postprocessed);
-  if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
-    {
-      nucleation_handler.attempt_nucleation(solver_context);
-    }
+  solver_handler.solve(increment, update_postprocessed);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -370,13 +366,13 @@ PDEProblem<dim, degree, number>::solve()
     {
       user_inputs->get_temporal_discretization().update_increment();
       user_inputs->get_temporal_discretization().update_time();
+      unsigned int increment = user_inputs->get_temporal_discretization().get_increment();
 
       Timer::start_section("Solve Increment");
       solve_increment();
       Timer::end_section("Solve Increment");
 
-      if (user_inputs->get_spatial_discretization().should_refine_mesh(
-            user_inputs->get_temporal_discretization().get_increment()))
+      if (user_inputs->get_spatial_discretization().should_refine_mesh(increment))
         {
           // Perform grid refinement
           ConditionalOStreams::pout_base()
@@ -395,8 +391,7 @@ PDEProblem<dim, degree, number>::solve()
           solution_handler.update_ghosts();
           Timer::end_section("Update ghosts");
         }
-      if (user_inputs->get_output_parameters().should_output(
-            user_inputs->get_temporal_discretization().get_increment()))
+      if (user_inputs->get_output_parameters().should_output(increment))
         {
           Timer::start_section("Output");
           SolutionOutput<dim, number>(solution_handler.get_solution_vector(),
@@ -445,6 +440,13 @@ PDEProblem<dim, degree, number>::solve()
             }
           ConditionalOStreams::pout_base() << "\n" << std::flush;
           Timer::end_section("Output");
+        }
+      if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
+        {
+          NucleationHandler<dim, degree, number>::attempt_nucleation(
+            solver_context,
+            solver_context.get_pde_operator()->get_phase_field_utils().nuclei_list);
+          // TODO: refine around nucleus when using amr
         }
     }
 }

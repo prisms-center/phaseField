@@ -6,27 +6,22 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
+#include <prismspf/nucleation/nucleus.h>
+
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief This class contains mutable utilities for phase field problems.
  */
-template <unsigned int dim, typename number>
-class PhaseFieldUtils
+template <unsigned int dim>
+struct PhaseFieldUtils
 {
-public:
   /**
-   * @brief Constructor.
+   * @brief Nucleus list.
    */
-  PhaseFieldUtils() = default;
-
-private:
-  /**
-   * @brief
-   */
-  void
-  solve();
+  std::vector<Nucleus<dim>> nuclei_list;
 };
 
 PRISMS_PF_END_NAMESPACE
