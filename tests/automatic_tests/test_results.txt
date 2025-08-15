@@ -1176,3 +1176,59 @@ Time: 36.64751100540161
  
 Tests Passed: 11/11
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-08-15 12:08
+Architecture: x86_64
+Model name: AMD Ryzen 7 7745HX with Radeon Graphics
+CPU(s): 16
+CPU max/min MHz: 5151.0000, 400.0000
+Hypervisor vendor: None
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 4.646788597106934
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 35.337499141693115
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 20.272907733917236
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 5.155086517333984
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 2.3318967819213867
+ 
+Application: mechanics
+Result: Pass
+Time: 2.4502627849578857
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 10.743233680725098
+ 
+Application: fracture
+Result: Pass
+Time: 8.710550308227539
+ 
+Application: solution_blocks
+Result: Pass
+Time: 2.283773183822632
+ 
+Application: linear_solve_old_solution
+Result: Pass
+Time: 2.2894933223724365
+ 
+Application: cavity_flow
+Result: New Gold Standard
+Time: 60.52648162841797
+ 
+Tests Passed: 11/11
+--------------------------------------------------------- 
