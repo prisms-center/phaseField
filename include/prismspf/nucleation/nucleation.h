@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/fe/fe_values.h>
+
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/nucleation_parameters.h>
@@ -35,7 +37,8 @@ public:
   static double
   calculate_number_of_events(const double &rate,
                              const double &delta_t,
-                             const double &volume)
+                             const double &volume,
+                             std::mt19937 &rng)
   {
     std::poisson_distribution<unsigned int> distribution(rate * delta_t * volume);
     return distribution(rng);
@@ -43,29 +46,36 @@ public:
 
 private:
   // Add private member variables and functions as needed
-  static std::uniform_real_distribution<double> uniform_unit_interval(-1.0, 1.0);
+  static const std::uniform_real_distribution<double> uniform_unit_interval(-1.0, 1.0);
 };
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline static void
+inline void
 NucleationHandler<dim, degree, number>::attempt_nucleation(
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
 {
   NucleationParameters &nucleation_parameters =
-    solver_context.user_inputs->get_nucleation_parameters();
+    solver_context.get_user_inputs().get_nucleation_parameters();
   double delta_t =
     nucleation_parameters.get_nucleation_period() *
-    solver_context.user_inputs->get_temporal_discretization().get_delta_t();
-  auto &rng = solver_context.user_inputs->get_miscellaneous_parameters().rng;
+    solver_context.get_user_inputs().get_temporal_discretization().get_delta_t();
+  auto &rng = solver_context.get_user_inputs().get_miscellaneous_parameters().rng;
+  // Set up FEValues
+  const dealii::QGaussLobatto<1> quadrature(degree + 1);
+  const unsigned int             num_quad_points = quadrature.size();
+  dealii::FEValues<dim> fe_values(dealii::FESystem<dim>(dealii::FE_Q<dim>(quadrature),
+                                                        dim),
+                                  quadrature,
+                                  dealii::UpdateFlags::update_values);
   for (const auto &[index, variable] :
-       solver_context.user_inputs->get_variable_attributes())
+       solver_context.get_user_inputs().get_variable_attributes())
     {
-      if (variable.is_nucleation_rate)
+      if (variable.is_nucleation_rate())
         {
           std::uniform_int_distribution<unsigned int> nucleating_index_dist(
             0,
-            variable.nucleating_indices.size() - 1);
+            variable.get_nucleating_field_indices().size() - 1);
           std::list<Nucleus<dim>> new_nuclei;
           // Perform nucleation logic here
           // This is where you would check conditions and create nuclei
@@ -75,6 +85,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
             {
               if (cell->is_locally_owned())
                 {
+                  std::vector<number> values(num_quad_points, 0.0);
+                  solver_context.get_matrix_free_container().get_fe_values(index);
                   // Grab the DoFHandler iterator
                   const auto dof_iterator = cell->as_dof_handler_iterator(
                     solver_context.get_dof_handler().get_dof_handler(index));
@@ -86,17 +98,18 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                     solver_context.get_solution_handler()
                       .get_solution_vector(index, DependencyType::Normal),
                     values);
+                  double nuc_rate = 0.0;
                   for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                     {
                       nuc_rate +=
                         values[q_point] * fe_values.get_quadrature().weight(q_point);
                     }
-                  unsigned int num_nuclei_in_cell =
-                    nucleation_parameters.calculate_number_of_events(
-                      nuc_rate,
-                      delta_t,
-                      solver_context.get_element_volume_container().get_volume(
-                        dof_iterator));
+                  unsigned int num_nuclei_in_cell = calculate_number_of_events(
+                    nuc_rate,
+                    delta_t,
+                    solver_context.get_element_volume_container().get_volume(
+                      dof_iterator),
+                    solver_context.get_user_inputs().get_miscellaneous_parameters().rng);
                   for (unsigned int i = 0; i < num_nuclei_in_cell; ++i)
                     {
                       dealii::Point<dim> nucleus_location_unit_cell;
@@ -105,16 +118,18 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                           nucleus_location_unit_cell[d] = uniform_unit_interval(rng);
                         }
                       dealii::Point<dim> nucleus_location =
-                        dealii::transform_unit_to_real_cell(cell,
-                                                            nucleus_location_unit_cell);
-                      double seed_time =
-                        solver_context.user_inputs->get_temporal_discretization()
-                          .get_time();
-                      unsigned int seed_increment =
-                        solver_context.user_inputs->get_temporal_discretization()
-                          .get_increment();
+                        dealii::Mapping<dim>::transform_unit_to_real_cell(
+                          cell,
+                          nucleus_location_unit_cell);
+                      double seed_time = solver_context.get_user_inputs()
+                                           .get_temporal_discretization()
+                                           .get_time();
+                      unsigned int seed_increment = solver_context.get_user_inputs()
+                                                      .get_temporal_discretization()
+                                                      .get_increment();
                       unsigned int nucleating_index =
-                        variable.nucleating_indices[nucleating_index_dist(rng)];
+                        variable
+                          .get_nucleating_field_indices()[nucleating_index_dist(rng)];
 
                       new_nuclei.emplace_back(nucleating_index,
                                               nucleus_location,

@@ -327,7 +327,7 @@ PDEProblem<dim, degree, number>::solve_increment()
   bool update_postprocessed =
     user_inputs->get_spatial_discretization().should_refine_mesh(increment) ||
     user_inputs->get_output_parameters().should_output(increment) ||
-    (user_inputs->get_nucleation_parameters().postprocessed_nucleation_rate_exists &&
+    (user_inputs->get_nucleation_parameters().postprocessed_nucleation_rate_exists() &&
      user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment));
 
   // Solve a single increment
@@ -445,7 +445,7 @@ PDEProblem<dim, degree, number>::solve()
         {
           NucleationHandler<dim, degree, number>::attempt_nucleation(
             solver_context,
-            solver_context.get_pde_operator()->get_phase_field_utils().nuclei_list);
+            solver_context.get_pde_operator()->phase_field_utils().nuclei_list);
           // TODO: refine around nucleus when using amr
         }
     }

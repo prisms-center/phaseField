@@ -126,6 +126,24 @@ struct VariableAttributes
   }
 
   /**
+   * @brief Whether the field is a nucleation rate variable.
+   */
+  [[nodiscard]] bool
+  is_nucleation_rate() const
+  {
+    return is_nucleation_rate_variable;
+  }
+
+  /**
+   * @brief Get the nucleating field indices.
+   */
+  [[nodiscard]] const std::vector<Types::Index> &
+  get_nucleating_field_indices() const
+  {
+    return nucleation_indices;
+  }
+
+  /**
    * @brief Get the solve block.
    */
   [[nodiscard]] Types::Index
@@ -356,13 +374,13 @@ private:
    * @brief Is a nucleation rate
    * @remark User-set
    */
-  bool is_nucleation_rate = false;
+  bool is_nucleation_rate_variable = false;
 
   /**
    * @brief If this is a nucleation rate, the indices of the nucleating fields
    * @remark User-set
    */
-  std::vector<unsigned int> nucleation_indices;
+  std::vector<Types::Index> nucleation_indices;
 
   /**
    * @brief Solve block

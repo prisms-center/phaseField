@@ -35,7 +35,7 @@ PDEOperator<dim, degree, number>::get_timestep() const
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-PhaseFieldUtilities<dim, number> &
+PhaseFieldUtils<dim> &
 PDEOperator<dim, degree, number>::phase_field_utils()
 {
   return pf_utils;

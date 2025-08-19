@@ -5,6 +5,7 @@
 
 #include <deal.II/base/point.h>
 
+#include <prismspf/core/phase_field_utils.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -16,9 +17,6 @@ class UserInputParameters;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class VariableContainer;
-
-template <unsigned int dim, typename number>
-class PhaseFieldUtilities;
 
 // TODO: Pass pf_utils into the operators rather than having it as a member variable.
 // TODO: Remove user_inputs as a member, consider passing into operator. Users should get
@@ -118,7 +116,7 @@ public:
   /**
    * @brief Get the phase-field utilities (reference).
    */
-  [[nodiscard]] PhaseFieldUtilities<dim, number> &
+  [[nodiscard]] PhaseFieldUtils<dim> &
   phase_field_utils();
 
 private:
@@ -130,7 +128,7 @@ private:
   /**
    * Phase-Field utilities.
    */
-  PhaseFieldUtilities<dim, number> pf_utils;
+  PhaseFieldUtils<dim> pf_utils;
 };
 
 PRISMS_PF_END_NAMESPACE

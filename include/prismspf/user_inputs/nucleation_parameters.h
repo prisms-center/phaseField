@@ -132,12 +132,21 @@ public:
     print_timing_with_nucleation = _print_timing_with_nucleation;
   }
 
+  /**
+   * @brief Whether a postprocessed nucleation rate exists
+   */
+  [[nodiscard]] bool
+  postprocessed_nucleation_rate_exists() const
+  {
+    return pp_nucleation_rate_exists;
+  }
+
 private:
   // The number of steps between nucleationting relevant information to screen
   unsigned int nucleation_period = UINT_MAX;
 
   // Whether a postprocess field is being used for nucleation
-  bool postprocessed_nucleation_rate_exists = false;
+  bool pp_nucleation_rate_exists = false;
 
   // The radius around a nucleus to exclude other nuclei
   double nucleus_exclusion_distance = 0.0;
@@ -170,9 +179,9 @@ NucleationParameters::postprocess_and_validate(
   // Check if the postprocessed nucleation rate exists
   for (const auto &[index, variable] : var_attributes)
     {
-      if (variable.is_postprocess() && variable.is_nucleation_rate)
+      if (variable.is_postprocess() && variable.is_nucleation_rate())
         {
-          postprocessed_nucleation_rate_exists = true;
+          pp_nucleation_rate_exists = true;
           break;
         }
     }
