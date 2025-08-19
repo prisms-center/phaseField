@@ -121,6 +121,20 @@ private:
    */
   unsigned int global_min_level = 0;
 
+#ifdef ADDITIONAL_OPTIMIZATIONS
+  /**
+   * @brief A set of the degenerate field indices that are outside of the multigrid
+   * dependencies.
+   *
+   * Since the degenerate field indices are solely determined by the FieldType and the
+   * constraints, no info about any multigrid schemes is contained. This leads to the edge
+   * case where the degenerate field index is not part of the multigrid LHS dependencies.
+   * In this case, we have to keep track of that and initialize the degenerate field index
+   * as if it were part of the multigrid dependencies.
+   */
+  std::set<Types::Index> degenerate_field_indices_outside_mg;
+#endif
+
   /**
    * @brief Collection of the triangulation DoFs for each multigrid level for all fields
    * that require it. Like before, we can share the same DoFHandler for multiple fields in
