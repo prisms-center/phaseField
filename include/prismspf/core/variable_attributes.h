@@ -134,21 +134,21 @@ struct VariableAttributes
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
-   * @brief Set the duplicate field index.
+   * @brief Set the degenerate field index.
    */
   void
-  set_duplicate_field_index(const Types::Index &_duplicate_field_index)
+  set_degenerate_field_index(const Types::Index &_degenerate_field_index)
   {
-    duplicate_field_index = _duplicate_field_index;
+    degenerate_field_index = _degenerate_field_index;
   }
 
   /**
-   * @brief Get the duplicate field index.
+   * @brief Get the degenerate field index.
    */
   [[nodiscard]] Types::Index
-  get_duplicate_field_index() const
+  get_degenerate_field_index() const
   {
-    return duplicate_field_index;
+    return degenerate_field_index;
   }
 #endif
 
@@ -358,12 +358,10 @@ private:
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
   /**
-   * @brief Duplicate field index.
+   * @brief Degenerate field index.
    * @remark Internally determined
-   *
-   * TODO (landinjm): Rename
    */
-  mutable Types::Index duplicate_field_index = Numbers::invalid_index;
+  mutable Types::Index degenerate_field_index = Numbers::invalid_index;
 #endif
 
   /**
