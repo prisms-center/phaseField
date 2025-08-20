@@ -166,8 +166,8 @@ public:
    * @brief Check whether the boundary conditions for two fields are the same.
    */
   [[nodiscard]] bool
-  check_duplicate_boundary_conditions(const Types::Index &index_1,
-                                      const Types::Index &index_2) const;
+  check_degenerate_boundary_conditions(const Types::Index &index_1,
+                                       const Types::Index &index_2) const;
 
   /**
    * @brief Print parameters to summary.log
@@ -342,12 +342,12 @@ BoundaryParameters<dim>::postprocess_and_validate(
   bc_list.clear();
 
 #ifdef ADDITIONAL_OPTIMIZATIONS
-  // Check if any fields are duplicates in terms of boundary conditions
+  // Check if any fields are degenerate in terms of boundary conditions
   // TODO (landinjm): Clean this up
   for (const auto &[index_1, variable_1] : var_attributes)
     {
-      // Skip is the duplicate index has already been assigned
-      if (variable_1.get_duplicate_field_index() != Numbers::invalid_index)
+      // Skip is the degenerate index has already been assigned
+      if (variable_1.get_degenerate_field_index() != Numbers::invalid_index)
         {
           continue;
         }
@@ -365,20 +365,20 @@ BoundaryParameters<dim>::postprocess_and_validate(
               continue;
             }
 
-          bool is_duplicate = false;
+          bool is_degenerate = false;
 
           const auto field_type_2 = variable_2.get_field_type();
 
-          is_duplicate = field_type_1 == field_type_2 &&
-                         check_duplicate_boundary_conditions(index_1, index_2);
+          is_degenerate = field_type_1 == field_type_2 &&
+                          check_degenerate_boundary_conditions(index_1, index_2);
 
-          if (is_duplicate)
+          if (is_degenerate)
             {
               ConditionalOStreams::pout_verbose()
                 << "Field " << variable_1.get_name()
                 << " has the same boundary conditions as " << variable_2.get_name()
                 << ". Using optimizations...\n";
-              variable_2.set_duplicate_field_index(index_1);
+              variable_2.set_degenerate_field_index(index_1);
             }
         }
     }
@@ -387,7 +387,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
 
 template <unsigned int dim>
 inline bool
-BoundaryParameters<dim>::check_duplicate_boundary_conditions(
+BoundaryParameters<dim>::check_degenerate_boundary_conditions(
   const Types::Index &index_1,
   const Types::Index &index_2) const
 {
@@ -402,22 +402,22 @@ BoundaryParameters<dim>::check_duplicate_boundary_conditions(
   Assert(boundary_condition_list.contains(index_2),
          dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_2)));
 
-  bool is_duplicate = false;
+  bool is_degenerate = false;
 
   // First check the boundary_condition_list
   const auto &boundary_condition_1 = boundary_condition_list.at(index_1);
   const auto &boundary_condition_2 = boundary_condition_list.at(index_2);
 
-  is_duplicate = boundary_condition_1 == boundary_condition_2;
+  is_degenerate = boundary_condition_1 == boundary_condition_2;
 
   // Check the pinned points
   if (pinned_point_list.contains(index_1) && pinned_point_list.contains(index_2))
     {
-      is_duplicate =
-        is_duplicate && pinned_point_list.at(index_1) == pinned_point_list.at(index_2);
+      is_degenerate =
+        is_degenerate && pinned_point_list.at(index_1) == pinned_point_list.at(index_2);
     }
 
-  return is_duplicate;
+  return is_degenerate;
 }
 
 template <unsigned int dim>

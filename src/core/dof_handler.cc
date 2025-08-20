@@ -31,15 +31,15 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      const Types::Index duplicate_field_index =
-        user_inputs->get_variable_attributes().at(index).get_duplicate_field_index();
-      if (duplicate_field_index != Numbers::invalid_index)
+      const Types::Index degenerate_field_index =
+        user_inputs->get_variable_attributes().at(index).get_degenerate_field_index();
+      if (degenerate_field_index != Numbers::invalid_index)
         {
-          Assert(dof_handlers.contains(duplicate_field_index),
+          Assert(dof_handlers.contains(degenerate_field_index),
                  dealii::ExcMessage(
                    "The DoFHandler set does not contain an entry for index = " +
-                   std::to_string(duplicate_field_index)));
-          const_dof_handlers.push_back(dof_handlers.at(duplicate_field_index).get());
+                   std::to_string(degenerate_field_index)));
+          const_dof_handlers.push_back(dof_handlers.at(degenerate_field_index).get());
           continue;
         }
 #endif
@@ -62,18 +62,19 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
     {
       const unsigned int relative_level = min_level - global_min_level;
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      const Types::Index duplicate_field_index =
-        user_inputs->get_variable_attributes().at(index).get_duplicate_field_index();
-      // TODO (landinjm): Duplicate field indices aren't well support because we have to
+      const Types::Index degenerate_field_index =
+        user_inputs->get_variable_attributes().at(index).get_degenerate_field_index();
+      // TODO (landinjm): Degenerate field indices aren't well support because we have to
       // deal with the edge case where the minimum multigrid levels are different
-      if (duplicate_field_index != Numbers::invalid_index)
+      if (degenerate_field_index != Numbers::invalid_index)
         {
-          if (!mg_dof_handlers.contains(duplicate_field_index))
+          if (!mg_dof_handlers.contains(degenerate_field_index))
             {
-              Assert(!degenerate_field_indices_outside_mg.contains(duplicate_field_index),
+              Assert(!degenerate_field_indices_outside_mg.contains(
+                       degenerate_field_index),
                      dealii::ExcInternalError());
-              degenerate_field_indices_outside_mg.insert(duplicate_field_index);
-              mg_dof_handlers[duplicate_field_index] =
+              degenerate_field_indices_outside_mg.insert(degenerate_field_index);
+              mg_dof_handlers[degenerate_field_index] =
                 dealii::MGLevelObject<std::unique_ptr<dealii::DoFHandler<dim>>>(
                   min_level,
                   global_max_level);
@@ -81,18 +82,18 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
                    level < const_mg_dof_handlers.size();
                    level++)
                 {
-                  mg_dof_handlers[duplicate_field_index][level + global_min_level] =
+                  mg_dof_handlers[degenerate_field_index][level + global_min_level] =
                     std::make_unique<dealii::DoFHandler<dim>>();
                 }
             }
-          Assert(mg_dof_handlers.at(duplicate_field_index).min_level() == min_level,
+          Assert(mg_dof_handlers.at(degenerate_field_index).min_level() == min_level,
                  dealii::ExcMessage("There was a mismatch in the minimum multigrid level "
-                                    "for the duplicate fields."));
+                                    "for the degenerate fields."));
           for (unsigned int level = relative_level; level < const_mg_dof_handlers.size();
                level++)
             {
               const_mg_dof_handlers[level].push_back(
-                mg_dof_handlers[duplicate_field_index][level + global_min_level].get());
+                mg_dof_handlers[degenerate_field_index][level + global_min_level].get());
             }
           continue;
         }
@@ -133,11 +134,11 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      const Types::Index duplicate_field_index =
-        user_inputs->get_variable_attributes().at(index).get_duplicate_field_index();
-      if (duplicate_field_index != Numbers::invalid_index)
+      const Types::Index degenerate_field_index =
+        user_inputs->get_variable_attributes().at(index).get_degenerate_field_index();
+      if (degenerate_field_index != Numbers::invalid_index)
         {
-          n_dofs += dof_handlers.at(duplicate_field_index)->n_dofs();
+          n_dofs += dof_handlers.at(degenerate_field_index)->n_dofs();
           continue;
         }
 #endif
@@ -166,34 +167,34 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
   for (const auto &[index, dependency, min_level] : mg_info.get_lhs_fields())
     {
 #ifdef ADDITIONAL_OPTIMIZATIONS
-      const Types::Index duplicate_field_index =
-        user_inputs->get_variable_attributes().at(index).get_duplicate_field_index();
-      if (duplicate_field_index != Numbers::invalid_index)
+      const Types::Index degenerate_field_index =
+        user_inputs->get_variable_attributes().at(index).get_degenerate_field_index();
+      if (degenerate_field_index != Numbers::invalid_index)
         {
-          if (degenerate_field_indices_outside_mg.contains(duplicate_field_index) &&
-              !processed_degenerate_field_indices.contains(duplicate_field_index))
+          if (degenerate_field_indices_outside_mg.contains(degenerate_field_index) &&
+              !processed_degenerate_field_indices.contains(degenerate_field_index))
             {
-              Assert(mg_dof_handlers.contains(duplicate_field_index),
+              Assert(mg_dof_handlers.contains(degenerate_field_index),
                      dealii::ExcNotInitialized());
               for (unsigned int level = min_level; level <= mg_info.get_mg_max_level();
                    ++level)
                 {
-                  Assert(mg_dof_handlers.at(duplicate_field_index)[level] != nullptr,
+                  Assert(mg_dof_handlers.at(degenerate_field_index)[level] != nullptr,
                          dealii::ExcNotInitialized());
-                  mg_dof_handlers.at(duplicate_field_index)[level]->reinit(
+                  mg_dof_handlers.at(degenerate_field_index)[level]->reinit(
                     triangulation_handler.get_mg_triangulation(level));
-                  mg_dof_handlers.at(duplicate_field_index)[level]->distribute_dofs(
+                  mg_dof_handlers.at(degenerate_field_index)[level]->distribute_dofs(
                     fe_system.at(user_inputs->get_variable_attributes()
-                                   .at(duplicate_field_index)
+                                   .at(degenerate_field_index)
                                    .get_field_type()));
                 }
-              processed_degenerate_field_indices.insert(duplicate_field_index);
+              processed_degenerate_field_indices.insert(degenerate_field_index);
             }
           for (unsigned int level = min_level; level <= mg_info.get_mg_max_level();
                ++level)
             {
               n_dofs_with_mg +=
-                mg_dof_handlers.at(duplicate_field_index)[level]->n_dofs();
+                mg_dof_handlers.at(degenerate_field_index)[level]->n_dofs();
             }
           continue;
         }
