@@ -155,7 +155,7 @@ WARN_LOGFILE           = DoxygenWarningLog.txt
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = ../../src ../../include applications installation tutorial
+INPUT                  = ../../src ../../include main applications installation tutorial
 INPUT_ENCODING         = UTF-8
 INPUT_FILE_ENCODING    =
 FILE_PATTERNS          = *.c \

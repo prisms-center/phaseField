@@ -2,3 +2,5 @@ html/*
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 DoxygenWarningLog.txt
+
+!main
