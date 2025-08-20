@@ -24,8 +24,8 @@ equations (PDEs)
 phase field applications. Like deal.II positions itself as a general-purpose finite
 element library, PRISMS-PF is a general-purpose partial differential equation (PDE)
 solver.\n\n However, the numerics are primarily designed for phase field, and might be
-unsuitable for your application. If you find yourself in this position, please reach
-out over GitHub discussions or email!
+unsuitable for your application. If you find yourself in this position, please \ref
+contact us!
 
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS)
 Center at University of Michigan which is supported by the U.S. Department of Energy
