@@ -4,7 +4,7 @@ Welcome to the installation guide for PRISMS-PF! This is arguably the most diffi
 for most of our users, but we hope to make it as easy as possible. If you run into any
 issues, please feel free to \ref contact us.
 
-There are many ways to install PRISMS-PF's, and we will try to cover the most common ones
+There are many ways to install PRISMS-PF, and we will try to cover the most common ones
 here.
 
 <table>

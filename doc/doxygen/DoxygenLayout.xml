@@ -8,6 +8,7 @@
     <tab type="user" url="installation.html" title="Installation"/>
     <tab type="user" url="tutorial.html" title="Tutorial"/>
     <tab type="user" url="applications.html" title="Applications"/>
+    <tab type="user" url="contact.html" title="Contact"/>
     <tab type="topics" visible="yes" title="" intro=""/>
     <tab type="modules" visible="yes" title="" intro="">
       <tab type="modulelist" visible="yes" title="" intro=""/>
