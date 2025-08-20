@@ -1,0 +1,7 @@
+html {
+    /* override light-mode variables here */
+}
+
+html.dark-mode {
+    /* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */
+}
