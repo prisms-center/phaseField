@@ -1,0 +1,5 @@
+html/*
+latex/*
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+DoxygenWarningLog.txt
