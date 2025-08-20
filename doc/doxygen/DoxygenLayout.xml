@@ -5,7 +5,10 @@
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="pages" visible="no" title="" intro=""/>
-    <tab type="user" url="installation.html" title="Installation"/>
+    <tab	type="usergroup" url="\ref installation" title="Installation">
+	    <tab type="user" url="\ref docker" title="Docker"/>
+	    <tab type="user" url="\ref source" title="Source"/>
+    </tab>
     <tab type="user" url="tutorial.html" title="Tutorial"/>
     <tab type="user" url="applications.html" title="Applications"/>
     <tab type="user" url="contact.html" title="Contact"/>

@@ -29,6 +29,43 @@ it does require some basic knowledge of build systems like CMake</td>
   </tr>
 </table>
 
+Once you have decided on a method, you can follow the instructions below:
+<ul class="nav-submenu">
+  <li><a href="docker.html">Install with Docker</a></li>
+  <li><a href="source.html">Install from Source</a></li>
+</ul>
+
+*/
+
+/** \page docker Installing with Docker
+As mentioned in the \ref installation page, Docker is potentially the easiest way to
+install PRISMS-PF. However, it is not performant and unsuitable for large simulations.
+We'll get into those reasons with a brief introduction to Docker.
+
+\subsection docker_introduction Introduction to Docker
+Docker is a platform that allows you to run applications in containers. What are
+containers? Containers are typically stripped down versions of virtual machines that allow
+you to run an application in an isolated and reproducible environment. This custom
+environment is defined by a Dockerfile, which is a text file that contains all the
+instructions to build the container image. The image can then be run on any machine that
+has Docker installed, regardless of the underlying operating system.
+
+Importantly for PRISMS-PF, Docker allows you to run our software without needing to
+install any dependencies. All you have to do is download the Docker image! Depending on
+your operating system and the difference (if any) between the your hardware and the
+emulated hardware, the running of a Docker image may add some overhead, which will slow
+down your simulations. Additionally, with the Docker image, you're stuck with the image we
+provide. If you want to change the compiler, the configuration of dependencies, or any
+other things, you should consider \ref source instead.
+
+\subsection docker_installation Installation with Docker
+To install PRISMS-PF with Docker, you will need to have Docker installed on your machine.
+You can find instructions for installing Docker on the official [Docker
+website](https://docs.docker.com/get-started/get-docker/).
+
+ */
+
+/** \page source Installing from Source
 
 \subsection installation_prerequisites Prerequisites
 <div class="tabbed">
@@ -42,4 +79,4 @@ instructions if you use either of those options.
 
 </div>
 
-*/
+ */
