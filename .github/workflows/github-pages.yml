@@ -31,18 +31,26 @@ jobs:
         cd doc/doxygen
         cmake .
         make
+      
+    - name: Update version selector
+      run: |
+        ./contrib/utilities/update_doc_version_selector.sh doc/doxygen/docs/
+
+    - name: Update default version
+      run: |
+        ./contrib/utilities/update_doc_default_version.sh doc/doxygen/docs/
 
     - name: Upload folders
       uses: actions/upload-artifact@v4
       with:
         name: html-doc
-        path: doc/doxygen/html/
+        path: doc/doxygen/docs/
 
     - name: Deploy to GitHub pages
       uses: JamesIves/github-pages-deploy-action@v4
       if: github.ref == 'refs/heads/master'
       with:
         branch: gh-pages
-        folder: doc/doxygen/html/
+        folder: doc/doxygen/docs/
         target-folder: doxygen/
         
