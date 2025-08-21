@@ -73,6 +73,11 @@ public:
 
   /**
    * @brief Return the value of the specified field.
+   *
+   * @tparam T the return type. Must be either a `SizeType` or `dealii::Tensor<1, dim,
+   * SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -153,6 +158,11 @@ public:
 
   /**
    * @brief Return the gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * SizeType>` or `dealii::Tensor<2, dim, SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -233,6 +243,11 @@ public:
 
   /**
    * @brief Return the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * SizeType>` or `dealii::Tensor<3, dim, SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -313,6 +328,11 @@ public:
 
   /**
    * @brief Return the diagonal of the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * SizeType>` or `dealii::Tensor<2, dim, SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -393,6 +413,11 @@ public:
 
   /**
    * @brief Return the laplacian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `SizeType` or `dealii::Tensor<1, dim,
+   * SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -473,6 +498,10 @@ public:
 
   /**
    * @brief Return the divergence of the specified field.
+   *
+   * @tparam T the return type. Must be `SizeType`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -536,6 +565,11 @@ public:
 
   /**
    * @brief Return the symmetric gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * SizeType>` or `dealii::SymmetricTensor<2, dim, SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
@@ -605,6 +639,11 @@ public:
    *
    * Note that this is dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1,
    * dim, dealii::VectorizedArray<number>> type for 3D.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, 1,
+   * SizeType>` or `dealii::Tensor<1, dim, SizeType>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
    */
   template <typename T>
   [[nodiscard]] T
