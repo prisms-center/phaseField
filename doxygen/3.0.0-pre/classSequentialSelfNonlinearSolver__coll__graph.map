@@ -1,0 +1,7 @@
+<map id="SequentialSelfNonlinearSolver&lt; dim, degree, number &gt;" name="SequentialSelfNonlinearSolver&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="This class handles the self&#45;nonlinear solves of a single nonexplicit field." alt="" coords="5,181,225,221"/>
+<area shape="rect" id="Node000002" href="$classSequentialSolver.html" title=" " alt="" coords="27,93,203,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,147,118,181,113,181,113,147"/>
+<area shape="rect" id="Node000003" href="$classSolverBase.html" title=" " alt="" coords="19,5,211,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,59,118,93,113,93,113,59"/>
+</map>

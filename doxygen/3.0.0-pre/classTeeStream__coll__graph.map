@@ -1,0 +1,5 @@
+<map id="TeeStream" name="TeeStream">
+<area shape="rect" id="Node000001" title="Combined output streams so we can output to terminal and the summary.log with a single statement." alt="" coords="12,79,103,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,109,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,44,60,79,55,79,55,44"/>
+</map>

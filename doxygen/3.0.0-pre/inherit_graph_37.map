@@ -1,0 +1,21 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classSolverBase.html" title=" " alt="" coords="5,197,197,237"/>
+<area shape="rect" id="Node000001" href="$classConcurrentSolver.html" title=" " alt="" coords="245,101,424,141"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="162,190,284,139,286,144,165,194"/>
+<area shape="rect" id="Node000005" href="$classSequentialSolver.html" title=" " alt="" coords="247,261,423,301"/>
+<area shape="poly" id="edge12_Node000000_Node000005" title=" " alt="" coords="189,238,262,259,261,264,187,244"/>
+<area shape="rect" id="Node000002" href="$classConcurrentConstantSolver.html" title="This class handles the explicit solves of all constant fields." alt="" coords="491,5,683,45"/>
+<area shape="poly" id="edge9_Node000001_Node000002" title=" " alt="" coords="386,93,471,55,507,43,509,48,473,60,388,97"/>
+<area shape="rect" id="Node000003" href="$classConcurrentExplicitPostprocessSolver.html" title="This class handles the explicit solves of all postprocessed fields." alt="" coords="472,69,701,109"/>
+<area shape="poly" id="edge10_Node000001_Node000003" title=" " alt="" coords="437,106,472,101,472,107,438,111"/>
+<area shape="rect" id="Node000004" href="$classConcurrentExplicitSolver.html" title="This class handles the explicit solves of all explicit fields." alt="" coords="493,133,681,173"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="438,132,493,139,492,144,438,137"/>
+<area shape="rect" id="Node000006" href="$classSequentialAuxiliarySolver.html" title="This class handles all auxiliary solves." alt="" coords="491,197,682,237"/>
+<area shape="poly" id="edge13_Node000005_Node000006" title=" " alt="" coords="427,255,507,235,508,240,428,260"/>
+<area shape="rect" id="Node000007" href="$classSequentialCoNonlinearSolver.html" title="This class handles the co&#45;nonlinear solves of a several nonexplicit fields." alt="" coords="481,261,693,301"/>
+<area shape="poly" id="edge14_Node000005_Node000007" title=" " alt="" coords="437,279,480,279,480,284,437,284"/>
+<area shape="rect" id="Node000008" href="$classSequentialLinearSolver.html" title="This class handles all linear solves." alt="" coords="493,325,681,365"/>
+<area shape="poly" id="edge15_Node000005_Node000008" title=" " alt="" coords="428,302,508,323,507,328,427,307"/>
+<area shape="rect" id="Node000009" href="$classSequentialSelfNonlinearSolver.html" title="This class handles the self&#45;nonlinear solves of a single nonexplicit field." alt="" coords="477,389,697,429"/>
+<area shape="poly" id="edge16_Node000005_Node000009" title=" " alt="" coords="372,308,418,343,473,375,503,387,501,392,471,380,415,347,368,312"/>
+</map>

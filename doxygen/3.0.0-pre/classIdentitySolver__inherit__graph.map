@@ -1,0 +1,5 @@
+<map id="IdentitySolver&lt; dim, degree, number &gt;" name="IdentitySolver&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="Class that handles the assembly and solving of a field with the identity preconditioner (no precondit..." alt="" coords="16,93,173,133"/>
+<area shape="rect" id="Node000002" href="$classLinearSolverBase.html" title="Base class that handles the assembly and linear solving of a field." alt="" coords="5,5,184,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,59,97,93,92,93,92,59"/>
+</map>

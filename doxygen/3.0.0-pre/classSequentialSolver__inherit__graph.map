@@ -1,0 +1,13 @@
+<map id="SequentialSolver&lt; dim, degree, number &gt;" name="SequentialSolver&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="245,101,421,141"/>
+<area shape="rect" id="Node000003" href="$classSequentialAuxiliarySolver.html" title="This class handles all auxiliary solves." alt="" coords="484,5,675,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="384,93,468,55,503,43,505,48,470,60,386,98"/>
+<area shape="rect" id="Node000004" href="$classSequentialCoNonlinearSolver.html" title="This class handles the co&#45;nonlinear solves of a several nonexplicit fields." alt="" coords="473,69,685,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="435,105,473,100,474,106,435,111"/>
+<area shape="rect" id="Node000005" href="$classSequentialLinearSolver.html" title="This class handles all linear solves." alt="" coords="485,133,673,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="436,132,485,138,485,144,435,137"/>
+<area shape="rect" id="Node000006" href="$classSequentialSelfNonlinearSolver.html" title="This class handles the self&#45;nonlinear solves of a single nonexplicit field." alt="" coords="469,197,689,237"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="386,145,470,183,505,195,503,200,468,188,384,150"/>
+<area shape="rect" id="Node000002" href="$classSolverBase.html" title=" " alt="" coords="5,101,197,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,119,245,119,245,124,212,124"/>
+</map>

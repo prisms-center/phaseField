@@ -1,0 +1,5 @@
+<map id="MatrixFreeOperator&lt; dim, degree, number &gt;" name="MatrixFreeOperator&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="This is the abstract base class for the matrix&#45;free implementation of some PDE." alt="" coords="27,79,215,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,236,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,44,123,79,118,79,118,44"/>
+</map>

@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['deal_20ii_0',['deal ii',['../install_prereqs.html',1,'Installing CMake and deal.II'],['../install_prereqs.html#autotoc_md44',1,'Installing deal.II']]],
+  ['declare_5fbc_5fparameters_1',['declare_BC_parameters',['../classinputFileReader.html#ab88de098c86b49a75b258c479dc51c2e',1,'inputFileReader']]],
+  ['declare_5fcheckpoint_5fparameters_2',['declare_checkpoint_parameters',['../classinputFileReader.html#a424a3df51463b861112b408e612e0ab0',1,'inputFileReader']]],
+  ['declare_5fgrain_5floading_5fparameters_3',['declare_grain_loading_parameters',['../classinputFileReader.html#aedb23075b39be240d268f9f5159e5260',1,'inputFileReader']]],
+  ['declare_5fgrain_5fremapping_5fparameters_4',['declare_grain_remapping_parameters',['../classinputFileReader.html#ab27eff33f8449c9dcda399404964bcc1',1,'inputFileReader']]],
+  ['declare_5fload_5fic_5fparameters_5',['declare_load_IC_parameters',['../classinputFileReader.html#a0932251e482fc9c2b1e530f33fd2fb21',1,'inputFileReader']]],
+  ['declare_5fmesh_6',['declare_mesh',['../classinputFileReader.html#a19c13b78af30763b34d5b5677509ef07',1,'inputFileReader']]],
+  ['declare_5fmodel_5fconstants_7',['declare_model_constants',['../classinputFileReader.html#ab73024711c588f0922819f3b93a73084',1,'inputFileReader']]],
+  ['declare_5fnucleation_5fparameters_8',['declare_nucleation_parameters',['../classinputFileReader.html#af72f1b83a5f4f8aa438fb8ddf6dbea0e',1,'inputFileReader']]],
+  ['declare_5foutput_5fparameters_9',['declare_output_parameters',['../classinputFileReader.html#ab769487e486a4e0c87b626a5a1059aa3',1,'inputFileReader']]],
+  ['declare_5fparameters_10',['declare_parameters',['../classinputFileReader.html#a113d0cd7535b073165edead90466890a',1,'inputFileReader']]],
+  ['declare_5fpinning_5fparameters_11',['declare_pinning_parameters',['../classinputFileReader.html#a8d1a12cf5b1df42631b3e13533702192',1,'inputFileReader']]],
+  ['declare_5fsolver_5fparameters_12',['declare_solver_parameters',['../classinputFileReader.html#a8b286eacf630a67b27dc49feeee481ee',1,'inputFileReader']]],
+  ['declare_5ftime_5fdiscretization_13',['declare_time_discretization',['../classinputFileReader.html#ab084f539bba80eb5af9569908bc34bc0',1,'inputFileReader']]],
+  ['describing_20each_20block_20of_20input_20parameters_14',['Tables Describing Each Block of Input Parameters',['../input_file.html#autotoc_md18',1,'']]],
+  ['details_15',['details',['../input_file.html#autotoc_md29',1,'Boundary Conditions (see Note 4 below for details)'],['../input_file.html#autotoc_md28',1,'Checkpoints (optional, see Note 3 below for details)'],['../input_file.html#autotoc_md33',1,'Grain Remapping Parameters (optional, see Note 7 below for details)'],['../input_file.html#autotoc_md24',1,'Linear Solver Parameters for Each TIME_INDEPENDENT Equation (optional, see Note 1 below for details)'],['../input_file.html#autotoc_md30',1,'Loading Initial Conditions from File (optional, see Note 5 below for details)'],['../input_file.html#autotoc_md34',1,'Model constants (optional, see Note 8 below for details)'],['../input_file.html#autotoc_md26',1,'Nonlinear Solver Parameters for Each Nonlinear Equation (optional, see Note 2 below for details)'],['../input_file.html#autotoc_md32',1,'Nucleation Parameters for Each Nucleating Variable (optional, see Note 6 below for details)'],['../input_file.html#autotoc_md25',1,'Shared Nonlinear Solver Parameters (optional, see Note 2 below for details)'],['../input_file.html#autotoc_md31',1,'Shared Nucleation Parameters (optional, see Note 6 below for details)']]],
+  ['dimensionality_16',['Dimensionality',['../input_file.html#autotoc_md19',1,'']]],
+  ['distance_5fto_5fneighbor_5fsharing_5fop_17',['distance_to_neighbor_sharing_op',['../classSimplifiedGrainRepresentation.html#ab8270e77c7d036f26bc97966c2541013',1,'SimplifiedGrainRepresentation']]],
+  ['do_5fadaptive_5frefinement_18',['do_adaptive_refinement',['../classAdaptiveRefinement.html#a242874c2381e7b142d3d93507226e806',1,'AdaptiveRefinement']]],
+  ['docker_19',['Traditional Installation (Non-Docker)',['../install_prismspf.html#autotoc_md51',1,'']]],
+  ['docker_20installation_20',['Docker Installation',['../install_prismspf.html#autotoc_md54',1,'']]],
+  ['docker_20mac_20os_20x_20linux_20windows_21',['Docker (Mac OS X, Linux, Windows)',['../install_prereqs.html#autotoc_md47',1,'']]],
+  ['dofs_5fper_5fcell_22',['dofs_per_cell',['../classFloodFiller.html#a9feb9326062c45e8311ec353830b73e8',1,'FloodFiller']]],
+  ['domain_23',['Computational Domain',['../input_file.html#autotoc_md20',1,'']]],
+  ['downloading_20prisms_20pf_24',['Downloading PRISMS-PF',['../install_prismspf.html#autotoc_md52',1,'']]]
+];

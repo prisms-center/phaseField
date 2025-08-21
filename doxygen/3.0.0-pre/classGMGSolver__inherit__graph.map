@@ -1,0 +1,5 @@
+<map id="GMGSolver&lt; dim, degree, number &gt;" name="GMGSolver&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="Class that handles the assembly and solving of a field with a GMG preconditioner." alt="" coords="5,93,197,133"/>
+<area shape="rect" id="Node000002" href="$classLinearSolverBase.html" title="Base class that handles the assembly and linear solving of a field." alt="" coords="12,5,191,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,59,104,93,99,93,99,59"/>
+</map>
