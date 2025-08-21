@@ -1,7 +1,0 @@
-var classnonexplicitLinearSolver =
-[
-    [ "nonexplicitLinearSolver", "classnonexplicitLinearSolver.html#a3cbcac4bc9003ba251d917b14ca6a0ec", null ],
-    [ "~nonexplicitLinearSolver", "classnonexplicitLinearSolver.html#a2bf478f799ba67ef509cbe83c94815ef", null ],
-    [ "init", "classnonexplicitLinearSolver.html#a939d4191ef067a37d22e5c14a0c6735c", null ],
-    [ "solve", "classnonexplicitLinearSolver.html#a564a05dc133bbed1ebd54a5b50555973", null ]
-];
