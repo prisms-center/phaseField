@@ -29,7 +29,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "PRISMS-PF Manual"
-PROJECT_NUMBER         = "v3.0-pre"
+PROJECT_NUMBER         = @PRISMS_PF_VERSION@
 PROJECT_BRIEF          = ""
 PROJECT_LOGO           = ../../logo_v2_small.png
 PROJECT_ICON           =
@@ -222,7 +222,7 @@ INPUT_FILTER           =
 FILTER_PATTERNS        =
 FILTER_SOURCE_FILES    = NO
 FILTER_SOURCE_PATTERNS =
-USE_MDFILE_AS_MAINPAGE = landing_page.md
+USE_MDFILE_AS_MAINPAGE =
 FORTRAN_COMMENT_AFTER  = 72
 
 #---------------------------------------------------------------------------
