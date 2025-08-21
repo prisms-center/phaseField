@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"structSpatialDiscretization.html#a3bb4652a7f5d2e5d9620b9dbfee2c786":[5,0,55,13],
 "structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f":[5,0,55,21],
 "structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414":[5,0,55,12],
 "structSpatialDiscretization.html#a447e695223cdcd27cf8a6325800da3a2":[5,0,55,20],

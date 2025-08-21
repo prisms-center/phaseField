@@ -50,7 +50,6 @@ var NAVTREEINDEX2 =
 "concurrent__explicit__solver_8h_source.html":[6,0,1,0,4,2],
 "concurrent__solver_8h_source.html":[6,0,1,0,4,3],
 "conditional__ostreams_8h_source.html":[6,0,1,0,0,0],
-"config_8h_source.html":[6,0,1,0,7],
 "constraint__handler_8h_source.html":[6,0,1,0,0,1],
 "contact.html":[4],
 "contact_8h_source.html":[6,0,3,0],
@@ -79,8 +78,8 @@ var NAVTREEINDEX2 =
 "functions_e.html":[5,3,0,3],
 "functions_enum.html":[5,3,4],
 "functions_f.html":[5,3,0,4],
-"functions_func.html":[5,3,1],
 "functions_func.html":[5,3,1,0],
+"functions_func.html":[5,3,1],
 "functions_func_c.html":[5,3,1,1],
 "functions_func_d.html":[5,3,1,2],
 "functions_func_e.html":[5,3,1,3],
@@ -123,8 +122,8 @@ var NAVTREEINDEX2 =
 "grid__refiner__context_8h_source.html":[6,0,1,0,0,5],
 "grid__refiner__criterion_8h_source.html":[6,0,1,0,0,6],
 "hierarchy.html":[5,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "initial__conditions_8h_source.html":[6,0,1,0,0,7],
 "input__file__reader_8h_source.html":[6,0,1,0,5,2],
 "installation.html":[1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b":[5,0,41,5],
 "structSpatialDiscretization.html":[5,0,55],
 "structSpatialDiscretization.html#a093f80cd249b95e9640902bd2400b05f":[5,0,55,16],
-"structSpatialDiscretization.html#a2bca9c16b448dab3bd5f7ed212fdaafb":[5,0,55,19]
+"structSpatialDiscretization.html#a2bca9c16b448dab3bd5f7ed212fdaafb":[5,0,55,19],
+"structSpatialDiscretization.html#a3bb4652a7f5d2e5d9620b9dbfee2c786":[5,0,55,13]
 };
