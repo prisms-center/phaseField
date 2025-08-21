@@ -1,6 +1,8 @@
-html/*
+docs/*
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 DoxygenWarningLog.txt
 
 !main
+!docs/index.html
+!docs/version_selector.html

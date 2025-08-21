@@ -38,6 +38,7 @@
   <script type="text/javascript">
     DoxygenAwesomeTabs.init()
   </script>
+  <script type="text/javascript" src="$relpath^version_selector_handler.js"></script>
 </head>
 
 <body>
@@ -59,9 +60,8 @@
               <!--END PROJECT_LOGO-->
               <!--BEGIN PROJECT_NAME-->
               <td id="projectalign">
-                <div id="projectname">$projectname<!--BEGIN PROJECT_NUMBER--><span
-                    id="projectnumber">&#160;$projectnumber</span><!--END PROJECT_NUMBER-->
-                </div>
+                <div id="projectname">$projectname </div>
+                <div id="projectnumber"></div> <!-- version selector will be injected here -->
                 <!--BEGIN PROJECT_BRIEF-->
                 <div id="projectbrief">$projectbrief</div><!--END PROJECT_BRIEF-->
               </td>

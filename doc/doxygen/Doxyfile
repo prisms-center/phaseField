@@ -33,7 +33,7 @@ PROJECT_NUMBER         = "v3.0-pre"
 PROJECT_BRIEF          = ""
 PROJECT_LOGO           = ../../logo_v2_small.png
 PROJECT_ICON           =
-OUTPUT_DIRECTORY       =
+OUTPUT_DIRECTORY       = @DOXYGEN_OUTPUT_DIRECTORY@
 CREATE_SUBDIRS         = NO
 CREATE_SUBDIRS_LEVEL   = 8
 ALLOW_UNICODE_NAMES    = NO
@@ -255,13 +255,13 @@ IGNORE_PREFIX          =
 #---------------------------------------------------------------------------
 
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html
+HTML_OUTPUT            = @DOXYGEN_HTML_OUTPUT@
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = header.html
 HTML_FOOTER            =
 HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css custom.css
-HTML_EXTRA_FILES       = doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js doxygen-awesome-css/doxygen-awesome-tabs.js
+HTML_EXTRA_FILES       = doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js doxygen-awesome-css/doxygen-awesome-tabs.js version_selector_handler.js
 HTML_COLORSTYLE        = LIGHT
 HTML_COLORSTYLE_HUE    = 209
 HTML_COLORSTYLE_SAT    = 255
