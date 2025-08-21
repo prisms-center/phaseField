@@ -89,7 +89,7 @@ For DOI information for other releases, please refer to [this site](https://zeno
 ## Getting Started
 - [Quick start guide](https://github.com/prisms-center/phaseField#quick-start-guide) <br>
 - [Installation instructions](doxygen/install.html) <br>
-- [User manual](doxygen/manual.html) <br>
+- [User manual](doxygen/index.html) <br>
 - [Repository of training slides and exercises](https://goo.gl/BBTkJ8)
 - [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md)
 
