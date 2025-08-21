@@ -20,6 +20,8 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
+      with:
+        submodules: true # Check out submodules so we get doxygne awesome
 
     - name: Setup doxygen
       run: |
