@@ -33,14 +33,14 @@ echo "$dirs"
 echo ""
 
 # Create HTML
-echo '<select id="versionSelector">' > $FILE_PATH/versionSelector.html
+echo '<select id="versionSelector">' > $FILE_PATH/version_selector.html
 for dir in $dirs; do
 	if [[ "$(basename "$dir")" != .* ]]; then
 		version=$(basename "$dir")
-		echo "    <option value=\"$version\">$version</option>" >> $FILE_PATH/versionSelector.html
+		echo "    <option value=\"$version\">$version</option>" >> $FILE_PATH/version_selector.html
 	fi
 done
-echo '</select>' >> $FILE_PATH/versionSelector.html
+echo '</select>' >> $FILE_PATH/version_selector.html
 
 echo "Done"
 exit 0
