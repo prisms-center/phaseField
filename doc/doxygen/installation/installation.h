@@ -90,6 +90,14 @@ directory higher to preserve your changes. In other words,
 docker run -ti -v
 ~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
 ```
+You can then run the applications in the container as you would normally. For example,
+to run the `allen_cahn_explicit` application, you can use the following commands:
+```
+cd allen_cahn_explicit
+cmake .
+make
+mpirun -n 1 ./main
+```
 
 */
 
