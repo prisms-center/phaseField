@@ -5,8 +5,8 @@
 # cmake config
 message(STATUS "Using CMake ${CMAKE_VERSION}")
 message(STATUS "")
-cmake_minimum_required(VERSION 3.13.4)
-cmake_policy(VERSION 3.13.4)
+cmake_minimum_required(VERSION 3.27)
+cmake_policy(VERSION 3.27)
 
 # Grab the version of PRISMS-PF
 file(STRINGS "${CMAKE_SOURCE_DIR}/../../VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
@@ -39,8 +39,8 @@ if(DOXYGEN_FOUND)
     # Add target to generate documentation
     doxygen_add_docs(
         doc
-        ${CMAKE_SOURCE_DIR}/src
-        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/../../src
+        ${CMAKE_SOURCE_DIR}/../../include
         COMMENT "Generating Doxygen documentation"
         CONFIG_FILE ${DOXYGEN_OUTPUT}
         ALL
