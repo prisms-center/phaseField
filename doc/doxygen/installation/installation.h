@@ -104,9 +104,33 @@ mpirun -n 1 ./main
 /** \page source Installing from Source
 
 \subsection installation_prerequisites Prerequisites
+Before you can install PRISMS-PF, you will need to have some prerequisites installed on
+your machine. These include:
+- Git (to clone the repository)
+- A C++ compiler with C++20 support (we recommend GCC or Clang)
+- CMake (version 3.13.4 or higher)
+- LAPACK (for linear algebra operations)
+- MPI (we recommend OpenMPI or MPICH)
+- p4est (for adaptive octree meshing)
+- vtk (for file I/O) **[optional]**
+- HDF5 (for file I/O) **[optional]**
+- SUNDIALS (for time integration & nonlinear solvers) **[optional]**
+- Caliper (for profiling) **[optional]**
+- deal.II (version 9.6 or higher)
+
 <div class="tabbed">
 
-- <b class="tab-title">Linux</b> This is the content of tab 1
+- <b class="tab-title">Linux</b>
+You can install these prerequisites however you like. The
+first five are typically available on most OSes through your package manager. For example,
+on Ubuntu, you can install them with:
+```
+sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential
+autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin
+openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev
+libsuitesparse-dev
+```
+To install p4est, you can follow these instructions:
 - <b class="tab-title">MacOS</b> This is the content of tab 2
 - <b class="tab-title">Windows</b> **PRISMS-PF has no plans to support Windows.** If you
 are on Windows, we recommend using a virtual machine or Windows Subsystem for Linux (WSL)
