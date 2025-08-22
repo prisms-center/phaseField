@@ -56,14 +56,42 @@ your operating system and the difference (if any) between the your hardware and 
 emulated hardware, the running of a Docker image may add some overhead, which will slow
 down your simulations. Additionally, with the Docker image, you're stuck with the image we
 provide. If you want to change the compiler, the configuration of dependencies, or any
-other things, you should consider \ref source instead.
+other things, you should consider \ref source instead. If you would like to learn more
+about Docker, [here](https://opensource.com/resources/what-docker) is a nice resource.
 
 \subsection docker_installation Installation with Docker
 To install PRISMS-PF with Docker, you will need to have Docker installed on your machine.
 You can find instructions for installing Docker on the official [Docker
 website](https://docs.docker.com/get-started/get-docker/).
 
- */
+After you have installed Docker, find a working directory where we can put your files.
+This is where we will clone PRISMS-PF so you can interact with the files and applications
+there.
+```
+mkdir ~/prisms_pf_docker
+git clone https://github.com/prisms-center/phaseField.git
+```
+
+Next, we will pull the docker image with
+```
+docker pull prismspf/prismspf:latest
+```
+
+Finally, we will launch an interactive container with
+```
+docker run -ti -v
+~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications
+prismspf/prismspf:latest
+```
+This will link your local applications directory (the one in `prisms_workspace`) to the
+one in the Docker image. If you plan to modify the core library, you should link one
+directory higher to preserve your changes. In other words,
+```
+docker run -ti -v
+~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
+```
+
+*/
 
 /** \page source Installing from Source
 
