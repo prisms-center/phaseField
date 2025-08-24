@@ -448,6 +448,8 @@ UserInputParameters<dim>::assign_nucleation_parameters(
     parameter_handler.get_double("nucleus exclusion distance"));
   nucleation_parameters.set_same_field_exclusion_distance(
     parameter_handler.get_double("same field nucleus exclusion distance"));
+  nucleation_parameters.set_nucleation_period(
+    parameter_handler.get_integer("nucleation period"));
   parameter_handler.leave_subsection();
 }
 

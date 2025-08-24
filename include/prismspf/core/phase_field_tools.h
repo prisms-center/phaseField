@@ -16,7 +16,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * @brief This class contains mutable utilities for phase field problems.
  */
 template <unsigned int dim>
-struct PhaseFieldUtils
+struct PhaseFieldTools
 {
   /**
    * @brief Nucleus list.

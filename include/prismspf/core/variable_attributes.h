@@ -63,6 +63,12 @@ struct RawDependencies
    * @remark Internally determined
    */
   std::set<std::string> dependencies_lhs;
+
+  /**
+   * @brief The collection of nucleating fields.
+   * @remark User-set
+   */
+  std::set<std::string> nucleating_fields;
 };
 
 // TODO: Fix style. This struct needn't be over 100 lines. Validation can occur in a

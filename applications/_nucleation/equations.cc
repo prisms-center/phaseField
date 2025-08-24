@@ -1,20 +1,17 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-// =================================================================================
-// Set the attributes of the primary field variables
-// =================================================================================
-// This function sets attributes for each variable/equation in the app. The
-// attributes are set via standardized function calls. The first parameter for
-// each function call is the variable index (starting at zero). The first set of
-// variable/equation attributes are the variable name (any string), the variable
-// type (Scalar/Vector), and the equation type (ExplicitTimeDependent/
-// TimeIndependent/Auxiliary). The next set of attributes describe the
-// dependencies for the governing equation on the values and derivatives of the
-// other variables for the value term and gradient term of the RHS and the LHS.
-// The final pair of attributes determine whether a variable represents a field
-// that can nucleate and whether the value of the field is needed for nucleation
-// rate calculations.
+#include "custom_pde.h"
+
+#include <deal.II/base/vectorization.h>
+
+#include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attribute_loader.h>
+#include <prismspf/core/variable_container.h>
+
+#include <prismspf/config.h>
+
+PRISMS_PF_BEGIN_NAMESPACE
 
 void
 CustomAttributeLoader::load_variable_attributes()
@@ -27,9 +24,6 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_value_term_rhs(0, "c");
   set_dependencies_gradient_term_rhs(0, "c, grad(c), n, grad(n)");
 
-  set_allowed_to_nucleate(0, false);
-  set_need_value_nucleation(0, true);
-
   // Variable 1
   set_variable_name(1, "n");
   set_variable_type(1, Scalar);
@@ -38,194 +32,182 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_value_term_rhs(1, "c, n");
   set_dependencies_gradient_term_rhs(1, "grad(n)");
 
-  set_allowed_to_nucleate(1, true);
-  set_need_value_nucleation(1, true);
+  // Variable 2
+  set_variable_name(2, "nucleation_rate");
+  set_variable_type(2, Scalar);
+  set_variable_equation_type(2, ExplicitTimeDependent);
+
+  insert_dependencies_value_term_rhs(2, std::set<std::string> {"c", "n"});
 }
 
-// =============================================================================================
-// explicitEquationRHS (needed only if one or more equation is explict time
-// dependent)
-// =============================================================================================
-// This function calculates the right-hand-side of the explicit time-dependent
-// equations for each variable. It takes "variable_list" as an input, which is a
-// list of the value and derivatives of each of the variables at a specific
-// quadrature point. The (x,y,z) location of that quadrature point is given by
-// "q_point_loc". The function outputs two terms to variable_list -- one
-// proportional to the test function and one proportional to the gradient of the
-// test function. The index for each variable in this list corresponds to the
-// index given at the top of this file.
-
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-CustomPDE<dim, degree>::explicitEquationRHS(
-  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+CustomPDE<dim, degree, number>::compute_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
 {
   // --- Getting the values and derivatives of the model variables ---
 
   // The concentration and its derivatives
-  scalarvalueType c  = variable_list.template get_value<ScalarValue>(0);
-  scalargradType  cx = variable_list.template get_gradient<ScalarGrad>(0);
+  ScalarValue c  = variable_list.template get_value<ScalarValue>(0);
+  ScalarGrad  cx = variable_list.template get_gradient<ScalarGrad>(0);
 
   // The order parameter and its derivatives
-  scalarvalueType n  = variable_list.template get_value<ScalarValue>(1);
-  scalargradType  nx = variable_list.template get_gradient<ScalarGrad>(1);
+  ScalarValue n  = variable_list.template get_value<ScalarValue>(1);
+  ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(1);
 
   // --- Setting the expressions for the terms in the governing equations ---
 
   // Interpolation function and its derivative
-  scalarvalueType hV  = 3.0 * n * n - 2.0 * n * n * n;
-  scalarvalueType hnV = 6.0 * n - 6.0 * n * n;
+  ScalarValue hV  = 3.0 * n * n - 2.0 * n * n * n;
+  ScalarValue hnV = 6.0 * n - 6.0 * n * n;
+
+  double delta_t = this->get_timestep();
 
   // KKS model c_alpha and c_beta as a function of c and h
-  scalarvalueType c_alpha =
+  ScalarValue c_alpha =
     (B2 * (c - cbtmin * hV) + A2 * calmin * hV) / (A2 * hV + B2 * (1.0 - hV));
-  scalarvalueType c_beta = (A2 * (c - calmin * (1.0 - hV)) + B2 * cbtmin * (1.0 - hV)) /
-                           (A2 * hV + B2 * (1.0 - hV));
+  ScalarValue c_beta = (A2 * (c - calmin * (1.0 - hV)) + B2 * cbtmin * (1.0 - hV)) /
+                       (A2 * hV + B2 * (1.0 - hV));
 
   // Free energy for each phase and their first and second derivatives
-  scalarvalueType faV  = A0 + A2 * (c_alpha - calmin) * (c_alpha - calmin);
-  scalarvalueType fbV  = B0 + B2 * (c_beta - cbtmin) * (c_beta - cbtmin);
-  scalarvalueType fbcV = 2.0 * B2 * (c_beta - cbtmin);
+  ScalarValue faV  = A0 + A2 * (c_alpha - calmin) * (c_alpha - calmin);
+  ScalarValue fbV  = B0 + B2 * (c_beta - cbtmin) * (c_beta - cbtmin);
+  ScalarValue fbcV = 2.0 * B2 * (c_beta - cbtmin);
 
   // Double-Well function (can be used to tune the interfacial energy)
-  scalarvalueType fbarriernV = 2.0 * n - 6.0 * n * n + 4.0 * n * n * n;
+  ScalarValue fbarriernV = 2.0 * n - 6.0 * n * n + 4.0 * n * n * n;
 
   // -------------------------------------------------
   // Nucleation expressions
   // -------------------------------------------------
-  VectorizedArray<double> source_term = constV(0.0);
-  VectorizedArray<double> gamma       = constV(1.0);
-  seedNucleus(q_point_loc, source_term, gamma);
+  ScalarValue source_term = ScalarValue(0.0);
+  seed_nucleus(q_point_loc, source_term);
   // -------------------------------------------------
 
   // Set the terms in the governing equations
 
   // For concentration
-  scalarvalueType eq_c = c;
-  scalargradType  eqx_c =
-    constV(-McV * userInputs.dtValue) * (cx + (c_alpha - c_beta) * hnV * nx);
+  ScalarValue eq_c  = c;
+  ScalarGrad  eqx_c = ScalarValue(-McV * delta_t) * (cx + (c_alpha - c_beta) * hnV * nx);
+
   // For order parameter (gamma is a variable order parameter mobility factor)
-  scalarvalueType eq_n =
-    n - constV(userInputs.dtValue * MnV) * gamma *
+  ScalarValue eq_n =
+    n - ScalarValue(delta_t * MnV) *
           ((fbV - faV) * hnV - (c_beta - c_alpha) * fbcV * hnV + W_barrier * fbarriernV);
-  scalargradType eqx_n = constV(-userInputs.dtValue * KnV * MnV) * gamma * nx;
+  ScalarGrad eqx_n = ScalarValue(-delta_t * KnV * MnV) * nx;
+
+  // Supersaturation factor
+  ScalarValue ssf = ScalarValue(0.0);
+  if constexpr (dim == 2)
+    {
+      ssf = c - calmin;
+    }
+  else if constexpr (dim == 3)
+    {
+      ssf = (c - calmin) * (c - calmin);
+    }
+  else
+    {
+      AssertThrow(false,
+                  dealii::ExcMessage("Only dim=2 and dim=3 are supported in this app."));
+    }
+
+  auto max = [](const ScalarValue &arr, number val)
+  {
+    ScalarValue result;
+    for (unsigned int i = 0; i < arr.size(); ++i)
+      {
+        result[i] = std::max(arr[i], val);
+      }
+    return result;
+  };
+  // Calculate the nucleation rate
+  double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
+  using std::exp;
+  ScalarValue J = k1 * exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
 
   // --- Submitting the terms for the governing equations ---
 
   // Terms for the equation to evolve the concentration
-  variable_list.set_scalar_value_term_rhs(0, eq_c);
-  variable_list.set_scalar_gradient_term_rhs(0, eqx_c);
+  variable_list.set_value_term(0, eq_c);
+  variable_list.set_gradient_term(0, eqx_c);
 
   // Terms for the equation to evolve the order parameter
-  variable_list.set_scalar_value_term_rhs(1, eq_n + source_term);
-  variable_list.set_scalar_gradient_term_rhs(1, eqx_n);
+  variable_list.set_value_term(1, eq_n + source_term);
+  variable_list.set_gradient_term(1, eqx_n);
+
+  // Terms for the nucleation rate
+  variable_list.set_value_term(2, J);
 }
 
 // =================================================================================
 // seedNucleus: a function particular to this app
 // =================================================================================
-template <int dim, int degree>
+#include <prismspf/nucleation/nucleus.h>
+
+template <unsigned int dim, unsigned int degree, typename number>
 void
-CustomPDE<dim, degree>::seedNucleus(
-  const Point<dim, VectorizedArray<double>> &q_point_loc,
-  VectorizedArray<double>                   &source_term,
-  VectorizedArray<double>                   &gamma) const
+CustomPDE<dim, degree, number>::seed_nucleus(
+  const dealii::Point<dim, ScalarValue> &q_point_loc,
+  ScalarValue                           &source_term) const
 {
-  for (const auto &thisNucleus : this->nuclei)
+  unsigned int current_increment =
+    this->get_user_inputs().get_temporal_discretization().get_increment();
+  // Iterate through nuclei list
+  for (const prisms::Nucleus<dim> &nucleus : this->get_pf_tools().nuclei_list)
     {
-      if (thisNucleus.seededTime + thisNucleus.seedingTime > this->currentTime)
+      // Calculate the distance function to the nucleus center
+      dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
+      {
+        dealii::Point<dim, ScalarValue> result;
+        const dealii::Point<dim>       &point = nucleus.location;
+        for (unsigned int i = 0; i < ScalarValue::size(); ++i)
+          {
+            result[i] = ScalarValue(point[i]);
+          }
+        return result;
+      };
+      ScalarValue dist = q_point_loc.distance(loc_as_arr);
+      // Seed a nucleus if it was added to the list of nuclei recently
+      if (nucleus.seed_increment == current_increment)
         {
-          // Calculate the weighted distance function to the order parameter
-          // freeze boundary (weighted_dist = 1.0 on that boundary)
-          VectorizedArray<double> weighted_dist = this->weightedDistanceFromNucleusCenter(
-            thisNucleus.center,
-            userInputs.get_nucleus_freeze_semiaxes(thisNucleus.orderParameterIndex),
-            q_point_loc,
-            thisNucleus.orderParameterIndex);
-
-          for (unsigned i = 0; i < gamma.size(); i++)
-            {
-              if (weighted_dist[i] <= 1.0)
-                {
-                  gamma[i] = 0.0;
-
-                  // Seed a nucleus if it was added to the list of nuclei this
-                  // time step
-                  if (thisNucleus.seedingTimestep == this->currentIncrement)
-                    {
-                      // Find the weighted distance to the outer edge of the
-                      // nucleus and use it to calculate the order parameter
-                      // source term
-                      Point<dim, double> q_point_loc_element;
-                      for (unsigned int j = 0; j < dim; j++)
-                        {
-                          q_point_loc_element(j) = q_point_loc(j)[i];
-                        }
-                      double r = this->weightedDistanceFromNucleusCenter(
-                        thisNucleus.center,
-                        userInputs.get_nucleus_semiaxes(thisNucleus.orderParameterIndex),
-                        q_point_loc_element,
-                        thisNucleus.orderParameterIndex);
-
-                      double avg_semiaxis = 0.0;
-                      for (unsigned int j = 0; j < dim; j++)
-                        {
-                          avg_semiaxis += thisNucleus.semiaxes[j];
-                        }
-                      avg_semiaxis /= dim;
-
-                      source_term[i] =
-                        0.5 *
-                        (1.0 - std::tanh(avg_semiaxis * (r - 1.0) / interface_coeff));
-                    }
-                }
-            }
+          source_term = 0.5 * (1.0 - std::tanh((dist - 1.0) / interface_coeff));
         }
     }
 }
 
-// =============================================================================================
-// nonExplicitEquationRHS (needed only if one or more equation is time
-// independent or auxiliary)
-// =============================================================================================
-// This function calculates the right-hand-side of all of the equations that are
-// not explicit time-dependent equations. It takes "variable_list" as an input,
-// which is a list of the value and derivatives of each of the variables at a
-// specific quadrature point. The (x,y,z) location of that quadrature point is
-// given by "q_point_loc". The function outputs two terms to variable_list --
-// one proportional to the test function and one proportional to the gradient of
-// the test function. The index for each variable in this list corresponds to
-// the index given at the top of this file.
-
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-CustomPDE<dim, degree>::nonExplicitEquationRHS(
-  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           current_index) const
 {}
 
-// =============================================================================================
-// equationLHS (needed only if at least one equation is time independent)
-// =============================================================================================
-// This function calculates the left-hand-side of time-independent equations. It
-// takes "variable_list" as an input, which is a list of the value and
-// derivatives of each of the variables at a specific quadrature point. The
-// (x,y,z) location of that quadrature point is given by "q_point_loc". The
-// function outputs two terms to variable_list -- one proportional to the test
-// function and one proportional to the gradient of the test function -- for the
-// left-hand-side of the equation. The index for each variable in this list
-// corresponds to the index given at the top of this file. If there are multiple
-// elliptic equations, conditional statements should be sed to ensure that the
-// correct residual is being submitted. The index of the field being solved can
-// be accessed by "this->currentFieldIndex".
-
-template <int dim, int degree>
+template <unsigned int dim, unsigned int degree, typename number>
 void
-CustomPDE<dim, degree>::equationLHS(
-  [[maybe_unused]] VariableContainer<dim, degree, VectorizedArray<double>> &variable_list,
-  [[maybe_unused]] const Point<dim, VectorizedArray<double>>                q_point_loc,
-  [[maybe_unused]] const VectorizedArray<double> element_volume) const
+CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block,
+  [[maybe_unused]] Types::Index                           current_index) const
 {}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
+  [[maybe_unused]] VariableContainer<dim, degree, number> &variable_list,
+  [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
+  [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
+  [[maybe_unused]] Types::Index                           solve_block) const
+{}
+
+#include "custom_pde.inst"
+
+PRISMS_PF_END_NAMESPACE

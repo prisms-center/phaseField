@@ -4,6 +4,7 @@
 #include <deal.II/base/exceptions.h>
 
 #include <prismspf/core/pde_operator.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/variable_container.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
@@ -14,8 +15,10 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 PDEOperator<dim, degree, number>::PDEOperator(
-  const UserInputParameters<dim> &_user_inputs)
+  const UserInputParameters<dim> &_user_inputs,
+  const PhaseFieldTools<dim>     &pf_tools)
   : user_inputs(&_user_inputs)
+  , pf_tools(&pf_tools)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -35,10 +38,11 @@ PDEOperator<dim, degree, number>::get_timestep() const
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-PhaseFieldUtils<dim> &
-PDEOperator<dim, degree, number>::phase_field_utils()
+const PhaseFieldTools<dim> &
+PDEOperator<dim, degree, number>::get_pf_tools() const
 {
-  return pf_utils;
+  Assert(pf_tools != nullptr, dealii::ExcNotInitialized());
+  return *pf_tools;
 }
 
 #include "core/pde_operator.inst"

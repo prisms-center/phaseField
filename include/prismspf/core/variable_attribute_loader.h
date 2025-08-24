@@ -125,6 +125,18 @@ protected:
   set_is_postprocessed_field(const unsigned int &index, const bool &is_postprocess);
 
   /**
+   * @brief Set whether the field is a nucleation rate.
+   *
+   * @param index Index of variable
+   * @param is_nucleation Whether the field is a nucleation rate.
+   */
+  template <typename Iterable>
+  void
+  set_is_nucleation_rate(const unsigned int &index,
+                         const bool         &is_nucleation,
+                         const Iterable     &nucleating_fields);
+
+  /**
    * @brief Set the solve block of the field.
    *
    * @param index Index of variable

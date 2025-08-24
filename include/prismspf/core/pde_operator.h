@@ -5,7 +5,6 @@
 
 #include <deal.II/base/point.h>
 
-#include <prismspf/core/phase_field_utils.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -18,10 +17,8 @@ class UserInputParameters;
 template <unsigned int dim, unsigned int degree, typename number>
 class VariableContainer;
 
-// TODO: Pass pf_utils into the operators rather than having it as a member variable.
-// TODO: Remove user_inputs as a member, consider passing into operator. Users should get
-// necessary information from user_inputs using the constructor.
-// TODO: Move element volume and q_point_loc into variable container
+template <unsigned int dim>
+class PhaseFieldTools;
 
 /**
  * @brief This class contains the user implementation of each PDE operator.
@@ -35,7 +32,8 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs);
+  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs,
+                       const PhaseFieldTools<dim>     &pf_tools);
 
   /**
    * @brief Destructor.
@@ -108,16 +106,16 @@ public:
   get_user_inputs() const;
 
   /**
+   * @brief Get the phase field tools (constant reference).
+   */
+  [[nodiscard]] const PhaseFieldTools<dim> &
+  get_pf_tools() const;
+
+  /**
    * @brief Get the timestep (copy).
    */
   [[nodiscard]] number
   get_timestep() const;
-
-  /**
-   * @brief Get the phase-field utilities (reference).
-   */
-  [[nodiscard]] PhaseFieldUtils<dim> &
-  phase_field_utils();
 
 private:
   /**
@@ -126,9 +124,9 @@ private:
   const UserInputParameters<dim> *user_inputs;
 
   /**
-   * Phase-Field utilities.
+   * @brief Phase field tools.
    */
-  PhaseFieldUtils<dim> pf_utils;
+  const PhaseFieldTools<dim> *pf_tools;
 };
 
 PRISMS_PF_END_NAMESPACE

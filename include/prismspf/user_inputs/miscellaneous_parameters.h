@@ -13,7 +13,7 @@
 #include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
-using RNGEngine = std::mt19937_64;
+using RNGEngine = std::mt19937;
 
 /**
  * @brief Struct that holds miscellaneous parameters.
@@ -43,8 +43,8 @@ public:
     rng.seed(random_seed);
   }
 
-  unsigned int random_seed = 2025;
-  RNGEngine    rng {random_seed};
+  unsigned int      random_seed = 2025;
+  mutable RNGEngine rng {random_seed};
 };
 
 inline void

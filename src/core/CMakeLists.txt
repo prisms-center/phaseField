@@ -10,6 +10,7 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/pde_operator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/pde_problem.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/phase_field_tools.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_handler.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solver_handler.cc
@@ -30,6 +31,7 @@ set(_inst
     nonuniform_dirichlet.inst.in
     pde_operator.inst.in
     pde_problem.inst.in
+    phase_field_tools.inst.in
     solution_handler.inst.in
     solution_output.inst.in
     solver_handler.inst.in

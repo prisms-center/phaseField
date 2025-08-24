@@ -19,6 +19,7 @@
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/solver_handler.h>
@@ -58,9 +59,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 PDEProblem<dim, degree, number>::PDEProblem(
   const UserInputParameters<dim>                                &_user_inputs,
+  PhaseFieldTools<dim>                                          &_pf_tools,
   const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
+  , pf_tools(&_pf_tools)
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
   , constraint_handler(_user_inputs, mg_info, _pde_operator, _pde_operator_float)
@@ -445,7 +448,7 @@ PDEProblem<dim, degree, number>::solve()
         {
           NucleationHandler<dim, degree, number>::attempt_nucleation(
             solver_context,
-            solver_context.get_pde_operator()->phase_field_utils().nuclei_list);
+            pf_tools->nuclei_list);
           // TODO: refine around nucleus when using amr
         }
     }
