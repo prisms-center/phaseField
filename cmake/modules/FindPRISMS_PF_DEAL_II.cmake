@@ -126,3 +126,7 @@ if(PRISMS_PF_WITH_CUDA)
 endif()
 
 # Grab some compiler flags that would otherwise be provided by deal_ii_initialize_cached_variables()
+
+# For now, just override any c++ standard that deal.II might want to set
+message(STATUS "Overriding deal.II C++ standard to ${CMAKE_CXX_STANDARD}")
+string(REPLACE "-std=c++17" "" DEAL_II_CXX_FLAGS "${DEAL_II_CXX_FLAGS}")
