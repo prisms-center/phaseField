@@ -136,8 +136,9 @@ if(PRISMS_PF_WITH_SUNDIALS)
     endif()
 endif()
 
-# Load deal.II cached variables
-deal_ii_initialize_cached_variables()
+# For now, just override any c++ standard that deal.II might want to set
+message(STATUS "Overriding deal.II C++ standard to ${CMAKE_CXX_STANDARD}")
+string(REPLACE "-std=c++17" "" DEAL_II_CXX_FLAGS "${DEAL_II_CXX_FLAGS}")
 
 # Caliper
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
