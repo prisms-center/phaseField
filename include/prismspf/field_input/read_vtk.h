@@ -7,11 +7,8 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/core/types.h>
+#include <prismspf/field_input/read_field_base.h>
 
-#include <prismspf/utilities/utilities.h>
-
-#include <filesystem>
 #include <vtkCellLocator.h>
 #include <vtkDataArray.h>
 #include <vtkGenericCell.h>
@@ -23,18 +20,18 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
-class ReadUnstructuredVTK
+class ReadUnstructuredVTK : public ReadFieldBase<dim, number>
 {
 public:
   /**
    * @brief Constructor
    */
-  explicit ReadUnstructuredVTK(const std::string &filename);
+  explicit ReadUnstructuredVTK(const std::string &_filename);
 
   /**
    * @brief Destructor
    */
-  ~ReadUnstructuredVTK() = default;
+  ~ReadUnstructuredVTK() override = default;
 
   /**
    * @brief Copy constructor.
@@ -80,7 +77,7 @@ public:
    * @brief Print the vtk file for debugging
    */
   void
-  print_vtk_file();
+  print_file() override;
 
   /**
    * @brief Get the names of the scalars in the vtk file.
@@ -98,13 +95,13 @@ public:
    * @brief Get scalar value for a given point
    */
   number
-  get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name);
+  get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name) override;
 
   /**
    * @brief Get vector value for a given point
    */
   dealii::Vector<number>
-  get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name);
+  get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name) override;
 
 private:
   /**
@@ -144,18 +141,13 @@ private:
 };
 
 template <unsigned int dim, typename number>
-ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const std::string &filename)
+ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const std::string &_filename)
+  : ReadFieldBase<dim, number>(_filename)
 {
-  // Check that the filename exists
-  if (!std::filesystem::exists(filename))
-    {
-      AssertThrow(false, dealii::ExcMessage("File " + filename + " does not exist"));
-    }
-
   // Create a reader for the vtk file and update it
   // vtkNew is a smart pointer so we don't need to manage it with delete
   reader = vtkNew<vtkUnstructuredGridReader>();
-  reader->SetFileName(filename.c_str());
+  reader->SetFileName(this->filename.c_str());
   reader->Update();
 
   // Check that the file is an unstructured grid
@@ -235,7 +227,7 @@ ReadUnstructuredVTK<dim, number>::get_n_cells() const
 
 template <unsigned int dim, typename number>
 inline void
-ReadUnstructuredVTK<dim, number>::print_vtk_file()
+ReadUnstructuredVTK<dim, number>::print_file()
 {
   // TODO (landinjm): Should we print only on rank 0?.
   reader->GetOutput()->PrintSelf(std::cout, vtkIndent());
