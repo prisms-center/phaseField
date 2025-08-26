@@ -10,7 +10,7 @@
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
-#include <prismspf/field_input/read_vtk.h>
+#include <prismspf/field_input/read_field_factory.h>
 
 #include <memory>
 #include <string>
@@ -57,7 +57,7 @@ ReadInitialCondition<dim, number>::ReadInitialCondition(const std::string &file_
   : dealii::Function<dim, number>((_field_type == FieldType::Vector) ? dim : 1)
   , field_name(std::move(_field_name))
   , field_type(_field_type)
-  , reader(std::make_shared<ReadUnstructuredVTK<dim, number>>(file_name))
+  , reader(create_reader<dim, number>(file_name))
 {}
 
 // NOLINTBEGIN(readability-identifier-length)

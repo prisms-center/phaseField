@@ -20,7 +20,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
 template <unsigned int dim, typename number>
-class ReadUnstructuredVTK;
+class ReadFieldBase;
 
 /**
  * @brief Function for user-implemented initial conditions. These are only ever calculated
@@ -86,7 +86,7 @@ private:
 
   FieldType field_type;
 
-  std::shared_ptr<ReadUnstructuredVTK<dim, number>> reader;
+  std::shared_ptr<ReadFieldBase<dim, number>> reader;
 };
 
 PRISMS_PF_END_NAMESPACE
