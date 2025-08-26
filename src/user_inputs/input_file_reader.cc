@@ -218,6 +218,7 @@ InputFileReader::declare_parameters()
   declare_grain_remapping_parameters();
   declare_grain_loading_parameters();
   declare_model_constants();
+  declare_miscellaneous_parameters();
 }
 
 void

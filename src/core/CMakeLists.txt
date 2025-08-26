@@ -36,6 +36,7 @@ set(_inst
     solution_output.inst.in
     solver_handler.inst.in
     triangulation_handler.inst.in
+    variable_attribute_loader.inst.in
     variable_container.inst.in
 )
 

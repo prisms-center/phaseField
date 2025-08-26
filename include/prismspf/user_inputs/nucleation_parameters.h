@@ -185,8 +185,6 @@ NucleationParameters::postprocess_and_validate(
           break;
         }
     }
-  // Check if the print timing option is valid
-  AssertThrow(print_timing_with_nucleation, dealii::ExcMessage(""));
 }
 
 inline void

@@ -632,4 +632,6 @@ VariableAttributeLoader::compute_shared_dependencies(
     }
 }
 
+#include "core/variable_attribute_loader.inst"
+
 PRISMS_PF_END_NAMESPACE

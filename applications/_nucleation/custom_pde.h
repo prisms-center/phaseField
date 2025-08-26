@@ -4,6 +4,7 @@
 #pragma once
 
 #include <prismspf/core/pde_operator.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -127,7 +128,8 @@ private:
 
   void
   seed_nucleus(const dealii::Point<dim, ScalarValue> &q_point_loc,
-               ScalarValue                           &source_term) const;
+               ScalarValue                           &source_term,
+               ScalarValue                           &gamma) const;
 
   double c_avg =
     this->get_user_inputs().get_user_constants().get_model_constant_double("c_avg");
@@ -160,6 +162,13 @@ private:
     this->get_user_inputs().get_user_constants().get_model_constant_double("tau");
   double epsilon =
     this->get_user_inputs().get_user_constants().get_model_constant_double("epsilon");
+  double r_nuc =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("r_nuc");
+  double r_freeze =
+    this->get_user_inputs().get_user_constants().get_model_constant_double("r_freeze");
+  double seeding_duration =
+    this->get_user_inputs().get_user_constants().get_model_constant_double(
+      "seeding_duration");
 
   // Interface coefficient
   double interface_coeff = std::sqrt(2.0 * KnV / W_barrier);

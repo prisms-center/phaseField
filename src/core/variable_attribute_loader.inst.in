@@ -1,0 +1,19 @@
+for (container : CONTAINERS)
+  {
+template void VariableAttributeLoader::insert_dependencies_value_term_rhs<container<std::string>>
+  (const unsigned int             &index,
+    const container<std::string> &dependencies);
+template void VariableAttributeLoader::insert_dependencies_gradient_term_rhs<container<std::string>>
+  (const unsigned int             &index,
+    const container<std::string> &dependencies);
+template void VariableAttributeLoader::insert_dependencies_value_term_lhs<container<std::string>>
+  (const unsigned int             &index,
+    const container<std::string> &dependencies);
+template void VariableAttributeLoader::insert_dependencies_gradient_term_lhs<container<std::string>>
+  (const unsigned int             &index,
+    const container<std::string> &dependencies);
+template void VariableAttributeLoader::set_is_nucleation_rate<container<std::string>>
+  (const unsigned int          &index,
+    const bool         &is_nucleation,
+    const container<std::string> &dependencies);
+  }

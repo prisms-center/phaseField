@@ -17,33 +17,42 @@ set degree = 2
 #set min refinement level = 2
 
 set time step = 0.011
-set Number of time steps = 50000
+set number steps = 50000
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 20
 end
 
-set boundary condition for variable c = Periodic
-set boundary condition for variable n = Periodic
+set boundary condition for c = Periodic
+set boundary condition for n = Periodic
+set boundary condition for nucleation_rate = Periodic
 
 subsection nucleation
   set nucleus exclusion distance = 20.0
-  set nucleation period = 30
+  set nucleation period = 2500
 end
 
-set model constant c_avg = 0.2, DOUBLE
-set model constant McV = 1.0, DOUBLE
-set model constant MnV = 1.0, DOUBLE
-set model constant KnV = 2.0, DOUBLE
-set model constant W_barrier = 2.0, DOUBLE
-set model constant A0 = 0.0, DOUBLE
-set model constant A2 = 1.0, DOUBLE
-set model constant calmin = 0.0, DOUBLE
-set model constant B0 = 0.0, DOUBLE
-set model constant B2 = 4.0, DOUBLE
-set model constant cbtmin = 1.0, DOUBLE
-set model constant k1 = 498.866, DOUBLE
-set model constant k2 = 4.14465, DOUBLE
-set model constant tau = 500.0, DOUBLE
-set model constant epsilon = 1.0e-7, DOUBLE
+subsection miscellaneous
+  set random seed = 2025
+end
+
+set Model constant c_avg = 0.2, DOUBLE
+set Model constant McV = 1.0, DOUBLE
+set Model constant MnV = 1.0, DOUBLE
+set Model constant KnV = 2.0, DOUBLE
+set Model constant W_barrier = 2.0, DOUBLE
+set Model constant A0 = 0.0, DOUBLE
+set Model constant A2 = 1.0, DOUBLE
+set Model constant calmin = 0.0, DOUBLE
+set Model constant B0 = 0.0, DOUBLE
+set Model constant B2 = 4.0, DOUBLE
+set Model constant cbtmin = 1.0, DOUBLE
+set Model constant k1 = 498.866, DOUBLE
+set Model constant k2 = 4.14465, DOUBLE
+#set Model constant tau = 500.0, DOUBLE
+set Model constant tau = 0.0, DOUBLE
+set Model constant epsilon = 1.0e-7, DOUBLE
+set Model constant r_nuc = 5.0, DOUBLE
+set Model constant r_freeze = 7.5, DOUBLE
+set Model constant seeding_duration = 20.0, DOUBLE

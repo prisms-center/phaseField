@@ -5,6 +5,7 @@
 
 #include <deal.II/fe/fe_values.h>
 
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/nucleation_parameters.h>
@@ -60,10 +61,12 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
   // Set up FEValues
   const dealii::QGaussLobatto<dim> quadrature(degree + 1);
   const unsigned int               num_quad_points = quadrature.size();
-  dealii::FEValues<dim>            fe_values(
-    dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1),
-    quadrature,
-    dealii::UpdateFlags::update_values);
+  dealii::FESystem<dim> fe_system(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)),
+                                  1);
+  dealii::FEValues<dim> fe_values(fe_system,
+                                  quadrature,
+                                  dealii::UpdateFlags::update_values |
+                                    dealii::UpdateFlags::update_JxW_values);
   for (const auto &[index, variable] :
        solver_context.get_user_inputs().get_variable_attributes())
     {
@@ -136,6 +139,10 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                 }
             }
           // Remove nuclei within their exclusion distance and add to nuclei list
+          ConditionalOStreams::pout_base()
+            << new_nuclei.size() << " nuclei generated before exclusion.\n"
+            << "Excluding nuclei...\n";
+
           // remove bias
           std::vector<Nucleus<dim>> vec(new_nuclei.begin(), new_nuclei.end());
           std::shuffle(vec.begin(), vec.end(), rng);
@@ -163,6 +170,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                   new_nuclei.erase(iter);
                 }
             }
+          ConditionalOStreams::pout_base()
+            << new_nuclei.size() << " nuclei generated after exclusion.\n";
         }
     }
 }

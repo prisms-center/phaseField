@@ -9,3 +9,6 @@ SPACE_DIMENSIONS := { 1; 2@EXPAND_DIMENSIONS@ }
 
 // Element degrees
 ELEMENT_DEGREE := { 1; 2@EXPAND_DEGREES@ }
+
+// Non-associative containers
+CONTAINERS := { std::vector; std::set; std::list }

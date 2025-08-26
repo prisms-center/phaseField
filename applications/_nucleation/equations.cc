@@ -38,6 +38,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(2, ExplicitTimeDependent);
 
   insert_dependencies_value_term_rhs(2, std::set<std::string> {"c", "n"});
+  set_is_nucleation_rate(2, true, std::set<std::string> {"n"});
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -84,7 +85,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   // Nucleation expressions
   // -------------------------------------------------
   ScalarValue source_term = ScalarValue(0.0);
-  seed_nucleus(q_point_loc, source_term);
+  ScalarValue gamma       = ScalarValue(1.0);
+  seed_nucleus(q_point_loc, source_term, gamma);
   // -------------------------------------------------
 
   // Set the terms in the governing equations
@@ -95,24 +97,16 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 
   // For order parameter (gamma is a variable order parameter mobility factor)
   ScalarValue eq_n =
-    n - ScalarValue(delta_t * MnV) *
+    n - ScalarValue(delta_t * MnV) * gamma *
           ((fbV - faV) * hnV - (c_beta - c_alpha) * fbcV * hnV + W_barrier * fbarriernV);
-  ScalarGrad eqx_n = ScalarValue(-delta_t * KnV * MnV) * nx;
+  ScalarGrad eqx_n = ScalarValue(-delta_t * KnV * MnV) * gamma * nx;
 
   // Supersaturation factor
-  ScalarValue ssf = ScalarValue(0.0);
-  if constexpr (dim == 2)
+  const ScalarValue ssf1 = c - calmin;
+  ScalarValue       ssf(1.0);
+  for (unsigned int d = 0; d < dim - 1; ++d)
     {
-      ssf = c - calmin;
-    }
-  else if constexpr (dim == 3)
-    {
-      ssf = (c - calmin) * (c - calmin);
-    }
-  else
-    {
-      AssertThrow(false,
-                  dealii::ExcMessage("Only dim=2 and dim=3 are supported in this app."));
+      ssf *= ssf1;
     }
 
   auto max = [](const ScalarValue &arr, number val)
@@ -127,7 +121,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   // Calculate the nucleation rate
   double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
   using std::exp;
-  ScalarValue J = k1 * exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
+  ScalarValue J = dealii::Utilities::fixed_power<8>(1.0 - n) * k1 *
+                  exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
 
   // --- Submitting the terms for the governing equations ---
 
@@ -152,29 +147,36 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 CustomPDE<dim, degree, number>::seed_nucleus(
   const dealii::Point<dim, ScalarValue> &q_point_loc,
-  ScalarValue                           &source_term) const
+  ScalarValue                           &source_term,
+  ScalarValue                           &gamma) const
 {
   unsigned int current_increment =
     this->get_user_inputs().get_temporal_discretization().get_increment();
+  unsigned int current_time =
+    this->get_user_inputs().get_temporal_discretization().get_time();
   // Iterate through nuclei list
   for (const prisms::Nucleus<dim> &nucleus : this->get_pf_tools().nuclei_list)
     {
       // Calculate the distance function to the nucleus center
-      dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
+      const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
       {
         dealii::Point<dim, ScalarValue> result;
         const dealii::Point<dim>       &point = nucleus.location;
-        for (unsigned int i = 0; i < ScalarValue::size(); ++i)
+        for (unsigned int d = 0; d < dim; ++d)
           {
-            result[i] = ScalarValue(point[i]);
+            result[d] = ScalarValue(point[d]);
           }
         return result;
-      };
+      }();
       ScalarValue dist = q_point_loc.distance(loc_as_arr);
       // Seed a nucleus if it was added to the list of nuclei recently
-      if (nucleus.seed_increment == current_increment)
+      if (current_time < nucleus.seed_time + seeding_duration)
         {
-          source_term = 0.5 * (1.0 - std::tanh((dist - 1.0) / interface_coeff));
+          gamma = 0.5 * (1.0 + std::tanh((dist - r_freeze) / interface_coeff));
+        }
+      if (nucleus.seed_increment == current_increment - 1)
+        {
+          source_term = 0.5 * (1.0 - std::tanh((dist - r_nuc) / interface_coeff));
         }
     }
 }
