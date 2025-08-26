@@ -528,15 +528,10 @@ InputFileReader::declare_load_ic_parameters()
                                         "",
                                         dealii::Patterns::Anything(),
                                         "The file name to load from for each variable.");
-        parameter_handler.declare_entry("file extension",
-                                        "vtk",
+        parameter_handler.declare_entry("dataset format",
+                                        "vtk_unstructured_grid",
                                         dealii::Patterns::Selection(
-                                          "vtk|vtu|pvtu|vtr|vts"),
-                                        "The file extension.");
-        parameter_handler.declare_entry("grid type",
-                                        "unstructured",
-                                        dealii::Patterns::Selection(
-                                          "unstructured|structured"),
+                                          "vtk_unstructured_grid|vtk_structured_grid"),
                                         "The type of grid in the file.");
         parameter_handler.declare_entry("file variable names",
                                         "",

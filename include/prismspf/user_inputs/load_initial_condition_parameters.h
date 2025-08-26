@@ -24,13 +24,9 @@ struct InitialConditionFile
   // File name
   std::string filename;
 
-  // File extension
-  // TODO (landinjm): Add enum for file extension
-  std::string file_extension;
-
   // Grid type
   // TODO (landinjm): Add enum for grid type
-  std::string grid_type;
+  std::string dataset_format;
 
   // File variable names
   std::vector<std::string> file_variable_names;
@@ -158,8 +154,7 @@ LoadInitialConditionParameters::print_parameter_summary() const
         {
           ConditionalOStreams::pout_summary()
             << "File name: " << ic_file.filename << "\n"
-            << "File extension: " << ic_file.file_extension << "\n"
-            << "Grid type: " << ic_file.grid_type << "\n"
+            << "Dataset format: " << ic_file.dataset_format << "\n"
             << "File variable names: ";
           for (const auto &file_variable_name : ic_file.file_variable_names)
             {

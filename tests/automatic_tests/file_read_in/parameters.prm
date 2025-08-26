@@ -13,9 +13,8 @@ end
 set read initial conditions from file = true
 
 subsection initial condition file 1
-  set file name = test_2D_1degree
-  set file extension = vtk
-  set grid type = unstructured
+  set file name = test_2D_1degree.vtk
+  set dataset format = vtk_unstructured_grid
   set file variable names = n
   set simulation variable names = n
 end

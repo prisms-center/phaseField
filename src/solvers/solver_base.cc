@@ -166,8 +166,7 @@ SolverBase<dim, degree, number>::set_initial_condition()
                     solver_context->get_mapping(),
                     *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
                     ReadInitialCondition<dim, number>(
-                      initial_condition_file.filename + "." +
-                        initial_condition_file.file_extension,
+                      initial_condition_file.filename,
                       initial_condition_file.file_variable_names
                         [iterator -
                          initial_condition_file.simulation_variable_names.begin()],

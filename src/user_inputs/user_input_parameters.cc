@@ -397,8 +397,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             // Create the LoadICFile object
             InitialConditionFile ic_file;
             ic_file.filename            = parameter_handler.get("file name");
-            ic_file.file_extension      = parameter_handler.get("file extension");
-            ic_file.grid_type           = parameter_handler.get("grid type");
+            ic_file.dataset_format           = parameter_handler.get("dataset format");
             ic_file.file_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("file variable names"));
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
