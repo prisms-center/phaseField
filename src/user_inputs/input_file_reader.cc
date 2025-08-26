@@ -543,6 +543,21 @@ InputFileReader::declare_load_ic_parameters()
                                         dealii::Patterns::List(
                                           dealii::Patterns::Anything()),
                                         "The name of the variable in the file.");
+        parameter_handler.declare_entry(
+          "data points in x direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the x direction.");
+        parameter_handler.declare_entry(
+          "data points in y direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the y direction.");
+        parameter_handler.declare_entry(
+          "data points in z direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the z direction.");
       }
       parameter_handler.leave_subsection();
     }

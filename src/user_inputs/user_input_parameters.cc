@@ -386,7 +386,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
 {
   load_ic_parameters.set_read_initial_conditions_from_file(
     parameter_handler.get_bool("read initial conditions from file"));
-
+  std::vector<std::string> axis_labels = {"x", "y", "z"};
   for (unsigned int i = 0; i < Numbers::max_subsections; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
@@ -402,7 +402,12 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
               parameter_handler.get("file variable names"));
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variable names"));
-
+            ic_file.n_data_points.resize(dim);
+            for (unsigned int i = 0; i < dim; ++i)
+              {
+                ic_file.n_data_points[i] = parameter_handler.get_integer("data points in "
+                                            + axis_labels[i] + " direction");
+              }
             load_ic_parameters.add_initial_condition_file(ic_file);
           }
       }

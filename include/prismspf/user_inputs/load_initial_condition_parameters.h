@@ -33,6 +33,9 @@ struct InitialConditionFile
 
   // Simulation variable names
   std::vector<std::string> simulation_variable_names;
+
+  // Number of data points in each direction
+  std::vector<int> n_data_points;
 };
 
 /**
@@ -165,6 +168,14 @@ LoadInitialConditionParameters::print_parameter_summary() const
           for (const auto &simulation_variable_name : ic_file.simulation_variable_names)
             {
               ConditionalOStreams::pout_summary() << simulation_variable_name << " ";
+            }
+          if (ic_file.dataset_format == "flat_binary")
+            {
+              ConditionalOStreams::pout_summary() << "\n Data points in each direction: ";
+              for (const auto &n_data_points : ic_file.n_data_points)
+                {
+                  ConditionalOStreams::pout_summary() << n_data_points << " ";
+                }
             }
         }
 
