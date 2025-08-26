@@ -166,11 +166,12 @@ SolverBase<dim, degree, number>::set_initial_condition()
                     solver_context->get_mapping(),
                     *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
                     ReadInitialCondition<dim, number>(
-                      initial_condition_file.filename,
                       initial_condition_file.file_variable_names
                         [iterator -
                          initial_condition_file.simulation_variable_names.begin()],
-                      subset_attributes.at(index).get_field_type()),
+                      subset_attributes.at(index).get_field_type(),
+                      initial_condition_file,
+                      solver_context->get_user_inputs().get_spatial_discretization()),
                     *(solver_context->get_solution_handler()
                         .get_solution_vector(index, DependencyType::Normal)));
                 }
