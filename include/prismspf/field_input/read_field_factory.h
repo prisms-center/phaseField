@@ -35,9 +35,9 @@ create_reader(const InitialConditionFile &ic_file,
   switch (ic_file.dataset_format)
    {
       case DataFormatType::VTKUnstructuredGrid:
-        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file.filename);
+        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file, spatial_discretization);
       case DataFormatType::FlatBinary:
-        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file.filename);
+        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file, spatial_discretization);
       default:
           AssertThrow(false, UnreachableCode());
     }

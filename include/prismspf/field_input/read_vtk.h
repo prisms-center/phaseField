@@ -26,7 +26,8 @@ public:
   /**
    * @brief Constructor
    */
-  explicit ReadUnstructuredVTK(const std::string &_filename);
+  ReadUnstructuredVTK(const InitialConditionFile       &_ic_file,
+                      const SpatialDiscretization<dim> &_spatial_discretization);
 
   /**
    * @brief Destructor
@@ -141,13 +142,14 @@ private:
 };
 
 template <unsigned int dim, typename number>
-ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const std::string &_filename)
-  : ReadFieldBase<dim, number>(_filename)
+ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const InitialConditionFile       &_ic_file,
+                                        const SpatialDiscretization<dim> &_spatial_discretization)
+  : ReadFieldBase<dim, number>(_ic_file, _spatial_discretization)
 {
   // Create a reader for the vtk file and update it
   // vtkNew is a smart pointer so we don't need to manage it with delete
   reader = vtkNew<vtkUnstructuredGridReader>();
-  reader->SetFileName(this->filename.c_str());
+  reader->SetFileName(this->ic_file.filename.c_str());
   reader->Update();
 
   // Check that the file is an unstructured grid

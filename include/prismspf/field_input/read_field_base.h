@@ -11,6 +11,7 @@
 
 #include <prismspf/utilities/utilities.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
+#include <prismspf/user_inputs/load_initial_condition_parameters.h>
 
 #include <filesystem>
 
@@ -23,7 +24,8 @@ public:
   /**
    * @brief Constructor
    */
-  explicit ReadFieldBase(const std::string &_filename);
+  ReadFieldBase(const InitialConditionFile       &_ic_file,
+                const SpatialDiscretization<dim> &_spatial_discretization);
 
   /**
    * @brief Destructor
@@ -71,25 +73,29 @@ public:
   get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name) = 0;
 
 protected:
+  // info for file/discretization passed by dependency injection, class is non-copyable
   /**
    * @brief Spatial discretization object
    */
-  const SpatialDiscretization<dim> spatial_discretization;
+  const SpatialDiscretization<dim> &spatial_discretization;
 
   /**
-   * @brief Filename
+   * @brief Initial condition file object
    */
-  const std::string &filename;
+  const InitialConditionFile &ic_file;
+
 };
 
 template <unsigned int dim, typename number>
-ReadFieldBase<dim, number>::ReadFieldBase(const std::string &_filename)
-  : filename(_filename)
+ReadFieldBase<dim, number>::ReadFieldBase(const InitialConditionFile       &_ic_file,
+                                          const SpatialDiscretization<dim> &_spatial_discretization)
+  : spatial_discretization(_spatial_discretization)
+  , ic_file(_ic_file)
 {
   // Check that the filename exists
-  if (!std::filesystem::exists(filename))
+  if (!std::filesystem::exists(this->ic_file.filename))
     {
-      AssertThrow(false, dealii::ExcMessage("File " + filename + " does not exist"));
+      AssertThrow(false, dealii::ExcMessage("File " + this->ic_file.filename + " does not exist"));
     }
 }
 
