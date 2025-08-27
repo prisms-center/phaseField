@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/base/mpi.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
@@ -10,6 +12,7 @@
 
 #include <prismspf/config.h>
 
+#include <mpi.h>
 #include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -43,8 +46,10 @@ public:
     rng.seed(random_seed);
   }
 
-  unsigned int      random_seed = 2025;
-  mutable RNGEngine rng {random_seed};
+  unsigned int random_seed = 2025;
+  // Use a different seed for each MPI process to avoid correlated events
+  mutable RNGEngine rng {random_seed +
+                         dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)};
 };
 
 inline void

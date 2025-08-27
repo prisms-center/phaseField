@@ -138,40 +138,61 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                     }
                 }
             }
-          // Remove nuclei within their exclusion distance and add to nuclei list
-          ConditionalOStreams::pout_base()
-            << new_nuclei.size() << " nuclei generated before exclusion.\n"
-            << "Excluding nuclei...\n";
-
-          // remove bias
-          std::vector<Nucleus<dim>> vec(new_nuclei.begin(), new_nuclei.end());
-          std::shuffle(vec.begin(), vec.end(), rng);
-          new_nuclei = std::list<Nucleus<dim>>(vec.begin(), vec.end());
-
-          while (!new_nuclei.empty())
+          if (dealii::Utilities::MPI::sum(new_nuclei.size(),
+                                          MPI_COMM_WORLD)) // dont waste time if
+                                                           // no nuclei appeared
             {
-              auto iter = new_nuclei.begin();
-              for (const auto &existing_nucleus : nuclei)
+              // Gather to root process
+              std::vector<std::list<Nucleus<dim>>> gathered_nuclei =
+                dealii::Utilities::MPI::gather(MPI_COMM_WORLD, new_nuclei, 0);
+              new_nuclei.clear();
+              if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
                 {
-                  if (iter->location.distance(existing_nucleus.location) <
-                        nucleation_parameters.get_exclusion_distance() ||
-                      (iter->field_index == existing_nucleus.field_index &&
-                       iter->location.distance(existing_nucleus.location) <
-                         nucleation_parameters.get_same_field_exclusion_distance()))
+                  for (const auto &proc_nuclei : gathered_nuclei)
                     {
-                      new_nuclei.erase(iter);
-                      iter = new_nuclei.end();
-                      break;
+                      new_nuclei.insert(new_nuclei.end(),
+                                        proc_nuclei.begin(),
+                                        proc_nuclei.end());
+                    }
+
+                  // Remove nuclei within their exclusion distance and add to nuclei list
+                  ConditionalOStreams::pout_base()
+                    << new_nuclei.size() << " nuclei generated before exclusion.\n"
+                    << "Excluding nuclei...\n";
+
+                  // remove bias from cell order
+                  std::vector<Nucleus<dim>> vec(new_nuclei.begin(), new_nuclei.end());
+                  std::shuffle(vec.begin(), vec.end(), rng);
+                  new_nuclei = std::list<Nucleus<dim>>(vec.begin(), vec.end());
+
+                  while (!new_nuclei.empty())
+                    {
+                      auto iter = new_nuclei.begin();
+                      for (const auto &existing_nucleus : nuclei)
+                        {
+                          if (iter->location.distance(existing_nucleus.location) <
+                                nucleation_parameters.get_exclusion_distance() ||
+                              (iter->field_index == existing_nucleus.field_index &&
+                               iter->location.distance(existing_nucleus.location) <
+                                 nucleation_parameters
+                                   .get_same_field_exclusion_distance()))
+                            {
+                              new_nuclei.erase(iter);
+                              iter = new_nuclei.end();
+                              break;
+                            }
+                        }
+                      if (iter != new_nuclei.end())
+                        {
+                          nuclei.push_back(*iter);
+                          new_nuclei.erase(iter);
+                        }
                     }
                 }
-              if (iter != new_nuclei.end())
-                {
-                  nuclei.push_back(*iter);
-                  new_nuclei.erase(iter);
-                }
+              ConditionalOStreams::pout_base()
+                << new_nuclei.size() << " nuclei generated after exclusion.\n";
+              nuclei = dealii::Utilities::MPI::broadcast(MPI_COMM_WORLD, nuclei, 0);
             }
-          ConditionalOStreams::pout_base()
-            << new_nuclei.size() << " nuclei generated after exclusion.\n";
         }
     }
 }

@@ -9,6 +9,7 @@
 
 #include <prismspf/config.h>
 
+#include <mpi.h>
 #include <ostream>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -39,6 +40,20 @@ public:
   dealii::Point<dim> location;
   double             seed_time      = 0.0;
   unsigned int       seed_increment = 0;
+
+private:
+  friend class boost::serialization::access;
+
+  // The serialization function
+  template <class Archive>
+  void
+  serialize(Archive &ar, const unsigned int version)
+  {
+    ar &field_index;    // Serialize 'field_index' member
+    ar &location;       // Serialize 'location' member
+    ar &seed_time;      // Serialize 'seed_time' member
+    ar &seed_increment; // Serialize 'seed_increment' member
+  }
 };
 
 PRISMS_PF_END_NAMESPACE
