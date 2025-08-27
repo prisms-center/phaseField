@@ -10,11 +10,16 @@ end
 set global refinement = 8
 set degree = 2
 
-#set Mesh adaptivity = true
-#set Steps between remeshing operations = 500
+set mesh adaptivity = false
+#set remeshing period = 500
+set max refinement = 8
+set min refinement = 2
 
-#set max refinement level = 10
-#set min refinement level = 2
+subsection refinement criterion: n
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
 
 set time step = 0.011
 set number steps = 50000
@@ -22,7 +27,10 @@ set number steps = 50000
 subsection output
   set condition = EQUAL_SPACING
   set number = 20
+  set file type = pvtu
 end
+
+
 
 set boundary condition for c = Periodic
 set boundary condition for n = Periodic
@@ -34,7 +42,7 @@ subsection nucleation
 end
 
 subsection miscellaneous
-  set random seed = 2025
+  set random seed = 2015
 end
 
 set Model constant c_avg = 0.2, DOUBLE

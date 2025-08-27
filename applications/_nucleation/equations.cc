@@ -135,7 +135,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   variable_list.set_gradient_term(1, eqx_n);
 
   // Terms for the nucleation rate
-  variable_list.set_value_term(2, J);
+  variable_list.set_value_term(2, 100.0 * J);
 }
 
 // =================================================================================
@@ -152,8 +152,7 @@ CustomPDE<dim, degree, number>::seed_nucleus(
 {
   unsigned int current_increment =
     this->get_user_inputs().get_temporal_discretization().get_increment();
-  unsigned int current_time =
-    this->get_user_inputs().get_temporal_discretization().get_time();
+  double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
   // Iterate through nuclei list
   for (const prisms::Nucleus<dim> &nucleus : this->get_pf_tools().nuclei_list)
     {

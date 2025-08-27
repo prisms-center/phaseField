@@ -18,7 +18,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class VariableContainer;
 
 template <unsigned int dim>
-class PhaseFieldTools;
+struct PhaseFieldTools;
 
 /**
  * @brief This class contains the user implementation of each PDE operator.

@@ -19,7 +19,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 template <unsigned int dim>
-class PhaseFieldTools;
+struct PhaseFieldTools;
 
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
