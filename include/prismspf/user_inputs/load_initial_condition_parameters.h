@@ -6,6 +6,7 @@
 #include <deal.II/base/exceptions.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
@@ -25,8 +26,7 @@ struct InitialConditionFile
   std::string filename;
 
   // Grid type
-  // TODO (landinjm): Add enum for grid type
-  std::string dataset_format;
+  DataFormatType dataset_format;
 
   // File variable names
   std::vector<std::string> file_variable_names;
@@ -157,7 +157,7 @@ LoadInitialConditionParameters::print_parameter_summary() const
         {
           ConditionalOStreams::pout_summary()
             << "File name: " << ic_file.filename << "\n"
-            << "Dataset format: " << ic_file.dataset_format << "\n"
+            << "Dataset format: " << to_string(ic_file.dataset_format) << "\n"
             << "File variable names: ";
           for (const auto &file_variable_name : ic_file.file_variable_names)
             {
@@ -169,7 +169,7 @@ LoadInitialConditionParameters::print_parameter_summary() const
             {
               ConditionalOStreams::pout_summary() << simulation_variable_name << " ";
             }
-          if (ic_file.dataset_format == "flat_binary")
+          if (ic_file.dataset_format == FlatBinary)
             {
               ConditionalOStreams::pout_summary() << "\n Data points in each direction: ";
               for (const auto &n_data_points : ic_file.n_data_points)

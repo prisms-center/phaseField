@@ -397,12 +397,25 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             // Create the LoadICFile object
             InitialConditionFile ic_file;
             ic_file.filename            = parameter_handler.get("file name");
-            ic_file.dataset_format           = parameter_handler.get("dataset format");
+            const std::string type_string = parameter_handler.get("dataset format");
+            bool found_type = false;
+            for (unsigned int j = 0; j < static_cast<unsigned int>(DataFormatType::LastEntry); j++)
+              {
+                if (boost::iequals(type_string, to_string(static_cast<DataFormatType>(j))))
+                  {
+                    ic_file.dataset_format = static_cast<DataFormatType>(j);
+                    found_type = true;
+                    break;
+                  }
+              }
+            AssertThrow(found_type,
+                        dealii::ExcMessage("Unsupported dataset format: " + type_string));
             ic_file.file_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("file variable names"));
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variable names"));
             ic_file.n_data_points.resize(dim);
+            // Defaults to -1 for unused dimensions/cases that don't require it
             for (unsigned int i = 0; i < dim; ++i)
               {
                 ic_file.n_data_points[i] = parameter_handler.get_integer("data points in "

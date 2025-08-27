@@ -13,6 +13,11 @@
 #include <prismspf/field_input/read_field_base.h>
 #include <prismspf/field_input/read_vtk.h>
 
+#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
+#  include <deal.II/base/exception_macros.h>
+#else
+#  include <deal.II/base/exceptions.h>
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -22,22 +27,19 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 
 enum class Type { ReadUnstructuredVTK };
-
 template <unsigned int dim, typename number>
 std::shared_ptr<ReadFieldBase<dim, number>>
 create_reader(const InitialConditionFile &ic_file,
               const SpatialDiscretization<dim> &spatial_discretization)
 {
-  const static std::unordered_map<std::string,int> string_to_case
-    {
-      {"vtk_unstructured_grid",1},
-    };
-  switch (string_to_case.contains(ic_file.dataset_format) ? string_to_case.at(ic_file.dataset_format) : 0)
+  switch (ic_file.dataset_format)
    {
-      case 1:
-          return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file.filename);
+      case DataFormatType::VTKUnstructuredGrid:
+        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file.filename);
+      case DataFormatType::FlatBinary:
+        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file.filename);
       default:
-          AssertThrow(false, dealii::ExcMessage("Unsupported dataset format: " + ic_file.dataset_format));
+          AssertThrow(false, UnreachableCode());
     }
 }
 
