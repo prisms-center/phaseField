@@ -31,7 +31,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class NucleationHandler
 {
 public:
-  static void
+  static bool
   attempt_nucleation(const SolverContext<dim, degree, number> &solver_context,
                      std::vector<Nucleus<dim>>                &nuclei);
 
@@ -53,11 +53,12 @@ public:
 };
 
 template <unsigned int dim, unsigned int degree, typename number>
-inline void
+inline bool
 NucleationHandler<dim, degree, number>::attempt_nucleation(
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
 {
+  bool                        any_nucleation_occurred = false;
   const NucleationParameters &nucleation_parameters =
     solver_context.get_user_inputs().get_nucleation_parameters();
   double delta_t =
@@ -73,6 +74,7 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                                   quadrature,
                                   dealii::UpdateFlags::update_values |
                                     dealii::UpdateFlags::update_JxW_values);
+  std::list<Nucleus<dim>> new_nuclei_list;
   for (const auto &[index, variable] :
        solver_context.get_user_inputs().get_variable_attributes())
     {
@@ -81,7 +83,6 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
           std::uniform_int_distribution<unsigned int> nucleating_index_dist(
             0,
             variable.get_nucleating_field_indices().size() - 1);
-          std::list<Nucleus<dim>> new_nuclei_list;
           // Perform nucleation logic here
           // This is where you would check conditions and create nuclei
           for (const auto &cell : solver_context.get_triangulation_handler()
@@ -144,66 +145,68 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                     }
                 }
             }
-          if (dealii::Utilities::MPI::sum(new_nuclei_list.size(),
-                                          MPI_COMM_WORLD)) // dont waste time if
-                                                           // no nuclei appeared
-            {
-              // Gather to root process
-              std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(),
-                                                   new_nuclei_list.end());
-              mpi_gather_nuclei(new_nuclei);
-              if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-                {
-                  // Remove nuclei within their exclusion distance and add to nuclei list
-                  ConditionalOStreams::pout_base()
-                    << new_nuclei.size() << " nuclei generated before exclusion.\n"
-                    << "Excluding nuclei...\n";
-                  unsigned int count = 0;
-
-                  // remove bias from cell order
-                  std::shuffle(new_nuclei.begin(), new_nuclei.end(), rng);
-
-                  while (!new_nuclei.empty())
-                    {
-                      Nucleus<dim> *nuc = &new_nuclei.back();
-                      for (const auto &existing_nucleus : nuclei)
-                        {
-                          if (nuc->location.distance(existing_nucleus.location) <
-                                nucleation_parameters.get_exclusion_distance() ||
-                              (nuc->field_index == existing_nucleus.field_index &&
-                               nuc->location.distance(existing_nucleus.location) <
-                                 nucleation_parameters
-                                   .get_same_field_exclusion_distance()))
-                            {
-                              new_nuclei.pop_back();
-                              nuc = nullptr;
-                              break;
-                            }
-                        }
-                      if (nuc != nullptr)
-                        {
-                          // Note: Using push_back() in a loop is not good use for
-                          // vectors. We also don't want to use reserve() on the highest
-                          // possible amount because that could allocate much more space
-                          // than needed. I originally was using a std::list to avoid this
-                          // issue, but that is unfriendly to the MPI functions.
-                          // One solution could be to convert between data structures
-                          // as needed, but that also adds overhead. For now, I will
-                          // assume that the total number of added nuclei is not enough to
-                          // cause significant performance issues.
-                          nuclei.push_back(*nuc);
-                          new_nuclei.pop_back();
-                          ++count;
-                        }
-                    }
-                  ConditionalOStreams::pout_base()
-                    << count << " nuclei generated after exclusion.\n"
-                    << nuclei.size() << " total nuclei.\n";
-                }
-              mpi_broadcast_nuclei(nuclei);
-            }
         }
     }
+  if (dealii::Utilities::MPI::sum(new_nuclei_list.size(),
+                                  MPI_COMM_WORLD)) // dont waste time if
+                                                   // no nuclei appeared
+    {
+      // Gather to root process
+      std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(),
+                                           new_nuclei_list.end());
+      mpi_gather_nuclei(new_nuclei);
+      if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+        {
+          // Remove nuclei within their exclusion distance and add to nuclei list
+          ConditionalOStreams::pout_base()
+            << new_nuclei.size() << " nuclei generated before exclusion.\n"
+            << "Excluding nuclei...\n";
+          unsigned int count = 0;
+
+          // remove bias from cell order
+          std::shuffle(new_nuclei.begin(), new_nuclei.end(), rng);
+
+          while (!new_nuclei.empty())
+            {
+              Nucleus<dim> *nuc = &new_nuclei.back();
+              for (const auto &existing_nucleus : nuclei)
+                {
+                  if (nuc->location.distance(existing_nucleus.location) <
+                        nucleation_parameters.get_exclusion_distance() ||
+                      (nuc->field_index == existing_nucleus.field_index &&
+                       nuc->location.distance(existing_nucleus.location) <
+                         nucleation_parameters.get_same_field_exclusion_distance()))
+                    {
+                      new_nuclei.pop_back();
+                      nuc = nullptr;
+                      break;
+                    }
+                }
+              if (nuc != nullptr)
+                {
+                  // Note: Using push_back() in a loop is not good use for
+                  // vectors. We also don't want to use reserve() on the highest
+                  // possible amount because that could allocate much more space
+                  // than needed. I originally was using a std::list to avoid this
+                  // issue, but that is unfriendly to the MPI functions.
+                  // One solution could be to convert between data structures
+                  // as needed, but that also adds overhead. For now, I will
+                  // assume that the total number of added nuclei is not enough to
+                  // cause significant performance issues.
+                  nuclei.push_back(*nuc);
+                  new_nuclei.pop_back();
+                  ++count;
+                  any_nucleation_occurred = true;
+                }
+            }
+          ConditionalOStreams::pout_base()
+            << count << " nuclei generated after exclusion.\n"
+            << nuclei.size() << " total nuclei.\n";
+        }
+      MPI_Bcast(&any_nucleation_occurred, 1, MPI_CXX_BOOL, 0, MPI_COMM_WORLD);
+      mpi_broadcast_nuclei(nuclei);
+    }
+  return any_nucleation_occurred;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -217,7 +220,9 @@ NucleationHandler<dim, degree, number>::mpi_gather_nuclei(
   int              local_count = local_nuclei.size();
   std::vector<int> nuclei_counts_per_rank;
   if (rank == 0)
-    nuclei_counts_per_rank.resize(num_procs);
+    {
+      nuclei_counts_per_rank.resize(num_procs);
+    }
 
   MPI_Gather(&local_count,
              1,
@@ -252,6 +257,10 @@ NucleationHandler<dim, degree, number>::mpi_gather_nuclei(
               Nucleus<dim>::mpi_datatype(),
               0,
               MPI_COMM_WORLD);
+  if (rank == 0)
+    {
+      local_nuclei = gathered_nuclei;
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -264,7 +273,9 @@ NucleationHandler<dim, degree, number>::mpi_broadcast_nuclei(
   MPI_Bcast(&count, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank != 0)
-    local_nuclei.resize(count);
+    {
+      local_nuclei.resize(count);
+    }
 
   MPI_Bcast(local_nuclei.data(), count, Nucleus<dim>::mpi_datatype(), 0, MPI_COMM_WORLD);
 }

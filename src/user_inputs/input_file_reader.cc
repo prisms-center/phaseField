@@ -714,8 +714,12 @@ InputFileReader::declare_nucleation_parameters()
     "1",
     dealii::Patterns::Integer(1),
     "The number of increments between nucleation attempts.");
-  // Declare aliases for the two parameters
-  //
+  parameter_handler.declare_entry("refinement radius",
+                                  "0.0",
+                                  dealii::Patterns::Double(0.0),
+                                  "The radius around a nucleus in which AMR is applied.");
+  // Declare aliases for the parameters
+  //============================================================================================
   parameter_handler.declare_alias("nucleus exclusion distance",
                                   "nucleus_exclusion_distance");
   parameter_handler.declare_alias("nucleus exclusion distance",

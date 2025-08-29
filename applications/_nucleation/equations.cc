@@ -135,7 +135,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   variable_list.set_gradient_term(1, eqx_n);
 
   // Terms for the nucleation rate
-  variable_list.set_value_term(2, 100.0 * J);
+  variable_list.set_value_term(2, J);
 }
 
 // =================================================================================
@@ -171,11 +171,11 @@ CustomPDE<dim, degree, number>::seed_nucleus(
       // Seed a nucleus if it was added to the list of nuclei recently
       if (current_time < nucleus.seed_time + seeding_duration)
         {
-          gamma = 0.5 * (1.0 + std::tanh((dist - r_freeze) / interface_coeff));
+          gamma *= 0.5 * (1.0 + std::tanh((dist - r_freeze) / interface_coeff));
         }
       if (nucleus.seed_increment == current_increment - 1)
         {
-          source_term = 0.5 * (1.0 - std::tanh((dist - r_nuc) / interface_coeff));
+          source_term += 0.5 * (1.0 - std::tanh((dist - r_nuc) / interface_coeff));
         }
     }
 }

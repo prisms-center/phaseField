@@ -85,6 +85,7 @@ PDEProblem<dim, degree, number>::PDEProblem(
                    _pde_operator,
                    _pde_operator_float)
   , grid_refiner_context(_user_inputs,
+                         _pf_tools,
                          triangulation_handler,
                          constraint_handler,
                          matrix_free_container,
@@ -375,7 +376,17 @@ PDEProblem<dim, degree, number>::solve()
       solve_increment();
       Timer::end_section("Solve Increment");
 
-      if (user_inputs->get_spatial_discretization().should_refine_mesh(increment))
+      bool any_nucleation_occurred = false;
+      if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
+        {
+          any_nucleation_occurred =
+            NucleationHandler<dim, degree, number>::attempt_nucleation(
+              solver_context,
+              pf_tools->nuclei_list);
+        }
+      if (user_inputs->get_spatial_discretization().get_has_adaptivity() &&
+          (user_inputs->get_spatial_discretization().should_refine_mesh(increment) ||
+           any_nucleation_occurred))
         {
           // Perform grid refinement
           ConditionalOStreams::pout_base()
@@ -443,13 +454,6 @@ PDEProblem<dim, degree, number>::solve()
             }
           ConditionalOStreams::pout_base() << "\n" << std::flush;
           Timer::end_section("Output");
-        }
-      if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
-        {
-          NucleationHandler<dim, degree, number>::attempt_nucleation(
-            solver_context,
-            pf_tools->nuclei_list);
-          // TODO: refine around nucleus when using amr
         }
     }
 }

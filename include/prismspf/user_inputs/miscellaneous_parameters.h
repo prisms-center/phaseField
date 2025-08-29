@@ -48,8 +48,7 @@ public:
 
   unsigned int random_seed = 2025;
   // Use a different seed for each MPI process to avoid correlated events
-  mutable RNGEngine rng {random_seed +
-                         dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)};
+  mutable RNGEngine rng {random_seed};
 };
 
 inline void

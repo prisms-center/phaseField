@@ -3,11 +3,14 @@
 
 #pragma once
 
+#include <deal.II/base/bounding_box.h>
 #include <deal.II/fe/fe_values.h>
 
 #include <prismspf/core/grid_refiner_context.h>
 
 #include <prismspf/config.h>
+
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -159,61 +162,60 @@ public:
            dealii::ExcMessage("The init() function must be called before trying to "
                               "perform adaptive refinement"));
 
-    // Step 1
-    mark_cells_for_refinement_and_coarsening();
-
-    // Step 2
-    refine_grid();
-
-    // Step 3
-    grid_refinement_context.get_triangulation_handler().reinit();
-    grid_refinement_context.get_dof_handler().reinit(
-      grid_refinement_context.get_triangulation_handler(),
-      grid_refinement_context.get_finite_element_systems(),
-      grid_refinement_context.get_multigrid_info());
-    grid_refinement_context.get_constraint_handler().make_constraints(
-      grid_refinement_context.get_mapping(),
-      grid_refinement_context.get_dof_handler().get_dof_handlers());
-    if (grid_refinement_context.get_multigrid_info().has_multigrid())
+    for (unsigned int refine_index = min_refinement; refine_index < max_refinement;
+         ++refine_index)
       {
-        const unsigned int min_level =
-          grid_refinement_context.get_multigrid_info().get_mg_min_level();
-        const unsigned int max_level =
-          grid_refinement_context.get_multigrid_info().get_mg_max_level();
-        for (unsigned int level = min_level; level <= max_level; ++level)
+        for (auto &[field_index, solution] :
+             grid_refinement_context.get_solution_handler().get_solution_vector())
           {
-            grid_refinement_context.get_constraint_handler().make_mg_constraints(
-              grid_refinement_context.get_mapping(),
-              grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
-              level);
+            solution->update_ghost_values();
           }
+        // Step 1
+        mark_cells_for_refinement_and_coarsening();
+
+        // Step 2
+        refine_grid();
+
+        // Step 3
+        grid_refinement_context.get_triangulation_handler().reinit();
+        grid_refinement_context.get_dof_handler().reinit(
+          grid_refinement_context.get_triangulation_handler(),
+          grid_refinement_context.get_finite_element_systems(),
+          grid_refinement_context.get_multigrid_info());
+        grid_refinement_context.get_constraint_handler().make_constraints(
+          grid_refinement_context.get_mapping(),
+          grid_refinement_context.get_dof_handler().get_dof_handlers());
+        if (grid_refinement_context.get_multigrid_info().has_multigrid())
+          {
+            const unsigned int min_level =
+              grid_refinement_context.get_multigrid_info().get_mg_min_level();
+            const unsigned int max_level =
+              grid_refinement_context.get_multigrid_info().get_mg_max_level();
+            for (unsigned int level = min_level; level <= max_level; ++level)
+              {
+                grid_refinement_context.get_constraint_handler().make_mg_constraints(
+                  grid_refinement_context.get_mapping(),
+                  grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
+                  level);
+              }
+          }
+
+        grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
+          grid_refinement_context.get_mapping(),
+          grid_refinement_context.get_dof_handler(),
+          grid_refinement_context.get_constraint_handler(),
+          dealii::QGaussLobatto<1>(degree + 1));
+
+        grid_refinement_context.get_solution_handler().reinit(
+          grid_refinement_context.get_matrix_free_container());
+
+        // Step 4
+        grid_refinement_context.get_solution_handler().execute_solution_transfer();
+
+        // Step 6
+        grid_refinement_context.get_invm_handler().recompute_invm();
+        grid_refinement_context.get_element_volume_container().recompute_element_volume();
       }
-
-    grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
-      grid_refinement_context.get_mapping(),
-      grid_refinement_context.get_dof_handler(),
-      grid_refinement_context.get_constraint_handler(),
-      dealii::QGaussLobatto<1>(degree + 1));
-
-    // Clear the ghosts
-    grid_refinement_context.get_solution_handler().zero_out_ghosts();
-
-    // Reinit the solution vectors
-    grid_refinement_context.get_solution_handler().reinit(
-      grid_refinement_context.get_matrix_free_container());
-
-    // Step 4
-    grid_refinement_context.get_solution_handler().execute_solution_transfer();
-    grid_refinement_context.get_solution_handler().free_solution_transfer();
-    grid_refinement_context.get_solution_handler().reinit_solution_transfer(
-      grid_refinement_context.get_matrix_free_container());
-
-    // Step 6
-    grid_refinement_context.get_invm_handler().recompute_invm();
-    grid_refinement_context.get_element_volume_container().recompute_element_volume();
-
-    // Update the ghosts
-    grid_refinement_context.get_solution_handler().update_ghosts();
   };
 
 private:
@@ -371,6 +373,38 @@ private:
                       {
                         break;
                       }
+                  }
+              }
+            // Refine around active nuclei
+            for (const Nucleus<dim> &nucleus :
+                 grid_refinement_context.get_pf_tools().nuclei_list)
+              {
+                static dealii::Point<dim> unit_corner = []()
+                {
+                  dealii::Point<dim> p;
+                  for (unsigned int d = 0; d < dim; ++d)
+                    {
+                      p[d] = 1.0;
+                    }
+                  return p;
+                }();
+                dealii::BoundingBox<dim> nucleus_bounding_box(
+                  std::make_pair<dealii::Point<dim>, dealii::Point<dim>>(
+                    dealii::Point<dim>(nucleus.location -
+                                       unit_corner *
+                                         grid_refinement_context.get_user_inputs()
+                                           .get_nucleation_parameters()
+                                           .get_refinement_radius()),
+                    dealii::Point<dim>(nucleus.location +
+                                       unit_corner *
+                                         grid_refinement_context.get_user_inputs()
+                                           .get_nucleation_parameters()
+                                           .get_refinement_radius())));
+
+                if (cell->bounding_box().has_overlap_with(nucleus_bounding_box))
+                  {
+                    should_refine = true;
+                    break;
                   }
               }
 

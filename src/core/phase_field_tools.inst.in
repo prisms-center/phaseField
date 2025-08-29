@@ -1,4 +1,4 @@
 for (dimension : SPACE_DIMENSIONS)
   {
-    template class PhaseFieldTools<dimension>;
+    template struct PhaseFieldTools<dimension>;
   }

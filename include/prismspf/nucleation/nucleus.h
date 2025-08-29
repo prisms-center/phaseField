@@ -64,7 +64,11 @@ template <unsigned int dim>
 inline MPI_Datatype
 Nucleus<dim>::mpi_datatype()
 {
-  MPI_Datatype MPI_NUCLEUS;
+  static MPI_Datatype MPI_NUCLEUS = MPI_DATATYPE_NULL;
+  if (MPI_NUCLEUS != MPI_DATATYPE_NULL)
+    {
+      return MPI_NUCLEUS;
+    }
 
   constexpr int block_lengths[4] = {1, static_cast<int>(dim), 1, 1};
   MPI_Datatype  types[4]         = {MPI_UNSIGNED, MPI_DOUBLE, MPI_DOUBLE, MPI_UNSIGNED};
@@ -80,7 +84,9 @@ Nucleus<dim>::mpi_datatype()
   MPI_Get_address(&dummy.seed_increment, &displacements[3]);
 
   for (int i = 0; i < 4; ++i)
-    displacements[i] -= base;
+    {
+      displacements[i] -= base;
+    }
 
   MPI_Type_create_struct(4, block_lengths, displacements, types, &MPI_NUCLEUS);
   MPI_Type_commit(&MPI_NUCLEUS);

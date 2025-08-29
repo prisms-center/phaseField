@@ -10,8 +10,8 @@ end
 set global refinement = 8
 set degree = 2
 
-set mesh adaptivity = false
-#set remeshing period = 500
+set mesh adaptivity = true
+set remeshing period = 1000
 set max refinement = 8
 set min refinement = 2
 
@@ -22,23 +22,24 @@ subsection refinement criterion: n
 end
 
 set time step = 0.011
-set number steps = 50000
+set number steps = 500000
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 20
+  set number = 80
   set file type = pvtu
 end
 
 
 
-set boundary condition for c = Periodic
-set boundary condition for n = Periodic
-set boundary condition for nucleation_rate = Periodic
+set boundary condition for c = Natural
+set boundary condition for n = Natural
+set boundary condition for nucleation_rate = Natural
 
 subsection nucleation
   set nucleus exclusion distance = 20.0
   set nucleation period = 2500
+  set refinement radius = 10
 end
 
 subsection miscellaneous
