@@ -35,7 +35,7 @@ struct InitialConditionFile
   std::vector<std::string> simulation_variable_names;
 
   // Number of data points in each direction
-  std::vector<int> n_data_points;
+  std::vector<dealii::types::global_dof_index> n_data_points = {0, 0, 0};
 };
 
 /**

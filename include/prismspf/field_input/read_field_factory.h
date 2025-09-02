@@ -12,6 +12,7 @@
 
 #include <prismspf/field_input/read_field_base.h>
 #include <prismspf/field_input/read_vtk.h>
+#include <prismspf/field_input/read_binary.h>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
 #  include <deal.II/base/exception_macros.h>
@@ -26,7 +27,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  * not a member of ReadFieldBase to avoid redundant template instantiations
  */
 
-enum class Type { ReadUnstructuredVTK };
+enum class Type { ReadUnstructuredVTK, ReadBinary };
 template <unsigned int dim, typename number>
 std::shared_ptr<ReadFieldBase<dim, number>>
 create_reader(const InitialConditionFile &ic_file,
@@ -37,7 +38,7 @@ create_reader(const InitialConditionFile &ic_file,
       case DataFormatType::VTKUnstructuredGrid:
         return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file, spatial_discretization);
       case DataFormatType::FlatBinary:
-        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file, spatial_discretization);
+        return std::make_shared<ReadBinary<dim, number>>(ic_file, spatial_discretization);
       default:
           AssertThrow(false, UnreachableCode());
     }

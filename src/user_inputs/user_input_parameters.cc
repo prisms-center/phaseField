@@ -414,8 +414,7 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
               parameter_handler.get("file variable names"));
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variable names"));
-            ic_file.n_data_points.resize(dim);
-            // Defaults to -1 for unused dimensions/cases that don't require it
+            // Defaults to 0 for unused dimensions/cases that don't require it
             for (unsigned int i = 0; i < dim; ++i)
               {
                 ic_file.n_data_points[i] = parameter_handler.get_integer("data points in "
