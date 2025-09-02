@@ -121,8 +121,14 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   // Calculate the nucleation rate
   double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
   using std::exp;
-  ScalarValue J = dealii::Utilities::fixed_power<8>(1.0 - n) * k1 *
-                  exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
+  ScalarValue J = k1 * exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
+  for (unsigned int i = 0; i < ScalarValue::size(); ++i)
+    {
+      if (n[i] >= 0.01)
+        {
+          J[i] = 0.0;
+        }
+    }
 
   // --- Submitting the terms for the governing equations ---
 
