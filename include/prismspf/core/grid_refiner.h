@@ -6,10 +6,12 @@
 #include <deal.II/base/bounding_box.h>
 #include <deal.II/fe/fe_values.h>
 
+#include <prismspf/core/cell_marker_base.h>
 #include <prismspf/core/grid_refiner_context.h>
 
 #include <prismspf/config.h>
 
+#include <memory>
 #include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -161,17 +163,17 @@ public:
     Assert(num_quad_points != 0,
            dealii::ExcMessage("The init() function must be called before trying to "
                               "perform adaptive refinement"));
-
-    for (unsigned int refine_index = min_refinement; refine_index < max_refinement;
-         ++refine_index)
+    // Step 1
+    mark_cells_for_refinement_and_coarsening();
+    bool first_iteration = true;
+    while (mark_cells_for_refinement() || first_iteration)
       {
+        first_iteration = false;
         for (auto &[field_index, solution] :
              grid_refinement_context.get_solution_handler().get_solution_vector())
           {
             solution->update_ghost_values();
           }
-        // Step 1
-        mark_cells_for_refinement_and_coarsening();
 
         // Step 2
         refine_grid();
@@ -217,6 +219,24 @@ public:
         grid_refinement_context.get_element_volume_container().recompute_element_volume();
       }
   };
+
+  void
+  add_refinement_marker(const CellMarkerBase<dim> *marker)
+  {
+    marker_functions.push_back(std::make_shared<CellMarkerBase<dim>>(*marker));
+  }
+
+  void
+  clear_refinement_markers()
+  {
+    marker_functions.clear();
+  }
+
+  const std::vector<std::shared_ptr<const CellMarkerBase<dim>>> &
+  get_refinement_markers() const
+  {
+    return marker_functions;
+  }
 
 private:
   /**
@@ -375,38 +395,6 @@ private:
                       }
                   }
               }
-            // Refine around active nuclei
-            for (const Nucleus<dim> &nucleus :
-                 grid_refinement_context.get_pf_tools().nuclei_list)
-              {
-                static dealii::Point<dim> unit_corner = []()
-                {
-                  dealii::Point<dim> p;
-                  for (unsigned int d = 0; d < dim; ++d)
-                    {
-                      p[d] = 1.0;
-                    }
-                  return p;
-                }();
-                dealii::BoundingBox<dim> nucleus_bounding_box(
-                  std::make_pair<dealii::Point<dim>, dealii::Point<dim>>(
-                    dealii::Point<dim>(nucleus.location -
-                                       unit_corner *
-                                         grid_refinement_context.get_user_inputs()
-                                           .get_nucleation_parameters()
-                                           .get_refinement_radius()),
-                    dealii::Point<dim>(nucleus.location +
-                                       unit_corner *
-                                         grid_refinement_context.get_user_inputs()
-                                           .get_nucleation_parameters()
-                                           .get_refinement_radius())));
-
-                if (cell->bounding_box().has_overlap_with(nucleus_bounding_box))
-                  {
-                    should_refine = true;
-                    break;
-                  }
-              }
 
             Assert(cell->level() > 0,
                    dealii::ExcMessage("Cell refinement level is less than one, which "
@@ -430,6 +418,45 @@ private:
               }
           }
       }
+  }
+
+  /**
+   * @brief Mark cells based on function. Note: cells are only marked for refinement but
+   * not coarsening.
+   * @param refinement_function A function that determines if a cell should be refined.
+   * @return True if any cell was marked for refinement, false otherwise.
+   */
+  bool
+  mark_cells_for_refinement()
+  {
+    bool any_cell_marked = false;
+    for (const auto &cell : grid_refinement_context.get_triangulation_handler()
+                              .get_triangulation()
+                              .active_cell_iterators())
+      {
+        if (cell->is_locally_owned())
+          {
+            const auto cell_refinement = static_cast<unsigned int>(cell->level());
+            if (cell_refinement < max_refinement &&
+                std::any_of(
+                  marker_functions.begin(),
+                  marker_functions.end(),
+                  [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
+                  {
+                    return marker_function->operator()(*cell,
+                                                       grid_refinement_context
+                                                         .get_user_inputs()
+                                                         .get_temporal_discretization());
+                  }))
+              {
+                cell->set_user_flag();
+                cell->clear_coarsen_flag();
+                cell->set_refine_flag();
+                any_cell_marked = true;
+              }
+          }
+      }
+    return any_cell_marked;
   }
 
   /**
@@ -483,6 +510,11 @@ private:
    * @brief Minimum global refinement level.
    */
   unsigned int min_refinement = 0;
+
+  /**
+   * @brief Marker functions.
+   */
+  std::list<std::shared_ptr<const CellMarkerBase<dim>>> marker_functions;
 };
 
 PRISMS_PF_END_NAMESPACE

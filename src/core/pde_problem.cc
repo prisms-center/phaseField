@@ -44,6 +44,7 @@
 
 #include <prismspf/config.h>
 #include <prismspf/nucleation/nucleation.h>
+#include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include <memory>
 #include <mpi.h>
@@ -214,6 +215,9 @@ PDEProblem<dim, degree, number>::init_system()
   // coarsen cells to the minimum level
   ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
   grid_refiner.init(fe_system);
+  grid_refiner.add_refinement_marker(
+    new NucleusRefinementFunction<dim>(user_inputs->get_nucleation_parameters(),
+                                       pf_tools->nuclei_list));
   dealii::types::global_dof_index old_dofs = dof_handler.get_total_dofs();
   dealii::types::global_dof_index new_dofs = 0;
   for (unsigned int remesh_index = 0;
