@@ -16,6 +16,7 @@
 #include <prismspf/config.h>
 #include <prismspf/nucleation/nucleus.h>
 
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -29,17 +30,20 @@ template <unsigned int dim>
 class NucleusRefinementFunction : public CellMarkerBase<dim>
 {
 public:
+  using CellIterator =
+    dealii::CellAccessor<dim>; // dealii::TriaActiveIterator<dealii::CellAccessor<dim>>;
+  using prisms::CellMarkerBase<dim>::flag;
+
   NucleusRefinementFunction(const NucleationParameters      &_nuc_params,
                             const std::vector<Nucleus<dim>> &_nuclei_list)
-    : nuc_params(std::make_shared<const NucleationParameters>(_nuc_params))
-    , nuclei_list(std::make_shared<const std::vector<Nucleus<dim>>>(_nuclei_list))
+    : nuc_params(&_nuc_params)
+    , nuclei_list(&_nuclei_list)
   {}
 
   bool
-  operator()(const dealii::CellAccessor<dim>               &cell,
-             [[maybe_unused]] const TemporalDiscretization &time_info) const override
+  flag(const CellIterator                            &cell,
+       [[maybe_unused]] const TemporalDiscretization &time_info) const override
   {
-    std::cout << "reached nucleus refinement function\n";
     for (const Nucleus<dim> &nucleus : *nuclei_list)
       {
         static dealii::Point<dim> unit_corner = []()
@@ -57,7 +61,6 @@ public:
                                (unit_corner * nuc_params->get_refinement_radius())),
             dealii::Point<dim>(nucleus.location +
                                (unit_corner * nuc_params->get_refinement_radius()))));
-
         if (cell.bounding_box().has_overlap_with(nucleus_bounding_box))
           {
             return true;
@@ -66,8 +69,8 @@ public:
     return false;
   }
 
-  std::shared_ptr<const NucleationParameters>      nuc_params;
-  std::shared_ptr<const std::vector<Nucleus<dim>>> nuclei_list;
+  const NucleationParameters      *nuc_params;
+  const std::vector<Nucleus<dim>> *nuclei_list;
 };
 
 PRISMS_PF_END_NAMESPACE

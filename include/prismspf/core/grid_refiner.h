@@ -166,7 +166,9 @@ public:
     // Step 1
     mark_cells_for_refinement_and_coarsening();
     bool first_iteration = true;
-    while (mark_cells_for_refinement() || first_iteration)
+    while (
+      dealii::Utilities::MPI::logical_or(mark_cells_for_refinement(), MPI_COMM_WORLD) ||
+      first_iteration)
       {
         first_iteration = false;
         for (auto &[field_index, solution] :
@@ -218,12 +220,12 @@ public:
         grid_refinement_context.get_invm_handler().recompute_invm();
         grid_refinement_context.get_element_volume_container().recompute_element_volume();
       }
-  };
+  }
 
   void
-  add_refinement_marker(const CellMarkerBase<dim> *marker)
+  add_refinement_marker(std::shared_ptr<const CellMarkerBase<dim>> marker)
   {
-    marker_functions.push_back(std::make_shared<CellMarkerBase<dim>>(*marker));
+    marker_functions.push_back(marker);
   }
 
   void
@@ -443,10 +445,9 @@ private:
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
                   {
-                    return marker_function->operator()(*cell,
-                                                       grid_refinement_context
-                                                         .get_user_inputs()
-                                                         .get_temporal_discretization());
+                    return marker_function->flag(*cell,
+                                                 grid_refinement_context.get_user_inputs()
+                                                   .get_temporal_discretization());
                   }))
               {
                 cell->set_user_flag();

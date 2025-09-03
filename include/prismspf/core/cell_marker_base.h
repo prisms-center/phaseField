@@ -6,6 +6,7 @@
 #include <deal.II/base/bounding_box.h>
 #include <deal.II/base/point.h>
 #include <deal.II/grid/tria_accessor.h>
+#include <deal.II/grid/tria_iterator.h>
 
 #include <prismspf/user_inputs/temporal_discretization.h>
 
@@ -23,21 +24,23 @@ template <unsigned int dim>
 class CellMarkerBase
 {
 public:
+  using CellIterator =
+    dealii::CellAccessor<dim>; // dealii::TriaActiveIterator<dealii::CellAccessor<dim>>;
   /**
    * @brief Destructor.
    */
   virtual ~CellMarkerBase() = default;
 
   virtual bool
-  operator()([[maybe_unused]] const dealii::CellAccessor<dim> &cell,
-             [[maybe_unused]] const TemporalDiscretization    &time_info) const
+  flag([[maybe_unused]] const CellIterator           &cell,
+       [[maybe_unused]] const TemporalDiscretization &time_info) const
   {
-    return (*this)(cell.center(), time_info);
+    return this->flag(cell.center(), time_info);
   }
 
   virtual bool
-  operator()([[maybe_unused]] const dealii::Point<dim>     &point,
-             [[maybe_unused]] const TemporalDiscretization &time_info) const
+  flag([[maybe_unused]] const dealii::Point<dim>     &point,
+       [[maybe_unused]] const TemporalDiscretization &time_info) const
   {
     return false;
   }
