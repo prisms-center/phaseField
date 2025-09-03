@@ -60,10 +60,17 @@ public:
   check_size(const InitialConditionFile &ic_file);
 
   /**
-   * @brief Print the binary file for debugging
+   * @brief Print the binary file to text for debugging
    */
   void
   print_file() override;
+
+  /**
+   * @brief Write a binary file for testing
+   */
+  
+  static void
+  write_file(const std::vector<number> &data, const InitialConditionFile &ic_file);
 
   /**
    * @brief Get vector value for a given point
@@ -167,8 +174,27 @@ void ReadBinary<dim, number>::check_size(const InitialConditionFile &ic_file)
   n_values = file_size / sizeof(number); // reset to actual number of values in case of vector data
 }
 
+template <unsigned int dim, typename number>
+inline void
+ReadBinary<dim, number>::write_file(const std::vector<number>  &data,
+                                    const InitialConditionFile &ic_file)
+{
+  std::ofstream dataFile(ic_file.filename, std::ios::binary);
+  AssertThrow(dataFile,
+              dealii::ExcMessage("Could not open binary file: " +
+                                 ic_file.filename));
+  const unsigned int bufsize = sizeof(number);
+  char buf[bufsize];
+  for(dealii::types::global_dof_index j=0; j < data.size(); ++j)
+    {
+        memcpy(&buf, &data[j], bufsize);
+        dataFile.write(buf, bufsize);
+    }
+  dataFile.close();
+}
+
 // function to get values at specified indices
-// encapsulates the assumed storage order of the input data
+// encapsulates the assumed storage order of the input data (row-major)
 template <unsigned int dim, typename number>
 inline number
 ReadBinary<dim, number>::get_val(
@@ -197,18 +223,18 @@ ReadBinary<dim, number>::get_val(
 
 template <unsigned int dim, typename number>
 inline dealii::Vector<number>
-ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
-                                     const unsigned int       n_pt_values)
+ReadBinary<dim, number>::interpolate(
+    const dealii::Point<dim> &point, const unsigned int n_pt_values)
 { 
-  std::array<std::array<dealii::types::global_dof_index,dim>,2> indices;  // lower and upper indices in each dimension
-  std::array<std::array<number,dim>,2> weights;  // lower and upper weights in each dimension
+  std::vector<std::vector<unsigned int>>
+      indices(dim, std::vector<unsigned int>(2));  // lower and upper indices in each dimension
+  std::vector<std::vector<number>>
+      weights(dim, std::vector<number>(2));  // lower and upper weights in each dimension
   for (unsigned int j = 0; j < dim; ++j)
     {
       indices[j][0] = (dealii::types::global_dof_index) std::floor(dNdx[j]*point[j]);
       if (indices[j][0] < 0)
         AssertThrow(false, dealii::ExcMessage("negative index encountered in ReadBinary::interpolate"));
-      if (indices[j][0] > this->ic_file.n_data_points[j] - 1)  
-        AssertThrow(false, dealii::ExcMessage("index out of bounds encountered in ReadBinary::interpolate"));
       if (indices[j][0] == this->ic_file.n_data_points[j] - 1)
         {
           weights[j][0] = 1.0;
@@ -222,6 +248,8 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
           weights[j][0] = (number) indices[j][1] - point[j]*dNdx[j];
           weights[j][1] = 1.0 - weights[j][0];
         }
+      if (indices[j][1] > this->ic_file.n_data_points[j] - 1)  
+        AssertThrow(false, dealii::ExcMessage("index out of bounds encountered in ReadBinary::interpolate"));
     }
   dealii::Vector<number> pt_values(n_pt_values);
   pt_values = 0.0;

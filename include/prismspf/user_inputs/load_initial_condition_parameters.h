@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/types.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
@@ -35,7 +36,7 @@ struct InitialConditionFile
   std::vector<std::string> simulation_variable_names;
 
   // Number of data points in each direction
-  std::vector<dealii::types::global_dof_index> n_data_points = {0, 0, 0};
+  std::array<dealii::types::global_dof_index,3> n_data_points = {0, 0, 0};
 };
 
 /**
