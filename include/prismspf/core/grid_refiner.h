@@ -439,8 +439,7 @@ private:
         if (cell->is_locally_owned())
           {
             const auto cell_refinement = static_cast<unsigned int>(cell->level());
-            if (cell_refinement < max_refinement &&
-                std::any_of(
+            if (std::any_of(
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
@@ -452,8 +451,11 @@ private:
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
-                cell->set_refine_flag();
-                any_cell_marked = true;
+                if (cell_refinement < max_refinement)
+                  {
+                    cell->set_refine_flag();
+                    any_cell_marked = true;
+                  }
               }
           }
       }

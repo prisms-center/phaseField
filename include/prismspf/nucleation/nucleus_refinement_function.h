@@ -46,24 +46,27 @@ public:
   {
     for (const Nucleus<dim> &nucleus : *nuclei_list)
       {
-        static dealii::Point<dim> unit_corner = []()
-        {
-          dealii::Point<dim> p;
-          for (unsigned int d = 0; d < dim; ++d)
-            {
-              p[d] = 1.0;
-            }
-          return p;
-        }();
-        dealii::BoundingBox<dim> nucleus_bounding_box(
-          std::make_pair<dealii::Point<dim>, dealii::Point<dim>>(
-            dealii::Point<dim>(nucleus.location -
-                               (unit_corner * nuc_params->get_refinement_radius())),
-            dealii::Point<dim>(nucleus.location +
-                               (unit_corner * nuc_params->get_refinement_radius()))));
-        if (cell.bounding_box().has_overlap_with(nucleus_bounding_box))
+        if (time_info.get_increment() == nucleus.seed_increment) // subject to change
           {
-            return true;
+            static dealii::Point<dim> unit_corner = []()
+            {
+              dealii::Point<dim> p;
+              for (unsigned int d = 0; d < dim; ++d)
+                {
+                  p[d] = 1.0;
+                }
+              return p;
+            }();
+            dealii::BoundingBox<dim> nucleus_bounding_box(
+              std::make_pair<dealii::Point<dim>, dealii::Point<dim>>(
+                dealii::Point<dim>(nucleus.location -
+                                   (unit_corner * nuc_params->get_refinement_radius())),
+                dealii::Point<dim>(nucleus.location +
+                                   (unit_corner * nuc_params->get_refinement_radius()))));
+            if (cell.bounding_box().has_overlap_with(nucleus_bounding_box))
+              {
+                return true;
+              }
           }
       }
     return false;
