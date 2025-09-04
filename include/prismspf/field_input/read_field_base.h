@@ -9,9 +9,10 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/utilities/utilities.h>
-#include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
+#include <prismspf/user_inputs/spatial_discretization.h>
+
+#include <prismspf/utilities/utilities.h>
 
 #include <filesystem>
 
@@ -83,19 +84,21 @@ protected:
    * @brief Initial condition file object
    */
   const InitialConditionFile &ic_file;
-
 };
 
 template <unsigned int dim, typename number>
-ReadFieldBase<dim, number>::ReadFieldBase(const InitialConditionFile       &_ic_file,
-                                          const SpatialDiscretization<dim> &_spatial_discretization)
+ReadFieldBase<dim, number>::ReadFieldBase(
+  const InitialConditionFile       &_ic_file,
+  const SpatialDiscretization<dim> &_spatial_discretization)
   : spatial_discretization(_spatial_discretization)
   , ic_file(_ic_file)
 {
   // Check that the filename exists
   if (!std::filesystem::exists(this->ic_file.filename))
     {
-      AssertThrow(false, dealii::ExcMessage("File " + this->ic_file.filename + " does not exist"));
+      AssertThrow(false,
+                  dealii::ExcMessage("File " + this->ic_file.filename +
+                                     " does not exist"));
     }
 }
 

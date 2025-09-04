@@ -4,15 +4,17 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/types.h>
 
-#include <prismspf/utilities/utilities.h>
-#include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
+#include <prismspf/user_inputs/spatial_discretization.h>
 
+#include <prismspf/utilities/utilities.h>
+
+#include <prismspf/field_input/read_binary.h>
 #include <prismspf/field_input/read_field_base.h>
 #include <prismspf/field_input/read_vtk.h>
-#include <prismspf/field_input/read_binary.h>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
 #  include <deal.II/base/exception_macros.h>
@@ -27,20 +29,26 @@ PRISMS_PF_BEGIN_NAMESPACE
  * not a member of ReadFieldBase to avoid redundant template instantiations
  */
 
-enum class Type { ReadUnstructuredVTK, ReadBinary };
+enum class Type
+{
+  ReadUnstructuredVTK,
+  ReadBinary
+};
+
 template <unsigned int dim, typename number>
 std::shared_ptr<ReadFieldBase<dim, number>>
-create_reader(const InitialConditionFile &ic_file,
+create_reader(const InitialConditionFile       &ic_file,
               const SpatialDiscretization<dim> &spatial_discretization)
 {
   switch (ic_file.dataset_format)
-   {
+    {
       case DataFormatType::VTKUnstructuredGrid:
-        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file, spatial_discretization);
+        return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file,
+                                                                  spatial_discretization);
       case DataFormatType::FlatBinary:
         return std::make_shared<ReadBinary<dim, number>>(ic_file, spatial_discretization);
       default:
-          AssertThrow(false, UnreachableCode());
+        AssertThrow(false, UnreachableCode());
     }
 }
 
