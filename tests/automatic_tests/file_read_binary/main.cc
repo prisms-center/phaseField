@@ -3,6 +3,7 @@
 
 #include "custom_pde.h"
 
+#include <prismspf/core/types.h>
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/grid_refiner.h>
 #include <prismspf/core/invm_handler.h>
@@ -26,6 +27,8 @@
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>
 
+#include <prismspf/field_input/read_binary.h>
+
 #include <prismspf/config.h>
 
 #ifdef PRISMS_PF_WITH_CALIPER
@@ -42,6 +45,22 @@ main(int argc, char *argv[])
       dealii::Utilities::MPI::MPI_InitFinalize
         mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
 
+      // for this test only: set up initial condition file (if not already present)
+     // if (!std::filesystem::exists("test_2D.bin"))
+     //   {
+          prisms::InitialConditionFile file;
+          file.filename = "test_2D.bin";
+          std::vector<double> data = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                      0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0,
+                                      0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0,
+                                      0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0,
+                                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+          prisms::ReadBinary<2, double>::write_file(data, file);
+     //   }
       // Parse the command line options (if there are any) to get the name of the input
       // file
       prisms::ParseCMDOptions cli_options(argc, argv);

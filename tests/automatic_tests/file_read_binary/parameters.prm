@@ -1,6 +1,6 @@
 set dim = 2
-set global refinement = 4
-set degree = 1
+set global refinement = 3
+set degree = 2
 
 subsection Rectangular mesh
   set x size = 10
@@ -13,8 +13,10 @@ end
 set read initial conditions from file = true
 
 subsection initial condition file 1
-  set file name = test_2D_1degree.vtk
+  set file name = test_2D.bin
   set dataset format = flat_binary
   set file variable names = n
   set simulation variable names = n
+  set data points in x direction = 9
+  set data points in y direction = 9
 end

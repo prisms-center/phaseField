@@ -75,9 +75,9 @@ public:
   /**
    * @brief Get vector value for a given point
    */
-  number
-  get_val(const std::array<dealii::types::global_dof_index, dim> &indices,
-                                             const unsigned int n_pt_index);
+  dealii::Vector<number>
+  get_vals(const std::array<dealii::types::global_dof_index, dim> &indices,
+                                             const unsigned int n_values);
 
   /**
    * @brief Get vector value for a given point
@@ -139,7 +139,7 @@ ReadBinary<dim, number>::ReadBinary(
   dataFile.close();
   for (unsigned int j = 0; j < dim; ++j)
     {
-      dNdx[j] = (this->ic_file.n_data_points[j] - 1) /
+      dNdx[j] = static_cast<number>(this->ic_file.n_data_points[j] - 1) /
                    this->spatial_discretization.get_size()[j];
     }
 }
@@ -167,8 +167,8 @@ void ReadBinary<dim, number>::check_size(const InitialConditionFile &ic_file)
     {
       AssertThrow(false, dealii::ExcMessage(std::string("Expected binary file size (") +
             std::to_string(expected_size) + std::string(" bytes for scalar or ")  +
-            std::to_string(expected_size) +
-            std::string("bytes for vector) does not match actual file size (") +
+            std::to_string(3*expected_size) +
+            std::string(" bytes for vector) does not match actual file size (") +
             std::to_string(file_size) + std::string(" bytes).")));
     }
   n_values = file_size / sizeof(number); // reset to actual number of values in case of vector data
@@ -194,30 +194,35 @@ ReadBinary<dim, number>::write_file(const std::vector<number>  &data,
 }
 
 // function to get values at specified indices
-// encapsulates the assumed storage order of the input data (row-major)
+// encapsulates the assumed storage order of the input data (fortran-style)
 template <unsigned int dim, typename number>
-inline number
-ReadBinary<dim, number>::get_val(
+inline dealii::Vector<number>
+ReadBinary<dim, number>::get_vals(
   const std::array<dealii::types::global_dof_index, dim> &indices,
-  const unsigned int n_pt_index)
+  const unsigned int n_pt_values)
 {
+  dealii::Vector<number> pt_values(n_pt_values);
   dealii::types::global_dof_index flat_index = 0;
   switch (dim)
     {
       case 1:
-        flat_index = indices[0];
+        flat_index = indices[0]*n_pt_values;
         break;
       case 2:
-        flat_index = indices[0]*this->ic_file.n_data_points[1] + indices[1];
+        flat_index = (indices[1]*this->ic_file.n_data_points[0] + indices[0])*n_pt_values;
         break;
       case 3:
-        flat_index = indices[0]*this->ic_file.n_data_points[1]*this->ic_file.n_data_points[2] +
-                     indices[1]*this->ic_file.n_data_points[2] + indices[2];
+        flat_index = (indices[2]*this->ic_file.n_data_points[1]*this->ic_file.n_data_points[0] +
+                      indices[1]*this->ic_file.n_data_points[0] + indices[0])*n_pt_values;
         break;
       default:
-        AssertThrow(false, dealii::ExcMessage("dim must be 1, 2, or 3 in ReadBinary::get_val"));
+        AssertThrow(false, dealii::ExcMessage("dim must be 1, 2, or 3 in ReadBinary::get_vals"));
     }
-  return this->data[flat_index + n_pt_index];
+  for (unsigned int n_pt_index=0; n_pt_index < n_pt_values; ++n_pt_index)
+    {
+      pt_values[n_pt_index] = this->data[flat_index + n_pt_index];
+    }
+  return pt_values;
 }
 
 
@@ -235,6 +240,8 @@ ReadBinary<dim, number>::interpolate(
       indices[j][0] = (dealii::types::global_dof_index) std::floor(dNdx[j]*point[j]);
       if (indices[j][0] < 0)
         AssertThrow(false, dealii::ExcMessage("negative index encountered in ReadBinary::interpolate"));
+      if (indices[j][0] > this->ic_file.n_data_points[j] - 1)  
+        AssertThrow(false, dealii::ExcMessage("index out of bounds encountered in ReadBinary::interpolate"));
       if (indices[j][0] == this->ic_file.n_data_points[j] - 1)
         {
           weights[j][0] = 1.0;
@@ -244,12 +251,11 @@ ReadBinary<dim, number>::interpolate(
       else
         {
           indices[j][1] = indices[j][0] + 1;
-          // lower weight = upper distance / total distance
-          weights[j][0] = (number) indices[j][1] - point[j]*dNdx[j];
-          weights[j][1] = 1.0 - weights[j][0];
+          // Calculate the fractional position between grid points
+          number pt_lower = static_cast<number>(indices[j][0]) / dNdx[j];
+          weights[j][1] = (point[j] - pt_lower) * dNdx[j]; // 1/dNdx[j] = grid spacing;
+          weights[j][0] = 1.0 - weights[j][1];
         }
-      if (indices[j][1] > this->ic_file.n_data_points[j] - 1)  
-        AssertThrow(false, dealii::ExcMessage("index out of bounds encountered in ReadBinary::interpolate"));
     }
   dealii::Vector<number> pt_values(n_pt_values);
   pt_values = 0.0;
@@ -266,9 +272,10 @@ ReadBinary<dim, number>::interpolate(
           pt_indices[j] = indices[j][bit ? 1 : 0];
           pt_wgt *= weights[j][bit ? 1 : 0];
         }
-      for (unsigned int j = 0; j < n_pt_values; ++j)
+      dealii::Vector<number> values_temp = this->get_vals(pt_indices, n_pt_values);
+      for (unsigned int n_pt_index = 0; n_pt_index < n_pt_values; ++n_pt_index)
         {
-          pt_values[j] = pt_wgt * this->get_val(pt_indices, j);
+          pt_values[n_pt_index] += pt_wgt * values_temp[n_pt_index];
         }
     }
   return pt_values;

@@ -18,8 +18,6 @@ TEST_CASE("Read binary file")
     file.filename = "nonexistent.bin";
     SpatialDiscretization<2> spatial_discretization;
     REQUIRE_THROWS(ReadBinary<2, double>(file, spatial_discretization));
-    std::cout << "Caught expected exception for nonexistent file."
-              << std::endl;
   }
   SECTION("1D read/write")
   {
@@ -41,9 +39,9 @@ TEST_CASE("Read binary file")
   SECTION("2D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 1.0, 2.0, 3.0,
-                                1.0, 2.0, 3.0, 4.0,
-                                2.0, 3.0, 4.0, 5.0};
+    std::vector<double> data = {0.0, 0.0, 0.0, 0.0,
+                                0.0, 10.0, 0.0, 1.0,
+                                0.0, 0.0, 0.0, 0.0};
     file.filename = "field_input/test_2D.bin";
     file.dataset_format = DataFormatType::FlatBinary;
     file.n_data_points = {4, 3, 0};
@@ -55,11 +53,9 @@ TEST_CASE("Read binary file")
 
     // Check values at selected points
     dealii::Point<2> point1 = {0.5, 0.5};
-    REQUIRE(reader.get_scalar_value(point1, "n") - 1.0 < 1e-12);
-    dealii::Point<2> point2 = {2.5, 1.0};
-    REQUIRE(reader.get_scalar_value(point2, "n") - 3.5 < 1e-12);
-    dealii::Point<2> point3 = {3.0, 2.0};
-    REQUIRE(reader.get_scalar_value(point3, "n") - 5.0 < 1e-12);
+    REQUIRE(reader.get_scalar_value(point1, "n") - 2.5 < 1e-12);
+    dealii::Point<2> point2 = {3.0, 1.5};
+    REQUIRE(reader.get_scalar_value(point2, "n") - 0.5 < 1e-12);
   }
   SECTION("3D read/write")
   {
@@ -79,8 +75,8 @@ TEST_CASE("Read binary file")
     // Check values at selected points
     dealii::Point<3> point1 = {0.5, 0.5, 0.2};
     REQUIRE(reader.get_scalar_value(point1, "n") - 0.9 < 1e-12);
-    dealii::Point<3> point2 = {0.0, 0.0, 0.0};
-    REQUIRE(reader.get_scalar_value(point2, "n") < 1e-12);
+    dealii::Point<3> point2 = {1.0, 1.0, 0.0};
+    REQUIRE(reader.get_scalar_value(point2, "n") - 3.0 < 1e-12);
     dealii::Point<3> point3 = {0.0, 0.5, 1.0};
     REQUIRE(reader.get_scalar_value(point3, "n") - 2.5 < 1e-12);
   }
