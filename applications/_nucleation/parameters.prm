@@ -22,7 +22,7 @@ subsection refinement criterion: n
 end
 
 set time step = 0.011
-set number steps = 500000
+set number steps = 200000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -32,9 +32,9 @@ end
 
 
 
-set boundary condition for c = Natural
-set boundary condition for n = Natural
-set boundary condition for nucleation_rate = Natural
+set boundary condition for c = Periodic
+set boundary condition for n = Periodic
+set boundary condition for nucleation_rate = Periodic
 
 subsection nucleation
   set nucleus exclusion distance = 20.0
@@ -43,7 +43,7 @@ subsection nucleation
 end
 
 subsection miscellaneous
-  set random seed = 2015
+  set random seed = 2025
 end
 
 set Model constant c_avg = 0.2, DOUBLE

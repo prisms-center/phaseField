@@ -6,11 +6,14 @@
 #include <deal.II/fe/fe_values.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/nucleation_parameters.h>
 
 #include <prismspf/solvers/solver_context.h>
+
+#include <prismspf/utilities/periodic_distance.h>
 
 #include <prismspf/config.h>
 #include <prismspf/nucleation/nucleus.h>
@@ -168,36 +171,36 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
 
           while (!new_nuclei.empty())
             {
-              Nucleus<dim> *nuc = &new_nuclei.back();
-              for (const auto &existing_nucleus : nuclei)
+              Nucleus<dim> &nuc   = new_nuclei.back();
+              bool          valid = std::none_of(
+                nuclei.begin(),
+                nuclei.end(),
+                [&](const Nucleus<dim> &existing_nucleus)
                 {
-                  if (nuc->location.distance(existing_nucleus.location) <
-                        nucleation_parameters.get_exclusion_distance() ||
-                      (nuc->field_index == existing_nucleus.field_index &&
-                       nuc->location.distance(existing_nucleus.location) <
-                         nucleation_parameters.get_same_field_exclusion_distance()))
-                    {
-                      new_nuclei.pop_back();
-                      nuc = nullptr;
-                      break;
-                    }
-                }
-              if (nuc != nullptr)
+                  const double distance =
+                    prisms::distance<dim, double>(nuc.location,
+                                                  existing_nucleus.location,
+                                                  solver_context.get_user_inputs());
+                  return (distance < nucleation_parameters.get_exclusion_distance() ||
+                          (nuc.field_index == existing_nucleus.field_index &&
+                           distance <
+                             nucleation_parameters.get_same_field_exclusion_distance()));
+                });
+              if (valid)
                 {
                   // Note: Using push_back() in a loop is not good use for
-                  // vectors. We also don't want to use reserve() on the highest
-                  // possible amount because that could allocate much more space
-                  // than needed. I originally was using a std::list to avoid this
-                  // issue, but that is unfriendly to the MPI functions.
-                  // One solution could be to convert between data structures
-                  // as needed, but that also adds overhead. For now, I will
-                  // assume that the total number of added nuclei is not enough to
+                  // vectors. We also don't want to use reserve() on the upper bound
+                  // because that could allocate much more space than needed. I originally
+                  // was using a std::list to avoid this issue, but that is unfriendly to
+                  // the MPI functions. One solution could be to convert between data
+                  // structures as needed, but that also adds overhead. For now, I will
+                  // assume that the total number of nuclei is not enough to
                   // cause significant performance issues.
-                  nuclei.push_back(*nuc);
-                  new_nuclei.pop_back();
+                  nuclei.push_back(nuc);
                   ++count;
                   any_nucleation_occurred = true;
                 }
+              new_nuclei.pop_back();
             }
           ConditionalOStreams::pout_base()
             << count << " nuclei generated after exclusion.\n"

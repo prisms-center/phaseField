@@ -243,6 +243,29 @@ public:
     return boundary_condition_list;
   }
 
+  /**
+   * @brief Check if any boundaries are periodic
+   */
+  [[nodiscard]] bool
+  has_periodic_boundaries() const
+  {
+    return std::any_of(periodicity.begin(),
+                       periodicity.end(),
+                       [](const bool val)
+                       {
+                         return val;
+                       });
+  }
+
+  /**
+   * @brief Get the periodicity array.
+   */
+  [[nodiscard]] const std::array<bool, dim> &
+  get_periodicity() const
+  {
+    return periodicity;
+  }
+
 private:
   /**
    * @brief Set the boundary for a single component of a field index.
@@ -273,6 +296,9 @@ private:
   // Map of boundary conditions. The first key is the global index. The second key is the
   // number of dimensions.
   BoundaryConditionMap boundary_condition_list;
+
+  // Flag indicating whether there are periodic boundaries
+  std::array<bool, dim> periodicity;
 };
 
 template <unsigned int dim>
@@ -331,6 +357,23 @@ BoundaryParameters<dim>::postprocess_and_validate(
               set_boundary(bc_list.at(variable.get_field_index()).at(0),
                            variable.get_field_index(),
                            0);
+            }
+        }
+    }
+
+  // Set periodicity flags
+  periodicity.fill(false);
+  for (const auto &[index, component_map] : boundary_condition_list)
+    {
+      for (const auto &[component, boundary_condition] : component_map)
+        {
+          for (const auto &[domain_id, boundary_type] :
+               boundary_condition.get_boundary_condition_map())
+            {
+              if (boundary_type == BoundaryCondition::Type::Periodic)
+                {
+                  periodicity[domain_id / 2] = true;
+                }
             }
         }
     }
