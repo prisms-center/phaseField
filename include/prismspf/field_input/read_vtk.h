@@ -96,13 +96,15 @@ public:
    * @brief Get scalar value for a given point
    */
   number
-  get_scalar_value(const dealii::Point<dim> &point, const std::string &scalar_name) override;
+  get_scalar_value(const dealii::Point<dim> &point,
+                   const std::string        &scalar_name) override;
 
   /**
    * @brief Get vector value for a given point
    */
   dealii::Vector<number>
-  get_vector_value(const dealii::Point<dim> &point, const std::string &vector_name) override;
+  get_vector_value(const dealii::Point<dim> &point,
+                   const std::string        &vector_name) override;
 
 private:
   /**
@@ -142,8 +144,9 @@ private:
 };
 
 template <unsigned int dim, typename number>
-ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(const InitialConditionFile       &_ic_file,
-                                        const SpatialDiscretization<dim> &_spatial_discretization)
+ReadUnstructuredVTK<dim, number>::ReadUnstructuredVTK(
+  const InitialConditionFile       &_ic_file,
+  const SpatialDiscretization<dim> &_spatial_discretization)
   : ReadFieldBase<dim, number>(_ic_file, _spatial_discretization)
 {
   // Create a reader for the vtk file and update it

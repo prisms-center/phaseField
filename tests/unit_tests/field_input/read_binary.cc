@@ -8,8 +8,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-
-
 TEST_CASE("Read binary file")
 {
   SECTION("Nonexistent file")
@@ -22,10 +20,10 @@ TEST_CASE("Read binary file")
   SECTION("1D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
-    file.filename = "field_input/test_1D.bin";
-    file.dataset_format = DataFormatType::FlatBinary;
-    file.n_data_points = {6, 0, 0};
+    std::vector<double>  data = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
+    file.filename             = "field_input/test_1D.bin";
+    file.dataset_format       = DataFormatType::FlatBinary;
+    file.n_data_points        = {6, 0, 0};
     ReadBinary<1, double>::write_file(data, file);
     SpatialDiscretization<1> spatial_discretization;
     spatial_discretization.set_size(0, 5.0);
@@ -39,12 +37,11 @@ TEST_CASE("Read binary file")
   SECTION("2D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 0.0, 0.0, 0.0,
-                                0.0, 10.0, 0.0, 1.0,
-                                0.0, 0.0, 0.0, 0.0};
-    file.filename = "field_input/test_2D.bin";
+    std::vector<double>  data =
+      {0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
+    file.filename       = "field_input/test_2D.bin";
     file.dataset_format = DataFormatType::FlatBinary;
-    file.n_data_points = {4, 3, 0};
+    file.n_data_points  = {4, 3, 0};
     ReadBinary<2, double>::write_file(data, file);
     SpatialDiscretization<2> spatial_discretization;
     spatial_discretization.set_size(0, 3.0);
@@ -60,11 +57,10 @@ TEST_CASE("Read binary file")
   SECTION("3D read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 0.0, 1.0, 1.0,
-                                2.0, 2.0, 3.0, 3.0};
-    file.filename = "field_input/test_3D.bin";
-    file.dataset_format = DataFormatType::FlatBinary;
-    file.n_data_points = {2, 2, 2};
+    std::vector<double>  data = {0.0, 0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 3.0};
+    file.filename             = "field_input/test_3D.bin";
+    file.dataset_format       = DataFormatType::FlatBinary;
+    file.n_data_points        = {2, 2, 2};
     ReadBinary<3, double>::write_file(data, file);
     SpatialDiscretization<3> spatial_discretization;
     spatial_discretization.set_size(0, 1.0);
@@ -83,13 +79,12 @@ TEST_CASE("Read binary file")
   SECTION("3D vector read/write")
   {
     InitialConditionFile file;
-    std::vector<double> data = {0.0, 10.0, 20.0, 0.0, 10.0, 20.0,
-                                1.0, 11.0, 21.0, 1.0, 11.0, 21.0,
-                                2.0, 12.0, 22.0, 2.0, 12.0, 22.0,
-                                3.0, 13.0, 23.0, 3.0, 13.0, 23.0};
-    file.filename = "field_input/test_3D_vec.bin";
-    file.dataset_format = DataFormatType::FlatBinary;
-    file.n_data_points = {2, 2, 2};
+    std::vector<double>  data = {0.0,  10.0, 20.0, 0.0,  10.0, 20.0, 1.0,  11.0,
+                                 21.0, 1.0,  11.0, 21.0, 2.0,  12.0, 22.0, 2.0,
+                                 12.0, 22.0, 3.0,  13.0, 23.0, 3.0,  13.0, 23.0};
+    file.filename             = "field_input/test_3D_vec.bin";
+    file.dataset_format       = DataFormatType::FlatBinary;
+    file.n_data_points        = {2, 2, 2};
     ReadBinary<3, double>::write_file(data, file);
     SpatialDiscretization<3> spatial_discretization;
     spatial_discretization.set_size(0, 1.0);
@@ -108,9 +103,9 @@ TEST_CASE("Read binary file")
   SECTION("trigger warning for size mismatch")
   {
     InitialConditionFile file;
-    file.filename = "field_input/test_3D_vec.bin"; // from previous test
+    file.filename       = "field_input/test_3D_vec.bin"; // from previous test
     file.dataset_format = DataFormatType::FlatBinary;
-    file.n_data_points = {20, 2, 0};
+    file.n_data_points  = {20, 2, 0};
     SpatialDiscretization<3> spatial_discretization;
     REQUIRE_THROWS(ReadBinary<3, double>(file, spatial_discretization));
   }

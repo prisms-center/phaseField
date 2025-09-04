@@ -6,13 +6,13 @@
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
-#include <prismspf/field_input/read_binary.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
+#include <prismspf/field_input/read_binary.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

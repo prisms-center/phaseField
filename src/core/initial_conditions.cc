@@ -51,10 +51,11 @@ InitialCondition<dim, degree, number>::vector_value(const dealii::Point<dim> &p,
 // NOLINTEND(readability-identifier-length)
 
 template <unsigned int dim, typename number>
-ReadInitialCondition<dim, number>::ReadInitialCondition(std::string        _field_name,
-                                                        const FieldType   &_field_type,
-                                                        const InitialConditionFile &ic_file,
-                                                        const SpatialDiscretization<dim> &spatial_discretization)
+ReadInitialCondition<dim, number>::ReadInitialCondition(
+  std::string                       _field_name,
+  const FieldType                  &_field_type,
+  const InitialConditionFile       &ic_file,
+  const SpatialDiscretization<dim> &spatial_discretization)
   : dealii::Function<dim, number>((_field_type == FieldType::Vector) ? dim : 1)
   , field_name(std::move(_field_name))
   , field_type(_field_type)

@@ -70,9 +70,9 @@ public:
   /**
    * @brief Constructor.
    */
-  ReadInitialCondition(std::string        _field_name,
-                       const FieldType   &_field_type,
-                       const InitialConditionFile &ic_file,
+  ReadInitialCondition(std::string                       _field_name,
+                       const FieldType                  &_field_type,
+                       const InitialConditionFile       &ic_file,
                        const SpatialDiscretization<dim> &spatial_discretization);
 
   // NOLINTBEGIN(readability-identifier-length)

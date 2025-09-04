@@ -13,9 +13,9 @@ TEST_CASE("Read vtk file")
   SECTION("2D Scalar fields with quadrature degree 1")
   {
     InitialConditionFile file;
-    file.filename = "field_input/test_2D_1degree.vtk";
+    file.filename       = "field_input/test_2D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
-    SpatialDiscretization<2> spatial_discretization;
+    SpatialDiscretization<2>       spatial_discretization;
     ReadUnstructuredVTK<2, double> reader(file, spatial_discretization);
 
     // Check that the number of points and cells are correct
@@ -36,9 +36,9 @@ TEST_CASE("Read vtk file")
   SECTION("2D Scalar fields with quadrature degree 2")
   {
     InitialConditionFile file;
-    file.filename = "field_input/test_2D_2degree.vtk";
+    file.filename       = "field_input/test_2D_2degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
-    SpatialDiscretization<2> spatial_discretization;
+    SpatialDiscretization<2>       spatial_discretization;
     ReadUnstructuredVTK<2, double> reader(file, spatial_discretization);
 
     // Check that the number of points and cells are correct
@@ -59,9 +59,9 @@ TEST_CASE("Read vtk file")
   SECTION("3D Scalar fields with quadrature degree 1")
   {
     InitialConditionFile file;
-    file.filename = "field_input/test_3D_1degree.vtk";
+    file.filename       = "field_input/test_3D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
-    SpatialDiscretization<3> spatial_discretization;
+    SpatialDiscretization<3>       spatial_discretization;
     ReadUnstructuredVTK<3, double> reader(file, spatial_discretization);
 
     // Check that the number of points and cells are correct
@@ -85,7 +85,7 @@ TEST_CASE("Read vtk file")
   SECTION("Nonexistent file")
   {
     InitialConditionFile file;
-    file.filename = "nonexistent.vtk";
+    file.filename       = "nonexistent.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<2> spatial_discretization;
     REQUIRE_THROWS(ReadUnstructuredVTK<2, double>(file, spatial_discretization));
@@ -93,7 +93,7 @@ TEST_CASE("Read vtk file")
   SECTION("Invalid cell type due to mismatched dimensions")
   {
     InitialConditionFile file;
-    file.filename = "field_input/test_2D_1degree.vtk";
+    file.filename       = "field_input/test_2D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<3> spatial_discretization;
     REQUIRE_THROWS(ReadUnstructuredVTK<3, double>(file, spatial_discretization));
