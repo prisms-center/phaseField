@@ -386,7 +386,9 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
 {
   load_ic_parameters.set_read_initial_conditions_from_file(
     parameter_handler.get_bool("read initial conditions from file"));
-  std::vector<std::string> axis_labels = {"x", "y", "z"};
+  static std::array<std::string, 3> axis_labels = {
+    {"x", "y", "z"}
+  };
   for (unsigned int i = 0; i < Numbers::max_subsections; i++)
     {
       parameter_handler.enter_subsection("initial condition file " + std::to_string(i));

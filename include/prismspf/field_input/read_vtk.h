@@ -30,33 +30,6 @@ public:
                       const SpatialDiscretization<dim> &_spatial_discretization);
 
   /**
-   * @brief Destructor
-   */
-  ~ReadUnstructuredVTK() override = default;
-
-  /**
-   * @brief Copy constructor.
-   */
-  ReadUnstructuredVTK(const ReadUnstructuredVTK &read_vtk) = delete;
-
-  /**
-   * @brief Copy assignment.
-   */
-  ReadUnstructuredVTK &
-  operator=(const ReadUnstructuredVTK &read_vtk) = delete;
-
-  /**
-   * @brief Move constructor.
-   */
-  ReadUnstructuredVTK(ReadUnstructuredVTK &&read_vtk) noexcept = delete;
-
-  /**
-   * @brief Move assignment.
-   */
-  ReadUnstructuredVTK &
-  operator=(ReadUnstructuredVTK &&read_vtk) noexcept = delete;
-
-  /**
    * @brief Get the vtk output
    */
   vtkUnstructuredGrid *
