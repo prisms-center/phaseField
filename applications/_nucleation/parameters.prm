@@ -40,6 +40,7 @@ subsection nucleation
   set nucleus exclusion distance = 20.0
   set nucleation period = 2500
   set refinement radius = 10
+  set seeding time = 200.0
 end
 
 subsection miscellaneous

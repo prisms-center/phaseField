@@ -701,50 +701,67 @@ void
 InputFileReader::declare_nucleation_parameters()
 {
   parameter_handler.enter_subsection("nucleation");
-  parameter_handler.declare_entry("nucleus exclusion distance",
-                                  "0.0",
-                                  dealii::Patterns::Double(),
-                                  "The minimum distance between nuclei.");
-  parameter_handler.declare_entry("same field nucleus exclusion distance",
-                                  "0.0",
-                                  dealii::Patterns::Double(),
-                                  "The minimum distance between nuclei.");
-  parameter_handler.declare_entry(
-    "nucleation period",
-    "1",
-    dealii::Patterns::Integer(1),
-    "The number of increments between nucleation attempts.");
-  parameter_handler.declare_entry("refinement radius",
-                                  "0.0",
-                                  dealii::Patterns::Double(0.0),
-                                  "The radius around a nucleus in which AMR is applied.");
-  // Declare aliases for the parameters
-  //============================================================================================
-  parameter_handler.declare_alias("nucleus exclusion distance",
-                                  "nucleus_exclusion_distance");
-  parameter_handler.declare_alias("nucleus exclusion distance",
-                                  "nucleus exclusion radius");
-  parameter_handler.declare_alias("nucleus exclusion distance",
-                                  "nucleus_exclusion_radius");
-  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion distance");
-  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
-  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
-  parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
-  //
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same_field_nucleus_exclusion_distance");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same field nucleus exclusion radius");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same_field_nucleus_exclusion_radius");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same field exclusion distance");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same_field_exclusion_distance");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same field exclusion radius");
-  parameter_handler.declare_alias("same field nucleus exclusion distance",
-                                  "same_field_exclusion_radius");
+  {
+    parameter_handler.declare_entry("nucleus exclusion distance",
+                                    "0.0",
+                                    dealii::Patterns::Double(),
+                                    "The minimum distance between nuclei.");
+    parameter_handler.declare_entry("same field nucleus exclusion distance",
+                                    "0.0",
+                                    dealii::Patterns::Double(),
+                                    "The minimum distance between nuclei.");
+    parameter_handler.declare_entry(
+      "nucleation period",
+      "1",
+      dealii::Patterns::Integer(1),
+      "The number of increments between nucleation attempts.");
+    parameter_handler.declare_entry(
+      "refinement radius",
+      "0.0",
+      dealii::Patterns::Double(0.0),
+      "The radius around a nucleus in which AMR is applied.");
+    parameter_handler.declare_entry(
+      "seeding time",
+      "0.0",
+      dealii::Patterns::Double(0.0),
+      "The time duration over which nuclei are considered \"active\" and refinement and "
+      "exclusion zones are applied. Same as \"seeding increments\" but in time.");
+    parameter_handler.declare_entry(
+      "seeding increments",
+      "1",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of increments over which nuclei are considered \"active\" and "
+      "refinement and exclusion zones are applied. Same as \"seeding time\" but in "
+      "increments.");
+    { // Declare aliases for the parameters
+      //============================================================================================
+      parameter_handler.declare_alias("nucleus exclusion distance",
+                                      "nucleus_exclusion_distance");
+      parameter_handler.declare_alias("nucleus exclusion distance",
+                                      "nucleus exclusion radius");
+      parameter_handler.declare_alias("nucleus exclusion distance",
+                                      "nucleus_exclusion_radius");
+      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion distance");
+      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_distance");
+      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion radius");
+      parameter_handler.declare_alias("nucleus exclusion distance", "exclusion_radius");
+      //
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same_field_nucleus_exclusion_distance");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same field nucleus exclusion radius");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same_field_nucleus_exclusion_radius");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same field exclusion distance");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same_field_exclusion_distance");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same field exclusion radius");
+      parameter_handler.declare_alias("same field nucleus exclusion distance",
+                                      "same_field_exclusion_radius");
+    }
+  }
   parameter_handler.leave_subsection();
 }
 

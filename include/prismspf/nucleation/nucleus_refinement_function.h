@@ -46,7 +46,7 @@ public:
   {
     for (const Nucleus<dim> &nucleus : *nuclei_list)
       {
-        if (time_info.get_increment() == nucleus.seed_increment) // subject to change
+        if (nuc_params->check_active(nucleus, time_info))
           {
             static dealii::Point<dim> unit_corner = []()
             {

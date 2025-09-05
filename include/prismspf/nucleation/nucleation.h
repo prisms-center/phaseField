@@ -61,13 +61,13 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
   const SolverContext<dim, degree, number> &solver_context,
   std::vector<Nucleus<dim>>                &nuclei)
 {
-  bool                        any_nucleation_occurred = false;
-  const NucleationParameters &nucleation_parameters =
-    solver_context.get_user_inputs().get_nucleation_parameters();
-  double delta_t =
-    nucleation_parameters.get_nucleation_period() *
-    solver_context.get_user_inputs().get_temporal_discretization().get_timestep();
-  auto &rng = solver_context.get_user_inputs().get_miscellaneous_parameters().rng;
+  bool                            any_nucleation_occurred = false;
+  const UserInputParameters<dim> &user_inputs = solver_context.get_user_inputs();
+  const NucleationParameters     &nuc_params  = user_inputs.get_nucleation_parameters();
+  const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
+  double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
+  auto  &rng     = user_inputs.get_miscellaneous_parameters().rng;
+
   // Set up FEValues
   const dealii::QGaussLobatto<dim> quadrature(degree + 1);
   const unsigned int               num_quad_points = quadrature.size();
@@ -78,8 +78,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                                   dealii::UpdateFlags::update_values |
                                     dealii::UpdateFlags::update_JxW_values);
   std::list<Nucleus<dim>> new_nuclei_list;
-  for (const auto &[index, variable] :
-       solver_context.get_user_inputs().get_variable_attributes())
+  // Loop over nucleation rate variables and attempt seeding at each cell
+  for (const auto &[index, variable] : user_inputs.get_variable_attributes())
     {
       if (variable.is_nucleation_rate())
         {
@@ -114,11 +114,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                         values[q_point] * fe_values.get_quadrature().weight(q_point);
                       cell_volume += fe_values.JxW(q_point);
                     }
-                  unsigned int num_nuclei_in_cell = calculate_number_of_events(
-                    nuc_rate,
-                    delta_t,
-                    cell_volume,
-                    solver_context.get_user_inputs().get_miscellaneous_parameters().rng);
+                  unsigned int num_nuclei_in_cell =
+                    calculate_number_of_events(nuc_rate, delta_t, cell_volume, rng);
                   for (unsigned int i = 0; i < num_nuclei_in_cell; ++i)
                     {
                       dealii::Point<dim> nucleus_location_unit_cell;
@@ -131,12 +128,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                       dealii::Point<dim> nucleus_location =
                         solver_context.get_mapping()
                           .transform_unit_to_real_cell(cell, nucleus_location_unit_cell);
-                      double seed_time = solver_context.get_user_inputs()
-                                           .get_temporal_discretization()
-                                           .get_time();
-                      unsigned int seed_increment = solver_context.get_user_inputs()
-                                                      .get_temporal_discretization()
-                                                      .get_increment();
+                      double       seed_time      = time_info.get_time();
+                      unsigned int seed_increment = time_info.get_increment();
                       unsigned int nucleating_index =
                         variable
                           .get_nucleating_field_indices()[nucleating_index_dist(rng)];
@@ -150,6 +143,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
             }
         }
     }
+  // If any nuclei were created, gather them to rank 0, exclude based on distance, and
+  // broadcast back to all ranks
   if (dealii::Utilities::MPI::sum(new_nuclei_list.size(),
                                   MPI_COMM_WORLD)) // dont waste time if
                                                    // no nuclei appeared
@@ -180,11 +175,11 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
                   const double distance =
                     prisms::distance<dim, double>(nuc.location,
                                                   existing_nucleus.location,
-                                                  solver_context.get_user_inputs());
-                  return (distance < nucleation_parameters.get_exclusion_distance() ||
+                                                  user_inputs);
+                  return nuc_params.check_active(existing_nucleus, time_info) &&
+                         (distance < nuc_params.get_exclusion_distance() ||
                           (nuc.field_index == existing_nucleus.field_index &&
-                           distance <
-                             nucleation_parameters.get_same_field_exclusion_distance()));
+                           distance < nuc_params.get_same_field_exclusion_distance()));
                 });
               if (valid)
                 {

@@ -444,14 +444,24 @@ UserInputParameters<dim>::assign_nucleation_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
   parameter_handler.enter_subsection("nucleation");
-  nucleation_parameters.set_exclusion_distance(
-    parameter_handler.get_double("nucleus exclusion distance"));
-  nucleation_parameters.set_same_field_exclusion_distance(
-    parameter_handler.get_double("same field nucleus exclusion distance"));
-  nucleation_parameters.set_nucleation_period(
-    parameter_handler.get_integer("nucleation period"));
-  nucleation_parameters.set_refinement_radius(
-    parameter_handler.get_double("refinement radius"));
+  {
+    nucleation_parameters.set_exclusion_distance(
+      parameter_handler.get_double("nucleus exclusion distance"));
+
+    nucleation_parameters.set_same_field_exclusion_distance(
+      parameter_handler.get_double("same field nucleus exclusion distance"));
+
+    nucleation_parameters.set_nucleation_period(
+      parameter_handler.get_integer("nucleation period"));
+
+    nucleation_parameters.set_refinement_radius(
+      parameter_handler.get_double("refinement radius"));
+
+    nucleation_parameters.set_seeding_time(parameter_handler.get_double("seeding time"));
+
+    nucleation_parameters.set_seeding_increments(
+      parameter_handler.get_integer("seeding increments"));
+  }
   parameter_handler.leave_subsection();
 }
 

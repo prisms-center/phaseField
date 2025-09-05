@@ -11,6 +11,7 @@
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
+#include <prismspf/nucleation/nucleus.h>
 
 #include "prismspf/core/variable_attributes.h"
 
@@ -124,6 +125,57 @@ public:
   }
 
   /**
+   * @brief Set the seeding time
+   */
+  void
+  set_seeding_time(const double &_seeding_time)
+  {
+    seeding_time = _seeding_time;
+  }
+
+  /**
+   * @brief Get the seeding time
+   */
+  [[nodiscard]] double
+  get_seeding_time() const
+  {
+    return seeding_time;
+  }
+
+  /**
+   * @brief Set the seeding increments
+   */
+  void
+  set_seeding_increments(const unsigned int &_seeding_increments)
+  {
+    seeding_increments = _seeding_increments;
+  }
+
+  /**
+   * @brief Get the seeding increments
+   */
+  [[nodiscard]] unsigned int
+  get_seeding_increments() const
+  {
+    return seeding_increments;
+  }
+
+  /**
+   * @brief Check if a nucleus is still active based on its seed time and increment.
+   * A nucleus is considered active if the current time or increment is within the greater
+   * of the seeding time or seeding increments.
+   * The exclusion distance and active refinement are only applied to active nuclei.
+   */
+  template <unsigned int dim>
+  [[nodiscard]] bool
+  check_active(const Nucleus<dim> &nucleus, const TemporalDiscretization &time_info) const
+  {
+    return nucleus.seed_increment <= time_info.get_increment() &&
+           ((time_info.get_increment() - nucleus.seed_increment) < seeding_increments ||
+            time_info.get_time() - nucleus.seed_time < seeding_time);
+  }
+
+  /**
    * @brief Whether to print timing information with nucleation
    */
   void
@@ -156,6 +208,12 @@ private:
 
   // The radius around a nucleus to refine the mesh
   double refinement_radius = 0.0;
+
+  // Seeding time
+  double seeding_time = 0.0;
+
+  // Seeding increments
+  unsigned int seeding_increments = 1;
 
   // Whether to print timing information with nucleation
   // TODO (landinjm): Implement this.
