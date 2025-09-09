@@ -18,6 +18,18 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
+ * @brief Positive moldulo (remainder)
+ * returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)
+ */
+template <typename Real, typename OtherReal>
+inline Real
+pmod(const Real &value, const OtherReal &modulus)
+{
+  using std::fmod;
+  return fmod(fmod(value, modulus) + modulus, modulus);
+}
+
+/**
  * @brief Voigt notation index range
  */
 template <unsigned int dim>
@@ -187,3 +199,5 @@ dealii_point_to_vector(const dealii::Point<dim, number> &point)
 }
 
 PRISMS_PF_END_NAMESPACE
+
+#include <prismspf/utilities/vectorized_operations.h>

@@ -30,8 +30,6 @@ subsection output
   set file type = pvtu
 end
 
-
-
 set boundary condition for c = Periodic
 set boundary condition for n = Periodic
 set boundary condition for nucleation_rate = Periodic

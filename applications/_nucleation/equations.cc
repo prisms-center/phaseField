@@ -10,6 +10,9 @@
 #include <prismspf/core/variable_container.h>
 
 #include <prismspf/config.h>
+#include <prismspf/nucleation/nucleus.h>
+
+#include "prismspf/utilities/periodic_distance.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -147,7 +150,6 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 // =================================================================================
 // seedNucleus: a function particular to this app
 // =================================================================================
-#include <prismspf/nucleation/nucleus.h>
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
@@ -173,7 +175,10 @@ CustomPDE<dim, degree, number>::seed_nucleus(
           }
         return result;
       }();
-      ScalarValue dist = q_point_loc.distance(loc_as_arr);
+
+      ScalarValue dist = prisms::distance<dim, ScalarValue>(q_point_loc,
+                                                            loc_as_arr,
+                                                            this->get_user_inputs());
       // Seed a nucleus if it was added to the list of nuclei recently
       if (current_time < nucleus.seed_time + seeding_duration)
         {

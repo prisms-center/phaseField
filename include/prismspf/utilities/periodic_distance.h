@@ -9,6 +9,8 @@
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -39,10 +41,9 @@ distance(const dealii::Point<dim, real> &point1,
       real delta = point2[d] - point1[d];
       if (boundary_params.get_periodicity()[d])
         {
-          using std::fmod;
-          const real half_box_length = spatial_discretization.get_size()[d] / 2.0;
-          delta = fmod(delta - half_box_length, spatial_discretization.get_size()[d]) -
-                  half_box_length;
+          const real length      = spatial_discretization.get_size()[d];
+          const real half_length = length / 2.0;
+          delta                  = pmod(delta - half_length, length) - half_length;
         }
       dist += delta * delta;
     }

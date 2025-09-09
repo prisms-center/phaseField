@@ -46,6 +46,8 @@
 #include <prismspf/nucleation/nucleation.h>
 #include <prismspf/nucleation/nucleus_refinement_function.h>
 
+#include "prismspf/user_inputs/temporal_discretization.h"
+
 #include <memory>
 #include <mpi.h>
 #include <ostream>
@@ -358,8 +360,10 @@ PDEProblem<dim, degree, number>::solve()
 
   ConditionalOStreams::pout_base() << "\n";
 
+  const TemporalDiscretization &time_info = user_inputs->get_temporal_discretization();
+
   // If the number of increments is 0, we return early
-  if (user_inputs->get_temporal_discretization().get_total_increments() == 0)
+  if (time_info.get_total_increments() == 0)
     {
       return;
     }
@@ -369,12 +373,11 @@ PDEProblem<dim, degree, number>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->get_temporal_discretization().get_increment() <
-         user_inputs->get_temporal_discretization().get_total_increments())
+  while (time_info.get_increment() < time_info.get_total_increments())
     {
-      user_inputs->get_temporal_discretization().update_increment();
-      user_inputs->get_temporal_discretization().update_time();
-      unsigned int increment = user_inputs->get_temporal_discretization().get_increment();
+      time_info.update_increment();
+      time_info.update_time();
+      unsigned int increment = time_info.get_increment();
 
       Timer::start_section("Solve Increment");
       solve_increment();
@@ -394,12 +397,11 @@ PDEProblem<dim, degree, number>::solve()
         {
           // Perform grid refinement
           ConditionalOStreams::pout_base()
-            << "performing grid refinement at increment "
-            << user_inputs->get_temporal_discretization().get_increment() << "...\n"
-            << std::flush;
+            << "[Increment " << time_info.get_increment() << "] : Grid Refinement\n";
           Timer::start_section("Grid refinement");
           grid_refiner.do_adaptive_refinement();
           Timer::end_section("Grid refinement");
+          ConditionalOStreams::pout_base() << "\n" << std::flush;
 
           // Reinitialize the solver types
           solver_handler.reinit();
@@ -420,8 +422,7 @@ PDEProblem<dim, degree, number>::solve()
 
           // Print the l2-norms and integrals of each solution
           ConditionalOStreams::pout_base()
-            << "Iteration: " << user_inputs->get_temporal_discretization().get_increment()
-            << "\n";
+            << "Iteration: " << time_info.get_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               ConditionalOStreams::pout_base()
@@ -460,6 +461,16 @@ PDEProblem<dim, degree, number>::solve()
           Timer::end_section("Output");
         }
     }
+  ConditionalOStreams::pout_summary()
+    << "================================================\n"
+       "  Nuclei Seeded\n"
+    << "================================================\n"
+    << std::to_string(pf_tools->nuclei_list.size()) << " total nuclei seeded.\n";
+  for (const Nucleus<dim> nucleus : pf_tools->nuclei_list)
+    {
+      ConditionalOStreams::pout_summary() << nucleus << "\n";
+    }
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

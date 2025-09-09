@@ -11,6 +11,7 @@
 
 #include <mpi.h>
 #include <ostream>
+#include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -58,6 +59,17 @@ Nucleus<dim>::location_vectorized() const
       result[d] = dealii::VectorizedArray<double>(location[d]);
     }
   return result;
+}
+
+template <unsigned int dim, typename OStream>
+OStream &
+operator<<(OStream &ost, const Nucleus<dim> &nucleus)
+{
+  ost << "Field Index: " << std::to_string(nucleus.field_index)
+      << " ; Location: " << nucleus.location
+      << " ; Seed Time: " << std::to_string(nucleus.seed_time)
+      << " ; Seed Increment: " << std::to_string(nucleus.seed_increment);
+  return ost;
 }
 
 template <unsigned int dim>
