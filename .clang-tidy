@@ -9,6 +9,7 @@ Checks: >
   cppcoreguidelines-*,
   hicpp-*,
   misc-*,
+  -misc-include-cleaner,
   modernize-*,
   -modernize-use-trailing-return-type,
   mpi-*,
@@ -31,9 +32,9 @@ CheckOptions:
   - key:             readability-identifier-naming.ConstexprFunctionCase
     value:           lower_case
   - key:             readability-identifier-naming.EnumCase
-    value:           CamelCase
+    value:           UPPER_CASE
   - key:             readability-identifier-naming.EnumConstantCase
-    value:           CamelCase
+    value:           UPPER_CASE
   - key:             readability-identifier-naming.FunctionCase
     value:           lower_case
   - key:             readability-identifier-naming.GlobalConstantCase
