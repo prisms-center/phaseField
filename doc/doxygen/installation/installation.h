@@ -56,21 +56,81 @@ your operating system and the difference (if any) between the your hardware and 
 emulated hardware, the running of a Docker image may add some overhead, which will slow
 down your simulations. Additionally, with the Docker image, you're stuck with the image we
 provide. If you want to change the compiler, the configuration of dependencies, or any
-other things, you should consider \ref source instead.
+other things, you should consider \ref source instead. If you would like to learn more
+about Docker, [here](https://opensource.com/resources/what-docker) is a nice resource.
 
 \subsection docker_installation Installation with Docker
 To install PRISMS-PF with Docker, you will need to have Docker installed on your machine.
 You can find instructions for installing Docker on the official [Docker
 website](https://docs.docker.com/get-started/get-docker/).
 
- */
+After you have installed Docker, find a working directory where we can put your files.
+This is where we will clone PRISMS-PF so you can interact with the files and applications
+there.
+```
+mkdir ~/prisms_pf_docker
+git clone https://github.com/prisms-center/phaseField.git
+```
+
+Next, we will pull the docker image with
+```
+docker pull prismspf/prismspf:latest
+```
+
+Finally, we will launch an interactive container with
+```
+docker run -ti -v
+~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications
+prismspf/prismspf:latest
+```
+This will link your local applications directory (the one in `prisms_workspace`) to the
+one in the Docker image. If you plan to modify the core library, you should link one
+directory higher to preserve your changes. In other words,
+```
+docker run -ti -v
+~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
+```
+You can then run the applications in the container as you would normally. For example,
+to run the `allen_cahn_explicit` application, you can use the following commands:
+```
+cd allen_cahn_explicit
+cmake .
+make
+mpirun -n 1 ./main
+```
+
+*/
 
 /** \page source Installing from Source
 
 \subsection installation_prerequisites Prerequisites
+Before you can install PRISMS-PF, you will need to have some prerequisites installed on
+your machine. These include:
+- Git (to clone the repository)
+- A C++ compiler with C++20 support (we recommend GCC or Clang)
+- CMake (version 3.13.4 or higher)
+- LAPACK (for linear algebra operations)
+- MPI (we recommend OpenMPI or MPICH)
+- p4est (for adaptive octree meshing)
+- VTK (for file I/O) **[optional]**
+- HDF5 (for file I/O) **[optional]**
+- SUNDIALS (for time integration & nonlinear solvers) **[optional]**
+- Caliper (for profiling) **[optional]**
+- deal.II (version 9.6 or higher)
+
 <div class="tabbed">
 
-- <b class="tab-title">Linux</b> This is the content of tab 1
+- <b class="tab-title">Linux</b>
+You can install these prerequisites however you like. The
+first five are typically available on most OSes through your package manager. For example,
+on Ubuntu, you can install them with:
+```
+sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential
+autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin
+openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev
+libsuitesparse-dev
+```
+To install p4est, you can follow these instructions:
 - <b class="tab-title">MacOS</b> This is the content of tab 2
 - <b class="tab-title">Windows</b> **PRISMS-PF has no plans to support Windows.** If you
 are on Windows, we recommend using a virtual machine or Windows Subsystem for Linux (WSL)
