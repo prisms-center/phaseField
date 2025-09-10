@@ -112,7 +112,7 @@ your machine. These include:
 - LAPACK (for linear algebra operations)
 - MPI (we recommend OpenMPI or MPICH)
 - p4est (for adaptive octree meshing)
-- vtk (for file I/O) **[optional]**
+- VTK (for file I/O) **[optional]**
 - HDF5 (for file I/O) **[optional]**
 - SUNDIALS (for time integration & nonlinear solvers) **[optional]**
 - Caliper (for profiling) **[optional]**
