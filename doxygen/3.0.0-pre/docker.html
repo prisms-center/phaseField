@@ -113,11 +113,23 @@ $(document).ready(function(){initNavTree('docker.html',''); initResizable(); });
 <h2><a class="anchor" id="docker_introduction"></a>
 Introduction to Docker</h2>
 <p>Docker is a platform that allows you to run applications in containers. What are containers? Containers are typically stripped down versions of virtual machines that allow you to run an application in an isolated and reproducible environment. This custom environment is defined by a Dockerfile, which is a text file that contains all the instructions to build the container image. The image can then be run on any machine that has Docker installed, regardless of the underlying operating system.</p>
-<p>Importantly for PRISMS-PF, Docker allows you to run our software without needing to install any dependencies. All you have to do is download the Docker image! Depending on your operating system and the difference (if any) between the your hardware and the emulated hardware, the running of a Docker image may add some overhead, which will slow down your simulations. Additionally, with the Docker image, you're stuck with the image we provide. If you want to change the compiler, the configuration of dependencies, or any other things, you should consider <a class="el" href="source.html">Installing from Source</a> instead.</p>
+<p>Importantly for PRISMS-PF, Docker allows you to run our software without needing to install any dependencies. All you have to do is download the Docker image! Depending on your operating system and the difference (if any) between the your hardware and the emulated hardware, the running of a Docker image may add some overhead, which will slow down your simulations. Additionally, with the Docker image, you're stuck with the image we provide. If you want to change the compiler, the configuration of dependencies, or any other things, you should consider <a class="el" href="source.html">Installing from Source</a> instead. If you would like to learn more about Docker, <a href="https://opensource.com/resources/what-docker">here</a> is a nice resource.</p>
 <h2><a class="anchor" id="docker_installation"></a>
 Installation with Docker</h2>
-<p>To install PRISMS-PF with Docker, you will need to have Docker installed on your machine. You can find instructions for installing Docker on the official <a href="https://docs.docker.com/get-started/get-docker/">Docker website</a>. </p>
-</div></div><!-- contents -->
+<p>To install PRISMS-PF with Docker, you will need to have Docker installed on your machine. You can find instructions for installing Docker on the official <a href="https://docs.docker.com/get-started/get-docker/">Docker website</a>.</p>
+<p>After you have installed Docker, find a working directory where we can put your files. This is where we will clone PRISMS-PF so you can interact with the files and applications there. </p><div class="fragment"><div class="line">mkdir ~/prisms_pf_docker</div>
+<div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
+</div><!-- fragment --><p>Next, we will pull the docker image with </p><div class="fragment"><div class="line">docker pull prismspf/prismspf:latest</div>
+</div><!-- fragment --><p>Finally, we will launch an interactive container with </p><div class="fragment"><div class="line">docker run -ti -v</div>
+<div class="line">~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications</div>
+<div class="line">prismspf/prismspf:latest</div>
+</div><!-- fragment --><p> This will link your local applications directory (the one in <code>prisms_workspace</code>) to the one in the Docker image. If you plan to modify the core library, you should link one directory higher to preserve your changes. In other words, </p><div class="fragment"><div class="line">docker run -ti -v</div>
+<div class="line">~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest</div>
+</div><!-- fragment --><p> You can then run the applications in the container as you would normally. For example, to run the <code>allen_cahn_explicit</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd allen_cahn_explicit</div>
+<div class="line">cmake .</div>
+<div class="line">make</div>
+<div class="line">mpirun -n 1 ./main</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

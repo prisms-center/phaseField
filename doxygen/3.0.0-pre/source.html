@@ -111,8 +111,25 @@ $(document).ready(function(){initNavTree('source.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><h2><a class="anchor" id="installation_prerequisites"></a>
 Prerequisites</h2>
+<p>Before you can install PRISMS-PF, you will need to have some prerequisites installed on your machine. These include:</p><ul>
+<li>Git (to clone the repository)</li>
+<li>A C++ compiler with C++20 support (we recommend GCC or Clang)</li>
+<li>CMake (version 3.13.4 or higher)</li>
+<li>LAPACK (for linear algebra operations)</li>
+<li>MPI (we recommend OpenMPI or MPICH)</li>
+<li>p4est (for adaptive octree meshing)</li>
+<li>VTK (for file I/O) <b>[optional]</b></li>
+<li>HDF5 (for file I/O) <b>[optional]</b></li>
+<li>SUNDIALS (for time integration &amp; nonlinear solvers) <b>[optional]</b></li>
+<li>Caliper (for profiling) <b>[optional]</b></li>
+<li>deal.II (version 9.6 or higher)</li>
+</ul>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">Linux</b> This is the content of tab 1</li>
+<li><b class="tab-title">Linux</b> You can install these prerequisites however you like. The first five are typically available on most OSes through your package manager. For example, on Ubuntu, you can install them with: <div class="fragment"><div class="line">sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential</div>
+<div class="line">autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin</div>
+<div class="line">openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev</div>
+<div class="line">libsuitesparse-dev</div>
+</div><!-- fragment --> To install p4est, you can follow these instructions:</li>
 <li><b class="tab-title">MacOS</b> This is the content of tab 2</li>
 <li><b class="tab-title">Windows</b> <b>PRISMS-PF has no plans to support Windows.</b> If you are on Windows, we recommend using a virtual machine or Windows Subsystem for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you use either of those options.</li>
 </ul>
