@@ -58,7 +58,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classReadInitialCondition.html" target="_top" xlink:title="Function for read&#45;in intial conditions. These are only ever used for for explicit time dependent fiel...">
+<g id="a_Node000003"><a xlink:href="classReadInitialCondition.html" target="_top" xlink:title="Function for read&#45;in of initial conditions.">
 <polygon fill="white" stroke="#666666" points="255.5,-30 139.5,-30 139.5,0 255.5,0 255.5,-30"/>
 <text text-anchor="start" x="147.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">ReadInitialCondition</text>
 <text text-anchor="middle" x="197.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; dim, number &gt;</text>

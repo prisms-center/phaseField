@@ -47,7 +47,10 @@ var hierarchy =
     [ "PDEOperator< dim, degree, number >", "classPDEOperator.html", null ],
     [ "PDEProblem< dim, degree, number >", "classPDEProblem.html", null ],
     [ "RawDependencies", "structRawDependencies.html", null ],
-    [ "ReadUnstructuredVTK< dim, number >", "classReadUnstructuredVTK.html", null ],
+    [ "ReadFieldBase< dim, number >", "classReadFieldBase.html", [
+      [ "ReadBinary< dim, number >", "classReadBinary.html", null ],
+      [ "ReadUnstructuredVTK< dim, number >", "classReadUnstructuredVTK.html", null ]
+    ] ],
     [ "GridRefinement::RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", null ],
     [ "SolutionHandler< dim, number >", "classSolutionHandler.html", null ],
     [ "SolutionOutput< dim, number >", "classSolutionOutput.html", null ],

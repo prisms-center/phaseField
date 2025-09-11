@@ -44,6 +44,8 @@ var annotated_dup =
     [ "PDEOperator", "classPDEOperator.html", "classPDEOperator" ],
     [ "PDEProblem", "classPDEProblem.html", "classPDEProblem" ],
     [ "RawDependencies", "structRawDependencies.html", "structRawDependencies" ],
+    [ "ReadBinary", "classReadBinary.html", "classReadBinary" ],
+    [ "ReadFieldBase", "classReadFieldBase.html", "classReadFieldBase" ],
     [ "ReadInitialCondition", "classReadInitialCondition.html", "classReadInitialCondition" ],
     [ "ReadUnstructuredVTK", "classReadUnstructuredVTK.html", "classReadUnstructuredVTK" ],
     [ "RectangularMesh", "classRectangularMesh.html", null ],

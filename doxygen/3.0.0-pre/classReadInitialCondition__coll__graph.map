@@ -1,5 +1,5 @@
 <map id="ReadInitialCondition&lt; dim, number &gt;" name="ReadInitialCondition&lt; dim, number &gt;">
-<area shape="rect" id="Node000001" title="Function for read&#45;in intial conditions. These are only ever used for for explicit time dependent fiel..." alt="" coords="11,93,165,133"/>
+<area shape="rect" id="Node000001" title="Function for read&#45;in of initial conditions." alt="" coords="11,93,165,133"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,5,171,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,59,91,93,85,93,85,59"/>
 </map>

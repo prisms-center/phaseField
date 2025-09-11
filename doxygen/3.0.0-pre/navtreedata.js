@@ -56,8 +56,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classMatrixFreeOperator.html#a66ea902605dd0b5f388e1c1b11e884fc",
-"classUserInputParameters.html#adee29cbe69da4c52e846ba2c18c53126",
-"structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f"
+"classUserConstants.html#a480929f141c03b87b31e2e459576b7f5",
+"structOutputParameters.html#a8c5c30cb129285cf40f8dfa7b8cc9f8d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

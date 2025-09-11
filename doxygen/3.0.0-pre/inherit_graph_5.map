@@ -4,6 +4,6 @@
 <area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="119,70,204,43,205,48,121,75"/>
 <area shape="rect" id="Node000002" href="$classNonuniformDirichlet.html" title="Function for user&#45;implemented nonuniform dirichlet boundary condition." alt="" coords="175,69,363,109"/>
 <area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="140,87,174,87,174,92,140,92"/>
-<area shape="rect" id="Node000003" href="$classReadInitialCondition.html" title="Function for read&#45;in intial conditions. These are only ever used for for explicit time dependent fiel..." alt="" coords="191,133,346,173"/>
+<area shape="rect" id="Node000003" href="$classReadInitialCondition.html" title="Function for read&#45;in of initial conditions." alt="" coords="191,133,346,173"/>
 <area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="121,104,205,131,204,136,119,109"/>
 </map>

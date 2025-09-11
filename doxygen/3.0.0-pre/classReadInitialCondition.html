@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('classReadInitialCondition.html',''); i
 </div><!--header-->
 <div class="contents">
 
-<p>Function for read-in intial conditions. These are only ever used for for explicit time dependent fields and implicit time dependent, as all others are calculated at runtime.  
+<p>Function for read-in of initial conditions.  
  <a href="classReadInitialCondition.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="initial__conditions_8h_source.html">initial_conditions.h</a>&gt;</code></p>
@@ -130,10 +130,10 @@ Collaboration diagram for ReadInitialCondition&lt; dim, number &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a501886523f57a2c313a9cc6aa1c62798" id="r_a501886523f57a2c313a9cc6aa1c62798"><td class="memItemLeft" align="right" valign="top"><a id="a501886523f57a2c313a9cc6aa1c62798" name="a501886523f57a2c313a9cc6aa1c62798"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ReadInitialCondition</b> (const std::string &amp;file_name, std::string _field_name, const FieldType &amp;_field_type)</td></tr>
-<tr class="memdesc:a501886523f57a2c313a9cc6aa1c62798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:a501886523f57a2c313a9cc6aa1c62798"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76262540be2f46cf4844761d3e084816" id="r_a76262540be2f46cf4844761d3e084816"><td class="memItemLeft" align="right" valign="top"><a id="a76262540be2f46cf4844761d3e084816" name="a76262540be2f46cf4844761d3e084816"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ReadInitialCondition</b> (std::string _field_name, const FieldType &amp;_field_type, const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;ic_file, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;spatial_discretization)</td></tr>
+<tr class="memdesc:a76262540be2f46cf4844761d3e084816"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="separator:a76262540be2f46cf4844761d3e084816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f4b02ecee8d1822620fe2fac717effe" id="r_a2f4b02ecee8d1822620fe2fac717effe"><td class="memItemLeft" align="right" valign="top"><a id="a2f4b02ecee8d1822620fe2fac717effe" name="a2f4b02ecee8d1822620fe2fac717effe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>vector_value</b> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td></tr>
 <tr class="memdesc:a2f4b02ecee8d1822620fe2fac717effe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar/Vector value. <br /></td></tr>
@@ -141,7 +141,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>vector_value</b> (con
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
-class ReadInitialCondition&lt; dim, number &gt;</div><p>Function for read-in intial conditions. These are only ever used for for explicit time dependent fields and implicit time dependent, as all others are calculated at runtime. </p>
+class ReadInitialCondition&lt; dim, number &gt;</div><p>Function for read-in of initial conditions. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="initial__conditions_8h_source.html">initial_conditions.h</a></li>
 <li>/home/runner/work/phaseField/phaseField/src/core/<b>initial_conditions.cc</b></li>

@@ -132,69 +132,77 @@ $(document).ready(function(){initNavTree('initial__conditions_8h_source.html',''
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">class </span><a class="code hl_class" href="classPDEOperator.html">PDEOperator</a>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">class </span><a class="code hl_class" href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classInitialCondition.html">   31</a></span><span class="keyword">class </span><a class="code hl_class" href="classInitialCondition.html">InitialCondition</a> : <span class="keyword">public</span> dealii::Function&lt;dim, number&gt;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_class" href="classInitialCondition.html">InitialCondition</a>(</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                            &amp;_index,</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">const</span> FieldType                                               &amp;field_type,</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, number&gt;</a>&gt; &amp;_pde_operator);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_function" href="classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606">vector_value</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;number&gt; &amp;value) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">struct </span><a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">struct </span><a class="code hl_struct" href="structSpatialDiscretization.html">SpatialDiscretization</a>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span><a class="code hl_class" href="classPDEOperator.html">PDEOperator</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span><a class="code hl_class" href="classReadFieldBase.html">ReadFieldBase</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classInitialCondition.html">   36</a></span><span class="keyword">class </span><a class="code hl_class" href="classInitialCondition.html">InitialCondition</a> : <span class="keyword">public</span> dealii::Function&lt;dim, number&gt;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_class" href="classInitialCondition.html">InitialCondition</a>(</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                                            &amp;_index,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> FieldType                                               &amp;field_type,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, number&gt;</a>&gt; &amp;_pde_operator);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <a class="code hl_function" href="classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606">vector_value</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;number&gt; &amp;value) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  std::shared_ptr&lt;const PDEOperator&lt;dim, degree, number&gt;&gt; pde_operator;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  std::shared_ptr&lt;const PDEOperator&lt;dim, degree, number&gt;&gt; pde_operator;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
-<div class="foldopen" id="foldopen00064" data-start="{" data-end="};">
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classReadInitialCondition.html">   64</a></span><span class="keyword">class </span><a class="code hl_class" href="classReadInitialCondition.html">ReadInitialCondition</a> : <span class="keyword">public</span> dealii::Function&lt;dim, number&gt;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_class" href="classReadInitialCondition.html">ReadInitialCondition</a>(<span class="keyword">const</span> std::string &amp;file_name,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                       std::string        _field_name,</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                       <span class="keyword">const</span> FieldType   &amp;_field_type);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_function" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">vector_value</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;number&gt; &amp;value) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  std::string field_name;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  FieldType field_type;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  std::shared_ptr&lt;ReadUnstructuredVTK&lt;dim, number&gt;&gt; reader;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>};</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="};">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classReadInitialCondition.html">   67</a></span><span class="keyword">class </span><a class="code hl_class" href="classReadInitialCondition.html">ReadInitialCondition</a> : <span class="keyword">public</span> dealii::Function&lt;dim, number&gt;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>{</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_class" href="classReadInitialCondition.html">ReadInitialCondition</a>(std::string                       _field_name,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                       <span class="keyword">const</span> FieldType                  &amp;_field_type,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                       <span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a>       &amp;ic_file,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                       <span class="keyword">const</span> <a class="code hl_struct" href="structSpatialDiscretization.html">SpatialDiscretization&lt;dim&gt;</a> &amp;spatial_discretization);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_function" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">vector_value</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;p, dealii::Vector&lt;number&gt; &amp;value) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  std::string field_name;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  FieldType field_type;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  std::shared_ptr&lt;ReadFieldBase&lt;dim, number&gt;&gt; reader;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>};</div>
 </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>PRISMS_PF_END_NAMESPACE</div>
-<div class="ttc" id="aclassInitialCondition_html"><div class="ttname"><a href="classInitialCondition.html">InitialCondition</a></div><div class="ttdoc">Function for user-implemented initial conditions. These are only ever calculated for explicit time de...</div><div class="ttdef"><b>Definition</b> initial_conditions.h:32</div></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aclassInitialCondition_html"><div class="ttname"><a href="classInitialCondition.html">InitialCondition</a></div><div class="ttdoc">Function for user-implemented initial conditions. These are only ever calculated for explicit time de...</div><div class="ttdef"><b>Definition</b> initial_conditions.h:37</div></div>
 <div class="ttc" id="aclassInitialCondition_html_ae1e1c28adb3c0b9feadd2c381f507606"><div class="ttname"><a href="classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606">InitialCondition::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</div><div class="ttdoc">Scalar/Vector value.</div><div class="ttdef"><b>Definition</b> initial_conditions.cc:35</div></div>
 <div class="ttc" id="aclassPDEOperator_html"><div class="ttname"><a href="classPDEOperator.html">PDEOperator</a></div><div class="ttdoc">This class contains the user implementation of each PDE operator.</div><div class="ttdef"><b>Definition</b> pde_operator.h:25</div></div>
-<div class="ttc" id="aclassReadInitialCondition_html"><div class="ttname"><a href="classReadInitialCondition.html">ReadInitialCondition</a></div><div class="ttdoc">Function for read-in intial conditions. These are only ever used for for explicit time dependent fiel...</div><div class="ttdef"><b>Definition</b> initial_conditions.h:65</div></div>
-<div class="ttc" id="aclassReadInitialCondition_html_a2f4b02ecee8d1822620fe2fac717effe"><div class="ttname"><a href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">ReadInitialCondition::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</div><div class="ttdoc">Scalar/Vector value.</div><div class="ttdef"><b>Definition</b> initial_conditions.cc:67</div></div>
-<div class="ttc" id="aclassReadUnstructuredVTK_html"><div class="ttname"><a href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a></div><div class="ttdef"><b>Definition</b> read_vtk.h:27</div></div>
+<div class="ttc" id="aclassReadFieldBase_html"><div class="ttname"><a href="classReadFieldBase.html">ReadFieldBase</a></div><div class="ttdef"><b>Definition</b> read_field_base.h:23</div></div>
+<div class="ttc" id="aclassReadInitialCondition_html"><div class="ttname"><a href="classReadInitialCondition.html">ReadInitialCondition</a></div><div class="ttdoc">Function for read-in of initial conditions.</div><div class="ttdef"><b>Definition</b> initial_conditions.h:68</div></div>
+<div class="ttc" id="aclassReadInitialCondition_html_a2f4b02ecee8d1822620fe2fac717effe"><div class="ttname"><a href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">ReadInitialCondition::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</div><div class="ttdoc">Scalar/Vector value.</div><div class="ttdef"><b>Definition</b> initial_conditions.cc:69</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:28</div></div>
+<div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
