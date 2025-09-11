@@ -1,18 +1,16 @@
 set dim = 2
 subsection Rectangular mesh
-  set x size = 200.0
-  set y size = 200.0
-  set z size = 200.0
-  set x subdivisions = 1
-  set y subdivisions = 1
-  set z subdivisions = 1
+  set x size = 800.0
+  set y size = 800.0
+  set z size = 800.0
 end
-set global refinement = 8
+
+set global refinement = 2
 set degree = 2
 
 set mesh adaptivity = true
 set remeshing period = 1000
-set max refinement = 8
+set max refinement = 10
 set min refinement = 2
 
 subsection refinement criterion: n
@@ -22,7 +20,7 @@ subsection refinement criterion: n
 end
 
 set time step = 0.011
-set number steps = 200000
+set number steps = 50000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -36,9 +34,8 @@ set boundary condition for nucleation_rate = Periodic
 
 subsection nucleation
   set nucleus exclusion distance = 20.0
-  set nucleation period = 2500
-  set refinement radius = 10
-  set seeding time = 200.0
+  set nucleation period = 30
+  set refinement radius = 7.5
 end
 
 subsection miscellaneous
@@ -58,8 +55,7 @@ set Model constant B2 = 4.0, DOUBLE
 set Model constant cbtmin = 1.0, DOUBLE
 set Model constant k1 = 498.866, DOUBLE
 set Model constant k2 = 4.14465, DOUBLE
-#set Model constant tau = 500.0, DOUBLE
-set Model constant tau = 0.0, DOUBLE
+set Model constant tau = 500.0, DOUBLE
 set Model constant epsilon = 1.0e-7, DOUBLE
 set Model constant r_nuc = 5.0, DOUBLE
 set Model constant r_freeze = 7.5, DOUBLE
