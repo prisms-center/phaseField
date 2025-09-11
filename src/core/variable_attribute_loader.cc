@@ -346,7 +346,7 @@ VariableAttributeLoader::validate_attributes()
     {
       // Check that postprocessed variables are only explicit
       AssertThrow(!(variable.is_postprocessed_variable &&
-                    variable.pde_type == PDEType::ExplicitTimeDependent),
+                    variable.pde_type != PDEType::ExplicitTimeDependent),
                   dealii::ExcMessage(
                     "Currently, postprocessing only allows explicit equations."));
       // Check that nucleation rates are scalars

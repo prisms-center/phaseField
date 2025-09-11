@@ -1232,3 +1232,59 @@ Time: 60.52648162841797
  
 Tests Passed: 11/11
 --------------------------------------------------------- 
+--------------------------------------------------------- 
+Regression test on 2025-09-11 14:04
+Architecture: x86_64
+Model name: AMD Ryzen 7 5800X 8-Core Processor
+CPU(s): 16
+CPU max/min MHz: None, None
+Hypervisor vendor: Microsoft
+Number of processes: 1
+Number of threads: 1
+--------------------------------------------------------- 
+Application: allen_cahn_explicit
+Result: Pass
+Time: 5.107484817504883
+ 
+Application: allen_cahn_implicit
+Result: Pass
+Time: 66.47570490837097
+ 
+Application: cahn_hilliard_explicit
+Result: Pass
+Time: 45.553224325180054
+ 
+Application: cahn_hilliard_implicit
+Result: Pass
+Time: 6.571847438812256
+ 
+Application: heat_equation_steady_state
+Result: Pass
+Time: 0.6505775451660156
+ 
+Application: mechanics
+Result: Pass
+Time: 0.914060115814209
+ 
+Application: precipitate_explicit
+Result: Pass
+Time: 20.088241577148438
+ 
+Application: fracture
+Result: Pass
+Time: 14.574650049209595
+ 
+Application: solution_blocks
+Result: Pass
+Time: 0.49363112449645996
+ 
+Application: linear_solve_old_solution
+Result: Pass
+Time: 0.47952985763549805
+ 
+Application: cavity_flow
+Result: Pass
+Time: 178.90050959587097
+ 
+Tests Passed: 11/11
+--------------------------------------------------------- 

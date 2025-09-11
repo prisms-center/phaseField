@@ -64,8 +64,9 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
-    : PDEOperator<dim, degree, number>(_user_inputs)
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
+                     PhaseFieldTools<dim>           &_pf_tools)
+    : PDEOperator<dim, degree, number>(_user_inputs, _pf_tools)
   {}
 
 private:
