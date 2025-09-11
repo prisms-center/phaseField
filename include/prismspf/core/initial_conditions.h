@@ -16,11 +16,16 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class UserInputParameters;
 
+struct InitialConditionFile;
+
+template <unsigned int dim>
+struct SpatialDiscretization;
+
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
 template <unsigned int dim, typename number>
-class ReadUnstructuredVTK;
+class ReadFieldBase;
 
 /**
  * @brief Function for user-implemented initial conditions. These are only ever calculated
@@ -56,9 +61,7 @@ private:
 };
 
 /**
- * @brief Function for read-in intial conditions. These are only ever used for
- * for explicit time dependent fields and implicit time dependent, as all others are
- * calculated at runtime.
+ * @brief Function for read-in of initial conditions.
  */
 template <unsigned int dim, typename number>
 class ReadInitialCondition : public dealii::Function<dim, number>
@@ -67,9 +70,10 @@ public:
   /**
    * @brief Constructor.
    */
-  ReadInitialCondition(const std::string &file_name,
-                       std::string        _field_name,
-                       const FieldType   &_field_type);
+  ReadInitialCondition(std::string                       _field_name,
+                       const FieldType                  &_field_type,
+                       const InitialConditionFile       &ic_file,
+                       const SpatialDiscretization<dim> &spatial_discretization);
 
   // NOLINTBEGIN(readability-identifier-length)
 
@@ -86,7 +90,7 @@ private:
 
   FieldType field_type;
 
-  std::shared_ptr<ReadUnstructuredVTK<dim, number>> reader;
+  std::shared_ptr<ReadFieldBase<dim, number>> reader;
 };
 
 PRISMS_PF_END_NAMESPACE

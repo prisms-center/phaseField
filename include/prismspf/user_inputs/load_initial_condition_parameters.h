@@ -4,8 +4,10 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/types.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
 
@@ -24,19 +26,19 @@ struct InitialConditionFile
   // File name
   std::string filename;
 
-  // File extension
-  // TODO (landinjm): Add enum for file extension
-  std::string file_extension;
-
   // Grid type
-  // TODO (landinjm): Add enum for grid type
-  std::string grid_type;
+  DataFormatType dataset_format;
 
   // File variable names
   std::vector<std::string> file_variable_names;
 
   // Simulation variable names
   std::vector<std::string> simulation_variable_names;
+
+  // Number of data points in each direction
+  std::array<dealii::types::global_dof_index, 3> n_data_points = {
+    {0, 0, 0}
+  };
 };
 
 /**
@@ -158,8 +160,7 @@ LoadInitialConditionParameters::print_parameter_summary() const
         {
           ConditionalOStreams::pout_summary()
             << "File name: " << ic_file.filename << "\n"
-            << "File extension: " << ic_file.file_extension << "\n"
-            << "Grid type: " << ic_file.grid_type << "\n"
+            << "Dataset format: " << to_string(ic_file.dataset_format) << "\n"
             << "File variable names: ";
           for (const auto &file_variable_name : ic_file.file_variable_names)
             {
@@ -170,6 +171,14 @@ LoadInitialConditionParameters::print_parameter_summary() const
           for (const auto &simulation_variable_name : ic_file.simulation_variable_names)
             {
               ConditionalOStreams::pout_summary() << simulation_variable_name << " ";
+            }
+          if (ic_file.dataset_format == FlatBinary)
+            {
+              ConditionalOStreams::pout_summary() << "\n Data points in each direction: ";
+              for (const auto &n_data_points : ic_file.n_data_points)
+                {
+                  ConditionalOStreams::pout_summary() << n_data_points << " ";
+                }
             }
         }
 

@@ -528,15 +528,9 @@ InputFileReader::declare_load_ic_parameters()
                                         "",
                                         dealii::Patterns::Anything(),
                                         "The file name to load from for each variable.");
-        parameter_handler.declare_entry("file extension",
-                                        "vtk",
-                                        dealii::Patterns::Selection(
-                                          "vtk|vtu|pvtu|vtr|vts"),
-                                        "The file extension.");
-        parameter_handler.declare_entry("grid type",
-                                        "unstructured",
-                                        dealii::Patterns::Selection(
-                                          "unstructured|structured"),
+        parameter_handler.declare_entry("dataset format",
+                                        "vtk_unstructured_grid",
+                                        dealii::Patterns::Anything(),
                                         "The type of grid in the file.");
         parameter_handler.declare_entry("file variable names",
                                         "",
@@ -548,6 +542,21 @@ InputFileReader::declare_load_ic_parameters()
                                         dealii::Patterns::List(
                                           dealii::Patterns::Anything()),
                                         "The name of the variable in the file.");
+        parameter_handler.declare_entry(
+          "data points in x direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the x direction.");
+        parameter_handler.declare_entry(
+          "data points in y direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the y direction.");
+        parameter_handler.declare_entry(
+          "data points in z direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the z direction.");
       }
       parameter_handler.leave_subsection();
     }

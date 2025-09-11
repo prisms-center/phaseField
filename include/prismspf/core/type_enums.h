@@ -107,6 +107,17 @@ enum PreconditionerType : std::uint8_t
 };
 
 /**
+ * @brief Data formats for input initial conditions.
+ * LastEntry is used for loop bounds.
+ */
+enum DataFormatType : std::uint8_t
+{
+  VTKUnstructuredGrid,
+  FlatBinary,
+  LastEntry
+};
+
+/**
  * @brief Enum to string for FieldType
  */
 inline std::string
@@ -272,6 +283,23 @@ to_string(PreconditionerType type)
         return "GMG";
       default:
         return "UNKNOWN";
+    }
+}
+
+/**
+ * @brief Enum to string for DataFormatType
+ */
+inline std::string
+to_string(DataFormatType type)
+{
+  switch (type)
+    {
+      case DataFormatType::VTKUnstructuredGrid:
+        return "vtk_unstructured_grid";
+      case DataFormatType::FlatBinary:
+        return "flat_binary";
+      default:
+        return "unknown";
     }
 }
 
