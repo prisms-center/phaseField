@@ -375,15 +375,8 @@ PDEProblem<dim, degree, number>::solve()
     << std::flush;
   while (time_info.get_increment() < time_info.get_total_increments())
     {
-      time_info.update_increment();
-      time_info.update_time();
-      unsigned int increment = time_info.get_increment();
-
-      Timer::start_section("Solve Increment");
-      solve_increment();
-      Timer::end_section("Solve Increment");
-
-      bool any_nucleation_occurred = false;
+      unsigned int increment               = time_info.get_increment();
+      bool         any_nucleation_occurred = false;
       if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
         {
           any_nucleation_occurred =
@@ -411,6 +404,16 @@ PDEProblem<dim, degree, number>::solve()
           solution_handler.update_ghosts();
           Timer::end_section("Update ghosts");
         }
+
+      // Update the time
+      time_info.update_increment();
+      time_info.update_time();
+      increment = time_info.get_increment();
+
+      Timer::start_section("Solve Increment");
+      solve_increment();
+      Timer::end_section("Solve Increment");
+
       if (user_inputs->get_output_parameters().should_output(increment))
         {
           Timer::start_section("Output");
