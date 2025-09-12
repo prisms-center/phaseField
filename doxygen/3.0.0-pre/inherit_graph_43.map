@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structTemporalDiscretization.html" title="Struct that holds temporal discretization parameters." alt="" coords="5,5,177,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,109,31"/>
+<area shape="rect" id="Node000001" href="$classTeeStream.html" title="Combined output streams so we can output to terminal and the summary.log with a single statement." alt="" coords="157,5,248,31"/>
+<area shape="poly" id="edge19_Node000000_Node000001" title=" " alt="" coords="123,15,157,15,157,21,123,21"/>
 </map>

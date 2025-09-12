@@ -54,6 +54,7 @@ var hierarchy =
     [ "GridRefinement::RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", null ],
     [ "SolutionHandler< dim, number >", "classSolutionHandler.html", null ],
     [ "SolutionOutput< dim, number >", "classSolutionOutput.html", null ],
+    [ "SolveBlock< dim, degree, number >", "classSolveBlock.html", null ],
     [ "SolverBase< dim, degree, number >", "classSolverBase.html", [
       [ "ConcurrentSolver< dim, degree, number >", "classConcurrentSolver.html", [
         [ "ConcurrentConstantSolver< dim, degree, number >", "classConcurrentConstantSolver.html", null ],

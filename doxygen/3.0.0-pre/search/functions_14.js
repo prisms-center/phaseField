@@ -19,8 +19,9 @@ var searchData=
   ['_7esequentiallinearsolver_16',['~SequentialLinearSolver',['../classSequentialLinearSolver.html#a2984feebd34b462ea0944ed8e9316fa4',1,'SequentialLinearSolver']]],
   ['_7esequentialselfnonlinearsolver_17',['~SequentialSelfNonlinearSolver',['../classSequentialSelfNonlinearSolver.html#a2899bf0a16455b36e3f5bed1aca3047a',1,'SequentialSelfNonlinearSolver']]],
   ['_7esequentialsolver_18',['~SequentialSolver',['../classSequentialSolver.html#a334dc29c5d6695eda04b80477c3c7890',1,'SequentialSolver']]],
-  ['_7esolverbase_19',['~SolverBase',['../classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b',1,'SolverBase']]],
-  ['_7esolvercontext_20',['~SolverContext',['../classSolverContext.html#ab06a57bec1539df03fcdf21e3c4a2c8e',1,'SolverContext']]],
-  ['_7esolverhandler_21',['~SolverHandler',['../classSolverHandler.html#ac54efcb0eae6fa0a6725e14e3e76ac5f',1,'SolverHandler']]],
-  ['_7evariableattributeloader_22',['~VariableAttributeLoader',['../classVariableAttributeLoader.html#ab4ff697662bcae8e80863156e1b3c573',1,'VariableAttributeLoader']]]
+  ['_7esolveblock_19',['~SolveBlock',['../classSolveBlock.html#a5fad9f255e7a3025277e10968890de5b',1,'SolveBlock']]],
+  ['_7esolverbase_20',['~SolverBase',['../classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b',1,'SolverBase']]],
+  ['_7esolvercontext_21',['~SolverContext',['../classSolverContext.html#ab06a57bec1539df03fcdf21e3c4a2c8e',1,'SolverContext']]],
+  ['_7esolverhandler_22',['~SolverHandler',['../classSolverHandler.html#ac54efcb0eae6fa0a6725e14e3e76ac5f',1,'SolverHandler']]],
+  ['_7evariableattributeloader_23',['~VariableAttributeLoader',['../classVariableAttributeLoader.html#ab4ff697662bcae8e80863156e1b3c573',1,'VariableAttributeLoader']]]
 ];

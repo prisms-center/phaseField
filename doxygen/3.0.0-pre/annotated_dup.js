@@ -56,6 +56,7 @@ var annotated_dup =
     [ "SequentialSolver", "classSequentialSolver.html", "classSequentialSolver" ],
     [ "SolutionHandler", "classSolutionHandler.html", "classSolutionHandler" ],
     [ "SolutionOutput", "classSolutionOutput.html", "classSolutionOutput" ],
+    [ "SolveBlock", "classSolveBlock.html", "classSolveBlock" ],
     [ "SolverBase", "classSolverBase.html", "classSolverBase" ],
     [ "SolverContext", "classSolverContext.html", "classSolverContext" ],
     [ "SolverHandler", "classSolverHandler.html", "classSolverHandler" ],
