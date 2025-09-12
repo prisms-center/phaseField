@@ -1,4 +1,5 @@
 for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
   {
+    template class SolveBlock<dimension, degree, number>;
     template class SolverHandler<dimension, degree, number>;
   }
