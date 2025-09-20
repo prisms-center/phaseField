@@ -2,6 +2,9 @@ var hierarchy =
 [
     [ "BoundaryCondition", "structBoundaryCondition.html", null ],
     [ "BoundaryParameters< dim >", "structBoundaryParameters.html", null ],
+    [ "CellMarkerBase< dim >", "classCellMarkerBase.html", [
+      [ "NucleusRefinementFunction< dim >", "classNucleusRefinementFunction.html", null ]
+    ] ],
     [ "CheckpointParameters", "structCheckpointParameters.html", null ],
     [ "ConditionalOStreams", "classConditionalOStreams.html", null ],
     [ "ConstraintHandler< dim, degree, number >", "classConstraintHandler.html", null ],
@@ -35,9 +38,13 @@ var hierarchy =
       [ "RectangularMesh< dim >", "classRectangularMesh.html", null ]
     ] ],
     [ "MGInfo< dim >", "classMGInfo.html", null ],
+    [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
     [ "NamedType< T, Parameter >", "classNamedType.html", null ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", null ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],
+    [ "NucleationHandler< dim, degree, number >", "classNucleationHandler.html", null ],
+    [ "NucleationParameters", "structNucleationParameters.html", null ],
+    [ "Nucleus< dim >", "structNucleus.html", null ],
     [ "std::ostream", null, [
       [ "TeeStream", "classTeeStream.html", null ]
     ] ],
@@ -46,6 +53,7 @@ var hierarchy =
     [ "ParseCMDOptions", "classParseCMDOptions.html", null ],
     [ "PDEOperator< dim, degree, number >", "classPDEOperator.html", null ],
     [ "PDEProblem< dim, degree, number >", "classPDEProblem.html", null ],
+    [ "PhaseFieldTools< dim >", "structPhaseFieldTools.html", null ],
     [ "RawDependencies", "structRawDependencies.html", null ],
     [ "ReadFieldBase< dim, number >", "classReadFieldBase.html", [
       [ "ReadBinary< dim, number >", "classReadBinary.html", null ],

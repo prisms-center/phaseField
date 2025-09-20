@@ -8,6 +8,7 @@ var classInputFileReader =
     [ "declare_grain_remapping_parameters", "classInputFileReader.html#a106506e9ea9c7c061be652b44e08a8b6", null ],
     [ "declare_load_ic_parameters", "classInputFileReader.html#ab9806f9292d32744bc5524bbeb1d2006", null ],
     [ "declare_mesh", "classInputFileReader.html#a56e77d6e58c5f98b539395c9a001b005", null ],
+    [ "declare_miscellaneous_parameters", "classInputFileReader.html#a37e5d33aa3a85c059cf262d6583180c1", null ],
     [ "declare_model_constants", "classInputFileReader.html#acb10db154c9b7621b66d8e6c76550238", null ],
     [ "declare_nucleation_parameters", "classInputFileReader.html#a7f264887675800c07cd01ff7aedd689d", null ],
     [ "declare_output_parameters", "classInputFileReader.html#a838a860ef7de6d875927b7aaacc10836", null ],

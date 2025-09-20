@@ -127,200 +127,213 @@ $(document).ready(function(){initNavTree('grid__refiner__context_8h_source.html'
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/core/dof_handler.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/invm_handler.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/core/matrix_free_handler.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/solution_handler.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/core/triangulation_handler.h&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;prismspf/utilities/element_volume.h&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>PRISMS_PF_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext</a></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a9cd3c4d47cce437fe8e0fac51f69edbf">   40</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a9cd3c4d47cce437fe8e0fac51f69edbf">GridRefinementContext</a>(</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a>              &amp;_user_inputs,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a>                   &amp;_triangulation_handler,</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a>      &amp;_constraint_handler,</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a>            &amp;_matrix_free_container,</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a>            &amp;_invm_handler,</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a>                &amp;_solution_handler,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a>                             &amp;_dof_handler,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt;  &amp;_fe_system,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                &amp;_mapping,</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> &amp;_element_volume_container,</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a>                           &amp;_mg_info)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    : user_inputs(&amp;_user_inputs)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    , triangulation_handler(&amp;_triangulation_handler)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    , constraint_handler(&amp;_constraint_handler)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    , matrix_free_container(&amp;_matrix_free_container)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    , invm_handler(&amp;_invm_handler)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    , solution_handler(&amp;_solution_handler)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    , dof_handler(&amp;_dof_handler)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    , fe_system(&amp;_fe_system)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    , mapping(&amp;_mapping)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    , element_volume_container(&amp;_element_volume_container)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    , mg_info(&amp;_mg_info) {};</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/phase_field_tools.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/core/solution_handler.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;prismspf/core/triangulation_handler.h&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_input_parameters.h&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;prismspf/utilities/element_volume.h&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a5760c73740027b23a07a2a0b2f626110">   41</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a5760c73740027b23a07a2a0b2f626110">GridRefinementContext</a>(</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a>              &amp;_user_inputs,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a>                        &amp;_pf_tools,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a>                   &amp;_triangulation_handler,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a>      &amp;_constraint_handler,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a>            &amp;_matrix_free_container,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a>            &amp;_invm_handler,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a>                &amp;_solution_handler,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a>                             &amp;_dof_handler,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt;  &amp;_fe_system,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt;                &amp;_mapping,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> &amp;_element_volume_container,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a>                           &amp;_mg_info)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    : user_inputs(&amp;_user_inputs)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    , pf_tools(&amp;_pf_tools)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    , triangulation_handler(&amp;_triangulation_handler)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    , constraint_handler(&amp;_constraint_handler)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    , matrix_free_container(&amp;_matrix_free_container)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    , invm_handler(&amp;_invm_handler)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    , solution_handler(&amp;_solution_handler)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    , dof_handler(&amp;_dof_handler)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    , fe_system(&amp;_fe_system)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    , mapping(&amp;_mapping)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    , element_volume_container(&amp;_element_volume_container)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    , mg_info(&amp;_mg_info) {};</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">   67</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">~GridRefinementContext</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> &amp;</div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">   73</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">get_user_inputs</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    Assert(user_inputs != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> *user_inputs;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">   70</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">~GridRefinementContext</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> &amp;</div>
+<div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">   76</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">get_user_inputs</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    Assert(user_inputs != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> *user_inputs;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  [[nodiscard]] <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> &amp;</div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">   83</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">get_constraint_handler</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  [[nodiscard]] <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a> &amp;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  get_pf_tools()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    Assert(constraint_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">return</span> *constraint_handler;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    Assert(pf_tools != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">return</span> *pf_tools;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
-</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  [[nodiscard]] <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> &amp;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  [[nodiscard]] <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">   93</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">get_matrix_free_container</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">   93</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">get_constraint_handler</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    Assert(matrix_free_container != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">return</span> *matrix_free_container;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    Assert(constraint_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">return</span> *constraint_handler;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  [[nodiscard]] <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> &amp;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  [[nodiscard]] <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">  103</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">get_triangulation_handler</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">  103</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">get_matrix_free_container</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    Assert(triangulation_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> *triangulation_handler;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    Assert(matrix_free_container != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">return</span> *matrix_free_container;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  }</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  [[nodiscard]] <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> &amp;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  [[nodiscard]] <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">  113</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">get_invm_handler</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">  113</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">get_triangulation_handler</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    Assert(invm_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">return</span> *invm_handler;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    Assert(triangulation_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">return</span> *triangulation_handler;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  }</div>
 </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  [[nodiscard]] <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> &amp;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  [[nodiscard]] <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">  123</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">get_dof_handler</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">  123</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">get_invm_handler</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    Assert(dof_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> *dof_handler;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    Assert(invm_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> *invm_handler;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
 </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  [[nodiscard]] <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt; &amp;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  [[nodiscard]] <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">  133</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">get_mapping</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">  133</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">get_dof_handler</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Assert(mapping != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">return</span> *mapping;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Assert(dof_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">return</span> *dof_handler;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  }</div>
 </div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  [[nodiscard]] <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> &amp;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  [[nodiscard]] <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt; &amp;</div>
 <div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">  143</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">get_solution_handler</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">  143</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">get_mapping</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    Assert(solution_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">return</span> *solution_handler;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    Assert(mapping != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">return</span> *mapping;</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
 </div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  [[nodiscard]] <span class="keyword">const</span> std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; &amp;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  [[nodiscard]] <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">  153</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">get_finite_element_systems</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">  153</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">get_solution_handler</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    Assert(fe_system != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    Assert(!fe_system-&gt;empty(),</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>           dealii::ExcMessage(<span class="stringliteral">&quot;The finite element system map is empty.&quot;</span>));</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">return</span> *fe_system;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    Assert(solution_handler != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">return</span> *solution_handler;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  }</div>
 </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  [[nodiscard]] <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> &amp;</div>
-<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">  165</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">get_element_volume_container</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    Assert(element_volume_container != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">return</span> *element_volume_container;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  [[nodiscard]] <span class="keyword">const</span> std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; &amp;</div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">  163</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">get_finite_element_systems</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    Assert(fe_system != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    Assert(!fe_system-&gt;empty(),</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>           dealii::ExcMessage(<span class="stringliteral">&quot;The finite element system map is empty.&quot;</span>));</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keywordflow">return</span> *fe_system;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  }</div>
 </div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> &amp;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  [[nodiscard]] <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> &amp;</div>
 <div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">  175</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">get_multigrid_info</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">  175</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">get_element_volume_container</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    Assert(mg_info != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">return</span> *mg_info;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    Assert(element_volume_container != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">return</span> *element_volume_container;</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  }</div>
 </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> *triangulation_handler;</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> *constraint_handler;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> *matrix_free_container;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> *invm_handler;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> *solution_handler;</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> *dof_handler;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; *fe_system;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt; *mapping;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> *element_volume_container;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> *mg_info;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>};</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> &amp;</div>
+<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">  185</a></span>  <a class="code hl_function" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">get_multigrid_info</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    Assert(mg_info != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">return</span> *mg_info;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  }</div>
 </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a> *pf_tools;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> *triangulation_handler;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> *constraint_handler;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> *matrix_free_container;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> *invm_handler;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> *solution_handler;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> *dof_handler;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; *fe_system;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <span class="keyword">const</span> dealii::MappingQ1&lt;dim&gt; *mapping;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> *element_volume_container;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  <span class="keyword">const</span> <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> *mg_info;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>};</div>
+</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConstraintHandler_html"><div class="ttname"><a href="classConstraintHandler.html">ConstraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:34</div></div>
 <div class="ttc" id="aclassDofHandler_html"><div class="ttname"><a href="classDofHandler.html">DofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:31</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html"><div class="ttname"><a href="classElementVolumeContainer.html">ElementVolumeContainer</a></div><div class="ttdoc">A container that holds the element volumes for multigrid and normal triangulations.</div><div class="ttdef"><b>Definition</b> element_volume.h:72</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html"><div class="ttname"><a href="classGridRefinementContext.html">GridRefinementContext</a></div><div class="ttdoc">This class provides the context for the grid refiner with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:35</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a0cbfbe5811c4f114ab69685acfac38cb"><div class="ttname"><a href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">GridRefinementContext::get_triangulation_handler</a></div><div class="ttdeci">TriangulationHandler&lt; dim &gt; &amp; get_triangulation_handler() const</div><div class="ttdoc">Get the triangulation handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:103</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a11b714b77398ae0e9ebda092039f481e"><div class="ttname"><a href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">GridRefinementContext::get_element_volume_container</a></div><div class="ttdeci">ElementVolumeContainer&lt; dim, degree, number &gt; &amp; get_element_volume_container() const</div><div class="ttdoc">Get the element volume container.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:165</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a23ff117fb4794a212882934a4c2a31ae"><div class="ttname"><a href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">GridRefinementContext::get_user_inputs</a></div><div class="ttdeci">const UserInputParameters&lt; dim &gt; &amp; get_user_inputs() const</div><div class="ttdoc">Get the user-inputs.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:73</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html"><div class="ttname"><a href="classGridRefinementContext.html">GridRefinementContext</a></div><div class="ttdoc">This class provides the context for the grid refiner with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:36</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a0cbfbe5811c4f114ab69685acfac38cb"><div class="ttname"><a href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">GridRefinementContext::get_triangulation_handler</a></div><div class="ttdeci">TriangulationHandler&lt; dim &gt; &amp; get_triangulation_handler() const</div><div class="ttdoc">Get the triangulation handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:113</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a11b714b77398ae0e9ebda092039f481e"><div class="ttname"><a href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">GridRefinementContext::get_element_volume_container</a></div><div class="ttdeci">ElementVolumeContainer&lt; dim, degree, number &gt; &amp; get_element_volume_container() const</div><div class="ttdoc">Get the element volume container.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:175</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a23ff117fb4794a212882934a4c2a31ae"><div class="ttname"><a href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">GridRefinementContext::get_user_inputs</a></div><div class="ttdeci">const UserInputParameters&lt; dim &gt; &amp; get_user_inputs() const</div><div class="ttdoc">Get the user-inputs.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:76</div></div>
 <div class="ttc" id="aclassGridRefinementContext_html_a36b4ced8f7834bfeaeeec229e5ff7825"><div class="ttname"><a href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">GridRefinementContext::~GridRefinementContext</a></div><div class="ttdeci">~GridRefinementContext()=default</div><div class="ttdoc">Destructor.</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a40164a7d157f2fbc7343877084100ab3"><div class="ttname"><a href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">GridRefinementContext::get_matrix_free_container</a></div><div class="ttdeci">MatrixFreeContainer&lt; dim, number &gt; &amp; get_matrix_free_container() const</div><div class="ttdoc">Get the matrix-free container.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:93</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a4b33fc07cf26173f3552951971502fa9"><div class="ttname"><a href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">GridRefinementContext::get_multigrid_info</a></div><div class="ttdeci">const MGInfo&lt; dim &gt; &amp; get_multigrid_info() const</div><div class="ttdoc">Get the multigrid info.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:175</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a59faa3d3eacc229a0b28f6d4d2e3f199"><div class="ttname"><a href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">GridRefinementContext::get_mapping</a></div><div class="ttdeci">const dealii::MappingQ1&lt; dim &gt; &amp; get_mapping() const</div><div class="ttdoc">Get the mapping.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:133</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a6e714f8bf97c8cf80f7dcc990b3aa2ac"><div class="ttname"><a href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">GridRefinementContext::get_invm_handler</a></div><div class="ttdeci">InvmHandler&lt; dim, degree, number &gt; &amp; get_invm_handler() const</div><div class="ttdoc">Get the invm handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:113</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_a9cd3c4d47cce437fe8e0fac51f69edbf"><div class="ttname"><a href="classGridRefinementContext.html#a9cd3c4d47cce437fe8e0fac51f69edbf">GridRefinementContext::GridRefinementContext</a></div><div class="ttdeci">GridRefinementContext(const UserInputParameters&lt; dim &gt; &amp;_user_inputs, TriangulationHandler&lt; dim &gt; &amp;_triangulation_handler, ConstraintHandler&lt; dim, degree, number &gt; &amp;_constraint_handler, MatrixFreeContainer&lt; dim, number &gt; &amp;_matrix_free_container, InvmHandler&lt; dim, degree, number &gt; &amp;_invm_handler, SolutionHandler&lt; dim, number &gt; &amp;_solution_handler, DofHandler&lt; dim &gt; &amp;_dof_handler, std::map&lt; FieldType, dealii::FESystem&lt; dim &gt; &gt; &amp;_fe_system, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, ElementVolumeContainer&lt; dim, degree, number &gt; &amp;_element_volume_container, const MGInfo&lt; dim &gt; &amp;_mg_info)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:40</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_acbb56d01319ae922fd42be920ac5a127"><div class="ttname"><a href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">GridRefinementContext::get_solution_handler</a></div><div class="ttdeci">SolutionHandler&lt; dim, number &gt; &amp; get_solution_handler() const</div><div class="ttdoc">Get the solution handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:143</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_ad64b8b9eb29b0ab1f122154b8912b8d0"><div class="ttname"><a href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">GridRefinementContext::get_dof_handler</a></div><div class="ttdeci">DofHandler&lt; dim &gt; &amp; get_dof_handler() const</div><div class="ttdoc">Get the dof handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:123</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_af25c41b0db602a392afccc1c875e9ace"><div class="ttname"><a href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">GridRefinementContext::get_constraint_handler</a></div><div class="ttdeci">ConstraintHandler&lt; dim, degree, number &gt; &amp; get_constraint_handler() const</div><div class="ttdoc">Get the constraint handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:83</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html_af2727188ee6987567fc3317233cf6fa3"><div class="ttname"><a href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">GridRefinementContext::get_finite_element_systems</a></div><div class="ttdeci">const std::map&lt; FieldType, dealii::FESystem&lt; dim &gt; &gt; &amp; get_finite_element_systems() const</div><div class="ttdoc">Get the collection of finite element systems.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:153</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a40164a7d157f2fbc7343877084100ab3"><div class="ttname"><a href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">GridRefinementContext::get_matrix_free_container</a></div><div class="ttdeci">MatrixFreeContainer&lt; dim, number &gt; &amp; get_matrix_free_container() const</div><div class="ttdoc">Get the matrix-free container.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:103</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a4b33fc07cf26173f3552951971502fa9"><div class="ttname"><a href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">GridRefinementContext::get_multigrid_info</a></div><div class="ttdeci">const MGInfo&lt; dim &gt; &amp; get_multigrid_info() const</div><div class="ttdoc">Get the multigrid info.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:185</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a5760c73740027b23a07a2a0b2f626110"><div class="ttname"><a href="classGridRefinementContext.html#a5760c73740027b23a07a2a0b2f626110">GridRefinementContext::GridRefinementContext</a></div><div class="ttdeci">GridRefinementContext(const UserInputParameters&lt; dim &gt; &amp;_user_inputs, PhaseFieldTools&lt; dim &gt; &amp;_pf_tools, TriangulationHandler&lt; dim &gt; &amp;_triangulation_handler, ConstraintHandler&lt; dim, degree, number &gt; &amp;_constraint_handler, MatrixFreeContainer&lt; dim, number &gt; &amp;_matrix_free_container, InvmHandler&lt; dim, degree, number &gt; &amp;_invm_handler, SolutionHandler&lt; dim, number &gt; &amp;_solution_handler, DofHandler&lt; dim &gt; &amp;_dof_handler, std::map&lt; FieldType, dealii::FESystem&lt; dim &gt; &gt; &amp;_fe_system, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, ElementVolumeContainer&lt; dim, degree, number &gt; &amp;_element_volume_container, const MGInfo&lt; dim &gt; &amp;_mg_info)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:41</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a59faa3d3eacc229a0b28f6d4d2e3f199"><div class="ttname"><a href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">GridRefinementContext::get_mapping</a></div><div class="ttdeci">const dealii::MappingQ1&lt; dim &gt; &amp; get_mapping() const</div><div class="ttdoc">Get the mapping.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:143</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_a6e714f8bf97c8cf80f7dcc990b3aa2ac"><div class="ttname"><a href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">GridRefinementContext::get_invm_handler</a></div><div class="ttdeci">InvmHandler&lt; dim, degree, number &gt; &amp; get_invm_handler() const</div><div class="ttdoc">Get the invm handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:123</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_acbb56d01319ae922fd42be920ac5a127"><div class="ttname"><a href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">GridRefinementContext::get_solution_handler</a></div><div class="ttdeci">SolutionHandler&lt; dim, number &gt; &amp; get_solution_handler() const</div><div class="ttdoc">Get the solution handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:153</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_ad64b8b9eb29b0ab1f122154b8912b8d0"><div class="ttname"><a href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">GridRefinementContext::get_dof_handler</a></div><div class="ttdeci">DofHandler&lt; dim &gt; &amp; get_dof_handler() const</div><div class="ttdoc">Get the dof handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:133</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_af25c41b0db602a392afccc1c875e9ace"><div class="ttname"><a href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">GridRefinementContext::get_constraint_handler</a></div><div class="ttdeci">ConstraintHandler&lt; dim, degree, number &gt; &amp; get_constraint_handler() const</div><div class="ttdoc">Get the constraint handler.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:93</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html_af2727188ee6987567fc3317233cf6fa3"><div class="ttname"><a href="classGridRefinementContext.html#af2727188ee6987567fc3317233cf6fa3">GridRefinementContext::get_finite_element_systems</a></div><div class="ttdeci">const std::map&lt; FieldType, dealii::FESystem&lt; dim &gt; &gt; &amp; get_finite_element_systems() const</div><div class="ttdoc">Get the collection of finite element systems.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:163</div></div>
 <div class="ttc" id="aclassInvmHandler_html"><div class="ttname"><a href="classInvmHandler.html">InvmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:26</div></div>
 <div class="ttc" id="aclassMGInfo_html"><div class="ttname"><a href="classMGInfo.html">MGInfo</a></div><div class="ttdoc">This class centralized the collection of multigrid data, which is of particular important when dealin...</div><div class="ttdef"><b>Definition</b> multigrid_info.h:31</div></div>
 <div class="ttc" id="aclassMatrixFreeContainer_html"><div class="ttname"><a href="classMatrixFreeContainer.html">MatrixFreeContainer</a></div><div class="ttdoc">This class is a simple container for the matrix-free objects used in PRISMS-PF.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:100</div></div>
 <div class="ttc" id="aclassSolutionHandler_html"><div class="ttname"><a href="classSolutionHandler.html">SolutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:32</div></div>
 <div class="ttc" id="aclassTriangulationHandler_html"><div class="ttname"><a href="classTriangulationHandler.html">TriangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:30</div></div>
-<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:28</div></div>
+<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
+<div class="ttc" id="astructPhaseFieldTools_html"><div class="ttname"><a href="structPhaseFieldTools.html">PhaseFieldTools</a></div><div class="ttdoc">This class contains mutable utilities for phase field problems.</div><div class="ttdef"><b>Definition</b> phase_field_tools.h:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

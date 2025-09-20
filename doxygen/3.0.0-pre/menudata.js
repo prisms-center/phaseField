@@ -30,6 +30,8 @@ var menudata={children:[
 {text:"Tutorial",url:"tutorial.html"},
 {text:"Applications",url:"applications.html"},
 {text:"Contact",url:"contact.html"},
+{text:"Namespaces",url:"namespaces.html",children:[
+{text:"Namespace List",url:"namespaces.html"}]},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},

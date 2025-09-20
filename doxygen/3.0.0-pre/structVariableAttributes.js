@@ -12,8 +12,10 @@ var structVariableAttributes =
     [ "get_max_dependency_types", "structVariableAttributes.html#ac3ca2c4d460913f543ad4b13808b9df0", null ],
     [ "get_max_fields", "structVariableAttributes.html#a773a17429fe6dc85fe895233fc8ddfbf", null ],
     [ "get_name", "structVariableAttributes.html#a912399c784fdf168bf5150bb1afb484e", null ],
+    [ "get_nucleating_field_indices", "structVariableAttributes.html#a5b54e992d5ecf0243be3d3ea73cdc3d7", null ],
     [ "get_pde_type", "structVariableAttributes.html#aff2506452f6847ce518c44e7689cb412", null ],
     [ "get_solve_block", "structVariableAttributes.html#ab1111b93b64f7400ca09f0cf6e582ae0", null ],
+    [ "is_nucleation_rate", "structVariableAttributes.html#a2459a89ffbe7331de5a541f77cba2ce3", null ],
     [ "is_postprocess", "structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e", null ],
     [ "print", "structVariableAttributes.html#a893668fb7c87a53b5ef8a404431fd445", null ],
     [ "VariableAttributeLoader", "structVariableAttributes.html#ad37a74507ce9fba4966d6eba54d39c00", null ]

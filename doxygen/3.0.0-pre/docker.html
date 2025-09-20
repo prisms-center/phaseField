@@ -121,10 +121,11 @@ Installation with Docker</h2>
 <div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
 </div><!-- fragment --><p>Next, we will pull the docker image with </p><div class="fragment"><div class="line">docker pull prismspf/prismspf:latest</div>
 </div><!-- fragment --><p>Finally, we will launch an interactive container with </p><div class="fragment"><div class="line">docker run -ti -v</div>
-<div class="line">~/prisms_pf_docker/phaseField/applications:/home/dealii/phaseField/applications</div>
+<div class="line">~/prisms_pf_docker/phaseField/applications:/home/<a class="code hl_namespace" href="namespacedealii.html">dealii</a>/phaseField/applications</div>
 <div class="line">prismspf/prismspf:latest</div>
+<div class="ttc" id="anamespacedealii_html"><div class="ttname"><a href="namespacedealii.html">dealii</a></div><div class="ttdef"><b>Definition</b> vectorized_operations.h:15</div></div>
 </div><!-- fragment --><p> This will link your local applications directory (the one in <code>prisms_workspace</code>) to the one in the Docker image. If you plan to modify the core library, you should link one directory higher to preserve your changes. In other words, </p><div class="fragment"><div class="line">docker run -ti -v</div>
-<div class="line">~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest</div>
+<div class="line">~/prisms_pf_docker/phaseField:/home/<a class="code hl_namespace" href="namespacedealii.html">dealii</a>/phaseField prismspf/prismspf:latest</div>
 </div><!-- fragment --><p> You can then run the applications in the container as you would normally. For example, to run the <code>allen_cahn_explicit</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd allen_cahn_explicit</div>
 <div class="line">cmake .</div>
 <div class="line">make</div>

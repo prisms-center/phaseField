@@ -1,9 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,77,127,102"/>
-<area shape="rect" id="Node000001" href="$classInitialCondition.html" title="Function for user&#45;implemented initial conditions. These are only ever calculated for explicit time de..." alt="" coords="186,5,351,45"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="119,70,204,43,205,48,121,75"/>
-<area shape="rect" id="Node000002" href="$classNonuniformDirichlet.html" title="Function for user&#45;implemented nonuniform dirichlet boundary condition." alt="" coords="175,69,363,109"/>
-<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="140,87,174,87,174,92,140,92"/>
-<area shape="rect" id="Node000003" href="$classReadInitialCondition.html" title="Function for read&#45;in of initial conditions." alt="" coords="191,133,346,173"/>
-<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="121,104,205,131,204,136,119,109"/>
+<area shape="rect" id="Node000000" href="$classConstraintHandler.html" title="The class handles the generation and application of boundary conditions based on the user&#45;inputs." alt="" coords="5,5,183,45"/>
 </map>

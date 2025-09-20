@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classElementVolumeContainer.html" title="A container that holds the element volumes for multigrid and normal triangulations." alt="" coords="5,5,193,45"/>
+<area shape="rect" id="Node000000" href="$classElementVolume.html" title="A little class that computes the element volume for our triangulation." alt="" coords="5,5,175,45"/>
 </map>

@@ -8,5 +8,6 @@ var searchData=
   ['add_5fuser_5fconstant_5',['add_user_constant',['../classUserConstants.html#a5579bbb1335c38ae05a523b9572af082',1,'UserConstants']]],
   ['applications_6',['Applications',['../applications.html',1,'']]],
   ['apply_5fconstraints_7',['apply_constraints',['../classSolutionHandler.html#af9e62b69963f1ec8c65b60afbfcad14c',1,'SolutionHandler::apply_constraints()'],['../classLinearSolverBase.html#a0871909bfb8fa75633142c19793c189f',1,'LinearSolverBase::apply_constraints()']]],
-  ['apply_5finitial_5fcondition_5ffor_5fold_5ffields_8',['apply_initial_condition_for_old_fields',['../classSolutionHandler.html#a60a099dfa3a4789ea6968d0c46f1b32b',1,'SolutionHandler']]]
+  ['apply_5finitial_5fcondition_5ffor_5fold_5ffields_8',['apply_initial_condition_for_old_fields',['../classSolutionHandler.html#a60a099dfa3a4789ea6968d0c46f1b32b',1,'SolutionHandler']]],
+  ['attempt_5fnucleation_9',['attempt_nucleation',['../classNucleationHandler.html#a13c3a0e5fb8d996c34e56e148955c32b',1,'NucleationHandler']]]
 ];

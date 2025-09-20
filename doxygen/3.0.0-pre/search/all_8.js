@@ -25,6 +25,7 @@ var searchData=
   ['interpolate_22',['interpolate',['../classReadBinary.html#a3f38eeaa81c2d764de8d86be93dfb47f',1,'ReadBinary']]],
   ['introduction_20to_20docker_23',['Introduction to Docker',['../docker.html#docker_introduction',1,'']]],
   ['invmhandler_24',['invmhandler',['../classInvmHandler.html#a81771d4f9a450fb571d166a2198dd325',1,'InvmHandler::InvmHandler()'],['../classInvmHandler.html',1,'InvmHandler&lt; dim, degree, number &gt;']]],
-  ['is_5fpostprocess_25',['is_postprocess',['../structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e',1,'VariableAttributes']]],
-  ['is_5ftime_5fdependent_26',['is_time_dependent',['../structBoundaryParameters.html#a8970f0febe9a31d88f11a770935a1bd4',1,'BoundaryParameters']]]
+  ['is_5fnucleation_5frate_25',['is_nucleation_rate',['../structVariableAttributes.html#a2459a89ffbe7331de5a541f77cba2ce3',1,'VariableAttributes']]],
+  ['is_5fpostprocess_26',['is_postprocess',['../structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e',1,'VariableAttributes']]],
+  ['is_5ftime_5fdependent_27',['is_time_dependent',['../structBoundaryParameters.html#a8970f0febe9a31d88f11a770935a1bd4',1,'BoundaryParameters']]]
 ];

@@ -9,5 +9,7 @@ var searchData=
   ['matrixfreehandler_6',['MatrixFreeHandler',['../classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8',1,'MatrixFreeHandler']]],
   ['matrixfreeoperator_7',['MatrixFreeOperator',['../classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca',1,'MatrixFreeOperator']]],
   ['mesh_8',['Mesh',['../classMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
-  ['mginfo_9',['MGInfo',['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo']]]
+  ['mginfo_9',['MGInfo',['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo']]],
+  ['mpi_5fbroadcast_5fnuclei_10',['mpi_broadcast_nuclei',['../classNucleationHandler.html#af35183a2b6e3306f758933ed511f3d14',1,'NucleationHandler']]],
+  ['mpi_5fgather_5fnuclei_11',['mpi_gather_nuclei',['../classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f',1,'NucleationHandler']]]
 ];

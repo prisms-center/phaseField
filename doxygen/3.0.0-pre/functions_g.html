@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
+<li>gather_exclude_broadcast_nuclei()&#160;:&#160;<a class="el" href="classNucleationHandler.html#a682c95317df5190d439ff081ce694489">NucleationHandler&lt; dim, degree, number &gt;</a></li>
 <li>generate_mesh()&#160;:&#160;<a class="el" href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#af7281276d928e6586b1921522009d10a">TriangulationHandler&lt; dim &gt;</a></li>
 <li>get_boundary_condition_list()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a82f53d76b2bcdcd41fa7413f8133b33e">BoundaryParameters&lt; dim &gt;</a></li>
 <li>get_boundary_condition_map()&#160;:&#160;<a class="el" href="structBoundaryCondition.html#a532ffec182189a883e0f31dcc82284c8">BoundaryCondition</a></li>
@@ -133,6 +134,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_eval_flag_set_rhs()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a622997f1bd66ef4d921ecce0e2cc2366">VariableAttributes</a></li>
 <li>get_eval_flags_residual_lhs()&#160;:&#160;<a class="el" href="structVariableAttributes.html#ac5b6f7e80fa020a5bf191f9229cc4cb5">VariableAttributes</a></li>
 <li>get_eval_flags_residual_rhs()&#160;:&#160;<a class="el" href="structVariableAttributes.html#ab2e6cab69a8ecfee79bab4b4eccce12d">VariableAttributes</a></li>
+<li>get_exclusion_distance()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a242594dd8e0b4d72469fa620d2092f37">NucleationParameters</a></li>
 <li>get_field_index()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#af7dec1c79739ab8bb3a40eef8c396fac">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="structVariableAttributes.html#ae51fa16c2f5d3989668993e99265420d">VariableAttributes</a></li>
 <li>get_field_solve_type()&#160;:&#160;<a class="el" href="classSolverBase.html#aec39ee189618d0d21f362dcea55727d8">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="structVariableAttributes.html#a912787d4a861dc01037d8ee0ed22c5f7">VariableAttributes</a></li>
 <li>get_field_type()&#160;:&#160;<a class="el" href="structVariableAttributes.html#ad24bb5804797c158e3529c47ad649666">VariableAttributes</a></li>
@@ -178,11 +180,12 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_mg_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a1ba5c7253874de78b724b3845a8205e1">SolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_mg_triangulation()&#160;:&#160;<a class="el" href="classTriangulationHandler.html#a957a50163440d45b74fe64ec46ad21cd">TriangulationHandler&lt; dim &gt;</a></li>
 <li>get_min_refinement()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#aeb9fe493daf3d92593588bfa25b86101">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>get_miscellaneous_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a7fe7f9d583a52c357f9baef0f56099bf">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_model_constant_bool()&#160;:&#160;<a class="el" href="classUserConstants.html#a480929f141c03b87b31e2e459576b7f5">UserConstants&lt; dim &gt;</a></li>
 <li>get_model_constant_double()&#160;:&#160;<a class="el" href="classUserConstants.html#a16b8588236f276e259649d58aff6d6b5">UserConstants&lt; dim &gt;</a></li>
 <li>get_model_constant_elasticity_tensor()&#160;:&#160;<a class="el" href="classUserConstants.html#a2599a9f8a50cf3a5de28fa5cd6fef596">UserConstants&lt; dim &gt;</a></li>
 <li>get_model_constant_int()&#160;:&#160;<a class="el" href="classUserConstants.html#ab1bdd73fc414082d06ff0c955a16a0f3">UserConstants&lt; dim &gt;</a></li>
-<li>get_model_constant_names()&#160;:&#160;<a class="el" href="classInputFileReader.html#ad10d22bd70b09bdc13803ce1261f9fce">InputFileReader</a></li>
+<li>get_model_constant_names()&#160;:&#160;<a class="el" href="classInputFileReader.html#aa4dc47d61d0a3d752dfb3a4cddd9aac3">InputFileReader</a></li>
 <li>get_model_constant_rank_1_tensor()&#160;:&#160;<a class="el" href="classUserConstants.html#ae16c95957918cb80baa6769b4743c072">UserConstants&lt; dim &gt;</a></li>
 <li>get_model_constant_rank_2_tensor()&#160;:&#160;<a class="el" href="classUserConstants.html#a41b3f71c6a81aead2b93649d47cf80d2">UserConstants&lt; dim &gt;</a></li>
 <li>get_multigrid_info()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">GridRefinementContext&lt; dim, degree, number &gt;</a></li>
@@ -196,6 +199,9 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_newton_update_l2_norm()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ad9cafbd67a07076ddfa80530adf11a37">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_newton_update_src()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#af3e4a9ea4813c62a66ddb8fe8d2b65ad">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_nonlinear_solve_parameters()&#160;:&#160;<a class="el" href="structNonlinearSolveParameterSet.html#ad566deaef73bc70f84358b84a09207ed">NonlinearSolveParameterSet</a>, <a class="el" href="classUserInputParameters.html#aba5d5beba4e128ba6a65b83736cd4019">UserInputParameters&lt; dim &gt;</a></li>
+<li>get_nucleating_field_indices()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a5b54e992d5ecf0243be3d3ea73cdc3d7">VariableAttributes</a></li>
+<li>get_nucleation_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a20d82277fa1ca1f10afac6135c538e23">UserInputParameters&lt; dim &gt;</a></li>
+<li>get_nucleation_period()&#160;:&#160;<a class="el" href="structNucleationParameters.html#aa7621adf83c282aa605554b021b64b57">NucleationParameters</a></li>
 <li>get_output()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a6cdaaa5d7880f6e1182627a0932849c8">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_output_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a0ce6ddd620f2c9a5eeb701e6fa738d13">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_parameter_handler()&#160;:&#160;<a class="el" href="classInputFileReader.html#a43516d8890cdc244ac27cdc8ca65b932">InputFileReader</a></li>
@@ -203,19 +209,25 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_pde_operator()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a18dbff54357aff66bc20721ac9e0ccca">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a8c03660522ed7abc933fc35b4c81044c">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#af7df834c71121c6e699e69e17f0375b1">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_pde_operator_float()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#adb1120de2599a3e99c5a7a7e9976eed1">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#ac42452c750847f3bc0a01864341dc656">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#aed0d934cc993453dd364151ac345769c">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_pde_type()&#160;:&#160;<a class="el" href="structVariableAttributes.html#aff2506452f6847ce518c44e7689cb412">VariableAttributes</a></li>
+<li>get_periodicity()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a538e1c2ed71a6a5c36ea4252fff10f6d">BoundaryParameters&lt; dim &gt;</a></li>
+<li>get_pf_tools()&#160;:&#160;<a class="el" href="classPDEOperator.html#a7edd8b269425268bbc67d7a9351519dd">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>get_pinned_point()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a0cc87d8496a7c6c754919bf08bd43ce4">BoundaryParameters&lt; dim &gt;</a></li>
 <li>get_radius()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#acf1bb39a8e60f8d228feaa78faac4255">SpatialDiscretization&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">SphericalMesh&lt; dim &gt;</a></li>
 <li>get_read_initial_conditions_from_file()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">LoadInitialConditionParameters</a></li>
 <li>get_refinement_criteria()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ac741099c1cd22298732b8856e662147e">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>get_refinement_radius()&#160;:&#160;<a class="el" href="structNucleationParameters.html#af6b8d32cc895fa58a18fb6c9cf6e6449">NucleationParameters</a></li>
 <li>get_remeshing_period()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_residual()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ac1575b703089fecbea98aeee0dc9b89d">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_residual_global_to_local_solution()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ae196932ac69511c77078fb6d5ba9c12e">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_residual_src()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a061db2c799f0434ca5115d3206abaf9d">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
+<li>get_same_field_exclusion_distance()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a419a445532d614b0dfa9258a6e2d62a6">NucleationParameters</a></li>
 <li>get_scalar_value()&#160;:&#160;<a class="el" href="classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b">ReadBinary&lt; dim, number &gt;</a>, <a class="el" href="classReadFieldBase.html#a5a26f41ca67e7f287fb32e01d6c3ee27">ReadFieldBase&lt; dim, number &gt;</a>, <a class="el" href="classReadUnstructuredVTK.html#a1f6523330c678791164507ca30efffd0">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_scalars_names()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a38b6eb828f026967cfcdd047414ff322">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
+<li>get_seeding_increments()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a5172ddb92117dab3f25bd71838108cb9">NucleationParameters</a></li>
+<li>get_seeding_time()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a000b2981783486287fceb8c8d892f7bd">NucleationParameters</a></li>
 <li>get_size()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_solution_handler()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#ad7dbe15ba4c5487211ddd3775b7f92c3">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a382d46ddd79012ef69a52348f9bd4bc2">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a09b6295d682287bb5f1b2843bd532535">SolverContext&lt; dim, degree, number &gt;</a></li>
-<li>get_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a853170fddb360c47a9f32baff6b35647">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>get_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#ad900aef553bd43a764681785d2f5ed15">SolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_solve_block()&#160;:&#160;<a class="el" href="classSolverBase.html#a4fe9748e84b22f239cead0cc6d4b8ef0">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="structVariableAttributes.html#ab1111b93b64f7400ca09f0cf6e582ae0">VariableAttributes</a></li>
 <li>get_solver_context()&#160;:&#160;<a class="el" href="classSolverBase.html#a3a5d964b30eeae5f7db3b55d01d25de5">SolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_solver_control()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ad14623d89e8d8ca24b758cff53213d8c">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
@@ -247,7 +259,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_vectors_names()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a59b44bdd14602633f788b92c7dbc93f6">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>GMGSolver()&#160;:&#160;<a class="el" href="classGMGSolver.html#af9dfbcb44f848847178f198ad76e68d9">GMGSolver&lt; dim, degree, number &gt;</a></li>
 <li>gradient_magnitude_above_threshold()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ac7ed0b368e82e0221ef02db5d637f18e">GridRefinement::RefinementCriterion</a></li>
-<li>GridRefinementContext()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a9cd3c4d47cce437fe8e0fac51f69edbf">GridRefinementContext&lt; dim, degree, number &gt;</a></li>
+<li>GridRefinementContext()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a5760c73740027b23a07a2a0b2f626110">GridRefinementContext&lt; dim, degree, number &gt;</a></li>
 <li>GridRefiner()&#160;:&#160;<a class="el" href="classGridRefiner.html#aefc76a1eaa081532a39c24dcc7562cfe">GridRefiner&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->

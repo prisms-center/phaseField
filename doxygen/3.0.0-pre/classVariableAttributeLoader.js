@@ -17,6 +17,7 @@ var classVariableAttributeLoader =
     [ "set_dependencies_gradient_term_rhs", "classVariableAttributeLoader.html#a13232c48a740dc3228e3ca165f7d2138", null ],
     [ "set_dependencies_value_term_lhs", "classVariableAttributeLoader.html#a55ac79d7113fda3e05493b96ed855aec", null ],
     [ "set_dependencies_value_term_rhs", "classVariableAttributeLoader.html#ad7dc863042010ad0d5b5f01a4baf0bf1", null ],
+    [ "set_is_nucleation_rate", "classVariableAttributeLoader.html#a1fc415d7a7b621ab95f8e2378c509c9b", null ],
     [ "set_is_postprocessed_field", "classVariableAttributeLoader.html#a5c554f8b1925ad0653d2fdec00b07b7b", null ],
     [ "set_solve_block", "classVariableAttributeLoader.html#aac25ceb35f589943b2d9cca5a756187d", null ],
     [ "set_variable_equation_type", "classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7", null ],

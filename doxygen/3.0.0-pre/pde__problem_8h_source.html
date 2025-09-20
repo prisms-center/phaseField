@@ -134,126 +134,133 @@ $(document).ready(function(){initNavTree('pde__problem_8h_source.html',''); init
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">class </span><a class="code hl_class" href="classPDEOperator.html">PDEOperator</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">struct </span><a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools</a>;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span><a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span><a class="code hl_class" href="classPDEOperator.html">PDEOperator</a>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span><a class="code hl_class" href="classDofHandler.html">DofHandler</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">class </span><a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">class </span><a class="code hl_class" href="classGridRefiner.html">GridRefiner</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">class </span><a class="code hl_class" href="classDofHandler.html">DofHandler</a>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">class </span><a class="code hl_class" href="classInvmHandler.html">InvmHandler</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">class </span><a class="code hl_class" href="classGridRefiner.html">GridRefiner</a>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">class </span><a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">class </span><a class="code hl_class" href="classInvmHandler.html">InvmHandler</a>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">class </span><a class="code hl_class" href="classMGInfo.html">MGInfo</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">class </span><a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">class </span><a class="code hl_class" href="classSolutionHandler.html">SolutionHandler</a>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">class </span><a class="code hl_class" href="classMGInfo.html">MGInfo</a>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">class </span><a class="code hl_class" href="classSolverHandler.html">SolverHandler</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">class </span><a class="code hl_class" href="classSolutionHandler.html">SolutionHandler</a>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">class </span><a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">class </span><a class="code hl_class" href="classSolverHandler.html">SolverHandler</a>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">class </span><a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">class </span><a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler</a>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">class </span><a class="code hl_class" href="classSolverContext.html">SolverContext</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">class </span><a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext</a>;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">class </span><a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">class </span><a class="code hl_class" href="classSolverContext.html">SolverContext</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">class </span><a class="code hl_class" href="classIntegrator.html">Integrator</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">class </span><a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer</a>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="};">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classPDEProblem.html">   68</a></span><span class="keyword">class </span><a class="code hl_class" href="classPDEProblem.html">PDEProblem</a></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_class" href="classPDEProblem.html">PDEProblem</a>(</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a>                                &amp;_user_inputs,</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, number&gt;</a>&gt; &amp;_pde_operator,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, float&gt;</a>&gt;  &amp;_pde_operator_float);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_function" href="classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">run</a>();</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  solve();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  solve_increment();</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  init_system();</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  reinit_system();</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> mg_info;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> triangulation_handler;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> constraint_handler;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> matrix_free_container;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> invm_handler;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> solution_handler;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> dof_handler;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; fe_system;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  dealii::MappingQ1&lt;dim&gt; mapping;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> element_volume_container;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <a class="code hl_class" href="classSolverContext.html">SolverContext&lt;dim, degree, number&gt;</a> solver_context;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <a class="code hl_class" href="classIntegrator.html">Integrator&lt;dim, degree, number&gt;</a> integrator;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext&lt;dim, degree, number&gt;</a> grid_refiner_context;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <a class="code hl_class" href="classGridRefiner.html">GridRefiner&lt;dim, degree, number&gt;</a> grid_refiner;</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <a class="code hl_class" href="classSolverHandler.html">SolverHandler&lt;dim, degree, number&gt;</a> solver_handler;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">class </span><a class="code hl_class" href="classIntegrator.html">Integrator</a>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="};">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classPDEProblem.html">   71</a></span><span class="keyword">class </span><a class="code hl_class" href="classPDEProblem.html">PDEProblem</a></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <a class="code hl_class" href="classPDEProblem.html">PDEProblem</a>(</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a>                                &amp;_user_inputs,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a>                                          &amp;_pf_tools,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, number&gt;</a>&gt; &amp;_pde_operator,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> std::shared_ptr&lt;<span class="keyword">const</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator&lt;dim, degree, float&gt;</a>&gt;  &amp;_pde_operator_float);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_function" href="classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">run</a>();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  solve();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  solve_increment();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  init_system();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  reinit_system();</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a> *pf_tools;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_class" href="classMGInfo.html">MGInfo&lt;dim&gt;</a> mg_info;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <a class="code hl_class" href="classTriangulationHandler.html">TriangulationHandler&lt;dim&gt;</a> triangulation_handler;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <a class="code hl_class" href="classConstraintHandler.html">ConstraintHandler&lt;dim, degree, number&gt;</a> constraint_handler;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt;dim, number&gt;</a> matrix_free_container;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <a class="code hl_class" href="classInvmHandler.html">InvmHandler&lt;dim, degree, number&gt;</a> invm_handler;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <a class="code hl_class" href="classSolutionHandler.html">SolutionHandler&lt;dim, number&gt;</a> solution_handler;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <a class="code hl_class" href="classDofHandler.html">DofHandler&lt;dim&gt;</a> dof_handler;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  std::map&lt;FieldType, dealii::FESystem&lt;dim&gt;&gt; fe_system;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  dealii::MappingQ1&lt;dim&gt; mapping;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  <a class="code hl_class" href="classElementVolumeContainer.html">ElementVolumeContainer&lt;dim, degree, number&gt;</a> element_volume_container;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <a class="code hl_class" href="classSolverContext.html">SolverContext&lt;dim, degree, number&gt;</a> solver_context;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <a class="code hl_class" href="classIntegrator.html">Integrator&lt;dim, degree, number&gt;</a> integrator;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <a class="code hl_class" href="classGridRefinementContext.html">GridRefinementContext&lt;dim, degree, number&gt;</a> grid_refiner_context;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <a class="code hl_class" href="classGridRefiner.html">GridRefiner&lt;dim, degree, number&gt;</a> grid_refiner;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <a class="code hl_class" href="classSolverHandler.html">SolverHandler&lt;dim, degree, number&gt;</a> solver_handler;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>};</div>
 </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConstraintHandler_html"><div class="ttname"><a href="classConstraintHandler.html">ConstraintHandler</a></div><div class="ttdoc">The class handles the generation and application of boundary conditions based on the user-inputs.</div><div class="ttdef"><b>Definition</b> constraint_handler.h:34</div></div>
 <div class="ttc" id="aclassDofHandler_html"><div class="ttname"><a href="classDofHandler.html">DofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:31</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html"><div class="ttname"><a href="classElementVolumeContainer.html">ElementVolumeContainer</a></div><div class="ttdoc">A container that holds the element volumes for multigrid and normal triangulations.</div><div class="ttdef"><b>Definition</b> element_volume.h:72</div></div>
-<div class="ttc" id="aclassGridRefinementContext_html"><div class="ttname"><a href="classGridRefinementContext.html">GridRefinementContext</a></div><div class="ttdoc">This class provides the context for the grid refiner with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:35</div></div>
-<div class="ttc" id="aclassGridRefiner_html"><div class="ttname"><a href="classGridRefiner.html">GridRefiner</a></div><div class="ttdef"><b>Definition</b> grid_refiner.h:16</div></div>
+<div class="ttc" id="aclassGridRefinementContext_html"><div class="ttname"><a href="classGridRefinementContext.html">GridRefinementContext</a></div><div class="ttdoc">This class provides the context for the grid refiner with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> grid_refiner_context.h:36</div></div>
+<div class="ttc" id="aclassGridRefiner_html"><div class="ttname"><a href="classGridRefiner.html">GridRefiner</a></div><div class="ttdef"><b>Definition</b> grid_refiner.h:21</div></div>
 <div class="ttc" id="aclassIntegrator_html"><div class="ttname"><a href="classIntegrator.html">Integrator</a></div><div class="ttdoc">Compute the integral of a given field.</div><div class="ttdef"><b>Definition</b> integrator.h:20</div></div>
 <div class="ttc" id="aclassInvmHandler_html"><div class="ttname"><a href="classInvmHandler.html">InvmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:26</div></div>
 <div class="ttc" id="aclassMGInfo_html"><div class="ttname"><a href="classMGInfo.html">MGInfo</a></div><div class="ttdoc">This class centralized the collection of multigrid data, which is of particular important when dealin...</div><div class="ttdef"><b>Definition</b> multigrid_info.h:31</div></div>
 <div class="ttc" id="aclassMatrixFreeContainer_html"><div class="ttname"><a href="classMatrixFreeContainer.html">MatrixFreeContainer</a></div><div class="ttdoc">This class is a simple container for the matrix-free objects used in PRISMS-PF.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:100</div></div>
-<div class="ttc" id="aclassPDEOperator_html"><div class="ttname"><a href="classPDEOperator.html">PDEOperator</a></div><div class="ttdoc">This class contains the user implementation of each PDE operator.</div><div class="ttdef"><b>Definition</b> pde_operator.h:25</div></div>
-<div class="ttc" id="aclassPDEProblem_html"><div class="ttname"><a href="classPDEProblem.html">PDEProblem</a></div><div class="ttdoc">This is the main class that handles the construction and solving of user-specified PDEs.</div><div class="ttdef"><b>Definition</b> pde_problem.h:69</div></div>
-<div class="ttc" id="aclassPDEProblem_html_ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><div class="ttname"><a href="classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">PDEProblem::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Run initialization and solving steps of the given problem.</div><div class="ttdef"><b>Definition</b> pde_problem.cc:448</div></div>
+<div class="ttc" id="aclassPDEOperator_html"><div class="ttname"><a href="classPDEOperator.html">PDEOperator</a></div><div class="ttdoc">This class contains the user implementation of each PDE operator.</div><div class="ttdef"><b>Definition</b> pde_operator.h:28</div></div>
+<div class="ttc" id="aclassPDEProblem_html"><div class="ttname"><a href="classPDEProblem.html">PDEProblem</a></div><div class="ttdoc">This is the main class that handles the construction and solving of user-specified PDEs.</div><div class="ttdef"><b>Definition</b> pde_problem.h:72</div></div>
+<div class="ttc" id="aclassPDEProblem_html_ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><div class="ttname"><a href="classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">PDEProblem::run</a></div><div class="ttdeci">void run()</div><div class="ttdoc">Run initialization and solving steps of the given problem.</div><div class="ttdef"><b>Definition</b> pde_problem.cc:481</div></div>
 <div class="ttc" id="aclassSolutionHandler_html"><div class="ttname"><a href="classSolutionHandler.html">SolutionHandler</a></div><div class="ttdoc">Class that manages solution initialization and swapping with old solutions.</div><div class="ttdef"><b>Definition</b> solution_handler.h:32</div></div>
 <div class="ttc" id="aclassSolverContext_html"><div class="ttname"><a href="classSolverContext.html">SolverContext</a></div><div class="ttdoc">This class provides context for a solver with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> solver_context.h:36</div></div>
 <div class="ttc" id="aclassSolverHandler_html"><div class="ttname"><a href="classSolverHandler.html">SolverHandler</a></div><div class="ttdoc">The class handles the initialization and solving of the various types of solvers in PRISMS-PF.</div><div class="ttdef"><b>Definition</b> solver_handler.h:135</div></div>
 <div class="ttc" id="aclassTriangulationHandler_html"><div class="ttname"><a href="classTriangulationHandler.html">TriangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:30</div></div>
-<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:28</div></div>
+<div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
+<div class="ttc" id="astructPhaseFieldTools_html"><div class="ttname"><a href="structPhaseFieldTools.html">PhaseFieldTools</a></div><div class="ttdoc">This class contains mutable utilities for phase field problems.</div><div class="ttdef"><b>Definition</b> phase_field_tools.h:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

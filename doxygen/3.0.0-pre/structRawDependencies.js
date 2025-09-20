@@ -5,5 +5,6 @@ var structRawDependencies =
     [ "dependencies_lhs", "structRawDependencies.html#a08e32bcc32822e5877069cdbb6355777", null ],
     [ "dependencies_rhs", "structRawDependencies.html#a88470811530b46460274a3117965bbbf", null ],
     [ "dependencies_value_lhs", "structRawDependencies.html#a05c5904cae0da573a2440ce70571d2fe", null ],
-    [ "dependencies_value_rhs", "structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b", null ]
+    [ "dependencies_value_rhs", "structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b", null ],
+    [ "nucleating_fields", "structRawDependencies.html#a6361f661953c35decc0b578490b91681", null ]
 ];

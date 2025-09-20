@@ -10,5 +10,8 @@ var searchData=
   ['matrixfreeoperator_7',['matrixfreeoperator',['../classMatrixFreeOperator.html',1,'MatrixFreeOperator&lt; dim, degree, number &gt;'],['../classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca',1,'MatrixFreeOperator::MatrixFreeOperator()']]],
   ['max_5ffiles_8',['max_files',['../structLoadInitialConditionParameters.html#a62397adf9f751e01d411a983d9201e29',1,'LoadInitialConditionParameters']]],
   ['mesh_9',['mesh',['../classMesh.html',1,'Mesh&lt; dim &gt;'],['../classMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh::Mesh()']]],
-  ['mginfo_10',['mginfo',['../classMGInfo.html',1,'MGInfo&lt; dim &gt;'],['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo::MGInfo()']]]
+  ['mginfo_10',['mginfo',['../classMGInfo.html',1,'MGInfo&lt; dim &gt;'],['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo::MGInfo()']]],
+  ['miscellaneousparameters_11',['MiscellaneousParameters',['../structMiscellaneousParameters.html',1,'']]],
+  ['mpi_5fbroadcast_5fnuclei_12',['mpi_broadcast_nuclei',['../classNucleationHandler.html#af35183a2b6e3306f758933ed511f3d14',1,'NucleationHandler']]],
+  ['mpi_5fgather_5fnuclei_13',['mpi_gather_nuclei',['../classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f',1,'NucleationHandler']]]
 ];
