@@ -9,7 +9,9 @@
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
+#include <prismspf/user_inputs/miscellaneous_parameters.h>
 #include <prismspf/user_inputs/nonlinear_solve_parameters.h>
+#include <prismspf/user_inputs/nucleation_parameters.h>
 #include <prismspf/user_inputs/output_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
@@ -116,6 +118,24 @@ public:
   }
 
   /**
+   * @brief Return the nucleation parameters.
+   */
+  [[nodiscard]] const NucleationParameters &
+  get_nucleation_parameters() const
+  {
+    return nucleation_parameters;
+  }
+
+  /**
+   * @brief Return the miscellaneous parameters.
+   */
+  [[nodiscard]] const MiscellaneousParameters &
+  get_miscellaneous_parameters() const
+  {
+    return misc_parameters;
+  }
+
+  /**
    * @brief Return the user constants.
    */
   [[nodiscard]] const UserConstants<dim> &
@@ -196,6 +216,13 @@ private:
   assign_boundary_parameters(dealii::ParameterHandler &parameter_handler);
 
   /**
+   * @brief Assign the provided user inputs to parameters for anything related to
+   * miscellaneous parameters.
+   */
+  void
+  assign_miscellaneous_parameters(dealii::ParameterHandler &parameter_handler);
+
+  /**
    * @brief Assign the provided user constants.
    */
   void
@@ -228,6 +255,12 @@ private:
 
   // Load IC parameters
   LoadInitialConditionParameters load_ic_parameters;
+
+  // Nucleation parameters
+  NucleationParameters nucleation_parameters;
+
+  // Miscellaneous parameters
+  MiscellaneousParameters misc_parameters;
 
   // User constants
   UserConstants<dim> user_constants;

@@ -18,6 +18,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim>
 class UserInputParameters;
 
+template <unsigned int dim>
+struct PhaseFieldTools;
+
 template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperator;
 
@@ -73,6 +76,7 @@ public:
    */
   PDEProblem(
     const UserInputParameters<dim>                                &_user_inputs,
+    PhaseFieldTools<dim>                                          &_pf_tools,
     const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
     const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float);
 
@@ -112,6 +116,11 @@ private:
    * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
+
+  /**
+   * @brief Phase field tools.
+   */
+  PhaseFieldTools<dim> *pf_tools;
 
   /**
    * @brief Multigrid info class.

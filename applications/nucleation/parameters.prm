@@ -1,0 +1,62 @@
+set dim = 2
+subsection Rectangular mesh
+  set x size = 800.0
+  set y size = 800.0
+  set z size = 800.0
+end
+
+set global refinement = 2
+set degree = 2
+
+set mesh adaptivity = true
+set remeshing period = 1000
+set max refinement = 10
+set min refinement = 2
+
+subsection refinement criterion: n
+  set type = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
+end
+
+set time step = 0.011
+set number steps = 50000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 80
+  set file type = pvtu
+end
+
+set boundary condition for c = Periodic
+set boundary condition for n = Periodic
+set boundary condition for nucleation_rate = Periodic
+
+subsection nucleation
+  set nucleus exclusion distance = 20.0
+  set nucleation period = 30
+  set refinement radius = 7.5
+end
+
+subsection miscellaneous
+  set random seed = 2025
+end
+
+set Model constant c_avg = 0.2, DOUBLE
+set Model constant McV = 1.0, DOUBLE
+set Model constant MnV = 1.0, DOUBLE
+set Model constant KnV = 2.0, DOUBLE
+set Model constant W_barrier = 2.0, DOUBLE
+set Model constant A0 = 0.0, DOUBLE
+set Model constant A2 = 1.0, DOUBLE
+set Model constant calmin = 0.0, DOUBLE
+set Model constant B0 = 0.0, DOUBLE
+set Model constant B2 = 4.0, DOUBLE
+set Model constant cbtmin = 1.0, DOUBLE
+set Model constant k1 = 498.866, DOUBLE
+set Model constant k2 = 4.14465, DOUBLE
+set Model constant tau = 500.0, DOUBLE
+set Model constant epsilon = 1.0e-7, DOUBLE
+set Model constant r_nuc = 5.0, DOUBLE
+set Model constant r_freeze = 7.5, DOUBLE
+set Model constant seeding_duration = 20.0, DOUBLE

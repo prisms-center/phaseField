@@ -17,6 +17,9 @@ class UserInputParameters;
 template <unsigned int dim, unsigned int degree, typename number>
 class VariableContainer;
 
+template <unsigned int dim>
+struct PhaseFieldTools;
+
 /**
  * @brief This class contains the user implementation of each PDE operator.
  */
@@ -29,7 +32,8 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs);
+  explicit PDEOperator(const UserInputParameters<dim> &_user_inputs,
+                       const PhaseFieldTools<dim>     &pf_tools);
 
   /**
    * @brief Destructor.
@@ -102,6 +106,12 @@ public:
   get_user_inputs() const;
 
   /**
+   * @brief Get the phase field tools (constant reference).
+   */
+  [[nodiscard]] const PhaseFieldTools<dim> &
+  get_pf_tools() const;
+
+  /**
    * @brief Get the timestep (copy).
    */
   [[nodiscard]] number
@@ -112,6 +122,11 @@ private:
    * @brief The user-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
+
+  /**
+   * @brief Phase field tools.
+   */
+  const PhaseFieldTools<dim> *pf_tools;
 };
 
 PRISMS_PF_END_NAMESPACE

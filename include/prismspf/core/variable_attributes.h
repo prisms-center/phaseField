@@ -63,8 +63,16 @@ struct RawDependencies
    * @remark Internally determined
    */
   std::set<std::string> dependencies_lhs;
+
+  /**
+   * @brief The collection of nucleating fields.
+   * @remark User-set
+   */
+  std::set<std::string> nucleating_fields;
 };
 
+// TODO: Fix style. This struct needn't be over 100 lines. Validation can occur in a
+// separate function.
 /**
  * @brief Structure to hold the variable attributes of a field. This includes things like
  * the name, equation type, whether it's nonlinear, and its dependence on other variables.
@@ -121,6 +129,24 @@ struct VariableAttributes
   is_postprocess() const
   {
     return is_postprocessed_variable;
+  }
+
+  /**
+   * @brief Whether the field is a nucleation rate variable.
+   */
+  [[nodiscard]] bool
+  is_nucleation_rate() const
+  {
+    return is_nucleation_rate_variable;
+  }
+
+  /**
+   * @brief Get the nucleating field indices.
+   */
+  [[nodiscard]] const std::vector<Types::Index> &
+  get_nucleating_field_indices() const
+  {
+    return nucleation_indices;
   }
 
   /**
@@ -349,6 +375,18 @@ private:
    * @remark User-set
    */
   bool is_postprocessed_variable = false;
+
+  /**
+   * @brief Is a nucleation rate
+   * @remark User-set
+   */
+  bool is_nucleation_rate_variable = false;
+
+  /**
+   * @brief If this is a nucleation rate, the indices of the nucleating fields
+   * @remark User-set
+   */
+  std::vector<Types::Index> nucleation_indices;
 
   /**
    * @brief Solve block

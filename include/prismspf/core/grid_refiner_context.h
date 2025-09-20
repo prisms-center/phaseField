@@ -11,6 +11,7 @@
 #include <prismspf/core/dof_handler.h>
 #include <prismspf/core/invm_handler.h>
 #include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/triangulation_handler.h>
 
@@ -39,6 +40,7 @@ public:
    */
   GridRefinementContext(
     const UserInputParameters<dim>              &_user_inputs,
+    PhaseFieldTools<dim>                        &_pf_tools,
     TriangulationHandler<dim>                   &_triangulation_handler,
     ConstraintHandler<dim, degree, number>      &_constraint_handler,
     MatrixFreeContainer<dim, number>            &_matrix_free_container,
@@ -50,6 +52,7 @@ public:
     ElementVolumeContainer<dim, degree, number> &_element_volume_container,
     const MGInfo<dim>                           &_mg_info)
     : user_inputs(&_user_inputs)
+    , pf_tools(&_pf_tools)
     , triangulation_handler(&_triangulation_handler)
     , constraint_handler(&_constraint_handler)
     , matrix_free_container(&_matrix_free_container)
@@ -74,6 +77,13 @@ public:
   {
     Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
     return *user_inputs;
+  }
+
+  [[nodiscard]] PhaseFieldTools<dim> &
+  get_pf_tools() const
+  {
+    Assert(pf_tools != nullptr, dealii::ExcNotInitialized());
+    return *pf_tools;
   }
 
   /**
@@ -183,6 +193,11 @@ private:
    * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
+
+  /**
+   * @brief Phase field tools.
+   */
+  PhaseFieldTools<dim> *pf_tools;
 
   /**
    * @brief Triangulation handler.

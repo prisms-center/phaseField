@@ -4,6 +4,7 @@
 #pragma once
 
 #include <prismspf/core/pde_operator.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
@@ -56,8 +57,9 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs)
-    : PDEOperator<dim, degree, number>(_user_inputs)
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
+                     PhaseFieldTools<dim>           &_pf_tools)
+    : PDEOperator<dim, degree, number>(_user_inputs, _pf_tools)
   {}
 
 private:

@@ -11,6 +11,7 @@
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solver_handler.h>
 #include <prismspf/core/variable_attribute_loader.h>
@@ -88,17 +89,21 @@ main(int argc, char *argv[])
               prisms::UserInputParameters<1> user_inputs(
                 input_file_reader,
                 input_file_reader.get_parameter_handler());
+              prisms::PhaseFieldTools<1> pf_tools;
               switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<1, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<1, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<1, 1, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<1, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<1, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<1, 1, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<1, 1, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();
@@ -107,12 +112,15 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<1, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<1, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<1, 2, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<1, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<1, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<1, 2, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<1, 2, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();
@@ -128,17 +136,21 @@ main(int argc, char *argv[])
               prisms::UserInputParameters<2> user_inputs(
                 input_file_reader,
                 input_file_reader.get_parameter_handler());
+              prisms::PhaseFieldTools<2> pf_tools;
               switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<2, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<2, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<2, 1, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<2, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<2, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<2, 1, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<2, 1, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();
@@ -147,12 +159,15 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<2, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<2, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<2, 2, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<2, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<2, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<2, 2, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<2, 2, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();
@@ -168,17 +183,21 @@ main(int argc, char *argv[])
               prisms::UserInputParameters<3> user_inputs(
                 input_file_reader,
                 input_file_reader.get_parameter_handler());
+              prisms::PhaseFieldTools<3> pf_tools;
               switch (user_inputs.get_spatial_discretization().get_degree())
                 {
                   case 1:
                     {
                       std::shared_ptr<prisms::PDEOperator<3, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<3, 1, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<3, 1, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<3, 1, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<3, 1, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<3, 1, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<3, 1, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();
@@ -187,12 +206,15 @@ main(int argc, char *argv[])
                   case 2:
                     {
                       std::shared_ptr<prisms::PDEOperator<3, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<3, 2, double>>(user_inputs);
+                        std::make_shared<prisms::CustomPDE<3, 2, double>>(user_inputs,
+                                                                          pf_tools);
                       std::shared_ptr<prisms::PDEOperator<3, 2, float>>
                         pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<3, 2, float>>(user_inputs);
+                          std::make_shared<prisms::CustomPDE<3, 2, float>>(user_inputs,
+                                                                           pf_tools);
 
                       prisms::PDEProblem<3, 2, double> problem(user_inputs,
+                                                               pf_tools,
                                                                pde_operator,
                                                                pde_operator_float);
                       problem.run();

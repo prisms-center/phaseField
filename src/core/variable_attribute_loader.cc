@@ -151,6 +151,18 @@ VariableAttributeLoader::set_is_postprocessed_field(const unsigned int &index,
   var_attributes[index].is_postprocessed_variable = is_postprocess;
 }
 
+template <typename Iterable>
+void
+VariableAttributeLoader::set_is_nucleation_rate(const unsigned int &index,
+                                                const bool         &is_nucleation,
+                                                const Iterable     &nucleating_fields)
+{
+  var_attributes[index].is_nucleation_rate_variable = is_nucleation;
+  var_attributes[index].raw_dependencies.nucleating_fields.insert(
+    nucleating_fields.begin(),
+    nucleating_fields.end());
+}
+
 void
 VariableAttributeLoader::set_solve_block(const unsigned int &index,
                                          const Types::Index &solve_block)
@@ -333,10 +345,15 @@ VariableAttributeLoader::validate_attributes()
   for (const auto &[index, variable] : var_attributes)
     {
       // Check that postprocessed variables are only explicit
-      AssertThrow(!variable.is_postprocessed_variable ||
-                    variable.pde_type == PDEType::ExplicitTimeDependent,
+      AssertThrow(!(variable.is_postprocessed_variable &&
+                    variable.pde_type != PDEType::ExplicitTimeDependent),
                   dealii::ExcMessage(
                     "Currently, postprocessing only allows explicit equations."));
+      // Check that nucleation rates are scalars
+      AssertThrow(!(variable.is_nucleation_rate_variable &&
+                    variable.field_type != FieldType::Scalar),
+                  dealii::ExcMessage(
+                    "Currently, nucleation rates must be scalar fields."));
       // Check that constant fields have no dependencies
       AssertThrow(!(variable.pde_type == PDEType::Constant) ||
                     (variable.raw_dependencies.dependencies_rhs.empty() &&
@@ -614,5 +631,7 @@ VariableAttributeLoader::compute_shared_dependencies(
       variable->dependency_set_rhs = shared_dependencies;
     }
 }
+
+#include "core/variable_attribute_loader.inst"
 
 PRISMS_PF_END_NAMESPACE

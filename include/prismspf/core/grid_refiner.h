@@ -3,11 +3,16 @@
 
 #pragma once
 
+#include <deal.II/base/bounding_box.h>
 #include <deal.II/fe/fe_values.h>
 
+#include <prismspf/core/cell_marker_base.h>
 #include <prismspf/core/grid_refiner_context.h>
 
 #include <prismspf/config.h>
+
+#include <memory>
+#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -158,63 +163,82 @@ public:
     Assert(num_quad_points != 0,
            dealii::ExcMessage("The init() function must be called before trying to "
                               "perform adaptive refinement"));
-
     // Step 1
     mark_cells_for_refinement_and_coarsening();
-
-    // Step 2
-    refine_grid();
-
-    // Step 3
-    grid_refinement_context.get_triangulation_handler().reinit();
-    grid_refinement_context.get_dof_handler().reinit(
-      grid_refinement_context.get_triangulation_handler(),
-      grid_refinement_context.get_finite_element_systems(),
-      grid_refinement_context.get_multigrid_info());
-    grid_refinement_context.get_constraint_handler().make_constraints(
-      grid_refinement_context.get_mapping(),
-      grid_refinement_context.get_dof_handler().get_dof_handlers());
-    if (grid_refinement_context.get_multigrid_info().has_multigrid())
+    bool first_iteration = true;
+    while (
+      dealii::Utilities::MPI::logical_or(mark_cells_for_refinement(), MPI_COMM_WORLD) ||
+      first_iteration)
       {
-        const unsigned int min_level =
-          grid_refinement_context.get_multigrid_info().get_mg_min_level();
-        const unsigned int max_level =
-          grid_refinement_context.get_multigrid_info().get_mg_max_level();
-        for (unsigned int level = min_level; level <= max_level; ++level)
+        first_iteration = false;
+        for (auto &[field_index, solution] :
+             grid_refinement_context.get_solution_handler().get_solution_vector())
           {
-            grid_refinement_context.get_constraint_handler().make_mg_constraints(
-              grid_refinement_context.get_mapping(),
-              grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
-              level);
+            solution->update_ghost_values();
           }
+
+        // Step 2
+        refine_grid();
+
+        // Step 3
+        grid_refinement_context.get_triangulation_handler().reinit();
+        grid_refinement_context.get_dof_handler().reinit(
+          grid_refinement_context.get_triangulation_handler(),
+          grid_refinement_context.get_finite_element_systems(),
+          grid_refinement_context.get_multigrid_info());
+        grid_refinement_context.get_constraint_handler().make_constraints(
+          grid_refinement_context.get_mapping(),
+          grid_refinement_context.get_dof_handler().get_dof_handlers());
+        if (grid_refinement_context.get_multigrid_info().has_multigrid())
+          {
+            const unsigned int min_level =
+              grid_refinement_context.get_multigrid_info().get_mg_min_level();
+            const unsigned int max_level =
+              grid_refinement_context.get_multigrid_info().get_mg_max_level();
+            for (unsigned int level = min_level; level <= max_level; ++level)
+              {
+                grid_refinement_context.get_constraint_handler().make_mg_constraints(
+                  grid_refinement_context.get_mapping(),
+                  grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
+                  level);
+              }
+          }
+
+        grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
+          grid_refinement_context.get_mapping(),
+          grid_refinement_context.get_dof_handler(),
+          grid_refinement_context.get_constraint_handler(),
+          dealii::QGaussLobatto<1>(degree + 1));
+
+        grid_refinement_context.get_solution_handler().reinit(
+          grid_refinement_context.get_matrix_free_container());
+
+        // Step 4
+        grid_refinement_context.get_solution_handler().execute_solution_transfer();
+
+        // Step 6
+        grid_refinement_context.get_invm_handler().recompute_invm();
+        grid_refinement_context.get_element_volume_container().recompute_element_volume();
       }
+  }
 
-    grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
-      grid_refinement_context.get_mapping(),
-      grid_refinement_context.get_dof_handler(),
-      grid_refinement_context.get_constraint_handler(),
-      dealii::QGaussLobatto<1>(degree + 1));
+  void
+  add_refinement_marker(std::shared_ptr<const CellMarkerBase<dim>> marker)
+  {
+    marker_functions.push_back(marker);
+  }
 
-    // Clear the ghosts
-    grid_refinement_context.get_solution_handler().zero_out_ghosts();
+  void
+  clear_refinement_markers()
+  {
+    marker_functions.clear();
+  }
 
-    // Reinit the solution vectors
-    grid_refinement_context.get_solution_handler().reinit(
-      grid_refinement_context.get_matrix_free_container());
-
-    // Step 4
-    grid_refinement_context.get_solution_handler().execute_solution_transfer();
-    grid_refinement_context.get_solution_handler().free_solution_transfer();
-    grid_refinement_context.get_solution_handler().reinit_solution_transfer(
-      grid_refinement_context.get_matrix_free_container());
-
-    // Step 6
-    grid_refinement_context.get_invm_handler().recompute_invm();
-    grid_refinement_context.get_element_volume_container().recompute_element_volume();
-
-    // Update the ghosts
-    grid_refinement_context.get_solution_handler().update_ghosts();
-  };
+  const std::vector<std::shared_ptr<const CellMarkerBase<dim>>> &
+  get_refinement_markers() const
+  {
+    return marker_functions;
+  }
 
 private:
   /**
@@ -399,6 +423,46 @@ private:
   }
 
   /**
+   * @brief Mark cells based on function. Note: cells are only marked for refinement but
+   * not coarsening.
+   * @param refinement_function A function that determines if a cell should be refined.
+   * @return True if any cell was marked for refinement, false otherwise.
+   */
+  bool
+  mark_cells_for_refinement()
+  {
+    bool any_cell_marked = false;
+    for (const auto &cell : grid_refinement_context.get_triangulation_handler()
+                              .get_triangulation()
+                              .active_cell_iterators())
+      {
+        if (cell->is_locally_owned())
+          {
+            const auto cell_refinement = static_cast<unsigned int>(cell->level());
+            if (std::any_of(
+                  marker_functions.begin(),
+                  marker_functions.end(),
+                  [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
+                  {
+                    return marker_function->flag(*cell,
+                                                 grid_refinement_context.get_user_inputs()
+                                                   .get_temporal_discretization());
+                  }))
+              {
+                cell->set_user_flag();
+                cell->clear_coarsen_flag();
+                if (cell_refinement < max_refinement)
+                  {
+                    cell->set_refine_flag();
+                    any_cell_marked = true;
+                  }
+              }
+          }
+      }
+    return any_cell_marked;
+  }
+
+  /**
    * @brief Refine the grid
    */
   void
@@ -449,6 +513,11 @@ private:
    * @brief Minimum global refinement level.
    */
   unsigned int min_refinement = 0;
+
+  /**
+   * @brief Marker functions.
+   */
+  std::list<std::shared_ptr<const CellMarkerBase<dim>>> marker_functions;
 };
 
 PRISMS_PF_END_NAMESPACE

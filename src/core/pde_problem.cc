@@ -19,6 +19,7 @@
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/pde_problem.h>
+#include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/solution_handler.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/solver_handler.h>
@@ -42,6 +43,10 @@
 #include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
+#include <prismspf/nucleation/nucleation.h>
+#include <prismspf/nucleation/nucleus_refinement_function.h>
+
+#include "prismspf/user_inputs/temporal_discretization.h"
 
 #include <memory>
 #include <mpi.h>
@@ -57,9 +62,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 PDEProblem<dim, degree, number>::PDEProblem(
   const UserInputParameters<dim>                                &_user_inputs,
+  PhaseFieldTools<dim>                                          &_pf_tools,
   const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
   : user_inputs(&_user_inputs)
+  , pf_tools(&_pf_tools)
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
   , constraint_handler(_user_inputs, mg_info, _pde_operator, _pde_operator_float)
@@ -81,6 +88,7 @@ PDEProblem<dim, degree, number>::PDEProblem(
                    _pde_operator,
                    _pde_operator_float)
   , grid_refiner_context(_user_inputs,
+                         _pf_tools,
                          triangulation_handler,
                          constraint_handler,
                          matrix_free_container,
@@ -209,6 +217,9 @@ PDEProblem<dim, degree, number>::init_system()
   // coarsen cells to the minimum level
   ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
   grid_refiner.init(fe_system);
+  grid_refiner.add_refinement_marker(std::make_shared<NucleusRefinementFunction<dim>>(
+    user_inputs->get_nucleation_parameters(),
+    pf_tools->nuclei_list));
   dealii::types::global_dof_index old_dofs = dof_handler.get_total_dofs();
   dealii::types::global_dof_index new_dofs = 0;
   for (unsigned int remesh_index = 0;
@@ -298,6 +309,8 @@ void
 PDEProblem<dim, degree, number>::solve_increment()
 {
   Timer::start_section("Update time-dependent constraints");
+  unsigned int increment = user_inputs->get_temporal_discretization().get_increment();
+
   // Update the time-dependent constraints
   if (user_inputs->get_boundary_parameters().has_time_dependent_bcs())
     {
@@ -318,18 +331,17 @@ PDEProblem<dim, degree, number>::solve_increment()
     }
   Timer::end_section("Update time-dependent constraints");
 
-  // TOOD (landinjm): I think I have to update the ghosts after each solve. This should be
+  // TODO (landinjm): I think I have to update the ghosts after each solve. This should be
   // apparent in an application that includes multiple of these solve types. Also only
   // update ghosts that need to be. It's wasteful to over communicate.
-  bool update_postprocssed =
-    user_inputs->get_spatial_discretization().should_refine_mesh(
-      user_inputs->get_temporal_discretization().get_increment()) ||
-    user_inputs->get_output_parameters().should_output(
-      user_inputs->get_temporal_discretization().get_increment());
+  bool update_postprocessed =
+    user_inputs->get_spatial_discretization().should_refine_mesh(increment) ||
+    user_inputs->get_output_parameters().should_output(increment) ||
+    (user_inputs->get_nucleation_parameters().postprocessed_nucleation_rate_exists() &&
+     user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment));
 
   // Solve a single increment
-  solver_handler.solve(user_inputs->get_temporal_discretization().get_increment(),
-                       update_postprocssed);
+  solver_handler.solve(increment, update_postprocessed);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -348,8 +360,10 @@ PDEProblem<dim, degree, number>::solve()
 
   ConditionalOStreams::pout_base() << "\n";
 
+  const TemporalDiscretization &time_info = user_inputs->get_temporal_discretization();
+
   // If the number of increments is 0, we return early
-  if (user_inputs->get_temporal_discretization().get_total_increments() == 0)
+  if (time_info.get_total_increments() == 0)
     {
       return;
     }
@@ -359,27 +373,28 @@ PDEProblem<dim, degree, number>::solve()
        "  Solve\n"
     << "================================================\n"
     << std::flush;
-  while (user_inputs->get_temporal_discretization().get_increment() <
-         user_inputs->get_temporal_discretization().get_total_increments())
+  while (time_info.get_increment() < time_info.get_total_increments())
     {
-      user_inputs->get_temporal_discretization().update_increment();
-      user_inputs->get_temporal_discretization().update_time();
-
-      Timer::start_section("Solve Increment");
-      solve_increment();
-      Timer::end_section("Solve Increment");
-
-      if (user_inputs->get_spatial_discretization().should_refine_mesh(
-            user_inputs->get_temporal_discretization().get_increment()))
+      unsigned int increment               = time_info.get_increment();
+      bool         any_nucleation_occurred = false;
+      if (user_inputs->get_nucleation_parameters().should_attempt_nucleation(increment))
+        {
+          any_nucleation_occurred =
+            NucleationHandler<dim, degree, number>::attempt_nucleation(
+              solver_context,
+              pf_tools->nuclei_list);
+        }
+      if (user_inputs->get_spatial_discretization().get_has_adaptivity() &&
+          (user_inputs->get_spatial_discretization().should_refine_mesh(increment) ||
+           any_nucleation_occurred))
         {
           // Perform grid refinement
           ConditionalOStreams::pout_base()
-            << "performing grid refinement at increment "
-            << user_inputs->get_temporal_discretization().get_increment() << "...\n"
-            << std::flush;
+            << "[Increment " << time_info.get_increment() << "] : Grid Refinement\n";
           Timer::start_section("Grid refinement");
           grid_refiner.do_adaptive_refinement();
           Timer::end_section("Grid refinement");
+          ConditionalOStreams::pout_base() << "\n" << std::flush;
 
           // Reinitialize the solver types
           solver_handler.reinit();
@@ -389,8 +404,17 @@ PDEProblem<dim, degree, number>::solve()
           solution_handler.update_ghosts();
           Timer::end_section("Update ghosts");
         }
-      if (user_inputs->get_output_parameters().should_output(
-            user_inputs->get_temporal_discretization().get_increment()))
+
+      // Update the time
+      time_info.update_increment();
+      time_info.update_time();
+      increment = time_info.get_increment();
+
+      Timer::start_section("Solve Increment");
+      solve_increment();
+      Timer::end_section("Solve Increment");
+
+      if (user_inputs->get_output_parameters().should_output(increment))
         {
           Timer::start_section("Output");
           SolutionOutput<dim, number>(solution_handler.get_solution_vector(),
@@ -401,8 +425,7 @@ PDEProblem<dim, degree, number>::solve()
 
           // Print the l2-norms and integrals of each solution
           ConditionalOStreams::pout_base()
-            << "Iteration: " << user_inputs->get_temporal_discretization().get_increment()
-            << "\n";
+            << "Iteration: " << time_info.get_increment() << "\n";
           for (const auto &[index, vector] : solution_handler.get_solution_vector())
             {
               ConditionalOStreams::pout_base()
@@ -441,6 +464,16 @@ PDEProblem<dim, degree, number>::solve()
           Timer::end_section("Output");
         }
     }
+  ConditionalOStreams::pout_summary()
+    << "================================================\n"
+       "  Nuclei Seeded\n"
+    << "================================================\n"
+    << std::to_string(pf_tools->nuclei_list.size()) << " total nuclei seeded.\n";
+  for (const Nucleus<dim> nucleus : pf_tools->nuclei_list)
+    {
+      ConditionalOStreams::pout_summary() << nucleus << "\n";
+    }
+  ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
