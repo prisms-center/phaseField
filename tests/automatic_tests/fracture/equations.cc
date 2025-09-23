@@ -112,12 +112,12 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
         {
           dndt[j] = 0.0;
         }
-      if (n[j] - dndt[j] * this->get_timestep() > 1.0)
+      if (n[j] - dndt[j] * get_timestep() > 1.0)
         {
-          dndt[j] = (n[j] - 1.0) / this->get_timestep();
+          dndt[j] = (n[j] - 1.0) / get_timestep();
         }
     }
-  ScalarValue eq_n = n - this->get_timestep() * Mn * dndt;
+  ScalarValue eq_n = n - get_timestep() * Mn * dndt;
 
   variable_list.set_value_term(0, eq_n);
 }

@@ -61,9 +61,9 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   // Residual equations
   ScalarGrad  mux   = (cx * ((1.0 - h) * facc + h * fbcc) + nx * ((fbc - fac) * hn));
   ScalarValue eq_c  = c;
-  ScalarGrad  eqx_c = ((-Mc * this->get_timestep()) * mux);
-  ScalarValue eq_n  = (n - (this->get_timestep() * Mn) * (fb - fa) * hn);
-  ScalarGrad  eqx_n = ((-this->get_timestep() * Kn * Mn) * nx);
+  ScalarGrad  eqx_c = ((-Mc * get_timestep()) * mux);
+  ScalarValue eq_n  = (n - (get_timestep() * Mn) * (fb - fa) * hn);
+  ScalarGrad  eqx_n = ((-get_timestep() * Kn * Mn) * nx);
 
   // --- Submitting the terms for the governing equations ---
 

@@ -45,7 +45,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarGrad  mux = variable_list.template get_gradient<ScalarGrad>(1);
 
   ScalarValue eq_c  = c;
-  ScalarGrad  eqx_c = -McV * this->get_timestep() * mux;
+  ScalarGrad  eqx_c = -McV * get_timestep() * mux;
 
   variable_list.set_value_term(0, eq_c);
   variable_list.set_gradient_term(0, eqx_c);

@@ -90,8 +90,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
 
   // grad_phi and grad_U dot product term
   ScalarValue val_term1 =
-    this->get_timestep() * (1.0 + (1.0 - k) * U) * xi / (2.0 * tau_phi * tau_U);
-  ScalarValue val_term2 = this->get_timestep() * ((1.0 - k) / 2.0) / (tau_U * tau_U) *
+    get_timestep() * (1.0 + (1.0 - k) * U) * xi / (2.0 * tau_phi * tau_U);
+  ScalarValue val_term2 = get_timestep() * ((1.0 - k) / 2.0) / (tau_U * tau_U) *
                           (phix[0] * (Dtilde * ((1.0 - phi) / 2.0) * Ux[0] + j_at[0]) +
                            phix[1] * (Dtilde * ((1.0 - phi) / 2.0) * Ux[1] + j_at[1]));
 
@@ -99,9 +99,9 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarValue eq_U = (U + val_term1 - val_term2);
 
   ScalarGrad eqx_U =
-    (-1.0 * this->get_timestep() * (Dtilde * ((1.0 - phi) / 2.0) * Ux + j_at) / tau_U);
+    (-1.0 * get_timestep() * (Dtilde * ((1.0 - phi) / 2.0) * Ux + j_at) / tau_U);
 
-  ScalarValue eq_phi = phi + (this->get_timestep() * xi / tau_phi);
+  ScalarValue eq_phi = phi + (get_timestep() * xi / tau_phi);
 
   // --- Submitting the terms for the governing equations ---
 
@@ -156,7 +156,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       // dimensionless temperature changes
       ScalarValue y = q_point_loc[1]; // The y-component
       ScalarValue t_n =
-        this->get_user_inputs().get_temporal_discretization().get_time(); // The time
+        get_user_inputs().get_temporal_discretization().get_time(); // The time
       ScalarValue tep = ((y - y0 - Vtilde * t_n) / ltilde);
 
       // The anisotropy term that enters in to the equation for xi

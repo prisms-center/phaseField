@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -133,15 +136,15 @@ private:
   const ScalarValue mu  = _mu;
 
   const ScalarValue total_domain_size = dealii::Utilities::fixed_power<3>(
-    this->get_user_inputs().get_spatial_discretization().get_size()[0]);
+    get_user_inputs().get_spatial_discretization().get_size()[0]);
 
   const ScalarValue nu = mu / rho;
-  const ScalarValue dt = this->get_timestep();
+  const ScalarValue dt = get_timestep();
 
   // Values for stabilization term
   const ScalarValue size_modifier = std::sqrt(4.0 / M_PI) / degree;
   const ScalarValue time_contribution =
-    dealii::Utilities::fixed_power<2>(1.0 / this->get_timestep());
+    dealii::Utilities::fixed_power<2>(1.0 / get_timestep());
 
   /**
    * @brief Compute the stabilization paramters

@@ -25,12 +25,9 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
 {
-  double center_x =
-    0.5 * this->get_user_inputs().get_spatial_discretization().get_size()[0];
-  double center_y =
-    0.5 * this->get_user_inputs().get_spatial_discretization().get_size()[1];
-  double center_z =
-    0.5 * this->get_user_inputs().get_spatial_discretization().get_size()[2];
+  double center_x = 0.5 * get_user_inputs().get_spatial_discretization().get_size()[0];
+  double center_y = 0.5 * get_user_inputs().get_spatial_discretization().get_size()[1];
+  double center_z = 0.5 * get_user_inputs().get_spatial_discretization().get_size()[2];
   dealii::Point<3> center(center_x, center_y, center_z);
 
   // Initial condition parameters

@@ -47,8 +47,8 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarGrad  nx = variable_list.template get_gradient<ScalarGrad>(0);
 
   ScalarValue fnV   = 4.0 * n * (n - 1.0) * (n - 0.5);
-  ScalarValue eq_n  = n - this->get_timestep() * MnV * fnV;
-  ScalarGrad  eqx_n = -this->get_timestep() * KnV * MnV * nx;
+  ScalarValue eq_n  = n - get_timestep() * MnV * fnV;
+  ScalarGrad  eqx_n = -get_timestep() * KnV * MnV * nx;
 
   variable_list.set_value_term(0, eq_n);
   variable_list.set_gradient_term(0, eqx_n);

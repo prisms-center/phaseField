@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -127,7 +130,7 @@ private:
     Types::Index solve_block) const override;
 
   dealii::Tensor<2, voigt_tensor_size<dim>, number> compliance =
-    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+    get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "compliance");
 };
 

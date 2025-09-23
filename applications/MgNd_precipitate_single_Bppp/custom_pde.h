@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -138,43 +141,34 @@ private:
     const dealii::VectorizedArray<number>                     &element_volume,
     Types::Index solve_block) const override;
 
-  number McV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
-  number Mn1V =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("Mn1V");
+  number McV  = get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  number Mn1V = get_user_inputs().get_user_constants().get_model_constant_double("Mn1V");
   dealii::Tensor<2, dim, number> Kn1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn1");
-  number W = this->get_user_inputs().get_user_constants().get_model_constant_double("W");
+    get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor("Kn1");
+  number W = get_user_inputs().get_user_constants().get_model_constant_double("W");
 
   bool n_dependent_stiffness =
-    this->get_user_inputs().get_user_constants().get_model_constant_bool(
+    get_user_inputs().get_user_constants().get_model_constant_bool(
       "n_dependent_stiffness");
 
   dealii::Tensor<2, dim, number> sfts_linear1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
+    get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
       "sfts_linear1");
   dealii::Tensor<2, dim, number> sfts_const1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
+    get_user_inputs().get_user_constants().get_model_constant_rank_2_tensor(
       "sfts_const1");
 
-  double A2 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("A2");
-  double A1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("A1");
-  double A0 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("A0");
-  double B2 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("B2");
-  double B1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("B1");
-  double B0 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("B0");
+  double A2 = get_user_inputs().get_user_constants().get_model_constant_double("A2");
+  double A1 = get_user_inputs().get_user_constants().get_model_constant_double("A1");
+  double A0 = get_user_inputs().get_user_constants().get_model_constant_double("A0");
+  double B2 = get_user_inputs().get_user_constants().get_model_constant_double("B2");
+  double B1 = get_user_inputs().get_user_constants().get_model_constant_double("B1");
+  double B0 = get_user_inputs().get_user_constants().get_model_constant_double("B0");
 
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Mg =
-    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
-      "CIJ_Mg");
+    get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor("CIJ_Mg");
   dealii::Tensor<2, voigt_tensor_size<dim>, number> CIJ_Beta =
-    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+    get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "CIJ_Beta");
 
   bool c_dependent_misfit;

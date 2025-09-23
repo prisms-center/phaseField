@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.

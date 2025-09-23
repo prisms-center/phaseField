@@ -38,8 +38,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
 {
   if (boundary_id == 3 && component == 0)
     {
-      double x0 =
-        0.1 * this->get_user_inputs().get_spatial_discretization().get_size()[1];
+      double x0 = 0.1 * get_user_inputs().get_spatial_discretization().get_size()[1];
 
       if (point[0] <= x0)
         {
@@ -49,7 +48,7 @@ CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
         }
       else if (point[0] > x0 &&
                point[0] <
-                 this->get_user_inputs().get_spatial_discretization().get_size()[1] - x0)
+                 get_user_inputs().get_spatial_discretization().get_size()[1] - x0)
         {
           vector_component_value = 1.0;
         }

@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -128,7 +131,7 @@ private:
 
   constexpr static unsigned int              CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
   dealii::Tensor<2, CIJ_tensor_size, number> compliance =
-    this->get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
+    get_user_inputs().get_user_constants().get_model_constant_elasticity_tensor(
       "compliance");
 };
 

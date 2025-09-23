@@ -60,9 +60,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarValue old_c      = variable_list.template get_value<ScalarValue>(0, OldOne);
       ScalarGrad  grad_gamma = variable_list.template get_gradient<ScalarGrad>(1);
 
-      ScalarValue eq_c      = old_c - c;
-      ScalarGrad  eq_grad_c = McV * this->get_timestep() *
-                             (grad_gamma - (12.0 * c * c - 12.0 * c + 2.0) * grad_c);
+      ScalarValue eq_c = old_c - c;
+      ScalarGrad  eq_grad_c =
+        McV * get_timestep() * (grad_gamma - (12.0 * c * c - 12.0 * c + 2.0) * grad_c);
 
       variable_list.set_value_term(0, eq_c);
       variable_list.set_gradient_term(0, eq_grad_c);
@@ -96,7 +96,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 
       ScalarValue eq_c = change_c;
       ScalarGrad  eq_grad_c =
-        McV * this->get_timestep() *
+        McV * get_timestep() *
         ((12.0 * c * c + 24.0 * c * change_c + 12.0 * change_c * change_c -
           12.0 * (c + change_c) + 2.0) *
            change_grad_c +

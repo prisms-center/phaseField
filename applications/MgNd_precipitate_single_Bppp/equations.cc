@@ -156,13 +156,13 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
     }
 
   ScalarValue eq_c  = (c);
-  ScalarGrad  eqx_c = (-this->get_timestep() * McV * (h1V * faccV + (1.0 - h1V) * fbccV) /
+  ScalarGrad  eqx_c = (-get_timestep() * McV * (h1V * faccV + (1.0 - h1V) * fbccV) /
                       (faccV * fbccV) * grad_mu);
 
-  ScalarValue eq_n1  = (n1 - this->get_timestep() * Mn1V *
+  ScalarValue eq_n1  = (n1 - get_timestep() * Mn1V *
                               ((fbV - faV) * hn1V - (c_beta - c_alpha) * facV * hn1V +
                                W * fbarriernV + nDependentMisfitAC1 + heterMechAC1));
-  ScalarGrad  eqx_n1 = (-this->get_timestep() * Mn1V * Knx1);
+  ScalarGrad  eqx_n1 = (-get_timestep() * Mn1V * Knx1);
 
   variable_list.set_value_term(0, eq_c);
   variable_list.set_gradient_term(0, eqx_c);
