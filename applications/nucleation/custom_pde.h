@@ -53,6 +53,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -132,43 +135,32 @@ private:
                ScalarValue                           &gamma) const;
 
   double c_avg =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("c_avg");
-  double McV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
-  double MnV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("MnV");
-  double KnV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("KnV");
+    get_user_inputs().get_user_constants().get_model_constant_double("c_avg");
+  double McV = get_user_inputs().get_user_constants().get_model_constant_double("McV");
+  double MnV = get_user_inputs().get_user_constants().get_model_constant_double("MnV");
+  double KnV = get_user_inputs().get_user_constants().get_model_constant_double("KnV");
   double W_barrier =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("W_barrier");
-  double A0 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("A0");
-  double A2 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("A2");
+    get_user_inputs().get_user_constants().get_model_constant_double("W_barrier");
+  double A0 = get_user_inputs().get_user_constants().get_model_constant_double("A0");
+  double A2 = get_user_inputs().get_user_constants().get_model_constant_double("A2");
   double calmin =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("calmin");
-  double B0 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("B0");
-  double B2 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("B2");
+    get_user_inputs().get_user_constants().get_model_constant_double("calmin");
+  double B0 = get_user_inputs().get_user_constants().get_model_constant_double("B0");
+  double B2 = get_user_inputs().get_user_constants().get_model_constant_double("B2");
   double cbtmin =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("cbtmin");
+    get_user_inputs().get_user_constants().get_model_constant_double("cbtmin");
 
-  double k1 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("k1");
-  double k2 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("k2");
-  double tau =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("tau");
+  double k1  = get_user_inputs().get_user_constants().get_model_constant_double("k1");
+  double k2  = get_user_inputs().get_user_constants().get_model_constant_double("k2");
+  double tau = get_user_inputs().get_user_constants().get_model_constant_double("tau");
   double epsilon =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("epsilon");
+    get_user_inputs().get_user_constants().get_model_constant_double("epsilon");
   double r_nuc =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("r_nuc");
+    get_user_inputs().get_user_constants().get_model_constant_double("r_nuc");
   double r_freeze =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("r_freeze");
+    get_user_inputs().get_user_constants().get_model_constant_double("r_freeze");
   double seeding_duration =
-    this->get_user_inputs().get_user_constants().get_model_constant_double(
-      "seeding_duration");
+    get_user_inputs().get_user_constants().get_model_constant_double("seeding_duration");
 
   // Interface coefficient
   double interface_coeff = std::sqrt(2.0 * KnV / W_barrier);

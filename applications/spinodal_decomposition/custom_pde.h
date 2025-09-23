@@ -54,6 +54,9 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperator<dim, degree, number>::get_user_inputs;
+  using PDEOperator<dim, degree, number>::get_pf_tools;
+  using PDEOperator<dim, degree, number>::get_timestep;
 
   /**
    * @brief Constructor.
@@ -128,16 +131,15 @@ private:
     Types::Index solve_block) const override;
 
   ScalarValue McV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("McV");
+    get_user_inputs().get_user_constants().get_model_constant_double("McV");
   ScalarValue KcV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("KcV");
+    get_user_inputs().get_user_constants().get_model_constant_double("KcV");
   ScalarValue WcV =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("WcV");
+    get_user_inputs().get_user_constants().get_model_constant_double("WcV");
 
-  number c0 =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("c0");
+  number c0 = get_user_inputs().get_user_constants().get_model_constant_double("c0");
   number icamplitude =
-    this->get_user_inputs().get_user_constants().get_model_constant_double("icamplitude");
+    get_user_inputs().get_user_constants().get_model_constant_double("icamplitude");
 };
 
 PRISMS_PF_END_NAMESPACE

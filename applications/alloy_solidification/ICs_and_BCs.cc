@@ -41,13 +41,12 @@ CustomPDE<dim, degree, number>::set_initial_condition(
       // the order parameter ranges from -1 to 1 in thi model.
       for (unsigned int dir = 0; dir < dim; dir++)
         {
-          dist +=
-            (point[dir] -
-             center[dir] *
-               this->get_user_inputs().get_spatial_discretization().get_size()[dir]) *
-            (point[dir] -
-             center[dir] *
-               this->get_user_inputs().get_spatial_discretization().get_size()[dir]);
+          dist += (point[dir] -
+                   center[dir] *
+                     get_user_inputs().get_spatial_discretization().get_size()[dir]) *
+                  (point[dir] -
+                   center[dir] *
+                     get_user_inputs().get_spatial_discretization().get_size()[dir]);
         }
       dist = std::sqrt(dist);
 

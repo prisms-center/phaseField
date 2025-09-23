@@ -64,10 +64,10 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
       ScalarValue k_3_bulk_energy = 4.0 * n_3 * (n_3 - 1.0) * (n_3 - 0.5);
       ScalarValue k_4_bulk_energy = 4.0 * n_4 * (n_4 - 1.0) * (n_4 - 0.5);
 
-      ScalarValue eq_n      = n - (this->get_timestep() * MnV / 6.0 *
+      ScalarValue eq_n      = n - (get_timestep() * MnV / 6.0 *
                               (k_1_bulk_energy + 2.0 * k_2_bulk_energy +
                                2.0 * k_3_bulk_energy + k_4_bulk_energy));
-      ScalarGrad  eq_grad_n = -this->get_timestep() * KnV * MnV / 6.0 *
+      ScalarGrad  eq_grad_n = -get_timestep() * KnV * MnV / 6.0 *
                              (grad_n + 2.0 * grad_n_2 + 2.0 * grad_n_3 + grad_n_4);
 
       variable_list.set_value_term(0, eq_n);
@@ -90,8 +90,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  grad_n = variable_list.template get_gradient<ScalarGrad>(0);
 
       ScalarValue bulk_energy = 4.0 * n * (n - 1.0) * (n - 0.5);
-      ScalarValue eq_n_2      = n - 0.5 * this->get_timestep() * MnV * bulk_energy;
-      ScalarGrad  eq_grad_n_2 = -0.5 * this->get_timestep() * MnV * KnV * grad_n;
+      ScalarValue eq_n_2      = n - 0.5 * get_timestep() * MnV * bulk_energy;
+      ScalarGrad  eq_grad_n_2 = -0.5 * get_timestep() * MnV * KnV * grad_n;
 
       variable_list.set_value_term(1, eq_n_2);
       variable_list.set_gradient_term(1, eq_grad_n_2);
@@ -103,8 +103,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  grad_n_2 = variable_list.template get_gradient<ScalarGrad>(1);
 
       ScalarValue bulk_energy = 4.0 * n_2 * (n_2 - 1.0) * (n_2 - 0.5);
-      ScalarValue eq_n_3      = n - 0.5 * this->get_timestep() * MnV * bulk_energy;
-      ScalarGrad  eq_grad_n_3 = -0.5 * this->get_timestep() * MnV * KnV * grad_n_2;
+      ScalarValue eq_n_3      = n - 0.5 * get_timestep() * MnV * bulk_energy;
+      ScalarGrad  eq_grad_n_3 = -0.5 * get_timestep() * MnV * KnV * grad_n_2;
 
       variable_list.set_value_term(2, eq_n_3);
       variable_list.set_gradient_term(2, eq_grad_n_3);
@@ -116,8 +116,8 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarGrad  grad_n_3 = variable_list.template get_gradient<ScalarGrad>(2);
 
       ScalarValue bulk_energy = 4.0 * n_3 * (n_3 - 1.0) * (n_3 - 0.5);
-      ScalarValue eq_n_3      = n - this->get_timestep() * MnV * bulk_energy;
-      ScalarGrad  eq_grad_n_3 = -this->get_timestep() * MnV * KnV * grad_n_3;
+      ScalarValue eq_n_3      = n - get_timestep() * MnV * bulk_energy;
+      ScalarGrad  eq_grad_n_3 = -get_timestep() * MnV * KnV * grad_n_3;
 
       variable_list.set_value_term(3, eq_n_3);
       variable_list.set_gradient_term(3, eq_grad_n_3);

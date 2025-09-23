@@ -180,16 +180,16 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarGrad  eqx_c_temp = cx * ((1.0 - sum_hV) * faccV + sum_hV * fbccV) +
                           n1x * ((fbcV - facV) * hn1V) + n2x * ((fbcV - facV) * hn2V) +
                           n3x * ((fbcV - facV) * hn3V);
-  ScalarGrad  eqx_c = -this->get_timestep() * McV * eqx_c_temp;
-  ScalarValue eq_n1 = n1 - this->get_timestep() * Mn1V *
+  ScalarGrad  eqx_c = -get_timestep() * McV * eqx_c_temp;
+  ScalarValue eq_n1 = n1 - get_timestep() * Mn1V *
                              ((fbV - faV) * hn1V + nDependentMisfitAC1 + heterMechAC1);
-  ScalarValue eq_n2 = n2 - this->get_timestep() * Mn2V *
+  ScalarValue eq_n2 = n2 - get_timestep() * Mn2V *
                              ((fbV - faV) * hn2V + nDependentMisfitAC2 + heterMechAC2);
-  ScalarValue eq_n3 = n3 - this->get_timestep() * Mn3V *
+  ScalarValue eq_n3 = n3 - get_timestep() * Mn3V *
                              ((fbV - faV) * hn3V + nDependentMisfitAC3 + heterMechAC3);
-  ScalarGrad eqx_n1 = -this->get_timestep() * Mn1V * Knx1;
-  ScalarGrad eqx_n2 = -this->get_timestep() * Mn2V * Knx2;
-  ScalarGrad eqx_n3 = -this->get_timestep() * Mn3V * Knx3;
+  ScalarGrad eqx_n1 = -get_timestep() * Mn1V * Knx1;
+  ScalarGrad eqx_n2 = -get_timestep() * Mn2V * Knx2;
+  ScalarGrad eqx_n3 = -get_timestep() * Mn3V * Knx3;
 
   variable_list.set_value_term(0, eq_c);
   variable_list.set_gradient_term(0, eqx_c);

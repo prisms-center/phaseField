@@ -68,7 +68,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarValue hV  = 3.0 * n * n - 2.0 * n * n * n;
   ScalarValue hnV = 6.0 * n - 6.0 * n * n;
 
-  double delta_t = this->get_timestep();
+  double delta_t = get_timestep();
 
   // KKS model c_alpha and c_beta as a function of c and h
   ScalarValue c_alpha =
@@ -122,7 +122,7 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
     return result;
   };
   // Calculate the nucleation rate
-  double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
+  double current_time = get_user_inputs().get_temporal_discretization().get_time();
   using std::exp;
   ScalarValue J = k1 * exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
   for (unsigned int i = 0; i < ScalarValue::size(); ++i)
@@ -159,10 +159,10 @@ CustomPDE<dim, degree, number>::seed_nucleus(
   ScalarValue                           &gamma) const
 {
   unsigned int current_increment =
-    this->get_user_inputs().get_temporal_discretization().get_increment();
-  double current_time = this->get_user_inputs().get_temporal_discretization().get_time();
+    get_user_inputs().get_temporal_discretization().get_increment();
+  double current_time = get_user_inputs().get_temporal_discretization().get_time();
   // Iterate through nuclei list
-  for (const prisms::Nucleus<dim> &nucleus : this->get_pf_tools().nuclei_list)
+  for (const prisms::Nucleus<dim> &nucleus : get_pf_tools().nuclei_list)
     {
       // Calculate the distance function to the nucleus center
       const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
@@ -176,9 +176,8 @@ CustomPDE<dim, degree, number>::seed_nucleus(
         return result;
       }();
 
-      ScalarValue dist = prisms::distance<dim, ScalarValue>(q_point_loc,
-                                                            loc_as_arr,
-                                                            this->get_user_inputs());
+      ScalarValue dist =
+        prisms::distance<dim, ScalarValue>(q_point_loc, loc_as_arr, get_user_inputs());
       // Seed a nucleus if it was added to the list of nuclei recently
       if (current_time < nucleus.seed_time + seeding_duration)
         {
