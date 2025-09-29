@@ -9,7 +9,12 @@ cmake_minimum_required(VERSION 3.27)
 cmake_policy(VERSION 3.27)
 
 # Grab the version of PRISMS-PF
-file(STRINGS "${CMAKE_SOURCE_DIR}/../../VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
+file(
+    STRINGS
+    "${CMAKE_SOURCE_DIR}/../../VERSION"
+    PRISMS_PF_VERSION
+    LIMIT_COUNT 1
+)
 
 message(STATUS "")
 message(STATUS "=========================================================")

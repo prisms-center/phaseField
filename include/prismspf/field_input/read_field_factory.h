@@ -14,12 +14,9 @@
 
 #include <prismspf/field_input/read_binary.h>
 #include <prismspf/field_input/read_field_base.h>
-#include <prismspf/field_input/read_vtk.h>
 
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-#  include <deal.II/base/exception_macros.h>
-#else
-#  include <deal.II/base/exceptions.h>
+#ifdef PRISMS_PF_WITH_VTK
+#  include <prismspf/field_input/read_vtk.h>
 #endif
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -43,8 +40,16 @@ create_reader(const InitialConditionFile       &ic_file,
   switch (ic_file.dataset_format)
     {
       case DataFormatType::VTKUnstructuredGrid:
+#ifdef PRISMS_PF_WITH_VTK
         return std::make_shared<ReadUnstructuredVTK<dim, number>>(ic_file,
                                                                   spatial_discretization);
+#else
+        AssertThrow(false,
+                    dealii::ExcMessage(
+                      "You are trying to read a VTK file as an input; however, PRISMS-PF "
+                      "was not built with VTK. Please reconfig PRISMS-PF with VTK using "
+                      "-D PRISMS_PF_WITH_VTK=ON"));
+#endif
       case DataFormatType::FlatBinary:
         return std::make_shared<ReadBinary<dim, number>>(ic_file, spatial_discretization);
       default:

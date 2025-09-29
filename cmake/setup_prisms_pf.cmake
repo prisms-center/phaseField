@@ -60,6 +60,12 @@ option(
 )
 
 option(
+    PRISMS_PF_WITH_VTK
+    "Whether the user wants to compiler PRISMS-PF with vtk, or not"
+    OFF
+)
+
+option(
     PRISMS_PF_WITH_HDF5
     "Whether the user wants to compile PRISMS-PF with deal.II's HDF5 dependency, or not."
     OFF

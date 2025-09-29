@@ -26,12 +26,6 @@
 #include <string>
 #include <vector>
 
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-#  include <deal.II/base/exception_macros.h>
-#else
-#  include <deal.II/base/exceptions.h>
-#endif
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
