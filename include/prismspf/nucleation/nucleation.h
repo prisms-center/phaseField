@@ -261,7 +261,7 @@ NucleationHandler<dim, degree, number>::gather_exclude_broadcast_nuclei(
   // Set up refs
   const NucleationParameters   &nuc_params = user_inputs.get_nucleation_parameters();
   const TemporalDiscretization &time_info  = user_inputs.get_temporal_discretization();
-  RNGEngine                    &rng = user_inputs.get_miscellaneous_parameters().rng;
+   RNGEngine              &rng = user_inputs.get_miscellaneous_parameters().rng;
 
   // Gather new nuclei to root process
   std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(), new_nuclei_list.end());
@@ -281,7 +281,7 @@ NucleationHandler<dim, degree, number>::gather_exclude_broadcast_nuclei(
 
       while (!new_nuclei.empty())
         {
-          Nucleus<dim> &nuc = new_nuclei.back();
+          const Nucleus<dim> &nuc = new_nuclei.back();
           bool          valid =
             std::none_of(global_nuclei.begin(),
                          global_nuclei.end(),

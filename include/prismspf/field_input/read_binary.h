@@ -197,11 +197,13 @@ inline dealii::Vector<number>
 ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
                                      const unsigned int        n_pt_values)
 {
-  std::vector<std::array<uint, 2>> indices(dim,
-                                           std::array<uint, 2> {
-                                             {0u, 0u}
-  }); // lower and upper indices in
-                                                         // each dimension
+  std::vector<std::array<unsigned int, 2>> indices(dim,
+                                                   std::array<unsigned int, 2> {
+                                                     {0u, 0u}
+  });
+  // lower and upper
+  // indices in each
+  // dimension
   std::vector<std::array<number, 2>> weights(
     dim,
     std::array<number, 2> {
@@ -210,9 +212,6 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
   for (unsigned int j = 0; j < dim; ++j)
     {
       indices[j][0] = (dealii::types::global_dof_index) std::floor(dNdx[j] * point[j]);
-      AssertThrow(indices[j][0] >= 0,
-                  dealii::ExcMessage(
-                    "negative index encountered in ReadBinary::interpolate"));
       AssertThrow(indices[j][0] < this->ic_file.n_data_points[j],
                   dealii::ExcMessage(
                     "index out of bounds encountered in ReadBinary::interpolate"));
