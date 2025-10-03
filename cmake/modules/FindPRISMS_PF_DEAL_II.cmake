@@ -70,59 +70,41 @@ if(PRISMS_PF_WITH_ZLIB)
     endif()
 endif()
 
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_HDF5)
-    set(PRISMS_PF_WITH_HDF5 ON)
-endif()
-if(PRISMS_PF_WITH_HDF5)
-    if(DEAL_II_WITH_HDF5)
-        message(STATUS "  Found deal.II installation with HDF5")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with HDF5 not found. Disable PRISMS_PF_WITH_HDF5 or recompile deal.II with HDF5."
-        )
-    endif()
-endif()
+macro(append_flags SOURCE_FLAGS DEST_FLAGS)
+  if(${SOURCE_FLAGS})
+    separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
+    foreach(flag IN LISTS _temp_flags)
+      list(APPEND ${DEST_FLAGS} "${flag}")
+    endforeach()
+  endif()
+endmacro()
 
-if(PRISMS_PF_AUTODETECTION AND DEAL_II_WITH_SUNDIALS)
-    set(PRISMS_PF_WITH_SUNDIALS ON)
-endif()
-if(PRISMS_PF_WITH_SUNDIALS)
-    if(DEAL_II_WITH_SUNDIALS)
-        message(STATUS "  Found deal.II installation with SUNDIALS")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS."
-        )
-    endif()
-endif()
+function(remove_std_flag variable_name)
+    # Get the current value
+    set(flags "${${variable_name}}")
+    
+    # Remove any -std=c++XX or -std=gnu++XX flags
+    string(REGEX REPLACE "-std=[^ ]+" "" flags "${flags}")
+    
+    # Clean up any extra spaces
+    string(REGEX REPLACE "  +" " " flags "${flags}")
+    string(STRIP "${flags}" flags)
+    
+    # Set the modified value back to the parent scope
+    set(${variable_name} "${flags}" PARENT_SCOPE)
+endfunction()
 
-# To enable CUDA in PRISMS-PF, deal.II must be built with Kokkos
-set(KOKKOS_CUDA_BACKEND
-    OFF
-    CACHE BOOL
-    "Whether the installed Kokkos version has a CUDA backend."
-)
-mark_as_advanced(KOKKOS_CUDA_BACKEND)
-if(DEAL_II_WITH_KOKKOS)
-    find_package(Kokkos QUIET HINTS ${KOKKOS_DIR} $ENV{KOKKOS_DIR})
-    if(Kokkos_FOUND AND Kokkos_DEVICES MATCHES "CUDA")
-        set(KOKKOS_CUDA_BACKEND ON)
-    endif()
-endif()
-if(PRISMS_PF_AUTODETECTION AND KOKKOS_CUDA_BACKEND)
-    set(PRISMS_PF_WITH_CUDA ON)
-endif()
-if(PRISMS_PF_WITH_CUDA)
-    if(KOKKOS_CUDA_BACKEND)
-        message(STATUS "  Found Kokkos installation with CUDA")
-    else()
-        message(
-            FATAL_ERROR
-            "Kokkos installation with CUDA not found. Disable PRISMS_PF_WITH_CUDA or recompile deal.II with Kokkos that has a CUDA backend."
-        )
-    endif()
-endif()
+# Grab relevant deal.II flags and put them into our own variables
+append_flags(DEAL_II_CXX_FLAGS PRISMS_PF_CXX_FLAGS)
+append_flags(DEAL_II_CXX_FLAGS_DEBUG PRISMS_PF_CXX_FLAGS_DEBUG)
+append_flags(DEAL_II_CXX_FLAGS_RELEASE PRISMS_PF_CXX_FLAGS_RELEASE)
 
-# Grab some compiler flags that would otherwise be provided by deal_ii_initialize_cached_variables()
+# Remove and standard flags that deal.II might have because we want to be able
+# to set our standard separately.
+remove_std_flag(PRISMS_PF_CXX_FLAGS)
+remove_std_flag(PRISMS_PF_CXX_FLAGS_DEBUG)
+remove_std_flag(PRISMS_PF_CXX_FLAGS_RELEASE)
+
+append_flags(DEAL_II_LINKER_FLAGS PRISMS_PF_LINKER_FLAGS)
+append_flags(DEAL_II_LINKER_FLAGS_DEBUG PRISMS_PF_LINKER_FLAGS_DEBUG)
+append_flags(DEAL_II_LINKER_FLAGS_RELEASE PRISMS_PF_LINKER_FLAGS_RELEASE)

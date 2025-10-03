@@ -97,7 +97,6 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     # Set targets & link libraries for the build type
     if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
         set_property(TARGET main_debug PROPERTY OUTPUT_NAME main-debug)
-        deal_ii_setup_target(main_debug DEBUG)
         target_link_libraries(
             main_debug
             ${PRISMS_PF_CORE_DIR}/libprisms-pf-debug.a
@@ -114,7 +113,6 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
 
     if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
         set_property(TARGET main_release PROPERTY OUTPUT_NAME main)
-        deal_ii_setup_target(main_release RELEASE)
         target_link_libraries(
             main_release
             ${PRISMS_PF_CORE_DIR}/libprisms-pf-release.a

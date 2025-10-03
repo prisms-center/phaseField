@@ -100,7 +100,7 @@ public:
   {
     if (read_initial_conditions_from_file)
       {
-        ic_files.push_back(std::move(_ic_file));
+        ic_files.push_back(_ic_file);
       }
   }
 

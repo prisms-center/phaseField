@@ -145,7 +145,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Grab the element volume
-      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+      const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
@@ -175,7 +175,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Grab the element volume
-      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+      const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
@@ -206,7 +206,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Grab the element volume
-      SizeType element_volume = element_volume_handler->get_element_volume(cell);
+      const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
       // Initialize, read DOFs, and set evaulation flags for each variable
       reinit_and_eval(src, cell);
@@ -1187,7 +1187,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
   using DiagonalValueType = typename DiagonalType::value_type;
 
   // Grab the element volume
-  SizeType element_volume = element_volume_handler->get_element_volume(cell);
+  const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
   // Helper function to submit the identity matrix
   auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)

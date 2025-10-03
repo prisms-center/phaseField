@@ -51,5 +51,4 @@ jobs:
 
         - name: Run clang-tidy
           run: |
-            ./contrib/utilities/clang_tidy.sh -j$(nproc) -D REDUCED_TEMPLATES=ON
-
+            ./contrib/utilities/clang_tidy.sh -j$(nproc)

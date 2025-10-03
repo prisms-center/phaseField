@@ -41,5 +41,6 @@ main-debug
 *.pvtu
 *.vtk
 *.log
+*.bin
 output.txt
 error.txt

@@ -73,9 +73,6 @@ endforeach()
 
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
 message(STATUS "Using PRISMS_PF_WITH_VTK = '${PRISMS_PF_WITH_VTK}'")
-message(STATUS "Using PRISMS_PF_WITH_HDF5 = '${PRISMS_PF_WITH_HDF5}'")
-message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
-message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 
 # =========================================================
@@ -93,10 +90,6 @@ set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
 if(ADDITIONAL_DEGREES)
     set(EXPAND_DEGREES "; 3; 4; 5; 6")
-endif()
-if(NOT REDUCED_TEMPLATES)
-    set(EXPAND_DIMENSIONS "; 3")
-    set(EXPAND_NUMBERS "; double")
 endif()
 
 configure_file(
@@ -216,29 +209,6 @@ add_custom_target(
         ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_usage.cmake
 )
 
-if(${FORCE_COLORED_OUTPUT})
-    if(
-        CMAKE_CXX_COMPILER_ID MATCHES "Clang"
-        OR CMAKE_CXX_COMPILER MATCHES "AppleClang"
-    )
-        string(APPEND DEAL_II_CXX_FLAGS_DEBUG " -fcolor-diagnostics")
-        string(APPEND DEAL_II_CXX_FLAGS_RELEASE " -fcolor-diagnostics")
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        string(APPEND DEAL_II_CXX_FLAGS_DEBUG " -fdiagnostics-color=always")
-        string(APPEND DEAL_II_CXX_FLAGS_RELEASE " -fdiagnostics-color=always")
-    endif()
-endif()
-
-# deal.II versions >=9.5 disable deprecation warnings in user code. Enable
-# the warnings again by removing the flag that disables them.
-string(
-    REPLACE
-    "-Wno-deprecated-declarations"
-    ""
-    DEAL_II_WARNING_FLAGS
-    "${DEAL_II_WARNING_FLAGS}"
-)
-
 # Set additional compiler flags
 set(PRISMS_PF_ADDITIONAL_CXX_FLAGS
     ""
@@ -251,93 +221,102 @@ if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
         STATUS
         "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':"
     )
-    string(APPEND DEAL_II_CXX_FLAGS_DEBUG " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
-    string(
-        APPEND
-        DEAL_II_CXX_FLAGS_RELEASE
-        " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}"
-    )
-    message(STATUS "  DEAL_II_WARNING_FLAGS: ${DEAL_II_WARNING_FLAGS}")
-    message(STATUS "  DEAL_II_CXX_FLAGS_DEBUG: ${DEAL_II_CXX_FLAGS_DEBUG}")
-    message(STATUS "  DEAL_II_CXX_FLAGS_RELEASE: ${DEAL_II_CXX_FLAGS_RELEASE}")
+    string(APPEND PRISMS_PF_CXX_FLAGS " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
+    message(STATUS "  PRISMS_PF_WARNING_FLAGS: ${PRISMS_PF_WARNING_FLAGS}")
+    message(STATUS "  PRISMS_PF_CXX_FLAGS: ${PRISMS_PF_CXX_FLAGS}")
+    message(STATUS "  PRISMS_PF_CXX_FLAGS_DEBUG: ${PRISMS_PF_CXX_FLAGS_DEBUG}")
+    message(STATUS "  PRISMS_PF_CXX_FLAGS_RELEASE: ${PRISMS_PF_CXX_FLAGS_RELEASE}")
 endif()
 
-if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
-    set(LIBRARY_NAME_DEBUG "prisms_pf_debug")
-    add_library(${LIBRARY_NAME_DEBUG} STATIC)
-    target_sources(${LIBRARY_NAME_DEBUG} PRIVATE ${PRISMS_PF_SOURCE_FILES})
-    set_property(
-        TARGET ${LIBRARY_NAME_DEBUG}
-        PROPERTY OUTPUT_NAME prisms-pf-debug
+foreach(_build ${PRISMS_PF_BUILD_TYPES})
+    # Create a target for each build type. Note that the build types are
+    # mixed case (e.g., Debug) so we need to convert them to lowercase and
+    # uppercase for various uses.
+    string(TOLOWER ${_build} _build_lowercase)
+    string(TOUPPER ${_build} _build_uppercase)
+    set(_library "prisms_pf_${_build_lowercase}")
+
+    # Add the library and set some properties
+    add_library(${_library} STATIC)
+    set_target_properties(
+        ${_target}
+        PROPERTIES
+            LINKER_LANGUAGE CXX
+            OUTPUT_NAME "prisms-pf-${_build_lowercase}"
     )
-    target_link_libraries(
-        ${LIBRARY_NAME_DEBUG}
-        prisms_pf_core_debug
-        prisms_pf_solvers_debug
-        prisms_pf_user_inputs_debug
-        prisms_pf_utilities_debug
+    target_sources(${_library} PRIVATE ${PRISMS_PF_SOURCE_FILES})
+
+    # Collect the libraries to link against and the include directories
+    set(_library_dependencies
+        prisms_pf_core_${_build_lowercase}
+        prisms_pf_solvers_${_build_lowercase}
+        prisms_pf_user_inputs_${_build_lowercase}
+        prisms_pf_utilities_${_build_lowercase}
     )
+    set(_include_directories
+        ${PRISMS_PF_INCLUDE_DIRS}
+        ${CMAKE_BINARY_DIR}/include
+        ${CMAKE_BINARY_DIR}/src
+        include
+    )
+
+    # Link the PRISMS-PF libraries
+    target_link_libraries(${_library} PRIVATE ${_library_dependencies})
     # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(
-        ${LIBRARY_NAME_DEBUG}
-        prisms_pf_core_debug
-        prisms_pf_solvers_debug
-        prisms_pf_user_inputs_debug
-        prisms_pf_utilities_debug
-    )
+    add_dependencies(${_library} ${_library_dependencies})
+
+    # Set the include directories
     target_include_directories(
-        ${LIBRARY_NAME_DEBUG}
+        ${_library}
         PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
     )
 
-    if(${VTK_BUILT_SEPARATELY})
-        include_directories(SYSTEM ${VTK_INCLUDE_DIR})
-        target_link_libraries(${LIBRARY_NAME_DEBUG} ${VTK_NEW_LIBRARIES})
-    endif()
-    if(${PRISMS_PF_WITH_CALIPER})
-        target_link_libraries(${LIBRARY_NAME_DEBUG} caliper)
-    endif()
-
-    deal_ii_setup_target(${LIBRARY_NAME_DEBUG} DEBUG)
-endif()
-
-if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
-    set(LIBRARY_NAME_RELEASE "prisms_pf_release")
-    add_library(${LIBRARY_NAME_RELEASE} STATIC)
-    target_sources(${LIBRARY_NAME_RELEASE} PRIVATE ${PRISMS_PF_SOURCE_FILES})
-    set_property(
-        TARGET ${LIBRARY_NAME_RELEASE}
-        PROPERTY OUTPUT_NAME prisms-pf-release
+    target_compile_options(
+        ${_library}
+        PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:${PRISMS_PF_WARNING_FLAGS}
+            ${PRISMS_PF_CXX_FLAGS}
+            ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
     )
+    target_link_options(
+        ${_library}
+        PRIVATE
+            $<$<LINK_LANGUAGE:CXX>:${PRISMS_PF_LINKER_FLAGS}
+            ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
+    )
+
+    # Add other dependencies, making sure they are public so that they
+    # propagate to targets that link against this library
+
+    # VTK
+    if(${VTK_BUILT_SEPARATELY})
+        target_include_directories(${_library} SYSTEM PUBLIC ${VTK_INCLUDE_DIR})
+        target_link_libraries(${_library} PUBLIC ${VTK_NEW_LIBRARIES})
+    endif()
+
+    # caliper
+    if(${PRISMS_PF_WITH_CALIPER})
+        target_link_libraries(${_library} PUBLIC caliper)
+    endif()
+
+    # deal.II
     target_link_libraries(
-        ${LIBRARY_NAME_RELEASE}
-        prisms_pf_core_release
-        prisms_pf_solvers_release
-        prisms_pf_user_inputs_release
-        prisms_pf_utilities_release
+        ${_library}
+        PUBLIC ${DEAL_II_TARGET_${_build_uppercase}}
     )
-    # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(
-        ${LIBRARY_NAME_RELEASE}
-        prisms_pf_core_release
-        prisms_pf_solvers_release
-        prisms_pf_user_inputs_release
-        prisms_pf_utilities_release
-    )
-    target_include_directories(
-        ${LIBRARY_NAME_RELEASE}
-        PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
-    )
+endforeach()
 
-    if(${VTK_BUILT_SEPARATELY})
-        include_directories(SYSTEM ${VTK_INCLUDE_DIR})
-        target_link_libraries(${LIBRARY_NAME_RELEASE} ${VTK_NEW_LIBRARIES})
-    endif()
-    if(${PRISMS_PF_WITH_CALIPER})
-        target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
-    endif()
+# Testing infrastructure
+if(UNIT_TESTS)
+    enable_testing()
+    add_subdirectory(tests/unit_tests)
 
-    deal_ii_setup_target(${LIBRARY_NAME_RELEASE} RELEASE)
+    add_custom_target(run_tests
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS test_core test_field_input test_user_inputs test_utilities
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Run all tests"
+    )
 endif()
 
 # Unwrap the compiler compile_commands.json after the build

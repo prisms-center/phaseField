@@ -66,25 +66,54 @@ option(
 )
 
 option(
-    PRISMS_PF_WITH_HDF5
-    "Whether the user wants to compile PRISMS-PF with deal.II's HDF5 dependency, or not."
-    OFF
-)
-
-option(
-    PRISMS_PF_WITH_SUNDIALS
-    "Whether the user wants to compile PRISMS-PF with deal.II's SUNDIALS dependency, or not."
-    OFF
-)
-
-option(
-    PRISMS_PF_WITH_CUDA
-    "Whether the user wants to compile PRISMS-PF with deal.II's CUDA dependency, or not."
-    OFF
-)
-
-option(
     PRISMS_PF_WITH_CALIPER
     "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
     OFF
 )
+
+# Set the compiler and linker flags
+set(PRISMS_PF_WARNING_FLAGS "")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # GCC
+    set(PRISMS_PF_WARNING_FLAGS 
+        -Wall -Wextra -Wpedantic
+        -Wconversion -Wsign-conversion
+        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
+        -Wunused -Woverloaded-virtual -Wnull-dereference
+        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
+        -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches
+        -Wlogical-op -Wuseless-cast
+    )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # Clang/AppleClang
+    set(PRISMS_PF_WARNING_FLAGS 
+        -Wall -Wextra -Wpedantic
+        -Wconversion -Wsign-conversion
+        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
+        -Wunused -Woverloaded-virtual -Wnull-dereference
+        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
+        -Wdocumentation -Winconsistent-missing-destructor-override-attribute
+        -Wunreachable-code -Wmove -Wloop-analysis
+        -Wcomma -Wrange-loop-analysis
+    )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel") # Intel classic (icc/icpc)
+    set(PRISMS_PF_WARNING_FLAGS 
+        -Wall -Wextra -Wcheck
+        -Wshadow -Wunused-variable -Wuninitialized
+        -Wremarks
+    )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM") # Newer Intel oneAPI compilers (icx/icpx)
+    set(PRISMS_PF_WARNING_FLAGS 
+        -Wall -Wextra -Wpedantic
+        -Wconversion -Wsign-conversion
+        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
+        -Wunused -Woverloaded-virtual -Wnull-dereference
+        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
+    )
+endif()
+
+set(PRISMS_PF_CXX_FLAGS "")
+set(PRISMS_PF_CXX_FLAGS_DEBUG "")
+set(PRISMS_PF_CXX_FLAGS_RELEASE "")
+
+set(PRISMS_PF_LINKER_FLAGS "")
+set(PRISMS_PF_LINKER_FLAGS_DEBUG "")
+set(PRISMS_PF_LINKER_FLAGS_RELEASE "")

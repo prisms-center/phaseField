@@ -57,7 +57,7 @@ ReadInitialCondition<dim, number>::ReadInitialCondition(
   const InitialConditionFile       &ic_file,
   const SpatialDiscretization<dim> &spatial_discretization)
   : dealii::Function<dim, number>((_field_type == FieldType::Vector) ? dim : 1)
-  , field_name(std::move(_field_name))
+  , field_name(_field_name)
   , field_type(_field_type)
   , reader(create_reader<dim, number>(ic_file, spatial_discretization))
 {}

@@ -124,21 +124,6 @@ if(PRISMS_PF_WITH_ZLIB)
     endif()
 endif()
 
-message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
-if(PRISMS_PF_WITH_SUNDIALS)
-    if(DEAL_II_WITH_SUNDIALS)
-        message(STATUS "  Found deal.II installation with SUNDIALS")
-    else()
-        message(
-            FATAL_ERROR
-            "deal.II installation with SUNDIALS not found. Disable PRISMS_PF_WITH_SUNDIALS or recompile deal.II with SUNDIALS."
-        )
-    endif()
-endif()
-
-# Load deal.II cached variables
-deal_ii_initialize_cached_variables()
-
 # Caliper
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 if(PRISMS_PF_WITH_CALIPER)

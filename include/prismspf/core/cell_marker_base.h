@@ -31,14 +31,14 @@ public:
    */
   virtual ~CellMarkerBase() = default;
 
-  virtual bool
+  [[nodiscard]] virtual bool
   flag([[maybe_unused]] const CellIterator           &cell,
        [[maybe_unused]] const TemporalDiscretization &time_info) const
   {
     return this->flag(cell.center(), time_info);
   }
 
-  virtual bool
+  [[nodiscard]] virtual bool
   flag([[maybe_unused]] const dealii::Point<dim>     &point,
        [[maybe_unused]] const TemporalDiscretization &time_info) const
   {
