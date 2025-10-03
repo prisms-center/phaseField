@@ -71,25 +71,25 @@ if(PRISMS_PF_WITH_ZLIB)
 endif()
 
 macro(append_flags SOURCE_FLAGS DEST_FLAGS)
-  if(${SOURCE_FLAGS})
-    separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
-    foreach(flag IN LISTS _temp_flags)
-      list(APPEND ${DEST_FLAGS} "${flag}")
-    endforeach()
-  endif()
+    if(${SOURCE_FLAGS})
+        separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
+        foreach(flag IN LISTS _temp_flags)
+            list(APPEND ${DEST_FLAGS} "${flag}")
+        endforeach()
+    endif()
 endmacro()
 
 function(remove_std_flag variable_name)
     # Get the current value
     set(flags "${${variable_name}}")
-    
+
     # Remove any -std=c++XX or -std=gnu++XX flags
     string(REGEX REPLACE "-std=[^ ]+" "" flags "${flags}")
-    
+
     # Clean up any extra spaces
     string(REGEX REPLACE "  +" " " flags "${flags}")
     string(STRIP "${flags}" flags)
-    
+
     # Set the modified value back to the parent scope
     set(${variable_name} "${flags}" PARENT_SCOPE)
 endfunction()

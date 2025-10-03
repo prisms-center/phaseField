@@ -1,6 +1,0 @@
-# PRISMS-PF configuration variables
-
-set(64BIT_INDICES @64BIT_INDICES@ CACHE BOOL "Whether 64-bit numbers are enabled for large simulations")
-set(PRISMS_PF_WITH_CALIPER @PRISMS_PF_WITH_CALIPER@ CACHE BOOL "Whether Caliper is enabled" FORCE)
-set(PRISMS_PF_WITH_VTK @PRISMS_PF_WITH_VTK@ CACHE BOOL "Whether VTK is enabled" FORCE)
-set(PRISMS_PF_WITH_ZLIB @PRISMS_PF_WITH_ZLIB@ CACHE BOOL "Whether zlib is enabled" FORCE)

@@ -26,12 +26,17 @@ function(define_library _library)
         target_compile_options(
             ${_target}
             PRIVATE
-                $<$<COMPILE_LANGUAGE:CXX>:${PRISMS_PF_WARNING_FLAGS} ${PRISMS_PF_CXX_FLAGS} ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
+                $<$<COMPILE_LANGUAGE:CXX>:
+                ${PRISMS_PF_WARNING_FLAGS}
+                ${PRISMS_PF_CXX_FLAGS}
+                ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
         )
         target_link_options(
             ${_target}
             PRIVATE
-                $<$<LINK_LANGUAGE:CXX>:${PRISMS_PF_LINKER_FLAGS} ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
+                $<$<LINK_LANGUAGE:CXX>:
+                ${PRISMS_PF_LINKER_FLAGS}
+                ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
         )
 
         # Add other dependencies, making sure they are public so that they
@@ -42,20 +47,20 @@ function(define_library _library)
             target_include_directories(
                 ${_target}
                 SYSTEM
-                PUBLIC ${VTK_INCLUDE_DIR}
+                PRIVATE ${VTK_INCLUDE_DIR}
             )
             target_link_libraries(${_target} PUBLIC ${VTK_NEW_LIBRARIES})
         endif()
 
         # caliper
         if(${PRISMS_PF_WITH_CALIPER})
-            target_link_libraries(${_target} PUBLIC caliper)
+            target_link_libraries(${_target} PRIVATE caliper)
         endif()
 
         # deal.II
         target_link_libraries(
             ${_target}
-            PUBLIC ${DEAL_II_TARGET_${_build_uppercase}}
+            PRIVATE ${DEAL_II_TARGET_${_build_uppercase}}
         )
     endforeach()
 endfunction()

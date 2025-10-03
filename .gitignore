@@ -11,7 +11,8 @@ CTest*
 
 # Config files
 include/prismspf/config.h
-cmake/prisms_pf_config.cmake
+cmake/prisms_pf-config.cmake
+cmake/prisms_pf-targets.cmake
 cmake/templates
 compile_commands.json
 
@@ -33,7 +34,7 @@ compile_commands.json
 *.a
 
 # Executables
-main
+main-release
 main-debug
 
 # Output files

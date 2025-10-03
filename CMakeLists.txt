@@ -225,7 +225,10 @@ if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
     message(STATUS "  PRISMS_PF_WARNING_FLAGS: ${PRISMS_PF_WARNING_FLAGS}")
     message(STATUS "  PRISMS_PF_CXX_FLAGS: ${PRISMS_PF_CXX_FLAGS}")
     message(STATUS "  PRISMS_PF_CXX_FLAGS_DEBUG: ${PRISMS_PF_CXX_FLAGS_DEBUG}")
-    message(STATUS "  PRISMS_PF_CXX_FLAGS_RELEASE: ${PRISMS_PF_CXX_FLAGS_RELEASE}")
+    message(
+        STATUS
+        "  PRISMS_PF_CXX_FLAGS_RELEASE: ${PRISMS_PF_CXX_FLAGS_RELEASE}"
+    )
 endif()
 
 foreach(_build ${PRISMS_PF_BUILD_TYPES})
@@ -235,6 +238,7 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     string(TOLOWER ${_build} _build_lowercase)
     string(TOUPPER ${_build} _build_uppercase)
     set(_library "prisms_pf_${_build_lowercase}")
+    list(APPEND PRISMS_PF_TARGETS ${_library})
 
     # Add the library and set some properties
     add_library(${_library} STATIC)
@@ -253,6 +257,7 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
         prisms_pf_user_inputs_${_build_lowercase}
         prisms_pf_utilities_${_build_lowercase}
     )
+    list(APPEND PRISMS_PF_TARGETS ${_library_dependencies})
     set(_include_directories
         ${PRISMS_PF_INCLUDE_DIRS}
         ${CMAKE_BINARY_DIR}/include
@@ -261,27 +266,30 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     )
 
     # Link the PRISMS-PF libraries
-    target_link_libraries(${_library} PRIVATE ${_library_dependencies})
+    target_link_libraries(${_library} PUBLIC ${_library_dependencies})
     # Add explicit dependencies to ensure proper build order with Ninja
     add_dependencies(${_library} ${_library_dependencies})
 
     # Set the include directories
     target_include_directories(
         ${_library}
-        PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
+        PUBLIC ${CMAKE_BINARY_DIR}/include
+        PRIVATE ${CMAKE_BINARY_DIR}/src
     )
 
     target_compile_options(
         ${_library}
         PRIVATE
-            $<$<COMPILE_LANGUAGE:CXX>:${PRISMS_PF_WARNING_FLAGS}
+            $<$<COMPILE_LANGUAGE:CXX>:
+            ${PRISMS_PF_WARNING_FLAGS}
             ${PRISMS_PF_CXX_FLAGS}
             ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
     )
     target_link_options(
         ${_library}
         PRIVATE
-            $<$<LINK_LANGUAGE:CXX>:${PRISMS_PF_LINKER_FLAGS}
+            $<$<LINK_LANGUAGE:CXX>:
+            ${PRISMS_PF_LINKER_FLAGS}
             ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
     )
 
@@ -311,7 +319,8 @@ if(UNIT_TESTS)
     enable_testing()
     add_subdirectory(tests/unit_tests)
 
-    add_custom_target(run_tests
+    add_custom_target(
+        run_tests
         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
         DEPENDS test_core test_field_input test_user_inputs test_utilities
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
@@ -336,10 +345,19 @@ endif()
 include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
 
 # Generate configuration file for applications
-configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf_config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/prisms_pf_config.cmake
-    @ONLY
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
+    ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    INSTALL_DESTINATION ${CMAKE_BINARY_DIR}/cmake
+)
+
+# Export targets
+list(REMOVE_DUPLICATES PRISMS_PF_TARGETS)
+export(
+    TARGETS ${PRISMS_PF_TARGETS}
+    FILE "${CMAKE_BINARY_DIR}/cmake/prisms_pf-targets.cmake"
+    NAMESPACE prisms_pf::
 )
 
 # Print the config

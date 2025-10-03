@@ -73,40 +73,81 @@ option(
 
 # Set the compiler and linker flags
 set(PRISMS_PF_WARNING_FLAGS "")
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # GCC
-    set(PRISMS_PF_WARNING_FLAGS 
-        -Wall -Wextra -Wpedantic
-        -Wconversion -Wsign-conversion
-        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
-        -Wunused -Woverloaded-virtual -Wnull-dereference
-        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
-        -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches
-        -Wlogical-op -Wuseless-cast
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # GCC
+    set(PRISMS_PF_WARNING_FLAGS
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wconversion
+        -Wsign-conversion
+        -Wshadow
+        -Wnon-virtual-dtor
+        -Wold-style-cast
+        -Wcast-align
+        -Wunused
+        -Woverloaded-virtual
+        -Wnull-dereference
+        -Wdouble-promotion
+        -Wformat=2
+        -Wimplicit-fallthrough
+        -Wmisleading-indentation
+        -Wduplicated-cond
+        -Wduplicated-branches
+        -Wlogical-op
+        -Wuseless-cast
     )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # Clang/AppleClang
-    set(PRISMS_PF_WARNING_FLAGS 
-        -Wall -Wextra -Wpedantic
-        -Wconversion -Wsign-conversion
-        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
-        -Wunused -Woverloaded-virtual -Wnull-dereference
-        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
-        -Wdocumentation -Winconsistent-missing-destructor-override-attribute
-        -Wunreachable-code -Wmove -Wloop-analysis
-        -Wcomma -Wrange-loop-analysis
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # Clang/AppleClang
+    set(PRISMS_PF_WARNING_FLAGS
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wconversion
+        -Wsign-conversion
+        -Wshadow
+        -Wnon-virtual-dtor
+        -Wold-style-cast
+        -Wcast-align
+        -Wunused
+        -Woverloaded-virtual
+        -Wnull-dereference
+        -Wdouble-promotion
+        -Wformat=2
+        -Wimplicit-fallthrough
+        -Wdocumentation
+        -Winconsistent-missing-destructor-override-attribute
+        -Wunreachable-code
+        -Wmove
+        -Wloop-analysis
+        -Wcomma
+        -Wrange-loop-analysis
     )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel") # Intel classic (icc/icpc)
-    set(PRISMS_PF_WARNING_FLAGS 
-        -Wall -Wextra -Wcheck
-        -Wshadow -Wunused-variable -Wuninitialized
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Intel") # Intel classic (icc/icpc)
+    set(PRISMS_PF_WARNING_FLAGS
+        -Wall
+        -Wextra
+        -Wcheck
+        -Wshadow
+        -Wunused-variable
+        -Wuninitialized
         -Wremarks
     )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM") # Newer Intel oneAPI compilers (icx/icpx)
-    set(PRISMS_PF_WARNING_FLAGS 
-        -Wall -Wextra -Wpedantic
-        -Wconversion -Wsign-conversion
-        -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align
-        -Wunused -Woverloaded-virtual -Wnull-dereference
-        -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM") # Newer Intel oneAPI compilers (icx/icpx)
+    set(PRISMS_PF_WARNING_FLAGS
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wconversion
+        -Wsign-conversion
+        -Wshadow
+        -Wnon-virtual-dtor
+        -Wold-style-cast
+        -Wcast-align
+        -Wunused
+        -Woverloaded-virtual
+        -Wnull-dereference
+        -Wdouble-promotion
+        -Wformat=2
+        -Wimplicit-fallthrough
     )
 endif()
 
