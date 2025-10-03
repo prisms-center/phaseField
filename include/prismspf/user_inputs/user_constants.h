@@ -544,7 +544,7 @@ inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                                    const std::vector<double> &constants) const
 {
-  // Initialize tensor
+  // Initialize compliance tensor
   dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> compliance;
 
   switch (dim)
@@ -555,9 +555,11 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
           switch (model)
             {
-              // TODO (landinjm): Should we both fixing this for the other cases and just
-              // selecting the x index. It would allow the user to switch from 2D to 1D to
-              // 3D, but would produce unexpected behavior.
+                // For the 1D case, it make little sense to accept anything besides an
+                // isotropic elasticity tensor. One hiccup, is that if a user is debugging
+                // an application and switches to 1D, they will have to modify the
+                // elasticity constants to align with that. While more burdensome, there's
+                // less of a chance of producing spurious behavior.
               case Isotropic:
                 {
                   const double modulus = constants.at(0);
@@ -575,15 +577,24 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
         }
       case 2:
         {
+          // The voigt indexing scheme for 2 dimensions
           const int xx_dir = 0;
           const int yy_dir = 1;
           const int xy_dir = 2;
 
           switch (model)
             {
+              // Like the 1D case, it is nonsensical to have transverse or orthotropic
+              // compliance tensors, so we throw an error.
               case Isotropic:
                 {
-                  // TODO (landinjm): Document this
+                  // For isotropic compliance tensors, we can simplify the computation to
+                  // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
+                  // modulus. In cartesian coordinates,
+                  // $$$
+                  // c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}
+                  // \delta_{jl} + \delta_{il} \delta_{kj})
+                  // $$$
                   const double modulus = constants.at(0);
                   const double poisson = constants.at(1);
 
@@ -599,6 +610,12 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                 }
               case Anisotropic:
                 {
+                  // In the anisotropic case, every entry is specified (given the symmetry
+                  // constraints). Also, ignore magic numbers because it is simpler to
+                  // hardcode this.
+
+                  // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+
                   compliance[xx_dir][xx_dir] = constants.at(0);
                   compliance[yy_dir][yy_dir] = constants.at(1);
                   compliance[xy_dir][xy_dir] = constants.at(2);
@@ -608,6 +625,8 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                     constants.at(4);
                   compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] =
                     constants.at(5);
+
+                  // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
                 }
               default:
@@ -628,7 +647,13 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
             {
               case Isotropic:
                 {
-                  // TODO (landinjm): Document this
+                  // For isotropic compliance tensors, we can simplify the computation to
+                  // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
+                  // modulus. In cartesian coordinates,
+                  // $$$
+                  // c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}
+                  // \delta_{jl} + \delta_{il} \delta_{kj})
+                  // $$$
                   const double modulus = constants.at(0);
                   const double poisson = constants.at(1);
 
@@ -647,6 +672,12 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                 }
               case Anisotropic:
                 {
+                  // In the anisotropic case, every entry is specified (given the symmetry
+                  // constraints). Also, ignore magic numbers because it is simpler to
+                  // hardcode this.
+
+                  // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+
                   compliance[xx_dir][xx_dir] = constants[0];
                   compliance[yy_dir][yy_dir] = constants[1];
                   compliance[zz_dir][zz_dir] = constants[2];
@@ -668,10 +699,14 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   compliance[yz_dir][xz_dir] = compliance[xz_dir][yz_dir] = constants[18];
                   compliance[yz_dir][xy_dir] = compliance[xy_dir][yz_dir] = constants[19];
                   compliance[xz_dir][xy_dir] = compliance[xy_dir][xz_dir] = constants[20];
+
+                  // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
                 }
               case Transverse:
+              // TODO (landinjm): implement
               case Orthotropic:
+              // TODO (landinjm): implement
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }

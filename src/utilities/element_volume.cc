@@ -93,7 +93,8 @@ ElementVolume<dim, degree, number>::get_element_volume(unsigned cell) const
 };
 
 template <unsigned int dim, unsigned int degree, typename number>
-ElementVolumeContainer<dim, degree, number>::ElementVolumeContainer(MGInfo<dim> &mg_info)
+ElementVolumeContainer<dim, degree, number>::ElementVolumeContainer(
+  const MGInfo<dim> &mg_info)
   : element_volume()
   , multigrid_element_volume(0, 0)
 {

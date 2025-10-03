@@ -1,10 +1,12 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <prismspf/config.h>
-#include <prismspf/field_input/read_vtk.h>
+#ifdef PRISMS_PF_WITH_VTK
 
-#include "catch.hpp"
+#  include <prismspf/config.h>
+#  include <prismspf/field_input/read_vtk.h>
+
+#  include "catch.hpp"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -13,7 +15,7 @@ TEST_CASE("Read vtk file")
   SECTION("2D Scalar fields with quadrature degree 1")
   {
     InitialConditionFile file;
-    file.filename       = "field_input/test_2D_1degree.vtk";
+    file.filename       = "test_2D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<2>       spatial_discretization;
     ReadUnstructuredVTK<2, double> reader(file, spatial_discretization);
@@ -36,7 +38,7 @@ TEST_CASE("Read vtk file")
   SECTION("2D Scalar fields with quadrature degree 2")
   {
     InitialConditionFile file;
-    file.filename       = "field_input/test_2D_2degree.vtk";
+    file.filename       = "test_2D_2degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<2>       spatial_discretization;
     ReadUnstructuredVTK<2, double> reader(file, spatial_discretization);
@@ -59,7 +61,7 @@ TEST_CASE("Read vtk file")
   SECTION("3D Scalar fields with quadrature degree 1")
   {
     InitialConditionFile file;
-    file.filename       = "field_input/test_3D_1degree.vtk";
+    file.filename       = "test_3D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<3>       spatial_discretization;
     ReadUnstructuredVTK<3, double> reader(file, spatial_discretization);
@@ -93,7 +95,7 @@ TEST_CASE("Read vtk file")
   SECTION("Invalid cell type due to mismatched dimensions")
   {
     InitialConditionFile file;
-    file.filename       = "field_input/test_2D_1degree.vtk";
+    file.filename       = "test_2D_1degree.vtk";
     file.dataset_format = DataFormatType::VTKUnstructuredGrid;
     SpatialDiscretization<3> spatial_discretization;
     REQUIRE_THROWS(ReadUnstructuredVTK<3, double>(file, spatial_discretization));
@@ -101,3 +103,5 @@ TEST_CASE("Read vtk file")
 }
 
 PRISMS_PF_END_NAMESPACE
+
+#endif

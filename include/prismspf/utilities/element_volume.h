@@ -74,7 +74,7 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit ElementVolumeContainer(MGInfo<dim> &mg_info);
+  explicit ElementVolumeContainer(const MGInfo<dim> &mg_info);
 
   /**
    * @brief Initialize the element volume container.

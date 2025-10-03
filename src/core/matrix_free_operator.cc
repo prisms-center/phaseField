@@ -44,7 +44,7 @@ MatrixFreeOperator<dim, degree, number>::MatrixFreeOperator(
   bool                                                    _use_local_mapping)
   : MATRIX_FREE_OPERATOR_BASE()
   , attributes_list(_attributes_list)
-  , pde_operator(std::move(_pde_operator))
+  , pde_operator(_pde_operator)
   , solve_block(_solve_block)
   , index(_index)
   , use_local_mapping(_use_local_mapping)

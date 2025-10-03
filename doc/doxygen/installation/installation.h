@@ -113,8 +113,6 @@ your machine. These include:
 - MPI (we recommend OpenMPI or MPICH)
 - p4est (for adaptive octree meshing)
 - VTK (for file I/O) **[optional]**
-- HDF5 (for file I/O) **[optional]**
-- SUNDIALS (for time integration & nonlinear solvers) **[optional]**
 - Caliper (for profiling) **[optional]**
 - deal.II (version 9.6 or higher)
 

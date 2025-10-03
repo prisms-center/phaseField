@@ -61,8 +61,8 @@ public:
     , element_volume_container(&_element_volume_container)
     , mg_info(&_mg_info)
     , solution_handler(&_solution_handler)
-    , pde_operator(std::move(_pde_operator))
-    , pde_operator_float(std::move(_pde_operator_float)) {};
+    , pde_operator(_pde_operator)
+    , pde_operator_float(_pde_operator_float) {};
 
   /**
    * @brief Destructor.

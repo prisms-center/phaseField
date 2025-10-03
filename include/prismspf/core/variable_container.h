@@ -1061,7 +1061,7 @@ private:
   eval_cell_diagonal(FEEvaluationType                            *feeval_ptr,
                      DiagonalType                                *diagonal_ptr,
                      unsigned int                                 cell,
-                     Types::Index                                 global_var_index,
+                     Types::Index                                 global_variable_index,
                      const std::function<void(VariableContainer &,
                                               const dealii::Point<dim, SizeType> &,
                                               const SizeType &)> &func,

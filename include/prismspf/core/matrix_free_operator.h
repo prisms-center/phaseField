@@ -254,7 +254,7 @@ private:
   /**
    * @brief The element volume container
    */
-  const ElementVolume<dim, degree, number> *element_volume_handler;
+  const ElementVolume<dim, degree, number> *element_volume_handler = nullptr;
 
   /**
    * @brief PDE operator object for user defined PDEs.

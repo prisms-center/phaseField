@@ -434,7 +434,7 @@ private:
   /**
    * @brief Residual vector.
    */
-  VectorType *residual;
+  VectorType *residual = nullptr;
 
   /**
    * @brief Mapping from global solution vectors to the local ones for the newton update.
@@ -449,7 +449,7 @@ private:
   /**
    * @brief Newton update vector.
    */
-  VectorType *newton_update;
+  VectorType *newton_update = nullptr;
 
   /**
    * @brief Matrix-free operator for the residual side.
