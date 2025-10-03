@@ -78,7 +78,6 @@ public:
 
   // cppcheck-suppress-end returnByReference
 
-protected:
   /**
    * @brief User-implemented method where the variable attributes are set for all fields.
    */
