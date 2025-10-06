@@ -10,6 +10,9 @@ message(STATUS "PRISMS_PF_AUTODETECTION = ${PRISMS_PF_AUTODETECTION}")
 option(UNIT_TESTS "Whether to build the unit tests or not." ON)
 message(STATUS "UNIT_TESTS = ${UNIT_TESTS}")
 
+option(REGRESSION_TESTS "Whether to build the regression tests or not." ON)
+message(STATUS "REGRESSION_TESTS = ${REGRESSION_TESTS}")
+
 option(
     64BIT_INDICES
     "Whether to compile PRISMS-PF with 64-bit numbers for large simulations"

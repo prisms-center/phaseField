@@ -9,6 +9,10 @@ CTest*
 **expand_template_instantiations_exe
 **.inst
 
+# The default install folder & files
+install/
+install_manifest.txt
+
 # Config files
 include/prismspf/config.h
 cmake/prisms_pf-config.cmake

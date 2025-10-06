@@ -19,7 +19,6 @@ function(define_library _library)
         target_include_directories(
             ${_target}
             SYSTEM
-            PUBLIC ${PRISMS_PF_INCLUDE_DIRS}
             PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src
         )
 

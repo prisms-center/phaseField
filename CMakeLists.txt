@@ -1,6 +1,5 @@
 ##
-#  CMake for the PRISMS-PF
-#  Adapted from the ASPECT CMake file
+#  CMake for the PRISMS-PF core library
 ##
 
 # cmake config
@@ -32,17 +31,6 @@ message(STATUS "")
 # Some basic bookkeeping
 # =========================================================
 
-# Check that a prior CMakeCache is not located in the build directory
-if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
-    message(
-        FATAL_ERROR
-        "Detected the file:\n"
-        "${CMAKE_SOURCE_DIR}/CMakeCache.txt\n"
-        "in your source directory, which may be leftover from prior builds. "
-        "Please delete the file before running cmake again."
-    )
-endif()
-
 # Grab git information
 prisms_pf_git_version()
 
@@ -51,6 +39,16 @@ include(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
 
 # Declare the project
 project(prisms_pf CXX)
+
+# Set the default install prefix if it was not set by the user
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX
+        "${CMAKE_BINARY_DIR}/install"
+        CACHE PATH
+        "Installation prefix"
+        FORCE
+    )
+endif()
 
 # Include the PRISMS-PF setup
 include(${CMAKE_SOURCE_DIR}/cmake/setup_prisms_pf.cmake)
@@ -112,8 +110,6 @@ add_subdirectory(src)
 # Grab the source and include files
 get_property(PRISMS_PF_SOURCE_FILES GLOBAL PROPERTY PRISMS_PF_SOURCE_FILES)
 get_property(PRISMS_PF_HEADER_FILES GLOBAL PROPERTY PRISMS_PF_HEADER_FILES)
-
-# Test stuff goes here
 
 # Make and ninja build options
 if(CMAKE_GENERATOR MATCHES "Ninja")
@@ -258,12 +254,6 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
         prisms_pf_utilities_${_build_lowercase}
     )
     list(APPEND PRISMS_PF_TARGETS ${_library_dependencies})
-    set(_include_directories
-        ${PRISMS_PF_INCLUDE_DIRS}
-        ${CMAKE_BINARY_DIR}/include
-        ${CMAKE_BINARY_DIR}/src
-        include
-    )
 
     # Link the PRISMS-PF libraries
     target_link_libraries(${_library} PUBLIC ${_library_dependencies})
@@ -273,7 +263,9 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     # Set the include directories
     target_include_directories(
         ${_library}
-        PUBLIC ${CMAKE_BINARY_DIR}/include
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/prisms_pf>
         PRIVATE ${CMAKE_BINARY_DIR}/src
     )
 
@@ -314,7 +306,48 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     )
 endforeach()
 
-# Testing infrastructure
+# =========================================================
+# Installation
+# =========================================================
+include(GNUInstallDirs)
+
+# Install the libraries
+install(
+    TARGETS ${PRISMS_PF_TARGETS}
+    EXPORT prisms_pf-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install the headers
+install(
+    DIRECTORY ${CMAKE_BINARY_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prisms_pf
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+)
+
+# Install the CMake config files
+install(
+    EXPORT prisms_pf-targets
+    FILE prisms_pf-targets.cmake
+    NAMESPACE prisms_pf::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+)
+
+install(
+    FILES ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+)
+
+# =========================================================
+# Testing
+# =========================================================
+
+# Unit tests
 if(UNIT_TESTS)
     enable_testing()
     add_subdirectory(tests/unit_tests)
@@ -328,6 +361,27 @@ if(UNIT_TESTS)
     )
 endif()
 
+# Regression tests
+if(REGRESSION_TESTS)
+    # Compile each of the regression tests and run the python script
+    add_subdirectory(tests/regression_tests)
+endif()
+
+# =========================================================
+# Final steps
+# =========================================================
+
+# Write config to file
+include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
+
+# Generate configuration file for applications
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
+    ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    INSTALL_DESTINATION ${CMAKE_BINARY_DIR}/cmake
+)
+
 # Unwrap the compiler compile_commands.json after the build
 if(${UNWRAP_COMPILER} STREQUAL "ON")
     add_custom_command(
@@ -340,17 +394,6 @@ if(${UNWRAP_COMPILER} STREQUAL "ON")
         COMMENT "Unwrapping compiler for compile_commands.json"
     )
 endif()
-
-# Write config to file
-include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
-
-# Generate configuration file for applications
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
-    INSTALL_DESTINATION ${CMAKE_BINARY_DIR}/cmake
-)
 
 # Export targets
 list(REMOVE_DUPLICATES PRISMS_PF_TARGETS)
