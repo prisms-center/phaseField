@@ -70,15 +70,6 @@ if(PRISMS_PF_WITH_ZLIB)
     endif()
 endif()
 
-macro(append_flags SOURCE_FLAGS DEST_FLAGS)
-    if(${SOURCE_FLAGS})
-        separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
-        foreach(flag IN LISTS _temp_flags)
-            list(APPEND ${DEST_FLAGS} "${flag}")
-        endforeach()
-    endif()
-endmacro()
-
 function(remove_std_flag variable_name)
     # Get the current value
     set(flags "${${variable_name}}")
