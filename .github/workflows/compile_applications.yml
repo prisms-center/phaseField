@@ -39,7 +39,10 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja -D BUILD_APPLICATIONS=ON .
+          cmake -G Ninja \
+          -D BUILD_APPLICATIONS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
 
       - name: Compile PRISMS-PF applications
@@ -47,7 +50,6 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-          export PRISMS_PF_DIR=$PWD/install
 
           ninja -j $(nproc) install
 

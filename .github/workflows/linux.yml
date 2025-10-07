@@ -40,7 +40,11 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON .
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
 
       - name: Run PRISMS-PF unit tests
@@ -55,7 +59,6 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-          export PRISMS_PF_DIR=$PWD/install
 
           ninja install
 
@@ -64,9 +67,13 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-          export PRISMS_PF_DIR=$PWD/install
 
-          cmake -G Ninja -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON -D N_THREADS=2.
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D N_THREADS=2 \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja install
 
   linux-optimizations:
@@ -83,7 +90,12 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja -D ADDITIONAL_OPTIMIZATIONS=ON -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON  .
+          cmake -G Ninja \
+          -D ADDITIONAL_OPTIMIZATIONS=ON \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
 
       - name: Run PRISMS-PF unit tests
@@ -98,7 +110,6 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-          export PRISMS_PF_DIR=$PWD/install
 
           ninja install
 
@@ -107,7 +118,11 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-          export PRISMS_PF_DIR=$PWD/install
 
-          cmake -G Ninja -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON -D N_THREADS=2.
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D N_THREADS=2 \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja install
