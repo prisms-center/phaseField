@@ -79,7 +79,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # GCC
         -Wextra
         -Wpedantic
         -Wconversion
-        -Wsign-conversion
+        # -Wsign-conversion # This is disabled because deal.II uses int when it should be uint so it just produces a lot of noise for limited utility 
         -Wshadow
         -Wnon-virtual-dtor
         -Wold-style-cast
@@ -102,7 +102,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # Clang/AppleClang
         -Wextra
         -Wpedantic
         -Wconversion
-        -Wsign-conversion
+        # -Wsign-conversion # This is disabled because deal.II uses int when it should be uint so it just produces a lot of noise for limited utility 
         -Wshadow
         -Wnon-virtual-dtor
         -Wold-style-cast
@@ -137,7 +137,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM") # Newer Intel oneAPI compiler
         -Wextra
         -Wpedantic
         -Wconversion
-        -Wsign-conversion
+        # -Wsign-conversion # This is disabled because deal.II uses int when it should be uint so it just produces a lot of noise for limited utility 
         -Wshadow
         -Wnon-virtual-dtor
         -Wold-style-cast
