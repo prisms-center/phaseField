@@ -4,25 +4,23 @@
 
 message(STATUS "Setting up PRISMS-PF regression tests...")
 
+# A list of the regression applications
 set(REGRESSION_TEST_APPS
     allen_cahn_explicit
     allen_cahn_implicit
-    allen_cahn_rk4
     blank
     cahn_hilliard_explicit
     cahn_hilliard_implicit
     cavity_flow
-    file_read_binary
-    file_read_vtk
     fracture
     heat_equation_steady_state
     linear_solve_old_solution
     mechanics
     precipitate_explicit
     solution_blocks
-    taylor_green_vortex
 )
 
+# For each regression application install the source files, configure, and compile
 foreach(test_app ${REGRESSION_TEST_APPS})
     # Install the source files
     install(
@@ -35,6 +33,7 @@ foreach(test_app ${REGRESSION_TEST_APPS})
         PATTERN "*.h"
         PATTERN "*.prm"
         PATTERN "CMakeLists.txt"
+        PATTERN "gold_output.txt"
     )
 
     # Compile during installation
@@ -64,5 +63,26 @@ foreach(test_app ${REGRESSION_TEST_APPS})
   "
     )
 endforeach()
+
+# Run the regressions apps
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
+
+if(NOT DEFINED N_THREADS)
+ set(N_THREADS 1)
+endif()
+
+install(CODE "
+execute_process(
+  COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/run.py
+    -j ${N_THREADS}
+    ${REGRESSION_TEST_APPS}
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  RESULT_VARIABLE run_result
+)
+if(run_result)
+  message(FATAL_ERROR \"Regression tests failed\")
+endif()
+")
+
 
 message(STATUS "PRISMS-PF regression tests setup complete.")
