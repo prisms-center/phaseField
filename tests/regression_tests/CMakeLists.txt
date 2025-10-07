@@ -74,6 +74,7 @@ install(CODE "
 execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/run.py
     -j ${N_THREADS}
+    -d ${CMAKE_INSTALL_PREFIX}/tests/regression_tests
     ${REGRESSION_TEST_APPS}
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   RESULT_VARIABLE run_result
