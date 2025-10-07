@@ -264,8 +264,8 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     target_include_directories(
         ${_library}
         PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/prisms_pf>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include/prisms_pf>
         PRIVATE ${CMAKE_BINARY_DIR}/src
     )
 
@@ -323,8 +323,8 @@ install(
 
 # Install the headers
 install(
-    DIRECTORY ${CMAKE_BINARY_DIR}/include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prisms_pf
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION include/prisms_pf
     FILES_MATCHING
     PATTERN "*.h"
     PATTERN "*.hpp"
