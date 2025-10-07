@@ -367,6 +367,12 @@ if(REGRESSION_TESTS)
     add_subdirectory(tests/regression_tests)
 endif()
 
+# Applications
+if(BUILD_APPLICATIONS)
+  # Compile each of the applications
+  add_subdirectory(applications)
+endif()
+
 # =========================================================
 # Final steps
 # =========================================================

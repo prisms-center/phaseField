@@ -13,6 +13,9 @@ message(STATUS "UNIT_TESTS = ${UNIT_TESTS}")
 option(REGRESSION_TESTS "Whether to build the regression tests or not." OFF)
 message(STATUS "REGRESSION_TESTS = ${REGRESSION_TESTS}")
 
+option(BUILD_APPLICATIONS "Whether to build all the pre-built applications or not." OFF)
+message(STATUS "BUILD_APPLICATIONS = ${BUILD_APPLICATIONS}")
+
 option(
     64BIT_INDICES
     "Whether to compile PRISMS-PF with 64-bit numbers for large simulations"

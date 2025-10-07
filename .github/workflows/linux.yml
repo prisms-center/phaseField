@@ -55,6 +55,7 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          export PRISMS_PF_DIR=$PWD/install
 
           ninja install
 
@@ -63,6 +64,7 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          export PRISMS_PF_DIR=$PWD/install
 
           cmake -G Ninja -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON -D N_THREADS=2.
           ninja install
@@ -96,6 +98,7 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          export PRISMS_PF_DIR=$PWD/install
 
           ninja install
 
@@ -104,6 +107,7 @@ jobs:
         run: |
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          export PRISMS_PF_DIR=$PWD/install
 
           cmake -G Ninja -D UNIT_TESTS=ON -D REGRESSION_TESTS=ON -D N_THREADS=2.
           ninja install
