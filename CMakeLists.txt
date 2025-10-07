@@ -391,7 +391,7 @@ configure_package_config_file(
 # Unwrap the compiler compile_commands.json after the build
 if(${UNWRAP_COMPILER} STREQUAL "ON")
     add_custom_command(
-        TARGET ${LIBRARY_NAME_DEBUG}
+        TARGET prisms_pf_debug
         POST_BUILD
         COMMAND
             /bin/bash
