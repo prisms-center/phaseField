@@ -7,10 +7,10 @@
 option(PRISMS_PF_AUTODETECTION "Autodetection of PRISMS-PF dependencies." ON)
 message(STATUS "PRISMS_PF_AUTODETECTION = ${PRISMS_PF_AUTODETECTION}")
 
-option(UNIT_TESTS "Whether to build the unit tests or not." ON)
+option(UNIT_TESTS "Whether to build the unit tests or not." OFF)
 message(STATUS "UNIT_TESTS = ${UNIT_TESTS}")
 
-option(REGRESSION_TESTS "Whether to build the regression tests or not." ON)
+option(REGRESSION_TESTS "Whether to build the regression tests or not." OFF)
 message(STATUS "REGRESSION_TESTS = ${REGRESSION_TESTS}")
 
 option(

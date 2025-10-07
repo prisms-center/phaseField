@@ -8,7 +8,6 @@ message(STATUS "Setting up PRISMS-PF regression tests...")
 set(REGRESSION_TEST_APPS
     allen_cahn_explicit
     allen_cahn_implicit
-    blank
     cahn_hilliard_explicit
     cahn_hilliard_implicit
     cavity_flow

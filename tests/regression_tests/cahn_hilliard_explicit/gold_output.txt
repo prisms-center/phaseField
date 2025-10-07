@@ -1,28 +1,34 @@
 Using the input parameter file: parameters.prm
 Number of constants: 2
 Number of variables: 3
-================================================
-  MGInfo
-================================================
-  There are no fields with multigrid enabled
-
-number of processes: 1
+number of processes: 2
 vectorization over 2 doubles = 128 bits (SSE2)
 creating FESystem...
 creating triangulation...
 creating DoFHandlers...
   number of degrees of freedom: 49923
 creating constraints...
-initializing matrix-free objects...
 initializing solution set...
 initializing invm...
 initializing element volumes...
-initializing solvers...
-solving auxiliary variables in 0th timestep...
-solving linear time-independent variables in 0th timestep...
-solving self-nonlinear time-independent variables in 0th timestep...
-solving postprocessed variables in 0th timestep...
+Initializing solvers for solve block 0 ...
+  no fields for this solver exist
+  no fields for this solver exist
+  no fields for this solver exist
+  no fields for this solver exist
+initializing grid refiner...  grid refinment disabled...
+solving 0th timestep for solve block 0 ...
+   solving auxiliary variables...
+  solving linear time-independent variables...
+  solving self-nonlinear time-independent variables...
+  solving co-nonlinear time-independent variables...
+  solving postprocessed variables...
 outputting initial condition...
+Iteration: 0
+  Solution index 0 l2-norm: 114.242 integrated value: 2009.14
+  Solution index 1 l2-norm: 55.0484 integrated value: 17.4527
+  Solution index 2 l2-norm: 10.5593 integrated value: 47.4855
+
 
 Iteration: 3000
   Solution index 0 l2-norm: 113.821 integrated value: 2009.14
@@ -49,5 +55,26 @@ Iteration: 15000
   Solution index 1 l2-norm: 5.50841 integrated value: -25.1225
   Solution index 2 l2-norm: 4.14517 integrated value: 27.0822
 
-Serial: Initialization - 0.0924677s (0.0924677s/call, 1 calls)
-Serial: Solve Increment - 45.246s (0.0030164s/call, 15000 calls)
+Serial: Auxiliary solver - 0.000321755s (0.000321755s/call, 1 calls)
+Serial: Create FESystem - 0.000422674s (0.000422674s/call, 1 calls)
+Serial: Create constraints - 0.00033244s (0.00033244s/call, 1 calls)
+Serial: Explicit solver - 5.91095s (0.000394064s/call, 15000 calls)
+Serial: Generate mesh - 0.00520387s (0.00520387s/call, 1 calls)
+Serial: Initialization - 0.050817s (0.050817s/call, 1 calls)
+Serial: Nonexplicit auxiliary solver - 4.51257s (0.000300838s/call, 15000 calls)
+Serial: Nonexplicit co-nonlinear solver - 0.0247833s (1.65211e-06s/call, 15001 calls)
+Serial: Nonexplicit linear solver - 0.0250292s (1.6685e-06s/call, 15001 calls)
+Serial: Nonexplicit self-nonlinear solver - 0.0250055s (1.66692e-06s/call, 15001 calls)
+Serial: Output - 0.155152s (0.0258587s/call, 6 calls)
+Serial: Postprocess solver - 0.0016064s (0.000267733s/call, 6 calls)
+Serial: Solve Increment - 10.8776s (0.000725171s/call, 15000 calls)
+Serial: Solver initialization - 0.0110691s (0.0110691s/call, 1 calls)
+Serial: Update ghosts - 0.126347s (4.21046e-06s/call, 30008 calls)
+Serial: Update time-dependent constraints - 0.0289994s (1.93329e-06s/call, 15000 calls)
+Serial: Zero ghosts - 0.0880052s (2.93282e-06s/call, 30007 calls)
+Serial: compute element volumes - 0.000629261s (0.000629261s/call, 1 calls)
+Serial: reinitialize DoFHandlers - 0.0024375s (0.0024375s/call, 1 calls)
+Serial: reinitialize element volumes - 3.562e-06s (3.562e-06s/call, 1 calls)
+Serial: reinitialize invm - 8.9047e-05s (8.9047e-05s/call, 1 calls)
+Serial: reinitialize matrix-free objects - 0.00291597s (0.00291597s/call, 1 calls)
+Serial: reinitialize solution set - 0.000154347s (0.000154347s/call, 1 calls)

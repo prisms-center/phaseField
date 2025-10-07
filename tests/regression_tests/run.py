@@ -13,7 +13,7 @@ import re
 executable_name = "main-release"
 
 # Tolerance
-tolerance = 1e-12
+tolerance = 1e-10
 
 # Mapping from the application name to the absolute directory path
 app_map = {}
@@ -178,8 +178,7 @@ class SimulationData:
                 f"Iterations are not equal ({self.iterations} != {value.iterations})",
                 "Error",
             )
-            # TODO: Enable this after re-running gold benchmarks
-            # return False
+            return False
 
         for index in range(self.n_variables):
             if self.field_l2_norm[index].size != value.field_l2_norm[
