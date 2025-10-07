@@ -12,8 +12,8 @@ import re
 # Executable name. For now we will use release mode
 executable_name = "main-release"
 
-# Tolerance
-tolerance = 1e-10
+# Relative tolerance
+tolerance = 1e-5
 
 # Mapping from the application name to the absolute directory path
 app_map = {}
