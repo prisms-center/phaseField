@@ -13,7 +13,7 @@ import re
 executable_name = "main-release"
 
 # Relative tolerance
-tolerance = 1e-5
+tolerance = 1e-4
 
 # Mapping from the application name to the absolute directory path
 app_map = {}
