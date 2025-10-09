@@ -40,7 +40,11 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja .
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
 
       - name: Run PRISMS-PF unit tests
@@ -48,10 +52,7 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/unit_tests
-          cmake -G Ninja .
-          ninja -j $(nproc)
-          ctest
+          ninja run_tests
 
       - name: Run PRISMS-PF automatic tests in serial
         timeout-minutes: 30
@@ -59,8 +60,7 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/automatic_tests
-          python3 run_automatic_tests.py
+          ninja install
 
       - name: Run PRISMS-PF automatic tests in parallel
         timeout-minutes: 30
@@ -68,8 +68,14 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/automatic_tests
-          python3 run_automatic_tests.py -j 2
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D N_THREADS=2 \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
+          ninja install
+
   linux-optimizations:
     runs-on: [ubuntu-22.04]
     timeout-minutes: 120
@@ -84,7 +90,12 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja -D ADDITIONAL_OPTIMIZATIONS=ON .
+          cmake -G Ninja \
+          -D ADDITIONAL_OPTIMIZATIONS=ON \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
 
       - name: Run PRISMS-PF unit tests
@@ -92,10 +103,7 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/unit_tests
-          cmake -G Ninja .
-          ninja -j $(nproc)
-          ctest
+          ninja run_tests
 
       - name: Run PRISMS-PF automatic tests in serial
         timeout-minutes: 30
@@ -103,8 +111,7 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/automatic_tests
-          python3 run_automatic_tests.py
+          ninja install
 
       - name: Run PRISMS-PF automatic tests in parallel
         timeout-minutes: 30
@@ -112,8 +119,10 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/automatic_tests
-          python3 run_automatic_tests.py -j 2
-
-
-
+          cmake -G Ninja \
+          -D UNIT_TESTS=ON \
+          -D REGRESSION_TESTS=ON \
+          -D N_THREADS=2 \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
+          ninja install

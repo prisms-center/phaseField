@@ -35,7 +35,7 @@ for arg in "$@"; do
 done
 
 # Construct the cmake arguments
-ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "-D" "PRISMS_PF_ADDITIONAL_CXX_FLAGS=-Werror -Wpedantic -Wall -Wextra" "${CMAKE_ARGS[@]}")
+ARGS=("-D" "CMAKE_EXPORT_COMPILE_COMMANDS=ON" "-D" "CMAKE_BUILD_TYPE=Debug" "${CMAKE_ARGS[@]}")
 
 # Compile
 if [ -f CMakeCache.txt ]; then

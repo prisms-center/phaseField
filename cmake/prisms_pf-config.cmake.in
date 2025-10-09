@@ -1,0 +1,55 @@
+# prisms_pf-config.cmake
+
+@PACKAGE_INIT@
+
+# Provide the location of the build tree
+set(PRISMS_PF_CORE_DIR "@CMAKE_SOURCE_DIR@")
+set(PRISMS_PF_BINARY_DIR "@CMAKE_BINARY_DIR@")  
+
+# Build types
+set(PRISMS_PF_BUILD_TYPES @PRISMS_PF_BUILD_TYPES@ CACHE STRING "List of PRISMS-PF build types")
+
+# Warning flags
+set(PRISMS_PF_WARNING_FLAGS @PRISMS_PF_WARNING_FLAGS@)
+
+# Compiler flags
+set(PRISMS_PF_CXX_FLAGS @PRISMS_PF_CXX_FLAGS@)
+set(PRISMS_PF_CXX_FLAGS_DEBUG @PRISMS_PF_CXX_FLAGS_DEBUG@)
+set(PRISMS_PF_CXX_FLAGS_RELEASE @PRISMS_PF_CXX_FLAGS_RELEASE@)
+
+# Linker flags
+set(PRISMS_PF_LINKER_FLAGS @PRISMS_PF_LINKER_FLAGS@)
+set(PRISMS_PF_LINKER_FLAGS_DEBUG @PRISMS_PF_LINKER_FLAGS_DEBUG@)
+set(PRISMS_PF_LINKER_FLAGS_RELEASE @PRISMS_PF_LINKER_FLAGS_RELEASE@)
+
+# Dependencies
+include(CMakeFindDependencyMacro)
+
+set(DEAL_II_DIR "@DEAL_II_DIR@")
+find_dependency(deal.II REQUIRED HINTS ${DEAL_II_DIR})
+
+if(@PRISMS_PF_WITH_CALIPER@)
+set(CALIPER_DIR "@CALIPER_DIR@")
+find_dependency(Caliper REQUIRED HINTS ${CALIPER_DIR})
+endif()
+
+if(@PRISMS_PF_WITH_VTK@)
+set(VTK_DIR "@VTK_DIR@")
+find_dependency(VTK REQUIRED HINTS ${VTK_DIR})
+endif()
+
+# Exported targets
+include("${CMAKE_CURRENT_LIST_DIR}/prisms_pf-targets.cmake")
+
+# Whether the package was found
+set(PRISMS_PF_FOUND TRUE)
+
+# Configuration options
+set(64BIT_INDICES @64BIT_INDICES@ CACHE BOOL "Whether 64-bit numbers are enabled for large simulations")
+
+# Dependencies
+set(PRISMS_PF_WITH_CALIPER @PRISMS_PF_WITH_CALIPER@ CACHE BOOL "Whether Caliper is enabled" FORCE)
+set(PRISMS_PF_WITH_VTK @PRISMS_PF_WITH_VTK@ CACHE BOOL "Whether VTK is enabled" FORCE)
+set(PRISMS_PF_WITH_ZLIB @PRISMS_PF_WITH_ZLIB@ CACHE BOOL "Whether zlib is enabled" FORCE)
+
+check_required_components(prisms_pf)

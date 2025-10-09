@@ -1,0 +1,149 @@
+Using the input parameter file: parameters.prm
+Number of constants: 7
+Number of variables: 12
+number of processes: 2
+vectorization over 2 doubles = 128 bits (SSE2)
+creating FESystem...
+creating triangulation...
+creating DoFHandlers...
+  number of degrees of freedom: 216333
+    with multigrid levels: 305785
+creating constraints...
+creating multigrid constraints at level 0...
+creating multigrid constraints at level 1...
+creating multigrid constraints at level 2...
+creating multigrid constraints at level 3...
+creating multigrid constraints at level 4...
+creating multigrid constraints at level 5...
+creating multigrid constraints at level 6...
+creating multigrid constraints at level 7...
+initializing solution set...
+initializing invm...
+initializing element volumes...
+initializing multgrid element volumes at level 0...
+initializing multgrid element volumes at level 1...
+initializing multgrid element volumes at level 2...
+initializing multgrid element volumes at level 3...
+initializing multgrid element volumes at level 4...
+initializing multgrid element volumes at level 5...
+initializing multgrid element volumes at level 6...
+initializing multgrid element volumes at level 7...
+Initializing solvers for solve block 0 ...
+  no fields for this solver exist
+  no fields for this solver exist
+initializing grid refiner...  grid refinment disabled...
+solving 0th timestep for solve block 0 ...
+   solving auxiliary variables...
+  solving linear time-independent variables...
+  solving self-nonlinear time-independent variables...
+  solving co-nonlinear time-independent variables...
+  solving postprocessed variables...
+outputting initial condition...
+Iteration: 0
+  Solution index 0 l2-norm: 5.09902 integrated value: 1.52588e-05
+  Solution index 1 l2-norm: 0.485669 integrated value: 3.13599e-05 1.92903e-07 
+  Solution index 2 l2-norm: 30525.2 integrated value: -0.298384
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 37127.4 integrated value: 0.232412
+  Solution index 6 l2-norm: 19196.7 integrated value: 1.3735
+  Solution index 7 l2-norm: 6300 integrated value: -0.000335898
+  Solution index 8 l2-norm: 30775.1 integrated value: 2.21036
+  Solution index 9 l2-norm: 23.6644 integrated value: 0.000493726
+  Solution index 10 l2-norm: 36793.7 integrated value: 0.156453
+  Solution index 11 l2-norm: 1913.88 integrated value: 0.0759589
+
+
+Iteration: 6
+  Solution index 0 l2-norm: 5.11949 integrated value: 2.11511e-05
+  Solution index 1 l2-norm: 0.486042 integrated value: 3.13572e-05 1.93264e-07 
+  Solution index 2 l2-norm: 620.354 integrated value: 0.0284768
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 33173.8 integrated value: 0.217721
+  Solution index 6 l2-norm: 19170.4 integrated value: 1.3727
+  Solution index 7 l2-norm: 6299.35 integrated value: -0.000343767
+  Solution index 8 l2-norm: 30752.3 integrated value: 2.20996
+  Solution index 9 l2-norm: 23.8489 integrated value: 0.000494861
+  Solution index 10 l2-norm: 32839.8 integrated value: 0.141656
+  Solution index 11 l2-norm: 1907.71 integrated value: 0.0760654
+
+Iteration: 12
+  Solution index 0 l2-norm: 5.15255 integrated value: 2.28388e-05
+  Solution index 1 l2-norm: 0.486532 integrated value: 3.13533e-05 1.93706e-07 
+  Solution index 2 l2-norm: 592.22 integrated value: 0.0284713
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 29695 integrated value: 0.203784
+  Solution index 6 l2-norm: 19149.9 integrated value: 1.37233
+  Solution index 7 l2-norm: 6291.81 integrated value: -0.000353261
+  Solution index 8 l2-norm: 30735.9 integrated value: 2.21028
+  Solution index 9 l2-norm: 24.0666 integrated value: 0.000495998
+  Solution index 10 l2-norm: 29358.2 integrated value: 0.127612
+  Solution index 11 l2-norm: 1902.48 integrated value: 0.0761719
+
+Iteration: 18
+  Solution index 0 l2-norm: 5.20679 integrated value: 2.4725e-05
+  Solution index 1 l2-norm: 0.48704 integrated value: 3.13507e-05 1.94157e-07 
+  Solution index 2 l2-norm: 567.001 integrated value: 0.0284659
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 26632.2 integrated value: 0.191811
+  Solution index 6 l2-norm: 19127.2 integrated value: 1.37179
+  Solution index 7 l2-norm: 6282.91 integrated value: -0.000362776
+  Solution index 8 l2-norm: 30716.8 integrated value: 2.21039
+  Solution index 9 l2-norm: 24.2876 integrated value: 0.000497139
+  Solution index 10 l2-norm: 26291.6 integrated value: 0.115551
+  Solution index 11 l2-norm: 1896.43 integrated value: 0.0762592
+
+Iteration: 24
+  Solution index 0 l2-norm: 5.28092 integrated value: 2.66864e-05
+  Solution index 1 l2-norm: 0.48756 integrated value: 3.13489e-05 1.94613e-07 
+  Solution index 2 l2-norm: 544.645 integrated value: 0.0284605
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 23930.6 integrated value: 0.181508
+  Solution index 6 l2-norm: 19102.8 integrated value: 1.37115
+  Solution index 7 l2-norm: 6274.21 integrated value: -0.000372287
+  Solution index 8 l2-norm: 30698.2 integrated value: 2.21039
+  Solution index 9 l2-norm: 24.511 integrated value: 0.000498282
+  Solution index 10 l2-norm: 23584.9 integrated value: 0.105172
+  Solution index 11 l2-norm: 1887.15 integrated value: 0.0763357
+
+Iteration: 30
+  Solution index 0 l2-norm: 5.37405 integrated value: 2.87961e-05
+  Solution index 1 l2-norm: 0.488099 integrated value: 3.13484e-05 1.95079e-07 
+  Solution index 2 l2-norm: 524.879 integrated value: 0.0284551
+  Solution index 3 l2-norm: 129 integrated value: 0.01
+  Solution index 4 l2-norm: 129 integrated value: 0.01
+  Solution index 5 l2-norm: 21543.7 integrated value: 0.172627
+  Solution index 6 l2-norm: 19076 integrated value: 1.37034
+  Solution index 7 l2-norm: 6264.38 integrated value: -0.000381672
+  Solution index 8 l2-norm: 30675.7 integrated value: 2.21015
+  Solution index 9 l2-norm: 24.739 integrated value: 0.000499429
+  Solution index 10 l2-norm: 21191 integrated value: 0.0962369
+  Solution index 11 l2-norm: 1876.81 integrated value: 0.0763903
+
+Serial: Auxiliary solver - 0.00139981s (0.00139981s/call, 1 calls)
+Serial: Create FESystem - 0.000707624s (0.000707624s/call, 1 calls)
+Serial: Create constraints - 0.0153825s (0.0153825s/call, 1 calls)
+Serial: Explicit solver - 0.0367323s (0.00122441s/call, 30 calls)
+Serial: Generate mesh - 0.07651s (0.07651s/call, 1 calls)
+Serial: Initialization - 0.431268s (0.431268s/call, 1 calls)
+Serial: Nonexplicit auxiliary solver - 0.0402633s (0.00134211s/call, 30 calls)
+Serial: Nonexplicit co-nonlinear solver - 5.9365e-05s (1.915e-06s/call, 31 calls)
+Serial: Nonexplicit linear solver - 2.30333s (0.0743009s/call, 31 calls)
+Serial: Nonexplicit self-nonlinear solver - 6.5305e-05s (2.10661e-06s/call, 31 calls)
+Serial: Output - 0.491327s (0.0818878s/call, 6 calls)
+Serial: Postprocess solver - 0.0191771s (0.00319618s/call, 6 calls)
+Serial: Solve Increment - 2.59074s (0.086358s/call, 30 calls)
+Serial: Solver initialization - 0.082146s (0.082146s/call, 1 calls)
+Serial: Update ghosts - 0.00196614s (1.986e-05s/call, 99 calls)
+Serial: Update time-dependent constraints - 0.301618s (0.0100539s/call, 30 calls)
+Serial: Zero ghosts - 0.000523592s (5.34278e-06s/call, 98 calls)
+Serial: compute element volumes - 0.00226059s (0.00226059s/call, 1 calls)
+Serial: reinitialize DoFHandlers - 0.0334767s (0.0334767s/call, 1 calls)
+Serial: reinitialize element volumes - 2.3746e-05s (2.3746e-05s/call, 1 calls)
+Serial: reinitialize invm - 0.000125853s (0.000125853s/call, 1 calls)
+Serial: reinitialize matrix-free objects - 0.0253248s (0.0253248s/call, 1 calls)
+Serial: reinitialize solution set - 0.000548527s (0.000548527s/call, 1 calls)

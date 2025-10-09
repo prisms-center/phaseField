@@ -49,5 +49,5 @@ jobs:
 
         - name: Run cppcheck
           run: |
-            ./contrib/utilities/cppcheck.sh -j$(nproc) -D REDUCED_TEMPLATES=ON
+            ./contrib/utilities/cppcheck.sh -j$(nproc)
 

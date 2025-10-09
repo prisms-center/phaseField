@@ -1,25 +1,23 @@
 ##
 #  CMake script for the PRISMS-PF applications
-#  Adapted from the ASPECT CMake file
 ##
 
 cmake_minimum_required(VERSION 3.13.4)
 
-# Get the core library's directory (3 levels up from the macro file)
-get_filename_component(
-    PRISMS_PF_CORE_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/../..
-    ABSOLUTE
-)
-
-# Include core library's configuration
-include(${PRISMS_PF_CORE_DIR}/cmake/prisms_pf_config.cmake)
-
-# Include setup script
-include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
-
 # Create a project for the application
 project(myapp CXX)
 
-# Set up the application
-prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
+# Find the PRISMS-PF package
+find_package(prisms_pf QUIET HINTS ${PRISMS_PF_DIR} $ENV{PRISMS_PF_DIR})
+if(PRISMS_PF_FOUND)
+    # Include setup script
+    include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
+
+    # Set up the application
+    prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
+else()
+    message(
+        FATAL_ERROR
+        "PRISMS-PF package not found. Please make sure it is in path."
+    )
+endif()

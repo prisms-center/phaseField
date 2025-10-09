@@ -97,8 +97,8 @@ NucleationHandler<dim, degree, number>::attempt_nucleation(
   const UserInputParameters<dim> &user_inputs = solver_context.get_user_inputs();
   const NucleationParameters     &nuc_params  = user_inputs.get_nucleation_parameters();
   const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
-  double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
-  auto  &rng     = user_inputs.get_miscellaneous_parameters().rng;
+  const double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
+  auto        &rng     = user_inputs.get_miscellaneous_parameters().rng;
 
   // Set up FEValues
   static const dealii::QGaussLobatto<dim> quadrature(degree + 1);
@@ -281,8 +281,8 @@ NucleationHandler<dim, degree, number>::gather_exclude_broadcast_nuclei(
 
       while (!new_nuclei.empty())
         {
-          Nucleus<dim> &nuc = new_nuclei.back();
-          bool          valid =
+          const Nucleus<dim> &nuc = new_nuclei.back();
+          bool                valid =
             std::none_of(global_nuclei.begin(),
                          global_nuclei.end(),
                          [&](const Nucleus<dim> &existing_nucleus)

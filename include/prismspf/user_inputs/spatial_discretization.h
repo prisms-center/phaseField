@@ -142,7 +142,7 @@ class RectangularMesh : public Mesh<dim>
     Assert(_subdivisions.size() == dim,
            dealii::ExcMessage(
              "Subdivisions vector size must match the number of dimensions"));
-    subdivisions = std::move(_subdivisions);
+    subdivisions = _subdivisions;
 
     // If the x direction is greater than 0, we set the mesh as initialized.
     // TODO (landinjm): Check that the other directions are also greater than 0.
@@ -624,6 +624,15 @@ public:
     const GridRefinement::RefinementCriterion &_refinement_criterion)
   {
     refinement_criteria.push_back(_refinement_criterion);
+  }
+
+  /**
+   * @brief Get the triangulation type
+   */
+  [[nodiscard]] TriangulationType
+  get_type() const
+  {
+    return type;
   }
 
 private:

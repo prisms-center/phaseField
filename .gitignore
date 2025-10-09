@@ -9,9 +9,14 @@ CTest*
 **expand_template_instantiations_exe
 **.inst
 
+# The default install folder & files
+install/
+install_manifest.txt
+
 # Config files
 include/prismspf/config.h
-cmake/prisms_pf_config.cmake
+cmake/prisms_pf-config.cmake
+cmake/prisms_pf-targets.cmake
 cmake/templates
 compile_commands.json
 
@@ -33,7 +38,7 @@ compile_commands.json
 *.a
 
 # Executables
-main
+main-release
 main-debug
 
 # Output files
@@ -41,5 +46,6 @@ main-debug
 *.pvtu
 *.vtk
 *.log
+*.bin
 output.txt
 error.txt

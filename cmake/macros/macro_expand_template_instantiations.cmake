@@ -57,13 +57,18 @@ macro(expand_template_instantiations _target _inst_in_files)
     # in the right order
     add_custom_target(${_target}_inst ALL DEPENDS ${_inst_targets})
 
-    # Add this target again to the different build types
-    foreach(_build ${PRISMS_PF_BUILD_TYPES})
-        # The build types are uppercase so we need to
-        # convert them
-        string(TOLOWER ${_build} _build_lowercase)
+    # Add this target again to the different build types if the override is off.
+    if(NOT DEFINED BUILD_OVERRIDE)
+        foreach(_build ${PRISMS_PF_BUILD_TYPES})
+            # The build types are uppercase so we need to
+            # convert them
+            string(TOLOWER ${_build} _build_lowercase)
 
+            # Add the target
+            add_dependencies(${_target}_${_build_lowercase} ${_target}_inst)
+        endforeach()
+    else()
         # Add the target
-        add_dependencies(${_target}_${_build_lowercase} ${_target}_inst)
-    endforeach()
+        add_dependencies(${_target} ${_target}_inst)
+    endif()
 endmacro()

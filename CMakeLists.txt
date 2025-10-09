@@ -1,6 +1,5 @@
 ##
-#  CMake for the PRISMS-PF
-#  Adapted from the ASPECT CMake file
+#  CMake for the PRISMS-PF core library
 ##
 
 # cmake config
@@ -32,17 +31,6 @@ message(STATUS "")
 # Some basic bookkeeping
 # =========================================================
 
-# Check that a prior CMakeCache is not located in the build directory
-if(EXISTS ${CMAKE_SOURCE_DIR}/CMakeCache.txt)
-    message(
-        FATAL_ERROR
-        "Detected the file:\n"
-        "${CMAKE_SOURCE_DIR}/CMakeCache.txt\n"
-        "in your source directory, which may be leftover from prior builds. "
-        "Please delete the file before running cmake again."
-    )
-endif()
-
 # Grab git information
 prisms_pf_git_version()
 
@@ -51,6 +39,16 @@ include(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
 
 # Declare the project
 project(prisms_pf CXX)
+
+# Set the default install prefix if it was not set by the user
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX
+        "${CMAKE_BINARY_DIR}/install"
+        CACHE PATH
+        "Installation prefix"
+        FORCE
+    )
+endif()
 
 # Include the PRISMS-PF setup
 include(${CMAKE_SOURCE_DIR}/cmake/setup_prisms_pf.cmake)
@@ -73,9 +71,6 @@ endforeach()
 
 message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
 message(STATUS "Using PRISMS_PF_WITH_VTK = '${PRISMS_PF_WITH_VTK}'")
-message(STATUS "Using PRISMS_PF_WITH_HDF5 = '${PRISMS_PF_WITH_HDF5}'")
-message(STATUS "Using PRISMS_PF_WITH_SUNDIALS = '${PRISMS_PF_WITH_SUNDIALS}'")
-message(STATUS "Using PRISMS_PF_WITH_CUDA = '${PRISMS_PF_WITH_CUDA}'")
 message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
 
 # =========================================================
@@ -93,10 +88,6 @@ set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
 
 if(ADDITIONAL_DEGREES)
     set(EXPAND_DEGREES "; 3; 4; 5; 6")
-endif()
-if(NOT REDUCED_TEMPLATES)
-    set(EXPAND_DIMENSIONS "; 3")
-    set(EXPAND_NUMBERS "; double")
 endif()
 
 configure_file(
@@ -119,8 +110,6 @@ add_subdirectory(src)
 # Grab the source and include files
 get_property(PRISMS_PF_SOURCE_FILES GLOBAL PROPERTY PRISMS_PF_SOURCE_FILES)
 get_property(PRISMS_PF_HEADER_FILES GLOBAL PROPERTY PRISMS_PF_HEADER_FILES)
-
-# Test stuff goes here
 
 # Make and ninja build options
 if(CMAKE_GENERATOR MATCHES "Ninja")
@@ -216,29 +205,6 @@ add_custom_target(
         ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_usage.cmake
 )
 
-if(${FORCE_COLORED_OUTPUT})
-    if(
-        CMAKE_CXX_COMPILER_ID MATCHES "Clang"
-        OR CMAKE_CXX_COMPILER MATCHES "AppleClang"
-    )
-        string(APPEND DEAL_II_CXX_FLAGS_DEBUG " -fcolor-diagnostics")
-        string(APPEND DEAL_II_CXX_FLAGS_RELEASE " -fcolor-diagnostics")
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        string(APPEND DEAL_II_CXX_FLAGS_DEBUG " -fdiagnostics-color=always")
-        string(APPEND DEAL_II_CXX_FLAGS_RELEASE " -fdiagnostics-color=always")
-    endif()
-endif()
-
-# deal.II versions >=9.5 disable deprecation warnings in user code. Enable
-# the warnings again by removing the flag that disables them.
-string(
-    REPLACE
-    "-Wno-deprecated-declarations"
-    ""
-    DEAL_II_WARNING_FLAGS
-    "${DEAL_II_WARNING_FLAGS}"
-)
-
 # Set additional compiler flags
 set(PRISMS_PF_ADDITIONAL_CXX_FLAGS
     ""
@@ -251,99 +217,181 @@ if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
         STATUS
         "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':"
     )
-    string(APPEND DEAL_II_CXX_FLAGS_DEBUG " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}")
-    string(
-        APPEND
-        DEAL_II_CXX_FLAGS_RELEASE
-        " ${PRISMS_PF_ADDITIONAL_CXX_FLAGS}"
+    append_flags(PRISMS_PF_ADDITIONAL_CXX_FLAGS PRISMS_PF_CXX_FLAGS)
+    message(STATUS "  PRISMS_PF_WARNING_FLAGS: ${PRISMS_PF_WARNING_FLAGS}")
+    message(STATUS "  PRISMS_PF_CXX_FLAGS: ${PRISMS_PF_CXX_FLAGS}")
+    message(STATUS "  PRISMS_PF_CXX_FLAGS_DEBUG: ${PRISMS_PF_CXX_FLAGS_DEBUG}")
+    message(
+        STATUS
+        "  PRISMS_PF_CXX_FLAGS_RELEASE: ${PRISMS_PF_CXX_FLAGS_RELEASE}"
     )
-    message(STATUS "  DEAL_II_WARNING_FLAGS: ${DEAL_II_WARNING_FLAGS}")
-    message(STATUS "  DEAL_II_CXX_FLAGS_DEBUG: ${DEAL_II_CXX_FLAGS_DEBUG}")
-    message(STATUS "  DEAL_II_CXX_FLAGS_RELEASE: ${DEAL_II_CXX_FLAGS_RELEASE}")
 endif()
 
-if(${PRISMS_PF_BUILD_DEBUG} STREQUAL "ON")
-    set(LIBRARY_NAME_DEBUG "prisms_pf_debug")
-    add_library(${LIBRARY_NAME_DEBUG} STATIC)
-    target_sources(${LIBRARY_NAME_DEBUG} PRIVATE ${PRISMS_PF_SOURCE_FILES})
-    set_property(
-        TARGET ${LIBRARY_NAME_DEBUG}
-        PROPERTY OUTPUT_NAME prisms-pf-debug
+foreach(_build ${PRISMS_PF_BUILD_TYPES})
+    # Create a target for each build type. Note that the build types are
+    # mixed case (e.g., Debug) so we need to convert them to lowercase and
+    # uppercase for various uses.
+    string(TOLOWER ${_build} _build_lowercase)
+    string(TOUPPER ${_build} _build_uppercase)
+    set(_library "prisms_pf_${_build_lowercase}")
+    list(APPEND PRISMS_PF_TARGETS ${_library})
+
+    # Add the library and set some properties
+    add_library(${_library} STATIC)
+    set_target_properties(
+        ${_target}
+        PROPERTIES
+            LINKER_LANGUAGE CXX
+            OUTPUT_NAME "prisms-pf-${_build_lowercase}"
     )
-    target_link_libraries(
-        ${LIBRARY_NAME_DEBUG}
-        prisms_pf_core_debug
-        prisms_pf_solvers_debug
-        prisms_pf_user_inputs_debug
-        prisms_pf_utilities_debug
+    target_sources(${_library} PRIVATE ${PRISMS_PF_SOURCE_FILES})
+
+    # Collect the libraries to link against and the include directories
+    set(_library_dependencies
+        prisms_pf_core_${_build_lowercase}
+        prisms_pf_solvers_${_build_lowercase}
+        prisms_pf_user_inputs_${_build_lowercase}
+        prisms_pf_utilities_${_build_lowercase}
     )
+    list(APPEND PRISMS_PF_TARGETS ${_library_dependencies})
+
+    # Link the PRISMS-PF libraries
+    target_link_libraries(${_library} PUBLIC ${_library_dependencies})
     # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(
-        ${LIBRARY_NAME_DEBUG}
-        prisms_pf_core_debug
-        prisms_pf_solvers_debug
-        prisms_pf_user_inputs_debug
-        prisms_pf_utilities_debug
-    )
+    add_dependencies(${_library} ${_library_dependencies})
+
+    # Set the include directories
     target_include_directories(
-        ${LIBRARY_NAME_DEBUG}
-        PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
+        ${_library}
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include/prisms_pf>
+        PRIVATE ${CMAKE_BINARY_DIR}/src
     )
 
+    target_compile_options(
+        ${_library}
+        PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:
+            ${PRISMS_PF_WARNING_FLAGS}
+            ${PRISMS_PF_CXX_FLAGS}
+            ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
+    )
+    target_link_options(
+        ${_library}
+        PRIVATE
+            $<$<LINK_LANGUAGE:CXX>:
+            ${PRISMS_PF_LINKER_FLAGS}
+            ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
+    )
+
+    # Add other dependencies, making sure they are public so that they
+    # propagate to targets that link against this library
+
+    # VTK
     if(${VTK_BUILT_SEPARATELY})
-        include_directories(SYSTEM ${VTK_INCLUDE_DIR})
-        target_link_libraries(${LIBRARY_NAME_DEBUG} ${VTK_NEW_LIBRARIES})
+        target_include_directories(${_library} SYSTEM PUBLIC ${VTK_INCLUDE_DIR})
+        target_link_libraries(${_library} PUBLIC ${VTK_NEW_LIBRARIES})
     endif()
+
+    # caliper
     if(${PRISMS_PF_WITH_CALIPER})
-        target_link_libraries(${LIBRARY_NAME_DEBUG} caliper)
+        target_link_libraries(${_library} PUBLIC caliper)
     endif()
 
-    deal_ii_setup_target(${LIBRARY_NAME_DEBUG} DEBUG)
-endif()
-
-if(${PRISMS_PF_BUILD_RELEASE} STREQUAL "ON")
-    set(LIBRARY_NAME_RELEASE "prisms_pf_release")
-    add_library(${LIBRARY_NAME_RELEASE} STATIC)
-    target_sources(${LIBRARY_NAME_RELEASE} PRIVATE ${PRISMS_PF_SOURCE_FILES})
-    set_property(
-        TARGET ${LIBRARY_NAME_RELEASE}
-        PROPERTY OUTPUT_NAME prisms-pf-release
-    )
+    # deal.II
     target_link_libraries(
-        ${LIBRARY_NAME_RELEASE}
-        prisms_pf_core_release
-        prisms_pf_solvers_release
-        prisms_pf_user_inputs_release
-        prisms_pf_utilities_release
+        ${_library}
+        PUBLIC ${DEAL_II_TARGET_${_build_uppercase}}
     )
-    # Add explicit dependencies to ensure proper build order with Ninja
-    add_dependencies(
-        ${LIBRARY_NAME_RELEASE}
-        prisms_pf_core_release
-        prisms_pf_solvers_release
-        prisms_pf_user_inputs_release
-        prisms_pf_utilities_release
-    )
-    target_include_directories(
-        ${LIBRARY_NAME_RELEASE}
-        PRIVATE ${CMAKE_BINARY_DIR}/include ${CMAKE_BINARY_DIR}/src include
-    )
+endforeach()
 
-    if(${VTK_BUILT_SEPARATELY})
-        include_directories(SYSTEM ${VTK_INCLUDE_DIR})
-        target_link_libraries(${LIBRARY_NAME_RELEASE} ${VTK_NEW_LIBRARIES})
-    endif()
-    if(${PRISMS_PF_WITH_CALIPER})
-        target_link_libraries(${LIBRARY_NAME_RELEASE} caliper)
-    endif()
+# =========================================================
+# Installation
+# =========================================================
+include(GNUInstallDirs)
 
-    deal_ii_setup_target(${LIBRARY_NAME_RELEASE} RELEASE)
+# Install the libraries
+install(
+    TARGETS ${PRISMS_PF_TARGETS}
+    EXPORT prisms_pf-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install the headers
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION include/prisms_pf
+    FILES_MATCHING
+    PATTERN "*.h"
+    PATTERN "*.hpp"
+)
+
+# Install the CMake config files
+install(
+    EXPORT prisms_pf-targets
+    FILE prisms_pf-targets.cmake
+    NAMESPACE prisms_pf::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+)
+
+install(
+    FILES ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+)
+
+# =========================================================
+# Testing
+# =========================================================
+
+# Unit tests
+if(UNIT_TESTS)
+    enable_testing()
+    add_subdirectory(tests/unit_tests)
+
+    add_custom_target(
+        run_tests
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS test_core test_field_input test_user_inputs test_utilities
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Run all tests"
+    )
 endif()
+
+# Regression tests
+if(REGRESSION_TESTS)
+    # Compile each of the regression tests and run the python script
+    add_subdirectory(tests/regression_tests)
+endif()
+
+# Applications
+if(BUILD_APPLICATIONS)
+  # Compile each of the applications
+  add_subdirectory(applications)
+endif()
+
+# =========================================================
+# Final steps
+# =========================================================
+
+# Write config to file
+include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
+
+# Generate configuration file for applications
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
+    ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    INSTALL_DESTINATION ${CMAKE_BINARY_DIR}/cmake
+)
 
 # Unwrap the compiler compile_commands.json after the build
 if(${UNWRAP_COMPILER} STREQUAL "ON")
     add_custom_command(
-        TARGET ${LIBRARY_NAME_DEBUG}
+        TARGET prisms_pf_debug
         POST_BUILD
         COMMAND
             /bin/bash
@@ -353,14 +401,12 @@ if(${UNWRAP_COMPILER} STREQUAL "ON")
     )
 endif()
 
-# Write config to file
-include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
-
-# Generate configuration file for applications
-configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/prisms_pf_config.cmake.in
-    ${CMAKE_BINARY_DIR}/cmake/prisms_pf_config.cmake
-    @ONLY
+# Export targets
+list(REMOVE_DUPLICATES PRISMS_PF_TARGETS)
+export(
+    TARGETS ${PRISMS_PF_TARGETS}
+    FILE "${CMAKE_BINARY_DIR}/cmake/prisms_pf-targets.cmake"
+    NAMESPACE prisms_pf::
 )
 
 # Print the config

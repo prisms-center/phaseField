@@ -39,9 +39,11 @@ jobs:
 
       - name: Compile PRISMS-PF
         run: |
-          cmake -G Ninja .
+          cmake -G Ninja \
+          -D BUILD_APPLICATIONS=ON \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          .
           ninja -j $(nproc)
-
 
       - name: Compile PRISMS-PF applications
         timeout-minutes: 30
@@ -49,6 +51,5 @@ jobs:
           export OMPI_ALLOW_RUN_AS_ROOT=1
           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
-          cd tests/automatic_tests
-          python3 application_debug_test.py --no-run
+          ninja -j $(nproc) install
 
