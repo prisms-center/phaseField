@@ -16,6 +16,7 @@ var structSpatialDiscretization =
     [ "get_remeshing_period", "structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a", null ],
     [ "get_size", "structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5", null ],
     [ "get_subdivisions", "structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414", null ],
+    [ "get_type", "structSpatialDiscretization.html#aac4c2728f19ef1cd28853821c75156b4", null ],
     [ "postprocess_and_validate", "structSpatialDiscretization.html#a3bb4652a7f5d2e5d9620b9dbfee2c786", null ],
     [ "print_parameter_summary", "structSpatialDiscretization.html#afcb82b50f54ed9a6609d8332f4242e1d", null ],
     [ "set_degree", "structSpatialDiscretization.html#a6a8bf005b681a6f20bfabd1e2c7bfacf", null ],

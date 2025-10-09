@@ -113,6 +113,11 @@ $(document).ready(function(){initNavTree('classReadBinary.html',''); initResizab
   <div class="headertitle"><div class="title">ReadBinary&lt; dim, number &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class to read in a flat binary file and provide values at given points.  
+ <a href="classReadBinary.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="read__binary_8h_source.html">read_binary.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ReadBinary&lt; dim, number &gt;:</div>
 <div class="dyncontent">
@@ -130,20 +135,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ReadBinary</b> (const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;_ic_file, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;_spatial_discretization)</td></tr>
 <tr class="memdesc:a1ffbb18aec3eb4f2408954bfa7a25d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:a1ffbb18aec3eb4f2408954bfa7a25d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a116b2b9effba22f4f8e8da34922a44e6" id="r_a116b2b9effba22f4f8e8da34922a44e6"><td class="memItemLeft" align="right" valign="top"><a id="a116b2b9effba22f4f8e8da34922a44e6" name="a116b2b9effba22f4f8e8da34922a44e6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>check_size</b> (const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;<a class="el" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>)</td></tr>
-<tr class="separator:a116b2b9effba22f4f8e8da34922a44e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade03e461dc530beb288be54573216de2" id="r_ade03e461dc530beb288be54573216de2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadBinary.html#ade03e461dc530beb288be54573216de2">print_file</a> () override</td></tr>
 <tr class="memdesc:ade03e461dc530beb288be54573216de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the binary file to text for debugging.  <br /></td></tr>
 <tr class="separator:ade03e461dc530beb288be54573216de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25a425fedb1ea261c90aa7783f5e04f6" id="r_a25a425fedb1ea261c90aa7783f5e04f6"><td class="memItemLeft" align="right" valign="top"><a id="a25a425fedb1ea261c90aa7783f5e04f6" name="a25a425fedb1ea261c90aa7783f5e04f6"></a>
-dealii::Vector&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_vals</b> (const std::array&lt; dealii::types::global_dof_index, dim &gt; &amp;multi_index, const unsigned int n_values)</td></tr>
-<tr class="memdesc:a25a425fedb1ea261c90aa7783f5e04f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get vector value for a given point. <br /></td></tr>
-<tr class="separator:a25a425fedb1ea261c90aa7783f5e04f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f38eeaa81c2d764de8d86be93dfb47f" id="r_a3f38eeaa81c2d764de8d86be93dfb47f"><td class="memItemLeft" align="right" valign="top"><a id="a3f38eeaa81c2d764de8d86be93dfb47f" name="a3f38eeaa81c2d764de8d86be93dfb47f"></a>
-dealii::Vector&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (const dealii::Point&lt; dim &gt; &amp;point, const unsigned int n_pt_values)</td></tr>
-<tr class="memdesc:a3f38eeaa81c2d764de8d86be93dfb47f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get vector value for a given point. <br /></td></tr>
-<tr class="separator:a3f38eeaa81c2d764de8d86be93dfb47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a399fb95e0fc120d7b3b76dcf4f7d915b" id="r_a399fb95e0fc120d7b3b76dcf4f7d915b"><td class="memItemLeft" align="right" valign="top">number&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b">get_scalar_value</a> (const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;scalar_name) override</td></tr>
 <tr class="memdesc:a399fb95e0fc120d7b3b76dcf4f7d915b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get scalar value for a given point.  <br /></td></tr>
 <tr class="separator:a399fb95e0fc120d7b3b76dcf4f7d915b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,7 +189,10 @@ const <a class="el" href="structInitialConditionFile.html">InitialConditionFile<
 <tr class="memdesc:a43841d5a7c93676c7e6076cd19b0c904 inherit pro_attribs_classReadFieldBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial condition file object. <br /></td></tr>
 <tr class="separator:a43841d5a7c93676c7e6076cd19b0c904 inherit pro_attribs_classReadFieldBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
+class ReadBinary&lt; dim, number &gt;</div><p>Class to read in a flat binary file and provide values at given points. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a399fb95e0fc120d7b3b76dcf4f7d915b" name="a399fb95e0fc120d7b3b76dcf4f7d915b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a399fb95e0fc120d7b3b76dcf4f7d915b">&#9670;&#160;</a></span>get_scalar_value()</h2>
 

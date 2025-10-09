@@ -609,7 +609,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::get_cij_matrix</a>(<span class="keyword">const</span> ElasticityModel     &amp;model,</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>                                   <span class="keyword">const</span> std::vector&lt;double&gt; &amp;constants)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>  <span class="comment">// Initialize tensor</span></div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>  <span class="comment">// Initialize compliance tensor</span></div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>  dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt; compliance;</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span> </div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>  <span class="keywordflow">switch</span> (dim)</div>
@@ -620,161 +620,196 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span> </div>
 <div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>          <span class="keywordflow">switch</span> (model)</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>            {</div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>              <span class="comment">// TODO (landinjm): Should we both fixing this for the other cases and just</span></div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>              <span class="comment">// selecting the x index. It would allow the user to switch from 2D to 1D to</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>              <span class="comment">// 3D, but would produce unexpected behavior.</span></div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>              <span class="keywordflow">case</span> Isotropic:</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>                {</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>                  compliance[xx_dir][xx_dir] = modulus;</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>                }</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>              <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>                AssertThrow(<span class="keyword">false</span>,</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>                            dealii::ExcMessage(</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>                              <span class="stringliteral">&quot;Invalid elasticity model type for 1D. We only accept &quot;</span></div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>                              <span class="stringliteral">&quot;isotropic elasticity tensors.&quot;</span>));</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>            }</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        }</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>      <span class="keywordflow">case</span> 2:</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>        {</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xx_dir = 0;</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yy_dir = 1;</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xy_dir = 2;</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span> </div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>          <span class="keywordflow">switch</span> (model)</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            {</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>              <span class="keywordflow">case</span> Isotropic:</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                {</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>                  <span class="comment">// TODO (landinjm): Document this</span></div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> poisson = constants.at(1);</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span> </div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> shear_modulus = modulus / (2 * (1 + poisson));</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> lambda =</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                  compliance[xx_dir][xx_dir] = compliance[yy_dir][yy_dir] =</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                    lambda + 2 * shear_modulus;</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                  compliance[xy_dir][xy_dir] = shear_modulus;</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>                }</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>              <span class="keywordflow">case</span> Anisotropic:</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                {</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>                  compliance[xx_dir][xx_dir] = constants.at(0);</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                  compliance[yy_dir][yy_dir] = constants.at(1);</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>                  compliance[xy_dir][xy_dir] = constants.at(2);</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] =</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                    constants.at(3);</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] =</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                    constants.at(4);</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] =</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                    constants.at(5);</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                }</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>              <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                AssertThrow(<span class="keyword">false</span>, dealii::ExcMessage(<span class="stringliteral">&quot;Invalid elasticity model type&quot;</span>));</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>            }</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        }</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>      <span class="keywordflow">case</span> 3:</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        {</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xx_dir = 0;</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yy_dir = 1;</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> zz_dir = 2;</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yz_dir = 3;</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xz_dir = 4;</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xy_dir = 5;</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span> </div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>          <span class="keywordflow">switch</span> (model)</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>            {</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>              <span class="keywordflow">case</span> Isotropic:</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                {</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                  <span class="comment">// TODO (landinjm): Document this</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> poisson = constants.at(1);</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span> </div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> shear_modulus = modulus / (2 * (1 + poisson));</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> lambda =</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> </div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>                  compliance[xx_dir][xx_dir]     = compliance[yy_dir][yy_dir] =</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>                    compliance[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>                  compliance[yz_dir][yz_dir]     = compliance[xz_dir][xz_dir] =</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>                    compliance[xy_dir][xy_dir]   = shear_modulus;</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>                  compliance[xx_dir][yy_dir]     = compliance[yy_dir][xx_dir] =</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>                    compliance[xx_dir][zz_dir]   = compliance[zz_dir][xx_dir] =</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>                  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>                }</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>              <span class="keywordflow">case</span> Anisotropic:</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>                <span class="comment">// For the 1D case, it make little sense to accept anything besides an</span></div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                <span class="comment">// isotropic elasticity tensor. One hiccup, is that if a user is debugging</span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                <span class="comment">// an application and switches to 1D, they will have to modify the</span></div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                <span class="comment">// elasticity constants to align with that. While more burdensome, there&#39;s</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>                <span class="comment">// less of a chance of producing spurious behavior.</span></div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>              <span class="keywordflow">case</span> Isotropic:</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                {</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>                  compliance[xx_dir][xx_dir] = modulus;</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>                  <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>                }</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>              <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>                AssertThrow(<span class="keyword">false</span>,</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>                            dealii::ExcMessage(</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>                              <span class="stringliteral">&quot;Invalid elasticity model type for 1D. We only accept &quot;</span></div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>                              <span class="stringliteral">&quot;isotropic elasticity tensors.&quot;</span>));</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>            }</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>        }</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>      <span class="keywordflow">case</span> 2:</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>        {</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>          <span class="comment">// The voigt indexing scheme for 2 dimensions</span></div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xx_dir = 0;</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yy_dir = 1;</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xy_dir = 2;</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span> </div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>          <span class="keywordflow">switch</span> (model)</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>            {</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>              <span class="comment">// Like the 1D case, it is nonsensical to have transverse or orthotropic</span></div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>              <span class="comment">// compliance tensors, so we throw an error.</span></div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>              <span class="keywordflow">case</span> Isotropic:</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                {</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                  <span class="comment">// For isotropic compliance tensors, we can simplify the computation to</span></div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>                  <span class="comment">// two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>                  <span class="comment">// modulus. In cartesian coordinates,</span></div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>                  <span class="comment">// $$$</span></div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>                  <span class="comment">// c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}</span></div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>                  <span class="comment">// \delta_{jl} + \delta_{il} \delta_{kj})</span></div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>                  <span class="comment">// $$$</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> poisson = constants.at(1);</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> shear_modulus = modulus / (2 * (1 + poisson));</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> lambda =</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span> </div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>                  compliance[xx_dir][xx_dir] = compliance[yy_dir][yy_dir] =</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>                    lambda + 2 * shear_modulus;</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>                  compliance[xy_dir][xy_dir] = shear_modulus;</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                  <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                }</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>              <span class="keywordflow">case</span> Anisotropic:</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                {</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>                  <span class="comment">// In the anisotropic case, every entry is specified (given the symmetry</span></div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                  <span class="comment">// constraints). Also, ignore magic numbers because it is simpler to</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>                  <span class="comment">// hardcode this.</span></div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span> </div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>                  <span class="comment">// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span> </div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>                  compliance[xx_dir][xx_dir] = constants.at(0);</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>                  compliance[yy_dir][yy_dir] = constants.at(1);</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>                  compliance[xy_dir][xy_dir] = constants.at(2);</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] =</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>                    constants.at(3);</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] =</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>                    constants.at(4);</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] =</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>                    constants.at(5);</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>                  <span class="comment">// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>                  <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>                }</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>              <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>                AssertThrow(<span class="keyword">false</span>, dealii::ExcMessage(<span class="stringliteral">&quot;Invalid elasticity model type&quot;</span>));</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>            }</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>        }</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>      <span class="keywordflow">case</span> 3:</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        {</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xx_dir = 0;</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yy_dir = 1;</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> zz_dir = 2;</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> yz_dir = 3;</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xz_dir = 4;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> xy_dir = 5;</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>          <span class="keywordflow">switch</span> (model)</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>            {</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>              <span class="keywordflow">case</span> Isotropic:</div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>                {</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                  compliance[xx_dir][xx_dir] = constants[0];</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>                  compliance[yy_dir][yy_dir] = constants[1];</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>                  compliance[zz_dir][zz_dir] = constants[2];</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>                  compliance[yz_dir][yz_dir] = constants[3];</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>                  compliance[xz_dir][xz_dir] = constants[4];</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>                  compliance[xy_dir][xy_dir] = constants[5];</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = constants[6];</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>                  compliance[xx_dir][zz_dir] = compliance[zz_dir][xx_dir] = constants[7];</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                  compliance[xx_dir][yz_dir] = compliance[yz_dir][xx_dir] = constants[8];</div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                  compliance[xx_dir][xz_dir] = compliance[xz_dir][xx_dir] = constants[9];</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] = constants[10];</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>                  compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = constants[11];</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>                  compliance[yy_dir][yz_dir] = compliance[yz_dir][yy_dir] = constants[12];</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>                  compliance[yy_dir][xz_dir] = compliance[xz_dir][yy_dir] = constants[13];</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] = constants[14];</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>                  compliance[zz_dir][yz_dir] = compliance[yz_dir][zz_dir] = constants[15];</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>                  compliance[zz_dir][xz_dir] = compliance[xz_dir][zz_dir] = constants[16];</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>                  compliance[zz_dir][xy_dir] = compliance[xy_dir][zz_dir] = constants[17];</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>                  compliance[yz_dir][xz_dir] = compliance[xz_dir][yz_dir] = constants[18];</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                  compliance[yz_dir][xy_dir] = compliance[xy_dir][yz_dir] = constants[19];</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                  compliance[xz_dir][xy_dir] = compliance[xy_dir][xz_dir] = constants[20];</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                  <span class="comment">// For isotropic compliance tensors, we can simplify the computation to</span></div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>                  <span class="comment">// two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear</span></div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>                  <span class="comment">// modulus. In cartesian coordinates,</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>                  <span class="comment">// $$$</span></div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>                  <span class="comment">// c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}</span></div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>                  <span class="comment">// \delta_{jl} + \delta_{il} \delta_{kj})</span></div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>                  <span class="comment">// $$$</span></div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> poisson = constants.at(1);</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span> </div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> shear_modulus = modulus / (2 * (1 + poisson));</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> lambda =</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span> </div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>                  compliance[xx_dir][xx_dir]     = compliance[yy_dir][yy_dir] =</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>                    compliance[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>                  compliance[yz_dir][yz_dir]     = compliance[xz_dir][xz_dir] =</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>                    compliance[xy_dir][xy_dir]   = shear_modulus;</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>                  compliance[xx_dir][yy_dir]     = compliance[yy_dir][xx_dir] =</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                    compliance[xx_dir][zz_dir]   = compliance[zz_dir][xx_dir] =</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;</div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>                  <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>                }</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>              <span class="keywordflow">case</span> Transverse:</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>              <span class="keywordflow">case</span> Orthotropic:</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>              <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                AssertThrow(<span class="keyword">false</span>, dealii::ExcMessage(<span class="stringliteral">&quot;Invalid elasticity model type&quot;</span>));</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>            }</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        }</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        {</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>          Assert(<span class="keyword">false</span>, UnreachableCode());</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        }</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>    }</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span> </div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>  <span class="keywordflow">return</span> compliance;</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>}</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span> </div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span><span class="keywordtype">void</span></div>
-<div class="foldopen" id="foldopen00691" data-start="{" data-end="}">
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno"><a class="line" href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">  691</a></span><a class="code hl_function" href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">UserConstants&lt;dim&gt;::print</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>  <span class="keywordflow">if</span> (!model_constants.empty())</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>    {</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>()</div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        &lt;&lt; <span class="stringliteral">&quot;  User Constants\n&quot;</span></div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span>;</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span> </div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[constant_name, variant] : model_constants)</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        {</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; constant_name &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>;</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>          boost::apply_visitor(VariantPrinter(), variant);</div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>        }</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>    }</div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>}</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>              <span class="keywordflow">case</span> Anisotropic:</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>                {</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>                  <span class="comment">// In the anisotropic case, every entry is specified (given the symmetry</span></div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                  <span class="comment">// constraints). Also, ignore magic numbers because it is simpler to</span></div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>                  <span class="comment">// hardcode this.</span></div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span> </div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>                  <span class="comment">// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>                  compliance[xx_dir][xx_dir] = constants[0];</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>                  compliance[yy_dir][yy_dir] = constants[1];</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>                  compliance[zz_dir][zz_dir] = constants[2];</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>                  compliance[yz_dir][yz_dir] = constants[3];</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>                  compliance[xz_dir][xz_dir] = constants[4];</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>                  compliance[xy_dir][xy_dir] = constants[5];</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = constants[6];</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>                  compliance[xx_dir][zz_dir] = compliance[zz_dir][xx_dir] = constants[7];</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>                  compliance[xx_dir][yz_dir] = compliance[yz_dir][xx_dir] = constants[8];</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>                  compliance[xx_dir][xz_dir] = compliance[xz_dir][xx_dir] = constants[9];</div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] = constants[10];</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>                  compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = constants[11];</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>                  compliance[yy_dir][yz_dir] = compliance[yz_dir][yy_dir] = constants[12];</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>                  compliance[yy_dir][xz_dir] = compliance[xz_dir][yy_dir] = constants[13];</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] = constants[14];</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>                  compliance[zz_dir][yz_dir] = compliance[yz_dir][zz_dir] = constants[15];</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>                  compliance[zz_dir][xz_dir] = compliance[xz_dir][zz_dir] = constants[16];</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>                  compliance[zz_dir][xy_dir] = compliance[xy_dir][zz_dir] = constants[17];</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>                  compliance[yz_dir][xz_dir] = compliance[xz_dir][yz_dir] = constants[18];</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>                  compliance[yz_dir][xy_dir] = compliance[xy_dir][yz_dir] = constants[19];</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>                  compliance[xz_dir][xy_dir] = compliance[xy_dir][xz_dir] = constants[20];</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span> </div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>                  <span class="comment">// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>                  <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                }</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>              <span class="keywordflow">case</span> Transverse:</div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>              <span class="comment">// TODO (landinjm): implement</span></div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>              <span class="keywordflow">case</span> Orthotropic:</div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>              <span class="comment">// TODO (landinjm): implement</span></div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>              <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>                AssertThrow(<span class="keyword">false</span>, dealii::ExcMessage(<span class="stringliteral">&quot;Invalid elasticity model type&quot;</span>));</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            }</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>        }</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>        {</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>          Assert(<span class="keyword">false</span>, UnreachableCode());</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>        }</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>    }</div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span> </div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>  <span class="keywordflow">return</span> compliance;</div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>}</div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span> </div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="keywordtype">void</span></div>
+<div class="foldopen" id="foldopen00726" data-start="{" data-end="}">
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno"><a class="line" href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">  726</a></span><a class="code hl_function" href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">UserConstants&lt;dim&gt;::print</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>  <span class="keywordflow">if</span> (!model_constants.empty())</div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>    {</div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>()</div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>        &lt;&lt; <span class="stringliteral">&quot;  User Constants\n&quot;</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span>;</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span> </div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[constant_name, variant] : model_constants)</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        {</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; constant_name &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>;</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>          boost::apply_visitor(VariantPrinter(), variant);</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        }</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>    }</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>}</div>
 </div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span> </div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
 <div class="ttc" id="aclassUserConstants_html"><div class="ttname"><a href="classUserConstants.html">UserConstants</a></div><div class="ttdoc">Class the stores and manages user-defined constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:28</div></div>
 <div class="ttc" id="aclassUserConstants_html_a00d9c5f996c650688da96ce81c5c4be8"><div class="ttname"><a href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">UserConstants::construct_user_constant</a></div><div class="ttdeci">InputVariant construct_user_constant(std::vector&lt; std::string &gt; &amp;model_constants_strings)</div><div class="ttdoc">Assign the specified user constant to whatever type.</div><div class="ttdef"><b>Definition</b> user_constants.h:398</div></div>
@@ -784,7 +819,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="ttc" id="aclassUserConstants_html_a480929f141c03b87b31e2e459576b7f5"><div class="ttname"><a href="classUserConstants.html#a480929f141c03b87b31e2e459576b7f5">UserConstants::get_model_constant_bool</a></div><div class="ttdeci">bool get_model_constant_bool(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the bool from the model_constants that are defined from the parameters.prm parser....</div><div class="ttdef"><b>Definition</b> user_constants.h:253</div></div>
 <div class="ttc" id="aclassUserConstants_html_a5579bbb1335c38ae05a523b9572af082"><div class="ttname"><a href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">UserConstants::add_user_constant</a></div><div class="ttdeci">void add_user_constant(const std::string &amp;constant_name, std::vector&lt; std::string &gt; &amp;model_constants_strings)</div><div class="ttdoc">Print all user-specified constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:101</div></div>
 <div class="ttc" id="aclassUserConstants_html_ab1bdd73fc414082d06ff0c955a16a0f3"><div class="ttname"><a href="classUserConstants.html#ab1bdd73fc414082d06ff0c955a16a0f3">UserConstants::get_model_constant_int</a></div><div class="ttdeci">int get_model_constant_int(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the int from the model_constants that are defined from the parameters.prm parser....</div><div class="ttdef"><b>Definition</b> user_constants.h:240</div></div>
-<div class="ttc" id="aclassUserConstants_html_adc1db15a0df4d6603bbafe3e6c426aad"><div class="ttname"><a href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">UserConstants::print</a></div><div class="ttdeci">void print() const</div><div class="ttdoc">Print all user-specified constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:691</div></div>
+<div class="ttc" id="aclassUserConstants_html_adc1db15a0df4d6603bbafe3e6c426aad"><div class="ttname"><a href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">UserConstants::print</a></div><div class="ttdeci">void print() const</div><div class="ttdoc">Print all user-specified constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:726</div></div>
 <div class="ttc" id="aclassUserConstants_html_ae16c95957918cb80baa6769b4743c072"><div class="ttname"><a href="classUserConstants.html#ae16c95957918cb80baa6769b4743c072">UserConstants::get_model_constant_rank_1_tensor</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim &gt; get_model_constant_rank_1_tensor(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the rank 1 tensor from the model_constants that are defined from the parameters....</div><div class="ttdef"><b>Definition</b> user_constants.h:266</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -57,11 +57,9 @@ var NAVTREEINDEX1 =
 "classParseCMDOptions.html":[6,0,44],
 "classReadBinary.html":[6,0,49],
 "classReadBinary.html#a1ffbb18aec3eb4f2408954bfa7a25d01":[6,0,49,0],
-"classReadBinary.html#a25a425fedb1ea261c90aa7783f5e04f6":[6,0,49,2],
 "classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b":[6,0,49,1],
-"classReadBinary.html#a3f38eeaa81c2d764de8d86be93dfb47f":[6,0,49,4],
-"classReadBinary.html#ade03e461dc530beb288be54573216de2":[6,0,49,5],
-"classReadBinary.html#ae9af07a8712437645674e88279f1bbdd":[6,0,49,3],
+"classReadBinary.html#ade03e461dc530beb288be54573216de2":[6,0,49,3],
+"classReadBinary.html#ae9af07a8712437645674e88279f1bbdd":[6,0,49,2],
 "classReadFieldBase.html":[6,0,50],
 "classReadFieldBase.html#a2147519c05329c3e30a5ba3c103ac972":[6,0,50,6],
 "classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904":[6,0,50,9],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "classTeeStream.html":[6,0,67],
 "classTimer.html":[6,0,69],
 "classTimer.html#a5f16e8da27d2a5a5242dead46de05d97":[6,0,69,0],
-"classTriangulationHandler.html":[6,0,70]
+"classTriangulationHandler.html":[6,0,70],
+"classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221":[6,0,70,11],
+"classTriangulationHandler.html#a31b8c11973df87e1374a69e7ea33b13e":[6,0,70,9]
 };

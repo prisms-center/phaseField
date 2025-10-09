@@ -139,14 +139,14 @@ $(document).ready(function(){initNavTree('cell__marker__base_8h_source.html','')
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    dealii::CellAccessor&lt;dim&gt;; <span class="comment">// dealii::TriaActiveIterator&lt;dealii::CellAccessor&lt;dim&gt;&gt;;</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classCellMarkerBase.html#a10ba574bf0a796968941e952238be991">   32</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classCellMarkerBase.html#a10ba574bf0a796968941e952238be991">~CellMarkerBase</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  [[nodiscard]] <span class="keyword">virtual</span> <span class="keywordtype">bool</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  flag([[maybe_unused]] <span class="keyword">const</span> CellIterator           &amp;cell,</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>       [[maybe_unused]] <span class="keyword">const</span> <a class="code hl_struct" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> this-&gt;flag(cell.center(), time_info);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">virtual</span> <span class="keywordtype">bool</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  [[nodiscard]] <span class="keyword">virtual</span> <span class="keywordtype">bool</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  flag([[maybe_unused]] <span class="keyword">const</span> dealii::Point&lt;dim&gt;     &amp;point,</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>       [[maybe_unused]] <span class="keyword">const</span> <a class="code hl_struct" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">  </span>{</div>
