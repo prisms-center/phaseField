@@ -7,6 +7,7 @@
 // Optional features:
 #cmakedefine PRISMS_PF_WITH_ZLIB
 #cmakedefine PRISMS_PF_WITH_CALIPER
+#cmakedefine PRISMS_PF_WITH_VTK
 
 // Flags for enabling and disabling certain features
 #cmakedefine ADDITIONAL_OPTIMIZATIONS
