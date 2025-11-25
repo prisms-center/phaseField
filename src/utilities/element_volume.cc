@@ -70,7 +70,7 @@ ElementVolume<dim, degree, number>::compute_element_volume()
           // in 3D or area in 2D.
           for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
             {
-              cell_volume += fe_values.JxW(q_point);
+              cell_volume += static_cast<number>(fe_values.JxW(q_point));
             }
 
           // Store the element volume
