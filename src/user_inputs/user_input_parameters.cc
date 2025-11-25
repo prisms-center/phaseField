@@ -86,8 +86,9 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
                                         parameter_handler.get_double(axis_labels[i] +
                                                                      " size"));
         spatial_discretization.set_subdivisions(i,
-                                                parameter_handler.get_integer(
-                                                  axis_labels[i] + " subdivisions"));
+                                                static_cast<unsigned int>(
+                                                  parameter_handler.get_integer(
+                                                    axis_labels[i] + " subdivisions")));
       }
   }
   parameter_handler.leave_subsection();
@@ -99,20 +100,21 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
   parameter_handler.leave_subsection();
 
   spatial_discretization.set_global_refinement(
-    parameter_handler.get_integer("global refinement"));
+    static_cast<unsigned int>(parameter_handler.get_integer("global refinement")));
 
-  spatial_discretization.set_degree(parameter_handler.get_integer("degree"));
+  spatial_discretization.set_degree(
+    static_cast<unsigned int>(parameter_handler.get_integer("degree")));
 
   spatial_discretization.set_has_adaptivity(
     parameter_handler.get_bool("mesh adaptivity"));
 
   spatial_discretization.set_remeshing_period(
-    parameter_handler.get_integer("remeshing period"));
+    static_cast<unsigned int>(parameter_handler.get_integer("remeshing period")));
 
   spatial_discretization.set_max_refinement(
-    parameter_handler.get_integer("max refinement"));
+    static_cast<unsigned int>(parameter_handler.get_integer("max refinement")));
   spatial_discretization.set_min_refinement(
-    parameter_handler.get_integer("min refinement"));
+    static_cast<unsigned int>(parameter_handler.get_integer("min refinement")));
 
   for (const auto &[index, variable] : var_attributes)
     {
@@ -175,14 +177,14 @@ UserInputParameters<dim>::assign_output_parameters(
     output_parameters.set_file_name(parameter_handler.get("file name"));
     output_parameters.set_file_type(parameter_handler.get("file type"));
     output_parameters.set_patch_subdivisions(
-      parameter_handler.get_integer("subdivisions"));
+      static_cast<unsigned int>(parameter_handler.get_integer("subdivisions")));
     output_parameters.set_output_condition(parameter_handler.get("condition"));
     output_parameters.set_user_output_list(dealii::Utilities::string_to_int(
       dealii::Utilities::split_string_list(parameter_handler.get("list"))));
     output_parameters.set_n_outputs(
       static_cast<unsigned int>(parameter_handler.get_integer("number")));
     output_parameters.set_print_output_period(
-      parameter_handler.get_integer("print step period"));
+      static_cast<unsigned int>(parameter_handler.get_integer("print step period")));
     output_parameters.set_print_timing_with_output(
       parameter_handler.get_bool("timing information with output"));
   }
@@ -322,7 +324,7 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
 
           // Set the maximum number of iterations
           linear_solver_parameters.max_iterations =
-            parameter_handler.get_integer("max iterations");
+            static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
 
           // Set preconditioner type and related parameters
           linear_solver_parameters.preconditioner =
@@ -334,13 +336,13 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
             parameter_handler.get_double("smoothing range");
 
           linear_solver_parameters.smoother_degree =
-            parameter_handler.get_integer("smoother degree");
+            static_cast<unsigned int>(parameter_handler.get_integer("smoother degree"));
 
-          linear_solver_parameters.eig_cg_n_iterations =
-            parameter_handler.get_integer("eigenvalue cg iterations");
+          linear_solver_parameters.eig_cg_n_iterations = static_cast<unsigned int>(
+            parameter_handler.get_integer("eigenvalue cg iterations"));
 
           linear_solver_parameters.min_mg_level =
-            parameter_handler.get_integer("min mg level");
+            static_cast<unsigned int>(parameter_handler.get_integer("min mg level"));
 
           linear_solve_parameters.set_linear_solve_parameters(index,
                                                               linear_solver_parameters);
@@ -366,7 +368,7 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
 
           NonlinearSolverParameters nonlinear_solver_parameters;
           nonlinear_solver_parameters.max_iterations =
-            parameter_handler.get_integer("max iterations");
+            static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
           nonlinear_solver_parameters.step_length =
             parameter_handler.get_double("step size");
           nonlinear_solve_parameters
@@ -420,10 +422,10 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
               parameter_handler.get("simulation variable names"));
             // Defaults to 0 for unused dimensions/cases that don't require it
-            for (unsigned int i = 0; i < dim; ++i)
+            for (unsigned int k = 0; k < dim; ++k)
               {
-                ic_file.n_data_points[i] = parameter_handler.get_integer(
-                  "data points in " + axis_labels[i] + " direction");
+                ic_file.n_data_points[k] = parameter_handler.get_integer(
+                  "data points in " + axis_labels[k] + " direction");
               }
             load_ic_parameters.add_initial_condition_file(ic_file);
           }
@@ -446,7 +448,7 @@ UserInputParameters<dim>::assign_nucleation_parameters(
       parameter_handler.get_double("same field nucleus exclusion distance"));
 
     nucleation_parameters.set_nucleation_period(
-      parameter_handler.get_integer("nucleation period"));
+      static_cast<unsigned int>(parameter_handler.get_integer("nucleation period")));
 
     nucleation_parameters.set_refinement_radius(
       parameter_handler.get_double("refinement radius"));
@@ -454,7 +456,7 @@ UserInputParameters<dim>::assign_nucleation_parameters(
     nucleation_parameters.set_seeding_time(parameter_handler.get_double("seeding time"));
 
     nucleation_parameters.set_seeding_increments(
-      parameter_handler.get_integer("seeding increments"));
+      static_cast<unsigned int>(parameter_handler.get_integer("seeding increments")));
   }
   parameter_handler.leave_subsection();
 }

@@ -30,8 +30,8 @@ InputFileReader::InputFileReader(
   : parameters_file_name(input_file_name)
   , var_attributes(&_var_attributes)
 {
-  model_constant_names             = get_model_constant_names();
-  const unsigned int num_constants = model_constant_names.size();
+  model_constant_names     = get_model_constant_names();
+  const auto num_constants = static_cast<unsigned int>(model_constant_names.size());
 
   ConditionalOStreams::pout_base()
     << "Number of constants: " << num_constants << "\n"
@@ -40,7 +40,7 @@ InputFileReader::InputFileReader(
   // Read in all of the parameters now
   declare_parameters();
   parameter_handler.parse_input(parameters_file_name);
-  number_of_dimensions = parameter_handler.get_integer("dim");
+  number_of_dimensions = static_cast<unsigned int>(parameter_handler.get_integer("dim"));
 }
 
 void
