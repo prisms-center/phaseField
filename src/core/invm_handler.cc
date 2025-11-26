@@ -165,7 +165,8 @@ InvmHandler<dim, degree, number>::compute_scalar_invm()
     {
       if (invm_scalar.local_element(i) > tolerance)
         {
-          invm_scalar.local_element(i) = 1.0 / invm_scalar.local_element(i);
+          invm_scalar.local_element(i) =
+            static_cast<number>(1.0) / invm_scalar.local_element(i);
         }
       else
         {
@@ -205,7 +206,8 @@ InvmHandler<dim, degree, number>::compute_vector_invm()
     {
       if (invm_vector.local_element(i) > tolerance)
         {
-          invm_vector.local_element(i) = 1.0 / invm_vector.local_element(i);
+          invm_vector.local_element(i) =
+            static_cast<number>(1.0) / invm_vector.local_element(i);
         }
       else
         {

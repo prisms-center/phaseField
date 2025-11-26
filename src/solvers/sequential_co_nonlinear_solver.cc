@@ -138,10 +138,11 @@ SequentialCoNonlinearSolver<dim, degree, number>::solve()
       for (const auto &[index, variable] : this->get_subset_attributes())
         {
           // Set the step length
-          const number step_length = this->get_user_inputs()
-                                       .get_nonlinear_solve_parameters()
-                                       .get_nonlinear_solve_parameters(index)
-                                       .step_length;
+          const auto step_length =
+            static_cast<number>(this->get_user_inputs()
+                                  .get_nonlinear_solve_parameters()
+                                  .get_nonlinear_solve_parameters(index)
+                                  .step_length);
 
           // Set the norm of the newton update
           number newton_update_norm = 0.0;
@@ -171,10 +172,11 @@ SequentialCoNonlinearSolver<dim, degree, number>::solve()
                 << std::flush;
             }
 
-          if (newton_update_norm > this->get_user_inputs()
-                                     .get_nonlinear_solve_parameters()
-                                     .get_nonlinear_solve_parameters(index)
-                                     .tolerance_value)
+          if (newton_update_norm >
+              static_cast<number>(this->get_user_inputs()
+                                    .get_nonlinear_solve_parameters()
+                                    .get_nonlinear_solve_parameters(index)
+                                    .tolerance_value))
             {
               unconverged = true;
             }

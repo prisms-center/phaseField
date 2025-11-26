@@ -77,7 +77,8 @@ SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solu
   if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {
       std::ostringstream increment_stream;
-      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      increment_stream << std::setw(static_cast<int>(n_trailing_digits))
+                       << std::setfill('0') << increment;
       const std::string filename =
         directory + name + "_" + increment_stream.str() + ".vtu";
       data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
@@ -93,7 +94,8 @@ SolutionOutput<dim, number>::SolutionOutput(const VectorType               &solu
   else if (user_inputs.get_output_parameters().get_file_type() == "vtk")
     {
       std::ostringstream increment_stream;
-      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      increment_stream << std::setw(static_cast<int>(n_trailing_digits))
+                       << std::setfill('0') << increment;
       const std::string filename =
         directory + name + "_" + increment_stream.str() + ".vtk";
       std::ofstream vtk_output(filename);
@@ -176,7 +178,8 @@ SolutionOutput<dim, number>::SolutionOutput(
   if (user_inputs.get_output_parameters().get_file_type() == "vtu")
     {
       std::ostringstream increment_stream;
-      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      increment_stream << std::setw(static_cast<int>(n_trailing_digits))
+                       << std::setfill('0') << increment;
       const std::string filename =
         directory + name + "_" + increment_stream.str() + ".vtu";
       data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
@@ -192,7 +195,8 @@ SolutionOutput<dim, number>::SolutionOutput(
   else if (user_inputs.get_output_parameters().get_file_type() == "vtk")
     {
       std::ostringstream increment_stream;
-      increment_stream << std::setw(n_trailing_digits) << std::setfill('0') << increment;
+      increment_stream << std::setw(static_cast<int>(n_trailing_digits))
+                       << std::setfill('0') << increment;
       const std::string filename =
         directory + name + "_" + increment_stream.str() + ".vtk";
       std::ofstream vtk_output(filename);

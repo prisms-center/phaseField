@@ -69,10 +69,12 @@ LinearSolverBase<dim, degree, number>::init()
     variable_attributes->get_max_dependency_types();
 
   // Resize the global to local solution vector
-  residual_global_to_local_solution.resize(max_fields * max_dependency_types,
+  residual_global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                             max_dependency_types,
                                            Numbers::invalid_index);
 
-  newton_update_global_to_local_solution.resize(max_fields * max_dependency_types,
+  newton_update_global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                                  max_dependency_types,
                                                 Numbers::invalid_index);
 
   // Create the residual subset of solution vectors and add the mapping to
@@ -106,7 +108,8 @@ LinearSolverBase<dim, degree, number>::init()
               variable_index,
               static_cast<DependencyType>(dependency_type)));
           residual_global_to_local_solution[(variable_index * max_dependency_types) +
-                                            dependency_type] = residual_src.size() - 1;
+                                            dependency_type] =
+            static_cast<unsigned int>(residual_src.size()) - 1;
 
           dependency_type++;
         }
@@ -151,7 +154,7 @@ LinearSolverBase<dim, degree, number>::init()
               static_cast<DependencyType>(dependency_type)));
           newton_update_global_to_local_solution[(variable_index * max_dependency_types) +
                                                  dependency_type] =
-            newton_update_src.size() - 1;
+            static_cast<unsigned int>(newton_update_src.size()) - 1;
 
           dependency_type++;
         }
@@ -182,10 +185,12 @@ LinearSolverBase<dim, degree, number>::reinit()
     variable_attributes->get_max_dependency_types();
 
   // Resize the global to local solution vector
-  residual_global_to_local_solution.resize(max_fields * max_dependency_types,
+  residual_global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                             max_dependency_types,
                                            Numbers::invalid_index);
 
-  newton_update_global_to_local_solution.resize(max_fields * max_dependency_types,
+  newton_update_global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                                  max_dependency_types,
                                                 Numbers::invalid_index);
 
   // Create the residual subset of solution vectors and add the mapping to
@@ -219,7 +224,8 @@ LinearSolverBase<dim, degree, number>::reinit()
               variable_index,
               static_cast<DependencyType>(dependency_type)));
           residual_global_to_local_solution[(variable_index * max_dependency_types) +
-                                            dependency_type] = residual_src.size() - 1;
+                                            dependency_type] =
+            static_cast<unsigned int>(residual_src.size()) - 1;
 
           dependency_type++;
         }
@@ -264,7 +270,7 @@ LinearSolverBase<dim, degree, number>::reinit()
               static_cast<DependencyType>(dependency_type)));
           newton_update_global_to_local_solution[(variable_index * max_dependency_types) +
                                                  dependency_type] =
-            newton_update_src.size() - 1;
+            static_cast<unsigned int>(newton_update_src.size()) - 1;
 
           dependency_type++;
         }
@@ -281,15 +287,15 @@ LinearSolverBase<dim, degree, number>::compute_solver_tolerance()
                     .get_linear_solve_parameters()
                     .get_linear_solve_parameters(field_index)
                     .tolerance_type == SolverToleranceType::RelativeResidualChange
-                ? solver_context->get_user_inputs()
-                      .get_linear_solve_parameters()
-                      .get_linear_solve_parameters(field_index)
-                      .tolerance *
+                ? static_cast<number>(solver_context->get_user_inputs()
+                                        .get_linear_solve_parameters()
+                                        .get_linear_solve_parameters(field_index)
+                                        .tolerance) *
                     residual->l2_norm()
-                : solver_context->get_user_inputs()
-                    .get_linear_solve_parameters()
-                    .get_linear_solve_parameters(field_index)
-                    .tolerance;
+                : static_cast<number>(solver_context->get_user_inputs()
+                                        .get_linear_solve_parameters()
+                                        .get_linear_solve_parameters(field_index)
+                                        .tolerance);
 }
 
 #include "solvers/linear_solver_base.inst"

@@ -32,7 +32,7 @@ VariableAttributeLoader::init_variable_attributes()
 
   // Determine the max number of fields that user has defined. This is used to determine
   // the length of the vector for the eval flag set at runtime.
-  const Types::Index max_fields = var_attributes.size();
+  const auto max_fields = static_cast<Types::Index>(var_attributes.size());
 
   // Determine the max numer of dependency types. This is used to determine the length of
   // the vector for the eval flag set at runtime.

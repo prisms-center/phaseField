@@ -91,10 +91,11 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
       // Set the convergence bool, iteration counter, and step length
       bool         unconverged = true;
       unsigned int iteration   = 0;
-      const number step_length = this->get_user_inputs()
-                                   .get_nonlinear_solve_parameters()
-                                   .get_nonlinear_solve_parameters(index)
-                                   .step_length;
+      const auto   step_length =
+        static_cast<number>(this->get_user_inputs()
+                              .get_nonlinear_solve_parameters()
+                              .get_nonlinear_solve_parameters(index)
+                              .step_length);
 
       while (unconverged)
         {
@@ -124,10 +125,11 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
                 << std::flush;
             }
 
-          if (newton_update_norm > this->get_user_inputs()
-                                     .get_nonlinear_solve_parameters()
-                                     .get_nonlinear_solve_parameters(index)
-                                     .tolerance_value)
+          if (newton_update_norm >
+              static_cast<number>(this->get_user_inputs()
+                                    .get_nonlinear_solve_parameters()
+                                    .get_nonlinear_solve_parameters(index)
+                                    .tolerance_value))
             {
               unconverged = true;
             }

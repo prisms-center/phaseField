@@ -140,8 +140,9 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
     this->get_subset_attributes().begin()->second.get_max_dependency_types();
 
   // Resize the global to local solution vector
-  global_to_local_solution[global_field_index].resize(max_fields * max_dependency_types,
-                                                      Numbers::invalid_index);
+  global_to_local_solution[global_field_index].resize(
+    static_cast<unsigned long>(max_fields) * max_dependency_types,
+    Numbers::invalid_index);
 
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
   new_solution_subset[global_field_index].push_back(
@@ -174,10 +175,10 @@ SequentialSolver<dim, degree, number>::init_explicit_solver(
             this->get_solution_handler().get_solution_vector(variable_index,
                                                              static_cast<DependencyType>(
                                                                dependency_type)));
-          global_to_local_solution[global_field_index]
-                                  [(variable_index * max_dependency_types) +
-                                   dependency_type] =
-                                    solution_subset.at(global_field_index).size() - 1;
+          global_to_local_solution[global_field_index][(variable_index *
+                                                        max_dependency_types) +
+                                                       dependency_type] =
+            static_cast<unsigned int>(solution_subset.at(global_field_index).size()) - 1;
 
           dependency_type++;
         }
@@ -235,8 +236,9 @@ SequentialSolver<dim, degree, number>::reinit_explicit_solver(
     this->get_subset_attributes().begin()->second.get_max_dependency_types();
 
   // Resize the global to local solution vector
-  global_to_local_solution[global_field_index].resize(max_fields * max_dependency_types,
-                                                      Numbers::invalid_index);
+  global_to_local_solution[global_field_index].resize(
+    static_cast<unsigned long>(max_fields) * max_dependency_types,
+    Numbers::invalid_index);
 
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
   new_solution_subset[global_field_index].push_back(
@@ -269,10 +271,10 @@ SequentialSolver<dim, degree, number>::reinit_explicit_solver(
             this->get_solution_handler().get_solution_vector(variable_index,
                                                              static_cast<DependencyType>(
                                                                dependency_type)));
-          global_to_local_solution[global_field_index]
-                                  [(variable_index * max_dependency_types) +
-                                   dependency_type] =
-                                    solution_subset.at(global_field_index).size() - 1;
+          global_to_local_solution[global_field_index][(variable_index *
+                                                        max_dependency_types) +
+                                                       dependency_type] =
+            static_cast<unsigned int>(solution_subset.at(global_field_index).size()) - 1;
 
           dependency_type++;
         }

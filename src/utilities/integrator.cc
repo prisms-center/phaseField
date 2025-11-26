@@ -61,7 +61,7 @@ Integrator<dim, degree, number>::compute_integral(
           // compute the element integral.
           for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
             {
-              value += quad_values[q_point] * fe_values.JxW(q_point);
+              value += quad_values[q_point] * static_cast<number>(fe_values.JxW(q_point));
             }
         }
     }
@@ -118,8 +118,8 @@ Integrator<dim, degree, number>::compute_integral(
             {
               for (unsigned int dimension = 0; dimension < dim; dimension++)
                 {
-                  value[dimension] +=
-                    quad_values[q_point][dimension] * fe_values.JxW(q_point);
+                  value[dimension] += quad_values[q_point][dimension] *
+                                      static_cast<number>(fe_values.JxW(q_point));
                 }
             }
         }

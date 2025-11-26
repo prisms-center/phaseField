@@ -34,7 +34,7 @@ number
 PDEOperator<dim, degree, number>::get_timestep() const
 {
   Assert(user_inputs != nullptr, dealii::ExcNotInitialized());
-  return user_inputs->get_temporal_discretization().get_timestep();
+  return static_cast<number>(user_inputs->get_temporal_discretization().get_timestep());
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
