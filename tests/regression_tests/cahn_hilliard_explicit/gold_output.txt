@@ -1,7 +1,7 @@
 Using the input parameter file: parameters.prm
 Number of constants: 2
 Number of variables: 3
-number of processes: 2
+number of processes: 1
 vectorization over 2 doubles = 128 bits (SSE2)
 creating FESystem...
 creating triangulation...
@@ -25,56 +25,56 @@ solving 0th timestep for solve block 0 ...
   solving postprocessed variables...
 outputting initial condition...
 Iteration: 0
-  Solution index 0 l2-norm: 114.242 integrated value: 2009.14
-  Solution index 1 l2-norm: 55.0484 integrated value: 17.4527
-  Solution index 2 l2-norm: 10.5593 integrated value: 47.4855
+  Solution index 0 l2-norm: 109.458 integrated value: 1886.53
+  Solution index 1 l2-norm: 18.9064 integrated value: -6.80677
+  Solution index 2 l2-norm: 5.5409 integrated value: 37.0764
 
 
-Iteration: 3000
-  Solution index 0 l2-norm: 113.821 integrated value: 2009.14
-  Solution index 1 l2-norm: 7.26126 integrated value: -7.30989
-  Solution index 2 l2-norm: 4.89987 integrated value: 30.7652
+Iteration: 500
+  Solution index 0 l2-norm: 109.437 integrated value: 1886.53
+  Solution index 1 l2-norm: 5.7486 integrated value: -8.08296
+  Solution index 2 l2-norm: 5.27522 integrated value: 36.206
 
-Iteration: 6000
-  Solution index 0 l2-norm: 113.678 integrated value: 2009.14
-  Solution index 1 l2-norm: 6.23489 integrated value: -14.0719
-  Solution index 2 l2-norm: 4.52272 integrated value: 29.1192
+Iteration: 1000
+  Solution index 0 l2-norm: 109.413 integrated value: 1886.53
+  Solution index 1 l2-norm: 5.21869 integrated value: -8.84443
+  Solution index 2 l2-norm: 5.17676 integrated value: 35.9396
 
-Iteration: 9000
-  Solution index 0 l2-norm: 113.587 integrated value: 2009.14
-  Solution index 1 l2-norm: 5.82308 integrated value: -18.6374
-  Solution index 2 l2-norm: 4.34034 integrated value: 28.2041
+Iteration: 1500
+  Solution index 0 l2-norm: 109.392 integrated value: 1886.53
+  Solution index 1 l2-norm: 4.931 integrated value: -9.48444
+  Solution index 2 l2-norm: 5.11079 integrated value: 35.7548
 
-Iteration: 12000
-  Solution index 0 l2-norm: 113.52 integrated value: 2009.14
-  Solution index 1 l2-norm: 5.61573 integrated value: -22.1747
-  Solution index 2 l2-norm: 4.2262 integrated value: 27.5703
+Iteration: 2000
+  Solution index 0 l2-norm: 109.373 integrated value: 1886.53
+  Solution index 1 l2-norm: 4.74033 integrated value: -10.0616
+  Solution index 2 l2-norm: 5.06087 integrated value: 35.6102
 
-Iteration: 15000
-  Solution index 0 l2-norm: 113.467 integrated value: 2009.14
-  Solution index 1 l2-norm: 5.50841 integrated value: -25.1225
-  Solution index 2 l2-norm: 4.14517 integrated value: 27.0822
+Iteration: 2500
+  Solution index 0 l2-norm: 109.356 integrated value: 1886.53
+  Solution index 1 l2-norm: 4.60233 integrated value: -10.5981
+  Solution index 2 l2-norm: 5.02078 integrated value: 35.4903
 
-Serial: Auxiliary solver - 0.000321755s (0.000321755s/call, 1 calls)
-Serial: Create FESystem - 0.000422674s (0.000422674s/call, 1 calls)
-Serial: Create constraints - 0.00033244s (0.00033244s/call, 1 calls)
-Serial: Explicit solver - 5.91095s (0.000394064s/call, 15000 calls)
-Serial: Generate mesh - 0.00520387s (0.00520387s/call, 1 calls)
-Serial: Initialization - 0.050817s (0.050817s/call, 1 calls)
-Serial: Nonexplicit auxiliary solver - 4.51257s (0.000300838s/call, 15000 calls)
-Serial: Nonexplicit co-nonlinear solver - 0.0247833s (1.65211e-06s/call, 15001 calls)
-Serial: Nonexplicit linear solver - 0.0250292s (1.6685e-06s/call, 15001 calls)
-Serial: Nonexplicit self-nonlinear solver - 0.0250055s (1.66692e-06s/call, 15001 calls)
-Serial: Output - 0.155152s (0.0258587s/call, 6 calls)
-Serial: Postprocess solver - 0.0016064s (0.000267733s/call, 6 calls)
-Serial: Solve Increment - 10.8776s (0.000725171s/call, 15000 calls)
-Serial: Solver initialization - 0.0110691s (0.0110691s/call, 1 calls)
-Serial: Update ghosts - 0.126347s (4.21046e-06s/call, 30008 calls)
-Serial: Update time-dependent constraints - 0.0289994s (1.93329e-06s/call, 15000 calls)
-Serial: Zero ghosts - 0.0880052s (2.93282e-06s/call, 30007 calls)
-Serial: compute element volumes - 0.000629261s (0.000629261s/call, 1 calls)
-Serial: reinitialize DoFHandlers - 0.0024375s (0.0024375s/call, 1 calls)
-Serial: reinitialize element volumes - 3.562e-06s (3.562e-06s/call, 1 calls)
-Serial: reinitialize invm - 8.9047e-05s (8.9047e-05s/call, 1 calls)
-Serial: reinitialize matrix-free objects - 0.00291597s (0.00291597s/call, 1 calls)
-Serial: reinitialize solution set - 0.000154347s (0.000154347s/call, 1 calls)
+Serial: Auxiliary solver - 0.000609115s (0.000609115s/call, 1 calls)
+Serial: Create FESystem - 0.000333647s (0.000333647s/call, 1 calls)
+Serial: Create constraints - 0.000483255s (0.000483255s/call, 1 calls)
+Serial: Explicit solver - 1.44621s (0.000578486s/call, 2500 calls)
+Serial: Generate mesh - 0.00682018s (0.00682018s/call, 1 calls)
+Serial: Initialization - 0.0583218s (0.0583218s/call, 1 calls)
+Serial: Nonexplicit auxiliary solver - 1.3732s (0.00054928s/call, 2500 calls)
+Serial: Nonexplicit co-nonlinear solver - 0.00471737s (1.88619e-06s/call, 2501 calls)
+Serial: Nonexplicit linear solver - 0.00483492s (1.93319e-06s/call, 2501 calls)
+Serial: Nonexplicit self-nonlinear solver - 0.00470664s (1.8819e-06s/call, 2501 calls)
+Serial: Output - 0.148588s (0.0247647s/call, 6 calls)
+Serial: Postprocess solver - 0.0030147s (0.00050245s/call, 6 calls)
+Serial: Solve Increment - 2.90739s (0.00116296s/call, 2500 calls)
+Serial: Solver initialization - 0.0154012s (0.0154012s/call, 1 calls)
+Serial: Update ghosts - 0.0102552s (2.04776e-06s/call, 5008 calls)
+Serial: Update time-dependent constraints - 0.00539297s (2.15719e-06s/call, 2500 calls)
+Serial: Zero ghosts - 0.0148159s (2.95903e-06s/call, 5007 calls)
+Serial: compute element volumes - 0.000618613s (0.000618613s/call, 1 calls)
+Serial: reinitialize DoFHandlers - 0.00161243s (0.00161243s/call, 1 calls)
+Serial: reinitialize element volumes - 4.749e-06s (4.749e-06s/call, 1 calls)
+Serial: reinitialize invm - 0.000137734s (0.000137734s/call, 1 calls)
+Serial: reinitialize matrix-free objects - 0.0035217s (0.0035217s/call, 1 calls)
+Serial: reinitialize solution set - 0.000195914s (0.000195914s/call, 1 calls)
