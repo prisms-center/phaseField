@@ -488,10 +488,11 @@ MatrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
 
   for (unsigned int i = 0; i < inverse_diagonal.locally_owned_size(); ++i)
     {
-      Assert(inverse_diagonal.local_element(i) > 0.0,
+      Assert(inverse_diagonal.local_element(i) > static_cast<number>(0.0),
              dealii::ExcMessage(
                "No diagonal entry in a positive definite operator should be zero"));
-      inverse_diagonal.local_element(i) = 1.0 / inverse_diagonal.local_element(i);
+      inverse_diagonal.local_element(i) =
+        static_cast<number>(1.0) / inverse_diagonal.local_element(i);
     }
 }
 

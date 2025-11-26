@@ -524,7 +524,7 @@ ConstraintHandler<dim, degree, number>::set_pinned_point(
   unsigned int                    index,
   bool                            is_change_term) const
 {
-  const num tolerance = 1.0e-2;
+  const auto tolerance = static_cast<num>(1.0e-2);
   const auto &[value, target_point] =
     user_inputs->get_boundary_parameters().get_pinned_point(index);
 
@@ -631,7 +631,9 @@ ConstraintHandler<dim, degree, number>::apply_constraints(
             dof_handler,
             boundary_id,
             is_vector_field,
-            is_change_term ? 0.0 : boundary_condition.get_dirichlet_value(boundary_id),
+            is_change_term
+              ? 0.0
+              : static_cast<num>(boundary_condition.get_dirichlet_value(boundary_id)),
             constraints,
             mask);
           break;
