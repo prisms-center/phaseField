@@ -41,7 +41,7 @@ public:
    */
   InitialCondition(
     const unsigned int                                            &_index,
-    const FieldType                                               &field_type,
+    const FieldType                                               &_field_type,
     const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
@@ -56,6 +56,8 @@ public:
 
 private:
   unsigned int index;
+
+  FieldType field_type;
 
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 };
