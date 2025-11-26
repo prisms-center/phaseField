@@ -57,7 +57,8 @@ ConcurrentSolver<dim, degree, number>::init()
     this->get_subset_attributes().begin()->second.get_max_dependency_types();
 
   // Resize the global to local solution vector
-  global_to_local_solution.resize(max_fields * max_dependency_types,
+  global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                    max_dependency_types,
                                   Numbers::invalid_index);
 
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
@@ -84,7 +85,8 @@ ConcurrentSolver<dim, degree, number>::init()
           new_solution_subset.push_back(
             this->get_solution_handler().get_new_solution_vector(dependency_index));
           global_to_local_solution[(dependency_index * max_dependency_types) +
-                                   dependency_type] = solution_subset.size() - 1;
+                                   dependency_type] =
+            static_cast<unsigned int>(solution_subset.size()) - 1;
 
           dependency_type++;
         }
@@ -125,7 +127,8 @@ ConcurrentSolver<dim, degree, number>::reinit()
     this->get_subset_attributes().begin()->second.get_max_dependency_types();
 
   // Resize the global to local solution vector
-  global_to_local_solution.resize(max_fields * max_dependency_types,
+  global_to_local_solution.resize(static_cast<unsigned long>(max_fields) *
+                                    max_dependency_types,
                                   Numbers::invalid_index);
 
   // Create the subset of solution vectors and add the mapping to MatrixFreeOperator
@@ -152,7 +155,8 @@ ConcurrentSolver<dim, degree, number>::reinit()
           new_solution_subset.push_back(
             this->get_solution_handler().get_new_solution_vector(dependency_index));
           global_to_local_solution[(dependency_index * max_dependency_types) +
-                                   dependency_type] = solution_subset.size() - 1;
+                                   dependency_type] =
+            static_cast<unsigned int>(solution_subset.size()) - 1;
 
           dependency_type++;
         }

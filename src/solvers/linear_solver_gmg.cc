@@ -309,7 +309,7 @@ GMGSolver<dim, degree, number>::solve(const number &step_length)
   this->compute_solver_tolerance();
 
   // Update solver controls
-  this->get_solver_control().set_tolerance(this->get_tolerance());
+  this->get_solver_control().set_tolerance(static_cast<double>(this->get_tolerance()));
   dealii::SolverCG<VectorType> cg_solver(this->get_solver_control());
 
   // Grab some data from the VariableAttributes
