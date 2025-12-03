@@ -127,7 +127,7 @@ private:
                               const unsigned int             &boundary_id,
                               const bool                     &is_vector_field,
                               const num                      &value,
-                              dealii::AffineConstraints<num> &constraints,
+                              dealii::AffineConstraints<num> &_constraints,
                               const dealii::ComponentMask    &mask) const;
 
   /**
@@ -137,7 +137,7 @@ private:
   void
   apply_periodic_constraints(const dealii::DoFHandler<dim>  &dof_handler,
                              const unsigned int             &boundary_id,
-                             dealii::AffineConstraints<num> &constraints,
+                             dealii::AffineConstraints<num> &_constraints,
                              const dealii::ComponentMask    &mask) const;
 
   /**
@@ -150,7 +150,7 @@ private:
                                          const unsigned int             &boundary_id,
                                          const unsigned int             &index,
                                          const bool                     &is_vector_field,
-                                         dealii::AffineConstraints<num> &constraints,
+                                         dealii::AffineConstraints<num> &_constraints,
                                          const dealii::ComponentMask    &mask,
                                          bool is_change_term = false) const;
 
@@ -178,7 +178,7 @@ private:
   template <typename num>
   void
   set_pinned_point(const dealii::DoFHandler<dim>  &dof_handler,
-                   dealii::AffineConstraints<num> &constraints,
+                   dealii::AffineConstraints<num> &_constraints,
                    unsigned int                    index,
                    bool                            is_change_term = false) const;
 
@@ -188,7 +188,7 @@ private:
   template <typename num>
   void
   apply_generic_constraints(const dealii::DoFHandler<dim>  &dof_handler,
-                            dealii::AffineConstraints<num> &constraints) const;
+                            dealii::AffineConstraints<num> &_constraints) const;
 
   /**
    * @brief Apply constraints for common boundary conditions.
@@ -197,7 +197,7 @@ private:
   void
   apply_constraints(const dealii::Mapping<dim>     &mapping,
                     const dealii::DoFHandler<dim>  &dof_handler,
-                    dealii::AffineConstraints<num> &constraints,
+                    dealii::AffineConstraints<num> &_constraints,
                     const BoundaryCondition        &boundary_condition,
                     BoundaryCondition::Type         boundary_type,
                     unsigned int                    boundary_id,
@@ -214,7 +214,7 @@ private:
   void
   apply_mg_constraints(const dealii::Mapping<dim>     &mapping,
                        const dealii::DoFHandler<dim>  &dof_handler,
-                       dealii::AffineConstraints<num> &constraints,
+                       dealii::AffineConstraints<num> &_constraints,
                        BoundaryCondition::Type         boundary_type,
                        unsigned int                    boundary_id,
                        unsigned int                    component) const;
