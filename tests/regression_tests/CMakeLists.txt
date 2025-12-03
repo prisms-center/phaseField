@@ -9,6 +9,7 @@ set(REGRESSION_TEST_APPS
     allen_cahn_explicit
     allen_cahn_implicit
     cahn_hilliard_explicit
+		cahn_hilliard_explicit_amr
     cahn_hilliard_implicit
     cavity_flow
     fracture
