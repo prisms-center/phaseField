@@ -5,6 +5,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -13,8 +14,6 @@
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-struct VariableAttributes;
 
 /**
  * @brief Class to manage the variable attributes that the user specifies.
@@ -101,7 +100,7 @@ public:
    * @param field_type Field type of variable at `index` (`Scalar` or `Vector`).
    */
   void
-  set_variable_type(const unsigned int &index, const FieldType &field_type);
+  set_variable_type(const unsigned int &index, const FieldInfo::TensorRank &field_type);
 
   /**
    * @brief Set the PDE type of the variable at `index` to `pde_type` where

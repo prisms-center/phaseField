@@ -71,7 +71,7 @@ ConcurrentSolver<dim, degree, number>::init()
         {
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
-          if (field_type == Numbers::invalid_field_type ||
+          if (field_type == FieldInfo::TensorRank::Undefined ||
               global_to_local_solution[(dependency_index * max_dependency_types) +
                                        dependency_type] != Numbers::invalid_index)
             {
@@ -141,7 +141,7 @@ ConcurrentSolver<dim, degree, number>::reinit()
         {
           // Skip if an invalid field type is found or the global_to_local_solution
           // already has an entry for this dependency index and dependency type
-          if (field_type == Numbers::invalid_field_type ||
+          if (field_type == FieldInfo::TensorRank::Undefined ||
               global_to_local_solution[(dependency_index * max_dependency_types) +
                                        dependency_type] != Numbers::invalid_index)
             {

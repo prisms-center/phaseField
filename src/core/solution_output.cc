@@ -134,7 +134,8 @@ SolutionOutput<dim, number>::SolutionOutput(
       solution->update_ghost_values();
 
       // Mark field as Scalar/Vector
-      const bool         is_scalar    = variable.get_field_type() == FieldType::Scalar;
+      const bool is_scalar =
+        variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar;
       const unsigned int n_components = is_scalar ? 1 : dim;
 
       const std::vector<dealii::DataComponentInterpretation::DataComponentInterpretation>

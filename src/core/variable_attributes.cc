@@ -167,9 +167,10 @@ VariableAttributes::parse_dependencies(
             // Populate the dependencies
             if (dependencies.contains(possible_dependency))
               {
-                const DependencyType dep_type = relevant_flag.at(variation).first;
-                const EvalFlags      flags    = relevant_flag.at(variation).second;
-                const FieldType      other_field_type = other_variable.get_field_type();
+                const DependencyType        dep_type = relevant_flag.at(variation).first;
+                const EvalFlags             flags    = relevant_flag.at(variation).second;
+                const FieldInfo::TensorRank other_field_type =
+                  other_variable.field_info.tensor_rank;
 
                 validate_dependency(variation,
                                     dep_type,
@@ -282,7 +283,7 @@ VariableAttributes::print() const
     << "================================================\n"
     << "Name: " << name << "\n"
     << "Index: " << field_index << "\n"
-    << "Variable type: " << to_string(field_type) << "\n"
+    << "Variable type: " << to_string(field_info.tensor_rank) << "\n"
     << "Equation type: " << to_string(pde_type) << "\n"
     << "Postprocessed field: " << bool_to_string(is_postprocessed_variable) << "\n"
     << "Field solve type: " << to_string(field_solve_type) << "\n";
@@ -344,11 +345,11 @@ VariableAttributes::print() const
 
 void
 VariableAttributes::validate_dependency(
-  [[maybe_unused]] const std::string  &variation,
-  [[maybe_unused]] DependencyType      dep_type,
-  [[maybe_unused]] const unsigned int &other_index,
-  [[maybe_unused]] const FieldType    &other_field_type,
-  [[maybe_unused]] const std::string  &context) const
+  [[maybe_unused]] const std::string           &variation,
+  [[maybe_unused]] DependencyType               dep_type,
+  [[maybe_unused]] const unsigned int          &other_index,
+  [[maybe_unused]] const FieldInfo::TensorRank &other_field_type,
+  [[maybe_unused]] const std::string           &context) const
 {
   AssertThrow(context != "RHS" || dep_type != DependencyType::Change,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
@@ -363,15 +364,15 @@ VariableAttributes::validate_dependency(
                 "Dependencies with the delimiter change(var) are only allowed as "
                 "dependencies for the same field (e.g, change(phi) is only "
                 "allowed as a dependency for phi)."));
-  AssertThrow(other_field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
                 variation.find("divergence") == std::string::npos,
               dealii::ExcMessage("Dependencies with the divergence delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(other_field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
                 variation.find("symmetric_gradient") == std::string::npos,
               dealii::ExcMessage("Dependencies with the symmetric gradient delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(other_field_type == FieldType::Vector ||
+  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
                 variation.find("curl") == std::string::npos,
               dealii::ExcMessage("Dependencies with the curl delimiter are "
                                  "only allowed on vector fields."));
@@ -388,12 +389,14 @@ VariableAttributes::compute_dependency_set(
 
   // First resize the dependency_set_rhs and dependency_set_lhs and populate them with
   // invalid entries. This is so we don't create the FEEvaluation objects.
-  dependency_set_rhs.resize(eval_flag_set_rhs.size(),
-                            std::vector<FieldType>(eval_flag_set_rhs.begin()->size(),
-                                                   Numbers::invalid_field_type));
-  dependency_set_lhs.resize(eval_flag_set_lhs.size(),
-                            std::vector<FieldType>(eval_flag_set_lhs.begin()->size(),
-                                                   Numbers::invalid_field_type));
+  dependency_set_rhs.resize(
+    eval_flag_set_rhs.size(),
+    std::vector<FieldInfo::TensorRank>(eval_flag_set_rhs.begin()->size(),
+                                       FieldInfo::TensorRank::Undefined));
+  dependency_set_lhs.resize(
+    eval_flag_set_lhs.size(),
+    std::vector<FieldInfo::TensorRank>(eval_flag_set_lhs.begin()->size(),
+                                       FieldInfo::TensorRank::Undefined));
 
   Types::Index index = 0;
   for (const auto &dependency_set : eval_flag_set_rhs)
@@ -416,7 +419,7 @@ VariableAttributes::compute_dependency_set(
                    std::to_string(index)));
 
           dependency_set_rhs[index][dep_index] =
-            other_var_attributes.at(index).field_type;
+            other_var_attributes.at(index).field_info.tensor_rank;
 
           dep_index++;
         }
@@ -425,7 +428,7 @@ VariableAttributes::compute_dependency_set(
     }
 
   dependency_set_rhs[field_index][static_cast<Types::Index>(DependencyType::Normal)] =
-    field_type;
+    field_info.tensor_rank;
 
   index = 0;
   for (const auto &dependency_set : eval_flag_set_lhs)
@@ -445,7 +448,7 @@ VariableAttributes::compute_dependency_set(
                    std::to_string(index)));
 
           dependency_set_lhs[index][dep_index] =
-            other_var_attributes.at(index).field_type;
+            other_var_attributes.at(index).field_info.tensor_rank;
 
           dep_index++;
         }

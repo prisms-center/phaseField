@@ -106,18 +106,18 @@ VariableAttributeLoader::set_variable_name(const unsigned int &index,
 }
 
 void
-VariableAttributeLoader::set_variable_type(const unsigned int &index,
-                                           const FieldType    &field_type)
+VariableAttributeLoader::set_variable_type(const unsigned int          &index,
+                                           const FieldInfo::TensorRank &field_type)
 {
   switch (field_type)
     {
-      case FieldType::Scalar:
-      case FieldType::Vector:
-        var_attributes[index].field_type = field_type;
+      case FieldInfo::TensorRank::Scalar:
+      case FieldInfo::TensorRank::Vector:
+        var_attributes[index].field_info.tensor_rank = field_type;
         break;
       default:
         throw std::invalid_argument(
-          "Invalid FieldType value provided in set_variable_type().");
+          "Invalid FieldInfo::TensorRank value provided in set_variable_type().");
     }
 }
 
@@ -347,7 +347,7 @@ VariableAttributeLoader::validate_attributes()
                     "Currently, postprocessing only allows explicit equations."));
       // Check that nucleation rates are scalars
       AssertThrow(!(variable.is_nucleation_rate_variable &&
-                    variable.field_type != FieldType::Scalar),
+                    variable.field_info.tensor_rank != FieldInfo::TensorRank::Scalar),
                   dealii::ExcMessage(
                     "Currently, nucleation rates must be scalar fields."));
       // Check that constant fields have no dependencies
@@ -579,9 +579,10 @@ VariableAttributeLoader::compute_shared_dependencies(
     std::vector<dealii::EvaluationFlags::EvaluationFlags>(
       max_dependencies,
       dealii::EvaluationFlags::EvaluationFlags::nothing));
-  std::vector<std::vector<FieldType>> shared_dependencies(
+  std::vector<std::vector<FieldInfo::TensorRank>> shared_dependencies(
     max_fields,
-    std::vector<FieldType>(max_dependencies, Numbers::invalid_field_type));
+    std::vector<FieldInfo::TensorRank>(max_dependencies,
+                                       FieldInfo::TensorRank::Undefined));
 
   // Populate the shared eval flags
   for (const auto &[index, variable] : variable_attributes)
@@ -598,7 +599,7 @@ VariableAttributeLoader::compute_shared_dependencies(
 
               // If the eval flag is nothing and the dependency type is invalid skip it
               if (eval_flag == dealii::EvaluationFlags::EvaluationFlags::nothing &&
-                  dependency_type == Numbers::invalid_field_type)
+                  dependency_type == FieldInfo::TensorRank::Undefined)
                 {
                   continue;
                 }

@@ -27,7 +27,7 @@ public:
     GridRefinementContext<dim, degree, number> &grid_refinement_context)
     : grid_refinement_context(grid_refinement_context)
   {
-    fe_values_flags.resize(static_cast<Types::Index>(FieldType::Vector) + 1,
+    fe_values_flags.resize(static_cast<Types::Index>(FieldInfo::TensorRank::Vector),
                            dealii::UpdateFlags::update_default);
 
     for (const auto &criterion : grid_refinement_context.get_user_inputs()
@@ -35,20 +35,21 @@ public:
                                    .get_refinement_criteria())
       {
         // Grab the index and field type
-        const Types::Index index            = criterion.get_index();
-        const FieldType    local_field_type = grid_refinement_context.get_user_inputs()
-                                             .get_variable_attributes()
-                                             .at(index)
-                                             .get_field_type();
+        const Types::Index          index = criterion.get_index();
+        const FieldInfo::TensorRank local_field_type =
+          grid_refinement_context.get_user_inputs()
+            .get_variable_attributes()
+            .at(index)
+            .field_info.tensor_rank;
 
         if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
           {
-            fe_values_flags[static_cast<Types::Index>(local_field_type)] |=
+            fe_values_flags[static_cast<Types::Index>(local_field_type) - 1] |=
               dealii::UpdateFlags::update_values;
           }
         else if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
           {
-            fe_values_flags[static_cast<Types::Index>(local_field_type)] |=
+            fe_values_flags[static_cast<Types::Index>(local_field_type) - 1] |=
               dealii::UpdateFlags::update_gradients;
           }
       }
@@ -93,7 +94,7 @@ public:
    * @brief Initialize the object.
    */
   void
-  init(const std::map<FieldType, dealii::FESystem<dim>> &fe_system)
+  init(const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system)
   {
     // Return early if adaptive meshing is disabled
     if (!grid_refinement_context.get_user_inputs()
@@ -110,7 +111,8 @@ public:
 
     for (const auto &[field_type, system] : fe_system)
       {
-        const unsigned int spacedim = field_type == FieldType::Scalar ? 1 : dim;
+        const unsigned int spacedim =
+          field_type == FieldInfo::TensorRank::Scalar ? 1 : dim;
 
         // Recreate the FESystem for the field type. I hate to do this, but we have to
         // ensure that this proper lifetime management and FESystem has it's copy
@@ -123,7 +125,7 @@ public:
         fe_values.try_emplace(field_type,
                               fe_systems.at(field_type),
                               quadrature,
-                              fe_values_flags[static_cast<Types::Index>(field_type)]);
+                              fe_values_flags[static_cast<Types::Index>(field_type) - 1]);
       }
 
     // Get the number of quadrature points
@@ -275,11 +277,11 @@ private:
                 const Types::Index index = criterion.get_index();
 
                 // Grab the field type
-                const FieldType local_field_type =
+                const FieldInfo::TensorRank local_field_type =
                   grid_refinement_context.get_user_inputs()
                     .get_variable_attributes()
                     .at(index)
-                    .get_field_type();
+                    .field_info.tensor_rank;
 
                 // Grab the DoFHandler iterator
                 const auto dof_iterator = cell->as_dof_handler_iterator(
@@ -290,7 +292,7 @@ private:
 
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
                   {
-                    if (local_field_type == FieldType::Scalar)
+                    if (local_field_type == FieldInfo::TensorRank::Scalar)
                       {
                         // Get the values for a scalar field
                         fe_values.at(local_field_type)
@@ -336,7 +338,7 @@ private:
                   }
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
                   {
-                    if (local_field_type == FieldType::Scalar)
+                    if (local_field_type == FieldInfo::TensorRank::Scalar)
                       {
                         // Get the magnitude of the gradient for a scalar field
                         // TODO (landinjm): Should be zeroing this out?
@@ -492,12 +494,12 @@ private:
   /**
    * @brief Finite element systems for scalar and vector fields.
    */
-  std::unordered_map<FieldType, dealii::FESystem<dim>> fe_systems;
+  std::unordered_map<FieldInfo::TensorRank, dealii::FESystem<dim>> fe_systems;
 
   /**
    * @brief Finite element values for scalar and vector fields.
    */
-  std::unordered_map<FieldType, dealii::FEValues<dim>> fe_values;
+  std::unordered_map<FieldInfo::TensorRank, dealii::FEValues<dim>> fe_values;
 
   /**
    * @brief Number of quadrature points.
