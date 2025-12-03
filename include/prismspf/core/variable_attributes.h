@@ -407,13 +407,13 @@ private:
    * variable.
    *
    * @param[in] other_var_attributes The other variable attributes.
-   * @param[in] max_fields The max number of fields that user has defined.
-   * @param[in] max_dependency_types The max number of dependency types.
+   * @param[in] _max_fields The max number of fields that user has defined.
+   * @param[in] _max_dependency_types The max number of dependency types.
    */
   void
   parse_dependencies(std::map<unsigned int, VariableAttributes> &other_var_attributes,
-                     const Types::Index                         &max_fields,
-                     const Types::Index                         &max_dependency_types);
+                     const Types::Index                         &_max_fields,
+                     const Types::Index                         &_max_dependency_types);
 
   /**
    * @brief Using the assigned evaluation flags determine the solve type for this

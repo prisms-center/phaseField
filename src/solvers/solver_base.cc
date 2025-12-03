@@ -103,7 +103,7 @@ SolverBase<dim, degree, number>::solver_is_empty() const
 template <unsigned int dim, unsigned int degree, typename number>
 std::map<Types::Index, VariableAttributes>
 SolverBase<dim, degree, number>::compute_subset_attributes(
-  const FieldSolveType &field_solve_type,
+  const FieldSolveType &_field_solve_type,
   Types::Index          _solve_priority) const
 {
   std::map<Types::Index, VariableAttributes> local_subset_attributes;
@@ -111,7 +111,7 @@ SolverBase<dim, degree, number>::compute_subset_attributes(
   for (const auto &[index, variable] :
        solver_context->get_user_inputs().get_variable_attributes())
     {
-      if (variable.get_field_solve_type() == field_solve_type &&
+      if (variable.get_field_solve_type() == _field_solve_type &&
           variable.get_solve_block() == _solve_priority)
         {
           local_subset_attributes.emplace(index, variable);
@@ -124,10 +124,10 @@ SolverBase<dim, degree, number>::compute_subset_attributes(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 SolverBase<dim, degree, number>::update_subset_attributes(
-  const FieldSolveType &field_solve_type,
+  const FieldSolveType &_field_solve_type,
   Types::Index          _solve_priority)
 {
-  subset_attributes = compute_subset_attributes(field_solve_type, _solve_priority);
+  subset_attributes = compute_subset_attributes(_field_solve_type, _solve_priority);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

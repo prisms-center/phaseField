@@ -68,8 +68,8 @@ VariableAttributes::parse_residual_dependencies()
 void
 VariableAttributes::parse_dependencies(
   std::map<unsigned int, VariableAttributes> &other_var_attributes,
-  const Types::Index                         &max_fields,
-  const Types::Index                         &max_dependency_types)
+  const Types::Index                         &_max_fields,
+  const Types::Index                         &_max_dependency_types)
 {
   const std::map<std::string, std::pair<DependencyType, EvalFlags>> relevant_flag = []()
   {
@@ -186,12 +186,12 @@ VariableAttributes::parse_dependencies(
 
   // Initialize the eval flag sets
   eval_flag_set_rhs.resize(
-    max_fields,
-    std::vector<EvalFlags>(max_dependency_types + 1,
+    _max_fields,
+    std::vector<EvalFlags>(_max_dependency_types + 1,
                            dealii::EvaluationFlags::EvaluationFlags::nothing));
   eval_flag_set_lhs.resize(
-    max_fields,
-    std::vector<EvalFlags>(max_dependency_types + 1,
+    _max_fields,
+    std::vector<EvalFlags>(_max_dependency_types + 1,
                            dealii::EvaluationFlags::EvaluationFlags::nothing));
 
   set_dependencies(raw_dependencies.dependencies_rhs, eval_flag_set_rhs, "RHS");

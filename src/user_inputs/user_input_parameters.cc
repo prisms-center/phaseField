@@ -425,8 +425,9 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             // Defaults to 0 for unused dimensions/cases that don't require it
             for (unsigned int k = 0; k < dim; ++k)
               {
-                ic_file.n_data_points[k] = parameter_handler.get_integer(
-                  "data points in " + axis_labels[k] + " direction");
+                ic_file.n_data_points[k] =
+                  static_cast<unsigned int>(parameter_handler.get_integer(
+                    "data points in " + axis_labels[k] + " direction"));
               }
             load_ic_parameters.add_initial_condition_file(ic_file);
           }

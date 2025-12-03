@@ -146,7 +146,7 @@ public:
    * FieldSolveType and solve order.
    */
   [[nodiscard]] std::map<Types::Index, VariableAttributes>
-  compute_subset_attributes(const FieldSolveType &field_solve_type,
+  compute_subset_attributes(const FieldSolveType &_field_solve_type,
                             Types::Index          _solve_priority) const;
 
   /**
@@ -157,7 +157,7 @@ public:
    * FieldSolveType and solve order. The map can be accessed with get_subset_attributes.
    */
   void
-  update_subset_attributes(const FieldSolveType &field_solve_type,
+  update_subset_attributes(const FieldSolveType &_field_solve_type,
                            Types::Index          _solve_priority);
 
   /**
