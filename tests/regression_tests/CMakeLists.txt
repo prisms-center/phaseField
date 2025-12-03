@@ -9,7 +9,7 @@ set(REGRESSION_TEST_APPS
     allen_cahn_explicit
     allen_cahn_implicit
     cahn_hilliard_explicit
-		cahn_hilliard_explicit_amr
+    cahn_hilliard_explicit_amr
     cahn_hilliard_implicit
     cavity_flow
     fracture
@@ -68,10 +68,12 @@ endforeach()
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 if(NOT DEFINED N_THREADS)
- set(N_THREADS 1)
+    set(N_THREADS 1)
 endif()
 
-install(CODE "
+install(
+    CODE
+        "
 execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/run.py
     -j ${N_THREADS}
@@ -83,7 +85,7 @@ execute_process(
 if(run_result)
   message(FATAL_ERROR \"Regression tests failed\")
 endif()
-")
-
+"
+)
 
 message(STATUS "PRISMS-PF regression tests setup complete.")
