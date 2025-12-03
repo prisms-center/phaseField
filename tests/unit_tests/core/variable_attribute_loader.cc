@@ -102,7 +102,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, FieldInfo::TensorRank::Invalid);
+        set_variable_type(0, FieldInfo::TensorRank::Undefined);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
