@@ -145,7 +145,7 @@ CustomAttributeLoader::load_variable_attributes()
       std::string field_name = "phi" + std::to_string(i);
 
       set_variable_name(i, field_name);
-      set_variable_type(i, Scalar);
+      set_variable_type(i, FieldInfo::TensorRank::Scalar);
       set_variable_equation_type(i, ExplicitTimeDependent);
 
       set_dependencies_value_term_rhs(i, field_name);

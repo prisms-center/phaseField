@@ -18,7 +18,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 {
   // Variable 0
   set_variable_name(0, "f_tot");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
 
   set_dependencies_value_term_rhs(0, "c, grad(mu), n1, grad(n1), grad(u)");
   set_dependencies_gradient_term_rhs(0, "");
@@ -27,7 +27,7 @@ CustomAttributeLoader::loadPostProcessorVariableAttributes()
 
   // Variable 1
   set_variable_name(1, "von_mises_stress");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
 
   set_dependencies_value_term_rhs(1, "c, n1, grad(u)");
   set_dependencies_gradient_term_rhs(1, "");

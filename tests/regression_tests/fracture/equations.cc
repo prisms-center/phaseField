@@ -15,14 +15,14 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "n");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "n, dndt");
   set_dependencies_gradient_term_rhs(0, "");
 
   set_variable_name(1, "u");
-  set_variable_type(1, Vector);
+  set_variable_type(1, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(1, TimeIndependent);
 
   set_dependencies_value_term_rhs(1, "");
@@ -31,64 +31,64 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_gradient_term_lhs(1, "n, grad(change(u)), Ex");
 
   set_variable_name(2, "dndt");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, Auxiliary);
 
   set_dependencies_value_term_rhs(2, "n, grad(u), Ex, Gx");
   set_dependencies_gradient_term_rhs(2, "grad(n), Gx");
 
   set_variable_name(3, "Ex");
-  set_variable_type(3, Scalar);
+  set_variable_type(3, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(3, Constant);
 
   set_variable_name(4, "Gx");
-  set_variable_type(4, Scalar);
+  set_variable_type(4, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(4, Constant);
 
   set_variable_name(5, "f_tot");
-  set_variable_type(5, Scalar);
+  set_variable_type(5, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(5, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(5, "n, grad(n), grad(u), Ex, Gx");
   set_dependencies_gradient_term_rhs(5, "");
   set_is_postprocessed_field(5, true);
 
   set_variable_name(6, "s11");
-  set_variable_type(6, Scalar);
+  set_variable_type(6, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(6, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(6, "n, grad(u), Ex");
   set_dependencies_gradient_term_rhs(6, "");
   set_is_postprocessed_field(6, true);
 
   set_variable_name(7, "s12");
-  set_variable_type(7, Scalar);
+  set_variable_type(7, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(7, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(7, "n, grad(u), Ex");
   set_dependencies_gradient_term_rhs(7, "");
   set_is_postprocessed_field(7, true);
 
   set_variable_name(8, "s22");
-  set_variable_type(8, Scalar);
+  set_variable_type(8, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(8, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(8, "n, grad(u), Ex");
   set_dependencies_gradient_term_rhs(8, "");
   set_is_postprocessed_field(8, true);
 
   set_variable_name(9, "e22");
-  set_variable_type(9, Scalar);
+  set_variable_type(9, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(9, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(9, "grad(u), Ex");
   set_dependencies_gradient_term_rhs(9, "");
   set_is_postprocessed_field(9, true);
 
   set_variable_name(10, "f_int");
-  set_variable_type(10, Scalar);
+  set_variable_type(10, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(10, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(10, "n, grad(n), grad(u), Ex, Gx");
   set_dependencies_gradient_term_rhs(10, "");
   set_is_postprocessed_field(10, true);
 
   set_variable_name(11, "f_el");
-  set_variable_type(11, Scalar);
+  set_variable_type(11, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(11, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(11, "n, grad(u), Ex");
   set_dependencies_gradient_term_rhs(11, "");

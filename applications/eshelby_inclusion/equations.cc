@@ -15,7 +15,7 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "u");
-  set_variable_type(0, Vector);
+  set_variable_type(0, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(0, TimeIndependent);
   set_dependencies_gradient_term_rhs(0, "grad(u)");
   set_dependencies_gradient_term_lhs(0, "grad(change(u))");

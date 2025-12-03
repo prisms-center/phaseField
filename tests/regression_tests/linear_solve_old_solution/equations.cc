@@ -15,14 +15,14 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "u");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ImplicitTimeDependent);
 
   set_dependencies_gradient_term_rhs(0, "grad(u)");
   set_dependencies_gradient_term_lhs(0, "grad(change(u))");
 
   set_variable_name(1, "u_old");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, ExplicitTimeDependent);
   set_is_postprocessed_field(1, true);
 

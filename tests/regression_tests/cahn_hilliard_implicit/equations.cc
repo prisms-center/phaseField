@@ -15,7 +15,7 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "c");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ImplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "c, old_1(c)");
   set_dependencies_gradient_term_rhs(0, "grad(gamma), c, grad(c)");
@@ -23,13 +23,13 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_gradient_term_lhs(0, "change(c), grad(change(c)), c, grad(c)");
 
   set_variable_name(1, "gamma");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, Auxiliary);
   set_dependencies_value_term_rhs(1, "");
   set_dependencies_gradient_term_rhs(1, "grad(c)");
 
   set_variable_name(2, "f_tot");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, ExplicitTimeDependent);
   set_is_postprocessed_field(2, true);
   set_dependencies_value_term_rhs(2, "c, grad(c)");

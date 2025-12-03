@@ -15,14 +15,14 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "u");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "u");
   set_solve_block(0, 1);
 
   set_variable_name(1, "u_star");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(1, "u");
