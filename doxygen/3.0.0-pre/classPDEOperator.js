@@ -1,6 +1,6 @@
 var classPDEOperator =
 [
-    [ "PDEOperator", "classPDEOperator.html#ac2c52a2d745be98881abd7e45fa63cda", null ],
+    [ "PDEOperator", "classPDEOperator.html#a6584115460a8510bfbaee06a44a2925c", null ],
     [ "~PDEOperator", "classPDEOperator.html#afcd5093a7ca3f742287e3f15450ebe8d", null ],
     [ "compute_explicit_rhs", "classPDEOperator.html#ac9c2f6fc833016ed26eebfebe0b3904f", null ],
     [ "compute_nonexplicit_lhs", "classPDEOperator.html#a9349b9a104cb15ed159858735c177941", null ],

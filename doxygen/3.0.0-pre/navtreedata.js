@@ -59,8 +59,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classMatrixFreeHandler.html#afc3e36bb3c6d842e27c093eb729f6f79",
-"classTriangulationHandler.html#a31e8d9d80fbc855ad93afb054b038b09",
-"structLinearSolveParameters.html#ab17d374849a9c2d5596de791fd8b25fb"
+"classTriangulationHandler.html#a4330f5d1bee43ac2d69af62739fdb067",
+"structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

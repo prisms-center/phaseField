@@ -16,6 +16,7 @@ var annotated_dup =
     [ "DofHandler", "classDofHandler.html", "classDofHandler" ],
     [ "ElementVolume", "classElementVolume.html", "classElementVolume" ],
     [ "ElementVolumeContainer", "classElementVolumeContainer.html", "classElementVolumeContainer" ],
+    [ "FieldInfo", "structFieldInfo.html", "structFieldInfo" ],
     [ "GMGSolver", "classGMGSolver.html", "classGMGSolver" ],
     [ "GridRefinementContext", "classGridRefinementContext.html", "classGridRefinementContext" ],
     [ "GridRefiner", "classGridRefiner.html", "classGridRefiner" ],
@@ -35,7 +36,6 @@ var annotated_dup =
     [ "Mesh", "classMesh.html", "classMesh" ],
     [ "MGInfo", "classMGInfo.html", "classMGInfo" ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", "structMiscellaneousParameters" ],
-    [ "NamedType", "classNamedType.html", null ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", "structNonlinearSolveParameterSet" ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],
     [ "NonuniformDirichlet", "classNonuniformDirichlet.html", "classNonuniformDirichlet" ],
@@ -77,5 +77,6 @@ var annotated_dup =
     [ "UserInputParameters", "classUserInputParameters.html", "classUserInputParameters" ],
     [ "VariableAttributeLoader", "classVariableAttributeLoader.html", "classVariableAttributeLoader" ],
     [ "VariableAttributes", "structVariableAttributes.html", "structVariableAttributes" ],
-    [ "VariableContainer", "classVariableContainer.html", "classVariableContainer" ]
+    [ "VariableContainer", "classVariableContainer.html", "classVariableContainer" ],
+    [ "VectorMappings", "classVectorMappings.html", "classVectorMappings" ]
 ];

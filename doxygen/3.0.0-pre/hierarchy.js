@@ -11,6 +11,7 @@ var hierarchy =
     [ "DofHandler< dim >", "classDofHandler.html", null ],
     [ "ElementVolume< dim, degree, number >", "classElementVolume.html", null ],
     [ "ElementVolumeContainer< dim, degree, number >", "classElementVolumeContainer.html", null ],
+    [ "FieldInfo", "structFieldInfo.html", null ],
     [ "dealii::Function", null, [
       [ "InitialCondition< dim, degree, number >", "classInitialCondition.html", null ],
       [ "NonuniformDirichlet< dim, degree, number >", "classNonuniformDirichlet.html", null ],
@@ -39,7 +40,6 @@ var hierarchy =
     ] ],
     [ "MGInfo< dim >", "classMGInfo.html", null ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
-    [ "NamedType< T, Parameter >", "classNamedType.html", null ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", null ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],
     [ "NucleationHandler< dim, degree, number >", "classNucleationHandler.html", null ],
@@ -88,6 +88,7 @@ var hierarchy =
     [ "VariableAttributeLoader", "classVariableAttributeLoader.html", null ],
     [ "VariableAttributes", "structVariableAttributes.html", null ],
     [ "VariableContainer< dim, degree, number >", "classVariableContainer.html", null ],
+    [ "VectorMappings< Number >", "classVectorMappings.html", null ],
     [ "Ts", null, [
       [ "Overload< Ts >", "structOverload.html", null ]
     ] ]

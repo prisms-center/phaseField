@@ -28,5 +28,6 @@ var dir_72d2fbe96e504e5d9d70c5885bd9c513 =
     [ "types.h", "types_8h_source.html", null ],
     [ "variable_attribute_loader.h", "variable__attribute__loader_8h_source.html", null ],
     [ "variable_attributes.h", "variable__attributes_8h_source.html", null ],
-    [ "variable_container.h", "variable__container_8h_source.html", null ]
+    [ "variable_container.h", "variable__container_8h_source.html", null ],
+    [ "vector_mapping.h", "vector__mapping_8h_source.html", null ]
 ];

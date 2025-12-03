@@ -22,5 +22,5 @@ var classVariableAttributeLoader =
     [ "set_solve_block", "classVariableAttributeLoader.html#aac25ceb35f589943b2d9cca5a756187d", null ],
     [ "set_variable_equation_type", "classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7", null ],
     [ "set_variable_name", "classVariableAttributeLoader.html#a05d4c65ca045bcdd1198897eb4e785d0", null ],
-    [ "set_variable_type", "classVariableAttributeLoader.html#aacfa0e19b67f02ef6bb48fc047a46514", null ]
+    [ "set_variable_type", "classVariableAttributeLoader.html#aa23470aef9b522511fce8615f49f73d5", null ]
 ];

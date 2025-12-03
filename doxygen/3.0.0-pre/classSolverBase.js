@@ -4,7 +4,7 @@ var classSolverBase =
     [ "~SolverBase", "classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b", null ],
     [ "SolverBase", "classSolverBase.html#a5bce98970b784ac227ef51fbb9b8e1af", null ],
     [ "SolverBase", "classSolverBase.html#a7aaaabe2e3a109fea97747184d4c3add", null ],
-    [ "compute_subset_attributes", "classSolverBase.html#abd40fe7cd08439e8fdead408c2193c61", null ],
+    [ "compute_subset_attributes", "classSolverBase.html#a9a38d96617c5e3adc8c88dfd9427db05", null ],
     [ "get_constraint_handler", "classSolverBase.html#aed61b68cdc45532ef09defeba2405ca6", null ],
     [ "get_dof_handler", "classSolverBase.html#abe8a5c7ed36047e4e3fb2a83270695bb", null ],
     [ "get_element_volume_container", "classSolverBase.html#adfc42185e6368b467caf4ff2d53b8ae2", null ],
@@ -29,5 +29,5 @@ var classSolverBase =
     [ "set_initial_condition", "classSolverBase.html#a1ea3231db13cc32b113e487f859a41ef", null ],
     [ "solve", "classSolverBase.html#a8fad631727023412d605a6d861699435", null ],
     [ "solver_is_empty", "classSolverBase.html#a5356fdef1e92c6b4ad239052bbb14bc2", null ],
-    [ "update_subset_attributes", "classSolverBase.html#a25ca29bf5eedb6af6d7a5a8abccc5632", null ]
+    [ "update_subset_attributes", "classSolverBase.html#a79acd8aa61d877f6ab023cf2471f8d26", null ]
 ];

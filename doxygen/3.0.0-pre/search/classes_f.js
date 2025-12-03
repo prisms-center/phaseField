@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['variableattributeloader_0',['VariableAttributeLoader',['../classVariableAttributeLoader.html',1,'']]],
-  ['variableattributes_1',['VariableAttributes',['../structVariableAttributes.html',1,'']]],
-  ['variablecontainer_2',['VariableContainer',['../classVariableContainer.html',1,'']]]
+  ['userconstants_0',['UserConstants',['../classUserConstants.html',1,'']]],
+  ['userinputparameters_1',['UserInputParameters',['../classUserInputParameters.html',1,'']]]
 ];

@@ -21,7 +21,8 @@ var searchData=
   ['dependencies_5frhs_18',['dependencies_rhs',['../structRawDependencies.html#a88470811530b46460274a3117965bbbf',1,'RawDependencies']]],
   ['dependencies_5fvalue_5flhs_19',['dependencies_value_lhs',['../structRawDependencies.html#a05c5904cae0da573a2440ce70571d2fe',1,'RawDependencies']]],
   ['dependencies_5fvalue_5frhs_20',['dependencies_value_rhs',['../structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b',1,'RawDependencies']]],
-  ['do_5fadaptive_5frefinement_21',['do_adaptive_refinement',['../classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c',1,'GridRefiner']]],
-  ['docker_22',['docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker'],['../docker.html#docker_introduction',1,'Introduction to Docker']]],
-  ['dofhandler_23',['dofhandler',['../classDofHandler.html',1,'DofHandler&lt; dim &gt;'],['../classDofHandler.html#a155b8c37aaa1f22725a6f4c69e64e7fc',1,'DofHandler::DofHandler()']]]
+  ['dependencytypeflags_21',['DependencyTypeFlags',['../structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca',1,'FieldInfo']]],
+  ['do_5fadaptive_5frefinement_22',['do_adaptive_refinement',['../classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c',1,'GridRefiner']]],
+  ['docker_23',['docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker'],['../docker.html#docker_introduction',1,'Introduction to Docker']]],
+  ['dofhandler_24',['dofhandler',['../classDofHandler.html',1,'DofHandler&lt; dim &gt;'],['../classDofHandler.html#a155b8c37aaa1f22725a6f4c69e64e7fc',1,'DofHandler::DofHandler()']]]
 ];

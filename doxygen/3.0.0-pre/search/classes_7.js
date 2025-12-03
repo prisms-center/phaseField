@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['matrixfreecontainer_0',['MatrixFreeContainer',['../classMatrixFreeContainer.html',1,'']]],
-  ['matrixfreehandler_1',['MatrixFreeHandler',['../classMatrixFreeHandler.html',1,'']]],
-  ['matrixfreeoperator_2',['MatrixFreeOperator',['../classMatrixFreeOperator.html',1,'']]],
-  ['mesh_3',['Mesh',['../classMesh.html',1,'']]],
-  ['mginfo_4',['MGInfo',['../classMGInfo.html',1,'']]],
-  ['miscellaneousparameters_5',['MiscellaneousParameters',['../structMiscellaneousParameters.html',1,'']]]
+  ['linearsolveparameters_0',['LinearSolveParameters',['../structLinearSolveParameters.html',1,'']]],
+  ['linearsolverbase_1',['LinearSolverBase',['../classLinearSolverBase.html',1,'']]],
+  ['linearsolverparameters_2',['LinearSolverParameters',['../structLinearSolverParameters.html',1,'']]],
+  ['loadinitialconditionparameters_3',['LoadInitialConditionParameters',['../structLoadInitialConditionParameters.html',1,'']]]
 ];

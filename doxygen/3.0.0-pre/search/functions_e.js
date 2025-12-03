@@ -63,7 +63,7 @@ var searchData=
   ['set_5fvalue_5fupper_5fbound_60',['set_value_upper_bound',['../classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e',1,'GridRefinement::RefinementCriterion']]],
   ['set_5fvariable_5fequation_5ftype_61',['set_variable_equation_type',['../classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7',1,'VariableAttributeLoader']]],
   ['set_5fvariable_5fname_62',['set_variable_name',['../classVariableAttributeLoader.html#a05d4c65ca045bcdd1198897eb4e785d0',1,'VariableAttributeLoader']]],
-  ['set_5fvariable_5ftype_63',['set_variable_type',['../classVariableAttributeLoader.html#aacfa0e19b67f02ef6bb48fc047a46514',1,'VariableAttributeLoader']]],
+  ['set_5fvariable_5ftype_63',['set_variable_type',['../classVariableAttributeLoader.html#aa23470aef9b522511fce8615f49f73d5',1,'VariableAttributeLoader']]],
   ['should_5fattempt_5fnucleation_64',['should_attempt_nucleation',['../structNucleationParameters.html#a21d2f4391351915560882c5b8491d459',1,'NucleationParameters']]],
   ['should_5fcheckpoint_65',['should_checkpoint',['../structCheckpointParameters.html#ad8f3a01402a29419eaa4fa5e13d56611',1,'CheckpointParameters']]],
   ['should_5foutput_66',['should_output',['../structOutputParameters.html#a9dc9e90a0a6db418605ee918d6ba102d',1,'OutputParameters']]],

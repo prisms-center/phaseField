@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classMGInfo.html" title="This class centralized the collection of multigrid data, which is of particular important when dealin..." alt="" coords="5,5,129,31"/>
+<area shape="rect" id="Node000000" href="$classMesh.html" title="Base class for mesh parameters with a generator functions." alt="" coords="5,5,117,31"/>
+<area shape="rect" id="Node000001" href="$classRectangularMesh.html" title="Class for rectangular mesh parameters." alt="" coords="165,5,356,31"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="131,15,165,15,165,21,131,21"/>
 </map>
