@@ -16,9 +16,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 PDEOperator<dim, degree, number>::PDEOperator(
   const UserInputParameters<dim> &_user_inputs,
-  const PhaseFieldTools<dim>     &pf_tools)
+  const PhaseFieldTools<dim>     &_pf_tools)
   : user_inputs(&_user_inputs)
-  , pf_tools(&pf_tools)
+  , pf_tools(&_pf_tools)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>

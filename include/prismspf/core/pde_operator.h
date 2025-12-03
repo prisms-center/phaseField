@@ -33,7 +33,7 @@ public:
    * @brief Constructor.
    */
   explicit PDEOperator(const UserInputParameters<dim> &_user_inputs,
-                       const PhaseFieldTools<dim>     &pf_tools);
+                       const PhaseFieldTools<dim>     &_pf_tools);
 
   /**
    * @brief Destructor.
