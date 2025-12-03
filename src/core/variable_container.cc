@@ -1191,25 +1191,25 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
   const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
   // Helper function to submit the identity matrix
-  auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
+  auto submit_identity = [&](auto &_feeval_ptr, unsigned int dof_index)
   {
     for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
       {
         if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
           {
-            feeval_ptr->submit_dof_value(SizeType(), j);
+            _feeval_ptr->submit_dof_value(SizeType(), j);
           }
         else
           {
-            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
+            _feeval_ptr->submit_dof_value(DiagonalValueType(), j);
           }
       }
 
     // Set the i-th value to 1.0
     if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
       {
-        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
-                                     dof_index);
+        _feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
+                                      dof_index);
       }
     else
       {
@@ -1218,7 +1218,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
           {
             one[dimension] = dealii::make_vectorized_array<number>(1.0);
           }
-        feeval_ptr->submit_dof_value(one, dof_index);
+        _feeval_ptr->submit_dof_value(one, dof_index);
       }
   };
   // Reinit the cell for all the dependencies
