@@ -426,8 +426,8 @@ endif()
 
 # Applications
 if(BUILD_APPLICATIONS)
-  # Compile each of the applications
-  add_subdirectory(applications)
+    # Compile each of the applications
+    add_subdirectory(applications)
 endif()
 
 # =========================================================

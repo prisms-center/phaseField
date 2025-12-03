@@ -9,7 +9,7 @@ set(REGRESSION_TEST_APPS
     allen_cahn_explicit
     allen_cahn_implicit
     cahn_hilliard_explicit
-		cahn_hilliard_explicit_amr
+    cahn_hilliard_explicit_amr
     cahn_hilliard_implicit
     cavity_flow
     fracture
@@ -80,8 +80,8 @@ if(NOT DEFINED N_THREADS)
 endif()
 
 install(
-  CODE
-    "
+    CODE
+        "
 execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/run.py
     -j ${N_THREADS}
