@@ -10,6 +10,7 @@
 #include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/types.h>
+#include <prismspf/core/vector_mapping.h>
 
 #include <prismspf/config.h>
 
