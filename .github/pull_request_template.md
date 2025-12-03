@@ -1,9 +1,23 @@
-# Description
+* **Please check if the PR fulfills these requirements**
+- [ ] The PR follows our guidelines (formatting & style)
+- [ ] Tests for the changes have been added (for bug fixes / features)
+- [ ] Docs have been added / updated (for bug fixes / features)
 
-# Checklist
-Miscellaneous items that may need to be done when making a PR:
-- [ ] Documentation related to this PR is up to date (Doxygen format)
-- [ ] Unit test(s)
-- [ ] Code is properly formatted
-- [ ] PR labels are applied
-- [ ] Issues are linked
+
+* **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
+
+
+
+* **What is the current behavior?** (You can also link to an open issue here)
+
+
+
+* **What is the new behavior (if this is a feature change)?**
+
+
+
+* **Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?)
+
+
+
+* **Other information**:
