@@ -21,7 +21,7 @@ CustomAttributeLoader::load_variable_attributes()
 {
   // Variable 0
   set_variable_name(0, "c");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "c");
@@ -29,7 +29,7 @@ CustomAttributeLoader::load_variable_attributes()
 
   // Variable 1
   set_variable_name(1, "n");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(1, "c, n");
@@ -37,7 +37,7 @@ CustomAttributeLoader::load_variable_attributes()
 
   // Variable 2
   set_variable_name(2, "nucleation_rate");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, ExplicitTimeDependent);
 
   insert_dependencies_value_term_rhs(2, std::set<std::string> {"c", "n"});

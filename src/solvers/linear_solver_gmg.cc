@@ -76,13 +76,13 @@ GMGSolver<dim, degree, number>::init()
 
   // Print the local indices and global ones and check that they match the MGInfo provided
   // ones.
-  for (Types::Index field_index = 0; field_index < max_fields; field_index++)
+  for (Types::Index _field_index = 0; _field_index < max_fields; _field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[(field_index *
+            this->get_newton_update_global_to_local_solution()[(_field_index *
                                                                 max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
@@ -98,7 +98,7 @@ GMGSolver<dim, degree, number>::init()
           for (unsigned int level = min_level; level <= max_level; ++level)
             {
               Assert(local_index ==
-                       this->get_mg_info().get_local_index(field_index, level),
+                       this->get_mg_info().get_local_index(_field_index, level),
                      dealii::ExcMessage(
                        "The multigrid info indexing must match the local to "
                        "global ones in this solver. "));
@@ -137,13 +137,13 @@ GMGSolver<dim, degree, number>::init()
   // TODO (landinjm): This is awful please fix.
   mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
   mg_transfer.resize(mg_transfer_operators.size());
-  for (Types::Index field_index = 0; field_index < max_fields; field_index++)
+  for (Types::Index _field_index = 0; _field_index < max_fields; _field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[(field_index *
+            this->get_newton_update_global_to_local_solution()[(_field_index *
                                                                 max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
@@ -234,13 +234,13 @@ GMGSolver<dim, degree, number>::reinit()
   mg_transfer.clear();
   mg_transfer_operators.resize(this->get_newton_update_global_to_local_solution().size());
   mg_transfer.resize(mg_transfer_operators.size());
-  for (Types::Index field_index = 0; field_index < max_fields; field_index++)
+  for (Types::Index _field_index = 0; _field_index < max_fields; _field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[(field_index *
+            this->get_newton_update_global_to_local_solution()[(_field_index *
                                                                 max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
@@ -318,13 +318,13 @@ GMGSolver<dim, degree, number>::solve(const number &step_length)
     this->get_variable_attributes().get_max_dependency_types();
 
   // Interpolate the newton update src vector to each multigrid level
-  for (Types::Index field_index = 0; field_index < max_fields; field_index++)
+  for (Types::Index _field_index = 0; _field_index < max_fields; _field_index++)
     {
       for (Types::Index dependency_type = 0; dependency_type < max_dependency_types;
            dependency_type++)
         {
           Types::Index local_index =
-            this->get_newton_update_global_to_local_solution()[(field_index *
+            this->get_newton_update_global_to_local_solution()[(_field_index *
                                                                 max_dependency_types) +
                                                                dependency_type];
           // Skip if the local index is invalid
@@ -350,7 +350,7 @@ GMGSolver<dim, degree, number>::solve(const number &step_length)
 
           // Interpolate
           mg_transfer[local_index]->interpolate_to_mg(
-            *(this->get_dof_handler().get_dof_handlers().at(field_index)),
+            *(this->get_dof_handler().get_dof_handlers().at(_field_index)),
             mg_src_subset,
             *this->get_newton_update_src()[local_index]);
 

@@ -11,15 +11,6 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Type of field. Currently, the only support fields are scalar and vector.
- */
-enum FieldType : std::uint8_t
-{
-  Scalar,
-  Vector
-};
-
-/**
  * @brief Type of PDE that is being solved.
  */
 enum PDEType : std::uint8_t
@@ -116,24 +107,6 @@ enum DataFormatType : std::uint8_t
   FlatBinary,
   LastEntry
 };
-
-/**
- * @brief Enum to string for FieldType
- */
-inline std::string
-to_string(FieldType type)
-
-{
-  switch (type)
-    {
-      case FieldType::Scalar:
-        return "SCALAR_FIELD";
-      case FieldType::Vector:
-        return "VECTOR_FIELD";
-      default:
-        return "UNKNOWN";
-    }
-}
 
 /**
  * @brief Enum to string for PDEType

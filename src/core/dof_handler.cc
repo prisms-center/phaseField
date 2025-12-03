@@ -126,9 +126,10 @@ DofHandler<dim>::DofHandler(const UserInputParameters<dim> &_user_inputs,
 
 template <unsigned int dim>
 void
-DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
-                      const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
-                      const MGInfo<dim>                                &mg_info)
+DofHandler<dim>::init(
+  const TriangulationHandler<dim>                              &triangulation_handler,
+  const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system,
+  const MGInfo<dim>                                            &mg_info)
 {
   unsigned int n_dofs = 0;
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
@@ -143,7 +144,8 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
         }
 #endif
       dof_handlers.at(index)->reinit(triangulation_handler.get_triangulation());
-      dof_handlers.at(index)->distribute_dofs(fe_system.at(variable.get_field_type()));
+      dof_handlers.at(index)->distribute_dofs(
+        fe_system.at(variable.field_info.tensor_rank));
 
       n_dofs += dof_handlers.at(index)->n_dofs();
     }
@@ -186,7 +188,7 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
                   mg_dof_handlers.at(degenerate_field_index)[level]->distribute_dofs(
                     fe_system.at(user_inputs->get_variable_attributes()
                                    .at(degenerate_field_index)
-                                   .get_field_type()));
+                                   .field_info.tensor_rank));
                 }
               processed_degenerate_field_indices.insert(degenerate_field_index);
             }
@@ -204,7 +206,7 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
           mg_dof_handlers.at(index)[level]->reinit(
             triangulation_handler.get_mg_triangulation(level));
           mg_dof_handlers.at(index)[level]->distribute_dofs(fe_system.at(
-            user_inputs->get_variable_attributes().at(index).get_field_type()));
+            user_inputs->get_variable_attributes().at(index).field_info.tensor_rank));
           n_dofs_with_mg += mg_dof_handlers.at(index)[level]->n_dofs();
         }
     }
@@ -218,9 +220,10 @@ DofHandler<dim>::init(const TriangulationHandler<dim> &triangulation_handler,
 
 template <unsigned int dim>
 void
-DofHandler<dim>::reinit(const TriangulationHandler<dim> &triangulation_handler,
-                        const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
-                        const MGInfo<dim>                                &mg_info)
+DofHandler<dim>::reinit(
+  const TriangulationHandler<dim>                              &triangulation_handler,
+  const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system,
+  const MGInfo<dim>                                            &mg_info)
 {
   this->init(triangulation_handler, fe_system, mg_info);
 }

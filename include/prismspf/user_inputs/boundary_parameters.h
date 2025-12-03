@@ -310,7 +310,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
     {
       // Ensure that boundary conditions are specified for all variables and their
       // components
-      if (variable.get_field_type() == FieldType::Vector)
+      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Vector)
         {
           for (unsigned int i = 0; i < dim; i++)
             {
@@ -399,7 +399,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
           continue;
         }
 
-      const auto field_type_1 = variable_1.get_field_type();
+      const auto field_type_1 = variable_1.field_info.tensor_rank;
 
       for (auto &[index_2, variable_2] : var_attributes)
         {
@@ -410,7 +410,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
 
           bool is_degenerate = false;
 
-          const auto field_type_2 = variable_2.get_field_type();
+          const auto field_type_2 = variable_2.field_info.tensor_rank;
 
           is_degenerate = field_type_1 == field_type_2 &&
                           check_degenerate_boundary_conditions(index_1, index_2);

@@ -15,7 +15,7 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "c");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "c");
@@ -24,28 +24,28 @@ CustomAttributeLoader::load_variable_attributes()
     "c, grad(c), n1, grad(n1), n2, grad(n2), n3, grad(n3), grad(u)");
 
   set_variable_name(1, "n1");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(1, "c, n1, n2, n3, grad(u)");
   set_dependencies_gradient_term_rhs(1, "grad(n1)");
 
   set_variable_name(2, "n2");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(2, "c, n1, n2, n3, grad(u)");
   set_dependencies_gradient_term_rhs(2, "grad(n2)");
 
   set_variable_name(3, "n3");
-  set_variable_type(3, Scalar);
+  set_variable_type(3, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(3, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(3, "c, n1, n2, n3, grad(u)");
   set_dependencies_gradient_term_rhs(3, "grad(n3)");
 
   set_variable_name(4, "u");
-  set_variable_type(4, Vector);
+  set_variable_type(4, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(4, TimeIndependent);
 
   set_dependencies_value_term_rhs(4, "");
@@ -54,7 +54,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_gradient_term_lhs(4, "n1, n2, n3, grad(change(u))");
 
   set_variable_name(5, "f_tot");
-  set_variable_type(5, Scalar);
+  set_variable_type(5, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(5, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(

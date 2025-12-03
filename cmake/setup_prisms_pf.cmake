@@ -78,7 +78,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU") # GCC
         -Wall
         -Wextra
         -Wpedantic
-        -Wconversion
+				# -Wconversion # TODO: Renable this
         # -Wsign-conversion # This is disabled because deal.II uses int when it should be uint so it just produces a lot of noise for limited utility 
         -Wshadow
         -Wnon-virtual-dtor

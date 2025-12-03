@@ -125,20 +125,20 @@ PDEProblem<dim, degree, number>::init_system()
   Timer::start_section("Create FESystem");
   for (const auto &[index, variable] : user_inputs->get_variable_attributes())
     {
-      if (variable.get_field_type() == FieldType::Scalar &&
-          fe_system.find(FieldType::Scalar) == fe_system.end())
+      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar &&
+          fe_system.find(FieldInfo::TensorRank::Scalar) == fe_system.end())
         {
-          fe_system.emplace(FieldType::Scalar,
+          fe_system.emplace(FieldInfo::TensorRank::Scalar,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   1));
           ConditionalOStreams::pout_summary() << "  made FESystem for scalar fields\n"
                                               << std::flush;
         }
-      else if (variable.get_field_type() == FieldType::Vector &&
-               fe_system.find(FieldType::Vector) == fe_system.end())
+      else if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Vector &&
+               fe_system.find(FieldInfo::TensorRank::Vector) == fe_system.end())
         {
-          fe_system.emplace(FieldType::Vector,
+          fe_system.emplace(FieldInfo::TensorRank::Vector,
                             dealii::FESystem<dim>(dealii::FE_Q<dim>(
                                                     dealii::QGaussLobatto<1>(degree + 1)),
                                                   dim));
@@ -274,9 +274,9 @@ PDEProblem<dim, degree, number>::init_system()
         << " integrated value: ";
 
       const auto local_field_type =
-        user_inputs->get_variable_attributes().at(index).get_field_type();
+        user_inputs->get_variable_attributes().at(index).field_info.tensor_rank;
 
-      if (local_field_type == FieldType::Vector)
+      if (local_field_type == FieldInfo::TensorRank::Vector)
         {
           std::vector<number> integrated_values(dim, 0.0);
           integrator.compute_integral(integrated_values,
@@ -433,9 +433,9 @@ PDEProblem<dim, degree, number>::solve()
                 << " integrated value: ";
 
               const auto local_field_type =
-                user_inputs->get_variable_attributes().at(index).get_field_type();
+                user_inputs->get_variable_attributes().at(index).field_info.tensor_rank;
 
-              if (local_field_type == FieldType::Vector)
+              if (local_field_type == FieldInfo::TensorRank::Vector)
                 {
                   std::vector<number> integrated_values(dim, 0.0);
                   integrator.compute_integral(integrated_values,

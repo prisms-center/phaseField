@@ -8,6 +8,7 @@
 #include <deal.II/lac/vector.h>
 
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -41,7 +42,7 @@ public:
    */
   InitialCondition(
     const unsigned int                                            &_index,
-    const FieldType                                               &_field_type,
+    const FieldInfo::TensorRank                                   &_field_type,
     const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
@@ -57,7 +58,7 @@ public:
 private:
   unsigned int index;
 
-  FieldType field_type;
+  FieldInfo::TensorRank field_type;
 
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 };
@@ -73,7 +74,7 @@ public:
    * @brief Constructor.
    */
   ReadInitialCondition(std::string                       _field_name,
-                       const FieldType                  &_field_type,
+                       const FieldInfo::TensorRank      &_field_type,
                        const InitialConditionFile       &ic_file,
                        const SpatialDiscretization<dim> &spatial_discretization);
 
@@ -90,7 +91,7 @@ public:
 private:
   std::string field_name;
 
-  FieldType field_type;
+  FieldInfo::TensorRank field_type;
 
   std::shared_ptr<ReadFieldBase<dim, number>> reader;
 };

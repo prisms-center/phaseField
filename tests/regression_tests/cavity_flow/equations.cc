@@ -15,7 +15,7 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "u");
-  set_variable_type(0, Vector);
+  set_variable_type(0, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(0, ImplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "u, u_star, grad(p)");
@@ -25,7 +25,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_solve_block(0, 1);
 
   set_variable_name(1, "u_star");
-  set_variable_type(1, Vector);
+  set_variable_type(1, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(1, ImplicitTimeDependent);
 
   set_dependencies_value_term_rhs(1, "u_star, u, grad(u), div(u)");
@@ -35,7 +35,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_solve_block(1, 0);
 
   set_variable_name(2, "p");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, TimeIndependent);
 
   set_dependencies_value_term_rhs(2, "div(u_star)");

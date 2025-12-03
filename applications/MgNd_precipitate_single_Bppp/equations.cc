@@ -15,28 +15,28 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "c");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(0, "c");
   set_dependencies_gradient_term_rhs(0, "n1, grad(mu)");
 
   set_variable_name(1, "mu");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, Auxiliary);
 
   set_dependencies_value_term_rhs(1, "c, n1, grad(u)");
   set_dependencies_gradient_term_rhs(1, "");
 
   set_variable_name(2, "n1");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, ExplicitTimeDependent);
 
   set_dependencies_value_term_rhs(2, "c, n1, grad(u)");
   set_dependencies_gradient_term_rhs(2, "grad(n1)");
 
   set_variable_name(3, "u");
-  set_variable_type(3, Vector);
+  set_variable_type(3, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(3, TimeIndependent);
 
   set_dependencies_value_term_rhs(3, "");

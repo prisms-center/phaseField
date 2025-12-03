@@ -9,6 +9,7 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -39,17 +40,17 @@ public:
    * @brief Initialize the DoFHandlers
    */
   void
-  init(const TriangulationHandler<dim>                  &triangulation_handler,
-       const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
-       const MGInfo<dim>                                &mg_info);
+  init(const TriangulationHandler<dim> &triangulation_handler,
+       const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system,
+       const MGInfo<dim>                                            &mg_info);
 
   /**
    * @brief Reinitialize the DoFHandlers
    */
   void
-  reinit(const TriangulationHandler<dim>                  &triangulation_handler,
-         const std::map<FieldType, dealii::FESystem<dim>> &fe_system,
-         const MGInfo<dim>                                &mg_info);
+  reinit(const TriangulationHandler<dim> &triangulation_handler,
+         const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system,
+         const MGInfo<dim>                                            &mg_info);
 
   /**
    * @brief Getter function for the DoFHandlers (constant reference).
@@ -126,11 +127,11 @@ private:
    * @brief A set of the degenerate field indices that are outside of the multigrid
    * dependencies.
    *
-   * Since the degenerate field indices are solely determined by the FieldType and the
-   * constraints, no info about any multigrid schemes is contained. This leads to the edge
-   * case where the degenerate field index is not part of the multigrid LHS dependencies.
-   * In this case, we have to keep track of that and initialize the degenerate field index
-   * as if it were part of the multigrid dependencies.
+   * Since the degenerate field indices are solely determined by the FieldInfo::TensorRank
+   * and the constraints, no info about any multigrid schemes is contained. This leads to
+   * the edge case where the degenerate field index is not part of the multigrid LHS
+   * dependencies. In this case, we have to keep track of that and initialize the
+   * degenerate field index as if it were part of the multigrid dependencies.
    */
   std::set<Types::Index> degenerate_field_indices_outside_mg;
 #endif

@@ -50,7 +50,8 @@ VariableContainer<dim, degree, number>::VariableContainer(
   // Initialize the feeval_vector
   feeval_vector.resize(max_fields * max_dependency_types);
 
-  auto construct_map = [&](const std::vector<std::vector<FieldType>> &dependency_set)
+  auto construct_map =
+    [&](const std::vector<std::vector<FieldInfo::TensorRank>> &dependency_set)
   {
     Types::Index dependency_index = 0;
     for (const auto &inner_dependency_set : dependency_set)
@@ -59,7 +60,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
         for (const auto &field_type : inner_dependency_set)
           {
             // Skip if the field type is invalid
-            if (field_type == Numbers::invalid_field_type)
+            if (field_type == FieldInfo::TensorRank::Undefined)
               {
                 dependency_type++;
                 continue;
@@ -67,7 +68,7 @@ VariableContainer<dim, degree, number>::VariableContainer(
 
             feevaluation_size_valid(dependency_index, dependency_type);
 
-            if (field_type == FieldType::Scalar)
+            if (field_type == FieldInfo::TensorRank::Scalar)
               {
                 if (!use_local_mapping)
                   {
@@ -239,7 +240,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
            "For nonexplicit solves, subset attributes should only be 1 variable."));
 
   const auto &global_var_index = subset_attributes->begin()->first;
-  const auto &field_type       = subset_attributes->begin()->second.get_field_type();
+  const auto &field_type = subset_attributes->begin()->second.field_info.tensor_rank;
   feevaluation_exists(global_var_index, DependencyType::Change);
   auto &feeval_variant = feeval_vector[(global_var_index * max_dependency_types) +
                                        static_cast<Types::Index>(DependencyType::Change)];
@@ -261,7 +262,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
       }
   };
 
-  if (field_type == FieldType::Scalar)
+  if (field_type == FieldInfo::TensorRank::Scalar)
     {
       ScalarFEEvaluation *scalar_feeval_ptr = nullptr;
 
@@ -279,7 +280,7 @@ VariableContainer<dim, degree, number>::eval_local_diagonal(
       auto *scalar_diag_ptr = extract_diagonal_ptr<ScalarDiagonal>(diagonal);
       process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
     }
-  else if (field_type == FieldType::Vector)
+  else if (field_type == FieldInfo::TensorRank::Vector)
     {
       VectorFEEvaluation *vector_feeval_ptr = nullptr;
 
@@ -541,8 +542,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                  &eval_flag_set,
-        const std::vector<std::vector<FieldType>> &dependency_set)
+                                                              &eval_flag_set,
+        const std::vector<std::vector<FieldInfo::TensorRank>> &dependency_set)
   {
     Types::Index dependency_index = 0;
     for (const auto &inner_dependency_set : dependency_set)
@@ -551,7 +552,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(
         for (const auto &field_type : inner_dependency_set)
           {
             if (static_cast<DependencyType>(dependency_type) == DependencyType::Change ||
-                field_type == Numbers::invalid_field_type)
+                field_type == FieldInfo::TensorRank::Undefined)
               {
                 dependency_type++;
                 continue;
@@ -645,8 +646,8 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
   // this reason, I selectively read dofs and evaluate the flags.
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                  &eval_flag_set,
-        const std::vector<std::vector<FieldType>> &dependency_set)
+                                                              &eval_flag_set,
+        const std::vector<std::vector<FieldInfo::TensorRank>> &dependency_set)
   {
     Types::Index dependency_index = 0;
     for (const auto &inner_dependency_set : dependency_set)
@@ -657,7 +658,7 @@ VariableContainer<dim, degree, number>::reinit_and_eval(const VectorType &src,
             // TODO (landinjm): This can be drastically simplified because all we're doing
             // in reinit-ing and eval-ing the change solution.
             if (static_cast<DependencyType>(dependency_type) != DependencyType::Change ||
-                field_type == Numbers::invalid_field_type)
+                field_type == FieldInfo::TensorRank::Undefined)
               {
                 dependency_type++;
                 continue;
@@ -793,8 +794,8 @@ VariableContainer<dim, degree, number>::read_dof_values(
 {
   auto reinit_and_eval_map =
     [&](const std::vector<std::vector<dealii::EvaluationFlags::EvaluationFlags>>
-                                                  &eval_flag_set,
-        const std::vector<std::vector<FieldType>> &dependency_set)
+                                                              &eval_flag_set,
+        const std::vector<std::vector<FieldInfo::TensorRank>> &dependency_set)
   {
     Types::Index dependency_index = 0;
     for (const auto &inner_dependency_set : dependency_set)
@@ -803,7 +804,7 @@ VariableContainer<dim, degree, number>::read_dof_values(
         for (const auto &field_type : inner_dependency_set)
           {
             if (static_cast<DependencyType>(dependency_type) == DependencyType::Change ||
-                field_type == Numbers::invalid_field_type)
+                field_type == FieldInfo::TensorRank::Undefined)
               {
                 dependency_type++;
                 continue;
@@ -1190,25 +1191,25 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
   const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
   // Helper function to submit the identity matrix
-  auto submit_identity = [&](auto &feeval_ptr, unsigned int dof_index)
+  auto submit_identity = [&](auto &_feeval_ptr, unsigned int dof_index)
   {
     for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
       {
         if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
           {
-            feeval_ptr->submit_dof_value(SizeType(), j);
+            _feeval_ptr->submit_dof_value(SizeType(), j);
           }
         else
           {
-            feeval_ptr->submit_dof_value(DiagonalValueType(), j);
+            _feeval_ptr->submit_dof_value(DiagonalValueType(), j);
           }
       }
 
     // Set the i-th value to 1.0
     if constexpr (std::is_same_v<DiagonalValueType, SizeType> || dim == 1)
       {
-        feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
-                                     dof_index);
+        _feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
+                                      dof_index);
       }
     else
       {
@@ -1217,7 +1218,7 @@ VariableContainer<dim, degree, number>::eval_cell_diagonal(
           {
             one[dimension] = dealii::make_vectorized_array<number>(1.0);
           }
-        feeval_ptr->submit_dof_value(one, dof_index);
+        _feeval_ptr->submit_dof_value(one, dof_index);
       }
   };
   // Reinit the cell for all the dependencies

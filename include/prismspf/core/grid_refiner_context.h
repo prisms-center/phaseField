@@ -39,18 +39,18 @@ public:
    * @brief Constructor.
    */
   GridRefinementContext(
-    const UserInputParameters<dim>              &_user_inputs,
-    PhaseFieldTools<dim>                        &_pf_tools,
-    TriangulationHandler<dim>                   &_triangulation_handler,
-    ConstraintHandler<dim, degree, number>      &_constraint_handler,
-    MatrixFreeContainer<dim, number>            &_matrix_free_container,
-    InvmHandler<dim, degree, number>            &_invm_handler,
-    SolutionHandler<dim, number>                &_solution_handler,
-    DofHandler<dim>                             &_dof_handler,
-    std::map<FieldType, dealii::FESystem<dim>>  &_fe_system,
-    const dealii::MappingQ1<dim>                &_mapping,
-    ElementVolumeContainer<dim, degree, number> &_element_volume_container,
-    const MGInfo<dim>                           &_mg_info)
+    const UserInputParameters<dim>                         &_user_inputs,
+    PhaseFieldTools<dim>                                   &_pf_tools,
+    TriangulationHandler<dim>                              &_triangulation_handler,
+    ConstraintHandler<dim, degree, number>                 &_constraint_handler,
+    MatrixFreeContainer<dim, number>                       &_matrix_free_container,
+    InvmHandler<dim, degree, number>                       &_invm_handler,
+    SolutionHandler<dim, number>                           &_solution_handler,
+    DofHandler<dim>                                        &_dof_handler,
+    std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &_fe_system,
+    const dealii::MappingQ1<dim>                           &_mapping,
+    ElementVolumeContainer<dim, degree, number>            &_element_volume_container,
+    const MGInfo<dim>                                      &_mg_info)
     : user_inputs(&_user_inputs)
     , pf_tools(&_pf_tools)
     , triangulation_handler(&_triangulation_handler)
@@ -159,7 +159,7 @@ public:
   /**
    * @brief Get the collection of finite element systems.
    */
-  [[nodiscard]] const std::map<FieldType, dealii::FESystem<dim>> &
+  [[nodiscard]] const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &
   get_finite_element_systems() const
   {
     Assert(fe_system != nullptr, dealii::ExcNotInitialized());
@@ -234,7 +234,7 @@ private:
    * FESystem's: one for scalar fields and one for vector fields. For now they both use
    * FE_Q finite elements.
    */
-  std::map<FieldType, dealii::FESystem<dim>> *fe_system;
+  std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> *fe_system;
 
   /**
    * @brief Mappings to and from reference cell.

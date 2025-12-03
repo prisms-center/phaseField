@@ -599,7 +599,7 @@ InputFileReader::declare_bc_parameters()
         {
           continue;
         }
-      if (variable.get_field_type() == Scalar)
+      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar)
         {
           std::string bc_text = "boundary condition for ";
           bc_text.append(variable.get_name());
@@ -654,7 +654,7 @@ InputFileReader::declare_pinning_parameters()
       pinning_text.append(variable.get_name());
       parameter_handler.enter_subsection(pinning_text);
       {
-        if (variable.get_field_type() == Scalar)
+        if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar)
           {
             parameter_handler.declare_entry("value",
                                             "2147483647",

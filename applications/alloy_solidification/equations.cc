@@ -15,25 +15,25 @@ void
 CustomAttributeLoader::load_variable_attributes()
 {
   set_variable_name(0, "U");
-  set_variable_type(0, Scalar);
+  set_variable_type(0, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(0, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "U,xi,phi,grad(phi),grad(U)");
   set_dependencies_gradient_term_rhs(0, "U,grad(U),grad(phi),phi,xi");
 
   set_variable_name(1, "phi");
-  set_variable_type(1, Scalar);
+  set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(1, "phi,U,xi");
   set_dependencies_gradient_term_rhs(1, "");
 
   set_variable_name(2, "xi");
-  set_variable_type(2, Scalar);
+  set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, Auxiliary);
   set_dependencies_value_term_rhs(2, "phi,U,grad(phi)");
   set_dependencies_gradient_term_rhs(2, "grad(phi)");
 
   set_variable_name(3, "c");
-  set_variable_type(3, Scalar);
+  set_variable_type(3, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(3, ExplicitTimeDependent);
   set_is_postprocessed_field(3, true);
   set_dependencies_value_term_rhs(3, "phi,U");

@@ -313,13 +313,13 @@ MatrixFreeOperator<dim, degree, number>::Tvmult(VectorType       &dst,
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,
@@ -344,13 +344,13 @@ MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_update(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,
@@ -375,13 +375,13 @@ MatrixFreeOperator<dim, degree, number>::compute_local_postprocess_explicit_upda
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_update(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   std::vector<VectorType *>                                              &dst,
   const std::vector<VectorType *>                                        &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,
@@ -407,13 +407,13 @@ MatrixFreeOperator<dim, degree, number>::compute_local_nonexplicit_auxiliary_upd
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::compute_local_residual(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   VectorType                                                             &dst,
   [[maybe_unused]] const VectorType                                      &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,
@@ -439,13 +439,13 @@ MatrixFreeOperator<dim, degree, number>::compute_local_residual(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::compute_local_newton_update(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   VectorType                                                             &dst,
   const VectorType                                                       &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,
@@ -499,13 +499,13 @@ MatrixFreeOperator<dim, degree, number>::compute_diagonal(unsigned int field_ind
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MatrixFreeOperator<dim, degree, number>::local_compute_diagonal(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
   VectorType                                                             &dst,
   [[maybe_unused]] const unsigned int                                    &dummy,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(data,
+  VariableContainer<dim, degree, number> variable_list(_data,
                                                        attributes_list,
                                                        *element_volume_handler,
                                                        global_to_local_solution,

@@ -193,7 +193,7 @@ private:
    */
   void
   compute_local_explicit_update(
-    const dealii::MatrixFree<dim, number, SizeType> &data,
+    const dealii::MatrixFree<dim, number, SizeType> &_data,
     std::vector<VectorType *>                       &dst,
     const std::vector<VectorType *>                 &src,
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
@@ -203,7 +203,7 @@ private:
    */
   void
   compute_local_postprocess_explicit_update(
-    const dealii::MatrixFree<dim, number, SizeType> &data,
+    const dealii::MatrixFree<dim, number, SizeType> &_data,
     std::vector<VectorType *>                       &dst,
     const std::vector<VectorType *>                 &src,
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
@@ -213,7 +213,7 @@ private:
    */
   void
   compute_local_nonexplicit_auxiliary_update(
-    const dealii::MatrixFree<dim, number, SizeType> &data,
+    const dealii::MatrixFree<dim, number, SizeType> &_data,
     std::vector<VectorType *>                       &dst,
     const std::vector<VectorType *>                 &src,
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
@@ -222,7 +222,7 @@ private:
    * @brief Local computation of the residual of the operator.
    */
   void
-  compute_local_residual(const dealii::MatrixFree<dim, number, SizeType> &data,
+  compute_local_residual(const dealii::MatrixFree<dim, number, SizeType> &_data,
                          VectorType                                      &dst,
                          const VectorType                                &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
@@ -232,7 +232,7 @@ private:
    */
   void
   compute_local_newton_update(
-    const dealii::MatrixFree<dim, number, SizeType> &data,
+    const dealii::MatrixFree<dim, number, SizeType> &_data,
     VectorType                                      &dst,
     const VectorType                                &src,
     const std::pair<unsigned int, unsigned int>     &cell_range) const;
@@ -241,7 +241,7 @@ private:
    * @brief Local computation of the diagonal of the operator.
    */
   void
-  local_compute_diagonal(const dealii::MatrixFree<dim, number, SizeType> &data,
+  local_compute_diagonal(const dealii::MatrixFree<dim, number, SizeType> &_data,
                          VectorType                                      &dst,
                          const unsigned int                              &dummy,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;

@@ -103,16 +103,16 @@ SolverBase<dim, degree, number>::solver_is_empty() const
 template <unsigned int dim, unsigned int degree, typename number>
 std::map<Types::Index, VariableAttributes>
 SolverBase<dim, degree, number>::compute_subset_attributes(
-  const FieldSolveType &field_solve_type,
-  Types::Index          solve_priority) const
+  const FieldSolveType &_field_solve_type,
+  Types::Index          _solve_priority) const
 {
   std::map<Types::Index, VariableAttributes> local_subset_attributes;
 
   for (const auto &[index, variable] :
        solver_context->get_user_inputs().get_variable_attributes())
     {
-      if (variable.get_field_solve_type() == field_solve_type &&
-          variable.get_solve_block() == solve_priority)
+      if (variable.get_field_solve_type() == _field_solve_type &&
+          variable.get_solve_block() == _solve_priority)
         {
           local_subset_attributes.emplace(index, variable);
         }
@@ -124,10 +124,10 @@ SolverBase<dim, degree, number>::compute_subset_attributes(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 SolverBase<dim, degree, number>::update_subset_attributes(
-  const FieldSolveType &field_solve_type,
-  Types::Index          solve_priority)
+  const FieldSolveType &_field_solve_type,
+  Types::Index          _solve_priority)
 {
-  subset_attributes = compute_subset_attributes(field_solve_type, solve_priority);
+  subset_attributes = compute_subset_attributes(_field_solve_type, _solve_priority);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -169,7 +169,7 @@ SolverBase<dim, degree, number>::set_initial_condition()
                       initial_condition_file.file_variable_names
                         [iterator -
                          initial_condition_file.simulation_variable_names.begin()],
-                      subset_attributes.at(index).get_field_type(),
+                      subset_attributes.at(index).field_info.tensor_rank,
                       initial_condition_file,
                       solver_context->get_user_inputs().get_spatial_discretization()),
                     *(solver_context->get_solution_handler()
@@ -184,7 +184,7 @@ SolverBase<dim, degree, number>::set_initial_condition()
             *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
             InitialCondition<dim, degree, number>(
               index,
-              subset_attributes.at(index).get_field_type(),
+              subset_attributes.at(index).field_info.tensor_rank,
               solver_context->get_pde_operator()),
             *(solver_context->get_solution_handler()
                 .get_solution_vector(index, DependencyType::Normal)));

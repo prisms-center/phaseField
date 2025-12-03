@@ -282,7 +282,9 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       // 0 — 1
 
       // Grab the index of the lower left corner of the cell
+      // cppcheck-suppress-begin containerOutOfBounds
       auto lower_index = lower_indices[0];
+      // cppcheck-suppress-end containerOutOfBounds
 
       // Get the indices of the two points in 1D
       auto node_index_0 = lower_index;
@@ -295,7 +297,9 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       // Interpolate
       for (unsigned int c : std::views::iota(0U, n_components))
         {
+          // cppcheck-suppress-begin containerOutOfBounds
           value[c] = (1.0 - weights[0]) * value_0[c] + weights[0] * value_1[c];
+          // cppcheck-suppress-end containerOutOfBounds
         }
     }
   else if constexpr (dim == 2)
@@ -309,7 +313,9 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       auto row_length_0 = this->ic_file.n_data_points[0];
 
       // Grab the index of the lower left corner of the cell
+      // cppcheck-suppress-begin containerOutOfBounds
       auto lower_index = lower_indices[0] + (lower_indices[1] * row_length_0);
+      // cppcheck-suppress-end containerOutOfBounds
 
       // Get the indices of the four points in 2D
       auto node_index_00 = lower_index;
@@ -328,10 +334,12 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       // Interpolate
       for (unsigned int c : std::views::iota(0U, n_components))
         {
+          // cppcheck-suppress-begin containerOutOfBounds
           value[c] = (1.0 - weights[0]) * (1.0 - weights[1]) * value_00[c] +
                      weights[0] * (1.0 - weights[1]) * value_10[c] +
                      (1.0 - weights[0]) * weights[1] * value_01[c] +
                      weights[0] * weights[1] * value_11[c];
+          // cppcheck-suppress-end containerOutOfBounds
         }
     }
   else if constexpr (dim == 3)
@@ -352,8 +360,10 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       auto row_length_1 = this->ic_file.n_data_points[1];
 
       // Grab the index of the lower left corner of the cell
+      // cppcheck-suppress-begin containerOutOfBounds
       auto lower_index = lower_indices[0] + (lower_indices[1] * row_length_0) +
                          (lower_indices[2] * row_length_0 * row_length_1);
+      // cppcheck-suppress-end containerOutOfBounds
 
       // Get the indices of the eight points in 3D
       auto node_index_000 = lower_index;
@@ -385,6 +395,7 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
       // Interpolate
       for (unsigned int c : std::views::iota(0U, n_components))
         {
+          // cppcheck-suppress-begin containerOutOfBounds
           value[c] =
             (1.0 - weights[0]) * (1.0 - weights[1]) * (1.0 - weights[2]) * value_000[c] +
             weights[0] * (1.0 - weights[1]) * (1.0 - weights[2]) * value_100[c] +
@@ -394,6 +405,7 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
             weights[0] * (1.0 - weights[1]) * weights[2] * value_101[c] +
             (1.0 - weights[0]) * weights[1] * weights[2] * value_011[c] +
             weights[0] * weights[1] * weights[2] * value_111[c];
+          // cppcheck-suppress-end containerOutOfBounds
         }
     }
 

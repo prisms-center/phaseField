@@ -31,7 +31,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, Constant);
 
         set_dependencies_value_term_rhs(0, "phi");
@@ -55,7 +55,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_lhs(0, "phi");
@@ -81,7 +81,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ExplicitTimeDependent);
       }
     };
@@ -102,7 +102,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Numbers::invalid_field_type);
+        set_variable_type(0, FieldInfo::TensorRank::Undefined);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
@@ -126,7 +126,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Vector);
+        set_variable_type(0, FieldInfo::TensorRank::Vector);
         set_variable_equation_type(0, Numbers::invalid_pde_type);
 
         set_dependencies_value_term_rhs(0, "phi");
@@ -150,7 +150,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "fi");
@@ -174,7 +174,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, TimeIndependent);
         set_is_postprocessed_field(0, true);
 
@@ -201,7 +201,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, Auxiliary);
         set_is_postprocessed_field(0, true);
 
@@ -226,7 +226,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, Constant);
         set_is_postprocessed_field(0, true);
       }
@@ -248,7 +248,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ImplicitTimeDependent);
         set_is_postprocessed_field(0, true);
 
@@ -275,7 +275,7 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ImplicitTimeDependent);
 
         set_dependencies_value_term_lhs(0, "phi");
@@ -301,14 +301,14 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi, free_energy");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
-        set_variable_type(1, Scalar);
+        set_variable_type(1, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(1, ExplicitTimeDependent);
         set_is_postprocessed_field(1, true);
 
@@ -333,14 +333,14 @@ TEST_CASE("Invalid dependencies")
       load_variable_attributes() override
       {
         set_variable_name(0, "phi");
-        set_variable_type(0, Scalar);
+        set_variable_type(0, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(0, ExplicitTimeDependent);
 
         set_dependencies_value_term_rhs(0, "phi");
         set_dependencies_gradient_term_rhs(0, "grad(phi)");
 
         set_variable_name(1, "free_energy");
-        set_variable_type(1, Scalar);
+        set_variable_type(1, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(1, ExplicitTimeDependent);
         set_is_postprocessed_field(1, true);
 
@@ -348,7 +348,7 @@ TEST_CASE("Invalid dependencies")
         set_dependencies_gradient_term_rhs(1, "grad(phi)");
 
         set_variable_name(2, "unavailable_energy");
-        set_variable_type(2, Scalar);
+        set_variable_type(2, FieldInfo::TensorRank::Scalar);
         set_variable_equation_type(2, ExplicitTimeDependent);
         set_is_postprocessed_field(2, true);
 

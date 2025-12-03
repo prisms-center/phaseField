@@ -225,11 +225,11 @@ UserInputParameters<dim>::assign_boundary_parameters(
         }
 
       const unsigned int n_components =
-        (variable.get_field_type() == FieldType::Scalar) ? 1 : dim;
+        (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar) ? 1 : dim;
       for (unsigned int i = 0; i < n_components; i++)
         {
           std::string bc_text = "boundary condition for " + variable.get_name();
-          if (variable.get_field_type() != FieldType::Scalar)
+          if (variable.field_info.tensor_rank != FieldInfo::TensorRank::Scalar)
             {
               bc_text += ", " + axis_labels[i] + " component";
             }
@@ -250,7 +250,8 @@ UserInputParameters<dim>::assign_boundary_parameters(
       parameter_handler.enter_subsection(pinning_text);
 
       const std::string value_key =
-        (variable.get_field_type() == FieldType::Scalar) ? "value" : "x value";
+        (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar) ? "value"
+                                                                           : "x value";
 
       // Skip if the value is the default INT_MAX
       if (parameter_handler.get_double(value_key) == INT_MAX)
@@ -266,7 +267,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
           point[i] = parameter_handler.get_double(axis_labels[i]);
         }
 
-      if (variable.get_field_type() == FieldType::Scalar)
+      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar)
         {
           boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
                                                point,
@@ -424,8 +425,9 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             // Defaults to 0 for unused dimensions/cases that don't require it
             for (unsigned int k = 0; k < dim; ++k)
               {
-                ic_file.n_data_points[k] = parameter_handler.get_integer(
-                  "data points in " + axis_labels[k] + " direction");
+                ic_file.n_data_points[k] =
+                  static_cast<unsigned int>(parameter_handler.get_integer(
+                    "data points in " + axis_labels[k] + " direction"));
               }
             load_ic_parameters.add_initial_condition_file(ic_file);
           }

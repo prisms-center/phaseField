@@ -71,6 +71,133 @@ struct RawDependencies
   std::set<std::string> nucleating_fields;
 };
 
+/**
+ * @brief Information about the field.
+ */
+struct FieldInfo
+{
+  /**
+   * @brief Tensor rank of the field.
+   *
+   * Currently, only scalar and vectors are supported.
+   */
+  enum class TensorRank : std::uint8_t
+  {
+    Undefined,
+    Scalar,
+    Vector
+  };
+
+  /**
+   * @brief Type of PDE that is being solved.
+   */
+  enum class PDEType : std::uint8_t
+  {
+    Undefined,
+    Constant,
+    ExplicitTimeDependent,
+    ImplicitTimeDependent,
+    TimeIndependent,
+    Auxiliary
+  };
+
+  /**
+   * @brief Internal classification of PDE types.
+   *
+   * There are several different types of solves that are possible.
+   *
+   * For PDEType::ExplicitTimeDependent, all fields of that type can be solved
+   * concurrently. This also applies for postprocessed fields of that type.
+   *
+   * For PDEType::Constant, those fields are never updated.
+   *
+   * For the rest, we have several classifications that can either be solved sequentially
+   * of concurrently.
+   */
+  enum class SolveType : std::uint8_t
+  {
+    Undefined,
+    ConcurrentConstant,
+    ConcurrentExplicit,
+    ConcurrentAuxiliary,
+    SequentialAuxiliary,
+    SequentialLinear,
+    SequentialSelfNonlinear,
+    SequentialCoNonlinear
+  };
+
+  /**
+   * @brief Internal classification of dependency type flags.
+   */
+  enum class DependencyTypeFlags : std::uint8_t
+  {
+    None = 0x00,
+
+    New     = 0x01,
+    Current = 0x02,
+
+    Change = 0x04,
+
+    OldOne   = 0x08,
+    OldTwo   = 0x10,
+    OldThree = 0x20,
+    OldFour  = 0x40
+  };
+
+  friend DependencyTypeFlags
+  operator|(const DependencyTypeFlags flag_1, const DependencyTypeFlags flag_2)
+  {
+    return static_cast<DependencyTypeFlags>(static_cast<std::uint8_t>(flag_1) |
+                                            static_cast<std::uint8_t>(flag_2));
+  }
+
+  friend DependencyTypeFlags &
+  operator|=(DependencyTypeFlags &flag_1, const DependencyTypeFlags flag_2)
+  {
+    flag_1 = flag_1 | flag_2;
+    return flag_1;
+  }
+
+  friend DependencyTypeFlags
+  operator&(const DependencyTypeFlags flag_1, const DependencyTypeFlags flag_2)
+  {
+    return static_cast<DependencyTypeFlags>(static_cast<std::uint8_t>(flag_1) &
+                                            static_cast<std::uint8_t>(flag_2));
+  }
+
+  friend DependencyTypeFlags &
+  operator&=(DependencyTypeFlags &flag_1, const DependencyTypeFlags flag_2)
+  {
+    flag_1 = flag_1 & flag_2;
+    return flag_1;
+  }
+
+  bool                is_postprocess        = false;
+  bool                is_nucleation_rate    = false;
+  TensorRank          tensor_rank           = TensorRank::Undefined;
+  PDEType             pde_type              = PDEType::Undefined;
+  SolveType           solve_type            = SolveType::Undefined;
+  DependencyTypeFlags dependency_type_flags = DependencyTypeFlags::None;
+  unsigned int        global_index          = Numbers::invalid_index;
+  unsigned int        solve_block_index     = Numbers::invalid_index;
+};
+
+inline std::string
+to_string(FieldInfo::TensorRank tensor_rank)
+{
+  switch (tensor_rank)
+    {
+      case FieldInfo::TensorRank::Undefined:
+        return "Undefined";
+      case FieldInfo::TensorRank::Scalar:
+        return "Scalar";
+      case FieldInfo::TensorRank::Vector:
+        return "Vector";
+      default:
+        return "Unknown TensorRank";
+    }
+}
+
 // TODO: Fix style. This struct needn't be over 100 lines. Validation can occur in a
 // separate function.
 /**
@@ -85,6 +212,8 @@ struct VariableAttributes
    * @brief Allow VariableAttributeLoader to access private members.
    */
   friend class VariableAttributeLoader;
+
+  FieldInfo field_info;
 
   /**
    * @brief Get the field name
@@ -102,15 +231,6 @@ struct VariableAttributes
   get_field_index() const
   {
     return field_index;
-  }
-
-  /**
-   * @brief Get the field type
-   */
-  [[nodiscard]] const FieldType &
-  get_field_type() const
-  {
-    return field_type;
   }
 
   /**
@@ -226,7 +346,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] const std::vector<std::vector<FieldType>> &
+  [[nodiscard]] const std::vector<std::vector<FieldInfo::TensorRank>> &
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
@@ -235,7 +355,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the LHS.
    */
-  [[nodiscard]] const std::vector<std::vector<FieldType>> &
+  [[nodiscard]] const std::vector<std::vector<FieldInfo::TensorRank>> &
   get_dependency_set_lhs() const
   {
     return dependency_set_lhs;
@@ -287,13 +407,13 @@ private:
    * variable.
    *
    * @param[in] other_var_attributes The other variable attributes.
-   * @param[in] max_fields The max number of fields that user has defined.
-   * @param[in] max_dependency_types The max number of dependency types.
+   * @param[in] _max_fields The max number of fields that user has defined.
+   * @param[in] _max_dependency_types The max number of dependency types.
    */
   void
   parse_dependencies(std::map<unsigned int, VariableAttributes> &other_var_attributes,
-                     const Types::Index                         &max_fields,
-                     const Types::Index                         &max_dependency_types);
+                     const Types::Index                         &_max_fields,
+                     const Types::Index                         &_max_dependency_types);
 
   /**
    * @brief Using the assigned evaluation flags determine the solve type for this
@@ -307,11 +427,11 @@ private:
    * @brief Validate a dependency.
    */
   void
-  validate_dependency(const std::string  &variation,
-                      DependencyType      dep_type,
-                      const unsigned int &other_index,
-                      const FieldType    &other_field_type,
-                      const std::string  &context) const;
+  validate_dependency(const std::string           &variation,
+                      DependencyType               dep_type,
+                      const unsigned int          &other_index,
+                      const FieldInfo::TensorRank &other_field_type,
+                      const std::string           &context) const;
 
   /**
    * @brief Compute the dependency sets from eval_flag_set_rhs &
@@ -357,12 +477,6 @@ private:
    * @remark User-set
    */
   Types::Index field_index = Numbers::invalid_index;
-
-  /**
-   * @brief Field type (Scalar/Vector).
-   * @remark User-set
-   */
-  FieldType field_type = Numbers::invalid_field_type;
 
   /**
    * @brief PDE type (Explicit/NONEXPLICIT).
@@ -467,7 +581,7 @@ private:
    *
    * @remark Internally determined
    */
-  std::vector<std::vector<FieldType>> dependency_set_rhs;
+  std::vector<std::vector<FieldInfo::TensorRank>> dependency_set_rhs;
 
   /**
    * @brief TODO (Landinjm): Add brief description.
@@ -484,7 +598,7 @@ private:
    *
    * @remark Internally determined
    */
-  std::vector<std::vector<FieldType>> dependency_set_lhs;
+  std::vector<std::vector<FieldInfo::TensorRank>> dependency_set_lhs;
 
   /**
    * @brief Raw dependencies of the field.
