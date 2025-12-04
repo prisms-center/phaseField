@@ -131,8 +131,8 @@ TriangulationHandler<dim>::generate_mesh()
       dealii::GridGenerator::subdivided_hyper_rectangle(
         *triangulation,
         user_inputs->get_spatial_discretization().get_subdivisions(),
-        dealii::Point<dim>(),
-        dealii::Point<dim>(user_inputs->get_spatial_discretization().get_size()));
+        user_inputs->get_spatial_discretization().get_lower_bound(),
+        user_inputs->get_spatial_discretization().get_upper_bound());
 
       // Mark boundaries. This is done before global refinement to reduce the number of
       // cells we have to loop through.
@@ -206,11 +206,16 @@ TriangulationHandler<dim>::mark_boundaries() const
           // Direction for quad and hex cells
           auto direction = static_cast<unsigned int>(std::floor(face_number / 2));
 
-          // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
-          if (std::fabs(cell->face(face_number)->center()(direction) - 0) < tolerance ||
-              std::fabs(
-                cell->face(face_number)->center()(direction) -
-                (user_inputs->get_spatial_discretization().get_size()[direction])) <
+          // Lower bound and upper bound
+          const double lower_bound =
+            user_inputs->get_spatial_discretization().get_lower_bound()[direction];
+          const double upper_bound =
+            user_inputs->get_spatial_discretization().get_upper_bound()[direction];
+
+          // Mark the boundary id for lower and upper bounds
+          if (std::fabs(cell->face(face_number)->center()(direction) - lower_bound) <
+                tolerance ||
+              std::fabs(cell->face(face_number)->center()(direction) - upper_bound) <
                 tolerance)
             {
               cell->face(face_number)->set_boundary_id(face_number);
