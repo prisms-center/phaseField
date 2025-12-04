@@ -85,6 +85,9 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
         spatial_discretization.set_size(i,
                                         parameter_handler.get_double(axis_labels[i] +
                                                                      " size"));
+        spatial_discretization.set_lower_bound(i,
+                                               parameter_handler.get_double(
+                                                 axis_labels[i] + " lower bound"));
         spatial_discretization.set_subdivisions(i,
                                                 static_cast<unsigned int>(
                                                   parameter_handler.get_integer(

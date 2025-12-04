@@ -635,9 +635,43 @@ public:
     return type;
   }
 
+  /**
+   * @brief Set the lower bound in each cartesian direction
+   */
+  void
+  set_lower_bound(const unsigned int &direction, const double &_lower_bound)
+  {
+    lower_bound[direction] = _lower_bound;
+  }
+
+  /**
+   * @brief Get the lower bound for the rectangular grid
+   */
+  [[nodiscard]] const dealii::Point<dim, double> &
+  get_lower_bound() const
+  {
+    return lower_bound;
+  }
+
+  /**
+   * @brief Get the upper bound for the rectangular grid
+   */
+  [[nodiscard]] const dealii::Point<dim, double> &
+  get_upper_bound() const
+  {
+    upper_bound = dealii::Point<dim>(size) + lower_bound;
+    return upper_bound;
+  }
+
 private:
   // Triangulation type
   TriangulationType type = TriangulationType::Rectangular;
+
+  // Domain lower bound for rectangular domains
+  dealii::Point<dim, double> lower_bound;
+
+  // Domain upper bound for rectangular domains
+  mutable dealii::Point<dim, double> upper_bound;
 
   // Domain extents in each cartesian direction
   dealii::Tensor<1, dim, double> size;

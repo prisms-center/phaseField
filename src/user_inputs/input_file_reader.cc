@@ -251,6 +251,18 @@ InputFileReader::declare_mesh()
                                     "0.0",
                                     dealii::Patterns::Double(0.0, DBL_MAX),
                                     "The size of the domain in the z direction.");
+    parameter_handler.declare_entry("x lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the x direction.");
+    parameter_handler.declare_entry("y lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the y direction.");
+    parameter_handler.declare_entry("z lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the z direction.");
     parameter_handler.declare_entry(
       "x subdivisions",
       "1",
