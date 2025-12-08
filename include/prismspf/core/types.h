@@ -30,12 +30,17 @@ namespace Numbers
   /**
    * @brief Max element degree.
    */
-  static const unsigned int max_element_degree = 6;
+  static constexpr unsigned int max_element_degree = 6;
+
+  /**
+   * @brief How many increments of field history prismspf can store.
+   */
+  static constexpr unsigned int max_saved_increments = 4;
 
   /**
    * @brief Max number of subsections.
    */
-  static const unsigned int max_subsections = 16;
+  static constexpr unsigned int max_subsections = 16;
 
   /**
    * @brief Invalid PDE type.
