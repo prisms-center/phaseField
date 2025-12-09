@@ -46,7 +46,7 @@ main(int argc, char *argv[])
       // -----------------------------------------------------
       // Start runtime timer (MPI_Wtime gives wall-clock time)
       // -----------------------------------------------------
-      const double start_time = MPI_Wtime();  
+      const double start_time = MPI_Wtime();
 
       // Parse the command line options (if there are any) to get the name of the input
       // file
@@ -237,7 +237,7 @@ main(int argc, char *argv[])
       // -----------------------------------------------------
       // End runtime timer and print total time on rank 0
       // -----------------------------------------------------
-      const double end_time = MPI_Wtime();
+      const double end_time   = MPI_Wtime();
       const double total_time = end_time - start_time;
 
       const unsigned int this_mpi_rank =
@@ -247,9 +247,9 @@ main(int argc, char *argv[])
         std::cout << "\n=========================================\n"
                   << " Total runtime: " << total_time << " seconds"
                   << "\n=========================================\n"
-                  << std::endl;       
-                   
-          // Caliper config manager closure
+                  << std::endl;
+
+        // Caliper config manager closure
 #ifdef PRISMS_PF_WITH_CALIPER
       // Flush output before finalizing MPI
       mgr.flush();
