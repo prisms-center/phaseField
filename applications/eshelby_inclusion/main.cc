@@ -43,6 +43,11 @@ main(int argc, char *argv[])
       dealii::Utilities::MPI::MPI_InitFinalize
         mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
 
+      // -----------------------------------------------------
+      // Start runtime timer (MPI_Wtime gives wall-clock time)
+      // -----------------------------------------------------
+      const double start_time = MPI_Wtime();  
+
       // Parse the command line options (if there are any) to get the name of the input
       // file
       prisms::ParseCMDOptions cli_options(argc, argv);
@@ -229,6 +234,21 @@ main(int argc, char *argv[])
             throw std::runtime_error("Invalid number of dimensions");
         }
 
+      // -----------------------------------------------------
+      // End runtime timer and print total time on rank 0
+      // -----------------------------------------------------
+      const double end_time = MPI_Wtime();
+      const double total_time = end_time - start_time;
+
+      const unsigned int this_mpi_rank =
+        dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD);
+
+      if (this_mpi_rank == 0)
+        std::cout << "\n=========================================\n"
+                  << " Total runtime: " << total_time << " seconds"
+                  << "\n=========================================\n"
+                  << std::endl;       
+                   
           // Caliper config manager closure
 #ifdef PRISMS_PF_WITH_CALIPER
       // Flush output before finalizing MPI
