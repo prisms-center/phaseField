@@ -128,13 +128,81 @@ autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev ope
 openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev
 libsuitesparse-dev
 ```
-To install p4est, you can follow these instructions:
+To install p4est and deal.II, we recommend following the instructions on the [deal.II
+installation guide](https://dealii.org/current_release/download/).
+We suggest building
+deal.II and p4est using deal.II's automatic installation script
+[candi](https://github.com/dealii/candi).
+
+```
+git clone https://github.com/dealii/candi.git
+cd candi
+```
+Modify the `candi.cfg` file, commenting out any PACKAGES other than dealii and p4est.
+Then run:
+```
+./candi.sh
+```
+or
+```
+./candi.sh -j <nprocs>
+```
+to compile with multiple processors (much faster). (Note that we have found that
+specifying too many processors can sometimes lead to build failures, so if you run into
+issues, try reducing the number of processors specified.)
+
+This will install both p4est and deal.II in a local directory (by
+default,`$HOME/dealii-candi/`). Be sure to permanently set the `DEAL_II_DIR` environment
+variable to point to the deal.II installation.
+
+To install VTK, we reccommend installing from source.
+```
+git clone https://gitlab.kitware.com/vtk/vtk.git vtk-clone
+mkdir vtk-build
+mkdir vtk-install
+cd vtk-build
+cmake ../vtk-clone -DCMAKE_BUILD_TYPE=Release -DVTK_GROUP_ENABLE_QT=OFF
+-DVTK_GROUP_ENABLE_MPI=ON -DVTK_BUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=../vtk-install
+make -j <numprocs> install
+```
+Be sure to permanently set the `VTK_DIR` environment variable to point to the VTK
+installation (e.g.,`$HOME/vtk-install/lib/cmake/vtk-9.xx`).
+
 - <b class="tab-title">MacOS</b> This is the content of tab 2
+
+
 - <b class="tab-title">Windows</b> **PRISMS-PF has no plans to support Windows.** If you
-are on Windows, we recommend using a virtual machine or Windows Subsystem for Linux (WSL)
-to run a Linux environment. Please follow the Linux
-instructions if you use either of those options.
+are on Windows, we recommend using Docker, another virtual machine, or Windows Subsystem
+for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you
+use any of those options.
 
 </div>
+
+\subsection install_prismspf Installing PRISMS-PF
+
+Once you have all the prerequisites installed, you can clone the PRISMS-PF repository
+from GitHub, configure the build with CMake, and compile the code:
+```
+git clone https://github.com/prisms-center/phaseField.git
+cd phaseField
+cmake .
+make -j <nprocs>
+```
+This will build the PRISMS-PF library in both debug and release modes.
+Next, set the `PRISMS_PF_DIR` environment variable to point to the PRISMS-PF installation
+directory (the directory containing the `lib` and `include` directories).
+You can now compile and run any of the applications in the `applications` directory. For
+example, to compile and run the `allen_cahn_explicit` application, you can use the
+following commands:
+```
+cd applications/allen_cahn_explicit
+cmake .
+make
+mpirun -n <nprocs> ./main
+```
+(Note: there is a known bug with compiling application using multiple processors for the
+first time. This will be fixed in a future release. After compiling once, the issue should
+go away.)
+
 
  */
