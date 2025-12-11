@@ -7,6 +7,7 @@
 #include <deal.II/base/utilities.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -133,7 +134,7 @@ using DependencySet = std::map<Types::Index, Dependency>;
 
 DependencySet
 make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
-                    const std::set<std::string>        &dependency_strings)
+                    std::set<std::string>               dependency_strings)
 {
   static const std::set<std::pair<std::pair<std::string, std::string>, EvalFlags>>
     reg_delimiters = {
@@ -154,27 +155,47 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
       for (const auto &[delimiter, flag] : reg_delimiters)
         {
           std::string potential_match = delimiter.first + attr.name + delimiter.second;
-          if (dependency_strings.contains(potential_match))
+          auto        iter            = dependency_strings.find(potential_match);
+          if (iter != dependency_strings.end())
             {
               result[i].flag |= flag;
+              dependency_strings.erase(iter);
             }
           potential_match =
             delimiter.first + "change(" + attr.name + ")" + delimiter.second;
-          if (dependency_strings.contains(potential_match))
+          iter = dependency_strings.find(potential_match);
+          if (iter != dependency_strings.end())
             {
               result[i].change_flag |= flag;
+              dependency_strings.erase(iter);
             }
           for (unsigned int old_index = 0; old_index < Numbers::max_saved_increments;
                ++old_index)
             {
               potential_match = delimiter.first + "old_" + std::to_string(old_index + 1) +
                                 "(" + attr.name + ")" + delimiter.second;
-              if (dependency_strings.contains(potential_match))
+              iter = dependency_strings.find(potential_match);
+              if (iter != dependency_strings.end())
                 {
                   result[i].old_flags.at(old_index) |= flag;
+                  dependency_strings.erase(iter);
                 }
             }
         }
+    }
+  if (!dependency_strings.empty())
+    {
+      std::string error_message = "The following dependencies were not recognized: ";
+      for (const auto &dep : dependency_strings)
+        {
+          error_message += dep + ", ";
+        }
+      error_message.pop_back();
+      error_message.pop_back();
+#ifndef DEBUG
+      ConditionalOStreams::pout_base() << "Warning: " << error_message << std::endl;
+#endif
+      Assert(false, dealii::ExcMessage(error_message));
     }
   return result;
 }
