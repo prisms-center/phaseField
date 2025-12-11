@@ -91,10 +91,16 @@ public:
     aux_solve_container.clear();
   }
 
+  [[nodiscard]] bool
+  has_auxiliary_solve() const
+  {
+    return !aux_solve_container.empty();
+  }
+
   SolveGroup &
   auxiliary_solve() // get_auxiliary_solve()
   {
-    AssertThrow(!aux_solve_container.empty(),
+    AssertThrow(has_auxiliary_solve(),
                 dealii::ExcMessage("Cannot access auxiliary solve when none is set.\n "
                                    "Attempted access from solve id: " +
                                    std::to_string(id)));
@@ -109,12 +115,8 @@ public:
         return true;
       }
     return id < other.id;
-    // return priority < other.priority
   }
 };
-
-// TODO: Write a dependency parser that takes the field attributes vector and a list of
-// strings and turns them into dependencies.
 
 // NOLINTEND(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
 
