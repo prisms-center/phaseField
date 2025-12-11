@@ -44,7 +44,7 @@ dealii::TimerOutput &
 Timer::serial_timer()
 {
   static dealii::TimerOutput instance(ConditionalOStreams::pout_base(),
-                                      dealii::TimerOutput::never,
+                                      dealii::TimerOutput::summary,
                                       dealii::TimerOutput::wall_times);
 
   return instance;
@@ -69,27 +69,8 @@ Timer::print_summary()
   return;
 #endif
 
-  // Get the timer output for the serial and parallel timers
-  const auto serial_n_calls =
-    serial_timer().get_summary_data(dealii::TimerOutput::OutputData::n_calls);
-  const auto serial_wall_times =
-    serial_timer().get_summary_data(dealii::TimerOutput::OutputData::total_wall_time);
-  const auto parallel_n_calls =
-    parallel_timer().get_summary_data(dealii::TimerOutput::OutputData::n_calls);
-  const auto parallel_wall_times =
-    parallel_timer().get_summary_data(dealii::TimerOutput::OutputData::total_wall_time);
-
-  for (const auto &[section, wall_time] : serial_wall_times)
-    {
-      Assert(serial_n_calls.contains(section), dealii::ExcInternalError());
-
-      const auto n_calls = serial_n_calls.at(section);
-
-      ConditionalOStreams::pout_base()
-        << "Serial: " << section << " - " << wall_time << "s (" << wall_time / n_calls
-        << "s/call, " << n_calls << " calls)" << "\n"
-        << std::flush;
-    }
+  // TODO: Revist the deal.II TimerOutput class and reorganize sections so they are tiered
+  // accordingly
 }
 
 PRISMS_PF_END_NAMESPACE
