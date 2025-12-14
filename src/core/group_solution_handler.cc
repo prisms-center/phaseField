@@ -11,7 +11,7 @@
 // #include <prismspf/core/matrix_free_handler.h>
 // #include <prismspf/core/multigrid_info.h>
 // #include <prismspf/core/solution_handler.h> //
-// #include <prismspf/core/timer.h>
+#include <prismspf/core/timer.h>
 // #include <prismspf/core/type_enums.h>
 // #include <prismspf/core/types.h>
 // #include <prismspf/core/variable_attributes.h>
@@ -29,256 +29,119 @@ GroupSolutionHandler<dim, number>::GroupSolutionHandler(
 {
   block_to_global_index.assign(_solve_group.field_indices.begin(),
                                _solve_group.field_indices.end());
-  // If we don't have multigrid, we can return early
-  if (!_mg_info.has_multigrid())
-    {
-      return;
-    }
-  has_multigrid = true;
-
-  global_min_level = _mg_info.get_mg_min_level();
-  mg_solution_set.resize(_mg_info.get_mg_depth());
-  for (unsigned int level = 0; level < _mg_info.get_mg_depth(); level++)
-    {
-      mg_solution_set[level].resize(_mg_info.get_mg_breadth(level));
-    }
 }
 
 template <unsigned int dim, typename number>
-std::map<unsigned int, typename GroupSolutionHandler<dim, number>::VectorType *>
-GroupSolutionHandler<dim, number>::get_solution_vector() const
+auto
+GroupSolutionHandler<dim, number>::get_solution_full_vector(unsigned int relative_level)
+  -> BlockVector &
 {
-  std::map<unsigned int, VectorType *> temp;
-  for (const auto &[pair, vector] : solution_set)
-    {
-      if (pair.second != DependencyType::Normal)
-        {
-          continue;
-        }
-
-      Assert(vector != nullptr, dealii::ExcNotInitialized());
-
-      temp.emplace(pair.first, vector.get());
-    }
-
-  return temp;
+  return solution_levels[relative_level].solutions;
 }
 
 template <unsigned int dim, typename number>
-typename GroupSolutionHandler<dim, number>::VectorType *
-GroupSolutionHandler<dim, number>::get_solution_vector(
-  unsigned int   index,
-  DependencyType dependency_type) const
+auto
+GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
+                                                       unsigned int relative_level)
+  -> SolutionVector &
 {
-  const auto pair = std::make_pair(index, dependency_type);
-
-  Assert(solution_set.contains(pair),
-         dealii::ExcMessage(
-           "There is no solution vector for the given index = " + std::to_string(index) +
-           " and type = " + to_string(dependency_type)));
-  Assert(solution_set.at(pair) != nullptr, dealii::ExcNotInitialized());
-
-  return solution_set.at(pair).get();
+  return solution_levels[relative_level].solutions.block(
+    global_to_block_index[global_index]);
 }
 
 template <unsigned int dim, typename number>
-std::map<unsigned int, typename GroupSolutionHandler<dim, number>::VectorType *>
-GroupSolutionHandler<dim, number>::get_new_solution_vector() const
+auto
+GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
+  unsigned int age,
+  unsigned int relative_level) -> BlockVector &
 {
-  std::map<unsigned int, VectorType *> temp;
-  for (const auto &[index, vector] : new_solution_set)
-    {
-      Assert(vector != nullptr, dealii::ExcNotInitialized());
-
-      temp.emplace(index, vector.get());
-    }
-
-  return temp;
+  return solution_levels[relative_level].old_solutions[age];
 }
 
 template <unsigned int dim, typename number>
-typename GroupSolutionHandler<dim, number>::VectorType *
-GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int index) const
+auto
+GroupSolutionHandler<dim, number>::get_old_solution_vector(unsigned int age,
+                                                           unsigned int global_index,
+                                                           unsigned int relative_level)
+  -> SolutionVector &
 {
-  Assert(new_solution_set.contains(index),
-         dealii::ExcMessage("There is no new solution vector for the given index = " +
-                            std::to_string(index)));
-  Assert(new_solution_set.at(index) != nullptr, dealii::ExcNotInitialized());
-
-  return new_solution_set.at(index).get();
+  return solution_levels[relative_level].old_solutions[age].block(
+    global_to_block_index[global_index]);
 }
 
 template <unsigned int dim, typename number>
-std::vector<typename GroupSolutionHandler<dim, number>::MGVectorType *>
-GroupSolutionHandler<dim, number>::get_mg_solution_vector(unsigned int level) const
+auto
+GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
+  unsigned int relative_level) -> BlockVector &
 {
-  Assert(has_multigrid, dealii::ExcNotInitialized());
-
-  // Convert absolute level to a relative level
-  const unsigned int relative_level = level - global_min_level;
-  Assert(relative_level < mg_solution_set.size(),
-         dealii::ExcMessage("The mg solution set does not contain level = " +
-                            std::to_string(level)));
-  std::vector<MGVectorType *> temp;
-  temp.reserve(mg_solution_set[relative_level].size());
-
-  std::transform(mg_solution_set[relative_level].begin(),
-                 mg_solution_set[relative_level].end(),
-                 std::back_inserter(temp),
-                 [](const std::unique_ptr<MGVectorType> &vector)
-                 {
-                   return vector.get();
-                 });
-  return temp;
+  return solution_levels[relative_level].new_solutions;
 }
 
 template <unsigned int dim, typename number>
-typename GroupSolutionHandler<dim, number>::MGVectorType *
-GroupSolutionHandler<dim, number>::get_mg_solution_vector(unsigned int level,
-                                                          unsigned int index) const
+auto
+GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_index,
+                                                           unsigned int relative_level)
+  -> SolutionVector &
 {
-  Assert(has_multigrid, dealii::ExcNotInitialized());
-
-  // Convert absolute level to a relative level
-  const unsigned int relative_level = level - global_min_level;
-  Assert(relative_level < mg_solution_set.size(),
-         dealii::ExcMessage("The mg solution set does not contain level = " +
-                            std::to_string(level)));
-  [[maybe_unused]] const unsigned int global_index =
-    mg_info->get_global_index(index, relative_level);
-  Assert(index < mg_solution_set[relative_level].size(),
-         dealii::ExcMessage(
-           "The mg solution at the given level does not contain index = " +
-           std::to_string(global_index)));
-  return mg_solution_set[relative_level][index].get();
+  return solution_levels[relative_level].new_solutions.block(
+    global_to_block_index[global_index]);
 }
 
 template <unsigned int dim, typename number>
-void
-GroupSolutionHandler<dim, number>::init(
-  MatrixFreeContainer<dim, number> &matrix_free_container)
+void GroupSolutionHandler<dim, number>::init(/* args */)
 {
-  ConditionalOStreams::pout_base() << "initializing solution set...\n" << std::flush;
+  ConditionalOStreams::pout_base()
+    << "Initializing solution set for solver " << solve_group.id << "...\n"
+    << std::flush;
   Timer::start_section("reinitialize solution set");
 
-  // Create all entries
-  for (const auto &[index, variable] : *attributes_list)
+  // Initialize matrixfree objects
+  // TODO
+  for (auto &solution_level : solution_levels)
     {
-      // Add the variable if it doesn't already exist
-      if (!solution_set.contains(std::make_pair(index, DependencyType::Normal)))
-        {
-          solution_set[std::make_pair(index, DependencyType::Normal)] =
-            std::make_unique<VectorType>();
-          solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
-            std::make_unique<SolutionTransfer>(
-              matrix_free_container.get_matrix_free()->get_dof_handler(index));
-          new_solution_set[index] = std::make_unique<VectorType>();
-        }
-      new_solution_set.try_emplace(index, std::make_unique<VectorType>());
-
-      // Add dependencies if they don't exist
-      Types::Index field_index = 0;
-      for (const auto &dependency_set : variable.get_eval_flag_set_rhs())
-        {
-          Types::Index dep_index = 0;
-          for (const auto &value : dependency_set)
-            {
-              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
-                {
-                  dep_index++;
-                  continue;
-                }
-              solution_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<VectorType>());
-              solution_transfer_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<SolutionTransfer>(
-                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
-
-              dep_index++;
-            }
-
-          field_index++;
-        }
-      field_index = 0;
-      for (const auto &dependency_set : variable.get_eval_flag_set_lhs())
-        {
-          Types::Index dep_index = 0;
-          for (const auto &value : dependency_set)
-            {
-              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
-                {
-                  dep_index++;
-                  continue;
-                }
-              solution_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<VectorType>());
-              solution_transfer_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<SolutionTransfer>(
-                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
-
-              dep_index++;
-            }
-
-          field_index++;
-        }
+      dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
+        solution_level.matrix_free;
+      matrix_free.reinit(/* args */);
     }
+  // Initialize solution vectors
+  reinit();
 
-  // Initialize the entries according to the corresponding matrix free index
-  for (const auto &[pair, solution] : solution_set)
-    {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
-                                                                     pair.first);
-    }
-  for (const auto &[index, new_solution] : new_solution_set)
-    {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
-                                                                     index);
-    }
-
-  // Create all entries and initialize them
-  for (unsigned int level = 0; level < mg_solution_set.size(); level++)
-    {
-      for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
-        {
-          mg_solution_set[level][index] = std::make_unique<MGVectorType>();
-          matrix_free_container.get_mg_matrix_free(level + global_min_level)
-            ->initialize_dof_vector(*mg_solution_set[level][index], index);
-          mg_solution_set[level][index]->update_ghost_values();
-        }
-    }
   Timer::end_section("reinitialize solution set");
 }
 
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::reinit(
-  MatrixFreeContainer<dim, number> &matrix_free_container)
+GroupSolutionHandler<dim, number>::reinit()
 {
-  // Initialize the entries according to the corresponding matrix free index
-  for (const auto &[pair, solution] : solution_set)
+  for (auto &solution_level : solution_levels)
     {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*solution,
-                                                                     pair.first);
-    }
-  for (const auto &[index, new_solution] : new_solution_set)
-    {
-      matrix_free_container.get_matrix_free()->initialize_dof_vector(*new_solution,
-                                                                     index);
-    }
+      BlockVector &solutions     = solution_level.solutions;
+      BlockVector &new_solutions = solution_level.new_solutions;
+      std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
+        solution_level.old_solutions;
+      dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
+        solution_level.matrix_free;
 
-  // Loop over all entries and reinitialize them
-  for (unsigned int level = 0; level < mg_solution_set.size(); level++)
-    {
-      for (unsigned int index = 0; index < mg_solution_set[level].size(); index++)
+      // These partitioners basically just provide the number of elements in a distributed
+      // way
+      std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
+        partitioners;
+      for (unsigned int block_index = 0; block_index < solve_group.field_indices.size();
+           ++block_index)
         {
-          matrix_free_container.get_mg_matrix_free(level + global_min_level)
-            ->initialize_dof_vector(*mg_solution_set[level][index], index);
-          mg_solution_set[level][index]->update_ghost_values();
+          partitioners.push_back(matrix_free.get_vector_partitioner(block_index));
         }
+      // TODO (fractalsbyx): Check that the default MPI communicator is correct here
+      solutions.reinit(partitioners);
+      new_solutions.reinit(partitioners);
+      for (unsigned int i = 0; i < Numbers::max_saved_increments; ++i)
+        {
+          if (i < oldest_saved)
+            {
+              old_solutions[i].reinit(partitioners);
+            }
+        }
+      // TODO (fractalsbyx): Check if ghosts need to be updated here
     }
 }
 
