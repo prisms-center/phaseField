@@ -8,6 +8,7 @@
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
+#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_group.h>
@@ -51,57 +52,57 @@ public:
                        const std::vector<FieldAttributes> &_attributes_list,
                        const MGInfo<dim>                  &_mg_info);
 
+  // TODO (fractalsbyx): add 'const T& get() const' versions.
   /**
    * @brief Get the solution vector set. This contains all the normal fields and is
    * typically used for output.
    */
   [[nodiscard]] BlockVector &
-  get_solution_block() const;
+  get_solution_full_vector(unsigned int relative_level = 0);
 
   /**
    * @brief Get a solution vector of a given field index.
-   *
    */
   [[nodiscard]] SolutionVector &
-  get_solution_vector(unsigned int global_index) const;
+  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the old solution vector set at a given age.
+   */
+  [[nodiscard]] BlockVector &
+  get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get a solution vector of a given field index at a given age.
+   */
+  [[nodiscard]] SolutionVector &
+  get_old_solution_vector(unsigned int age,
+                          unsigned int global_index,
+                          unsigned int relative_level = 0);
 
   /**
    * @brief Get the "new" solution vector set.
-   *
    */
   [[nodiscard]] BlockVector &
-  get_new_solution_block() const;
+  get_new_solution_full_vector(unsigned int relative_level = 0);
 
   /**
    * @brief Get the "new" solution vector of a given field index.
-   *
    */
   [[nodiscard]] SolutionVector &
-  get_new_solution_vector(unsigned int index) const;
-
-  /**
-   * @brief Get the mg solution vector set at a given level.
-   */
-  [[nodiscard]] MGBlockVector &
-  get_mg_solution_vector(unsigned int level) const;
-
-  /**
-   * @brief Get the mg solution vector set at a given level and index;
-   */
-  [[nodiscard]] MGSolutionVector &
-  get_mg_solution_vector(unsigned int level, unsigned int index) const;
+  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
 
   /**
    * @brief Initialize the solution set.
    */
   void
-  init(MatrixFreeContainer<dim, number> &matrix_free_container);
+  init();
 
   /**
    * @brief Reinitialize the solution set.
    */
   void
-  reinit(MatrixFreeContainer<dim, number> &matrix_free_container);
+  reinit();
 
   /**
    * @brief Update the ghost values.
@@ -173,10 +174,19 @@ public:
   reinit_solution_transfer(MatrixFreeContainer<dim, number> &matrix_free_container);
 
 private:
+  SolveGroup solve_group;
+  // TODO (fractalsbyx): do this better
+  int oldest_saved = 0;
+
   /**
    * @brief Mapping from block index to global field index.
    */
   std::vector<unsigned int> block_to_global_index;
+
+  /**
+   * @brief Mapping from global field index to block index.
+   */
+  std::vector<unsigned int> global_to_block_index;
 
   std::vector<FieldInfo::TensorRank> field_ranks;
 
@@ -198,13 +208,20 @@ private:
   /**
    * @brief The solution vectors.
    */
-  BlockVector                                            solutions;
-  BlockVector                                            new_solutions;
-  std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
-  std::vector<MGBlockVector>                             mg_solution_set;
+  struct SolutionLevel
+  {
+    BlockVector                                                      solutions;
+    BlockVector                                                      new_solutions;
+    std::array<BlockVector, Numbers::max_saved_increments>           old_solutions;
+    dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> matrix_free;
+  };
+
+  // TODO (fractalsbyx): Consider switching to dealii::MGLevelObject
+  // Right now, I prefer using the relative level.
+  std::vector<SolutionLevel> solution_levels;
 
   /**
-   * @brief The collection of solution transfer objects at the current timestep.
+   * @brief Utility for solution transfer to different mesh (for AMR).
    */
   SolutionTransfer solution_transfer;
 };
