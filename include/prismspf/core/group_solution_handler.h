@@ -180,11 +180,6 @@ private:
   std::vector<unsigned int> global_to_block_index;
 
   /**
-   * @brief Multigrid information.
-   */
-  const MGInfo<dim> *mg_info;
-
-  /**
    * @brief The solution vectors.
    */
   struct SolutionLevel
