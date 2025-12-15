@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include <deal.II/base/mg_level_object.h>
 #include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/type_enums.h>
@@ -49,8 +49,7 @@ public:
    * @brief Constructor.
    */
   GroupSolutionHandler(const SolveGroup                   &_solve_group,
-                       const std::vector<FieldAttributes> &_attributes_list,
-                       const MGInfo<dim>                  &_mg_info);
+                       const std::vector<FieldAttributes> &_attributes_list);
 
   // TODO (fractalsbyx): add 'const T& get() const' versions.
   /**
@@ -96,7 +95,10 @@ public:
    * @brief Initialize the solution set.
    */
   void
-  init();
+  init(const dealii::Mapping<dim>                                   &mapping,
+       const DofManager<dim>                                        &dof_manager,
+       const std::vector<const dealii::AffineConstraints<number> *> &constraints,
+       const dealii::Quadrature<dim>                                &quad);
 
   /**
    * @brief Reinitialize the solution set.
@@ -106,76 +108,65 @@ public:
 
   /**
    * @brief Update the ghost values.
-   *
-   * TODO (landinjm): Fix so this isn't as wasteful in updating ghost values for all
-   * solution vectors.
    */
   void
   update_ghosts() const;
 
   /**
    * @brief Zero out the ghost values.
-   *
-   * TODO (landinjm): Fix so this isn't as wasteful in zeroing ghost values for all
-   * solution vectors.
    */
   void
   zero_out_ghosts() const;
 
   /**
    * @brief Apply the given constraints to a solution vector of a given field index.
-   *
-   * Note this applies constraints for all dependencyTypes of the given index.
    */
   void
-  apply_constraints(unsigned int                             field_index,
-                    const dealii::AffineConstraints<number> &constraints);
+  apply_constraints(const dealii::AffineConstraints<number> &constraints,
+                    unsigned int                             global_index,
+                    unsigned int                             relative_level = 0);
 
   /**
    * @brief Apply intial condition to the old fields. For now, this simply copies the
    * values in the normal field to the old.
-   *
-   * TODO (landinjm): What should we do for the initial condition of old fields.
    */
   void
   apply_initial_condition_for_old_fields();
 
   /**
-   * @brief Update the `solution_set` with the `new_solution_set`. This has different
-   * variants on which solutions to swap based on the FieldSolveType.
+   * @brief Update the `solutions` to the `new_solution` and propagate the old solutions.
    */
   void
-  update(FieldSolveType field_solve_type,
-         Types::Index   solve_block,
-         Types::Index   variable_index = 0);
-
-  /**
-   * @brief Prepare for solution transfer
-   */
-  void
-  prepare_for_solution_transfer()
-  {
-    solution_transfer.prepare_for_coarsening_and_refinement(*solutions);
-  }
-
-  /**
-   * @brief Transfer solutions
-   */
-  void
-  execute_solution_transfer()
-  {
-    solution_transfer.interpolate(*solutions);
-  }
+  update();
 
   /**
    * @brief Reinit the solution transfer objections.
    */
   void
-  reinit_solution_transfer(MatrixFreeContainer<dim, number> &matrix_free_container);
+  init_solution_transfer();
+
+  /**
+   * @brief Prepare for solution transfer
+   */
+  void
+  prepare_for_solution_transfer();
+
+  /**
+   * @brief Transfer solutions
+   */
+  void
+  execute_solution_transfer();
 
 private:
+  /**
+   * @brief Information about the solve group this handler is responsible for.
+   */
   SolveGroup solve_group;
+
   // TODO (fractalsbyx): do this better
+  /**
+   * @brief Oldest saved age.
+   */
   int oldest_saved = 0;
 
   /**
@@ -187,18 +178,6 @@ private:
    * @brief Mapping from global field index to block index.
    */
   std::vector<unsigned int> global_to_block_index;
-
-  std::vector<FieldInfo::TensorRank> field_ranks;
-
-  /**
-   * @brief Whether multigrid has been enabled.
-   */
-  bool has_multigrid = false;
-
-  /**
-   * @brief Global minimum level for multigrid.
-   */
-  unsigned int global_min_level;
 
   /**
    * @brief Multigrid information.
@@ -223,7 +202,8 @@ private:
   /**
    * @brief Utility for solution transfer to different mesh (for AMR).
    */
-  SolutionTransfer solution_transfer;
+  SolutionTransfer                                            solution_transfer;
+  std::array<SolutionTransfer, Numbers::max_saved_increments> old_solution_transfer;
 };
 
 PRISMS_PF_END_NAMESPACE

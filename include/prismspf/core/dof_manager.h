@@ -7,11 +7,10 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 
-#include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solve_group.h>
-#include <prismspf/core/triangulation_handler.h>
+#include <prismspf/core/triangulation_manager.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 #include <prismspf/core/variable_attributes.h>
@@ -19,6 +18,7 @@
 #include <prismspf/config.h>
 
 #include <map>
+#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -39,14 +39,14 @@ public:
    * @brief Initialize the DoFHandlers
    */
   void
-  init(const TriangulationHandler<dim>    &triangulation_handler,
+  init(const TriangulationManager<dim>    &triangulation_handler,
        const std::vector<FieldAttributes> &field_attributes);
 
   /**
    * @brief Reinitialize the DoFHandlers
    */
   void
-  reinit(const TriangulationHandler<dim>    &triangulation_handler,
+  reinit(const TriangulationManager<dim>    &triangulation_handler,
          const std::vector<FieldAttributes> &field_attributes);
 
   /**
