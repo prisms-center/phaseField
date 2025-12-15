@@ -1,34 +1,30 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-// #include <deal.II/base/exceptions.h>
-// #include <deal.II/base/mg_level_object.h>
-// #include <deal.II/distributed/solution_transfer.h>
-// #include <deal.II/lac/affine_constraints.h>
-// #include <deal.II/matrix_free/evaluation_flags.h>
+#include <deal.II/base/exceptions.h>
 
 #include <prismspf/core/group_solution_handler.h>
-// #include <prismspf/core/matrix_free_handler.h>
-// #include <prismspf/core/multigrid_info.h>
-// #include <prismspf/core/solution_handler.h> //
 #include <prismspf/core/timer.h>
-// #include <prismspf/core/type_enums.h>
-// #include <prismspf/core/types.h>
-// #include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
+
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
   const SolveGroup                   &_solve_group,
-  const std::vector<FieldAttributes> &_attributes_list,
-  const MGInfo<dim>                  &_mg_info)
-  : mg_info(&_mg_info)
+  const std::vector<FieldAttributes> &_attributes_list)
 {
   block_to_global_index.assign(_solve_group.field_indices.begin(),
                                _solve_group.field_indices.end());
+  global_to_block_index =
+    std::vector<Types::Index>(_attributes_list.size(), Numbers::invalid_index);
+  for (unsigned int i = 0; i < block_to_global_index.size(); ++i)
+    {
+      global_to_block_index[block_to_global_index[i]] = i;
+    }
 }
 
 template <unsigned int dim, typename number>
@@ -87,8 +83,15 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
     global_to_block_index[global_index]);
 }
 
+// TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
+// constraint ptrs change.
 template <unsigned int dim, typename number>
-void GroupSolutionHandler<dim, number>::init(/* args */)
+void
+GroupSolutionHandler<dim, number>::init(
+  const dealii::Mapping<dim>                                   &mapping,
+  const DofManager<dim>                                        &dof_manager,
+  const std::vector<const dealii::AffineConstraints<number> *> &constraints,
+  const dealii::Quadrature<dim>                                &quad)
 {
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_group.id << "...\n"
@@ -97,11 +100,17 @@ void GroupSolutionHandler<dim, number>::init(/* args */)
 
   // Initialize matrixfree objects
   // TODO
-  for (auto &solution_level : solution_levels)
+  for (unsigned int relative_level = 0; relative_level < solution_levels.size();
+       ++relative_level)
     {
+      SolutionLevel &solution_level = solution_levels[relative_level];
       dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
         solution_level.matrix_free;
-      matrix_free.reinit(/* args */);
+      matrix_free.reinit(mapping,
+                         dof_manager.get_dof_handlers(solve_group.field_indices,
+                                                      relative_level),
+                         constraints,
+                         quad);
     }
   // Initialize solution vectors
   reinit();
@@ -145,201 +154,124 @@ GroupSolutionHandler<dim, number>::reinit()
     }
 }
 
+// TODO (fractalsbyx): Check if this is necessary to repeat. Check if dof_handler ptrs
+// change.
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::reinit_solution_transfer(
-  MatrixFreeContainer<dim, number> &matrix_free_container)
+GroupSolutionHandler<dim, number>::init_solution_transfer()
 {
-  // Create all entries
-  for (const auto &[index, variable] : *attributes_list)
+  const dealii::DoFHandler<dim> &dof_handler =
+    solution_levels[0].matrix_free.get_dof_handler();
+  solution_transfer = SolutionTransfer(dof_handler);
+  for (unsigned int i = 0; i < oldest_saved; ++i)
     {
-      // Add the variable if it doesn't already exist
-      if (!solution_transfer_set.contains(std::make_pair(index, DependencyType::Normal)))
-        {
-          solution_transfer_set[std::make_pair(index, DependencyType::Normal)] =
-            std::make_unique<SolutionTransfer>(
-              matrix_free_container.get_matrix_free()->get_dof_handler(index));
-        }
-
-      // Add dependencies if they don't exist
-      Types::Index field_index = 0;
-      for (const auto &dependency_set : variable.get_eval_flag_set_rhs())
-        {
-          Types::Index dep_index = 0;
-          for (const auto &value : dependency_set)
-            {
-              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
-                {
-                  dep_index++;
-                  continue;
-                }
-
-              solution_transfer_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<SolutionTransfer>(
-                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
-
-              dep_index++;
-            }
-
-          field_index++;
-        }
-      field_index = 0;
-      for (const auto &dependency_set : variable.get_eval_flag_set_lhs())
-        {
-          Types::Index dep_index = 0;
-          for (const auto &value : dependency_set)
-            {
-              if (value == dealii::EvaluationFlags::EvaluationFlags::nothing)
-                {
-                  dep_index++;
-                  continue;
-                }
-
-              solution_transfer_set.try_emplace(
-                std::make_pair(field_index, static_cast<DependencyType>(dep_index)),
-                std::make_unique<SolutionTransfer>(
-                  matrix_free_container.get_matrix_free()->get_dof_handler(field_index)));
-
-              dep_index++;
-            }
-
-          field_index++;
-        }
+      old_solution_transfer[i] = SolutionTransfer(dof_handler);
     }
 }
 
+template <unsigned int dim, typename number>
+void
+GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
+{
+  solution_transfer.prepare_for_coarsening_and_refinement(solution_levels[0].solutions);
+  for (unsigned int i = 0; i < oldest_saved; ++i)
+    {
+      old_solution_transfer[i].prepare_for_coarsening_and_refinement(
+        solution_levels[0].old_solutions[i]);
+    }
+}
+
+template <unsigned int dim, typename number>
+void
+GroupSolutionHandler<dim, number>::execute_solution_transfer()
+{
+  solution_transfer.interpolate(solution_levels[0].solutions);
+  for (unsigned int i = 0; i < oldest_saved; ++i)
+    {
+      old_solution_transfer[i].interpolate(solution_levels[0].old_solutions[i]);
+    }
+}
+
+// TODO (fractalsbyx): Check if this is necessary for all solutions
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::update_ghosts() const
 {
-  for (const auto &[pair, solution] : solution_set)
+  for (auto &solution_level : solution_levels)
     {
-      solution->update_ghost_values();
-    }
-  for (const auto &index_vector : mg_solution_set)
-    {
-      for (const auto &solution : index_vector)
+      solution_level.solutions.update_ghost_values();
+      solution_level.new_solutions.update_ghost_values();
+      for (unsigned int i = 0; i < oldest_saved; ++i)
         {
-          solution->update_ghost_values();
+          solution_level.old_solutions[i].update_ghost_values();
         }
     }
 }
 
+// TODO (fractalsbyx): Check if this is necessary for all solutions
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::zero_out_ghosts() const
 {
-  for (const auto &[index, solution] : new_solution_set)
+  for (auto &solution_level : solution_levels)
     {
-      solution->zero_out_ghost_values();
+      solution_level.solutions.zero_out_ghost_values();
+      solution_level.new_solutions.zero_out_ghost_values();
+      for (unsigned int i = 0; i < oldest_saved; ++i)
+        {
+          solution_level.old_solutions[i].zero_out_ghost_values();
+        }
     }
 }
 
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_constraints(
-  unsigned int                             index,
-  const dealii::AffineConstraints<number> &constraints)
+  const dealii::AffineConstraints<number> &constraints,
+  unsigned int                             global_index,
+  unsigned int                             relative_level)
 {
-  for (auto &[pair, vector] : solution_set)
-    {
-      if (pair.first != index)
-        {
-          continue;
-        }
-      constraints.distribute(*vector);
-    }
+  constraints.distribute(get_solution_vector(global_index, relative_level));
 }
 
+// TODO (fractalsbyx): Replace into initial_conditions module
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_initial_condition_for_old_fields()
 {
-  for (auto &[pair, vector] : solution_set)
+  for (auto &solution_level : solution_levels)
     {
-      if (pair.second == DependencyType::Normal)
+      BlockVector &solutions = solution_level.solutions;
+      std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
+        solution_level.old_solutions;
+
+      for (unsigned int i = 0; i < oldest_saved; ++i)
         {
-          continue;
+          old_solutions[i] = solutions;
         }
-      *(get_solution_vector(pair.first, pair.second)) =
-        *(get_solution_vector(pair.first, DependencyType::Normal));
     }
 }
 
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
-                                          Types::Index   solve_block,
-                                          Types::Index   variable_index)
+GroupSolutionHandler<dim, number>::update()
 {
-  // Helper function to swap vectors for all dependency types
-  auto swap_all_dependency_vectors = [this](Types::Index index, auto &new_vector)
-  {
-    // Always swap the Normal dependency
-    new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::Normal))));
-
-    // Swap old dependency types if they exist
-    const std::array<DependencyType, 4> old_types = {
-      {DependencyType::OldOne,
-       DependencyType::OldTwo,
-       DependencyType::OldThree,
-       DependencyType::OldFour}
-    };
-
-    for (const auto &dep_type : old_types)
-      {
-        if (solution_set.contains(std::make_pair(index, dep_type)))
-          {
-            new_vector->swap(*(solution_set.at(std::make_pair(index, dep_type))));
-          }
-      }
-  };
-
-  // Loop through the solutions and swap them
-  for (auto &[index, new_vector] : new_solution_set)
+  // bubble-swap method. bubble the discarded solution up to 'new_solution'
+  SolutionLevel &solution_level = solution_levels[0];
+  for (int age = oldest_saved - 1; age >= 0; --age)
     {
-      const auto &attr_field_type = attributes_list->at(index).get_field_solve_type();
-
-      // Skip if the solve block is wrong
-      if (attributes_list->at(index).get_solve_block() != solve_block)
+      if (age > 0)
         {
-          continue;
+          solution_level.old_solutions[age].swap(solution_level.old_solutions[age - 1]);
         }
-
-      // Skip if field solve types don't match
-      if (attr_field_type != field_solve_type)
+      else
         {
-          continue;
-        }
-
-      switch (field_solve_type)
-        {
-          case FieldSolveType::ExplicitConstant:
-            // For ExplicitConstant we don't do anything
-            break;
-          case FieldSolveType::Explicit:
-          case FieldSolveType::ExplicitPostprocess:
-            // For ExplicitPostprocess we only swap Normal, but the helper function will
-            // do that first and ignore the rest since they should exist
-            swap_all_dependency_vectors(index, new_vector);
-            break;
-          case FieldSolveType::NonexplicitLinear:
-          case FieldSolveType::NonexplicitAuxiliary:
-          case FieldSolveType::NonexplicitSelfnonlinear:
-          case FieldSolveType::NonexplicitCononlinear:
-            // For Nonexplicit types we swap all dependency types if the index matches
-            if (variable_index == index)
-              {
-                swap_all_dependency_vectors(index, new_vector);
-              }
-            break;
-          default:
-            AssertThrow(false, dealii::ExcMessage("Invalid FieldSolveType"));
+          solution_level.old_solutions[age].swap(solution_level.solutions);
         }
     }
+  solution_level.solutions.swap(solution_level.new_solutions);
 }
 
-#include "core/solution_handler.inst"
+// #include "core/group_solution_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

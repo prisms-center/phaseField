@@ -2,21 +2,10 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/dofs/dof_handler.h>
-#include <deal.II/fe/fe_system.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/field_attributes.h>
-#include <prismspf/core/solve_group.h>
-#include <prismspf/core/triangulation_handler.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/core/types.h>
-
-#include <prismspf/config.h>
-
-#include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -45,7 +34,7 @@ DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes
 
 template <unsigned int dim>
 void
-DofManager<dim>::init(const TriangulationHandler<dim>    &triangulation_handler,
+DofManager<dim>::init(const TriangulationManager<dim>    &triangulation_handler,
                       const std::vector<FieldAttributes> &field_attributes)
 {
   unsigned int n_dofs         = 0;
@@ -74,7 +63,7 @@ DofManager<dim>::init(const TriangulationHandler<dim>    &triangulation_handler,
 
 template <unsigned int dim>
 void
-DofManager<dim>::reinit(const TriangulationHandler<dim>    &triangulation_handler,
+DofManager<dim>::reinit(const TriangulationManager<dim>    &triangulation_handler,
                         const std::vector<FieldAttributes> &field_attributes)
 {
   init(triangulation_handler, field_attributes);
