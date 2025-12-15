@@ -8,7 +8,6 @@
 #include <deal.II/fe/fe_system.h>
 
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/triangulation_manager.h>
 #include <prismspf/core/type_enums.h>

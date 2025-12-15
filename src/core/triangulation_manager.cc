@@ -16,9 +16,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/triangulation_manager.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/config.h>
 
 #include <fstream>
