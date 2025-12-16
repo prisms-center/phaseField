@@ -80,11 +80,6 @@ public:
 
 private:
   /**
-   * @brief User-inputs.
-   */
-  const UserInputParameters<dim> *user_inputs;
-
-  /**
    * @brief Collection of the triangulation DoFs. The number of DoFHandlers should be
    * equal to or less than the number of fields. Technically, there's a small
    * optimization we can use when multiple fields have the same constraints and
