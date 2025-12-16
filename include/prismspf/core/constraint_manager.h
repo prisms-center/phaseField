@@ -8,6 +8,7 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
 
+#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solve_group.h>
@@ -36,6 +37,7 @@ public:
   ConstraintManager(
     const std::vector<FieldAttributes>                            &field_attributes,
     const std::set<SolveGroup>                                    &solve_groups,
+    const DofManager<dim>                                         &_dof_manager,
     const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
 
   /**
@@ -55,8 +57,7 @@ public:
    * @brief Make constraints based on the inputs of the constructor.
    */
   void
-  make_constraints(const dealii::Mapping<dim>                         &mapping,
-                   const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
+  reinit(const dealii::Mapping<dim> &mapping);
 
   /**
    * @brief Update time-dependent constraints.
@@ -71,8 +72,33 @@ private:
   /**
    * @brief Create a component mask.
    */
-  [[nodiscard]] dealii::ComponentMask
-  create_component_mask(unsigned int component, bool is_vector_field) const;
+  static const std::array<dealii::ComponentMask, dim> vector_component_mask;
+  static const dealii::ComponentMask                  scalar_empty_mask;
+
+  /**
+   * @brief Add boundary conditions to a single constraint.
+   */
+  void
+  make_bc_constraints(dealii::AffineConstraints<number>               &constraint,
+                      const dealii::Mapping<dim>                      &mapping,
+                      const dealii::DoFHandler<dim>                   &dof_handler,
+                      const std::map<unsigned int, BoundaryCondition> &boundary_condition,
+                      FieldInfo::TensorRank                            tensor_rank,
+                      bool for_change_term = false);
+
+  /**
+   * @brief Apply constraints for common boundary conditions.
+   */
+  void
+  make_one_boundary_constraint(dealii::AffineConstraints<number> &_constraints,
+                               unsigned int                       boundary_id,
+                               unsigned int                       component,
+                               BoundaryCondition::Type            boundary_type,
+                               number                             dirichlet_value,
+                               const dealii::Mapping<dim>        &mapping,
+                               const dealii::DoFHandler<dim>     &dof_handler,
+                               FieldInfo::TensorRank              tensor_rank,
+                               bool for_change_term = false) const;
 
   /**
    * @brief Apply natural constraints.
@@ -115,48 +141,25 @@ private:
                             const dealii::ComponentMask       &mask) const;
 
   /**
-   * @brief Make the constraint for a single index.
-   */
-  void
-  make_constraint(const dealii::Mapping<dim>    &mapping,
-                  const dealii::DoFHandler<dim> &dof_handler,
-                  unsigned int                   index);
-
-  /**
    * @brief Set the dirichlet constraint for the pinned point.
    */
   void
-  set_pinned_point(const dealii::DoFHandler<dim>     &dof_handler,
-                   dealii::AffineConstraints<number> &_constraints,
-                   unsigned int                       index,
+  set_pinned_point(dealii::AffineConstraints<number> &constraint,
+                   const dealii::Point<dim>          &target_point,
+                   const std::array<number, dim>     &value,
+                   const dealii::DoFHandler<dim>     &dof_handler,
+                   FieldInfo::TensorRank              tensor_rank,
                    bool                               is_change_term = false) const;
-
-  /**
-   * @brief Clear, reinitialize and make hanging node constraints
-   */
-  void
-  apply_generic_constraints(const dealii::DoFHandler<dim>     &dof_handler,
-                            dealii::AffineConstraints<number> &_constraints) const;
-
-  /**
-   * @brief Apply constraints for common boundary conditions.
-   */
-  template <int spacedim>
-  void
-  apply_constraints(const dealii::Mapping<dim>        &mapping,
-                    const dealii::DoFHandler<dim>     &dof_handler,
-                    dealii::AffineConstraints<number> &_constraints,
-                    const BoundaryCondition           &boundary_condition,
-                    BoundaryCondition::Type            boundary_type,
-                    unsigned int                       boundary_id,
-                    unsigned int                       component,
-                    unsigned int                       index,
-                    bool                               is_change_term = false) const;
 
   /**
    * @brief User-inputs.
    */
   const UserInputParameters<dim> *user_inputs;
+
+  /**
+   * @brief Dof manager pointer.
+   */
+  std::shared_ptr<const DofManager<dim>> dof_manager;
 
   /**
    * @brief PDE operator number.
@@ -178,6 +181,12 @@ private:
    * by relative mg level.
    */
   std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<float>>>> constraints;
+  /**
+   * @brief Constraints for Newton-Change solutions. Outer vector is indexed by field
+   * index. Inner vector is indexed by relative mg level.
+   */
+  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<float>>>>
+    change_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

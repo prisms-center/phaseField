@@ -48,7 +48,8 @@ DofManager<dim>::init(const TriangulationManager<dim>    &triangulation_handler,
           std::shared_ptr<dealii::DoFHandler<dim>> &dof_handler =
             dof_handlers[field_index][relative_level];
           dof_handler->reinit(triangulation_handler.get_triangulation(relative_level));
-          dof_handler->distribute_dofs(fe_systems.at(field_attributes[field_index]));
+          dof_handler->distribute_dofs(
+            fe_systems.at(field_attributes[field_index].field_type));
           n_dofs_with_mg += dof_handler->n_dofs();
           n_dofs += bool(relative_level) ? 0 : dof_handler->n_dofs();
         }
