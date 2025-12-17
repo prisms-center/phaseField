@@ -9,6 +9,7 @@
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solve_group.h>
@@ -94,11 +95,12 @@ public:
   /**
    * @brief Initialize the solution set.
    */
+  template <unsigned int degree>
   void
-  init(const dealii::Mapping<dim>                                   &mapping,
-       const DofManager<dim>                                        &dof_manager,
-       const std::vector<const dealii::AffineConstraints<number> *> &constraints,
-       const dealii::Quadrature<dim>                                &quad);
+  init(const dealii::Mapping<dim>                   &mapping,
+       const DofManager<dim>                        &dof_manager,
+       const ConstraintManager<dim, degree, number> &constraint_manager,
+       const dealii::Quadrature<dim>                &quad);
 
   /**
    * @brief Reinitialize the solution set.
@@ -110,21 +112,19 @@ public:
    * @brief Update the ghost values.
    */
   void
-  update_ghosts() const;
+  update_ghosts(unsigned int relative_level = 0) const;
 
   /**
    * @brief Zero out the ghost values.
    */
   void
-  zero_out_ghosts() const;
+  zero_out_ghosts(unsigned int relative_level = 0) const;
 
   /**
    * @brief Apply the given constraints to a solution vector of a given field index.
    */
   void
-  apply_constraints(const dealii::AffineConstraints<number> &constraints,
-                    unsigned int                             global_index,
-                    unsigned int                             relative_level = 0);
+  apply_constraints(unsigned int relative_level = 0);
 
   /**
    * @brief Apply intial condition to the old fields. For now, this simply copies the
@@ -137,7 +137,7 @@ public:
    * @brief Update the `solutions` to the `new_solution` and propagate the old solutions.
    */
   void
-  update();
+  update(unsigned int relative_level = 0);
 
   /**
    * @brief Reinit the solution transfer objections.

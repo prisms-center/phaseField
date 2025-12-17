@@ -7,6 +7,8 @@
 
 #include <prismspf/solvers/group_solver_base.h>
 
+#include "prismspf/core/group_solution_handler.h"
+
 #include <map>
 #include <ostream>
 
@@ -26,30 +28,27 @@ void
 GroupSolverBase<dim, degree, number>::init()
 {
   // Initialize vectors
+  solutions =
+    GroupSolutionHandler<dim, number>(solve_group, solver_context->field_attributes);
+  solutions.init(solver_context->mapping,
+                 solver_context->dof_manager,
+                 solver_context->constraint_manager,
+                 solver_context->quadrature);
 
   // Set the initial condition
   set_initial_condition();
 
-  // Apply constraints. This part is neccessary so they are taken into account for
-  // adaptive meshing
-  for (const auto &[index, variable] : subset_attributes)
-    {
-      get_constraint_handler().get_constraint(index).distribute(
-        *(get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
-    }
+  // Apply constraints.
+  solutions.apply_constraints();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 GroupSolverBase<dim, degree, number>::reinit()
 {
-  // Apply constraints. This part is neccessary so they are taken into account for
-  // adaptive meshing
-  for (const auto &[index, variable] : subset_attributes)
-    {
-      get_constraint_handler().get_constraint(index).distribute(
-        *(get_solution_handler().get_solution_vector(index, DependencyType::Normal)));
-    }
+  // Apply constraints.
+  solutions.reinit();
+  solutions.apply_constraints();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -110,6 +109,6 @@ GroupSolverBase<dim, degree, number>::set_initial_condition()
     }
 }
 
-#include "solvers/solver_base.inst"
+// #include "solvers/group_solver_base.inst"
 
 PRISMS_PF_END_NAMESPACE

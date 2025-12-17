@@ -86,12 +86,13 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
 // TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
 // constraint ptrs change.
 template <unsigned int dim, typename number>
+template <unsigned int degree>
 void
 GroupSolutionHandler<dim, number>::init(
-  const dealii::Mapping<dim>                                   &mapping,
-  const DofManager<dim>                                        &dof_manager,
-  const std::vector<const dealii::AffineConstraints<number> *> &constraints,
-  const dealii::Quadrature<dim>                                &quad)
+  const dealii::Mapping<dim>                   &mapping,
+  const DofManager<dim>                        &dof_manager,
+  const ConstraintManager<dim, degree, number> &constraint_manager,
+  const dealii::Quadrature<dim>                &quad)
 {
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_group.id << "...\n"
@@ -106,11 +107,11 @@ GroupSolutionHandler<dim, number>::init(
       SolutionLevel &solution_level = solution_levels[relative_level];
       dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
         solution_level.matrix_free;
-      matrix_free.reinit(mapping,
-                         dof_manager.get_dof_handlers(solve_group.field_indices,
-                                                      relative_level),
-                         constraints,
-                         quad);
+      matrix_free.reinit(
+        mapping,
+        dof_manager.get_dof_handlers(solve_group.field_indices, relative_level),
+        constraint_manager.get_constraints(solve_group.field_indices, relative_level),
+        quad);
     }
   // Initialize solution vectors
   reinit();
@@ -135,6 +136,7 @@ GroupSolutionHandler<dim, number>::reinit()
       // way
       std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
         partitioners;
+      partitioners.reserve(solve_group.field_indices.size());
       for (unsigned int block_index = 0; block_index < solve_group.field_indices.size();
            ++block_index)
         {
@@ -195,43 +197,44 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
 // TODO (fractalsbyx): Check if this is necessary for all solutions
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::update_ghosts() const
+GroupSolutionHandler<dim, number>::update_ghosts(unsigned int relative_level) const
 {
-  for (auto &solution_level : solution_levels)
+  solution_levels[relative_level].solutions.update_ghost_values();
+  solution_levels[relative_level].new_solutions.update_ghost_values();
+  for (unsigned int i = 0; i < oldest_saved; ++i)
     {
-      solution_level.solutions.update_ghost_values();
-      solution_level.new_solutions.update_ghost_values();
-      for (unsigned int i = 0; i < oldest_saved; ++i)
-        {
-          solution_level.old_solutions[i].update_ghost_values();
-        }
+      solution_levels[relative_level].old_solutions[i].update_ghost_values();
     }
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::zero_out_ghosts() const
+GroupSolutionHandler<dim, number>::zero_out_ghosts(unsigned int relative_level) const
 {
-  for (auto &solution_level : solution_levels)
+  solution_levels[relative_level].solutions.zero_out_ghost_values();
+  solution_levels[relative_level].new_solutions.zero_out_ghost_values();
+  for (unsigned int i = 0; i < oldest_saved; ++i)
     {
-      solution_level.solutions.zero_out_ghost_values();
-      solution_level.new_solutions.zero_out_ghost_values();
-      for (unsigned int i = 0; i < oldest_saved; ++i)
-        {
-          solution_level.old_solutions[i].zero_out_ghost_values();
-        }
+      solution_levels[relative_level].old_solutions[i].zero_out_ghost_values();
     }
 }
 
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::apply_constraints(
-  const dealii::AffineConstraints<number> &constraints,
-  unsigned int                             global_index,
-  unsigned int                             relative_level)
+GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level)
 {
-  constraints.distribute(get_solution_vector(global_index, relative_level));
+  BlockVector &solutions     = solution_levels[relative_level].solutions;
+  BlockVector &new_solutions = solution_levels[relative_level].new_solutions;
+  dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> matrix_free =
+    solution_levels[relative_level].matrix_free;
+
+  for (unsigned int i = 0; i < matrix_free.get_affine_constraints().size(); ++i)
+    {
+      matrix_free.get_affine_constraints()[i].distribute(solutions.block(i));
+      matrix_free.get_affine_constraints()[i].distribute(new_solutions.block(i));
+      // TODO: Check if this needs to be done to both or just one of the above
+    }
 }
 
 // TODO (fractalsbyx): Replace into initial_conditions module
@@ -254,10 +257,10 @@ GroupSolutionHandler<dim, number>::apply_initial_condition_for_old_fields()
 
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::update()
+GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
   // bubble-swap method. bubble the discarded solution up to 'new_solution'
-  SolutionLevel &solution_level = solution_levels[0];
+  SolutionLevel &solution_level = solution_levels[relative_level];
   for (int age = oldest_saved - 1; age >= 0; --age)
     {
       if (age > 0)
