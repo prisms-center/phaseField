@@ -14,7 +14,6 @@
 
 #include <vector>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -30,12 +29,14 @@ ExplicitSolver<dim, degree, number>::solve_level(unsigned int relative_level)
     solutions.get_new_solution_full_vector(relative_level),
     solutions.get_solution_full_vector(relative_level));
 
-  solutions.solutions[0].matrix_free->cell_loop(
-    &MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update,
-    solver_context->matrix_free_operator,
-    solutions.get_new_solution_full_vector(relative_level),
-    solutions.get_solution_full_vector(relative_level),
-    true);
+  solutions.get_matrix_free(relative_level)
+    .cell_loop(&MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update,
+               solver_context->matrix_free_operator,
+               solutions.get_new_solution_full_vector(relative_level),
+               solutions.get_solution_full_vector(relative_level), // unused if we're
+                                                                   // accessing solutions
+                                                                   // in a roundabout way
+               true);
 
   // TODO: if it's used for all solvers, define invm in solution handler. originally
   // this was done as a loop over fields Scale the update by the respective
