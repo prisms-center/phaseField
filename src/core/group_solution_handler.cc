@@ -83,6 +83,14 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
     global_to_block_index[global_index]);
 }
 
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
+  -> dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
+{
+  return solution_levels[relative_level].matrix_free;
+}
+
 // TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
 // constraint ptrs change.
 template <unsigned int dim, typename number>
