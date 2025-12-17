@@ -19,7 +19,22 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/types.h"
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+// TODO (fractalsbyx): The following snippet is from dealii. Using this (by
+// pre-constructing the needed maps and functions) may be cleaner than how dirichlet are
+// currently done.
+/* template <int dim, int spacedim, typename number>
+   void
+  interpolate_boundary_values(
+    const Mapping<dim, spacedim>    &mapping,
+    const DoFHandler<dim, spacedim> &dof,
+    const std::map<types::boundary_id, const Function<spacedim, number> *>
+                              &function_map,
+    AffineConstraints<number> &constraints,
+    const ComponentMask       &component_mask = {}); */
 
 // TODO (fractalsbyx): This class seems to parallel DofManager quite a bit. Consider
 // merging them?
@@ -34,11 +49,10 @@ public:
   /**
    * @brief Constructor.
    */
-  ConstraintManager(
-    const std::vector<FieldAttributes>                            &field_attributes,
-    const std::set<SolveGroup>                                    &solve_groups,
-    const DofManager<dim>                                         &_dof_manager,
-    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
+  ConstraintManager(const std::vector<FieldAttributes>     &field_attributes,
+                    const std::set<SolveGroup>             &solve_groups,
+                    const DofManager<dim>                  &_dof_manager,
+                    const PDEOperator<dim, degree, number> &_pde_operator);
 
   /**
    * @brief Getter function for the constraints.
@@ -52,6 +66,19 @@ public:
    */
   [[nodiscard]] const dealii::AffineConstraints<number> &
   get_constraint(Types::Index index, unsigned int relative_level = 0) const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
+  get_change_constraints(const std::set<unsigned int> &field_indices,
+                         unsigned int                  relative_level = 0) const;
+
+  /**
+   * @brief Getter function for the constraint of an index (constant reference).
+   */
+  [[nodiscard]] const dealii::AffineConstraints<number> &
+  get_change_constraint(Types::Index index, unsigned int relative_level = 0) const;
 
   /**
    * @brief Make constraints based on the inputs of the constructor.
@@ -84,6 +111,7 @@ private:
                       const dealii::DoFHandler<dim>                   &dof_handler,
                       const std::map<unsigned int, BoundaryCondition> &boundary_condition,
                       FieldInfo::TensorRank                            tensor_rank,
+                      Types::Index                                     field_index,
                       bool for_change_term = false);
 
   /**
@@ -98,6 +126,7 @@ private:
                                const dealii::Mapping<dim>        &mapping,
                                const dealii::DoFHandler<dim>     &dof_handler,
                                FieldInfo::TensorRank              tensor_rank,
+                               Types::Index                       field_index,
                                bool for_change_term = false) const;
 
   /**
@@ -110,25 +139,26 @@ private:
    * @brief make dirichlet constraints.
    */
   void
-  make_uniform_dirichlet_constraints(const dealii::Mapping<dim>        &mapping,
+  make_uniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
+                                     const dealii::Mapping<dim>        &mapping,
                                      const dealii::DoFHandler<dim>     &dof_handler,
                                      const unsigned int                &boundary_id,
                                      const bool                        &is_vector_field,
                                      const number                      &value,
-                                     dealii::AffineConstraints<number> &_constraints,
-                                     const dealii::ComponentMask       &mask) const;
+
+                                     const dealii::ComponentMask &mask) const;
 
   /**
    * @brief make nonuniform dirichlet constraints.
    */
   void
-  make_nonuniform_dirichlet_constraints(const dealii::Mapping<dim>    &mapping,
-                                        const dealii::DoFHandler<dim> &dof_handler,
-                                        const unsigned int            &boundary_id,
-                                        const unsigned int            &index,
-                                        const bool                    &is_vector_field,
-                                        dealii::AffineConstraints<number> &_constraints,
-                                        const dealii::ComponentMask       &mask,
+  make_nonuniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
+                                        const dealii::Mapping<dim>        &mapping,
+                                        const dealii::DoFHandler<dim>     &dof_handler,
+                                        const unsigned int                &boundary_id,
+                                        const unsigned int                &field_index,
+                                        const bool                  &is_vector_field,
+                                        const dealii::ComponentMask &mask,
                                         bool is_change_term = false) const;
 
   /**
