@@ -158,7 +158,7 @@ public:
     return *solver_context;
   }
 
-private:
+protected:
   /**
    * @brief List of field attributes available.
    */
