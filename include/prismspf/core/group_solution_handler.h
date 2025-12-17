@@ -93,6 +93,12 @@ public:
   get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
 
   /**
+   * @brief Get the matrix_free object at a level.
+   */
+  [[nodiscard]] dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
+  get_matrix_free(unsigned int relative_level = 0);
+
+  /**
    * @brief Initialize the solution set.
    */
   template <unsigned int degree>
