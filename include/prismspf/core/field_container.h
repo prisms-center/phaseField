@@ -5,6 +5,7 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
+#include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
@@ -24,6 +25,7 @@
 #include <memory>
 #include <type_traits>
 #include <variant>
+#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -64,6 +66,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class FieldContainer
 {
 public:
+  using TensorRank = FieldInfo::TensorRank;
   /**
    * @brief Typedef for the basic vector that apply our operations to.
    */
@@ -77,779 +80,68 @@ public:
   using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
   using ScalarGradient = VectorValue;
   using VectorGradient = dealii::Tensor<2, dim, ScalarValue>;
-
-  /**
-   * @brief Constructor.
-   */
-  FieldContainer(
-    const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const SolveGroup                                                       &_solve_group,
-    const ElementVolume<dim, degree, number> &_element_volume,
-    const std::vector<Types::Index>          &_global_to_local_solution,
-    EquationType                              _equation_side);
-
-  /**
-   * @brief Return the value of the specified field.
-   *
-   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
-   * ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <FieldInfo::TensorRank Rank, >
-  [[nodiscard]] auto
-  get_value(Types::Index global_variable_index) const
-    -> std::conditional_t<Rank == FieldInfo::TensorRank::Scalar, ScalarValue, VectorValue>
-  {}
-
-  /**
-   * @brief Return the gradient of the specified field.
-   *
-   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
-   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_gradient(Types::Index   global_variable_index,
-               DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>> ||
-           std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::gradients);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Wrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-          {
-            dealii::Tensor<2, dim, ScalarValue> wrapper;
-            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
-                                       static_cast<Types::Index>(dependency_type)]
-                           ->get_gradient(q_point);
-            return wrapper;
-          }
-        else
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->get_gradient(q_point);
-          }
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_gradient(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match scalar FEEvaluation"));
-                    return T {};
-                  }
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_gradient(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the hessian of the specified field.
-   *
-   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
-   * ScalarValue>` or `dealii::Tensor<3, dim, ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_hessian(Types::Index   global_variable_index,
-              DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>> ||
-           std::is_same_v<T, dealii::Tensor<3, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::hessians);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Wrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<3, dim, ScalarValue>>)
-          {
-            dealii::Tensor<3, dim, ScalarValue> wrapper;
-            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
-                                       static_cast<Types::Index>(dependency_type)]
-                           ->get_hessian(q_point);
-            return wrapper;
-          }
-        else
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->get_hessian(q_point);
-          }
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_hessian(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match scalar FEEvaluation"));
-                    return T {};
-                  }
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<3, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_hessian(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the diagonal of the hessian of the specified field.
-   *
-   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
-   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_hessian_diagonal(Types::Index   global_variable_index,
-                       DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>> ||
-           std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::hessians);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Wrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-          {
-            dealii::Tensor<2, dim, ScalarValue> wrapper;
-            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
-                                       static_cast<Types::Index>(dependency_type)]
-                           ->get_hessian_diagonal(q_point);
-            return wrapper;
-          }
-        else
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->get_hessian_diagonal(q_point);
-          }
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_hessian_diagonal(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match scalar FEEvaluation"));
-                    return T {};
-                  }
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_hessian_diagonal(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the laplacian of the specified field.
-   *
-   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
-   * ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_laplacian(Types::Index   global_variable_index,
-                DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, ScalarValue> ||
-           std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::hessians);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Wrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-          {
-            dealii::Tensor<1, dim, ScalarValue> wrapper;
-            wrapper[0] = feeval_vector[(global_variable_index * max_dependency_types) +
-                                       static_cast<Types::Index>(dependency_type)]
-                           ->get_laplacian(q_point);
-            return wrapper;
-          }
-        else
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->get_laplacian(q_point);
-          }
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, ScalarValue>)
-                  {
-                    return feeval_ptr->get_laplacian(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match scalar FEEvaluation"));
-                    return T {};
-                  }
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_laplacian(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the divergence of the specified field.
-   *
-   * @tparam T the return type. Must be `ScalarValue`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_divergence(Types::Index   global_variable_index,
-                 DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, ScalarValue>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::gradients);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Typically, we wrap the vector value for consistency with higher space
-        // dimensions; however, the divergence of a vector field (n_components = dim),
-        // always returns a ScalarValue.
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_divergence(q_point);
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "You cannot take the divergence of scalar fields."));
-                return T {};
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, ScalarValue>)
-                  {
-                    return feeval_ptr->get_divergence(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the symmetric gradient of the specified field.
-   *
-   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
-   * ScalarValue>` or `dealii::SymmetricTensor<2, dim, ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_symmetric_gradient(Types::Index   global_variable_index,
-                         DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>> ||
-           std::is_same_v<T, dealii::SymmetricTensor<2, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::gradients);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Typically, we wrap the vector value for consistency with higher space
-        // dimensions; however, the symmetric gradient of a vector field (n_components =
-        // dim), always returns a dealii::SymmetricTensor<2, dim, ScalarValue>.
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->get_symmetric_gradient(q_point);
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                Assert(false,
-                       dealii::ExcMessage(
-                         "You cannot take the symmetric gradient of scalar fields."));
-                return T {};
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>> ||
-                              std::is_same_v<
-                                T,
-                                dealii::SymmetricTensor<2, dim, ScalarValue>>)
-                  {
-                    return feeval_ptr->get_symmetric_gradient(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Return the curl of the specified field.
-   *
-   * Note that this is dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1,
-   * dim, dealii::VectorizedArray<number>> type for 3D.
-   *
-   * @tparam T the return type. Must be either a `dealii::Tensor<1, 1,
-   * ScalarValue>` or `dealii::Tensor<1, dim, ScalarValue>`.
-   * @param global_variable_index The global index of the variable to access.
-   * @param dependency_type The dependency type of the variable to access.
-   */
-  template <typename T>
-  [[nodiscard]] T
-  get_vector_curl(Types::Index   global_variable_index,
-                  DependencyType dependency_type = DependencyType::Normal) const
-  requires(std::is_same_v<T, dealii::Tensor<1, 1, ScalarValue>> ||
-           std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have evaluation flags and that the feevaluation
-    // exists
-#ifdef DEBUG
-    access_valid(global_variable_index,
-                 dependency_type,
-                 dealii::EvaluationFlags::EvaluationFlags::gradients);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        Assert(false, dealii::ExcMessage("Curl is nonsensical for 1D."));
-        return T {};
-      }
-    else
-      {
-        return std::visit<T>(
-          [&](auto &feeval_ptr) -> T
-          {
-            using FEEvalType = std::decay_t<decltype(*feeval_ptr)>;
-
-            if constexpr (std::is_same_v<FEEvalType, ScalarFEEvaluation>)
-              {
-                Assert(false,
-                       dealii::ExcMessage("You cannot take the curl of scalar fields."));
-                return T {};
-              }
-            else if constexpr (std::is_same_v<FEEvalType, VectorFEEvaluation>)
-              {
-                if constexpr (std::is_same_v<
-                                T,
-                                dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>>)
-                  {
-                    return feeval_ptr->get_curl(q_point);
-                  }
-                else
-                  {
-                    Assert(false,
-                           dealii::ExcMessage(
-                             "Requested type does not match vector FEEvaluation"));
-                    return T {};
-                  }
-              }
-          },
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Set the residual value of the specified scalar/vector field.
-   */
-  template <typename T>
-  void
-  set_value_term(Types::Index   global_variable_index,
-                 const T       &val,
-                 DependencyType dependency_type = DependencyType::Normal)
-  requires(std::is_same_v<T, ScalarValue> ||
-           std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have a valid submission and that the
-    // feevaluation exists
-#ifdef DEBUG
-    submission_valid(dependency_type);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Unwrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->submit_value(val[0], q_point);
-          }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->submit_value(val, q_point);
-      }
-    else
-      {
-        std::visit<void>(
-          Overload {
-            [&](std::unique_ptr<ScalarFEEvaluation> &feeval_ptr)
-            {
-              if constexpr (std::is_same_v<T, ScalarValue>)
-                {
-                  feeval_ptr->submit_value(val, q_point);
-                }
-              else
-                {
-                  Assert(false,
-                         dealii::ExcMessage(
-                           "Submitted type does not match the one expected for a "
-                           "scalar FEEvaluation object."));
-                }
-            },
-            [&](std::unique_ptr<VectorFEEvaluation> &feeval_ptr)
-            {
-              if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-                {
-                  feeval_ptr->submit_value(val, q_point);
-                }
-              else
-                {
-                  Assert(false,
-                         dealii::ExcMessage(
-                           "Submitted type does not match the one expected for a "
-                           "vector FEEvaluation object."));
-                }
-            }},
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Set the residual gradient of the specified scalar/vector field.
-   */
-  template <typename T>
-  void
-  set_gradient_term(Types::Index   global_variable_index,
-                    const T       &grad,
-                    DependencyType dependency_type = DependencyType::Normal)
-  requires(std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>> ||
-           std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-  {
-    // Some checks that make sure that we have a valid submission and that the
-    // feevaluation exists
-#ifdef DEBUG
-    submission_valid(dependency_type);
-    feevaluation_exists(global_variable_index, dependency_type);
-#endif
-
-    // For the 1D case the FEEvaluation objects for scalar/vector fields are degenerate.
-    // Otherwise, use std::visit
-    if constexpr (dim == 1)
-      {
-        // Unwrap the vector value here
-        if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-          {
-            return feeval_vector[(global_variable_index * max_dependency_types) +
-                                 static_cast<Types::Index>(dependency_type)]
-              ->submit_gradient(grad[0], q_point);
-          }
-        return feeval_vector[(global_variable_index * max_dependency_types) +
-                             static_cast<Types::Index>(dependency_type)]
-          ->submit_gradient(grad, q_point);
-      }
-    else
-      {
-        std::visit<void>(
-          Overload {
-            [&](std::unique_ptr<ScalarFEEvaluation> &feeval_ptr)
-            {
-              if constexpr (std::is_same_v<T, dealii::Tensor<1, dim, ScalarValue>>)
-                {
-                  feeval_ptr->submit_gradient(grad, q_point);
-                }
-              else
-                {
-                  Assert(false,
-                         dealii::ExcMessage(
-                           "Submitted type does not match the one expected for a "
-                           "scalar FEEvaluation object."));
-                }
-            },
-            [&](std::unique_ptr<VectorFEEvaluation> &feeval_ptr)
-            {
-              if constexpr (std::is_same_v<T, dealii::Tensor<2, dim, ScalarValue>>)
-                {
-                  feeval_ptr->submit_gradient(grad, q_point);
-                }
-              else
-                {
-                  Assert(false,
-                         dealii::ExcMessage(
-                           "Submitted type does not match the one expected for a "
-                           "vector FEEvaluation object."));
-                }
-            }},
-          feeval_vector[(global_variable_index * max_dependency_types) +
-                        static_cast<Types::Index>(dependency_type)]);
-      }
-  }
-
-  /**
-   * @brief Apply some operator function for a given cell range and source vector to
-   * some destination vector.
-   */
-  void
-  eval_local_operator(const std::function<void(FieldContainer &,
-                                               const dealii::Point<dim, ScalarValue> &,
-                                               const ScalarValue &)> &func,
-                      std::vector<SolutionVector *>                  &dst,
-                      const std::vector<SolutionVector *>            &src,
-                      const std::pair<unsigned int, unsigned int>    &cell_range);
-
-  /**
-   * @brief Apply some operator function for a given cell range and source vector to
-   * some destination vector.
-   */
-  void
-  eval_local_operator(const std::function<void(FieldContainer &,
-                                               const dealii::Point<dim, ScalarValue> &,
-                                               const ScalarValue &)> &func,
-                      SolutionVector                                 &dst,
-                      const std::vector<SolutionVector *>            &src,
-                      const std::pair<unsigned int, unsigned int>    &cell_range);
-
-  /**
-   * @brief Apply some operator function for a given cell range and source vector to
-   * some destination vector.
-   */
-  void
-  eval_local_operator(const std::function<void(FieldContainer &,
-                                               const dealii::Point<dim, ScalarValue> &,
-                                               const ScalarValue &)> &func,
-                      SolutionVector                                 &dst,
-                      const SolutionVector                           &src,
-                      const std::vector<SolutionVector *>            &src_subset,
-                      const std::pair<unsigned int, unsigned int>    &cell_range);
-
-  /**
-   * @brief TODO (landinjm): Add comments
-   */
-  void
-  eval_local_diagonal(const std::function<void(FieldContainer &,
-                                               const dealii::Point<dim, ScalarValue> &,
-                                               const ScalarValue &)> &func,
-                      SolutionVector                                 &dst,
-                      const std::vector<SolutionVector *>            &src_subset,
-                      const std::pair<unsigned int, unsigned int>    &cell_range);
-
-private:
   /**
    * @brief Typedef for scalar evaluation objects.
    */
   using ScalarFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, 1, number, dealii::VectorizedArray<number>>;
-
   /**
    * @brief Typedef for vector evaluation objects.
    */
   using VectorFEEvaluation = dealii::
     FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
+
+  template <TensorRank Rank>
+  using Value = std::conditional_t<Rank == TensorRank::Scalar,
+                                   ScalarValue,
+                                   dealii::Tensor<int(Rank), dim, ScalarValue>>;
+  template <TensorRank Rank>
+  using Gradient = dealii::Tensor<int(Rank) + 1, dim, ScalarValue>;
+  template <TensorRank Rank>
+  using Hessian = dealii::Tensor<int(Rank) + 2, dim, ScalarValue>;
+  template <TensorRank Rank>
+  using FEEval =
+    dealii::FEEvaluation<dim,
+                         degree,
+                         degree + 1,
+                         dealii::Tensor<int(Rank), dim>::n_independent_components,
+                         number,
+                         ScalarValue>;
+
+  template <typename Type>
+  struct GetRankHelper
+  {
+    static constexpr TensorRank rank_from_val  = TensorRank(Type::rank);
+    static constexpr TensorRank rank_from_grad = TensorRank(Type::rank - 1);
+  };
+
+  template <>
+  struct GetRankHelper<ScalarValue>
+  {
+    static constexpr TensorRank rank_from_val = TensorRank::Scalar;
+    // TODO: make sure the enable_if is correct syntax
+    template <typename = std::enable_if<dim == 1>>
+    static constexpr TensorRank rank_from_grad = TensorRank::Scalar;
+  };
+
+  template <typename ValType>
+  using GetRankFromVal = GetRankHelper<ValType>::rank_from_val;
+  template <typename GradType>
+  using GetRankFromGrad = GetRankHelper<GradType>::rank_from_grad;
+
+  template <TensorRank Rank>
+  std::vector<FEEval<Rank>>
+  get_relevant_feeval_vector()
+  {
+    if constexpr (Rank == TensorRank::Scalar)
+      {
+        return feeval_deps_scalar;
+      }
+    else if constexpr (Rank == TensorRank::Vector)
+      {
+        return feeval_deps_vector;
+      }
+  }
 
   /**
    * @brief Typedef for the variant evaluation objects. Note that the states become
@@ -869,14 +161,192 @@ private:
   /**
    * @brief Typedef for vector diagonal matrix objects.
    */
-  using VectorDiagonal = dealii::AlignedVector<dealii::Tensor<1, dim, ScalarValue>>;
+  using VectorDiagonal = dealii::AlignedVector<VectorValue>;
 
   /**
    * @brief Typedef for the variant diagonal matrix objects.
    */
   using VariantDiagonal =
     std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;
+  /**
+   * @brief Constructor.
+   */
+  FieldContainer(
+    const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
+    const SolveGroup                                                       &_solve_group,
+    const ElementVolume<dim, degree, number> &_element_volume,
+    const std::vector<Types::Index>          &_global_to_local_solution,
+    EquationType                              _equation_side);
 
+  /**
+   * @brief Return the value of the specified field.
+   *
+   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
+   * ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] Value<Rank>
+  get_value(Types::Index global_variable_index) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_value(q_point);
+  }
+
+  /**
+   * @brief Return the gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] Gradient<Rank>
+  get_gradient(Types::Index global_variable_index) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_gradient(q_point);
+  }
+
+  /**
+   * @brief Return the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * ScalarValue>` or `dealii::Tensor<3, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] Hessian<Rank>
+  get_hessian(Types::Index global_variable_index) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_hessian(q_point);
+  }
+
+  /**
+   * @brief Return the diagonal of the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] Gradient<Rank>
+  get_hessian_diagonal(Types::Index global_variable_index) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_hessian_diagonal(q_point);
+  }
+
+  /**
+   * @brief Return the laplacian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
+   * ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] Value<Rank>
+  get_laplacian(Types::Index global_variable_index) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_laplacian(q_point);
+  }
+
+  /**
+   * @brief Return the divergence of the specified field.
+   *
+   * @tparam T the return type. Must be `ScalarValue`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] auto
+  get_divergence(Types::Index global_variable_index) const
+    -> ScalarValue /* Value<Rank>::value_type */
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_divergence(q_point);
+  }
+
+  /**
+   * @brief Return the symmetric gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * ScalarValue>` or `dealii::SymmetricTensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] auto
+  get_symmetric_gradient(Types::Index global_variable_index) const
+    -> dealii::SymmetricTensor<2, dim, ScalarValue>
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_symmetric_gradient(q_point);
+  }
+
+  /**
+   * @brief Return the curl of the specified field.
+   *
+   * Note that this is dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1,
+   * dim, dealii::VectorizedArray<number>> type for 3D.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, 1,
+   * ScalarValue>` or `dealii::Tensor<1, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
+  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  [[nodiscard]] auto
+  get_curl(Types::Index global_variable_index) const
+    -> dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .template get<type>()
+      .get_curl(q_point);
+  }
+
+  /**
+   * @brief Set the residual value of the specified scalar/vector field.
+   */
+  template <typename ValType, DependencyType type = DependencyType::Normal>
+  void
+  set_value_term(Types::Index global_variable_index, const ValType &val)
+  {
+    get_relevant_feeval_vector<GetRankFromVal<ValType>>()[global_variable_index]
+      .template get<type>()
+      .submit_value(val, q_point);
+  }
+
+  /**
+   * @brief Set the residual gradient of the specified scalar/vector field.
+   */
+  template <typename GradType, DependencyType type = DependencyType::Normal>
+  void
+  set_gradient_term(Types::Index global_variable_index, const GradType &val)
+  {
+    get_relevant_feeval_vector<GetRankFromGrad<GradType>>()[global_variable_index]
+      .template get<type>()
+      .submit_gradient(val, q_point);
+  }
+
+private:
   /**
    * @brief Check whether the entry for the FEEvaluation is within the bounds of the
    * vector.
@@ -1046,6 +516,24 @@ private:
               fe_eval_old[age] =
                 std::make_unique<FEEvaluationType>(mf_id_pair.first, mf_id_pair.second);
             }
+        }
+    }
+
+    template <DependencyType type>
+    FEEvaluationType &
+    get()
+    {
+      if constexpr (type == DependencyType::Normal)
+        {
+          return *fe_eval;
+        }
+      else if constexpr (type == DependencyType::Change)
+        {
+          return *fe_eval_change;
+        }
+      else
+        {
+          return *fe_eval_old[int(type)];
         }
     }
   };
