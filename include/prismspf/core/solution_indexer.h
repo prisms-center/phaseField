@@ -19,14 +19,9 @@ template <unsigned int dim, typename number>
 class SolutionIndexer
 {
 public:
-  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
+  using BlockVector    = GroupSolutionHandler<dim, number>::BlockVector;
   using SolutionVector = BlockVector::BlockType;
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-  using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
-#else
-  using SolutionTransfer =
-    dealii::parallel::distributed::SolutionTransfer<dim, BlockVector>;
-#endif
+  using MatrixFree     = GroupSolutionHandler<dim, number>::MatrixFree;
 
   /**
    * @brief Constructor.
@@ -59,6 +54,24 @@ public:
    */
   [[nodiscard]] const SolutionVector &
   get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the matrixfree object of the group a given field index.
+   */
+  [[nodiscard]] const MatrixFree &
+  get_matrix_free(unsigned int index, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the matrixfree object of the group a given field index.
+   */
+  [[nodiscard]] std::pair<const MatrixFree &, unsigned int>
+  get_matrix_free_and_block_index(unsigned int index, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the block index of a field within its solve group
+   */
+  [[nodiscard]] unsigned int
+  get_block_index(unsigned int global_index) const;
 
 private:
   std::vector<const GroupSolutionHandler<dim, number> *> solutions;

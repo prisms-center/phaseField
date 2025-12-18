@@ -58,11 +58,8 @@ ExplicitSolver<dim, degree, number>::solve_level(unsigned int relative_level)
 template <unsigned int dim, unsigned int degree, typename number>
 void
 ExplicitSolver<dim, degree, number>::print()
-{
-  // Print the base class information
-  this->ConcurrentSolver<dim, degree, number>::print();
-}
+{}
 
-#include "solvers/concurrent_explicit_solver.inst"
+// #include "solvers/group_explicit_solver.inst"
 
 PRISMS_PF_END_NAMESPACE
