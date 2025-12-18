@@ -35,10 +35,8 @@ template <unsigned int dim, typename number>
 class GroupSolutionHandler
 {
 public:
-  using BlockVector      = dealii::LinearAlgebra::distributed::BlockVector<number>;
-  using SolutionVector   = BlockVector::BlockType;
-  using MGBlockVector    = dealii::LinearAlgebra::distributed::BlockVector<float>;
-  using MGSolutionVector = MGBlockVector::BlockType;
+  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
+  using SolutionVector = BlockVector::BlockType;
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
   using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
 #else
@@ -97,6 +95,12 @@ public:
    */
   [[nodiscard]] dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
   get_matrix_free(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the underlying solve group object.
+   */
+  [[nodiscard]] const SolveGroup &
+  get_solve_group() const;
 
   /**
    * @brief Initialize the solution set.
