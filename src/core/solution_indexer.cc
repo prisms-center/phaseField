@@ -7,10 +7,6 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/group_solution_handler.h"
-
-#include <vector>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
@@ -57,6 +53,33 @@ SolutionIndexer<dim, number>::get_new_solution_vector(unsigned int global_index,
   -> const SolutionVector &
 {
   return solutions[global_index]->get_new_solution_vector(global_index, relative_level);
+}
+
+template <unsigned int dim, typename number>
+auto
+SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
+                                              unsigned int relative_level)
+  -> const MatrixFree &
+{
+  return solutions[global_index]->get_matrix_free(relative_level);
+}
+
+template <unsigned int dim, typename number>
+auto
+SolutionIndexer<dim, number>::get_matrix_free_and_block_index(unsigned int global_index,
+                                                              unsigned int relative_level)
+  -> std::pair<const MatrixFree &, unsigned int>
+{
+  auto &sol = solutions[global_index];
+  return {sol->get_matrix_free(relative_level), sol->get_block_index(global_index)};
+}
+
+template <unsigned int dim, typename number>
+unsigned int
+SolutionIndexer<dim, number>::get_block_index(unsigned int global_index) const
+
+{
+  return solutions[global_index]->get_block_index(global_index);
 }
 
 // #include "core/solution_indexer.inst"

@@ -88,9 +88,16 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
 template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
-  -> dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
+  -> MatrixFree &
 {
   return solution_levels[relative_level].matrix_free;
+}
+
+template <unsigned int dim, typename number>
+unsigned int
+GroupSolutionHandler<dim, number>::get_block_index(unsigned int global_index) const
+{
+  return global_to_block_index[global_index];
 }
 
 template <unsigned int dim, typename number>
@@ -122,8 +129,7 @@ GroupSolutionHandler<dim, number>::init(
        ++relative_level)
     {
       SolutionLevel &solution_level = solution_levels[relative_level];
-      dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
-        solution_level.matrix_free;
+      MatrixFree    &matrix_free    = solution_level.matrix_free;
       matrix_free.reinit(
         mapping,
         dof_manager.get_dof_handlers(solve_group.field_indices, relative_level),
@@ -146,8 +152,7 @@ GroupSolutionHandler<dim, number>::reinit()
       BlockVector &new_solutions = solution_level.new_solutions;
       std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
         solution_level.old_solutions;
-      dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &matrix_free =
-        solution_level.matrix_free;
+      MatrixFree &matrix_free = solution_level.matrix_free;
 
       // These partitioners basically just provide the number of elements in a distributed
       // way
@@ -243,8 +248,7 @@ GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level
 {
   BlockVector &solutions     = solution_levels[relative_level].solutions;
   BlockVector &new_solutions = solution_levels[relative_level].new_solutions;
-  dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> matrix_free =
-    solution_levels[relative_level].matrix_free;
+  MatrixFree  &matrix_free   = solution_levels[relative_level].matrix_free;
 
   for (unsigned int i = 0; i < matrix_free.get_affine_constraints().size(); ++i)
     {
