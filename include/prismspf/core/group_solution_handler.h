@@ -37,6 +37,7 @@ class GroupSolutionHandler
 public:
   using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
   using SolutionVector = BlockVector::BlockType;
+  using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
   using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
 #else
@@ -93,8 +94,14 @@ public:
   /**
    * @brief Get the matrix_free object at a level.
    */
-  [[nodiscard]] dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
+  [[nodiscard]] MatrixFree &
   get_matrix_free(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the block index from the global index.
+   */
+  [[nodiscard]] unsigned int
+  get_block_index(unsigned int global_index) const;
 
   /**
    * @brief Get the underlying solve group object.
@@ -194,10 +201,10 @@ private:
    */
   struct SolutionLevel
   {
-    BlockVector                                                      solutions;
-    BlockVector                                                      new_solutions;
-    std::array<BlockVector, Numbers::max_saved_increments>           old_solutions;
-    dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> matrix_free;
+    BlockVector                                            solutions;
+    BlockVector                                            new_solutions;
+    std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
+    MatrixFree                                             matrix_free;
   };
 
   // TODO (fractalsbyx): Consider switching to dealii::MGLevelObject
