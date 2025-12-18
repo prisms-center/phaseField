@@ -8,6 +8,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/solve_group.h"
+
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -89,6 +91,13 @@ GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
   -> dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &
 {
   return solution_levels[relative_level].matrix_free;
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_solve_group() const -> const SolveGroup &
+{
+  return solve_group;
 }
 
 // TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
