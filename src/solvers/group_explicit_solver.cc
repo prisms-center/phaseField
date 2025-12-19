@@ -30,7 +30,7 @@ ExplicitSolver<dim, degree, number>::solve_level(unsigned int relative_level)
     solutions.get_solution_full_vector(relative_level));
 
   solutions.get_matrix_free(relative_level)
-    .cell_loop(&MatrixFreeOperator<dim, degree, number>::compute_local_explicit_update,
+    .cell_loop(&MatrixFreeOperator<dim, degree, number>::compute_local_rhs,
                solver_context->matrix_free_operator,
                solutions.get_new_solution_full_vector(relative_level),
                solutions.get_solution_full_vector(relative_level), // unused if we're
