@@ -170,6 +170,7 @@ public:
    */
   using VariantDiagonal =
     std::variant<std::unique_ptr<ScalarDiagonal>, std::unique_ptr<VectorDiagonal>>;
+
   /**
    * @brief Constructor.
    */
@@ -179,6 +180,26 @@ public:
     const ElementVolume<dim, degree, number> &_element_volume,
     const std::vector<Types::Index>          &_global_to_local_solution,
     EquationType                              _equation_side);
+
+  /**
+   * @brief Initialize based on cell for all dependencies.
+   */
+  void
+  reinit(unsigned int cell);
+
+  /**
+   * @brief Read solution vector, and evaluate based on
+   * dependency flags for all dependencies.
+   */
+  void
+  eval();
+
+  /**
+   * @brief Initialize based on cell, read solution vector, and evaluate based on
+   * dependency flags for all dependencies.
+   */
+  void
+  reinit_and_eval(unsigned int cell);
 
   /**
    * @brief Return the value of the specified field.
@@ -391,12 +412,6 @@ private:
   get_q_point_location() const;
 
   /**
-   * @brief Initialize, read DOFs, and set evaulation flags for each variable.
-   */
-  void
-  reinit_and_eval(unsigned int cell);
-
-  /**
    * @brief Integrate the residuals and distribute from local to global.
    */
   void
@@ -423,18 +438,22 @@ private:
   template <typename FEEvaluationType>
   struct FEEValuationDeps
   {
-    // Apparently FEEvaluation objects are cheap, so maybe it's overkill to use dynamic
-    // mem here.
-    std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>> fe_eval;
-    std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>> fe_eval_change;
-    std::array<std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>,
-               Numbers::max_saved_increments>
-                                                       fe_eval_old;
-    const SolutionHandler<dim, number>::SolutionLevel *solution_level;
-    unsigned int                                       block_index = -1;
+    using FEEDepPairPtr = std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>;
+    FEEDepPairPtr                                            fe_eval;
+    FEEDepPairPtr                                            fe_eval_change;
+    std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
+    /**
+     * @brief The solution group and the block index
+     * @note It would look nicer to just use the SolutionIndexer, but this way decreases
+     * indexing
+     */
+    const SolutionLevel<dim, number> *solution_level;
+    unsigned int                      block_index = -1;
 
     FEEValuationDeps(const Dependencies::Dependency     &dependency,
                      std::pair<MatrixFree, unsigned int> mf_id_pair)
+      : solution_level(mf_id_pair.first)
+      , block_index(mf_id_pair.second)
     {
       if (dependency.flag)
         {
@@ -501,18 +520,50 @@ private:
         {
           fe_eval->first.read_dof_values_plain(
             solution_level->solutions.block(block_index));
+          fe_eval->first.evaluate(fe_eval->second);
         }
       if (fe_eval_change)
         {
           fe_eval_change->first.read_dof_values_plain(
             solution_level->change_solutions.block(block_index));
+          fe_eval_change->first.evaluate(fe_eval_change->second);
         }
       for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
         {
-          if (fe_eval_old[age])
+          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
             {
-              fe_eval_old[age]->first.read_dof_values_plain(
+              old_fe_eval->first.read_dof_values_plain(
                 solution_level->old_solutions[age].block(block_index));
+              old_fe_eval->first.evaluate(old_fe_eval->second);
+            }
+        }
+    }
+
+    void
+    reinit_and_eval(unsigned int cell)
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.reinit(cell);
+          fe_eval->first.read_dof_values_plain(
+            solution_level->solutions.block(block_index));
+          fe_eval->first.evaluate(fe_eval->second);
+        }
+      if (fe_eval_change)
+        {
+          fe_eval_change->first.reinit(cell);
+          fe_eval_change->first.read_dof_values_plain(
+            solution_level->change_solutions.block(block_index));
+          fe_eval_change->first.evaluate(fe_eval_change->second);
+        }
+      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+        {
+          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
+            {
+              old_fe_eval->first.reinit(cell);
+              old_fe_eval->first.read_dof_values_plain(
+                solution_level->old_solutions[age].block(block_index));
+              old_fe_eval->first.evaluate(old_fe_eval->second);
             }
         }
     }

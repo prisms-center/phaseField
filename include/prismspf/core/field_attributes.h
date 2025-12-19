@@ -47,39 +47,33 @@ struct FieldAttributes
 
   /**
    * @brief Field name.
-   * @remark User-set
    */
   std::string name;
 
   /**
    * @brief Field type (Scalar/Vector).
-   * @remark User-set
    */
   Rank field_type = Rank::Undefined;
 
   /**
    * @brief Evaluation flags for the types of residual the user is expected to submit to
    * on the RHS.
-   * @remark Internally determined
    */
   EvalFlags eval_flags_rhs = EvalFlags::nothing;
 
   /**
    * @brief Evaluation flags for the types of residual the user is expected to submit to
    * on the LHS. This is empty for Explicit fields.
-   * @remark Internally determined
    */
   EvalFlags eval_flags_lhs = EvalFlags::nothing;
 
   /**
    * @brief Is a nucleation rate
-   * @remark User-set
    */
   bool is_nucleation_rate_variable = false;
 
   /**
    * @brief If this is a nucleation rate, the indices of the nucleating fields
-   * @remark User-set
    */
   std::vector<Types::Index> nucleating_field_indices;
 };
@@ -120,7 +114,7 @@ field_map(const std::vector<FieldAttributes> &fields)
   return map;
 }
 
-// TODO: Submit a PR/issue to dealii to make operator| const.
+// TODO: Submit a PR/issue to dealii to make operator| constexpr.
 // constexpr EvalFlags values_and_gradients = EvalFlags::values | EvalFlags::gradients;
 
 PRISMS_PF_END_NAMESPACE
