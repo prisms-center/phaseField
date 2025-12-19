@@ -4,11 +4,10 @@
 #include <deal.II/base/exceptions.h>
 
 #include <prismspf/core/group_solution_handler.h>
+#include <prismspf/core/solve_group.h>
 #include <prismspf/core/timer.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/solve_group.h"
 
 #include <vector>
 
@@ -128,8 +127,8 @@ GroupSolutionHandler<dim, number>::init(
   for (unsigned int relative_level = 0; relative_level < solution_levels.size();
        ++relative_level)
     {
-      SolutionLevel &solution_level = solution_levels[relative_level];
-      MatrixFree    &matrix_free    = solution_level.matrix_free;
+      SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
+      MatrixFree                 &matrix_free    = solution_level.matrix_free;
       matrix_free.reinit(
         mapping,
         dof_manager.get_dof_handlers(solve_group.field_indices, relative_level),
@@ -281,7 +280,7 @@ void
 GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
   // bubble-swap method. bubble the discarded solution up to 'new_solution'
-  SolutionLevel &solution_level = solution_levels[relative_level];
+  SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
   for (int age = oldest_saved - 1; age >= 0; --age)
     {
       if (age > 0)
