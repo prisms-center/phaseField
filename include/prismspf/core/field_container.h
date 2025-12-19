@@ -19,6 +19,8 @@
 #include <prismspf/config.h>
 
 #include "prismspf/core/dependencies.h"
+#include "prismspf/core/field_attributes.h"
+#include "prismspf/core/solution_handler.h"
 #include "prismspf/core/solve_group.h"
 #include "prismspf/core/variable_attributes.h"
 
@@ -352,7 +354,7 @@ private:
    * vector.
    */
   void
-  feevaluation_size_valid(Types::Index field_index, Types::Index dependency_index) const;
+  feevaluation_size_valid(Types::Index field_index) const;
 
   /**
    * @brief Check whether the entry for the FEEvaluation is within the bounds of the
@@ -360,27 +362,6 @@ private:
    */
   void
   feevaluation_exists(Types::Index field_index, Types::Index dependency_index) const;
-
-  /**
-   * @brief Check whether the entry for the global solution vector to local one is within
-   * the bounds of the vector and contains a valid entry.
-   */
-  void
-  global_to_local_solution_exists(Types::Index field_index,
-                                  Types::Index dependency_index) const;
-
-  /**
-   * @brief Get the local solution index for the given field index and dependency type.
-   */
-  [[nodiscard]] Types::Index
-  get_local_solution_index(Types::Index field_index, Types::Index dependency_index) const;
-
-  /**
-   * @brief Get the local solution index for the given field index and dependency type.
-   */
-  [[nodiscard]] Types::Index
-  get_local_solution_index(Types::Index   field_index,
-                           DependencyType dependency_type) const;
 
   /**
    * @brief Check that a variable value/gradient/hessians was marked as needed and thus
@@ -395,7 +376,7 @@ private:
    * @brief Check that a value is valid for submission.
    */
   void
-  submission_valid(DependencyType dependency_type) const;
+  submission_valid(Types::Index field_index, DependencyType dependency_type) const;
 
   /**
    * @brief Return the number of quadrature points.
@@ -413,64 +394,13 @@ private:
    * @brief Initialize, read DOFs, and set evaulation flags for each variable.
    */
   void
-  reinit_and_eval(const std::vector<SolutionVector *> &src, unsigned int cell);
-
-  /**
-   * @brief Initialize, read DOFs, and set evaulation flags for each variable.
-   */
-  void
-  reinit_and_eval(const SolutionVector &src, unsigned int cell);
-
-  /**
-   * @brief Initialize the cell for all dependencies of a certain variable index.
-   */
-  void
-  reinit(unsigned int cell, Types::Index global_variable_index);
-
-  /**
-   * @brief Read dofs values on the cell for all dependencies of a certain variable index.
-   */
-  void
-  read_dof_values(const std::vector<SolutionVector *> &src);
-
-  /**
-   * @brief Evaluate the flags on the cell for all dependencies of a certain variable
-   * index.
-   */
-  void
-  eval(Types::Index global_variable_index);
-
-  /**
-   * @brief Integrate the residuals and distribute from local to global.
-   */
-  void
-  integrate_and_distribute(std::vector<SolutionVector *> &dst);
+  reinit_and_eval(unsigned int cell);
 
   /**
    * @brief Integrate the residuals and distribute from local to global.
    */
   void
   integrate_and_distribute(SolutionVector &dst);
-
-  /**
-   * @brief Integrate the residuals for a certain variable index.
-   */
-  void
-  integrate(Types::Index global_variable_index);
-
-  /**
-   * @brief Get the FEEvaluation pointer from the variant.
-   */
-  template <typename FEEvaluationType>
-  FEEvaluationType *
-  extract_feeval_ptr(VariantFEEvaluation &variant) const;
-
-  /**
-   * @brief Get the diagonal pointer from the variant.
-   */
-  template <typename DiagonalType>
-  DiagonalType *
-  extract_diagonal_ptr(VariantDiagonal &variant) const;
 
   /**
    * @brief Evaluate the diagonal entry for a given cell.
@@ -487,14 +417,21 @@ private:
                      SolutionVector                                 &dst,
                      const std::vector<SolutionVector *>            &src_subset);
 
+  /**
+   * @brief Struct to hold feevaluation relevant for this solve.
+   */
   template <typename FEEvaluationType>
   struct FEEValuationDeps
   {
     // Apparently FEEvaluation objects are cheap, so maybe it's overkill to use dynamic
     // mem here.
-    std::unique_ptr<FEEvaluationType>                           fe_eval;
-    std::unique_ptr<FEEvaluationType>                           fe_eval_change;
-    std::array<FEEvaluationType, Numbers::max_saved_increments> fe_eval_old;
+    std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>> fe_eval;
+    std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>> fe_eval_change;
+    std::array<std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>,
+               Numbers::max_saved_increments>
+                                                       fe_eval_old;
+    const SolutionHandler<dim, number>::SolutionLevel *solution_level;
+    unsigned int                                       block_index = -1;
 
     FEEValuationDeps(const Dependencies::Dependency     &dependency,
                      std::pair<MatrixFree, unsigned int> mf_id_pair)
@@ -536,6 +473,49 @@ private:
           return *fe_eval_old[int(type)];
         }
     }
+
+    void
+    reinit(unsigned int cell)
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.reinit(cell);
+        }
+      if (fe_eval_change)
+        {
+          fe_eval_change->first.reinit(cell);
+        }
+      for (auto &old_fe_eval : fe_eval_old)
+        {
+          if (old_fe_eval)
+            {
+              old_fe_eval->first.reinit(cell);
+            }
+        }
+    }
+
+    void
+    eval()
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.read_dof_values_plain(
+            solution_level->solutions.block(block_index));
+        }
+      if (fe_eval_change)
+        {
+          fe_eval_change->first.read_dof_values_plain(
+            solution_level->change_solutions.block(block_index));
+        }
+      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+        {
+          if (fe_eval_old[age])
+            {
+              fe_eval_old[age]->first.read_dof_values_plain(
+                solution_level->old_solutions[age].block(block_index));
+            }
+        }
+    }
   };
 
   const SolveGroup                                 *solve_group;
@@ -554,15 +534,6 @@ private:
    * @brief Nax number of dependency types.
    */
   Types::Index max_dependency_types = Numbers::invalid_index;
-
-  /**
-   * @brief Vector of FEEvaluation objects for each active variable.
-   *
-   * The value is a variant that can hold either a ptr to a scalar or vector FEEvaluation.
-   * For performance reasons, we have a vector with length of max_fields *
-   * max_dependency_types. Consequently, most of the vector is filled with nullptr's.
-   */
-  std::vector<VariantFEEvaluation> feeval_vector;
 
   /**
    * @brief The attribute list of the relevant subset of variables.

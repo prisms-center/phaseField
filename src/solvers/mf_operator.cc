@@ -19,6 +19,9 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/group_solution_handler.h"
+#include "prismspf/core/solve_group.h"
+
 #include <map>
 #include <memory>
 #include <utility>
@@ -137,42 +140,6 @@ MFOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::compute_explicit_update(
-  std::vector<SolutionVector *>       &dst,
-  const std::vector<SolutionVector *> &src) const
-{
-  Assert(!global_to_local_solution.empty(),
-         dealii::ExcMessage(
-           "The global to local solution mapping must not be empty. Make sure to call "
-           "add_global_to_local_mapping() prior to any computations."));
-  Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
-  Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
-
-  this->data->cell_loop(&MFOperator::compute_local_explicit_update, this, dst, src, true);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-MFOperator<dim, degree, number>::compute_postprocess_explicit_update(
-  std::vector<SolutionVector *>       &dst,
-  const std::vector<SolutionVector *> &src) const
-{
-  Assert(!global_to_local_solution.empty(),
-         dealii::ExcMessage(
-           "The global to local solution mapping must not be empty. Make sure to call "
-           "add_global_to_local_mapping() prior to any computations."));
-  Assert(!dst.empty(), dealii::ExcMessage("The dst vector must not be empty"));
-  Assert(!src.empty(), dealii::ExcMessage("The src vector must not be empty"));
-
-  this->data->cell_loop(&MFOperator::compute_local_postprocess_explicit_update,
-                        this,
-                        dst,
-                        src,
-                        true);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
 MFOperator<dim, degree, number>::compute_nonexplicit_auxiliary_update(
   std::vector<SolutionVector *>       &dst,
   const std::vector<SolutionVector *> &src) const
@@ -251,11 +218,11 @@ MFOperator<dim, degree, number>::compute_local_rhs(
   // The reason this is constructed here, rather than as a private member is because
   // compute_local_rhs is called by cell_loop, which multithreads. There would be data
   // races.
-  VariableContainer<dim, degree, number> variable_list(_data,
-                                                       attributes_list,
-                                                       *element_volume_handler,
-                                                       global_to_local_solution,
-                                                       SolveType::ExplicitRHS);
+  FieldContainer<dim, degree, number> variable_list(_data,
+                                                    attributes_list,
+                                                    *element_volume_handler,
+                                                    global_to_local_solution,
+                                                    SolveType::ExplicitRHS);
 
   // Initialize, evaluate, and submit based on user function.
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
@@ -265,7 +232,7 @@ MFOperator<dim, degree, number>::compute_local_rhs(
         variable_list.element_volume_handler->get_element_volume(cell);
 
       // Initialize, read DOFs, and set evaulation flags for each variable
-      variable_list.reinit_and_eval(src, cell);
+      variable_list.reinit_and_eval(cell);
 
       // Evaluate at each quadrature point
       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
@@ -290,18 +257,18 @@ MFOperator<dim, degree, number>::compute_local_newton_update(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(_data,
-                                                       attributes_list,
-                                                       *element_volume_handler,
-                                                       global_to_local_solution,
-                                                       SolveType::NonexplicitLHS,
-                                                       use_local_mapping);
+  FieldContainer<dim, degree, number> variable_list(_data,
+                                                    attributes_list,
+                                                    *element_volume_handler,
+                                                    global_to_local_solution,
+                                                    SolveType::NonexplicitLHS,
+                                                    use_local_mapping);
 
   // Initialize, evaluate, and submit based on user function.
   variable_list.eval_local_operator(
-    [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, ScalarValue>  &q_point_loc,
-           const ScalarValue                      &element_volume)
+    [this](FieldContainer<dim, degree, number>   &var_list,
+           const dealii::Point<dim, ScalarValue> &q_point_loc,
+           const ScalarValue                     &element_volume)
     {
       this->pde_operator->compute_nonexplicit_lhs(var_list,
                                                   q_point_loc,
@@ -346,28 +313,75 @@ MFOperator<dim, degree, number>::local_compute_diagonal(
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Constructor for FEEvaluation objects
-  VariableContainer<dim, degree, number> variable_list(_data,
-                                                       attributes_list,
-                                                       *element_volume_handler,
-                                                       global_to_local_solution,
-                                                       SolveType::NonexplicitLHS,
-                                                       use_local_mapping);
+  FieldContainer<dim, degree, number> variable_list(_data,
+                                                    attributes_list,
+                                                    *element_volume_handler,
+                                                    global_to_local_solution,
+                                                    SolveType::NonexplicitLHS,
+                                                    use_local_mapping);
 
-  // Initialize, evaluate, and submit diagonal based on user function.
-  variable_list.eval_local_diagonal(
-    [this](VariableContainer<dim, degree, number> &var_list,
-           const dealii::Point<dim, ScalarValue>  &q_point_loc,
-           const ScalarValue                      &element_volume)
+  for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
-      this->pde_operator->compute_nonexplicit_lhs(var_list,
-                                                  q_point_loc,
-                                                  element_volume,
-                                                  solve_block,
-                                                  index);
-    },
-    dst,
-    src_solution_subset,
-    cell_range);
+      // Reinit the cell for all the dependencies
+      variable_list.reinit_and_eval(cell);
+
+      // To get the diagonal of the "matrix", repeatedly "multiply the matrix" by a test x
+      // vector (change vector) and store the solution in the i-th position in the y
+      // vector (the diagonal).
+      // First (i=1) x vector: I 0 0 0
+      // Second(i=2) x vector: 0 I 0 0 ...
+      SolveGroup                        solve_group;
+      GroupSolutionHandler<dim, number> group_solutions;
+
+      // Submit zeros for everyting except the diagonals
+      for (Types::FieldIndex field_index : solve_group.field_indices)
+        {
+          unsigned int n_dofs_per_cell = variable_list.get_dofs_per_component(
+            field_index); // vector_feeval_ptr->dofs_per_component;
+                          // scalar_feeval_ptr->dofs_per_cell;
+          for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+            {
+              int dof_index = i;
+              for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+                {
+                  variable_list.set_dof_value(field_index,
+                                              i == j ? Identity<Rank>() : Zero<Rank>(),
+                                              j);
+                }
+
+              // Read plain dof values for non change src
+              variable_list.read_dof_values(src_subset);
+
+              // Evaluate the dependencies based on the flags
+              variable_list.eval(global_variable_index);
+
+              // Evaluate at each quadrature point
+              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
+                {
+                  q_point = quad;
+                  compute_nonexplicit_lhs(*this, get_q_point_location(), element_volume);
+                }
+
+              // Integrate the diagonal
+              integrate(global_variable_index);
+              (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
+            }
+        }
+
+      // Submit calculated diagonal values and distribute
+      for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+        {
+          if constexpr (std::is_same_v<DiagonalValueType, ScalarValue> || dim != 1)
+            {
+              feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
+            }
+          else
+            {
+              feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
+            }
+        }
+      feeval_ptr->distribute_local_to_global(dst);
+    }
 }
 
 #include "core/matrix_free_operator.inst"
