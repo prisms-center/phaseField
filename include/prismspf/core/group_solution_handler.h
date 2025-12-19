@@ -22,11 +22,21 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+/**
+ * @brief The solution vectors.
+ */
 template <unsigned int dim, typename number>
-class MatrixFreeContainer;
-
-template <unsigned int dim>
-class MGInfo;
+struct SolutionLevel
+{
+  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
+  using SolutionVector = BlockVector::BlockType;
+  using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
+  BlockVector                                            solutions;
+  BlockVector                                            new_solutions;
+  std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
+  BlockVector                                            change_solutions;
+  MatrixFree                                             matrix_free;
+};
 
 /**
  * @brief Class that manages solution initialization and swapping with old solutions.
@@ -35,9 +45,9 @@ template <unsigned int dim, typename number>
 class GroupSolutionHandler
 {
 public:
-  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
-  using SolutionVector = BlockVector::BlockType;
-  using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
+  using BlockVector    = SolutionLevel<dim, number>::BlockVector;
+  using SolutionVector = SolutionLevel<dim, number>::SolutionVector;
+  using MatrixFree     = SolutionLevel<dim, number>::MatrixFree;
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
   using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
 #else
@@ -196,20 +206,9 @@ private:
    */
   std::vector<unsigned int> global_to_block_index;
 
-  /**
-   * @brief The solution vectors.
-   */
-  struct SolutionLevel
-  {
-    BlockVector                                            solutions;
-    BlockVector                                            new_solutions;
-    std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
-    MatrixFree                                             matrix_free;
-  };
-
   // TODO (fractalsbyx): Consider switching to dealii::MGLevelObject
   // Right now, I prefer using the relative level.
-  std::vector<SolutionLevel> solution_levels;
+  std::vector<SolutionLevel<dim, number>> solution_levels;
 
   /**
    * @brief Utility for solution transfer to different mesh (for AMR).
