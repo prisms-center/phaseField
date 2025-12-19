@@ -183,29 +183,6 @@ FieldContainer<dim, degree, number>::feevaluation_exists(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::global_to_local_solution_exists(
-  [[maybe_unused]] Types::Index field_index,
-  [[maybe_unused]] Types::Index dependency_index) const
-{
-#ifdef DEBUG
-  Assert(global_to_local_solution->size() >
-           field_index * max_dependency_types + dependency_index,
-         dealii::ExcMessage(
-           "The global to local solution vector size " +
-           std::to_string(global_to_local_solution->size()) +
-           " is greater than index = " + std::to_string(field_index) +
-           " and type = " + to_string(static_cast<DependencyType>(dependency_index))));
-  Assert(global_to_local_solution->at((field_index * max_dependency_types) +
-                                      dependency_index) != Numbers::invalid_index,
-         dealii::ExcMessage("Global to local solution at dependency index " +
-                            std::to_string(field_index) + " " +
-                            std::to_string(dependency_index) + " is invalid"));
-
-#endif
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
 FieldContainer<dim, degree, number>::access_valid(
   [[maybe_unused]] Types::Index                             field_index,
   [[maybe_unused]] DependencyType                           dependency_type,
@@ -339,33 +316,34 @@ FieldContainer<dim, degree, number>::get_q_point_location() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int cell)
+FieldContainer<dim, degree, number>::reinit(unsigned int cell)
 {
-  for (unsigned int global_index = 0; global_index < field_attributes.size();
-       ++global_index)
-    {
-      auto &fe_eval_set = feeval_deps_scalar[global_index];
-      if (fe_eval_set.fe_eval)
-        {
-          fe_eval_set.fe_eval->reinit(cell);
-          fe_eval_set.fe_eval->read_dof_values_plain(
-            solution_indexer->get_solution_vector(global_index, relative_level));
-          fe_eval_set.fe_eval->evaluate(/* dependency flags */);
-        }
-    }
   const DependencySet &dependency_map; // rhs or lhs
   for (const auto &[field_index, dependency] : dependency_map)
     {
-      const auto mf_id_pair =
-        solution_indexer->get_matrix_free_and_block_index(global_index, relative_level);
-      if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
-        {
-          feeval_deps_scalar[field_index] = {dependency, mf_id_pair};
-        }
-      else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
-        {
-          feeval_deps_vector[field_index] = {dependency, mf_id_pair};
-        }
+      feeval_deps_scalar[field_index].reinit(cell);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::eval()
+{
+  const DependencySet &dependency_map; // rhs or lhs
+  for (const auto &[field_index, dependency] : dependency_map)
+    {
+      feeval_deps_scalar[field_index].eval();
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int cell)
+{
+  const DependencySet &dependency_map; // rhs or lhs
+  for (const auto &[field_index, dependency] : dependency_map)
+    {
+      feeval_deps_scalar[field_index].reinit_and_eval(cell);
     }
 }
 
