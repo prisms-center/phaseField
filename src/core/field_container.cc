@@ -23,11 +23,8 @@
 #include "prismspf/core/solution_indexer.h"
 #include "prismspf/core/solve_group.h"
 
-#include <algorithm>
 #include <functional>
-#include <map>
 #include <memory>
-#include <ranges>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -40,14 +37,12 @@ FieldContainer<dim, degree, number>::FieldContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
   const std::vector<FieldAttributes>       &_field_attributes,
   const SolveGroup                         &_solve_group,
+  const DependencySet                      &dependency_map,
   SolutionIndexer<dim, number>             &_solution_indexer,
-  const ElementVolume<dim, degree, number> &_element_volume,
-  const EquationType                        _equation_type,
-  bool                                      use_local_mapping)
+  const ElementVolume<dim, degree, number> &_element_volume)
   : field_attributes_ptr(&_field_attributes)
   , solve_group(&_solve_group)
   , element_volume_handler(&_element_volume)
-  , equation_type(equation_type)
 {
   const std::vector<FieldAttributes> field_attributes;
   // Initialize the feeval vectors
@@ -60,9 +55,6 @@ FieldContainer<dim, degree, number>::FieldContainer(
   dst_feeval_scalar.resize(field_attributes.size());
   dst_feeval_vector.resize(field_attributes.size());
 
-  const DependencySet &dependency_map = equation_type == EquationType::RHS
-                                          ? solve_group->dependencies_rhs
-                                          : solve_group->dependencies_lhs;
   for (const auto &[field_index, dependency] : dependency_map)
     {
       const auto mf_id_pair =
@@ -93,85 +85,6 @@ FieldContainer<dim, degree, number>::FieldContainer(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::eval_local_diagonal(
-  const std::function<void(FieldContainer &,
-                           const dealii::Point<dim, ScalarValue> &,
-                           const ScalarValue &)> &func,
-  SolutionVector                                 &dst,
-  const std::vector<SolutionVector *>            &src_subset,
-  const std::pair<unsigned int, unsigned int>    &cell_range)
-{
-  Assert(subset_attributes->size() == 1,
-         dealii::ExcMessage(
-           "For nonexplicit solves, subset attributes should only be 1 variable."));
-
-  const auto &global_var_index = subset_attributes->begin()->first;
-  const auto &field_type = subset_attributes->begin()->second.field_info.tensor_rank;
-  feevaluation_exists(global_var_index, DependencyType::Change);
-  auto &feeval_variant = feeval_vector[(global_var_index * max_dependency_types) +
-                                       static_cast<Types::Index>(DependencyType::Change)];
-
-  auto process_feeval = [&](auto &feeval_ptr, auto &diag_ptr)
-  {
-    using FEEvaluationType = std::decay_t<decltype(*feeval_ptr)>;
-    using DiagonalType     = std::decay_t<decltype(*diag_ptr)>;
-
-    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
-      {
-        eval_cell_diagonal<FEEvaluationType, DiagonalType>(feeval_ptr,
-                                                           diag_ptr,
-                                                           cell,
-                                                           global_var_index,
-                                                           func,
-                                                           dst,
-                                                           src_subset);
-      }
-  };
-
-  if (field_type == FieldInfo::TensorRank::Scalar)
-    {
-      ScalarFEEvaluation *scalar_feeval_ptr = nullptr;
-
-      if constexpr (dim == 1)
-        {
-          scalar_feeval_ptr = feeval_variant.get();
-        }
-      else
-        {
-          scalar_feeval_ptr = extract_feeval_ptr<ScalarFEEvaluation>(feeval_variant);
-        }
-
-      n_dofs_per_cell       = scalar_feeval_ptr->dofs_per_cell;
-      diagonal              = std::make_unique<ScalarDiagonal>(n_dofs_per_cell);
-      auto *scalar_diag_ptr = extract_diagonal_ptr<ScalarDiagonal>(diagonal);
-      process_feeval(scalar_feeval_ptr, scalar_diag_ptr);
-    }
-  else if (field_type == FieldInfo::TensorRank::Vector)
-    {
-      VectorFEEvaluation *vector_feeval_ptr = nullptr;
-
-      if constexpr (dim == 1)
-        {
-          vector_feeval_ptr = feeval_variant.get();
-        }
-      else
-        {
-          vector_feeval_ptr = extract_feeval_ptr<VectorFEEvaluation>(feeval_variant);
-        }
-
-      n_dofs_per_cell       = vector_feeval_ptr->dofs_per_component;
-      diagonal              = std::make_unique<VectorDiagonal>(n_dofs_per_cell);
-      auto *vector_diag_ptr = extract_diagonal_ptr<VectorDiagonal>(diagonal);
-      process_feeval(vector_feeval_ptr, vector_diag_ptr);
-    }
-  else
-    {
-      Assert(false, UnreachableCode());
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
 FieldContainer<dim, degree, number>::get_n_q_points() const
 {}
@@ -186,10 +99,10 @@ FieldContainer<dim, degree, number>::get_q_point_location() const
     {
       return dst_feeval_scalar[field_index]->quadrature_point(q_point);
     }
-  else /* vector */
-    {
-      return dst_feeval_vector[field_index]->quadrature_point(q_point);
-    }
+  /*else if vector */
+  {
+    return dst_feeval_vector[field_index]->quadrature_point(q_point);
+  }
   /* unreachable */
   return dealii::Point<dim, ScalarValue>();
 }
