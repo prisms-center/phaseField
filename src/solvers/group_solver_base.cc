@@ -40,6 +40,8 @@ GroupSolverBase<dim, degree, number>::init()
 
   // Apply constraints.
   solutions.apply_constraints();
+
+  // Initialize mf_operators
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
