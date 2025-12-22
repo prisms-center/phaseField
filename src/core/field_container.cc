@@ -19,6 +19,7 @@
 #include <prismspf/config.h>
 
 #include "prismspf/core/dependencies.h"
+#include "prismspf/core/field_attributes.h"
 #include "prismspf/core/solution_indexer.h"
 #include "prismspf/core/solve_group.h"
 
@@ -41,24 +42,31 @@ FieldContainer<dim, degree, number>::FieldContainer(
   const SolveGroup                         &_solve_group,
   SolutionIndexer<dim, number>             &_solution_indexer,
   const ElementVolume<dim, degree, number> &_element_volume,
-  const std::vector<Types::Index>          &_global_to_local_solution,
   const EquationType                        _equation_type,
   bool                                      use_local_mapping)
-  : element_volume_handler(&_element_volume)
-  , global_to_local_solution(&_global_to_local_solution)
+  : field_attributes_ptr(&_field_attributes)
+  , solve_group(&_solve_group)
+  , element_volume_handler(&_element_volume)
   , equation_type(equation_type)
 {
   const std::vector<FieldAttributes> field_attributes;
-  // Initialize the feeval_vector
+  // Initialize the feeval vectors
   feeval_deps_scalar.clear();
+  feeval_deps_vector.clear();
+  dst_feeval_scalar.clear();
+  dst_feeval_vector.clear();
   feeval_deps_scalar.resize(field_attributes.size());
+  feeval_deps_vector.resize(field_attributes.size());
+  dst_feeval_scalar.resize(field_attributes.size());
+  dst_feeval_vector.resize(field_attributes.size());
+
   const DependencySet &dependency_map = equation_type == EquationType::RHS
                                           ? solve_group->dependencies_rhs
                                           : solve_group->dependencies_lhs;
   for (const auto &[field_index, dependency] : dependency_map)
     {
       const auto mf_id_pair =
-        solution_indexer->get_matrix_free_and_block_index(field_index, relative_level);
+        solution_indexer->get_solution_level_and_block_index(field_index, relative_level);
       if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
         {
           feeval_deps_scalar[field_index] = {dependency, mf_id_pair};
@@ -66,6 +74,20 @@ FieldContainer<dim, degree, number>::FieldContainer(
       else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
         {
           feeval_deps_vector[field_index] = {dependency, mf_id_pair};
+        }
+      // else Assert unreachable
+    }
+  MatrixFree   matrix_free;
+  unsigned int block_index = 0;
+  for (const auto &field_index : solve_group->field_indices)
+    {
+      if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
+        {
+          dst_feeval_scalar[field_index] = std::make_unique(matrix_free, block_index);
+        }
+      else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
+        {
+          dst_feeval_vector[field_index] = std::make_unique(matrix_free, block_index);
         }
     }
 }
@@ -150,167 +172,25 @@ FieldContainer<dim, degree, number>::eval_local_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::feevaluation_exists(
-  [[maybe_unused]] Types::Index field_index,
-  [[maybe_unused]] Types::Index dependency_index) const
-{
-#ifdef DEBUG
-  feevaluation_size_valid(field_index, dependency_index);
-
-  // Check if the feeval_variant is nullptr
-  bool is_nullptr = true;
-  if constexpr (dim == 1)
-    {
-      is_nullptr =
-        feeval_vector[(field_index * max_dependency_types) + dependency_index] == nullptr;
-    }
-  else
-    {
-      is_nullptr = std::visit(
-        [](const auto &ptr) -> bool
-        {
-          return ptr == nullptr;
-        },
-        feeval_vector[(field_index * max_dependency_types) + dependency_index]);
-    }
-  Assert(!is_nullptr,
-         dealii::ExcMessage("The FEEvaluation object with global index = " +
-                            std::to_string(field_index) + " does not exist for type = " +
-                            to_string(static_cast<DependencyType>(dependency_index))));
-#endif
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::access_valid(
-  [[maybe_unused]] Types::Index                             field_index,
-  [[maybe_unused]] DependencyType                           dependency_type,
-  [[maybe_unused]] dealii::EvaluationFlags::EvaluationFlags flag) const
-{
-#ifdef DEBUG
-  for (const auto &[index, variable] : *subset_attributes)
-    {
-      if (solve_type == SolveType::NonexplicitLHS)
-        {
-          Assert(variable.get_eval_flag_set_lhs()[field_index][static_cast<Types::Index>(
-                   dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
-                 DependencyNotFound(field_index, to_string(dependency_type)));
-        }
-      else
-        {
-          Assert(variable.get_eval_flag_set_rhs()[field_index][static_cast<Types::Index>(
-                   dependency_type)] != dealii::EvaluationFlags::EvaluationFlags::nothing,
-                 DependencyNotFound(field_index, to_string(dependency_type)));
-        }
-    }
-#endif
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::submission_valid(
-  [[maybe_unused]] DependencyType dependency_type) const
-{
-#ifdef DEBUG
-  Assert(dependency_type == Normal || solve_type == SolveType::NonexplicitLHS,
-         dealii::ExcMessage(
-           "RHS residuals are only allowed to submit normal gradient terms."));
-  Assert(dependency_type == Change || solve_type != SolveType::NonexplicitLHS,
-         dealii::ExcMessage(
-           "LHS residuals are only allowed to submit change gradient terms."));
-#endif
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
 unsigned int
 FieldContainer<dim, degree, number>::get_n_q_points() const
-{
-  // For dim = 1, the scalar and vector FEEvaluation objects are degenerate.
-  if constexpr (dim == 1)
-    {
-      auto iterator = std::ranges::find_if(feeval_vector,
-                                           [](const auto &ptr)
-                                           {
-                                             return ptr != nullptr;
-                                           });
-      Assert(iterator != feeval_vector.end(),
-             dealii::ExcMessage("All FEEvaluation objects were nullptr."));
-      return (*iterator)->n_q_points;
-    }
-  else
-    {
-      // Create a filtered view that ignores nullptrs
-      auto filtered_view = feeval_vector | std::views::filter(
-                                             [](const auto &v)
-                                             {
-                                               return !std::visit(
-                                                 [](const auto &ptr)
-                                                 {
-                                                   return ptr == nullptr;
-                                                 },
-                                                 v);
-                                             });
-      // Grab the first iterator and return the number of quad points
-      auto iterator = filtered_view.begin();
-      Assert(iterator != filtered_view.end(),
-             dealii::ExcMessage("All FEEvaluation variants were nullptr."));
-      return std::visit(
-        [](const auto &ptr)
-        {
-          return ptr->n_q_points;
-        },
-        *iterator);
-    }
-  Assert(false,
-         dealii::ExcMessage("When trying to access the number of quadrature points, all "
-                            "FEEvaluation object containers were empty."));
-  return 0;
-}
+{}
 
 template <unsigned int dim, unsigned int degree, typename number>
 dealii::Point<dim, typename FieldContainer<dim, degree, number>::ScalarValue>
 FieldContainer<dim, degree, number>::get_q_point_location() const
 {
-  // For dim = 1, the scalar and vector FEEvaluation objects are degenerate.
-  if constexpr (dim == 1)
+  Types::Index                        field_index = *(solve_group->field_indices.begin());
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
+  if (field_attributes[field_index].field_type == TensorRank::Scalar)
     {
-      auto iterator = std::ranges::find_if(feeval_vector,
-                                           [](const auto &ptr)
-                                           {
-                                             return ptr != nullptr;
-                                           });
-      Assert(iterator != feeval_vector.end(),
-             dealii::ExcMessage("All FEEvaluation objects were nullptr."));
-      return (*iterator)->quadrature_point(q_point);
+      return dst_feeval_scalar[field_index]->quadrature_point(q_point);
     }
-  else
+  else /* vector */
     {
-      // Create a filtered view that ignores nullptrs
-      auto filtered_view = feeval_vector | std::views::filter(
-                                             [](const auto &v)
-                                             {
-                                               return !std::visit(
-                                                 [](const auto &ptr)
-                                                 {
-                                                   return ptr == nullptr;
-                                                 },
-                                                 v);
-                                             });
-      // Grab the first iterator and return the number of quad points
-      auto iterator = filtered_view.begin();
-      Assert(iterator != filtered_view.end(),
-             dealii::ExcMessage("All FEEvaluation variants were nullptr."));
-      return std::visit(
-        [this](const auto &ptr)
-        {
-          return ptr->quadrature_point(q_point);
-        },
-        *iterator);
+      return dst_feeval_vector[field_index]->quadrature_point(q_point);
     }
-  Assert(false,
-         dealii::ExcMessage("When trying to access the quadrature point location, all "
-                            "FEEvaluation object containers were empty."));
+  /* unreachable */
   return dealii::Point<dim, ScalarValue>();
 }
 
@@ -349,197 +229,51 @@ FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int cell)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::integrate(Types::Index global_variable_index)
+FieldContainer<dim, degree, number>::integrate()
 {
-  Assert(subset_attributes->contains(global_variable_index),
-         dealii::ExcMessage(
-           "The subset attribute entry does not exists for global index = " +
-           std::to_string(global_variable_index)));
-  const auto &variable = subset_attributes->at(global_variable_index);
-
-  if (solve_type == SolveType::NonexplicitLHS)
+  const std::vector<FieldAttributes> field_attributes = *field_attributes_ptr;
+  for (const Types::Index &field_index : solve_group->field_indices)
     {
-      feevaluation_exists(global_variable_index, DependencyType::Change);
-      auto &feeval_variant =
-        feeval_vector[(global_variable_index * max_dependency_types) +
-                      static_cast<Types::Index>(DependencyType::Change)];
-
-      auto process_feeval = [&](auto &feeval_ptr)
-      {
-        feeval_ptr->integrate(variable.get_eval_flags_residual_lhs());
-      };
-
-      if constexpr (dim == 1)
+      const EvalFlags submission_flags = equation_type == EquationType::RHS
+                                           ? field_attributes[field_index].eval_flags_rhs
+                                           : field_attributes[field_index].eval_flags_lhs;
+      if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          process_feeval(feeval_variant);
+          dst_feeval_scalar[field_index]->integrate(submission_flags);
         }
-      else
+      else /* vector */
         {
-          std::visit(
-            [&](auto &ptr)
-            {
-              using T = std::decay_t<decltype(ptr)>;
-              static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
-                              std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                            "Unexpected type in feeval_vector variant");
-              process_feeval(ptr);
-            },
-            feeval_variant);
+          dst_feeval_vector[field_index]->integrate(submission_flags);
         }
-      return;
     }
-
-  AssertThrow(false,
+  /* AssertThrow(false,
               dealii::ExcMessage(
-                "Integrate called for a solve type that is not NonexplicitLHS."));
+                "Integrate called for a solve type that is not NonexplicitLHS.")); */
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::integrate_and_distribute(SolutionVector &dst)
+FieldContainer<dim, degree, number>::integrate_and_distribute()
 {
-  auto integrate_and_distribute_map =
-    [&](const dealii::EvaluationFlags::EvaluationFlags &residual_flag_set,
-        const DependencyType                           &dependency_type,
-        const unsigned int                             &residual_index)
-  {
-    Assert(subset_attributes->contains(residual_index),
-           dealii::ExcMessage(
-             "The subset attribute entry does not exists for global index = " +
-             std::to_string(residual_index)));
-    feevaluation_exists(residual_index, dependency_type);
-    auto &feeval_variant = feeval_vector[(residual_index * max_dependency_types) +
-                                         static_cast<Types::Index>(dependency_type)];
-
-    auto process_feeval = [&](auto &feeval_ptr)
+  const std::vector<FieldAttributes> field_attributes = *field_attributes_ptr;
+  for (const Types::Index &field_index : solve_group->field_indices)
     {
-      feeval_ptr->integrate_scatter(residual_flag_set, dst);
-    };
-
-    if constexpr (dim == 1)
-      {
-        process_feeval(feeval_variant);
-      }
-    else
-      {
-        std::visit(
-          [&](auto &ptr)
-          {
-            using T = std::decay_t<decltype(ptr)>;
-            static_assert(std::is_same_v<T, std::unique_ptr<ScalarFEEvaluation>> ||
-                            std::is_same_v<T, std::unique_ptr<VectorFEEvaluation>>,
-                          "Unexpected type in feeval_vector variant");
-            process_feeval(ptr);
-          },
-          feeval_variant);
-      }
-  };
-
-  Assert(subset_attributes->size() == 1,
-         dealii::ExcMessage(
-           "For nonexplicit solves, subset attributes should only be 1 variable."));
-
-  if (solve_type == SolveType::NonexplicitLHS)
-    {
-      integrate_and_distribute_map(
-        subset_attributes->begin()->second.get_eval_flags_residual_lhs(),
-        DependencyType::Change,
-        subset_attributes->begin()->first);
-    }
-  else
-    {
-      integrate_and_distribute_map(
-        subset_attributes->begin()->second.get_eval_flags_residual_rhs(),
-        DependencyType::Normal,
-        subset_attributes->begin()->first);
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-template <typename FEEvaluationType, typename DiagonalType>
-void
-FieldContainer<dim, degree, number>::eval_cell_diagonal(
-  FEEvaluationType                               *feeval_ptr,
-  DiagonalType                                   *diagonal_ptr,
-  unsigned int                                    cell,
-  Types::Index                                    global_variable_index,
-  const std::function<void(FieldContainer &,
-                           const dealii::Point<dim, ScalarValue> &,
-                           const ScalarValue &)> &func,
-  SolutionVector                                 &dst,
-  const std::vector<SolutionVector *>            &src_subset)
-{
-  using DiagonalValueType = typename DiagonalType::value_type;
-
-  // Grab the element volume
-  const ScalarValue element_volume = element_volume_handler->get_element_volume(cell);
-
-  // Reinit the cell for all the dependencies
-  reinit(cell, global_variable_index);
-
-  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-    {
-      int dof_index = i;
-      // Submit an identity matrix for the change term
-      for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+      const EvalFlags submission_flags = equation_type == EquationType::RHS
+                                           ? field_attributes[field_index].eval_flags_rhs
+                                           : field_attributes[field_index].eval_flags_lhs;
+      SolutionVector &dst              = equation_type == EquationType::RHS
+                                           ? solutions.new_solutions(field_index, relative_level)
+                                           : solutions.change_solutions(field_index, relative_level);
+      ;
+      if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          if constexpr (std::is_same_v<DiagonalValueType, ScalarValue> || dim == 1)
-            {
-              feeval_ptr->submit_dof_value(ScalarValue(), j);
-            }
-          else
-            {
-              feeval_ptr->submit_dof_value(DiagonalValueType(), j);
-            }
+          dst_feeval_scalar[field_index]->integrate_scatter(submission_flags, dst);
         }
-
-      // Set the i-th value to 1.0
-      if constexpr (std::is_same_v<DiagonalValueType, ScalarValue> || dim == 1)
+      else /* vector */
         {
-          feeval_ptr->submit_dof_value(dealii::make_vectorized_array<number>(1.0),
-                                       dof_index);
-        }
-      else
-        {
-          DiagonalValueType one;
-          for (unsigned int dimension = 0; dimension < dim; ++dimension)
-            {
-              one[dimension] = dealii::make_vectorized_array<number>(1.0);
-            }
-          feeval_ptr->submit_dof_value(one, dof_index);
-        }
-
-      // Read plain dof values for non change src
-      read_dof_values(src_subset);
-
-      // Evaluate the dependencies based on the flags
-      eval(global_variable_index);
-
-      // Evaluate at each quadrature point
-      for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
-        {
-          q_point = quad;
-          func(*this, get_q_point_location(), element_volume);
-        }
-
-      // Integrate the diagonal
-      integrate(global_variable_index);
-      (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
-    }
-
-  // Submit calculated diagonal values and distribute
-  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-    {
-      if constexpr (std::is_same_v<DiagonalValueType, ScalarValue> || dim != 1)
-        {
-          feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
-        }
-      else
-        {
-          feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
+          dst_feeval_vector[field_index]->integrate_scatter(submission_flags, dst);
         }
     }
-  feeval_ptr->distribute_local_to_global(dst);
 }
 
 #include "core/variable_container.inst"

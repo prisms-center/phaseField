@@ -7,6 +7,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/group_solution_handler.h"
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
@@ -66,12 +68,13 @@ SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
 
 template <unsigned int dim, typename number>
 auto
-SolutionIndexer<dim, number>::get_matrix_free_and_block_index(unsigned int global_index,
-                                                              unsigned int relative_level)
-  -> std::pair<const MatrixFree &, unsigned int>
+SolutionIndexer<dim, number>::get_solution_level_and_block_index(
+  unsigned int global_index,
+  unsigned int relative_level)
+  -> std::pair<const SolutionLevel<dim, number> &, unsigned int>
 {
   auto &sol = solutions[global_index];
-  return {sol->get_matrix_free(relative_level), sol->get_block_index(global_index)};
+  return {sol->get_solution_level(relative_level), sol->get_block_index(global_index)};
 }
 
 template <unsigned int dim, typename number>
