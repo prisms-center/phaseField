@@ -22,6 +22,7 @@ class ExplicitSolver : public GroupSolverBase<dim, degree, number>
 {
 public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
+  using GroupSolverBase::mf_operators;
   using GroupSolverBase::solutions;
   using GroupSolverBase::solver_context;
 

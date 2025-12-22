@@ -11,6 +11,8 @@
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/solvers/group_solver_base.h>
+
 #include <prismspf/config.h>
 
 #include "prismspf/core/field_attributes.h"
@@ -51,11 +53,81 @@ public:
    * @brief Initialize operator.
    */
   void
-  initialize(std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>> _data,
-             const ElementVolume<dim, degree, number> &_element_volume_handler,
-             const std::vector<unsigned int>          &selected_field_indexes =
+  initialize(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+             const ElementVolume<dim, degree, number>           &_element_volume_handler,
+             const std::vector<unsigned int>                    &selected_field_indexes =
                std::vector<unsigned int>());
 
+  // public:
+  /**
+   * @brief Compute the residual of this operator. This is the b in Ax=b.
+   */
+  void
+  compute_rhs(SolutionVector &dst, const SolutionVector &src) const;
+
+private:
+  /**
+   * @brief Local computation of the rhs operator.
+   */
+  void
+  compute_local_rhs(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+                    SolutionVector                                     &dst,
+                    const SolutionVector                               &src,
+                    const std::pair<unsigned int, unsigned int>        &cell_range) const;
+
+public:
+  /**
+   * @brief Compute the residual of this operator. This is the b in Ax=b.
+   */
+  void
+  compute_lhs(SolutionVector &dst, const SolutionVector &src) const;
+
+private:
+  /**
+   * @brief Local computation of the rhs operator.
+   */
+  void
+  compute_local_lhs(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+                    SolutionVector                                     &dst,
+                    const SolutionVector                               &src,
+                    const std::pair<unsigned int, unsigned int>        &cell_range) const;
+
+public:
+  /**
+   * @brief Compute the diagonal of this operator.
+   */
+  void
+  compute_diagonal();
+
+private:
+  /**
+   * @brief Local computation of the diagonal of the operator.
+   */
+  void
+  compute_local_diagonal(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+                         SolutionVector                                     &dst,
+                         const unsigned int                                 &dummy,
+                         const std::pair<unsigned int, unsigned int> &cell_range) const;
+
+public:
+  /**
+   * @brief Compute the element volume. (And store in this object?)
+   */
+  void
+  compute_element_volume();
+
+private:
+  /**
+   * @brief Local computation of the element volume.
+   */
+  void
+  compute_local_element_volume(
+    const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+    SolutionVector                                     &dst,
+    const unsigned int                                 &dummy,
+    const std::pair<unsigned int, unsigned int>        &cell_range) const;
+
+public:
   /**
    * @brief Return the number of DoFs.
    */
@@ -102,23 +174,6 @@ public:
   const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector>> &
   get_matrix_diagonal_inverse() const;
 
-  // cppcheck-suppress-begin passedByValue
-
-  /**
-   * @brief Add the mappings from global to local solution vectors.
-   */
-  void
-  add_global_to_local_mapping(std::vector<Types::Index> _global_to_local_solution);
-
-  /**
-   * @brief Add the solution subset for src vector.
-   */
-  void
-  add_src_solution_subset(
-    std::vector<SolutionVector *> _src_solution_subset = std::vector<SolutionVector *>());
-
-  // cppcheck-suppress-end passedByValue
-
   /**
    * @brief Matrix-vector multiplication.
    */
@@ -135,79 +190,16 @@ public:
 
   // NOLINTEND(readability-identifier-naming)
 
-  /**
-   * @brief Compute the explicit update.
-   */
-  void
-  compute_explicit_update(std::vector<SolutionVector *>       &dst,
-                          const std::vector<SolutionVector *> &src) const;
-
-  /**
-   * @brief Compute the explicit update for postprocessed fields.
-   */
-  void
-  compute_postprocess_explicit_update(std::vector<SolutionVector *>       &dst,
-                                      const std::vector<SolutionVector *> &src) const;
-
-  /**
-   * @brief Compute a nonexplicit auxiliary update.
-   */
-  void
-  compute_nonexplicit_auxiliary_update(std::vector<SolutionVector *>       &dst,
-                                       const std::vector<SolutionVector *> &src) const;
-
-  /**
-   * @brief Compute the residual of this operator. This is the b in Ax=b.
-   */
-  void
-  compute_residual(SolutionVector &dst, const SolutionVector &src) const;
-
-  /**
-   * @brief Compute the diagonal of this operator.
-   */
-  void
-  compute_diagonal(unsigned int field_index);
-
 private:
-  /**
-   * @brief Local computation of the rhs of the operator.
-   * For explicit equations, this is the explicit update.
-   * For implicit equations, this is the Newton residual.
-   */
-  void
-  compute_local_rhs(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                    SolutionVector                                     &dst,
-                    const SolutionVector                               &src,
-                    const std::pair<unsigned int, unsigned int>        &cell_range) const;
-
-  /**
-   * @brief Local computation of the newton update of the operator.
-   */
-  void
-  compute_local_newton_update(
-    const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-    SolutionVector                                     &dst,
-    const SolutionVector                               &src,
-    const std::pair<unsigned int, unsigned int>        &cell_range) const;
-
-  /**
-   * @brief Local computation of the diagonal of the operator.
-   */
-  void
-  local_compute_diagonal(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                         SolutionVector                                     &dst,
-                         const unsigned int                                 &dummy,
-                         const std::pair<unsigned int, unsigned int> &cell_range) const;
-
   /**
    * @brief The attribute list of the relevant variables.
    */
   std::vector<FieldAttributes> field_attributes;
 
-  ///**
-  // * @brief The element volume container
-  // */
-  // const ElementVolume<dim, degree, number> *element_volume_handler = nullptr;
+  /**
+   * @brief The group being solved
+   */
+  SolveGroup solve_group;
 
   /**
    * @brief PDE operator object for user defined PDEs.
@@ -215,25 +207,14 @@ private:
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
 
   /**
-   * @brief The solve block that is being evaluated
-   */
-  Types::Index solve_block = 0;
-
-  /**
-   * @brief Field index that is being evaluated.
-   */
-  Types::Index index = Numbers::invalid_index;
-
-  /**
-   * @brief Whether to use local mapping for the VariableContainer object.
-   */
-  bool use_local_mapping = false;
-
-  /**
    * @brief Matrix-free object.
    */
   std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>> data;
 
+  ///**
+  // * @brief The element volume container
+  // */
+  // const ElementVolume<dim, degree, number> *element_volume_handler = nullptr
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.
    */

@@ -6,6 +6,8 @@
 #include <deal.II/base/exceptions.h>
 #include <deal.II/numerics/vector_tools.h>
 
+#include <boost/geometry/core/cs.hpp>
+
 #include <prismspf/core/constraint_handler.h> //
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/group_solution_handler.h>
@@ -23,21 +25,16 @@
 
 #include <prismspf/config.h>
 
-#include <map>
+#include "prismspf/solvers/mf_operator.h"
+
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class ElementVolumeContainer;
-
-template <unsigned int dim, unsigned int degree, typename number>
 class GroupSolverBase
 {
 public:
-  using SystemMatrixType = MatrixFreeOperator<dim, degree, number>;
-  using VectorType       = dealii::LinearAlgebra::distributed::Vector<number>;
-
   /**
    * @brief Constructor.
    */
@@ -168,7 +165,8 @@ protected:
    */
   SolveGroup solve_group;
 
-  GroupSolutionHandler<dim, number> solutions;
+  GroupSolutionHandler<dim, number>            solutions;
+  std::vector<MFOperator<dim, degree, number>> mf_operators;
 
   /**
    * @brief Solver context.
