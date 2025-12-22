@@ -412,25 +412,16 @@ private:
   get_q_point_location() const;
 
   /**
+   * @brief Integrate the residuals.
+   */
+  void
+  integrate();
+
+  /**
    * @brief Integrate the residuals and distribute from local to global.
    */
   void
-  integrate_and_distribute(SolutionVector &dst);
-
-  /**
-   * @brief Evaluate the diagonal entry for a given cell.
-   */
-  template <typename FEEvaluationType, typename DiagonalType>
-  void
-  eval_cell_diagonal(FEEvaluationType *feeval_ptr,
-                     DiagonalType     *diagonal_ptr,
-                     unsigned int      cell,
-                     Types::Index      global_variable_index,
-                     const std::function<void(FieldContainer &,
-                                              const dealii::Point<dim, ScalarValue> &,
-                                              const ScalarValue &)> &func,
-                     SolutionVector                                 &dst,
-                     const std::vector<SolutionVector *>            &src_subset);
+  integrate_and_distribute();
 
   /**
    * @brief Struct to hold feevaluation relevant for this solve.
@@ -447,30 +438,32 @@ private:
      * @note It would look nicer to just use the SolutionIndexer, but this way decreases
      * indexing
      */
-    const SolutionLevel<dim, number> *solution_level;
-    unsigned int                      block_index = -1;
+    const SolutionLevel<dim, number> *solution_level = nullptr;
+    unsigned int                      block_index    = -1;
 
-    FEEValuationDeps(const Dependencies::Dependency     &dependency,
-                     std::pair<MatrixFree, unsigned int> mf_id_pair)
+    FEEValuationDeps(
+      const Dependencies::Dependency                             &dependency,
+      std::pair<const SolutionLevel<dim, number> *, unsigned int> mf_id_pair)
       : solution_level(mf_id_pair.first)
       , block_index(mf_id_pair.second)
     {
       if (dependency.flag)
         {
           fe_eval =
-            std::make_unique<FEEvaluationType>(mf_id_pair.first, mf_id_pair.second);
+            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
         }
       if (dependency.change_flag)
         {
           fe_eval_change =
-            std::make_unique<FEEvaluationType>(mf_id_pair.first, mf_id_pair.second);
+            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
         }
       for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
         {
           if (dependency.old_flags.at(age))
             {
               fe_eval_old[age] =
-                std::make_unique<FEEvaluationType>(mf_id_pair.first, mf_id_pair.second);
+                std::make_unique<FEEvaluationType>(solution_level->matrix_free,
+                                                   block_index);
             }
         }
     }
@@ -569,42 +562,20 @@ private:
     }
   };
 
+  const std::vector<FieldAttributes>               *field_attributes_ptr;
   const SolveGroup                                 *solve_group;
   EquationType                                      equation_type;
   const SolutionIndexer<dim, number>               *solution_indexer;
+  unsigned int                                      relative_level;
   std::vector<FEEValuationDeps<ScalarFEEvaluation>> feeval_deps_scalar;
   std::vector<FEEValuationDeps<VectorFEEvaluation>> feeval_deps_vector;
-  unsigned int                                      relative_level;
-
-  /**
-   * @brief Max number of fields.
-   */
-  Types::Index max_fields = Numbers::invalid_index;
-
-  /**
-   * @brief Nax number of dependency types.
-   */
-  Types::Index max_dependency_types = Numbers::invalid_index;
-
-  /**
-   * @brief The attribute list of the relevant subset of variables.
-   */
-  const std::map<Types::Index, VariableAttributes> *subset_attributes;
+  std::vector<std::unique_ptr<ScalarFEEvaluation>>  dst_feeval_scalar;
+  std::vector<std::unique_ptr<VectorFEEvaluation>>  dst_feeval_vector;
 
   /**
    * @brief The element volume container
    */
   const ElementVolume<dim, degree, number> *element_volume_handler;
-
-  /**
-   * @brief Mapping from global solution vectors to the local ones
-   */
-  const std::vector<Types::Index> *global_to_local_solution;
-
-  /**
-   * @brief The solve type
-   */
-  SolveType solve_type;
 
   /**
    * @brief The quadrature point index.
@@ -615,11 +586,6 @@ private:
    * @brief Number of DoFs per cell.
    */
   unsigned int n_dofs_per_cell = 0;
-
-  /**
-   * @brief Diagonal matrix that is used for preconditioning of fields.
-   */
-  VariantDiagonal diagonal;
 };
 
 PRISMS_PF_END_NAMESPACE

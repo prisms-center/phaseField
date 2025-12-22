@@ -85,6 +85,13 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
 }
 
 template <unsigned int dim, typename number>
+SolutionLevel<dim, number> &
+GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_level)
+{
+  return solution_levels[relative_level];
+}
+
+template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
   -> MatrixFree &
