@@ -25,21 +25,20 @@ ExplicitSolver<dim, degree, number>::solve_level(unsigned int relative_level)
   solutions.zero_out_ghosts(relative_level);
   Timer::end_section("Zero ghosts");
 
-  this->get_system_matrix()->compute_explicit_update(
-    solutions.get_new_solution_full_vector(relative_level),
-    solutions.get_solution_full_vector(relative_level));
-
-  solutions.get_matrix_free(relative_level)
-    .cell_loop(&MatrixFreeOperator<dim, degree, number>::compute_local_rhs,
-               solver_context->matrix_free_operator,
-               solutions.get_new_solution_full_vector(relative_level),
-               solutions.get_solution_full_vector(relative_level), // unused if we're
-                                                                   // accessing solutions
-                                                                   // in a roundabout way
-               true);
+  mf_operators[relative_level].compute_rhs();
+  // solutions.get_matrix_free(relative_level)
+  //   .cell_loop(&MatrixFreeOperator<dim, degree, number>::compute_local_rhs,
+  //              solver_context->matrix_free_operator,
+  //              solutions.get_new_solution_full_vector(relative_level),
+  //              solutions.get_solution_full_vector(relative_level), // unused if we're
+  //                                                                  // accessing
+  //                                                                  solutions
+  //                                                                  // in a roundabout
+  //                                                                  way
+  //              true);
 
   // TODO: if it's used for all solvers, define invm in solution handler. originally
-  // this was done as a loop over fields Scale the update by the respective
+  // this was done as a loop over fields. Scale the update by the respective
   // (Scalar/Vector) invm.
   solutions.get_new_solution_full_vector(relative_level).scale(block_invm);
 
