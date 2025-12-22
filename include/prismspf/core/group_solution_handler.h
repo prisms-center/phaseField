@@ -104,6 +104,12 @@ public:
   /**
    * @brief Get the matrix_free object at a level.
    */
+  [[nodiscard]] SolutionLevel<dim, number> &
+  get_solution_level(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the matrix_free object at a level.
+   */
   [[nodiscard]] MatrixFree &
   get_matrix_free(unsigned int relative_level = 0);
 
