@@ -45,9 +45,6 @@ MFOperator<dim, degree, number>::MFOperator(
   : MATRIX_FREE_OPERATOR_BASE()
   , attributes_list(_attributes_list)
   , pde_operator(_pde_operator)
-  , solve_block(_solve_block)
-  , index(_index)
-  , use_local_mapping(_use_local_mapping)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -60,19 +57,19 @@ MFOperator<dim, degree, number>::initialize(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::compute_rhs(SolutionVector       &dst,
-                                             const SolutionVector &src) const
+MFOperator<dim, degree, number>::compute_operator(SolutionVector       &dst,
+                                                  const SolutionVector &src) const
 {
-  data->cell_loop(&MFOperator::compute_local_rhs, this, dst, src, true);
+  data->cell_loop(&MFOperator::compute_local_operator, this, dst, src, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::compute_local_rhs(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
-  std::vector<SolutionVector *>                                          &dst,
-  const std::vector<SolutionVector *>                                    &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
+MFOperator<dim, degree, number>::compute_local_operator(
+  const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+  SolutionVector                                     &dst,
+  const SolutionVector                               &src,
+  const std::pair<unsigned int, unsigned int>        &cell_range) const
 {
   // Constructor for FEEvaluation objects
   // The reason this is constructed here, rather than as a private member is because
@@ -96,53 +93,10 @@ MFOperator<dim, degree, number>::compute_local_rhs(
       // Evaluate the user-defined pde at each quadrature point
       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
         {
-          pde_operator->compute_rhs(variable_list,
-                                    variable_list.get_q_point_location(),
-                                    element_volume);
-        }
-
-      // Integrate and add to global vector dst
-      variable_list.integrate_and_distribute(dst);
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-MFOperator<dim, degree, number>::compute_lhs(SolutionVector       &dst,
-                                             const SolutionVector &src) const
-{
-  data->cell_loop(&MFOperator::compute_local_lhs, this, dst, src, true);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-MFOperator<dim, degree, number>::compute_local_lhs(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
-  SolutionVector                                                         &dst,
-  const SolutionVector                                                   &src,
-  const std::pair<unsigned int, unsigned int> &cell_range) const
-{
-  // Constructor for FEEvaluation objects
-  // The reason this is constructed here, rather than as a private member is because
-  // compute_local_rhs is called by cell_loop, which multithreads. There would be data
-  // races.
-  FieldContainer<dim, degree, number> variable_list(/* args */);
-
-  // Initialize, evaluate, and submit based on user function.
-  for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
-    {
-      // Grab the element volume
-      const ScalarValue element_volume = element_volume_handler->get_element_volume(cell);
-
-      // Initialize, read DOFs, and set evaulation flags for each variable
-      variable_list.reinit_and_eval(cell);
-
-      // Evaluate the user-defined pde at each quadrature point
-      for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
-        {
-          pde_operator->compute_lhs(variable_list,
-                                    variable_list.get_q_point_location(),
-                                    element_volume);
+          // Evaluate the function pointer (the user-defined pde)
+          pde_operator->*pde_op(variable_list,
+                                variable_list.get_q_point_location(),
+                                element_volume);
         }
 
       // Integrate and add to global vector dst

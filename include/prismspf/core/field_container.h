@@ -20,13 +20,11 @@
 
 #include "prismspf/core/dependencies.h"
 #include "prismspf/core/field_attributes.h"
-#include "prismspf/core/solution_handler.h"
 #include "prismspf/core/solve_group.h"
 #include "prismspf/core/variable_attributes.h"
 
 #include <memory>
 #include <type_traits>
-#include <variant>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -527,7 +525,6 @@ private:
 
   const std::vector<FieldAttributes>               *field_attributes_ptr;
   const SolveGroup                                 *solve_group;
-  EquationType                                      equation_type;
   const SolutionIndexer<dim, number>               *solution_indexer;
   unsigned int                                      relative_level;
   std::vector<FEEValuationDeps<ScalarFEEvaluation>> feeval_deps_scalar;

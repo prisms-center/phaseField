@@ -8,6 +8,7 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
+#include <prismspf/core/field_container.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/types.h>
 
@@ -16,6 +17,7 @@
 #include <prismspf/config.h>
 
 #include "prismspf/core/field_attributes.h"
+#include "prismspf/core/pde_operator.h"
 #include "prismspf/core/solve_group.h"
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
@@ -29,8 +31,12 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief This is the abstract base class for the matrix-free implementation of some
- * PDE.
+ * @brief This class exists to evaluate a single user-defined operator for the matrix-free
+ * implementation of some PDE.
+ * @note Information such as the pde operator are passed in at construction/initialization
+ * rather than being passed in during function calls because in certain contexts (eg.
+ * GMG,) the operator gets called by a dealii function, rather than by prismspf, so it
+ * needs to act as a standalone operator.
  *
  * @tparam dim The number of dimensions in the problem.
  * @tparam degree The polynomial degree of the shape functions.
@@ -60,37 +66,20 @@ public:
 
   // public:
   /**
-   * @brief Compute the residual of this operator. This is the b in Ax=b.
+   * @brief Calls cell_loop on function that calls user-defiend operator
    */
   void
-  compute_rhs(SolutionVector &dst, const SolutionVector &src) const;
+  compute_operator(SolutionVector &dst, const SolutionVector &src) const;
 
 private:
   /**
-   * @brief Local computation of the rhs operator.
+   * @brief Calls user-defiend operator
    */
   void
-  compute_local_rhs(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                    SolutionVector                                     &dst,
-                    const SolutionVector                               &src,
-                    const std::pair<unsigned int, unsigned int>        &cell_range) const;
-
-public:
-  /**
-   * @brief Compute the residual of this operator. This is the b in Ax=b.
-   */
-  void
-  compute_lhs(SolutionVector &dst, const SolutionVector &src) const;
-
-private:
-  /**
-   * @brief Local computation of the rhs operator.
-   */
-  void
-  compute_local_lhs(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                    SolutionVector                                     &dst,
-                    const SolutionVector                               &src,
-                    const std::pair<unsigned int, unsigned int>        &cell_range) const;
+  compute_local_operator(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
+                         SolutionVector                                     &dst,
+                         const SolutionVector                               &src,
+                         const std::pair<unsigned int, unsigned int> &cell_range) const;
 
 public:
   /**
@@ -201,20 +190,26 @@ private:
    */
   SolveGroup solve_group;
 
+  using Operator = void (PDEOperator<dim, degree, number>::*)(
+    FieldContainer<dim, degree, number> &,                       /* variable_list */
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &, /* q_point_loc */
+    const dealii::VectorizedArray<number> &,                     /* element_volume */
+    unsigned int                                                 /* solve_group_id */
+  ) const;
   /**
-   * @brief PDE operator object for user defined PDEs.
+   * @brief PDE operator object (owning class instance of pde_op) for user defined PDEs.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+  const PDEOperator<dim, degree, number> *pde_operator;
+  /**
+   * @brief The actual PDE operator function ptr (eg. compute_rhs) for user defined PDEs.
+   */
+  Operator pde_op;
 
   /**
    * @brief Matrix-free object.
    */
   std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>> data;
 
-  ///**
-  // * @brief The element volume container
-  // */
-  // const ElementVolume<dim, degree, number> *element_volume_handler = nullptr
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.
    */
