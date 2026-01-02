@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import sys
+
 from visit import *
 
-#DeleteAllPlots()
+# DeleteAllPlots()
 
 # Step 1: Open a database (the whole .vtu time series)
-dbname="solution-*.vtu database"
+dbname = "solution-*.vtu database"
 OpenDatabase(dbname)
 
 # Step 2: Add plots (using variable "n")
@@ -27,26 +28,26 @@ num_y_coords = int(gpq[3])
 num_z_coords = int(gpq[4])
 
 # Step 5 Get the area (or volume) of the whole domain
-av=0.0
+av = 0.0
 if num_z_coords >= 1:
     Query("Volume")
     # Assign result to variable a
-    av=GetQueryOutputValue()
+    av = GetQueryOutputValue()
 else:
     Query("2D area")
     # Assign result to variable a
-    av=GetQueryOutputValue()
+    av = GetQueryOutputValue()
 
 # Step 6: Initialize phase fraction and open output file
-phasefrac=[0.0]*TimeSliderGetNStates()
+phasefrac = [0.0] * TimeSliderGetNStates()
 # Set the output file name
-ofnm="phi_vs_t.txt"
+ofnm = "phi_vs_t.txt"
 # Open  output file
 outF = open(ofnm, "w")
 
 # Step 7: Animate through time and save results
 for states in range(TimeSliderGetNStates()):
-    #Set slider to state
+    # Set slider to state
     SetTimeSliderState(states)
     # Get the time corresponding to the state
     Query("Time")
@@ -55,13 +56,13 @@ for states in range(TimeSliderGetNStates()):
     # Get the average of domains where n=1 by integration
     Query("Average Value")
     # Set this to the variable wvs
-    avv=GetQueryOutputValue()
+    avv = GetQueryOutputValue()
     # Calculate phase fraction as
-    phasefrac[states]=avv
+    phasefrac[states] = avv
     # Print the state number, time and phase fraction to
     # screen and to files
-    print("% d, %.1f, %.5f" %(states, t, phasefrac[states]))
-    print >> outF, "% d %.1f %.5f" %(states, t, phasefrac[states])
+    print("% d, %.1f, %.5f" % (states, t, phasefrac[states]))
+    print >> outF, "% d %.1f %.5f" % (states, t, phasefrac[states])
 outF.close()
 
 DeleteAllPlots()
