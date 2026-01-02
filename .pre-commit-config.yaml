@@ -49,3 +49,10 @@ repos:
   rev: 0.25.0
   hooks:
   - id: gersemi
+# c++ formatting
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev:  v18.1.8
+  hooks:
+  - id: clang-format
+    types_or: [c++, c, cuda]
+    exclude: ^contrib/catch/

@@ -260,8 +260,9 @@ public:
   // too.
   template <TensorRank Rank, DependencyType type = DependencyType::Normal>
   [[nodiscard]] auto
-  get_divergence(Types::Index global_variable_index) const -> ScalarValue /* Value<Rank>::value_type
-                                                                           */
+  get_divergence(Types::Index global_variable_index) const
+    -> ScalarValue /* Value<Rank>::value_type
+                    */
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
