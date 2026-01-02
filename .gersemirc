@@ -1,0 +1,4 @@
+definitions: [./cmake/macros,]
+line_length: 90
+indent: 2
+list_expansion: favour-expansion

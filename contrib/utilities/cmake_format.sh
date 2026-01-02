@@ -38,7 +38,7 @@ for TARGET_DIR in "${TARGET_DIRS[@]}"; do
 	find "$TARGET_DIR" \
 		-type d -name CMakeFiles -prune -o \
 		-type f \( -name "*.cmake" -o -name "CMakeLists.txt" \) -print | while read -r file; do
-		gersemi --in-place "$file"
+		gersemi --in-place "$file" --config .gersemirc
 		echo "Formatted $file"
 	done
 done

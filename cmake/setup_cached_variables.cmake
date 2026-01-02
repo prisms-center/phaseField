@@ -17,72 +17,91 @@ option(BUILD_APPLICATIONS "Whether to build all the pre-built applications or no
 message(STATUS "BUILD_APPLICATIONS = ${BUILD_APPLICATIONS}")
 
 option(
-    64BIT_INDICES
-    "Whether to compile PRISMS-PF with 64-bit numbers for large simulations"
-    OFF
+  64BIT_INDICES
+  "Whether to compile PRISMS-PF with 64-bit numbers for large simulations"
+  OFF
 )
 message(STATUS "64BIT_INDICES = ${64BIT_INDICES}")
 
 option(
-    ADDITIONAL_OPTIMIZATIONS
-    "Whether the user wants to enable additional optimizations, or not."
-    OFF
+  ADDITIONAL_OPTIMIZATIONS
+  "Whether the user wants to enable additional optimizations, or not."
+  OFF
 )
 message(STATUS "ADDITIONAL_OPTIMIZATIONS = ${ADDITIONAL_OPTIMIZATIONS}")
 
 option(
-    ADDITIONAL_DEGREES
-    "Wether the user wants to enable the compilation of additional element degrees or not."
-    OFF
+  ADDITIONAL_DEGREES
+  "Wether the user wants to enable the compilation of additional element degrees or not."
+  OFF
 )
 message(STATUS "ADDITIONAL_DEGREES = ${ADDITIONAL_DEGREES}")
 
 option(
-    UNWRAP_COMPILER
-    "Whether the user wants to unwrap the compiler in compile_commands.json, or not."
-    OFF
+  UNWRAP_COMPILER
+  "Whether the user wants to unwrap the compiler in compile_commands.json, or not."
+  OFF
 )
 mark_as_advanced(UNWRAP_COMPILER)
 
 # Setup the build type (debug, release, debugrelease)
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-    set(CMAKE_BUILD_TYPE
-        "DebugRelease"
-        CACHE STRING
-        "Choose the type of build, options are: Debug, Release and DebugRelease."
-        FORCE
-    )
+  set(
+    CMAKE_BUILD_TYPE
+    "DebugRelease"
+    CACHE STRING
+    "Choose the type of build, options are: Debug, Release and DebugRelease."
+    FORCE
+  )
 endif()
 
 # Convert build type into the debug and release builds, which may or may
 # not be built.
 if(
-    "${CMAKE_BUILD_TYPE}" STREQUAL "Release"
-    OR "${CMAKE_BUILD_TYPE}" STREQUAL "Debug"
-    OR "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease"
+  "${CMAKE_BUILD_TYPE}"
+    STREQUAL
+    "Release"
+  OR
+    "${CMAKE_BUILD_TYPE}"
+      STREQUAL
+      "Debug"
+  OR
+    "${CMAKE_BUILD_TYPE}"
+      STREQUAL
+      "DebugRelease"
 )
-    message(STATUS "Setting up PRISMS-PF for ${CMAKE_BUILD_TYPE} mode.")
+  message(STATUS "Setting up PRISMS-PF for ${CMAKE_BUILD_TYPE} mode.")
 else()
-    message(
-        FATAL_ERROR
-        "CMAKE_BUILD_TYPE must either be 'Release', 'Debug', or 'DebugRelease', but is set to '${CMAKE_BUILD_TYPE}'."
-    )
+  message(
+    FATAL_ERROR
+    "CMAKE_BUILD_TYPE must either be 'Release', 'Debug', or 'DebugRelease', but is set to '${CMAKE_BUILD_TYPE}'."
+  )
 endif()
 
 if(
-    "${CMAKE_BUILD_TYPE}" STREQUAL "Debug"
-    OR "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease"
+  "${CMAKE_BUILD_TYPE}"
+    STREQUAL
+    "Debug"
+  OR
+    "${CMAKE_BUILD_TYPE}"
+      STREQUAL
+      "DebugRelease"
 )
-    set(PRISMS_PF_BUILD_DEBUG "ON")
+  set(PRISMS_PF_BUILD_DEBUG "ON")
 else()
-    set(PRISMS_PF_BUILD_DEBUG "OFF")
+  set(PRISMS_PF_BUILD_DEBUG "OFF")
 endif()
 
 if(
-    "${CMAKE_BUILD_TYPE}" STREQUAL "Release"
-    OR "${CMAKE_BUILD_TYPE}" STREQUAL "DebugRelease"
+  "${CMAKE_BUILD_TYPE}"
+    STREQUAL
+    "Release"
+  OR
+    "${CMAKE_BUILD_TYPE}"
+      STREQUAL
+      "DebugRelease"
 )
-    set(PRISMS_PF_BUILD_RELEASE "ON")
+  set(PRISMS_PF_BUILD_RELEASE "ON")
 else()
-    set(PRISMS_PF_BUILD_RELEASE "OFF")
+  set(PRISMS_PF_BUILD_RELEASE "OFF")
 endif()

@@ -3,7 +3,7 @@
 #
 
 macro(set_if_empty _variable)
-    if("${${_variable}}" STREQUAL "")
-        set(${_variable} ${ARGN})
-    endif()
+  if("${${_variable}}" STREQUAL "")
+    set(${_variable} ${ARGN})
+  endif()
 endmacro()
