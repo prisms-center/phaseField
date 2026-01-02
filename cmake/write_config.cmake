@@ -5,19 +5,23 @@
 # Set the file pathes and remove any log files that may already exist
 set(detailed_log "${CMAKE_SOURCE_DIR}/detailed.log")
 set(summary_log "${CMAKE_SOURCE_DIR}/summary.log")
-file(REMOVE ${detailed_log} ${summary_log})
+file(
+  REMOVE
+  ${detailed_log}
+  ${summary_log}
+)
 
 function(write_to_both)
-    file(APPEND "${detailed_log}" "${ARGN}")
-    file(APPEND "${summary_log}" "${ARGN}")
+  file(APPEND "${detailed_log}" "${ARGN}")
+  file(APPEND "${summary_log}" "${ARGN}")
 endfunction()
 
 function(write_to_summary)
-    file(APPEND "${summary_log}" "${ARGN}")
+  file(APPEND "${summary_log}" "${ARGN}")
 endfunction()
 
 function(write_to_detailed)
-    file(APPEND "${detailed_log}" "${ARGN}")
+  file(APPEND "${detailed_log}" "${ARGN}")
 endfunction()
 
 write_to_both(

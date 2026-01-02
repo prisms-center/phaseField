@@ -1,13 +1,14 @@
 import argparse
-import subprocess
 import datetime
 import os
+import re
+import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
 from typing import Dict
+
 import numpy as np
-import re
 
 # Executable name. For now we will use release mode
 executable_name = "main-release"
