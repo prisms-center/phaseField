@@ -90,7 +90,7 @@ MFOperator<dim, degree, number>::compute_local_rhs(
       // Grab the element volume
       const ScalarValue element_volume = element_volume_handler->get_element_volume(cell);
 
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       variable_list.reinit_and_eval(cell);
 
       // Evaluate the user-defined pde at each quadrature point
@@ -134,7 +134,7 @@ MFOperator<dim, degree, number>::compute_local_lhs(
       // Grab the element volume
       const ScalarValue element_volume = element_volume_handler->get_element_volume(cell);
 
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       variable_list.reinit_and_eval(cell);
 
       // Evaluate the user-defined pde at each quadrature point
@@ -196,7 +196,7 @@ MFOperator<dim, degree, number>::compute_local_diagonal(
       SolveGroup                        solve_group;
       GroupSolutionHandler<dim, number> group_solutions;
 
-      // Submit zeros for everyting except the diagonals
+      // Submit zeros for everything except the diagonals
       for (Types::FieldIndex field_index : solve_group.field_indices)
         {
           unsigned int n_dofs_per_cell = variable_list.get_dofs_per_component(

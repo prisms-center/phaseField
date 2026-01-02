@@ -29,13 +29,13 @@ $$
  c^{n+1} &= c^{n} + (\Delta t D)~\Delta c^n + \Delta t f^n
 \end{align}
 $$
- 
+
 ## Weak formulation
 In the weak formulation, considering an arbitrary variation $w$, the above equation can be expressed as a residual equation:
 
 $$
 \begin{align}
-\int_{\Omega}   w c^{n+1} ~dV &= \int_{\Omega}   w c^{n} + w (\Delta t D) \Delta c^n + w \Delta t f^n ~dV 
+\int_{\Omega}   w c^{n+1} ~dV &= \int_{\Omega}   w c^{n} + w (\Delta t D) \Delta c^n + w \Delta t f^n ~dV
 \end{align}
 $$
 
@@ -54,19 +54,19 @@ $$
 $$
 \begin{align}
 &= \int_{\Omega}   w (c^{n}+\Delta t f^n) + \nabla w  \cdot (-\Delta t D) \nabla c^n ~dV \quad [\text {assuming flux}~j=0 ]
-\end{align} 
+\end{align}
 $$
 
 $$
 \begin{align}
 r_c &= c^{n}+\Delta t f^n
-\end{align} 
+\end{align}
 $$
 
 $$
 \begin{align}
 r_{cx} &= (-\Delta t D) \nabla c^n
-\end{align} 
+\end{align}
 $$
 
 The above values of  $r_{c}$ and $r_{c x}$ are used to define the residuals in the following parameters file:

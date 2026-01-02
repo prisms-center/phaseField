@@ -7,7 +7,7 @@ This application simulates the evolution of the metal-electrolyte interface due 
 Consider the free energy functional of the form
 
 $$
-\begin{equation} 
+\begin{equation}
  \widetilde {\mathcal F} = \int_\Omega \left(f_0\left(\{\varphi_j\},\psi\right)+\frac{\widetilde\epsilon^2}{2}\left(\sum^2_{j=1}|\nabla\varphi_j|^2+|\nabla\psi|^2\right)\right)d\Omega,
 \end{equation}
 $$
@@ -15,7 +15,7 @@ $$
 where $\widetilde {\mathcal F}$ represents the total free energy of the system scaled by the bulk free energy density coefficient, $W$, and $\tilde{\epsilon}^2=\epsilon/W$ is the rescaled gradient energy coefficient. Here  $\psi$ and $\varphi_j$  represent the order parameter for the electrolyte phase and for the $j^{th}$ metal phase respectively. The dimensionless bulk free energy density, $f_0$, is given by
 
 $$
-\begin{equation} 
+\begin{equation}
 f_0\left(\{\varphi_j\},\psi\right)= \sum^N_{j=1}\left(\frac{\varphi_j^4}{4}-\frac{\varphi_j^2}{2}\right)+\left(\frac{\psi^4}{4}-\frac{\psi^2}{2}\right)+\frac{3}{2}\sum^N_{j=1}\sum^N_{k>j}\varphi_j^2\varphi_k^2+\frac{3}{2}\sum^N_{j=1} \varphi_j^2\psi^2.
 \end{equation}
 $$
@@ -27,7 +27,7 @@ In this application, we only consider two phases in the metal: the anodic phase,
 The evolution of the anodic metal/electrolyte interface is governed by Cahn-Hilliard equations with a source term for $\varphi_1$ and $\psi$,
 
 $$
-\begin{equation} 
+\begin{equation}
 \frac{\partial \varphi_1}{\partial t} = \nabla \cdot \left(M\nabla\frac{\delta \widetilde F}{\delta \varphi_1} \right)+v\big|\nabla \psi \big|
 \end{equation}
 $$
@@ -40,10 +40,10 @@ $$
 \end{equation}
 $$
 
-Since we do not consider any deposition on the cathodic phase, the evolution of $\varphi_2$ is given by the Cahn-Hilliard equation, 
+Since we do not consider any deposition on the cathodic phase, the evolution of $\varphi_2$ is given by the Cahn-Hilliard equation,
 
 $$
-\begin{equation} 
+\begin{equation}
 \frac{\partial\varphi_2}{\partial t}=\nabla \cdot \left(M\nabla\frac{\delta \widetilde F}{\delta \varphi_2} \right)
 \end{equation}
 $$
@@ -51,7 +51,7 @@ $$
 In the previous Eqs., $M$ is the Cahn-Hilliard mobility coefficient, assumed to be equal for all phases, and $v$ is the velocity of the interface normal to the surface, which is related to the reaction current at the interface via Faraday’s law of electrolysis:
 
 $$
-\begin{equation} 
+\begin{equation}
 v = -\frac{V_m \xi_1 i_{rxn,1}}{z_mF}.
 \end{equation}
 $$
@@ -59,7 +59,7 @@ $$
 Here $V_m$ is the molar volume of the metal, $i_{rxn,1}$, is the anodic current density, $z_m$ is the dissolved metal cation charge number, and $F$ is Faraday’s constant. The variable $\xi_1$ is used as a weighing factor for the contribution of the anodic current density over the total current density. This factor is defined in the following section. The interfacial mobility, $M$, is set as a function of the local current density,
 
 $$
-\begin{equation} 
+\begin{equation}
 M = 2\delta\frac{V_m|\xi_1 i_{rxn,1}|\psi}{z_mF},
 \end{equation}
 $$
@@ -71,7 +71,7 @@ where $2\delta=2\sqrt{2\widetilde{\epsilon}^2}$ gives the equilibrium interfacia
 In general, the transport of the ionic species in the electrolyte is controlled by migration, diffusion, and convection. Though PRISMS-PF is capable of including diffusion, in this application, the electrolyte is considered to be well-stirred. The current density ${i_e}$ in the electrolyte is given by
 
 $$
-\begin{equation} 
+\begin{equation}
 {i_e} = -\kappa_e\nabla\Phi_e
 \end{equation}
 $$
@@ -87,16 +87,16 @@ $$
 At the metal/electrolyte interface, the normal component of ${i_e}$ is equal to $i_{rxn}$
 
 $$
-\begin{equation} 
+\begin{equation}
 {i_e}\cdot{\hat n_{m/e}}=i_{rxn}.
 \end{equation}
 $$
 
 where ${\hat n_{m/e}}$ is the unit normal vector of the metal/electrolyte interface pointing out of the metal. The previous Eqs. can combined using the Smoothed Boundary Method (SBM) [H.-C. Yu, H.-Y. Chen, and K. Thornton, Model. Simul. Mater. Sci. Eng. **20**, 075008
-(2012)] to obtain an expression for $\Phi_e$ within the electrolyte that includes the appropriate boundary condition at the metal/electrolyte interface. For this system, the SBM is applied with $\psi$ as the domain parameter. The resulting equation for $\Phi_e$ is given by 
+(2012)] to obtain an expression for $\Phi_e$ within the electrolyte that includes the appropriate boundary condition at the metal/electrolyte interface. For this system, the SBM is applied with $\psi$ as the domain parameter. The resulting equation for $\Phi_e$ is given by
 
 $$
-\begin{equation} 
+\begin{equation}
 \nabla\cdot\left(\psi\kappa_e\nabla\Phi_e\right) =-|\nabla\psi|i_{rxn}.
 \end{equation}
 $$
@@ -128,7 +128,7 @@ $$
 where $i_{corr,2}$ is the corrosion current density of the cathodic phase, $\eta_2$ is the cathodic overpotential which is given in the same form as its anodic counterpart:
 
 $$
-\begin{equation} 
+\begin{equation}
 \eta_2 = \Phi_m - \Phi_e - E_{corr,2},
 \end{equation}
 $$
@@ -152,7 +152,7 @@ $$
 and
 
 $$
-\begin{equation} 
+\begin{equation}
 \xi_{1} = 1- \varphi_2,
 \end{equation}
 $$
@@ -183,7 +183,7 @@ $$
 \end{equation}
 $$
 
-where 
+where
 
 $$
 \begin{equation}
@@ -294,7 +294,7 @@ r_{1 x} &= \left(-\Delta t M\nabla\mu_1^{n}\right)
 $$
 
 $$
-\begin{align} 
+\begin{align}
 \int_\Omega \omega \varphi_2^{n+1}dV = \int_\Omega \omega \varphi_2^n dV + \int_\Omega \nabla\omega\cdot \left(-\Delta t M\nabla\mu_2^{n}\right) dV
 \end{align}
 $$
@@ -348,7 +348,7 @@ r_{\mu 1 x} &= \left(\widetilde{\epsilon}^2\nabla\varphi^n_1\right)
 $$
 
 $$
-\begin{align} 
+\begin{align}
 \int_\Omega \omega\mu_2^{n+1} dV = \int_\Omega \omega f^n_2 dV +\int_\Omega \nabla\omega\cdot \left(\widetilde{\epsilon}^2\nabla\varphi^n_2\right) dV
 \end{align}
 $$
@@ -389,7 +389,7 @@ $$
 \begin{align}
 \int_\Omega \omega \left(\left(\frac{\partial i_{rxn}}{\partial\Phi_e}\right)_{\Phi_e = \Phi_e^0}|\nabla\psi|\Delta\Phi_e\right)dV
 \end{align}
-$$ 
+$$
 
 $$
 \begin{align}
@@ -438,32 +438,31 @@ The above values of are used to define the equation terms in the input file:
 
  |Name in the model equations | Variable/parameter name in the code |
  |----------------------------|-------------------------------------|
-| $\varphi_1$           |     nAnodic              |                
-| $\varphi_2$           |   nCathodic              |             
-| $\psi$                |    psi                   |                 
-| $v$                    |    v                    |                   
-| $M$                    |    MnV                  |                  
-| $V_m$                  |    VMV                  |                 
-| $z_m$                  |    zMV                  |                
-| $\delta$                |   delta                |                 
-| $\widetilde{{\epsilon}}^2$ | epssqV              |                 
-| $\kappa_e$            |     kappa                |               
-| $\Phi_e$              |     Phi                  |                
-| $i_{corr,1}$          |     i0Anodic             |               
-| $i_{corr,2}$          |     i0Cathodic           |              
-| $i_{rxn,1}$           |     iAnodic              |              
-| $i_{rxn,2}$           |     iCathodic            |              
-| $i_{max}$             |     iMax                 |             
-| $\eta_1$              |     etaAnodic            |              
-| $\eta_2$              |     etaCathodic          |             
-| \xi_1$                |    xiAnodic              |              
-| $\xi_2$               |     xiCathodic           |              
-| $A_1$                 |     AAnodic              |              
-| $A_2$                 |     ACathodic            |               
-| $E_{corr,1}$          |     EcorrAnodic          |               
-| $E_{corr,2}$          |     EcorrCathodic        |               
-| $\zeta$               |     lthresh              |               
+| $\varphi_1$           |     nAnodic              |
+| $\varphi_2$           |   nCathodic              |
+| $\psi$                |    psi                   |
+| $v$                    |    v                    |
+| $M$                    |    MnV                  |
+| $V_m$                  |    VMV                  |
+| $z_m$                  |    zMV                  |
+| $\delta$                |   delta                |
+| $\widetilde{{\epsilon}}^2$ | epssqV              |
+| $\kappa_e$            |     kappa                |
+| $\Phi_e$              |     Phi                  |
+| $i_{corr,1}$          |     i0Anodic             |
+| $i_{corr,2}$          |     i0Cathodic           |
+| $i_{rxn,1}$           |     iAnodic              |
+| $i_{rxn,2}$           |     iCathodic            |
+| $i_{max}$             |     iMax                 |
+| $\eta_1$              |     etaAnodic            |
+| $\eta_2$              |     etaCathodic          |
+| \xi_1$                |    xiAnodic              |
+| $\xi_2$               |     xiCathodic           |
+| $A_1$                 |     AAnodic              |
+| $A_2$                 |     ACathodic            |
+| $E_{corr,1}$          |     EcorrAnodic          |
+| $E_{corr,2}$          |     EcorrCathodic        |
+| $\zeta$               |     lthresh              |
 
 
 Table 1: Variables/parameters names used in the model equations and the corresponding names used in the code
-

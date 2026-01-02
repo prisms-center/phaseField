@@ -15,7 +15,6 @@
 
 #include <string>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -56,7 +55,7 @@ public:
              user_inputs->get_spatial_discretization().get_max_refinement(),
            dealii::ExcMessage(
              "Currently, we don't allow the initial refinement to be lower than the "
-             "maximum adpative refinement level when using multigrid. This is because we "
+             "maximum adaptive refinement level when using multigrid. This is because we "
              "have to create a sequence of coarser meshes.")); */
     if (has_multigrid)
       {

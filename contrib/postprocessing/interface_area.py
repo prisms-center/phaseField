@@ -15,7 +15,7 @@ OpenDatabase(db)
 # Step 2: Add Contour plot (using variable "n")
 # This variable must be in the range [0,1]
 # with 0 representing one phase, 1 representing another phase
-# and n=0.5 representing the midpoint accross the interface
+# and n=0.5 representing the midpoint across the interface
 AddPlot("Contour", "n", 1, 1)
 ContourAtts = ContourAttributes()
 ContourAtts.contourValue = 0.5
@@ -39,7 +39,7 @@ for states in range(TimeSliderGetNStates()):
     # Weighted Variable Sum integrates the value of the order
     # parameter along the area (length) of the contour
     # surface (curve).
-    # Since the countour is taken at value n=0.5,
+    # Since the contour is taken at value n=0.5,
     # We multiply by 2 to obtain the area (or length)
     if wvs == ():
         intarea[states] = 0.0

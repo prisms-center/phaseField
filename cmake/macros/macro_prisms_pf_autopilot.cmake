@@ -26,7 +26,7 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     set(TARGET_SRC ${TARGET_SRC_OVERRIDE})
   endif()
 
-  # Create the exectuables
+  # Create the executables
   foreach(_build ${APPLICATION_BUILD_TYPES})
     string(TOLOWER ${_build} _build_lowercase)
     string(TOUPPER ${_build} _build_uppercase)

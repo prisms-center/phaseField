@@ -3,11 +3,11 @@ Consider a free energy expression of the form:
 
 $$
 \begin{equation}
-  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{1}{2} | \gamma( \mathbf{n} ) \nabla  \eta |^2   ~dV 
+  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{1}{2} | \gamma( \mathbf{n} ) \nabla  \eta |^2   ~dV
 \end{equation}
 $$
 
-where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding to $\alpha$ and $\beta$ phases, respectively, and are functions of composition $c$. $H$ is a function of the structural order parameter $\eta$.  The interface normal vector $\mathbf{n}$ is given by 
+where $f_{\alpha}$ and $f_{\beta}$ are the free energy densities corresponding to $\alpha$ and $\beta$ phases, respectively, and are functions of composition $c$. $H$ is a function of the structural order parameter $\eta$.  The interface normal vector $\mathbf{n}$ is given by
 
 $$
 \begin{equation}
@@ -45,7 +45,7 @@ Now the PDE for Cahn-Hilliard dynamics is given by:
 $$
 \begin{align}
   \frac{\partial c}{\partial t} &= -~\nabla \cdot (-M_c\nabla \mu_c)\\
-  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H)) 
+  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H))
   \end{align}
 $$
 
@@ -54,11 +54,11 @@ and the PDE for Allen-Cahn dynamics is given by:
 $$
 \begin{align}
   \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta \\
-  &=-M_\eta ~ ((f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \nabla \cdot \mathbf{m}) 
+  &=-M_\eta ~ ((f_{\beta,c}-f_{\alpha,c})H_{,\eta} - \nabla \cdot \mathbf{m})
 \end{align}
 $$
 
-where $M_c$ and $M_\eta$ are the constant mobilities. 
+where $M_c$ and $M_\eta$ are the constant mobilities.
 
 ## Time discretization
 
@@ -82,7 +82,7 @@ $$
 
 $$
 \begin{align}
-&= \int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta})   \mathbf{m}^n ~dV 
+&= \int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta})   \mathbf{m}^n ~dV
 \end{align}
 $$
 
@@ -98,7 +98,7 @@ r_{\eta x} &= (- \Delta t M_{\eta})   \mathbf{m}^n
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
@@ -115,9 +115,9 @@ $$
 
 $$
 \begin{align}
-r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] 
+r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ]
 \end{align}
 $$
 
-The above values of $r_{\eta}$, $r_{\eta x}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following equations file: 
+The above values of $r_{\eta}$, $r_{\eta x}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following equations file:
 `applications/CHAC\_anisotropy/equations.h`

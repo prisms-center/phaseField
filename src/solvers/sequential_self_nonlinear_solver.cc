@@ -151,7 +151,7 @@ SequentialSelfNonlinearSolver<dim, degree, number>::solve()
         }
 
       // The solve will have updated the "old solution" vector with the newton update so
-      // it's technically the new solution. In order to update the solutions and perserve
+      // it's technically the new solution. In order to update the solutions and preserve
       // the old states we copy the old solution from above and swap.
       *(this->get_solution_handler().get_new_solution_vector(index)) = old_solution;
       this->get_solution_handler()

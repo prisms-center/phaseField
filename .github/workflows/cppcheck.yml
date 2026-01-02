@@ -50,4 +50,3 @@ jobs:
         - name: Run cppcheck
           run: |
             ./contrib/utilities/cppcheck.sh -j$(nproc)
-

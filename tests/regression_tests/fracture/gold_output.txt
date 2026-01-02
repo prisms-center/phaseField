@@ -31,7 +31,7 @@ initializing multgrid element volumes at level 7...
 Initializing solvers for solve block 0 ...
   no fields for this solver exist
   no fields for this solver exist
-initializing grid refiner...  grid refinment disabled...
+initializing grid refiner...  grid refinement disabled...
 solving 0th timestep for solve block 0 ...
    solving auxiliary variables...
   solving linear time-independent variables...
@@ -41,7 +41,7 @@ solving 0th timestep for solve block 0 ...
 outputting initial condition...
 Iteration: 0
   Solution index 0 l2-norm: 5.09902 integrated value: 1.52588e-05
-  Solution index 1 l2-norm: 0.485669 integrated value: 3.13599e-05 1.92903e-07 
+  Solution index 1 l2-norm: 0.485669 integrated value: 3.13599e-05 1.92903e-07
   Solution index 2 l2-norm: 30525.2 integrated value: -0.298384
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01
@@ -56,7 +56,7 @@ Iteration: 0
 
 Iteration: 6
   Solution index 0 l2-norm: 5.11949 integrated value: 2.11511e-05
-  Solution index 1 l2-norm: 0.486042 integrated value: 3.13572e-05 1.93264e-07 
+  Solution index 1 l2-norm: 0.486042 integrated value: 3.13572e-05 1.93264e-07
   Solution index 2 l2-norm: 620.354 integrated value: 0.0284768
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01
@@ -70,7 +70,7 @@ Iteration: 6
 
 Iteration: 12
   Solution index 0 l2-norm: 5.15255 integrated value: 2.28388e-05
-  Solution index 1 l2-norm: 0.486532 integrated value: 3.13533e-05 1.93706e-07 
+  Solution index 1 l2-norm: 0.486532 integrated value: 3.13533e-05 1.93706e-07
   Solution index 2 l2-norm: 592.22 integrated value: 0.0284713
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01
@@ -84,7 +84,7 @@ Iteration: 12
 
 Iteration: 18
   Solution index 0 l2-norm: 5.20679 integrated value: 2.4725e-05
-  Solution index 1 l2-norm: 0.48704 integrated value: 3.13507e-05 1.94157e-07 
+  Solution index 1 l2-norm: 0.48704 integrated value: 3.13507e-05 1.94157e-07
   Solution index 2 l2-norm: 567.001 integrated value: 0.0284659
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01
@@ -98,7 +98,7 @@ Iteration: 18
 
 Iteration: 24
   Solution index 0 l2-norm: 5.28092 integrated value: 2.66864e-05
-  Solution index 1 l2-norm: 0.48756 integrated value: 3.13489e-05 1.94613e-07 
+  Solution index 1 l2-norm: 0.48756 integrated value: 3.13489e-05 1.94613e-07
   Solution index 2 l2-norm: 544.645 integrated value: 0.0284605
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01
@@ -112,7 +112,7 @@ Iteration: 24
 
 Iteration: 30
   Solution index 0 l2-norm: 5.37405 integrated value: 2.87961e-05
-  Solution index 1 l2-norm: 0.488099 integrated value: 3.13484e-05 1.95079e-07 
+  Solution index 1 l2-norm: 0.488099 integrated value: 3.13484e-05 1.95079e-07
   Solution index 2 l2-norm: 524.879 integrated value: 0.0284551
   Solution index 3 l2-norm: 129 integrated value: 0.01
   Solution index 4 l2-norm: 129 integrated value: 0.01

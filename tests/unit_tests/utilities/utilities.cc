@@ -12,7 +12,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * This unit test looks at the compute stress utility funcition
+ * This unit test looks at the compute stress utility function
  */
 TEST_CASE("Compute stress")
 {

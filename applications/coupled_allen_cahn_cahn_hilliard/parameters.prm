@@ -43,24 +43,24 @@ set time step = 8.0e-4
 # The total number of timesteps to take
 set number steps = 150000
 
-# The number of ouputs and the frequency at which they output. The potential options
-# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE. 
+# The number of outputs and the frequency at which they output. The potential options
+# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE.
 subsection output
   set condition = EQUAL_SPACING
   set number = 10
 end
 
 # The boundary conditions for the variables. The available boundary conditions are
-# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and 
-# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann 
-# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is 
-# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and 
-# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc 
+# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and
+# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann
+# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is
+# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and
+# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc
 # files.
 set boundary condition for c = Natural
 set boundary condition for n = Natural
 
-# Model constants that are defined and accessed through CustomPDE. These constants 
+# Model constants that are defined and accessed through CustomPDE. These constants
 # are particular useful when defining system parameters that you may sweep over.
 set Model constant Mc = 1.0, DOUBLE
 set Model constant Mn = 150.0, DOUBLE
@@ -70,4 +70,3 @@ set Model constant center2 = (75,75,75), TENSOR
 set Model constant radius1 = 20.0, DOUBLE
 set Model constant radius2 = 8.33333333333, DOUBLE
 set Model constant matrix_concentration = 0.009, DOUBLE
-

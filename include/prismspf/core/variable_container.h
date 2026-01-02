@@ -991,13 +991,13 @@ private:
   get_q_point_location() const;
 
   /**
-   * @brief Initialize, read DOFs, and set evaulation flags for each variable.
+   * @brief Initialize, read DOFs, and set evaluation flags for each variable.
    */
   void
   reinit_and_eval(const std::vector<VectorType *> &src, unsigned int cell);
 
   /**
-   * @brief Initialize, read DOFs, and set evaulation flags for each variable.
+   * @brief Initialize, read DOFs, and set evaluation flags for each variable.
    */
   void
   reinit_and_eval(const VectorType &src, unsigned int cell);
@@ -1074,7 +1074,7 @@ private:
   Types::Index max_fields = Numbers::invalid_index;
 
   /**
-   * @brief Nax number of dependency types.
+   * @brief Max number of dependency types.
    */
   Types::Index max_dependency_types = Numbers::invalid_index;
 

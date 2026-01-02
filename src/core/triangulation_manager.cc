@@ -197,7 +197,7 @@ TriangulationManager<dim>::mark_periodic(const UserInputParameters<dim> &user_in
                     }
 
                   // Create a vector of matched pairs that we fill and enforce upon the
-                  // constaints
+                  // constraints
                   std::vector<dealii::GridTools::PeriodicFacePair<
                     typename Triangulation::cell_iterator>>
                     periodicity_vector;

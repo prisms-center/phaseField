@@ -11,7 +11,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * Due the generalized nature of PRISMS-PF and how we handle the solving of PDEs on the
  * backend, we end up with a slew of vectors that have to be managed and updated as we
- * solve fields. While we can stored these in hierarchical data structure to perserve the
+ * solve fields. While we can stored these in hierarchical data structure to preserve the
  * logic and intuition this becomes unwieldy on the backend and is less performant than
  * storing them in a flat structure or vector blocks.
  *
@@ -37,7 +37,7 @@ private:
   unsigned int n_blocks = 0;
 
   /**
-   * @brief Block vector of all neccessary vectors for the PDE problem.
+   * @brief Block vector of all necessary vectors for the PDE problem.
    */
   dealii::BlockVector<Number> block_vector;
 

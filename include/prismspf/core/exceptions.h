@@ -62,7 +62,7 @@ DeclExceptionMsg(UnreachableCode, "This code should not have been reached.");
 DeclException2(DependencyNotFound,
                Types::Index,
                std::string,
-               << "Attemped access of the variable with index " << arg1
+               << "Attempted access of the variable with index " << arg1
                << " and dependency type " << arg2
                << " that was not marked as needed. Please check CustomAttributeLoader.");
 

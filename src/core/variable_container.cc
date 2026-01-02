@@ -148,7 +148,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       // Grab the element volume
       const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       reinit_and_eval(src, cell);
 
       // Evaluate at each quadrature point
@@ -178,7 +178,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       // Grab the element volume
       const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       reinit_and_eval(src, cell);
 
       // Evaluate at each quadrature point
@@ -209,7 +209,7 @@ VariableContainer<dim, degree, number>::eval_local_operator(
       // Grab the element volume
       const SizeType element_volume = element_volume_handler->get_element_volume(cell);
 
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       reinit_and_eval(src, cell);
       reinit_and_eval(src_subset, cell);
 

@@ -238,7 +238,7 @@ private:
   // Temporal discretization parameters
   TemporalDiscretization temporal_discretization;
 
-  // Linear solve paramters
+  // Linear solve parameters
   LinearSolveParameters linear_solve_parameters;
 
   // Nonlinear solve parameters

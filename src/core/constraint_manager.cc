@@ -399,7 +399,7 @@ ConstraintManager<dim, degree, number>::make_periodic_constraints(
   const dealii::ComponentMask       &mask) const
 {
   // Create a vector of matched pairs that we fill and enforce upon the
-  // constaints
+  // constraints
   std::vector<
     dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
     periodicity_vector;
