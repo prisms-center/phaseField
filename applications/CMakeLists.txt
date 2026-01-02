@@ -43,7 +43,7 @@ foreach(app ${APPLICATIONS})
       "
     message(STATUS \"Building regression test: ${app}\")
     execute_process(
-      COMMAND ${CMAKE_COMMAND} 
+      COMMAND ${CMAKE_COMMAND}
         -S ${CMAKE_INSTALL_PREFIX}/applications/${app}/
       WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/applications/${app}
       RESULT_VARIABLE configure_result

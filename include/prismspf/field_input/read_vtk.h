@@ -248,7 +248,7 @@ ReadUnstructuredVTK<dim, number>::get_scalar_value(const dealii::Point<dim> &poi
                 "The provided vtk dataset does not contain a field named " +
                 scalar_name));
 
-  // Convet the dealii point to a vector
+  // Convert the dealii point to a vector
   std::vector<double> point_vector = dealii_point_to_vector<dim, double>(point);
 
   // Set the active scalar and update the reader
@@ -341,7 +341,7 @@ ReadUnstructuredVTK<dim, number>::get_vector_value(const dealii::Point<dim> &poi
                 "The provided vtk dataset does not contain a field named " +
                 vector_name));
 
-  // Convet the dealii point to a vector
+  // Convert the dealii point to a vector
   std::vector<double> point_vector = dealii_point_to_vector<dim, double>(point);
 
   // Set the active vector and update the reader

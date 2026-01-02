@@ -13,7 +13,7 @@ OpenDatabase(dbname)
 # Step 2: Add plots (using variable "n")
 # This variable must be in the range [0,1]
 # with 0 representing one phase, 1 representing another phase
-# and n=0.5 representing the midpoint accross the interface
+# and n=0.5 representing the midpoint across the interface
 AddPlot("Pseudocolor", "n")
 
 # Step 3: Draw the plots

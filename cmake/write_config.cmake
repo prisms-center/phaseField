@@ -2,7 +2,7 @@
 # Write the cmake config to a file
 #
 
-# Set the file pathes and remove any log files that may already exist
+# Set the file paths and remove any log files that may already exist
 set(detailed_log "${CMAKE_SOURCE_DIR}/detailed.log")
 set(summary_log "${CMAKE_SOURCE_DIR}/summary.log")
 file(

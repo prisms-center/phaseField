@@ -122,7 +122,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 }
 
 /**
- * @brief Remove whitepace from strings
+ * @brief Remove whitespace from strings
  */
 inline std::string
 strip_whitespace(const std::string &_text)

@@ -47,7 +47,7 @@ CustomAttributeLoader::load_variable_attributes()
 }
 
 // =============================================================================================
-// explicitEquationRHS (needed only if one or more equation is explict time
+// explicitEquationRHS (needed only if one or more equation is explicit time
 // dependent)
 // =============================================================================================
 // This function calculates the right-hand-side of the explicit time-dependent

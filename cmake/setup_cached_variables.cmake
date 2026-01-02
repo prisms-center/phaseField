@@ -32,7 +32,7 @@ message(STATUS "ADDITIONAL_OPTIMIZATIONS = ${ADDITIONAL_OPTIMIZATIONS}")
 
 option(
   ADDITIONAL_DEGREES
-  "Wether the user wants to enable the compilation of additional element degrees or not."
+  "Whether the user wants to enable the compilation of additional element degrees or not."
   OFF
 )
 message(STATUS "ADDITIONAL_DEGREES = ${ADDITIONAL_DEGREES}")

@@ -63,7 +63,7 @@ z_M c_M + z_+ c_+ + z_-c_- = 0.
 \end{equation}
 $$
 
-Thus, the concentrations are not independent of each other only two additional equations are required to describe the concentration evolution for all three species.  The concentrations of the effective metal cation and the supporting electrolyte cation are directly solved and the supporting anion concentration is eliminated via 
+Thus, the concentrations are not independent of each other only two additional equations are required to describe the concentration evolution for all three species.  The concentrations of the effective metal cation and the supporting electrolyte cation are directly solved and the supporting anion concentration is eliminated via
 
 $$
 \begin{equation}
@@ -79,7 +79,7 @@ $$
 \end{align}
 $$
 
-where $c_i =c_M, c_+$ and $\Phi$ is the electrostatic potential.  The last term of the right hand side of 
+where $c_i =c_M, c_+$ and $\Phi$ is the electrostatic potential.  The last term of the right hand side of
 
 $$
 \begin{align}
@@ -95,7 +95,7 @@ $$
 \end{equation}
 $$
 
-where 
+where
 
 $$
 \begin{equation}
@@ -115,7 +115,7 @@ where $i_{max,c}$ is the maximum reaction current density, $\beta$ is the the ch
 
 $$
 \begin{equation}
-i_{max,c}=\left( \frac{z_M F}{1-c_M V_M} \right) \left[ \frac{2\delta}{\tau}(c_{M,sat} - c_M ) + \left( D_M\nabla c_M +z_M\frac{F}{RT}D_M c_M \nabla \Phi \right) \cdot \mathbf{n} \right], 
+i_{max,c}=\left( \frac{z_M F}{1-c_M V_M} \right) \left[ \frac{2\delta}{\tau}(c_{M,sat} - c_M ) + \left( D_M\nabla c_M +z_M\frac{F}{RT}D_M c_M \nabla \Phi \right) \cdot \mathbf{n} \right],
 \end{equation}
 $$
 
@@ -128,7 +128,7 @@ $$
 $$
 
 ## Time Discretization
-The fields $\eta$, $\psi$, $c_M$ and $c_+$ are solved using an explicit Euler method for time integration. For  $\eta$ and $\psi$ we employ a splitting strategy to transform Eqs. 
+The fields $\eta$, $\psi$, $c_M$ and $c_+$ are solved using an explicit Euler method for time integration. For  $\eta$ and $\psi$ we employ a splitting strategy to transform Eqs.
 
 $$
 \begin{equation}
@@ -136,7 +136,7 @@ $$
  \end{equation}
 $$
 
-and 
+and
 
 $$
 \begin{equation}
@@ -160,7 +160,7 @@ $$
 \end{equation}
 $$
 
-where 
+where
 
 $$
 \begin{equation}
@@ -293,7 +293,7 @@ $$
 
 $$
 \begin{align}
-\int_{\Omega} \omega c_i^{n+1} dV &=\int_{\Omega} \omega \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n 
+\int_{\Omega} \omega c_i^{n+1} dV &=\int_{\Omega} \omega \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n
 +\frac{\Delta t D_i z_i F}{RT\psi^n}\nabla\psi^n\cdot(c_i^n\nabla \Phi^n) +\frac{\Delta t}{z_i F\psi^n} |\nabla\psi^n| i_{rxn}\right) dV
 \end{align}
 $$
@@ -306,7 +306,7 @@ $$
 
 $$
 \begin{align}
-r_{ci} &= \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n 
+r_{ci} &= \left( c_i^n+\frac{\Delta t D_i}{\psi^n}\nabla\psi^n\cdot\nabla c_i^n
 +\frac{\Delta t D_i z_i F}{RT\psi^n}\nabla\psi^n\cdot(c_i^n\nabla \Phi^n) +\frac{\Delta t}{z_i F\psi^n} |\nabla\psi^n| i_{rxn}\right)
 \end{align}
 $$

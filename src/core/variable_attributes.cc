@@ -464,7 +464,7 @@ VariableAttributes::compute_simplified_dependency_set(
   // Compute dependencies for a given eval_flag_set. Change and old flags are irrelevant,
   // so ignore those. If we have EvalFlags::nothing ignore it. If the dependency is
   // explicit or constant ignore it. If the dependency is itself ignore it so it doesn't
-  // interfere with the map and flag circularity. If the dependencys have different solve
+  // interfere with the map and flag circularity. If the dependencies have different solve
   // blocks ignore those as well.
   auto compute_dependencies = [&](const auto &eval_flag_set)
   {

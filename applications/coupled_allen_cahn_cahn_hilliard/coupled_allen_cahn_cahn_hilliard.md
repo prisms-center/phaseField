@@ -4,7 +4,7 @@ Consider a free energy expression of the form:
 
 $$
 \begin{equation}
-  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{\kappa}{2} \nabla  \eta  \cdot \nabla  \eta    ~dV 
+  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{\kappa}{2} \nabla  \eta  \cdot \nabla  \eta    ~dV
 \end{equation}
 $$
 
@@ -21,7 +21,7 @@ $$
 
 $$
 \begin{align}
-  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta 
+  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta
 \end{align}
 $$
 
@@ -36,7 +36,7 @@ $$
 
 $$
 \begin{align}
-  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H)) 
+  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H))
   \end{align}
 $$
 
@@ -44,17 +44,17 @@ and the PDE for Allen-Cahn dynamics is given by:
 
 $$
   \begin{align}
-    \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta 
+    \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta
 \end{align}
 $$
 
 $$
 \begin{align}
-  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta) 
+  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta)
 \end{align}
 $$
 
-where $M_c$ and $M_\eta$ are the constant mobilities. 
+where $M_c$ and $M_\eta$ are the constant mobilities.
 
 ## Time discretization
 Considering forward Euler explicit time stepping, we have the time discretized kinetics equation:
@@ -82,7 +82,7 @@ $$
 
 $$
 \begin{align}
-  &=\int_{\Omega}  w  \left(\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV 
+  &=\int_{\Omega}  w  \left(\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV
 \end{align}
 $$
 
@@ -98,7 +98,7 @@ r_{\eta x} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n}
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
@@ -120,7 +120,7 @@ $$
 
 $$
 \begin{align}
-r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] 
+r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ]
 \end{align}
 $$
 

@@ -15,7 +15,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * This unit tests looks at variable_attributes.h and variable_attribute_loader.h and how
- * the parser interpretes invalid user dependencies.
+ * the parser interprets invalid user dependencies.
  */
 TEST_CASE("Invalid dependencies")
 {

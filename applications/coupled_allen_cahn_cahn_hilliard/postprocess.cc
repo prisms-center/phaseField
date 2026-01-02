@@ -76,7 +76,7 @@ CustomPDE<dim, degree>::postProcessedFields(
   // Interpolation function and its derivative
   scalarvalueType h = (10.0 * n * n * n - 15.0 * n * n * n * n + 6.0 * n * n * n * n * n);
 
-  // The homogenous free energy
+  // The homogeneous free energy
   scalarvalueType f_chem = (constV(1.0) - h) * fa + h * fb;
 
   // The gradient free energy

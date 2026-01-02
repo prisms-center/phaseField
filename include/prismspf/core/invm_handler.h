@@ -111,14 +111,14 @@ private:
   bool vector_needed = false;
 
   /**
-   * @brief Field index of the first occuring scalar field. This is the index for which we
-   * attached the FEEvaluation objects to evaluate and initialize the invm vector.
+   * @brief Field index of the first occurring scalar field. This is the index for which
+   * we attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
   unsigned int scalar_index = Numbers::invalid_index;
 
   /**
-   * @brief Field index of the first occuring vector field. This is the index for which we
-   * attached the FEEvaluation objects to evaluate and initialize the invm vector.
+   * @brief Field index of the first occurring vector field. This is the index for which
+   * we attached the FEEvaluation objects to evaluate and initialize the invm vector.
    */
   unsigned int vector_index = Numbers::invalid_index;
 

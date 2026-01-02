@@ -41,11 +41,11 @@ $$
 \end{align}
 $$
 
-If surface tractions are zero: 
+If surface tractions are zero:
 
 $$
 \begin{align}
-R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0 
+R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0
 \end{align}
 $$
 
@@ -70,7 +70,7 @@ The discretized form of this equation can be written as a matrix inversion probl
 
 $$
 \begin{align}
-\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \epsilon (u+\alpha w) ~dV  \bigg{|}_{\alpha=0} 
+\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \epsilon (u+\alpha w) ~dV  \bigg{|}_{\alpha=0}
 \end{align}
 $$
 
@@ -82,13 +82,13 @@ $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha}\nabla(u+\alpha w)  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C) 
+&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha}\nabla(u+\alpha w)  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C)
 \end{align}
 $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV 
+&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV
 \end{align}
 $$
 

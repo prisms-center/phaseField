@@ -101,7 +101,7 @@ public:
            .get_spatial_discretization()
            .get_has_adaptivity())
       {
-        ConditionalOStreams::pout_base() << "  grid refinment disabled...\n"
+        ConditionalOStreams::pout_base() << "  grid refinement disabled...\n"
                                          << std::flush;
         return;
       }

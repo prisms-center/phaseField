@@ -12,4 +12,3 @@ for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALA
       const ConstraintHandler<dimension, degree, number> &,
       const dealii::Quadrature<1> &);
   }
-

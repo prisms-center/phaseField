@@ -1,4 +1,4 @@
-// Input file that is used with expand_template_instantations.cc 
+// Input file that is used with expand_template_instantiations.cc
 // to process .inst.in files into .in files
 
 // Scalar types

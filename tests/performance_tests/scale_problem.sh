@@ -42,7 +42,7 @@ for ((i=0; i<N_COPIES; i++)) ; do
 done
 rm "$APP_DIR/parameters_new.prm"
 
-# Compile and run 
+# Compile and run
 cd "$APP_DIR"
 make -j$(nproc)
 for ((i=0; i<3; i++)) ; do

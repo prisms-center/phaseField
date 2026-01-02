@@ -64,7 +64,7 @@ CustomPDE<dim, degree>::postProcessedFields(
 
   scalarvalueType f_tot = constV(0.0);
 
-  // The homogenous free energy
+  // The homogeneous free energy
   scalarvalueType f_chem =
     -0.5 * phi * phi + 0.25 * phi * phi * phi * phi +
     lambda * u * phi * (1.0 - 2.0 / 3.0 * phi * phi + 1.0 / 5.0 / phi * phi * phi * phi);

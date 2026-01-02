@@ -17,7 +17,7 @@ include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
 # Create a project for the application
 project(myapp CXX)
 
-# Set the overide for the src files
+# Set the override for the src files
 set(TARGET_SRC_OVERRIDE "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
 
 # Include the autopilot macro

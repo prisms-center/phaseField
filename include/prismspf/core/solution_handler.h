@@ -125,7 +125,7 @@ public:
                     const dealii::AffineConstraints<number> &constraints);
 
   /**
-   * @brief Apply intial condition to the old fields. For now, this simply copies the
+   * @brief Apply initial condition to the old fields. For now, this simply copies the
    * values in the normal field to the old.
    *
    * TODO (landinjm): What should we do for the initial condition of old fields.
