@@ -89,7 +89,7 @@ CustomAttributeLoader::load_variable_attributes()
 }
 
 // =============================================================================================
-// explicitEquationRHS (needed only if one or more equation is explict time
+// explicitEquationRHS (needed only if one or more equation is explicit time
 // dependent)
 // =============================================================================================
 // This function calculates the right-hand-side of the explicit time-dependent
@@ -111,7 +111,7 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Parameters in the explicit equations can be set here  ---
 
   // Timestep
-  scalarvalueType delt = constV(userInputs.dtValue);
+  scalarvalueType dt = constV(userInputs.dtValue);
 
   // The order parameter and its derivatives
   scalarvalueType n = variable_list.template get_value<ScalarValue>(0);
@@ -123,7 +123,7 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType psi  = variable_list.template get_value<ScalarValue>(2);
   scalargradType  psix = variable_list.template get_gradient<ScalarGrad>(2);
 
-  // The chemical potential of the domain patameter
+  // The chemical potential of the domain parameter
   scalargradType mupsix = variable_list.template get_gradient<ScalarGrad>(3);
 
   // The concentration of metal ion and its derivatives
@@ -160,7 +160,7 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType v = -constV(VMV / (zMV * FarC)) * irxn;
   // The mobility (including dependence of psi
   scalarvalueType MnV = MconstV * psi * std::abs(irxn);
-  // Products needed to calculate the concentraion residual terms
+  // Products needed to calculate the concentration residual terms
   // Miscellaneous dot products
   scalarvalueType psixcMx    = constV(0.0);
   scalarvalueType psixcPx    = constV(0.0);
@@ -176,27 +176,27 @@ CustomPDE<dim, degree>::explicitEquationRHS(
     }
 
   // --- Calculation of residual terms for n  ---
-  scalarvalueType rnV  = n + v * delt * magpsix;
-  scalargradType  rnxV = -MnV * delt * mux;
+  scalarvalueType rnV  = n + v * dt * magpsix;
+  scalargradType  rnxV = -MnV * dt * mux;
 
   // --- Calculation of residual terms for psi ---
-  scalarvalueType rpsiV  = psi - v * delt * magpsix;
-  scalargradType  rpsixV = -MnV * delt * mupsix;
+  scalarvalueType rpsiV  = psi - v * dt * magpsix;
+  scalargradType  rpsixV = -MnV * dt * mupsix;
 
   // --- Calculation of residual terms for cM ---
   scalarvalueType rcMV =
-    cM + delt * (constV(DMV) * invpsi * psixcMx +
-                 constV(DMV * zMV * FarC / (RV * TV)) * psixcMPhix * invpsi +
-                 constV(1.0 / (zMV * FarC)) * invpsi * magpsix * irxn);
+    cM + dt * (constV(DMV) * invpsi * psixcMx +
+               constV(DMV * zMV * FarC / (RV * TV)) * psixcMPhix * invpsi +
+               constV(1.0 / (zMV * FarC)) * invpsi * magpsix * irxn);
   scalargradType rcMxV =
-    -delt * (DMV * cMx + constV(DMV * zMV * FarC / (RV * TV)) * cM * Phix);
+    -dt * (DMV * cMx + constV(DMV * zMV * FarC / (RV * TV)) * cM * Phix);
 
   // --- Calculation of residual terms for cP ---
   scalarvalueType rcPV =
-    cP + delt * (constV(DPV) * invpsi * psixcPx +
-                 constV(DPV * zPV * FarC / (RV * TV)) * psixcPPhix * invpsi);
+    cP + dt * (constV(DPV) * invpsi * psixcPx +
+               constV(DPV * zPV * FarC / (RV * TV)) * psixcPPhix * invpsi);
   scalargradType rcPxV =
-    -delt * (DPV * cPx + constV(DPV * zPV * FarC / (RV * TV)) * cP * Phix);
+    -dt * (DPV * cPx + constV(DPV * zPV * FarC / (RV * TV)) * cP * Phix);
 
   // --- Submitting the terms for the governing equations ---
   // Residuals terms for the equation to evolve the order parameter

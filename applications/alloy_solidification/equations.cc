@@ -78,10 +78,10 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   // Anisotropic term
   ScalarValue a_n = 1.0 + (epsilon * c4th);
 
-  // coeffcient before phi
+  // coefficient before phi
   ScalarValue tau_phi = (1.0 + (1.0 - k) * U) * a_n * a_n;
 
-  // coeffcient before U
+  // coefficient before U
   ScalarValue tau_U = (((1.0 + k) / 2.0) - ((1.0 - k) * phi / 2.0));
 
   // Antitrapping term
@@ -167,7 +167,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       // Define the terms in the equations
       ScalarValue eq_xi =
         phi - (phi * phi * phi) -
-        (lamda * (1.0 - phi * phi) * (1.0 - phi * phi) * (U + tep + U_off));
+        (lambda * (1.0 - phi * phi) * (1.0 - phi * phi) * (U + tep + U_off));
 
       ScalarGrad eqx_xi = -aniso;
 

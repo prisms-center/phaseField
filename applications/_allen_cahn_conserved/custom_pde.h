@@ -179,7 +179,7 @@ CustomPDE<dim, degree>::solveIncrement(bool skip_time_dependent)
 
   // Now, update the non-explicit variables
   // For the time being, this is just the elliptic equations, but implicit
-  // parabolic and auxilary equations should also be here
+  // parabolic and auxiliary equations should also be here
   if (this->hasNonExplicitEquation)
     {
       bool         nonlinear_iteration_converged = false;

@@ -20,7 +20,7 @@ SetPlotOptions(ContourAtts)
 # Step 3: Draw the plots
 DrawPlots()
 
-# Step 4: Get the spacial extents
+# Step 4: Get the spatial extents
 Query("SpatialExtents")
 gpq = GetQueryOutputValue()
 # Extracting number of coordinate limits

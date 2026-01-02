@@ -30,7 +30,7 @@ SetPlotOptions(ContourAtts)
 # Step 3: Draw the plots
 DrawPlots()
 
-# Step 4: Get the spacial extents
+# Step 4: Get the spatial extents
 Query("SpatialExtents")
 gpq = GetQueryOutputValue()
 # Extracting number of coordinate limits
@@ -73,7 +73,7 @@ nsx = int(nmax * lv[0] / max(lv))
 nsy = int(nmax * lv[1] / max(lv))
 nsz = int(nmax * lv[2] / max(lv))
 
-# Step 5: Resample the data to create a strucutured mesh
+# Step 5: Resample the data to create a structured mesh
 # Adding the Resample Operator
 AddOperator("Resample")
 # The object r contains the Resample Operator Attributes

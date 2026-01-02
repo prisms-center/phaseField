@@ -494,7 +494,7 @@ InputFileReader::declare_output_parameters()
       "condition",
       "EQUAL_SPACING",
       dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
-      "The spacing type for outputing the solution fields (either EQUAL_SPACING, "
+      "The spacing type for outputting the solution fields (either EQUAL_SPACING, "
       "LOG_SPACING, N_PER_DECADE, or LIST).");
     parameter_handler.declare_entry(
       "list",
@@ -516,7 +516,7 @@ InputFileReader::declare_output_parameters()
       "false",
       dealii::Patterns::Bool(),
       "Whether to print the summary table of the wall time and wall time for "
-      "indiviual subroutines every time the code outputs.");
+      "individual subroutines every time the code outputs.");
   }
   parameter_handler.leave_subsection();
 }
@@ -830,7 +830,7 @@ InputFileReader::declare_grain_loading_parameters()
   //                                                                 input
   //                                                                 // parameters.prm
   //                                                                 file,
-  //                                                                 // deafault setting
+  //                                                                 // default setting
   //                                                                 is
   //                                                                 // unstructured
   //                                                                 mesh

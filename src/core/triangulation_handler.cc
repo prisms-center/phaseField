@@ -169,7 +169,7 @@ TriangulationHandler<dim>::generate_mesh()
            !user_inputs->get_spatial_discretization().get_has_adaptivity(),
          dealii::ExcMessage(
            "Currently, we don't allow the initial refinement to be lower than the "
-           "maximum adpative refinement level when using multigrid. This is because we "
+           "maximum adaptive refinement level when using multigrid. This is because we "
            "have to create a sequence of coarser meshes."));
 
   coarsened_triangulations =
@@ -259,7 +259,7 @@ TriangulationHandler<dim>::mark_periodic()
                   periodic_ids.insert(boundary_id);
 
                   // Create a vector of matched pairs that we fill and enforce upon the
-                  // constaints
+                  // constraints
                   std::vector<dealii::GridTools::PeriodicFacePair<
                     typename Triangulation::cell_iterator>>
                     periodicity_vector;

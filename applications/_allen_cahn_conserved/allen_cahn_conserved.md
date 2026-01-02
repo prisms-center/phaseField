@@ -8,12 +8,12 @@ Consider a free energy expression of the form:
 
 $$
 \begin{equation}
-  \Pi(\eta, \nabla  \eta) = \int_{\Omega}    f( \eta ) + \frac{\kappa}{2} \nabla  \eta  \cdot \nabla  \eta    ~dV, 
+  \Pi(\eta, \nabla  \eta) = \int_{\Omega}    f( \eta ) + \frac{\kappa}{2} \nabla  \eta  \cdot \nabla  \eta    ~dV,
 \end{equation}
 $$
 
 where $\eta$ is the structural order parameter, and $\kappa$ is the gradient length scale parameter.
-	
+
 ## Variational treatment
 
 Considering variations on the primal field $\eta$ of the from $\eta+\epsilon w$, we have
@@ -79,7 +79,7 @@ A &= \frac{M}{V}\int_\Omega \mu \,dV.
 \end{align}
 $$
 
-Subsituting $A$ from
+Substituting $A$ from
 
 $$
 \begin{align}
@@ -87,7 +87,7 @@ A &= \frac{M}{V}\int_\Omega \mu \,dV.
 \end{align}
 $$
 
-into 
+into
 
 $$
 \begin{align}
@@ -127,7 +127,7 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-\int_{\Omega}   w \eta^{n+1} ~dV&= \int_{\Omega}  w [ \eta^{n} - \Delta t M(\mu^n-\bar{\mu}^n) ]~dV 
+\int_{\Omega}   w \eta^{n+1} ~dV&= \int_{\Omega}  w [ \eta^{n} - \Delta t M(\mu^n-\bar{\mu}^n) ]~dV
 \end{align}
 $$
 
@@ -141,13 +141,13 @@ and
 
 $$
 \begin{align}
-\int_{\Omega}   w \mu^{n+1} ~dV&= \int_{\Omega} [w f_{,\eta}^n - w \kappa \Delta \eta^{n}]~dV 
+\int_{\Omega}   w \mu^{n+1} ~dV&= \int_{\Omega} [w f_{,\eta}^n - w \kappa \Delta \eta^{n}]~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   w (  f_{,\eta}^{n} )  + \nabla w \cdot (\kappa \nabla \eta^{n}) ~dV, 
+&= \int_{\Omega}   w (  f_{,\eta}^{n} )  + \nabla w \cdot (\kappa \nabla \eta^{n}) ~dV,
 \end{align}
 $$
 
@@ -159,7 +159,7 @@ $$
 
 $$
 \begin{align}
-r_{\mu} &=  f_{,\eta}^{n} 
+r_{\mu} &=  f_{,\eta}^{n}
 \end{align}
 $$
 
@@ -167,7 +167,7 @@ where the reference chemical potential $\bar{\mu}^n$ for time step $n$ in
 
 $$
 \begin{align}
-\int_{\Omega}   w \eta^{n+1} ~dV&= \int_{\Omega}  w [ \eta^{n} - \Delta t M(\mu^n-\bar{\mu}^n) ]~dV 
+\int_{\Omega}   w \eta^{n+1} ~dV&= \int_{\Omega}  w [ \eta^{n} - \Delta t M(\mu^n-\bar{\mu}^n) ]~dV
 \end{align}
 $$
 

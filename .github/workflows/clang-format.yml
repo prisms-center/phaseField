@@ -1,6 +1,6 @@
 name: Clang-Format Check
 
-on: 
+on:
   push:
     branches:
       - master

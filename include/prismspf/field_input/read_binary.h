@@ -166,7 +166,7 @@ ReadBinary<dim, number>::check_file_size()
   auto file_size = std::filesystem::file_size(this->ic_file.filename);
 
   // Compute the expected size of the binary file. This is simply the number of points
-  // mutliplied by the size of each point in bytes.
+  // multiplied by the size of each point in bytes.
   auto expected_size_scalar = static_cast<std::uintmax_t>(n_points * sizeof(number));
   auto expected_size_vector = static_cast<std::uintmax_t>(dim * expected_size_scalar);
 

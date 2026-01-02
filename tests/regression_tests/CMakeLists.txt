@@ -44,7 +44,7 @@ foreach(test_app ${REGRESSION_TEST_APPS})
       "
     message(STATUS \"Building regression test: ${test_app}\")
     execute_process(
-      COMMAND ${CMAKE_COMMAND} 
+      COMMAND ${CMAKE_COMMAND}
         -DCMAKE_BUILD_TYPE=Release
         -S ${CMAKE_INSTALL_PREFIX}/tests/regression_tests/${test_app}/
       WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/tests/regression_tests/${test_app}

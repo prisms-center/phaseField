@@ -38,7 +38,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   else if (index == 1)
     {
       // For the order parameter, we just place a small seed. Note that
-      // the order parameter ranges from -1 to 1 in thi model.
+      // the order parameter ranges from -1 to 1 in this model.
       for (unsigned int dir = 0; dir < dim; dir++)
         {
           dist += (point[dir] -
