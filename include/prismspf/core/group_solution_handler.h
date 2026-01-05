@@ -70,16 +70,35 @@ public:
   get_solution_full_vector(unsigned int relative_level = 0);
 
   /**
+   * @brief Get the const solution vector set. This contains all the normal fields and is
+   * typically used for output.
+   */
+  [[nodiscard]] const BlockVector &
+  get_solution_full_vector(unsigned int relative_level = 0) const;
+
+  /**
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] SolutionVector &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
 
   /**
+   * @brief Get a solution vector of a given field index.
+   */
+  [[nodiscard]] const SolutionVector &
+  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
+
+  /**
    * @brief Get the old solution vector set at a given age.
    */
   [[nodiscard]] BlockVector &
   get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the old solution vector set at a given age.
+   */
+  [[nodiscard]] const BlockVector &
+  get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0) const;
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
@@ -90,10 +109,24 @@ public:
                           unsigned int relative_level = 0);
 
   /**
+   * @brief Get a solution vector of a given field index at a given age.
+   */
+  [[nodiscard]] const SolutionVector &
+  get_old_solution_vector(unsigned int age,
+                          unsigned int global_index,
+                          unsigned int relative_level = 0) const;
+
+  /**
    * @brief Get the "new" solution vector set.
    */
   [[nodiscard]] BlockVector &
   get_new_solution_full_vector(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the "new" solution vector set.
+   */
+  [[nodiscard]] const BlockVector &
+  get_new_solution_full_vector(unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the "new" solution vector of a given field index.
@@ -102,16 +135,34 @@ public:
   get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
 
   /**
-   * @brief Get the matrix_free object at a level.
+   * @brief Get the "new" solution vector of a given field index.
+   */
+  [[nodiscard]] const SolutionVector &
+  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0) const;
+
+  /**
+   * @brief Get the solutions object at a level.
    */
   [[nodiscard]] SolutionLevel<dim, number> &
   get_solution_level(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the solutions object at a level.
+   */
+  [[nodiscard]] const SolutionLevel<dim, number> &
+  get_solution_level(unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the matrix_free object at a level.
    */
   [[nodiscard]] MatrixFree &
   get_matrix_free(unsigned int relative_level = 0);
+
+  /**
+   * @brief Get the matrix_free object at a level.
+   */
+  [[nodiscard]] const MatrixFree &
+  get_matrix_free(unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the block index from the global index.
