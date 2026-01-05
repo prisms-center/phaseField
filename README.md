@@ -11,7 +11,7 @@
 
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
-[User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/manual.html ) <br>
+[User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/) <br>
 [User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8) <br>
@@ -40,7 +40,7 @@ For DOI information for other releases, please refer to [this site](https://doi.
 
 ## Quick start guide:
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen_files/manual.html). A (very) abbreviated version of the instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen/). A (very) abbreviated version of the instructions is given below.
 
 ### Install:
 
@@ -63,7 +63,7 @@ here `<nprocs>` denotes the number of threads you want to use to compile the lib
 
 ### Running a pre-built application:
 
-Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/running_apps.html) for full details including instructions for visualization of the results.
+Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/) for full details including instructions for visualization of the results.
 
 Examples of various phase field models are located under the
 applications directory. The easiest way to get started on the code is to
