@@ -110,6 +110,10 @@ public:
   bool
   operator<(const SolveGroup &other) const
   {
+    // TODO: Ensure that the pde_type enum is defined in the proper order.
+    // Swap Explicit and ImplicitTimeDependent?
+    // Constant | ExplicitTimeDependent | Explicit | ImplicitTimeDependent | Implicit |
+    // Postprocess
     if (pde_type < other.pde_type)
       {
         return true;
