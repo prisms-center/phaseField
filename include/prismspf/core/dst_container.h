@@ -18,15 +18,12 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/dependencies.h"
 #include "prismspf/core/field_attributes.h"
-#include "prismspf/core/solution_handler.h"
 #include "prismspf/core/solve_group.h"
 #include "prismspf/core/variable_attributes.h"
 
 #include <memory>
 #include <type_traits>
-#include <variant>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -44,7 +41,7 @@ class ElementVolume;
  * double or float.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class FieldContainer
+class DSTContainer
 {
 public:
   using TensorRank = FieldInfo::TensorRank;
@@ -111,16 +108,16 @@ public:
   using GetRankFromGrad = GetRankHelper<GradType>::rank_from_grad;
 
   template <TensorRank Rank>
-  std::vector<FEEval<Rank>> &
+  std::vector<FEEval<Rank>>
   get_relevant_feeval_vector()
   {
     if constexpr (Rank == TensorRank::Scalar)
       {
-        return dst_feeval_scalar;
+        return feeval_scalar;
       }
     else if constexpr (Rank == TensorRank::Vector)
       {
-        return dst_feeval_vector;
+        return feeval_vector;
       }
   }
 
@@ -137,9 +134,10 @@ public:
   /**
    * @brief Constructor.
    */
-  FieldContainer(
-    const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const SolveGroup                                                       &_solve_group);
+  DSTContainer(const dealii::MatrixFree<dim, number, ScalarValue> &data,
+               const SolveGroup                                   &_solve_group,
+               const std::vector<FieldAttributes>                 &_field_attributes,
+               SolutionIndexer<dim, number>                       &_solution_indexer);
 
   /**
    * @brief Initialize based on cell for all dependencies.
@@ -155,7 +153,6 @@ public:
   set_value_term(Types::Index global_variable_index, const ValType &val)
   {
     get_relevant_feeval_vector<GetRankFromVal<ValType>>()[global_variable_index]
-      .template get<type>()
       .submit_value(val, q_point);
   }
 
@@ -167,9 +164,14 @@ public:
   set_gradient_term(Types::Index global_variable_index, const GradType &val)
   {
     get_relevant_feeval_vector<GetRankFromGrad<GradType>>()[global_variable_index]
-      .template get<type>()
       .submit_gradient(val, q_point);
   }
+
+  /**
+   * @brief Check that a value is valid for submission.
+   */
+  void
+  submission_valid(Types::Index field_index, DependencyType dependency_type) const;
 
 private:
   /**
@@ -191,9 +193,7 @@ private:
   struct FEEValuationDeps
   {
     using FEEDepPairPtr = std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>;
-    FEEDepPairPtr                                            fe_eval;
-    FEEDepPairPtr                                            fe_eval_change;
-    std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
+    FEEDepPairPtr fe_eval;
     /**
      * @brief The solution group and the block index
      * @note It would look nicer to just use the SolutionIndexer, but this way decreases
@@ -201,140 +201,14 @@ private:
      */
     const SolutionLevel<dim, number> *solution_level = nullptr;
     unsigned int                      block_index    = -1;
-
-    FEEValuationDeps(
-      const Dependencies::Dependency                             &dependency,
-      std::pair<const SolutionLevel<dim, number> *, unsigned int> mf_id_pair)
-      : solution_level(mf_id_pair.first)
-      , block_index(mf_id_pair.second)
-    {
-      if (dependency.flag)
-        {
-          fe_eval =
-            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
-        }
-      if (dependency.change_flag)
-        {
-          fe_eval_change =
-            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (dependency.old_flags.at(age))
-            {
-              fe_eval_old[age] =
-                std::make_unique<FEEvaluationType>(solution_level->matrix_free,
-                                                   block_index);
-            }
-        }
-    }
-
-    template <DependencyType type>
-    FEEvaluationType &
-    get()
-    {
-      if constexpr (type == DependencyType::Normal)
-        {
-          return *fe_eval;
-        }
-      else if constexpr (type == DependencyType::Change)
-        {
-          return *fe_eval_change;
-        }
-      else
-        {
-          return *fe_eval_old[int(type)];
-        }
-    }
-
-    void
-    reinit(unsigned int cell)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-        }
-      if (fe_eval_change)
-        {
-          fe_eval_change->first.reinit(cell);
-        }
-      for (auto &old_fe_eval : fe_eval_old)
-        {
-          if (old_fe_eval)
-            {
-              old_fe_eval->first.reinit(cell);
-            }
-        }
-    }
-
-    void
-    eval()
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      if (fe_eval_change)
-        {
-          fe_eval_change->first.read_dof_values_plain(
-            solution_level->change_solutions.block(block_index));
-          fe_eval_change->first.evaluate(fe_eval_change->second);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-    }
-
-    void
-    reinit_and_eval(unsigned int cell)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      if (fe_eval_change)
-        {
-          fe_eval_change->first.reinit(cell);
-          fe_eval_change->first.read_dof_values_plain(
-            solution_level->change_solutions.block(block_index));
-          fe_eval_change->first.evaluate(fe_eval_change->second);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.reinit(cell);
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-    }
   };
 
-  const std::vector<FieldAttributes> *field_attributes_ptr;
-  const SolveGroup                   *solve_group;
-  EquationType                        equation_type;
-  unsigned int                        relative_level;
-
-  std::vector<std::unique_ptr<ScalarFEEvaluation>> dst_feeval_scalar;
-  std::vector<std::unique_ptr<VectorFEEvaluation>> dst_feeval_vector;
-
-  /**
-   * @brief The element volume container
-   */
-  const ElementVolume<dim, degree, number> *element_volume_handler;
+  const std::vector<FieldAttributes>              *field_attributes_ptr;
+  const SolveGroup                                *solve_group;
+  const SolutionIndexer<dim, number>              *solution_indexer;
+  unsigned int                                     relative_level;
+  std::vector<std::unique_ptr<ScalarFEEvaluation>> feeval_scalar;
+  std::vector<std::unique_ptr<VectorFEEvaluation>> feeval_vector;
 
   /**
    * @brief The quadrature point index.
