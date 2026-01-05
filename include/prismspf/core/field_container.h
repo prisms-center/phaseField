@@ -135,11 +135,10 @@ public:
   /**
    * @brief Constructor.
    */
-  FieldContainer(
-    const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-    const SolveGroup                                                       &_solve_group,
-    const ElementVolume<dim, degree, number> &_element_volume,
-    const std::vector<Types::Index>          &_global_to_local_solution);
+  FieldContainer(const dealii::MatrixFree<dim, number, ScalarValue> &data,
+                 const SolveGroup                                   &_solve_group,
+                 const std::vector<FieldAttributes>                 &_field_attributes,
+                 SolutionIndexer<dim, number>                       &_solution_indexer);
 
   /**
    * @brief Initialize based on cell for all dependencies.

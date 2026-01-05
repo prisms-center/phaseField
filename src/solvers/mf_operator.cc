@@ -37,7 +37,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 MFOperator<dim, degree, number>::MFOperator(
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator, )
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
   : MATRIX_FREE_OPERATOR_BASE()
   , pde_operator(_pde_operator)
 {}
@@ -72,7 +72,6 @@ MFOperator<dim, degree, number>::compute_local_operator(
   // races.
   FieldContainer<dim, degree, number> variable_list(_data,
                                                     attributes_list,
-                                                    *element_volume_handler,
                                                     global_to_local_solution,
                                                     SolveType::ExplicitRHS);
 
@@ -302,7 +301,7 @@ void
 MFOperator<dim, degree, number>::vmult(SolutionVector       &dst,
                                        const SolutionVector &src) const
 {
-  compute_lhs(dst, src);
+  compute_operator(dst, src);
 }
 
 // NOLINTBEGIN(readability-identifier-naming)
