@@ -23,11 +23,7 @@
 #include "prismspf/core/solution_indexer.h"
 #include "prismspf/core/solve_group.h"
 
-#include <functional>
 #include <memory>
-#include <string>
-#include <type_traits>
-#include <utility>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -35,14 +31,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 FieldContainer<dim, degree, number>::FieldContainer(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-  const std::vector<FieldAttributes>       &_field_attributes,
-  const SolveGroup                         &_solve_group,
-  const DependencySet                      &dependency_map,
-  SolutionIndexer<dim, number>             &_solution_indexer,
-  const ElementVolume<dim, degree, number> &_element_volume)
+  const std::set<unsigned int>                                           &_field_indices,
+  const std::vector<FieldAttributes> &_field_attributes,
+  SolutionIndexer<dim, number>       &_solution_indexer,
+  const DependencySet                &dependency_map)
   : field_attributes_ptr(&_field_attributes)
   , solve_group(&_solve_group)
-  , element_volume_handler(&_element_volume)
 {
   const std::vector<FieldAttributes> field_attributes;
   // Initialize the feeval vectors
