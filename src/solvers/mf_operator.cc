@@ -37,13 +37,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 MFOperator<dim, degree, number>::MFOperator(
-  std::map<unsigned int, VariableAttributes>              _attributes_list,
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator,
-  Types::Index                                            _solve_block,
-  Types::Index                                            _index,
-  bool                                                    _use_local_mapping)
+  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator, )
   : MATRIX_FREE_OPERATOR_BASE()
-  , attributes_list(_attributes_list)
   , pde_operator(_pde_operator)
 {}
 

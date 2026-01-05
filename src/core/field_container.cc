@@ -189,6 +189,6 @@ FieldContainer<dim, degree, number>::integrate_and_distribute()
     }
 }
 
-#include "core/variable_container.inst"
+// #include "core/field_container.inst"
 
 PRISMS_PF_END_NAMESPACE

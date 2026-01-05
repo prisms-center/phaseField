@@ -59,10 +59,7 @@ public:
    * @brief Initialize operator.
    */
   void
-  initialize(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-             const ElementVolume<dim, degree, number>           &_element_volume_handler,
-             const std::vector<unsigned int>                    &selected_field_indexes =
-               std::vector<unsigned int>());
+  initialize(const dealii::MatrixFree<dim, number, ScalarValue> &_data);
 
   // public:
   /**
@@ -100,7 +97,7 @@ private:
 
 public:
   /**
-   * @brief Compute the element volume. (And store in this object?)
+   * @brief Compute the element volume. (And store in this object? void?)
    */
   void
   compute_element_volume();

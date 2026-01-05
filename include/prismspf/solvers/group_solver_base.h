@@ -168,6 +168,8 @@ protected:
   GroupSolutionHandler<dim, number>            solutions;
   std::vector<MFOperator<dim, degree, number>> mf_operators;
 
+  std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
+
   /**
    * @brief Solver context.
    */

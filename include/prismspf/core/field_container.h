@@ -139,8 +139,7 @@ public:
     const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
     const SolveGroup                                                       &_solve_group,
     const ElementVolume<dim, degree, number> &_element_volume,
-    const std::vector<Types::Index>          &_global_to_local_solution,
-    EquationType                              _equation_side);
+    const std::vector<Types::Index>          &_global_to_local_solution);
 
   /**
    * @brief Initialize based on cell for all dependencies.
