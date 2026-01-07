@@ -5,6 +5,7 @@
 
 #include <prismspf/core/types.h>
 
+#include <prismspf/solvers/group_linear_solver.h>
 #include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/mf_operator.h>
 
@@ -19,7 +20,7 @@ class SolverContext;
  * @brief This class handles the explicit solves of all explicit fields
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class ExplicitSolver : public GroupSolverBase<dim, degree, number>
+class NewtonSolver : public LinearSolver<dim, degree, number>
 {
 public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
@@ -31,45 +32,45 @@ public:
   /**
    * @brief Constructor.
    */
-  ExplicitSolver(SolveGroup                                _solve_group,
-                 const SolverContext<dim, degree, number> &_solver_context)
+  NewtonSolver(SolveGroup                                _solve_group,
+               const SolverContext<dim, degree, number> &_solver_context)
     : GroupSolverBase(_solve_group, _solver_context)
   {}
 
   /**
    * @brief Destructor.
    */
-  ~ExplicitSolver() override = default;
+  ~NewtonSolver() override = default;
 
   /**
    * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitSolver(const ExplicitSolver &solver_base) = delete;
+  NewtonSolver(const NewtonSolver &solver_base) = delete;
 
   /**
    * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
-  ExplicitSolver &
-  operator=(const ExplicitSolver &solver_base) = delete;
+  NewtonSolver &
+  operator=(const NewtonSolver &solver_base) = delete;
 
   /**
    * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitSolver(ExplicitSolver &&solver_base) noexcept = delete;
+  NewtonSolver(NewtonSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
-  ExplicitSolver &
-  operator=(ExplicitSolver &&solver_base) noexcept = delete;
+  NewtonSolver &
+  operator=(NewtonSolver &&solver_base) noexcept = delete;
 
   /**
    * @brief Initialize the solver.
@@ -105,7 +106,7 @@ private:
   /**
    * @brief Matrix free operators for each level
    */
-  // std::vector<MFOperator<dim, degree, number>> mf_operators;
+  std::vector<MFOperator<dim, degree, number>> lhs_mf_operators;
 };
 
 PRISMS_PF_END_NAMESPACE
