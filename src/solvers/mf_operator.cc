@@ -8,8 +8,9 @@
 #include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/dst_container.h>
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/variable_container.h>
+#include <prismspf/core/field_container.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -22,10 +23,8 @@
 #include "prismspf/core/group_solution_handler.h"
 #include "prismspf/core/solve_group.h"
 
-#include <map>
 #include <memory>
 #include <utility>
-#include <vector>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
 #  include <deal.II/base/enable_observer_pointer.h>
@@ -36,24 +35,9 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-MFOperator<dim, degree, number>::MFOperator(
-  std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
-  : MATRIX_FREE_OPERATOR_BASE()
-  , pde_operator(_pde_operator)
-{}
-
-template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::initialize(
-  std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>> _data)
-{
-  data = _data;
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-MFOperator<dim, degree, number>::compute_operator(SolutionVector       &dst,
-                                                  const SolutionVector &src) const
+MFOperator<dim, degree, number>::compute_operator(BlockVector       &dst,
+                                                  const BlockVector &src) const
 {
   data->cell_loop(&MFOperator::compute_local_operator, this, dst, src, true);
 }
@@ -61,40 +45,48 @@ MFOperator<dim, degree, number>::compute_operator(SolutionVector       &dst,
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MFOperator<dim, degree, number>::compute_local_operator(
-  const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-  SolutionVector                                     &dst,
-  const SolutionVector                               &src,
-  const std::pair<unsigned int, unsigned int>        &cell_range) const
+  const MatrixFree                            &_data,
+  BlockVector                                 &dst,
+  const BlockVector                           &src,
+  const std::pair<unsigned int, unsigned int> &cell_range) const
 {
-  // Constructor for FEEvaluation objects
+  // Construct FEEvaluation objects
   // The reason this is constructed here, rather than as a private member is because
   // compute_local_rhs is called by cell_loop, which multithreads. There would be data
   // races.
-  FieldContainer<dim, degree, number> variable_list(_data,
-                                                    attributes_list,
-                                                    global_to_local_solution,
-                                                    SolveType::ExplicitRHS);
+  FieldContainer<dim, degree, number> variable_list(1 /*args*/);
+  DSTContainer<dim, degree, number>   dst_fields(solve_group.field_indices,
+                                               field_attributes,
+                                               *data,
+                                               field_to_block_index);
 
   // Initialize, evaluate, and submit based on user function.
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Grab the element volume
-      const ScalarValue element_volume = element_volume_handler->get_element_volume(cell);
+      // const ScalarValue element_volume =
+      // element_volume_handler->get_element_volume(cell);
 
       // Initialize, read DOFs, and set evaulation flags for each variable
       variable_list.reinit_and_eval(cell);
+      dst_fields.reinit(cell);
 
       // Evaluate the user-defined pde at each quadrature point
       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
         {
+          variable_list.set_q_point(quad);
+          dst_fields.set_q_point(quad);
           // Evaluate the function pointer (the user-defined pde)
-          pde_operator->*pde_op(variable_list,
-                                variable_list.get_q_point_location(),
-                                element_volume);
+          pde_operator->*pde_op(variable_list, dst_fields);
         }
 
       // Integrate and add to global vector dst
-      variable_list.integrate_and_distribute(dst);
+      for (unsigned int field_index : solve_group.field_indices)
+        {
+          dst_fields.integrate_and_distribute(field_index,
+                                              dst.block(
+                                                field_to_block_index[field_index]));
+        }
     }
 }
 
@@ -115,8 +107,7 @@ MFOperator<dim, degree, number>::compute_diagonal()
       Assert(inverse_diagonal.local_element(i) > static_cast<number>(0.0),
              dealii::ExcMessage(
                "No diagonal entry in a positive definite operator should be zero"));
-      inverse_diagonal.local_element(i) =
-        static_cast<number>(1.0) / inverse_diagonal.local_element(i);
+      inverse_diagonal.local_element(i) = number(1.0) / inverse_diagonal.local_element(i);
     }
 }
 
@@ -124,77 +115,109 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 MFOperator<dim, degree, number>::compute_local_diagonal(
   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
-  SolutionVector                                                         &dst,
+  BlockVector                                                            &diagonal,
   [[maybe_unused]] const unsigned int                                    &dummy,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
-  // Constructor for FEEvaluation objects
-  FieldContainer<dim, degree, number> variable_list(/* args */);
+  // Construct FEEvaluation objects
+  // The reason this is constructed here, rather than as a private member is because
+  // compute_local_rhs is called by cell_loop, which multithreads. There would be data
+  // races.
+  FieldContainer<dim, degree, number> variable_list(1 /*args*/);
+  DSTContainer<dim, degree, number>   dst_fields(solve_group.field_indices,
+                                               field_attributes,
+                                               *data,
+                                               field_to_block_index);
 
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Reinit the cell for all the dependencies
       variable_list.reinit_and_eval(cell);
+      dst_fields.reinit(cell);
 
       // To get the diagonal of the "matrix", repeatedly "multiply the matrix" by a test x
       // vector (change vector) and store the solution in the i-th position in the y
       // vector (the diagonal).
       // First (i=1) x vector: I 0 0 0
       // Second(i=2) x vector: 0 I 0 0 ...
-      SolveGroup                        solve_group;
-      GroupSolutionHandler<dim, number> group_solutions;
-
       // Submit zeros for everyting except the diagonals
-      for (Types::FieldIndex field_index : solve_group.field_indices)
+      for (unsigned int field_index : solve_group.field_indices)
         {
-          unsigned int n_dofs_per_cell = variable_list.get_dofs_per_component(
-            field_index); // vector_feeval_ptr->dofs_per_component;
-                          // scalar_feeval_ptr->dofs_per_cell;
+          if (/* Scalar */)
+            {
+              dealii::AlignedVector<ScalarValue> cell_diagonal =
+                compute_field_diagonal<TensorRank::Scalar>(variable_list,
+                                                           dst_fields,
+                                                           field_index);
+              // Submit calculated diagonal values and distribute
+              for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+                {
+                  feeval_ptr->submit_dof_value(cell_diagonal[i], i);
+                }
+              feeval_ptr->distribute_local_to_global(dst);
+            }
+
+          // Submit calculated diagonal values and distribute
           for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
             {
-              int dof_index = i;
-              for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+              if (/* Scalar */)
                 {
-                  variable_list.set_dof_value(field_index,
-                                              i == j ? Identity<Rank>() : Zero<Rank>(),
-                                              j);
+                  feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
                 }
-
-              // Evaluate the dependencies based on the flags
-              variable_list.eval(global_variable_index);
-
-              // Evaluate at each quadrature point
-              for (unsigned int quad = 0; quad < get_n_q_points(); ++quad)
+              else
                 {
-                  q_point = quad;
-                  pde_operator->compute_nonexplicit_lhs(variable_list,
-                                                        get_q_point_location(),
-                                                        element_volume);
+                  feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
                 }
-
-              // Integrate the diagonal
-              integrate(global_variable_index);
-              dst_fields.set_dof_value(field_index,
-                                       i,
-                                       variable_list.get_dof_value(field_index, i));
-              (*diagonal_ptr)[i] = feeval_ptr->get_dof_value(i);
             }
+          feeval_ptr->distribute_local_to_global(
+            diagonal.block(field_to_block_index[field_index]));
         }
-
-      // Submit calculated diagonal values and distribute
-      for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-        {
-          if constexpr (std::is_same_v<DiagonalValueType, ScalarValue> || dim != 1)
-            {
-              feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
-            }
-          else
-            {
-              feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
-            }
-        }
-      feeval_ptr->distribute_local_to_global(dst);
     }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <MFOperator<dim, degree, number>::TensorRank Rank>
+auto
+MFOperator<dim, degree, number>::compute_field_diagonal(
+  FieldContainer<dim, degree, number> &variable_list,
+  DSTContainer<dim, degree, number>   &dst_fields,
+  unsigned int field_index) const -> dealii::AlignedVector<Value<Rank>>
+{
+  unsigned int n_dofs_per_cell = variable_list.get_dofs_per_component(field_index);
+  dealii::AlignedVector<Value<Rank>> cell_diagonal(n_dofs_per_cell, zero<Rank>());
+  // vector_feeval_ptr->dofs_per_component;
+  // scalar_feeval_ptr->dofs_per_cell;
+  for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
+    {
+      for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
+        {
+          dst_fields.set_dof_value(field_index,
+                                   i == j ? identity<Rank>() : zero<Rank>(),
+                                   j);
+        }
+
+      // Evaluate the dependencies based on the flags
+      variable_list.eval();
+
+      // Evaluate at each quadrature point
+      for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
+        {
+          variable_list.set_q_point(quad);
+          dst_fields.set_q_point(quad);
+          pde_operator->pde_op(variable_list, dst_fields);
+        }
+
+      // Integrate the diagonal
+      dst_fields.integrate(field_index);
+
+      // TODO: fix this
+      dst_fields.eval();
+      cell_diagonal[i] =
+        dst_fields.get_dof_value(field_index,
+                                 i,
+                                 variable_list.get_dof_value(field_index, i));
+    }
+  return cell_diagonal;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

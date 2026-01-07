@@ -30,24 +30,19 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 FieldContainer<dim, degree, number>::FieldContainer(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-  const std::set<unsigned int>                                           &_field_indices,
   const std::vector<FieldAttributes> &_field_attributes,
   SolutionIndexer<dim, number>       &_solution_indexer,
+  unsigned int                        _relative_level,
   const DependencySet                &dependency_map)
   : field_attributes_ptr(&_field_attributes)
-  , solve_group(&_solve_group)
+  , relative_level(_relative_level)
 {
   const std::vector<FieldAttributes> field_attributes;
   // Initialize the feeval vectors
   feeval_deps_scalar.clear();
   feeval_deps_vector.clear();
-  dst_feeval_scalar.clear();
-  dst_feeval_vector.clear();
   feeval_deps_scalar.resize(field_attributes.size());
   feeval_deps_vector.resize(field_attributes.size());
-  dst_feeval_scalar.resize(field_attributes.size());
-  dst_feeval_vector.resize(field_attributes.size());
 
   for (const auto &[field_index, dependency] : dependency_map)
     {

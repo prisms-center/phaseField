@@ -8,17 +8,20 @@
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
+#include <prismspf/core/dst_container.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/field_container.h>
+#include <prismspf/core/group_solution_handler.h>
+#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solution_indexer.h>
+#include <prismspf/core/solve_group.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/group_solver_base.h>
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/core/pde_operator.h"
-#include "prismspf/core/solve_group.h"
+#include <vector>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
 #  include <deal.II/base/enable_observer_pointer.h>
@@ -47,35 +50,114 @@ template <unsigned int dim, unsigned int degree, typename number>
 class MFOperator : public MATRIX_FREE_OPERATOR_BASE
 {
 public:
+  using BlockVector    = SolutionIndexer<dim, number>::BlockVector;
   using SolutionVector = SolutionIndexer<dim, number>::SolutionVector;
   using ScalarValue    = dealii::VectorizedArray<number>;
+  using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
+  using MatrixFree     = dealii::MatrixFree<dim, number, ScalarValue>;
+
+  using Operator = void (PDEOperator<dim, degree, number>::*)(
+    FieldContainer<dim, degree, number> &,                       /* variable_list */
+    const dealii::Point<dim, dealii::VectorizedArray<number>> &, /* q_point_loc */
+    const dealii::VectorizedArray<number> &,                     /* element_volume */
+    unsigned int                                                 /* solve_group_id */
+  ) const;
+
+  using TensorRank = FieldInfo::TensorRank;
+  template <TensorRank Rank>
+  using Value = std::conditional_t<Rank == TensorRank::Scalar,
+                                   ScalarValue,
+                                   dealii::Tensor<int(Rank), dim, ScalarValue>>;
+
+  template <TensorRank Rank>
+  Value<Rank>
+  identity()
+  {
+    static Value<Rank> ident = []()
+    {
+      Value<Rank> obj;
+      for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+        {
+          obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+        }
+    }();
+    return ident;
+  }
+
+  template <>
+  ScalarValue
+  identity()
+  {
+    static ScalarValue ident(1.0);
+    return ident;
+  }
+
+  template <TensorRank Rank>
+  Value<Rank>
+  zero()
+  {
+    return Value<Rank>();
+  }
+
+  template <>
+  ScalarValue
+  zero()
+  {
+    static ScalarValue zeroo(0.0);
+    return zeroo;
+  }
 
   /**
    * @brief Constructor.
    */
-  explicit MFOperator(SolveGroup _solve_group);
+  explicit MFOperator(PDEOperator<dim, degree, number>   &operator_owner,
+                      Operator                            oper,
+                      const std::vector<FieldAttributes> &_field_attributes,
+                      const SolutionIndexer<dim, number> &_solution_indexer,
+                      unsigned int                        _relative_level,
+                      DependencySet                       _dependency_map)
+    : MATRIX_FREE_OPERATOR_BASE()
+    , pde_operator(&operator_owner)
+    , pde_op(oper)
+    , field_attributes(_field_attributes)
+    , solution_indexer(&_solution_indexer)
+    , relative_level(_relative_level)
+    , dependency_map(std::move(_dependency_map))
+  {}
 
   /**
-   * @brief Initialize operator.
+   * @brief Initialize.
+   * @note This will look stylistically strange. We pass in the solution handler for the
+   * fields being solved here, but we don't actually use any of the field data from it.
+   * This is because the purpose of this MFOperator class is to provide an operator with
+   * the signature `vmult(VectorType &dst, const VectorType &src)`. Because we are
+   * using block vectors, for the MFOperator to work, it needs to have access to the index
+   * mapping in addition to the matrix_free object. Both are stored in the solution
+   * handler.
    */
   void
-  initialize(const dealii::MatrixFree<dim, number, ScalarValue> &_data);
+  initialize(const GroupSolutionHandler<dim, number> &dst_solution)
+  {
+    solve_group          = dst_solution.get_solve_group();
+    data                 = dst_solution.get_matrix_free();
+    field_to_block_index = dst_solution.get_global_to_block_index();
+  }
 
   // public:
   /**
-   * @brief Calls cell_loop on function that calls user-defiend operator
+   * @brief Calls cell_loop on function that calls user-defined operator
    */
   void
-  compute_operator(SolutionVector &dst, const SolutionVector &src) const;
+  compute_operator(BlockVector &dst, const BlockVector &src) const;
 
 private:
   /**
    * @brief Calls user-defiend operator
    */
   void
-  compute_local_operator(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                         SolutionVector                                     &dst,
-                         const SolutionVector                               &src,
+  compute_local_operator(const MatrixFree                            &_data,
+                         BlockVector                                 &dst,
+                         const BlockVector                           &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
 public:
@@ -90,10 +172,16 @@ private:
    * @brief Local computation of the diagonal of the operator.
    */
   void
-  compute_local_diagonal(const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-                         SolutionVector                                     &dst,
-                         const unsigned int                                 &dummy,
+  compute_local_diagonal(const MatrixFree                            &_data,
+                         BlockVector                                 &dst,
+                         const unsigned int                          &dummy,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
+
+  template <TensorRank Rank>
+  dealii::AlignedVector<Value<Rank>>
+  compute_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
+                         DSTContainer<dim, degree, number>   &dst_fields,
+                         unsigned int                         field_index) const;
 
 public:
   /**
@@ -108,10 +196,10 @@ private:
    */
   void
   compute_local_element_volume(
-    const dealii::MatrixFree<dim, number, ScalarValue> &_data,
-    SolutionVector                                     &dst,
-    const unsigned int                                 &dummy,
-    const std::pair<unsigned int, unsigned int>        &cell_range) const;
+    const MatrixFree                            &_data,
+    SolutionVector                              &dst,
+    const unsigned int                          &dummy,
+    const std::pair<unsigned int, unsigned int> &cell_range) const;
 
 public:
   /**
@@ -151,7 +239,7 @@ public:
   /**
    * @brief Get read access to the MatrixFree object stored with this operator.
    */
-  std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>>
+  std::shared_ptr<const MatrixFree>
   get_matrix_free() const;
 
   /**
@@ -187,12 +275,6 @@ private:
    */
   SolveGroup solve_group;
 
-  using Operator = void (PDEOperator<dim, degree, number>::*)(
-    FieldContainer<dim, degree, number> &,                       /* variable_list */
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &, /* q_point_loc */
-    const dealii::VectorizedArray<number> &,                     /* element_volume */
-    unsigned int                                                 /* solve_group_id */
-  ) const;
   /**
    * @brief PDE operator object (owning class instance of pde_op) for user defined PDEs.
    */
@@ -203,9 +285,28 @@ private:
   Operator pde_op;
 
   /**
+   * @brief Read-access to fields.
+   */
+  const SolutionIndexer<dim, number> *solution_indexer;
+  /**
+   * @brief Level so that correct fields are read from indexer.
+   */
+  unsigned int relative_level;
+
+  /**
+   * @brief Which fields should be available to the solve.
+   */
+  DependencySet dependency_map;
+
+  /**
+   * @brief Mapping from field index to block index (only for dst).
+   */
+  std::vector<unsigned int> field_to_block_index;
+
+  /**
    * @brief Matrix-free object.
    */
-  std::shared_ptr<const dealii::MatrixFree<dim, number, ScalarValue>> data;
+  std::shared_ptr<const MatrixFree> data;
 
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.

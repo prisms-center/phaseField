@@ -24,12 +24,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 DSTContainer<dim, degree, number>::DSTContainer(
-  const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &data,
-  const std::set<unsigned int>                                           &_field_indices,
+  const std::set<unsigned int>       &_field_indices,
   const std::vector<FieldAttributes> &_field_attributes,
-  SolutionLevel<dim, number>         &_solution_level,
-  const DependencySet                &dependency_map)
+  const MatrixFree                   &matrix_free,
+  const std::vector<unsigned int>    &_field_to_block_index)
   : field_attributes_ptr(&_field_attributes)
+  , field_indices(&_field_indices)
 {
   const std::vector<FieldAttributes> field_attributes;
   // Initialize the feeval vectors
@@ -37,16 +37,15 @@ DSTContainer<dim, degree, number>::DSTContainer(
   feeval_vector.clear();
   feeval_scalar.resize(field_attributes.size());
   feeval_vector.resize(field_attributes.size());
-
-  unsigned int block_index = 0;
-  for (const auto &field_index : solve_group->field_indices)
+  integration_flags = std::vector<EvalFlags>(field_attributes.size(), EvalFlags::nothing);
+  for (const auto &field_index : *field_indices)
     {
-      const MatrixFree &matrix_free = solution_level.matrix_free;
+      const unsigned int block_index = _field_to_block_index[field_index];
       if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
         {
           feeval_scalar[field_index] = std::make_unique(matrix_free, block_index);
         }
-      else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
+      else
         {
           feeval_vector[field_index] = std::make_unique(matrix_free, block_index);
         }
@@ -57,50 +56,47 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 DSTContainer<dim, degree, number>::reinit(unsigned int cell)
 {
-  const DependencySet &dependency_map; // rhs or lhs
-  for (const auto &[field_index, dependency] : dependency_map)
+  for (const unsigned int &field_index : *field_indices)
     {
-      feeval_deps_scalar[field_index].reinit(cell);
+      if ((*field_attributes_ptr)[field_index].field_type == TensorRank::Scalar)
+        {
+          feeval_scalar[field_index].reinit(cell);
+        }
+      else
+        {
+          feeval_vector[field_index].reinit(cell);
+        }
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-DSTContainer<dim, degree, number>::integrate(unsigned int field_index,
-                                             EvalFlags    submission_flags)
+DSTContainer<dim, degree, number>::integrate(unsigned int field_index)
 {
-  const EvalFlags submission_flags = equation_type == EquationType::RHS
-                                       ? field_attributes[field_index].eval_flags_rhs
-                                       : field_attributes[field_index].eval_flags_lhs;
-  if (field_attributes[field_index].field_type == TensorRank::Scalar)
+  if ((*field_attributes_ptr)[field_index].field_type == TensorRank::Scalar)
     {
-      feeval_scalar[field_index]->integrate(submission_flags);
+      feeval_scalar[field_index]->integrate(integration_flags[field_index]);
     }
   else /* vector */
     {
-      feeval_vector[field_index]->integrate(submission_flags);
+      feeval_vector[field_index]->integrate(integration_flags[field_index]);
     }
-
-  /* AssertThrow(false,
-              dealii::ExcMessage(
-                "Integrate called for a solve type that is not NonexplicitLHS.")); */
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-DSTContainer<dim, degree, number>::integrate_and_distribute(unsigned int field_index,
-                                                            EvalFlags    submission_flags,
+DSTContainer<dim, degree, number>::integrate_and_distribute(unsigned int    field_index,
                                                             SolutionVector &dst)
 {
   const std::vector<FieldAttributes> field_attributes = *field_attributes_ptr;
 
   if (field_attributes[field_index].field_type == TensorRank::Scalar)
     {
-      feeval_scalar[field_index]->integrate_scatter(submission_flags, dst);
+      feeval_scalar[field_index]->integrate_scatter(integration_flags[field_index], dst);
     }
   else /* vector */
     {
-      feeval_vector[field_index]->integrate_scatter(submission_flags, dst);
+      feeval_vector[field_index]->integrate_scatter(integration_flags[field_index], dst);
     }
 }
 
