@@ -135,10 +135,10 @@ public:
   /**
    * @brief Constructor.
    */
-  FieldContainer(const dealii::MatrixFree<dim, number, ScalarValue> &data,
-                 const SolveGroup                                   &_solve_group,
-                 const std::vector<FieldAttributes>                 &_field_attributes,
-                 SolutionIndexer<dim, number>                       &_solution_indexer);
+  FieldContainer(const std::vector<FieldAttributes> &_field_attributes,
+                 SolutionIndexer<dim, number>       &_solution_indexer,
+                 unsigned int                        _relative_level,
+                 const DependencySet                &dependency_map);
 
   /**
    * @brief Initialize based on cell for all dependencies.
@@ -159,6 +159,15 @@ public:
    */
   void
   reinit_and_eval(unsigned int cell);
+
+  /**
+   * @brief Set the current quadtrature point
+   */
+  void
+  set_q_point(unsigned int quad)
+  {
+    q_point = quad;
+  }
 
   /**
    * @brief Return the value of the specified field.
