@@ -148,7 +148,7 @@ public:
    * @brief Calls cell_loop on function that calls user-defined operator
    */
   void
-  compute_operator(BlockVector &dst, const BlockVector &src) const;
+  compute_operator(BlockVector &dst, const BlockVector &src = BlockVector()) const;
 
 private:
   /**
