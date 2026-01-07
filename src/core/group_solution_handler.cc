@@ -184,6 +184,13 @@ GroupSolutionHandler<dim, number>::get_solve_group() const -> const SolveGroup &
   return solve_group;
 }
 
+template <unsigned int dim, typename number>
+const std::vector<unsigned int> &
+GroupSolutionHandler<dim, number>::get_global_to_block_index() const
+{
+  return global_to_block_index;
+}
+
 // TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
 // constraint ptrs change.
 template <unsigned int dim, typename number>

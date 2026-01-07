@@ -177,6 +177,12 @@ public:
   get_solve_group() const;
 
   /**
+   * @brief Get the block index from the global index.
+   */
+  [[nodiscard]] const std::vector<unsigned int> &
+  get_global_to_block_index() const;
+
+  /**
    * @brief Initialize the solution set.
    */
   template <unsigned int degree>
