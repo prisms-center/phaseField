@@ -52,7 +52,7 @@ public:
   using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
 
   /**
-   * @brief Typedef for the basic value that the use manipulates.
+   * @brief Typedef for the basic value that the user manipulates.
    */
   using ScalarValue    = dealii::VectorizedArray<number>;
   using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
@@ -122,28 +122,27 @@ public:
   }
 
   /**
-   * @brief Typedef for scalar diagonal matrix objects.
-   */
-  using ScalarDiagonal = dealii::AlignedVector<ScalarValue>;
-
-  /**
-   * @brief Typedef for vector diagonal matrix objects.
-   */
-  using VectorDiagonal = dealii::AlignedVector<VectorValue>;
-
-  /**
    * @brief Constructor.
    */
-  DSTContainer(const dealii::MatrixFree<dim, number, ScalarValue> &data,
-               const SolveGroup                                   &_solve_group,
-               const std::vector<FieldAttributes>                 &_field_attributes,
-               SolutionIndexer<dim, number>                       &_solution_indexer);
+  DSTContainer(const std::set<unsigned int>       &_field_indices,
+               const std::vector<FieldAttributes> &_field_attributes,
+               const MatrixFree                   &matrix_free,
+               const std::vector<unsigned int>    &_field_to_block_index);
 
   /**
    * @brief Initialize based on cell for all dependencies.
    */
   void
   reinit(unsigned int cell);
+
+  /**
+   * @brief Set the current quadtrature point
+   */
+  void
+  set_q_point(unsigned int quad)
+  {
+    q_point = quad;
+  }
 
   /**
    * @brief Set the residual value of the specified scalar/vector field.
@@ -154,6 +153,7 @@ public:
   {
     get_relevant_feeval_vector<GetRankFromVal<ValType>>()[global_variable_index]
       .submit_value(val, q_point);
+    integration_flags[global_variable_index] |= EvalFlags::values;
   }
 
   /**
@@ -165,6 +165,7 @@ public:
   {
     get_relevant_feeval_vector<GetRankFromGrad<GradType>>()[global_variable_index]
       .submit_gradient(val, q_point);
+    integration_flags[global_variable_index] |= EvalFlags::gradients;
   }
 
   /**
@@ -175,50 +176,27 @@ public:
 
 private:
   /**
-   * @brief Integrate the residuals.
+   * @brief Integrate a single field.
    */
   void
-  integrate();
+  integrate(unsigned int field_index);
 
   /**
-   * @brief Integrate the residuals and distribute from local to global.
+   * @brief Integrate a single field and update the solution vector.
    */
   void
-  integrate_and_distribute();
-
-  /**
-   * @brief Struct to hold feevaluation relevant for this solve.
-   */
-  template <typename FEEvaluationType>
-  struct FEEValuationDeps
-  {
-    using FEEDepPairPtr = std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>;
-    FEEDepPairPtr fe_eval;
-    /**
-     * @brief The solution group and the block index
-     * @note It would look nicer to just use the SolutionIndexer, but this way decreases
-     * indexing
-     */
-    const SolutionLevel<dim, number> *solution_level = nullptr;
-    unsigned int                      block_index    = -1;
-  };
+  integrate_and_distribute(unsigned int field_index, SolutionVector &dst);
 
   const std::vector<FieldAttributes>              *field_attributes_ptr;
-  const SolveGroup                                *solve_group;
-  const SolutionIndexer<dim, number>              *solution_indexer;
-  unsigned int                                     relative_level;
+  const std::set<unsigned int>                    *field_indices;
   std::vector<std::unique_ptr<ScalarFEEvaluation>> feeval_scalar;
   std::vector<std::unique_ptr<VectorFEEvaluation>> feeval_vector;
+  std::vector<EvalFlags>                           integration_flags;
 
   /**
    * @brief The quadrature point index.
    */
   unsigned int q_point = 0;
-
-  /**
-   * @brief Number of DoFs per cell.
-   */
-  unsigned int n_dofs_per_cell = 0;
 };
 
 PRISMS_PF_END_NAMESPACE
