@@ -81,6 +81,11 @@ ExplicitSolver<dim, degree, number>::reinit()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
+ExplicitSolver<dim, degree, number>::update()
+{}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
 ExplicitSolver<dim, degree, number>::print()
 {}
 

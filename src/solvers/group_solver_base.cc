@@ -60,6 +60,11 @@ GroupSolverBase<dim, degree, number>::solve()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
+GroupSolverBase<dim, degree, number>::update()
+{}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
 GroupSolverBase<dim, degree, number>::solve_level(
   [[maybe_unused]] unsigned int relative_level)
 {}

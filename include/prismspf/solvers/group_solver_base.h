@@ -21,11 +21,10 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/solvers/mf_operator.h"
 
 #include <memory>
 
@@ -99,6 +98,13 @@ public:
    */
   virtual void
   solve();
+
+  /**
+   * @brief Update the fields. This is separate from solve because some derived solvers
+   * call solve methods from other solvers.
+   */
+  virtual void
+  update();
 
   /**
    * @brief Print information about the solver to summary.log.
