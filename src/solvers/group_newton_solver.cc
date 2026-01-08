@@ -24,10 +24,37 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 NewtonSolver<dim, degree, number>::solve_level(unsigned int relative_level)
 {
-  bool newton_unconverged = true;
-  while (newton_unconverged)
+  number       step_length        = number(1.0); // TODO
+  number       tolerance          = number(1.0); // TODO
+  unsigned int max_iterations     = 1;           // TODO
+  bool         newton_unconverged = true;
+  unsigned int iter               = 0;
+
+  // TODO: setup initial guess for solution vector. Maybe use old_solution if available.
+  // Newton iteration loop.
+  while (newton_unconverged && iter++ < max_iterations)
     {
+      // Solve for Newton update.
       LinearSolver<dim, degree, number>::solve_level(relative_level);
+
+      // TODO: Apply zero-constraints to 'change' vector
+
+      // Perform Newton update.
+      solutions.get_solution_full_vector(relative_level)
+        .add(step_length, solutions.get_change_solution_full_vector(relative_level));
+
+      // TODO: Apply constraints to solution vector
+
+      // Check convergence.
+      number l2_norm =
+        solutions.get_change_solution_full_vector(relative_level).l2_norm();
+      newton_unconverged = l2_norm > tolerance;
+    }
+  ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
+  if (iter >= max_iterations)
+    {
+      ConditionalOStreams::pout_base() << "Warning: nonlinear solver did not "
+                                          "converge as per set tolerances.\n\n";
     }
 }
 
