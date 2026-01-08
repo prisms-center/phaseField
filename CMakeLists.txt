@@ -265,7 +265,6 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
         ${_library}
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-            #$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
             $<INSTALL_INTERFACE:include/prisms_pf>
         PRIVATE ${CMAKE_SOURCE_DIR}/src
     )
