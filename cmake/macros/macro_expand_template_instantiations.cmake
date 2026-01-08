@@ -25,7 +25,7 @@ macro(expand_template_instantiations _target _inst_in_files)
             set(_main_build_dir ${PRISMS_PF_CORE_DIR})
         else()
             # We're in the main project context, use current binary dir
-            set(_main_build_dir ${CMAKE_BINARY_DIR})
+            set(_main_build_dir ${CMAKE_SOURCE_DIR})
         endif()
 
         # Create a tmp inst file in case the command fails to
@@ -41,7 +41,7 @@ macro(expand_template_instantiations _target _inst_in_files)
             ARGS
                 ${_main_build_dir}/cmake/templates <
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
-                ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_file}.tmp
+                ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}.tmp
             COMMAND ${CMAKE_COMMAND}
             ARGS
                 -E rename ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}.tmp

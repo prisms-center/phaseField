@@ -92,13 +92,13 @@ endif()
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/include/prismspf/config.h.in
-    ${CMAKE_BINARY_DIR}/include/prismspf/config.h
+    ${CMAKE_SOURCE_DIR}/include/prismspf/config.h
 )
 
 # Configure the template arguments file
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/templates.in
-    ${CMAKE_BINARY_DIR}/cmake/templates
+    ${CMAKE_SOURCE_DIR}/cmake/templates
 )
 
 # Add the script files
@@ -264,9 +264,10 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     target_include_directories(
         ${_library}
         PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+            #$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
             $<INSTALL_INTERFACE:include/prisms_pf>
-        PRIVATE ${CMAKE_BINARY_DIR}/src
+        PRIVATE ${CMAKE_SOURCE_DIR}/src
     )
 
     target_compile_options(
