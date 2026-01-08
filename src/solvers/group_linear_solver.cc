@@ -17,9 +17,6 @@
 #include "prismspf/core/pde_operator.h"
 #include "prismspf/core/solution_handler.h"
 
-#include <complex>
-#include <vector>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
