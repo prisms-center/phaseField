@@ -24,55 +24,23 @@ class SolverContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class NewtonSolver : public LinearSolver<dim, degree, number>
 {
-public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using GroupSolverBase::mf_operators;
+  using LinearSolver    = LinearSolver<dim, degree, number>;
+  using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
   using GroupSolverBase::solve_group;
   using GroupSolverBase::solver_context;
+  using LinearSolver::do_linear_solve;
+  using LinearSolver::lhs_operators;
 
+public:
   /**
    * @brief Constructor.
    */
   NewtonSolver(SolveGroup                                _solve_group,
                const SolverContext<dim, degree, number> &_solver_context)
-    : GroupSolverBase(_solve_group, _solver_context)
+    : LinearSolver(_solve_group, _solver_context)
   {}
-
-  /**
-   * @brief Initialize the solver.
-   */
-  void
-  init() override
-  {
-    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
-         ++relative_level)
-      {
-        mf_operators[relative_level] = MFOperator<dim, degree, number>(
-          solver_context->pde_operator,
-          PDEOperator<dim, degree, number>::compute_explicit_rhs,
-          solver_context->field_attributes,
-          solver_context->solution_indexer,
-          relative_level,
-          solve_group.dependencies_rhs);
-      }
-    reinit();
-  }
-
-  /**
-   * @brief Reinitialize the solver.
-   */
-  void
-  reinit() override
-  {
-    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
-         ++relative_level)
-      {
-        mf_operators[relative_level].initialize(solve_group,
-                                                solutions.get_matrix_free(relative_level),
-                                                solutions.get_global_to_block_index());
-      }
-  }
 
   /**
    * @brief Solve for a single update step.
@@ -80,57 +48,58 @@ public:
   void
   solve_level(unsigned int relative_level) override
   {
-    number       step_length        = number(1.0); // TODO
-    number       tolerance          = number(1.0); // TODO
-    unsigned int max_iterations     = 1;           // TODO
-    bool         newton_unconverged = true;
-    unsigned int iter               = 0;
+    number       newton_step_length    = number(1.0); // TODO
+    number       newton_tolerance      = number(1.0); // TODO
+    unsigned int newton_max_iterations = 1;           // TODO
+    bool         newton_unconverged    = true;
+    unsigned int iter                  = 0;
+
+    // Update the solutions
+    solutions.update(relative_level);
 
     // TODO: setup initial guess for solution vector. Maybe use old_solution if available.
+
     // Newton iteration loop.
-    while (newton_unconverged && iter++ < max_iterations)
+    while (newton_unconverged && iter++ < newton_max_iterations)
       {
+        // Zero out the ghosts
+        Timer::start_section("Zero ghosts");
+        solutions.zero_out_ghosts(relative_level);
+        Timer::end_section("Zero ghosts");
+
         // Solve for Newton update.
-        LinearSolver<dim, degree, number>::solve_level(relative_level);
+        do_linear_solve(rhs_operators[relative_level],
+                        solutions.get_new_solution_full_vector(relative_level),
+                        lhs_operators[relative_level],
+                        solutions.get_change_solution_full_vector(relative_level));
 
         // TODO: Apply zero-constraints to 'change' vector
 
         // Perform Newton update.
         solutions.get_solution_full_vector(relative_level)
-          .add(step_length, solutions.get_change_solution_full_vector(relative_level));
+          .add(newton_step_length,
+               solutions.get_change_solution_full_vector(relative_level));
 
-        // TODO: Apply constraints to solution vector
+        // Apply constraints to solution vector
+        solutions.apply_constraints(relative_level);
+
+        // Update the ghosts
+        Timer::start_section("Update ghosts");
+        solutions.update_ghosts(relative_level);
+        Timer::end_section("Update ghosts");
 
         // Check convergence.
         number l2_norm =
           solutions.get_change_solution_full_vector(relative_level).l2_norm();
-        newton_unconverged = l2_norm > tolerance;
+        newton_unconverged = l2_norm > newton_tolerance;
       }
     ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
-    if (iter >= max_iterations)
+    if (iter >= newton_max_iterations)
       {
         ConditionalOStreams::pout_base() << "Warning: nonlinear solver did not "
                                             "converge as per set tolerances.\n\n";
       }
   }
-
-  /**
-   * @brief Solve for a single update step.
-   */
-  void
-  solve() override;
-
-  /**
-   * @brief Print information about the solver to summary.log.
-   */
-  void
-  print() override;
-
-private:
-  /**
-   * @brief Matrix free operators for each level
-   */
-  std::vector<MFOperator<dim, degree, number>> lhs_mf_operators;
 };
 
 PRISMS_PF_END_NAMESPACE
