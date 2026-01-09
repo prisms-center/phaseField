@@ -3,6 +3,9 @@
 
 #pragma once
 
+#include <deal.II/lac/solver_cg.h>
+
+#include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/group_solver_base.h>
@@ -21,13 +24,14 @@ class SolverContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class LinearSolver : public GroupSolverBase<dim, degree, number>
 {
-public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using GroupSolverBase::mf_operators;
+  using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
   using GroupSolverBase::solve_group;
   using GroupSolverBase::solver_context;
+  using BlockVector = SolutionHandler<dim, number>::BlockVector;
 
+public:
   /**
    * @brief Constructor.
    */
@@ -42,32 +46,22 @@ public:
   void
   init() override
   {
-    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
+    GroupSolverBase::init();
+    // Initialize lhs_operators
+    for (unsigned int relative_level = 0; relative_level < lhs_operators.size();
          ++relative_level)
       {
-        mf_operators[relative_level] = MFOperator<dim, degree, number>(
+        lhs_operators[relative_level] = MFOperator<dim, degree, number>(
           solver_context->pde_operator,
-          PDEOperator<dim, degree, number>::compute_explicit_rhs,
+          PDEOperator<dim, degree, number>::compute_explicit_lhs,
           solver_context->field_attributes,
           solver_context->solution_indexer,
           relative_level,
-          solve_group.dependencies_rhs);
-      }
-    reinit();
-  }
-
-  /**
-   * @brief Reinitialize the solver.
-   */
-  void
-  reinit() override
-  {
-    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
-         ++relative_level)
-      {
-        mf_operators[relative_level].initialize(solve_group,
-                                                solutions.get_matrix_free(relative_level),
-                                                solutions.get_global_to_block_index());
+          solve_group.dependencies_lhs);
+        lhs_operators[relative_level].initialize(solve_group,
+                                                 solutions.get_matrix_free(
+                                                   relative_level),
+                                                 solutions.get_global_to_block_index());
       }
   }
 
@@ -77,32 +71,19 @@ public:
   void
   solve_level(unsigned int relative_level) override
   {
+    // Update the solutions
+    solutions.update(relative_level);
+
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
     solutions.zero_out_ghosts(relative_level);
     Timer::end_section("Zero ghosts");
 
-    // Compute residual (rhs)
-    mf_operators[relative_level].compute_operator(
-      solutions.get_new_solution_full_vector(relative_level));
-
     // Set up linear solver
-    using BlockVector = SolutionHandler<dim, number>::BlockVector;
-    dealii::SolverCG<BlockVector> cg_solver(0 /* this->get_solver_control() */);
-    try
-      {
-        cg_solver.solve(lhs_mf_operators[relative_level],
-                        solutions.get_change_solution_full_vector(relative_level),
-                        solutions.get_new_solution_full_vector(relative_level));
-      }
-    catch (...) // TODO: more specific catch
-      {
-        ConditionalOStreams::pout_base()
-          << "Warning: linear solver did not converge as per set tolerances.\n";
-      }
-
-    // Update the solutions
-    solutions.update(relative_level);
+    do_linear_solve(rhs_operators[relative_level],
+                    solutions.get_new_solution_full_vector(relative_level),
+                    lhs_operators[relative_level],
+                    solutions.get_solution_full_vector(relative_level));
 
     // Apply constraints
     solutions.apply_constraints(relative_level);
@@ -113,23 +94,39 @@ public:
     Timer::end_section("Update ghosts");
   }
 
-  /**
-   * @brief Solve for a single update step.
-   */
   void
-  solve() override;
+  do_linear_solve(MFOperator<dim, degree, number> &rhs_operator,
+                  BlockVector                     &b_vector,
+                  MFOperator<dim, degree, number> &lhs_operator,
+                  BlockVector                     &x_vector)
+  {
+    // Compute rhs
+    rhs_operator.compute_operator(b_vector);
+    // Linear solve
+    try
+      {
+        // TODO: Make member?
+        dealii::SolverCG<BlockVector> cg_solver(linear_solver_control);
+        cg_solver.solve(lhs_operator, x_vector, b_vector);
+      }
+    catch (...) // TODO: more specific catch
+      {
+        ConditionalOStreams::pout_base()
+          << "Warning: linear solver did not converge as per set tolerances.\n";
+      }
+  }
 
-  /**
-   * @brief Print information about the solver to summary.log.
-   */
-  void
-  print() override;
-
-private:
+protected:
   /**
    * @brief Matrix free operators for each level
    */
-  std::vector<MFOperator<dim, degree, number>> lhs_mf_operators;
+  std::vector<MFOperator<dim, degree, number>> lhs_operators;
+
+private:
+  /**
+   * @brief Solver control. Contains max iterations and tolerance.
+   */
+  dealii::SolverControl linear_solver_control;
 };
 
 PRISMS_PF_END_NAMESPACE
