@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/group_solver_base.h>
@@ -37,57 +38,70 @@ public:
   {}
 
   /**
-   * @brief Destructor.
-   */
-  ~ExplicitSolver() override = default;
-
-  /**
-   * @brief Copy constructor.
-   *
-   * Deleted so solver instances aren't copied.
-   */
-  ExplicitSolver(const ExplicitSolver &solver_base) = delete;
-
-  /**
-   * @brief Copy assignment.
-   *
-   * Deleted so solver instances aren't copied.
-   */
-  ExplicitSolver &
-  operator=(const ExplicitSolver &solver_base) = delete;
-
-  /**
-   * @brief Move constructor.
-   *
-   * Deleted so solver instances aren't moved.
-   */
-  ExplicitSolver(ExplicitSolver &&solver_base) noexcept = delete;
-
-  /**
-   * @brief Move assignment.
-   *
-   * Deleted so solver instances aren't moved.
-   */
-  ExplicitSolver &
-  operator=(ExplicitSolver &&solver_base) noexcept = delete;
-
-  /**
    * @brief Initialize the solver.
    */
   void
-  init() override;
+  init() override
+  {
+    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
+         ++relative_level)
+      {
+        mf_operators[relative_level] = MFOperator<dim, degree, number>(
+          solver_context->pde_operator,
+          PDEOperator<dim, degree, number>::compute_explicit_rhs,
+          solver_context->field_attributes,
+          solver_context->solution_indexer,
+          relative_level,
+          solve_group.dependencies_rhs);
+      }
+    reinit();
+  }
 
   /**
    * @brief Reinitialize the solver.
    */
   void
-  reinit() override;
+  reinit() override
+  {
+    for (unsigned int relative_level = 0; relative_level < mf_operators.size();
+         ++relative_level)
+      {
+        mf_operators[relative_level].initialize(solve_group,
+                                                solutions.get_matrix_free(relative_level),
+                                                solutions.get_global_to_block_index());
+      }
+  }
 
   /**
    * @brief Solve for a single update step.
    */
   void
-  solve_level(unsigned int relative_level) override;
+  solve_level(unsigned int relative_level) override
+  {
+    // Zero out the ghosts
+    Timer::start_section("Zero ghosts");
+    solutions.zero_out_ghosts(relative_level);
+    Timer::end_section("Zero ghosts");
+
+    mf_operators[relative_level].compute_operator(
+      solutions.get_new_solution_full_vector(relative_level));
+
+    // TODO: if it's used for all solvers, define invm in solution handler. originally
+    // this was done as a loop over fields. Scale the update by the respective
+    // (Scalar/Vector) invm.
+    solutions.get_new_solution_full_vector(relative_level).scale(block_invm);
+
+    // Update the solutions
+    solutions.update(relative_level);
+
+    // Apply constraints
+    solutions.apply_constraints(relative_level);
+
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    solutions.update_ghosts(relative_level);
+    Timer::end_section("Update ghosts");
+  }
 
   /**
    * @brief Solve for a single update step.

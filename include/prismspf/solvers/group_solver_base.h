@@ -38,7 +38,12 @@ public:
    * @brief Constructor.
    */
   GroupSolverBase(SolveGroup                                _solve_group,
-                  const SolverContext<dim, degree, number> &_solver_context);
+                  const SolverContext<dim, degree, number> &_solver_context)
+    : solve_group(std::move(_solve_group))
+    , solutions()
+    , solver_context(
+        std::make_shared<SolverContext<dim, degree, number>>(_solver_context))
+  {}
 
   /**
    * @brief Destructor.
@@ -79,44 +84,116 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init();
+  init()
+  {
+    // Initialize vectors
+    solutions =
+      GroupSolutionHandler<dim, number>(solve_group, solver_context->field_attributes);
+    solutions.init(solver_context->mapping,
+                   solver_context->dof_manager,
+                   solver_context->constraint_manager,
+                   solver_context->quadrature);
+
+    // Set the initial condition
+    set_initial_condition();
+
+    // Apply constraints.
+    solutions.apply_constraints();
+
+    // Initialize mf_operators
+  }
 
   /**
    * @brief Reinitialize the solver.
    */
   virtual void
-  reinit();
+  reinit()
+  {
+    // Apply constraints.
+    solutions.reinit();
+    solutions.apply_constraints();
+  }
 
   /**
    * @brief Solve one level.
    */
   virtual void
-  solve_level(unsigned int relative_level = 0);
+  solve_level([[maybe_unused]] unsigned int relative_level = 0)
+  {}
 
   /**
    * @brief Solve for a single update step.
    */
   virtual void
-  solve();
+  solve()
+  {
+    this->solve_level(0);
+  }
 
   /**
    * @brief Update the fields. This is separate from solve because some derived solvers
    * call solve methods from other solvers.
    */
   virtual void
-  update();
+  update()
+  {}
 
   /**
    * @brief Print information about the solver to summary.log.
    */
   virtual void
-  print();
+  print()
+  {}
 
   /**
    * @brief Set the initial conditions.
    */
   void
-  set_initial_condition();
+  set_initial_condition()
+  {
+    for (const auto &global_index : solve_group.field_indices)
+      {
+        if (solver_context->get_user_inputs()
+              .get_load_initial_condition_parameters()
+              .get_read_initial_conditions_from_file())
+          {
+            const auto &initial_condition_parameters =
+              solver_context->get_user_inputs().get_load_initial_condition_parameters();
+            for (const auto &initial_condition_file :
+                 initial_condition_parameters.get_initial_condition_files())
+              {
+                auto name_it =
+                  std::find(initial_condition_file.simulation_variable_names.begin(),
+                            initial_condition_file.simulation_variable_names.end(),
+                            attributes_list[global_index].name);
+                if (name_it != initial_condition_file.simulation_variable_names.end())
+                  {
+                    dealii::VectorTools::interpolate(
+                      solver_context->get_mapping(),
+                      solver_context->get_dof_manager().get_dof_handler(global_index),
+                      ReadInitialCondition<dim, number>(
+                        *name_it,
+                        attributes_list[global_index].field_type,
+                        initial_condition_file,
+                        solver_context->get_user_inputs().get_spatial_discretization()),
+                      solutions.get_solution_vector(global_index));
+                  }
+              }
+          }
+        else
+          {
+            dealii::VectorTools::interpolate(
+              solver_context->get_mapping(),
+              solver_context->get_dof_manager().get_dof_handler(index),
+              InitialCondition<dim, degree, number>(
+                index,
+                attributes_list[global_index].field_type,
+                solver_context->get_pde_operator()),
+              solutions.get_solution_vector(global_index));
+          }
+        solutions.apply_initial_condition_for_old_fields();
+      }
+  }
 
   /**
    * @brief Get the invm handler.
@@ -170,14 +247,17 @@ protected:
    * @brief Information about the solve group this handler is responsible for.
    */
   SolveGroup solve_group;
+  /**
+   * @brief Solution vectors for fields handled by this solver.
+   */
+  GroupSolutionHandler<dim, number> solutions;
 
-  GroupSolutionHandler<dim, number>            solutions;
   std::vector<MFOperator<dim, degree, number>> mf_operators;
 
   std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
 
   /**
-   * @brief Solver context.
+   * @brief Solver context provides access to external information.
    */
   const std::shared_ptr<SolverContext<dim, degree, number>> solver_context;
 };
