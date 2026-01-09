@@ -9,13 +9,10 @@
 #include <boost/geometry/core/cs.hpp>
 
 #include <prismspf/core/constraint_handler.h> //
-#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/invm_handler.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solve_group.h>
-#include <prismspf/core/triangulation_manager.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -100,7 +97,22 @@ public:
     // Apply constraints.
     solutions.apply_constraints();
 
-    // Initialize mf_operators
+    // Initialize rhs_operators
+    for (unsigned int relative_level = 0; relative_level < rhs_operators.size();
+         ++relative_level)
+      {
+        rhs_operators[relative_level] = MFOperator<dim, degree, number>(
+          solver_context->pde_operator,
+          PDEOperator<dim, degree, number>::compute_explicit_rhs,
+          solver_context->field_attributes,
+          solver_context->solution_indexer,
+          relative_level,
+          solve_group.dependencies_rhs);
+        rhs_operators[relative_level].initialize(solve_group,
+                                                 solutions.get_matrix_free(
+                                                   relative_level),
+                                                 solutions.get_global_to_block_index());
+      }
   }
 
   /**
@@ -252,7 +264,7 @@ protected:
    */
   GroupSolutionHandler<dim, number> solutions;
 
-  std::vector<MFOperator<dim, degree, number>> mf_operators;
+  std::vector<MFOperator<dim, degree, number>> rhs_operators;
 
   std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
 
