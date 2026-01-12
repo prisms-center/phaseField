@@ -1,4 +1,4 @@
-# PRISMS-PF Application Formulation: alloySolidification
+# PRISMS-PF: Alloy Solidification
 
 This example application [1] implements a simple model to simulate the directional solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A. 
 The implemented model was introduced by Echebarria et al. [2] in 2004. In this model, latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered
@@ -116,13 +116,7 @@ $$
 
 $$
 \begin{align}
-\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) &+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right]
-&+  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]
-\end{align}
-$$
-
-$$
-\begin{align}
+\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) +  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] +  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]\\
 & +\phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right],
 \end{align}
 $$
@@ -136,7 +130,7 @@ $$
 $$
 
 The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, 
-$\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with $m$-fold symmetry this factor is given by 
+$\hat{n}=-\nabla \phi / |\nabla \phi|$ (Note: The code uses the opposite sign convention). For a solid phase with $m$-fold symmetry this factor is given by 
 
 $$
 \begin{equation}
@@ -144,7 +138,7 @@ a_s(\hat{n})=1+\epsilon_m \cos[m(\theta-\theta_0)],
 \end{equation}
 $$
 
-(In the implementation of the current model, $m$ is set to 4 and  $\theta_0=0$. For the purpose of computational efficiency, explicit calculation of trigonometric functions (and their inverse) is avoided. Thus, all sine and cosine terms with argument $m\theta$ are evaluated as $\sin(m\theta)=4\cos^3\theta\sin\theta-4\cos\theta\sin^3\theta$ and $\cos(m\theta)=\cos^4\theta -6\cos^2\theta\sin^2\theta-\sin^4\theta$, where $\sin\theta=\partial_y\phi / |\nabla \phi|$ and $\cos\theta=\partial_x\phi / |\nabla \phi|$.)
+(In the implementation of the current model, $m$ is set to 4 and  $\theta_0=0$. For the purpose of computational efficiency, explicit calculation of trigonometric functions (and their inverse) is avoided. Thus, all sine and cosine terms with argument $m\theta$ are evaluated as $\sin(4\theta)=4\cos^3\theta\sin\theta-4\cos\theta\sin^3\theta$ and $\cos(4\theta)=\cos^4\theta -6\cos^2\theta\sin^2\theta-\sin^4\theta$, where $\sin\theta=\partial_y\phi / |\nabla \phi|$ and $\cos\theta=\partial_x\phi / |\nabla \phi|$.)
 
 where $\epsilon_m$ determines the strength of the anisotropy, $\theta$ is the in-plane azimuthal angle of the normal vector with respect to the positive $x$-direction and $\theta_0$ is the reference orientation of the solid grains. The angle $\theta$ is related to the normal derivatives of $\phi$ at the interface via 
 
@@ -158,13 +152,7 @@ In
 
 $$
 \begin{align}
-\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) &+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right]
-&+  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]
-\end{align}
-$$
-
-$$
-\begin{align}
+\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) +  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] +  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]\\
 & +\phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right],
 \end{align}
 $$
@@ -198,13 +186,7 @@ Equation
 
 $$
 \begin{align}
-\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) &+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right]
-&+  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]
-\end{align}
-$$
-
-$$
-\begin{align}
+\xi = & \nabla \cdot  \left( a_s^2(\hat{n}) \nabla \phi \right) +  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] +  \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 a_s(\hat{n}) \frac{\partial a_s(\hat{n})}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]\\
 & +\phi-\phi^3 - \lambda(1-\phi^2)^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right],
 \end{align}
 $$
@@ -224,23 +206,14 @@ $$
 \tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}. 
 \end{equation}
 $$
+See Appendix for details.
 
 Also, the second and third terms on the right-hand side can be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:
 
 $$
 \begin{align}
-\xi = & \nabla \cdot  \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right.
-\end{align}
-$$
-
-$$
-\begin{align}
-& \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right]
-\end{align}
-$$
-
-$$
-\begin{align}
+\xi = & \nabla \cdot  \left[ \left(a_s^2(\theta) \frac{\partial \phi}{\partial x} + \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial y}\right)\hat{x} \right.\\
+& \left . + \left(a_s^2(\theta) \frac{\partial \phi}{\partial y} - \epsilon_m m a_s(\theta) \sin \left[ m \left(\theta - \theta_0 \right) \right] \frac{\partial \phi}{\partial x}\right)\hat{y}\right]\\
 &+ \phi-\phi^3 - \lambda{(1-\phi^2)}^2 \left[ U + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
 \end{align}
 $$
@@ -270,7 +243,7 @@ $$
 
 $$
 \begin{align}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\],
+U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath}_{at}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right],
 \end{align}
 $$
 
@@ -278,18 +251,8 @@ and
 
 $$
 \begin{align}
-\xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.
-\end{align}
-$$
-
-$$
-\begin{align}
-& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right] 
-\end{align}
-$$
-
-$$
-\begin{align}
+\xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.\\
+& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right]\\
 & +\phi^n-{(\phi^n)}^3 - \lambda {\left[1-{(\phi^n)}^2\right]}^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
 \end{align}
 $$
@@ -314,7 +277,7 @@ For the weak form of
 
 $$
 \begin{align}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right\],
+U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right],
 \end{align}
 $$
 
@@ -331,12 +294,7 @@ into the gradient of $1/\tau_U$:
 $$
 \begin{align}
 \int_{\Omega}   \omega  U^{n+1}  ~dV =& 
-\int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV
-\end{align}
-$$
-
-$$
-\begin{align}
+\int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV\\
 &+\int_{\Omega}  \nabla  \omega  \cdot \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV.
 \end{align}
 $$
@@ -349,7 +307,7 @@ $$
 
 $$
 \begin{align}
-r_{Ux} &= \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
+r_{Ux} &= \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
 \end{align}
 $$
 
@@ -380,9 +338,39 @@ $$
 
 
 The above values of $r_{\phi}$, $r_{U}$, $r_{Ux}$,  $r_{\xi}$ and  $r_{\xi x}$ are used to define the residuals in the following parameters file:
-`\textit{applications/alloy_solification/equations.cc}`
+`applications/alloy_solification/equations.cc`
 
 ## References
 [1] Developed by Zhenjie Yao, Department of Material Science and Engineering, University of Michigan (2021).
 
 [2] B. Echebarria, R. Folch, A. Karma, and M. Plapp, Quantitative phase-field model of alloy solidification, *Phys. Rev. E* **70**, 061604 (2004).
+
+
+## Appendix
+
+First, we express $\theta$ as a function of the gradient components:
+$$
+\begin{equation}
+\theta = \arctan\left( \frac{\phi_y}{\phi_x} \right)
+\end{equation}
+$$
+
+Applying the chain rule for $\theta$:
+$$
+\begin{align}
+\frac{\partial \theta}{\partial \phi_x} &= \frac{1}{1 + (\phi_y/\phi_x)^2} \cdot \left( -\frac{\phi_y}{\phi_x^2} \right) = -\frac{\phi_y}{\phi_x^2 + \phi_y^2} = -\frac{\sin \theta}{|\nabla \phi|} \\
+\frac{\partial \theta}{\partial \phi_y} &= \frac{1}{1 + (\phi_y/\phi_x)^2} \cdot \left( \frac{1}{\phi_x} \right) = \frac{\phi_x}{\phi_x^2 + \phi_y^2} = \frac{\cos \theta}{|\nabla \phi|}
+\end{align}
+$$
+
+Now, applying the chain rule for $a(\theta)$:
+$$
+\begin{equation}
+\frac{\partial a}{\partial \phi_x} = \frac{da}{d\theta} \frac{\partial \theta}{\partial \phi_x} = -\frac{a'(\theta) \sin \theta}{|\nabla \phi|}
+\end{equation}
+$$
+$$
+\begin{equation}
+\frac{\partial a}{\partial \phi_y} = \frac{da}{d\theta} \frac{\partial \theta}{\partial \phi_y} = \frac{a'(\theta) \cos \theta}{|\nabla \phi|}
+\end{equation}
+$$
