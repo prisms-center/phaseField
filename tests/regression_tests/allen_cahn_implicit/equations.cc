@@ -107,10 +107,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   ScalarValue f_grad = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          f_grad += 0.5 * KnV * nx[i] * nx[j];
-        }
+      f_grad += 0.5 * KnV * nx[i] * nx[i];
     }
   f_tot = f_chem + f_grad;
 

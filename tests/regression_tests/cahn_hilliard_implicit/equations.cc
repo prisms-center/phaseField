@@ -124,10 +124,7 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
 
   for (unsigned int i = 0; i < dim; i++)
     {
-      for (unsigned int j = 0; j < dim; j++)
-        {
-          f_grad += 0.5 * KcV * cx[i] * cx[j];
-        }
+      f_grad += 0.5 * KcV * cx[i] * cx[i];
     }
   f_tot = f_chem + f_grad;
   variable_list.set_value_term(2, f_tot);
