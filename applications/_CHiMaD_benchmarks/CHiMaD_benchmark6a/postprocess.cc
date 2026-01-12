@@ -72,10 +72,7 @@ CustomPDE<dim, degree>::postProcessedFields(
 
   for (int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
-        {
-          f_grad += constV(0.5 * KcV) * cx[i] * cx[j];
-        }
+      f_grad += constV(0.5 * KcV) * cx[i] * cx[i];
     }
 
   // The total free energy
