@@ -73,13 +73,15 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-  \mu^{n+1} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n} 
+ c^{n+1} &= c^{n} + \Delta t M~\nabla \cdot (\nabla \mu^{n})
 \end{align}
 $$
 
+The auxiliary field is updated as
+
 $$
 \begin{align}
- c^{n+1} &= c^{n} + \Delta t M~\nabla \cdot (\nabla \mu^{n})
+  \mu^{n+1} &= f_{,c}^{n+1} -  \kappa \nabla^2 c^{n+1} 
 \end{align}
 $$
 
