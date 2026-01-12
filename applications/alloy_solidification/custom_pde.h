@@ -138,8 +138,8 @@ private:
   number epsilon =
     get_user_inputs().get_user_constants().get_model_constant_double("epsilon");
   number k = get_user_inputs().get_user_constants().get_model_constant_double("k");
-  number lamda =
-    get_user_inputs().get_user_constants().get_model_constant_double("lamda");
+  number lambda =
+    get_user_inputs().get_user_constants().get_model_constant_double("lambda");
 
   number Dtilde =
     get_user_inputs().get_user_constants().get_model_constant_double("Dtilde");

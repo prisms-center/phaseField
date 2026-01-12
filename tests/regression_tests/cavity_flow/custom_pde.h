@@ -142,7 +142,7 @@ private:
     dealii::Utilities::fixed_power<2>(1.0 / get_timestep());
 
   /**
-   * @brief Compute the stabilization paramters
+   * @brief Compute the stabilization parameters
    */
   ScalarValue
   compute_stabilization_parameter(const VectorValue &velocity,

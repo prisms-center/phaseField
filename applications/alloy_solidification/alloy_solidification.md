@@ -1,6 +1,6 @@
 # PRISMS-PF Application Formulation: alloySolidification
 
-This example application [1] implements a simple model to simulate the directional solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A. 
+This example application [1] implements a simple model to simulate the directional solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A.
 The implemented model was introduced by Echebarria et al. [2] in 2004. In this model, latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered
 to be fixed by external conditions. In the default settings of the application, the simulation starts with a circular solid in the corner of an elongated system which evolves as a system is cooled under
 a uniform thermal gradient and constant cooling rate. As this seed grows, three variables are tracked: an order parameter, $\phi$, that denotes whether the material is a liquid ($\phi=-1$) or solid ($\phi=1$),
@@ -43,7 +43,7 @@ and
 
 $$
 \begin{equation}
-\frac{\partial c}{\partial t} = \nabla \cdot \left(\  M(\phi,c) \frac{\delta \mathcal{F}}{\delta c}  - \vec{\jmath}_{at} \right), 
+\frac{\partial c}{\partial t} = \nabla \cdot \left(\  M(\phi,c) \frac{\delta \mathcal{F}}{\delta c}  - \vec{\jmath}_{at} \right),
 \end{equation}
 $$
 
@@ -92,7 +92,7 @@ $$
 \end{equation}
 $$
 
-and 
+and
 
 $$
 \begin{equation}
@@ -135,8 +135,8 @@ $$
 \end{equation}
 $$
 
-The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, 
-$\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with $m$-fold symmetry this factor is given by 
+The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface,
+$\hat{n}=-\nabla \phi / |\nabla \phi|$. For a solid phase with $m$-fold symmetry this factor is given by
 
 $$
 \begin{equation}
@@ -146,15 +146,15 @@ $$
 
 (In the implementation of the current model, $m$ is set to 4 and  $\theta_0=0$. For the purpose of computational efficiency, explicit calculation of trigonometric functions (and their inverse) is avoided. Thus, all sine and cosine terms with argument $m\theta$ are evaluated as $\sin(m\theta)=4\cos^3\theta\sin\theta-4\cos\theta\sin^3\theta$ and $\cos(m\theta)=\cos^4\theta -6\cos^2\theta\sin^2\theta-\sin^4\theta$, where $\sin\theta=\partial_y\phi / |\nabla \phi|$ and $\cos\theta=\partial_x\phi / |\nabla \phi|$.)
 
-where $\epsilon_m$ determines the strength of the anisotropy, $\theta$ is the in-plane azimuthal angle of the normal vector with respect to the positive $x$-direction and $\theta_0$ is the reference orientation of the solid grains. The angle $\theta$ is related to the normal derivatives of $\phi$ at the interface via 
+where $\epsilon_m$ determines the strength of the anisotropy, $\theta$ is the in-plane azimuthal angle of the normal vector with respect to the positive $x$-direction and $\theta_0$ is the reference orientation of the solid grains. The angle $\theta$ is related to the normal derivatives of $\phi$ at the interface via
 
 $$
 \begin{equation}
-\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}. 
+\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}.
 \end{equation}
 $$
 
-In 
+In
 
 $$
 \begin{align}
@@ -177,9 +177,9 @@ d_0=\frac{\gamma T_m}{L |m| (1-k) c_l^0}.
 \end{equation}
 $$
 
-In the previous equation, $\gamma$ is the equilibrium surface tension and $L$ is the latent heat of fusion per volume. 
-Finally, $\tilde{y}$, $\tilde{V}_p$, $\tilde{l}_T$ and $\tilde{D}$ are all dimensionless parameters, calculated by taking the unit length as $W$ and the unit time as $\tau_0=0.6267\lambda W^2/D$, 
-where $D$ is the solute diffusivity in the liquid. The coordinate, $\tilde{y}$, represents the position along the direction of the thermal gradient, $\tilde{V}_p$ is the steady-state solidification speed, 
+In the previous equation, $\gamma$ is the equilibrium surface tension and $L$ is the latent heat of fusion per volume.
+Finally, $\tilde{y}$, $\tilde{V}_p$, $\tilde{l}_T$ and $\tilde{D}$ are all dimensionless parameters, calculated by taking the unit length as $W$ and the unit time as $\tau_0=0.6267\lambda W^2/D$,
+where $D$ is the solute diffusivity in the liquid. The coordinate, $\tilde{y}$, represents the position along the direction of the thermal gradient, $\tilde{V}_p$ is the steady-state solidification speed,
 $\tilde{l}_T$ is the thermal length, calculated as
 
 $$
@@ -189,8 +189,8 @@ $$
 $$
 
 
-where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid. Note that Eqs. 10 through 15 
-are equivalent to Eqs. (132) and (133) from Ref. [2], except for the expression for the phase-field relaxation time $\tau_\phi$ which, for this application, was chosen to be $U$-dependent, 
+where $\tilde{G}$ is the dimensionless thermal gradient, and $\tilde{D}$ is the dimensionless solute diffusivity in the liquid. Note that Eqs. 10 through 15
+are equivalent to Eqs. (132) and (133) from Ref. [2], except for the expression for the phase-field relaxation time $\tau_\phi$ which, for this application, was chosen to be $U$-dependent,
 as defined by Eq. (123) from Ref. [2].
 
 
@@ -217,11 +217,11 @@ $$
 \end{align}
 $$
 
-along with 
+along with
 
 $$
 \begin{equation}
-\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}. 
+\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}.
 \end{equation}
 $$
 
@@ -284,7 +284,7 @@ $$
 
 $$
 \begin{align}
-& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right] 
+& \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right]
 \end{align}
 $$
 
@@ -310,7 +310,7 @@ r_{\phi} &= \left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)
 $$
 
 
-For the weak form of 
+For the weak form of
 
 $$
 \begin{align}
@@ -330,7 +330,7 @@ into the gradient of $1/\tau_U$:
 
 $$
 \begin{align}
-\int_{\Omega}   \omega  U^{n+1}  ~dV =& 
+\int_{\Omega}   \omega  U^{n+1}  ~dV =&
 \int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV
 \end{align}
 $$
@@ -343,7 +343,7 @@ $$
 
 $$
 \begin{align}
-r_U &=  \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) 
+r_U &=  \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
 \end{align}
 $$
 

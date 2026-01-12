@@ -15,7 +15,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * This unit test looks at variable_attributes.h and variable_attribute_loader.h and how
- * the parser determines the field sovle type of each field. In turn, the determines the
+ * the parser determines the field solve type of each field. In turn, the determines the
  * solver and other information such as nonlinearity.
  */
 TEST_CASE("Field solve types")

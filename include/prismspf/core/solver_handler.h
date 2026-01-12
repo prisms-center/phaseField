@@ -81,7 +81,7 @@ public:
   reinit();
 
   /**
-   * @brief Solve a single incremenet for all of the solvers.
+   * @brief Solve a single increment for all of the solvers.
    *
    * TODO (landinjm): Fix the logic here with the passed variables
    */
@@ -187,7 +187,7 @@ public:
   reinit();
 
   /**
-   * @brief Solve a single incremenet for all of the solvers.
+   * @brief Solve a single increment for all of the solvers.
    *
    * TODO (landinjm): Fix the logic here with the passed variables
    */

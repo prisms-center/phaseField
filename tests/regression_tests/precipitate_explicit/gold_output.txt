@@ -29,7 +29,7 @@ Initializing solvers for solve block 0 ...
   no fields for this solver exist
   no fields for this solver exist
   no fields for this solver exist
-initializing grid refiner...  grid refinment disabled...
+initializing grid refiner...  grid refinement disabled...
 solving 0th timestep for solve block 0 ...
    solving auxiliary variables...
   solving linear time-independent variables...
@@ -42,7 +42,7 @@ Iteration: 0
   Solution index 1 l2-norm: 27.8326 integrated value: 40.1673
   Solution index 2 l2-norm: 19.6806 integrated value: 20.0837
   Solution index 3 l2-norm: 19.6806 integrated value: 20.0837
-  Solution index 4 l2-norm: 3.42424 integrated value: -0.73956 0.73956 
+  Solution index 4 l2-norm: 3.42424 integrated value: -0.73956 0.73956
   Solution index 5 l2-norm: 357.19 integrated value: -2961.1
 
 
@@ -51,7 +51,7 @@ Iteration: 10
   Solution index 1 l2-norm: 27.2076 integrated value: 39.1555
   Solution index 2 l2-norm: 19.2362 integrated value: 19.5736
   Solution index 3 l2-norm: 19.2356 integrated value: 19.5725
-  Solution index 4 l2-norm: 3.32301 integrated value: -0.713791 0.712968 
+  Solution index 4 l2-norm: 3.32301 integrated value: -0.713791 0.712968
   Solution index 5 l2-norm: 357.284 integrated value: -2961.81
 
 Iteration: 20
@@ -59,7 +59,7 @@ Iteration: 20
   Solution index 1 l2-norm: 26.6332 integrated value: 38.1392
   Solution index 2 l2-norm: 18.8276 integrated value: 19.0613
   Solution index 3 l2-norm: 18.8264 integrated value: 19.0591
-  Solution index 4 l2-norm: 3.22758 integrated value: -0.689252 0.687675 
+  Solution index 4 l2-norm: 3.22758 integrated value: -0.689252 0.687675
   Solution index 5 l2-norm: 357.349 integrated value: -2962.27
 
 Iteration: 30
@@ -67,7 +67,7 @@ Iteration: 30
   Solution index 1 l2-norm: 26.091 integrated value: 37.1381
   Solution index 2 l2-norm: 18.4419 integrated value: 18.5568
   Solution index 3 l2-norm: 18.4401 integrated value: 18.5536
-  Solution index 4 l2-norm: 3.13715 integrated value: -0.665947 0.663696 
+  Solution index 4 l2-norm: 3.13715 integrated value: -0.665947 0.663696
   Solution index 5 l2-norm: 357.403 integrated value: -2962.63
 
 Iteration: 40
@@ -75,7 +75,7 @@ Iteration: 40
   Solution index 1 l2-norm: 25.5745 integrated value: 36.1616
   Solution index 2 l2-norm: 18.0745 integrated value: 18.065
   Solution index 3 l2-norm: 18.0721 integrated value: 18.0608
-  Solution index 4 l2-norm: 3.05131 integrated value: -0.643843 0.640997 
+  Solution index 4 l2-norm: 3.05131 integrated value: -0.643843 0.640997
   Solution index 5 l2-norm: 357.45 integrated value: -2962.94
 
 Iteration: 50
@@ -83,7 +83,7 @@ Iteration: 50
   Solution index 1 l2-norm: 25.0805 integrated value: 35.2155
   Solution index 2 l2-norm: 17.7228 integrated value: 17.5884
   Solution index 3 l2-norm: 17.72 integrated value: 17.5833
-  Solution index 4 l2-norm: 2.96978 integrated value: -0.6229 0.619525 
+  Solution index 4 l2-norm: 2.96978 integrated value: -0.6229 0.619525
   Solution index 5 l2-norm: 357.491 integrated value: -2963.21
 
 Serial: Auxiliary solver - 1.187e-06s (1.187e-06s/call, 1 calls)

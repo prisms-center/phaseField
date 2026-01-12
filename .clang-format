@@ -102,7 +102,7 @@ IncludeCategories:
     Priority:       14
   # all standard <...> headers
   - Regex:    '<[-\w\/-_]+[\.\/]*[-\w\/-_]+>>'
-    Priority:       99       
+    Priority:       99
   # all local "..." headers
   - Regex:    '"[-\w\/-_]+[\.\/]*[-\w\/-_]+"'
     Priority:       999

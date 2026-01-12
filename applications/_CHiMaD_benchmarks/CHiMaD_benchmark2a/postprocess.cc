@@ -93,7 +93,7 @@ CustomPDE<dim, degree>::postProcessedFields(
   // Combined function (g)
   scalarvalueType gV = (gdwV + gintV);
 
-  // The homogenous free energy
+  // The homogeneous free energy
   scalarvalueType f_chem = (constV(1.0) - hV) * faV + hV * fbV + wV * gV;
 
   // The gradient free energy
