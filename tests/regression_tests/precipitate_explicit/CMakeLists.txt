@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.13.4)
 
 # Create a project for the application
-project(myapp CXX)
+project(myapp C CXX)
 
 # Find the PRISMS-PF package
 find_package(prisms_pf QUIET HINTS ${PRISMS_PF_DIR} $ENV{PRISMS_PF_DIR})
@@ -15,6 +15,14 @@ if(PRISMS_PF_FOUND)
 
     # Set up the application
     prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
+
+    # put the binary in the source folder
+    set_target_properties(
+        main-debug main-release
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+
 else()
     message(
         FATAL_ERROR
