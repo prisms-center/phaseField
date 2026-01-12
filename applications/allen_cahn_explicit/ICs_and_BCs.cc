@@ -39,6 +39,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   };
   double rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
   double dist    = 0.0;
+  double sdf     = std::numeric_limits<double>::max();
   for (unsigned int i = 0; i < 12; i++)
     {
       dist = 0.0;
@@ -51,11 +52,10 @@ CustomPDE<dim, degree, number>::set_initial_condition(
                    center[i][dir] *
                      get_user_inputs().get_spatial_discretization().get_size()[dir]);
         }
-      dist = std::sqrt(dist);
-
-      scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
+      dist = std::sqrt(dist) - rad[i];
+      sdf = std::min(sdf, dist);
     }
-  scalar_value = std::min(scalar_value, static_cast<number>(1.0));
+  scalar_value += 0.5 * (1.0 - std::tanh(sdf / 1.5));
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
