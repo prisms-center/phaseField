@@ -84,15 +84,15 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Generate config.h to enable and disable certain features within the source code.
-set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+set(PRISMS_PF_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 if(ADDITIONAL_DEGREES)
     set(EXPAND_DEGREES "; 3; 4; 5; 6")
 endif()
 
 configure_file(
-    ${CMAKE_SOURCE_DIR}/include/prismspf/config.h.in
-    ${CMAKE_SOURCE_DIR}/include/prismspf/config.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/prismspf/config.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
 )
 
 # Configure the template arguments file
@@ -265,7 +265,7 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
         ${_library}
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:include/prisms_pf>
+            $<INSTALL_INTERFACE:include>
         PRIVATE ${CMAKE_SOURCE_DIR}/src
     )
 
@@ -310,6 +310,7 @@ endforeach()
 # Installation
 # =========================================================
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
 # Install the libraries
 install(
@@ -324,10 +325,23 @@ install(
 # Install the headers
 install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-    DESTINATION include/prisms_pf
+    DESTINATION include
     FILES_MATCHING
     PATTERN "*.h"
     PATTERN "*.hpp"
+)
+
+# Install the generated config.h
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
+    DESTINATION include/prisms_pf
+)
+
+# Generate the Config file from the .in template
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
 # Install the CMake config files
@@ -338,9 +352,22 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
+# Install the generated Config file
 install(
-    FILES ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+)
+
+# Install the VERSION file
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/VERSION
+    DESTINATION .
+)
+
+# Install the cmake folder
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+    DESTINATION .
 )
 
 # =========================================================

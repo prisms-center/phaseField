@@ -4,6 +4,7 @@
 #
 
 macro(expand_template_instantiations _target _inst_in_files)
+    set(_inst_targets "")
     # Loop over the provided inst.in files
     foreach(_inst_in_file ${_inst_in_files})
         # Get the name for the output file. In other words,
@@ -19,37 +20,38 @@ macro(expand_template_instantiations _target _inst_in_files)
         set(_command expand_template_instantiations_exe)
         set(_dependency expand_template_instantiations_exe)
 
-        # Get the main build directory path
+        # Get the directory for finding templates
         if(DEFINED PRISMS_PF_CORE_DIR)
-            # We're in an application context, use the main build directory
-            set(_main_build_dir ${PRISMS_PF_CORE_DIR})
+            # We're in an application context, use the install directory
+            set(_template_dir ${PRISMS_PF_CORE_DIR})
         else()
-            # We're in the main project context, use current binary dir
-            set(_main_build_dir ${CMAKE_SOURCE_DIR})
+            # We're in the main project context, use current source dir
+            set(_template_dir ${CMAKE_SOURCE_DIR})
         endif()
 
         # Create a tmp inst file in case the command fails to
         # execute. This two level thing is necessary so that
         # we don't try and compile with incomplete instantiations
+        set(_final_output "${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}")
         add_custom_command(
-            OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}
+            OUTPUT "${_final_output}"
             DEPENDS
                 ${_dependency}
-                ${_main_build_dir}/cmake/templates
+                ${_template_dir}/cmake/templates
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file}
             COMMAND ${_command}
             ARGS
-                ${_main_build_dir}/cmake/templates <
+                ${_template_dir}/cmake/templates <
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
-                ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}.tmp
+                "${_final_output}.tmp"
             COMMAND ${CMAKE_COMMAND}
             ARGS
-                -E rename ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}.tmp
-                ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file}
+                -E rename "${_final_output}.tmp"
+                "${_final_output}"
         )
 
         # Append to a list of inst _inst_targets
-        list(APPEND _inst_targets ${CMAKE_CURRENT_BINARY_DIR}/${_inst_file})
+        list(APPEND _inst_targets "${_final_output}")
     endforeach()
 
     # Create a target that depends on the generations
