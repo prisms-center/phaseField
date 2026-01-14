@@ -5,7 +5,7 @@
 macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     # Add the script files
     add_subdirectory(
-        "${PRISMS_PF_CORE_DIR}/cmake/scripts"
+        "${PRISMS_PF_CORE_DIR}/lib/cmake/prisms_pf/scripts"
         "${CMAKE_BINARY_DIR}/scripts_build"
     )
 

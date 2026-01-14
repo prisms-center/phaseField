@@ -23,10 +23,10 @@ macro(expand_template_instantiations _target _inst_in_files)
         # Get the directory for finding templates
         if(DEFINED PRISMS_PF_CORE_DIR)
             # We're in an application context, use the install directory
-            set(_template_dir ${PRISMS_PF_CORE_DIR})
+            set(_template_file "${PRISMS_PF_CORE_DIR}/lib/cmake/prisms_pf/templates")
         else()
             # We're in the main project context, use current source dir
-            set(_template_dir ${CMAKE_SOURCE_DIR})
+            set(_template_file "${CMAKE_BINARY_DIR}/cmake/templates")
         endif()
 
         # Create a tmp inst file in case the command fails to
@@ -37,11 +37,11 @@ macro(expand_template_instantiations _target _inst_in_files)
             OUTPUT "${_final_output}"
             DEPENDS
                 ${_dependency}
-                ${_template_dir}/cmake/templates
+                ${_template_file}
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file}
             COMMAND ${_command}
             ARGS
-                ${_template_dir}/cmake/templates <
+                ${_template_file} <
                 ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
                 "${_final_output}.tmp"
             COMMAND ${CMAKE_COMMAND}
