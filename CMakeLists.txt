@@ -367,6 +367,12 @@ install(
     DESTINATION .
 )
 
+# Install the LICENSE file
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
+    DESTINATION .
+)
+
 # Install the cmake/template file
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/templates"
