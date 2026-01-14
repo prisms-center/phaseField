@@ -11,7 +11,7 @@ project(myapp C CXX)
 find_package(prisms_pf QUIET HINTS ${PRISMS_PF_DIR} $ENV{PRISMS_PF_DIR})
 if(PRISMS_PF_FOUND)
     # Include setup script
-    include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
+    include(${PRISMS_PF_CMAKE_DIR}/setup_application.cmake)
 
     # Set up the application
     prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})

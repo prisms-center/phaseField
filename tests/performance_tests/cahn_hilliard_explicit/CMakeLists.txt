@@ -13,10 +13,10 @@ get_filename_component(
 )
 
 # Include core library's configuration
-include(${PRISMS_PF_CORE_DIR}/cmake/prisms_pf_config.cmake)
+include(${PRISMS_PF_CMAKE_DIR}/prisms_pf_config.cmake)
 
 # Include setup script
-include(${PRISMS_PF_CORE_DIR}/cmake/setup_application.cmake)
+include(${PRISMS_PF_CMAKE_DIR}/setup_application.cmake)
 
 # Create a project for the application
 project(myapp CXX)
@@ -25,7 +25,7 @@ project(myapp CXX)
 set(TARGET_SRC_OVERRIDE "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
 
 # Include the autopilot macro
-include(${PRISMS_PF_CORE_DIR}/cmake/macros/macro_prisms_pf_autopilot.cmake)
+include(${PRISMS_PF_CMAKE_DIR}/macros/macro_prisms_pf_autopilot.cmake)
 
 # Set up the application
 prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
