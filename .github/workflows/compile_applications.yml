@@ -4,18 +4,15 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-      - devel
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
     paths-ignore:
       - 'doc/**'
       - 'contrib/**'
+      - '**/*.md'
+  merge_group:
+    paths-ignore:
+      - 'doc/**'
+      - 'contrib/**'
+      - '**/*.md'
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
