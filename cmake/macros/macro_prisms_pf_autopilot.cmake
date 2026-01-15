@@ -40,6 +40,8 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
 
     add_executable(${_target} ${TARGET_SRC})
 
+    add_dependencies(${_target} dummy_inst)
+
     if(TARGET prisms_pf::prisms_pf_${_build_lowercase})
       target_link_libraries(${_target} PRIVATE prisms_pf::prisms_pf_${_build_lowercase})
       message(STATUS "Successfully linked ${_target} to prisms_pf_${_build_lowercase}")
