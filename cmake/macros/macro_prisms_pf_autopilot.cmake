@@ -26,6 +26,11 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     set(TARGET_SRC ${TARGET_SRC_OVERRIDE})
   endif()
 
+  add_custom_target(dummy) # create a dummy target
+  set(BUILD_OVERRIDE "TRUE")
+  expand_template_instantiations(dummy "custom_pde.inst.in")
+  unset(BUILD_OVERRIDE)
+
   # Create the executables
   foreach(_build ${APPLICATION_BUILD_TYPES})
     string(TOLOWER ${_build} _build_lowercase)
@@ -34,6 +39,8 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     set(_target main-${_build_lowercase})
 
     add_executable(${_target} ${TARGET_SRC})
+
+    add_dependencies(${_target} dummy_inst)
 
     if(TARGET prisms_pf::prisms_pf_${_build_lowercase})
       target_link_libraries(${_target} PRIVATE prisms_pf::prisms_pf_${_build_lowercase})
@@ -70,6 +77,5 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     )
 
     set(BUILD_OVERRIDE "")
-    expand_template_instantiations(${_target} "custom_pde.inst.in")
   endforeach()
 endmacro()
