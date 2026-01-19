@@ -24,4 +24,4 @@ set(TARGET_SRC_OVERRIDE "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
 include(${PRISMS_PF_CMAKE_DIR}/macros/macro_prisms_pf_autopilot.cmake)
 
 # Set up the application
-prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
+prisms_pf_autopilot(${PRISMS_PF_CMAKE_DIR})

@@ -20,7 +20,7 @@ if(PRISMS_PF_FOUND)
   include(${PRISMS_PF_CMAKE_DIR}/setup_application.cmake)
 
   # Set up the application
-  prisms_pf_autopilot(${PRISMS_PF_CORE_DIR})
+  prisms_pf_autopilot(${PRISMS_PF_CMAKE_DIR})
 
   # put the binary in the source folder
   set_target_properties(
