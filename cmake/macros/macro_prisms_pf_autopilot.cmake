@@ -2,11 +2,11 @@
 # Autopilot function that will set up an application
 #
 
-macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
+macro(prisms_pf_autopilot PRISMS_PF_CMAKE_DIR)
   # Add the script files
   add_subdirectory(
-    "${PRISMS_PF_CORE_DIR}/lib/cmake/prisms_pf/scripts"
-    "${CMAKE_BINARY_DIR}/scripts_build"
+    "${PRISMS_PF_CMAKE_DIR}/scripts"
+    "${CMAKE_CURRENT_BINARY_DIR}/scripts_build"
   )
 
   # Enable compile commands export

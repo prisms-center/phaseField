@@ -23,7 +23,7 @@ macro(expand_template_instantiations _target _inst_in_files)
     # Get the directory for finding templates
     if(DEFINED PRISMS_PF_CORE_DIR)
       # We're in an application context, use the install directory
-      set(_template_file "${PRISMS_PF_CORE_DIR}/lib/cmake/prisms_pf/templates")
+      set(_template_file "${PRISMS_PF_CMAKE_DIR}/templates")
     else()
       # We're in the main project context, use current source dir
       set(_template_file "${CMAKE_BINARY_DIR}/cmake/templates")
