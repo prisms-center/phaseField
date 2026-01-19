@@ -348,25 +348,25 @@ install(
 
 # Install the generated config.h
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
-    DESTINATION include/prismspf
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
+  DESTINATION include/prismspf
 )
 
 # Install the cmake folder
 install(
-    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
-    FILES_MATCHING
-    PATTERN "*.cmake"
-    PATTERN "*.cc"
-    PATTERN "CMakeLists.txt"
-    PATTERN "*.cmake.in" EXCLUDE
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+  FILES_MATCHING
+  PATTERN "*.cmake"
+  PATTERN "*.cc"
+  PATTERN "CMakeLists.txt"
+  PATTERN "*.cmake.in" EXCLUDE
 )
 
 # Install the generated Config file
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
 # Install the CMake config files
