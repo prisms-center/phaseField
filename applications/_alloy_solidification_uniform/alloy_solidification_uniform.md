@@ -1,6 +1,6 @@
 # PRISMS-PF Application Formulation: alloySolidification_uniform
 
-This example application implements a simple model to simulate solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A. The implemented model was introduced by Karma [1] in 2001. In this model, latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered to be fixed by external conditions. In contrast to *alloySolidification*, this application considers solidification under uniform temperature and no diffusion in the solid.  In the default settings of the application, the simulation starts with a circular solid in the corner of a square system. The evolution of the system is calculated for an initial scaled supersaturation value, $\Omega$. As this seed grows, three variables are tracked, an order parameter, $\phi$, that denotes whether the material a liquid ($\phi=-1$) or solid ($\phi=1$), the solute concentration, $c$, and an auxiliary term, $\xi$. 
+This example application implements a simple model to simulate solidification of a binary alloy A-B in the dilute limit with component B acting as a solute in a matrix of A. The implemented model was introduced by Karma [1] in 2001. In this model, latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered to be fixed by external conditions. In contrast to *alloySolidification*, this application considers solidification under uniform temperature and no diffusion in the solid.  In the default settings of the application, the simulation starts with a circular solid in the corner of a square system. The evolution of the system is calculated for an initial scaled supersaturation value, $\Omega$. As this seed grows, three variables are tracked, an order parameter, $\phi$, that denotes whether the material a liquid ($\phi=-1$) or solid ($\phi=1$), the solute concentration, $c$, and an auxiliary term, $\xi$.
 
 ## Model
 The free energy of the system can be written as the functional [2]
@@ -40,7 +40,7 @@ and
 
 $$
 \begin{equation}
-\frac{\partial c}{\partial t} = \nabla \cdot \left(\  M(\phi,c) \frac{\delta \mathcal{F}}{\delta c}  - \vec{j}_{at} \right), 
+\frac{\partial c}{\partial t} = \nabla \cdot \left(\  M(\phi,c) \frac{\delta \mathcal{F}}{\delta c}  - \vec{j}_{at} \right),
 \end{equation}
 $$
 
@@ -74,7 +74,7 @@ where
 
 $$
 \begin{equation}
-\xi(\phi,c) = -\frac{\partial f}{\partial \phi} - \frac{\lambda}{1-k} g'(\phi)(e^u - 1) + W^2\nabla^2 \phi 
+\xi(\phi,c) = -\frac{\partial f}{\partial \phi} - \frac{\lambda}{1-k} g'(\phi)(e^u - 1) + W^2\nabla^2 \phi
 \end{equation}
 $$
 
@@ -106,7 +106,7 @@ The constant  $\lambda$ is defined as $\lambda=a_1W/d_0$, where $d_0$ is the mic
 
 $$
 \begin{equation}
-g'(\phi)=(1-\phi^2)^2, 
+g'(\phi)=(1-\phi^2)^2,
 \end{equation}
 $$
 
@@ -132,11 +132,11 @@ $$
 \end{equation}
 $$
 
-and 
+and
 
 $$
 \begin{equation}
-\xi(\phi,c) = -\frac{\partial f}{\partial \phi} - \frac{\lambda}{1-k} g'(\phi)(e^u - 1) + W^2\nabla^2 \phi 
+\xi(\phi,c) = -\frac{\partial f}{\partial \phi} - \frac{\lambda}{1-k} g'(\phi)(e^u - 1) + W^2\nabla^2 \phi
 \end{equation}
 $$
 
@@ -170,7 +170,7 @@ The initial condition is set by placing a solid seed in an undercooled system wi
 | $\tau$ | 1     | Unit time |
 | $d_0/W$| 0.277 |Microscopic capillary length (with respect to W) |
 | $a$ | $1/(2\sqrt{2})$ |Antitraping term constant|
-|$a_1$| 0.8839 | Coefficient $a_1$ | 
+|$a_1$| 0.8839 | Coefficient $a_1$ |
 | $a_2$ | 0.6267 | Coefficient $a_2$ |
 | $\lambda$ | $a_1W/d_0$ | Parameter $\lambda$ |
 | $D$ | $a_2\lambda W^2/\tau$ | Solute diffusivity in the liquid |
@@ -189,7 +189,7 @@ $$
 
 $$
 \begin{equation}
-c^{n+1}=c^{n}+\Delta t \left \( D c^n q(\phi^n)\nabla(u^n) + aWc_l^0(1-k)(e^u)^n \left(\frac{\partial \phi}{\partial t}\right)^n\frac{\nabla \phi^n}{|\nabla \phi^n|} \right \) 
+c^{n+1}=c^{n}+\Delta t \left \( D c^n q(\phi^n)\nabla(u^n) + aWc_l^0(1-k)(e^u)^n \left(\frac{\partial \phi}{\partial t}\right)^n\frac{\nabla \phi^n}{|\nabla \phi^n|} \right \)
 \end{equation}
 $$
 
@@ -215,7 +215,7 @@ $$
 
 $$
 \begin{align}
-\int_{\Omega}   \omega  c^{n+1}  ~dV =& 
+\int_{\Omega}   \omega  c^{n+1}  ~dV =&
 \int_{\Omega} \omega  c^{n} ~dV
 \end{align}
 $$
@@ -228,7 +228,7 @@ $$
 
 $$
 \begin{align}
-r_c &= c^{n} 
+r_c &= c^{n}
 \end{align}
 $$
 
@@ -260,7 +260,7 @@ r_\xi= -f'(\phi^n) - \frac{\lambda}{1-k} g'(\phi^n)[(e^u)^n - 1]
 \end{equation}
 $$
 
-and 
+and
 
 $$
 \begin{align}

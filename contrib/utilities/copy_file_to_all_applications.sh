@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 # SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 #
-# This script copies a file to all the applications in the tests/automatic_tests 
+# This script copies a file to all the applications in the tests/automatic_tests
 # directory and all the applications in the applications directory.
 #
 #

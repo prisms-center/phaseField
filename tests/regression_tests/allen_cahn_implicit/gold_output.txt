@@ -2,7 +2,7 @@ Using the input parameter file: parameters.prm
 Number of constants: 2
 Number of variables: 3
 number of processes: 1
-vectorization over 2 doubles = 128 bits (SSE2)
+vectorization over 8 doubles = 512 bits (AVX512)
 creating FESystem...
 creating triangulation...
 creating DoFHandlers...
@@ -17,7 +17,7 @@ Initializing solvers for solve block 0 ...
   no fields for this solver exist
   no fields for this solver exist
   no fields for this solver exist
-initializing grid refiner...  grid refinment disabled...
+initializing grid refiner...  grid refinement disabled...
 solving 0th timestep for solve block 0 ...
    solving auxiliary variables...
   solving linear time-independent variables...
@@ -28,54 +28,62 @@ outputting initial condition...
 Iteration: 0
   Solution index 0 l2-norm: 109.458 integrated value: 1886.46
   Solution index 1 l2-norm: 13.0252 integrated value: 114.755
-  Solution index 2 l2-norm: 6.60579 integrated value: 44.246
+  Solution index 2 l2-norm: 5.62075 integrated value: 40.9674
 
 
 Iteration: 300
   Solution index 0 l2-norm: 109.803 integrated value: 1911.01
   Solution index 1 l2-norm: 9.89877 integrated value: 94.1595
-  Solution index 2 l2-norm: 4.71983 integrated value: 35.2562
+  Solution index 2 l2-norm: 4.17322 integrated value: 32.5139
 
 Iteration: 600
   Solution index 0 l2-norm: 111.064 integrated value: 1941.31
   Solution index 1 l2-norm: 9.11071 integrated value: 81.964
-  Solution index 2 l2-norm: 4.28888 integrated value: 30.2349
+  Solution index 2 l2-norm: 3.83829 integrated value: 28.1723
 
 Iteration: 900
   Solution index 0 l2-norm: 112.301 integrated value: 1968.4
   Solution index 1 l2-norm: 8.73173 integrated value: 72.4863
-  Solution index 2 l2-norm: 4.0282 integrated value: 25.5837
+  Solution index 2 l2-norm: 3.6263 integrated value: 24.1561
 
 Iteration: 1200
   Solution index 0 l2-norm: 112.893 integrated value: 1982.26
   Solution index 1 l2-norm: 8.62429 integrated value: 69.223
-  Solution index 2 l2-norm: 3.94988 integrated value: 24.3184
+  Solution index 2 l2-norm: 3.5729 integrated value: 23.094
 
 Iteration: 1500
   Solution index 0 l2-norm: 113.274 integrated value: 1992.63
   Solution index 1 l2-norm: 8.51738 integrated value: 67.1952
-  Solution index 2 l2-norm: 3.89271 integrated value: 23.5696
+  Solution index 2 l2-norm: 3.52647 integrated value: 22.404
 
-Serial: Auxiliary solver - 2.375e-06s (2.375e-06s/call, 1 calls)
-Serial: Create FESystem - 0.000330064s (0.000330064s/call, 1 calls)
-Serial: Create constraints - 0.00186641s (0.00186641s/call, 1 calls)
-Serial: Explicit solver - 0.00344787s (2.29858e-06s/call, 1500 calls)
-Serial: Generate mesh - 0.0249792s (0.0249792s/call, 1 calls)
-Serial: Initialization - 0.129114s (0.129114s/call, 1 calls)
-Serial: Nonexplicit auxiliary solver - 0.00341105s (2.27403e-06s/call, 1500 calls)
-Serial: Nonexplicit co-nonlinear solver - 0.00317243s (2.11354e-06s/call, 1501 calls)
-Serial: Nonexplicit linear solver - 34.5798s (0.0230379s/call, 1501 calls)
-Serial: Nonexplicit self-nonlinear solver - 0.00322462s (2.14831e-06s/call, 1501 calls)
-Serial: Output - 0.229324s (0.0382207s/call, 6 calls)
-Serial: Postprocess solver - 0.00922159s (0.00153693s/call, 6 calls)
-Serial: Solve Increment - 34.6475s (0.0230983s/call, 1500 calls)
-Serial: Solver initialization - 0.0538313s (0.0538313s/call, 1 calls)
-Serial: Update ghosts - 0.00388001s (2.57466e-06s/call, 1507 calls)
-Serial: Update time-dependent constraints - 0.00334574s (2.2305e-06s/call, 1500 calls)
-Serial: Zero ghosts - 0.00465056s (3.08597e-06s/call, 1507 calls)
-Serial: compute element volumes - 0.001344s (0.001344s/call, 1 calls)
-Serial: reinitialize DoFHandlers - 0.00385392s (0.00385392s/call, 1 calls)
-Serial: reinitialize element volumes - 4.749e-06s (4.749e-06s/call, 1 calls)
-Serial: reinitialize invm - 0.000191152s (0.000191152s/call, 1 calls)
-Serial: reinitialize matrix-free objects - 0.00836321s (0.00836321s/call, 1 calls)
-Serial: reinitialize solution set - 0.000124665s (0.000124665s/call, 1 calls)
+
+
++-----------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start      |      15.8s |            |
+|                                               |            |            |
+| Section                           | no. calls |  wall time | % of total |
++-----------------------------------+-----------+------------+------------+
+| Auxiliary solver                  |         1 |  8.51e-06s |         0% |
+| Create FESystem                   |         1 |   0.00431s |         0% |
+| Create constraints                |         1 |   0.00468s |         0% |
+| Explicit solver                   |      1500 |   0.00212s |         0% |
+| Generate mesh                     |         1 |    0.0364s |      0.23% |
+| Initialization                    |         1 |     0.352s |       2.2% |
+| Nonexplicit auxiliary solver      |      1500 |   0.00172s |         0% |
+| Nonexplicit co-nonlinear solver   |      1501 |   0.00186s |         0% |
+| Nonexplicit linear solver         |      1501 |      14.4s |        91% |
+| Nonexplicit self-nonlinear solver |      1501 |   0.00216s |         0% |
+| Output                            |         6 |     0.393s |       2.5% |
+| Postprocess solver                |         6 |    0.0322s |       0.2% |
+| Solve Increment                   |      1500 |      14.4s |        91% |
+| Solver initialization             |         1 |    0.0779s |      0.49% |
+| Update ghosts                     |      1507 |   0.00398s |         0% |
+| Update time-dependent constraints |      1500 |   0.00185s |         0% |
+| Zero ghosts                       |      1507 |   0.00505s |         0% |
+| compute element volumes           |         1 |   0.00516s |         0% |
+| reinitialize DoFHandlers          |         1 |    0.0117s |         0% |
+| reinitialize element volumes      |         1 |   0.00081s |         0% |
+| reinitialize invm                 |         1 |    0.0154s |         0% |
+| reinitialize matrix-free objects  |         1 |    0.0553s |      0.35% |
+| reinitialize solution set         |         1 |   0.00146s |         0% |
++-----------------------------------+-----------+------------+------------+

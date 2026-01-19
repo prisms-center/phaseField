@@ -5,7 +5,7 @@ The total free energy of the system (neglecting boundary terms) is of the form,
 
 $$
 \begin{equation}
-\Pi(c, \eta_1, \eta_2, \eta_3, \epsilon) = \int_{\Omega} f(c, \eta_1, \eta_2, \eta_3, \epsilon) ~dV 
+\Pi(c, \eta_1, \eta_2, \eta_3, \epsilon) = \int_{\Omega} f(c, \eta_1, \eta_2, \eta_3, \epsilon) ~dV
 \end{equation}
 $$
 
@@ -71,7 +71,7 @@ From the variational derivatives given in Appendix II, we obtain the chemical po
 
 $$
 \begin{align}
-  \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right) +f_{\beta,c} \left(  H(\eta_1)  + H(\eta_2) + H(\eta_3) \right)  + C_{ijkl} (- \epsilon^0_{ij,c}) \left( \epsilon_{kl} - \epsilon^0_{kl}\right) 
+  \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right) +f_{\beta,c} \left(  H(\eta_1)  + H(\eta_2) + H(\eta_3) \right)  + C_{ijkl} (- \epsilon^0_{ij,c}) \left( \epsilon_{kl} - \epsilon^0_{kl}\right)
 \end{align}
 $$
 
@@ -94,28 +94,28 @@ $$
 
 $$
   \begin{align}
-    \frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p} 
+    \frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p}
 \end{align}
 $$
 
-where $M$ and $L$ are the constant mobilities. 
+where $M$ and $L$ are the constant mobilities.
 
 ## Mechanics
 Considering variations on the displacement $u$ of the from $u+\epsilon w$, we have
 
 $$
 \begin{align}
-\delta_u \Pi &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+\delta_u \Pi &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
-where $\sigma = C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right)$ is the stress tensor. 
+where $\sigma = C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right)$ is the stress tensor.
 
 Now consider
 
 $$
 \begin{align}
-R &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+R &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
@@ -123,7 +123,7 @@ We solve for $R=0$ using a gradient scheme which involves the following lineariz
 
 $$
 \begin{align}
-R_{u}~| + \frac{\delta R}{\delta u} \Delta u &= 0 
+R_{u}~| + \frac{\delta R}{\delta u} \Delta u &= 0
 \end{align}
 $$
 
@@ -153,11 +153,11 @@ $$
 
 ## Weak formulation and residual expressions
 ### The Cahn-Hillard and Allen-Cahn equations
-Writing the Cahn-Hillard and Allen-Cahn equations in the weak form, with the arbirary variation given by $w$ yields:
+Writing the Cahn-Hillard and Allen-Cahn equations in the weak form, with the arbitrary variation given by $w$ yields:
 
 $$
 \begin{align}
-\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t [\nabla \cdot (M \nabla \mu_c) ] dV 
+\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t [\nabla \cdot (M \nabla \mu_c) ] dV
 \end{align}
 $$
 
@@ -181,8 +181,8 @@ $$
 
 $$
 \begin{align}
-\int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \eta_p^{n}-w  \Delta t L \mu_{\eta_p} dV 
-%&= \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV 
+\int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \eta_p^{n}-w  \Delta t L \mu_{\eta_p} dV
+%&= \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
 \end{align}
 $$
 
@@ -242,7 +242,7 @@ Expanding $\mu_{\eta_p}$ in the weak AC equation and applying the divergence the
 
 $$
 \begin{align}
-\int_\Omega w \eta_p^{n+1} dV &= 
+\int_\Omega w \eta_p^{n+1} dV &=
 \end{align}
 $$
 
@@ -260,7 +260,7 @@ $$
 
 $$
 \begin{align}
-&+ \nabla w \cdot (-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n ) dV 
+&+ \nabla w \cdot (-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n ) dV
 \end{align}
 $$
 
@@ -300,7 +300,7 @@ The discretized form of this equation can be written as a matrix inversion probl
 
 $$
 \begin{align}
-\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0} 
+\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0}
 \end{align}
 $$
 
@@ -318,7 +318,7 @@ $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV 
+&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV
 \end{align}
 $$
 
@@ -358,10 +358,10 @@ r_{ux} &= \sigma
 \end{align}
 $$
 
-The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file: 
+The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file:
 `applications/precipitate_evolution/equations.cc`
 
-## Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $H(\eta_p)$ 
+## Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $H(\eta_p)$
 
 $$
 \begin{align}
@@ -371,7 +371,7 @@ $$
 
 $$
 \begin{align}
-f_{\beta}(c) = A_{2, \beta} c^2 + A_{1, \beta} c + A_{0, \beta} 
+f_{\beta}(c) = A_{2, \beta} c^2 + A_{1, \beta} c + A_{0, \beta}
 \end{align}
 $$
 
@@ -394,20 +394,20 @@ Breaking up each of these terms yields:
 
 $$
 \begin{align}
-\frac{d}{d\alpha} \left[ f_{chem}(c,\eta_p+\alpha w,\eta_q,\eta_r)\right]\_{\alpha=0}\ &= f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p+\alpha w)}{\partial (\eta_p + \alpha w)} \frac{\partial(\eta_p + \alpha w)}{\partial \alpha} \right]_{\alpha=0} 
+\frac{d}{d\alpha} \left[ f_{chem}(c,\eta_p+\alpha w,\eta_q,\eta_r)\right]\_{\alpha=0}\ &= f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p+\alpha w)}{\partial (\eta_p + \alpha w)} \frac{\partial(\eta_p + \alpha w)}{\partial \alpha} \right]_{\alpha=0}
 \end{align}
 $$
 
 $$
 \begin{align}
-&+f_{\beta}(c)  \left[  \frac{\partial H(\eta_p+\alpha w)}{\partial (\eta_p + \alpha w)} \frac{\partial(\eta_p + \alpha w)}{\partial \alpha} \right]_{\alpha=0} 
+&+f_{\beta}(c)  \left[  \frac{\partial H(\eta_p+\alpha w)}{\partial (\eta_p + \alpha w)} \frac{\partial(\eta_p + \alpha w)}{\partial \alpha} \right]_{\alpha=0}
 \end{align}
 $$
 
 $$
 \begin{align}
-&=f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p)}{\partial \eta_p} w \right] 
-+f_{\beta}(c) \left[  \frac{\partial H(\eta_p)}{\partial \eta_p } w \right] 
+&=f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p)}{\partial \eta_p} w \right]
++f_{\beta}(c) \left[  \frac{\partial H(\eta_p)}{\partial \eta_p } w \right]
 \end{align}
 $$
 
@@ -470,13 +470,13 @@ Putting the terms back together yields:
 
 $$
 \begin{align}
-\delta_{\eta_p} \Pi  &=  \int_{\Omega}  f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p)}{\partial \eta_p} w \right] +f_{\beta}(c) \left[  \frac{\partial H(\eta_p)}{\partial \eta_p } w \right] 
+\delta_{\eta_p} \Pi  &=  \int_{\Omega}  f_{\alpha}(c) \left[  -\frac{\partial H(\eta_p)}{\partial \eta_p} w \right] +f_{\beta}(c) \left[  \frac{\partial H(\eta_p)}{\partial \eta_p } w \right]
 \end{align}
 $$
 
 $$
 \begin{align}
-&+ \kappa_{ij} w_{,i} \eta_{p,j} 
+&+ \kappa_{ij} w_{,i} \eta_{p,j}
 \end{align}
 $$
 
@@ -488,7 +488,7 @@ $$
 
 $$
 \begin{align}
-&+ C_{ijkl}(\eta_p,\eta_q,\eta_r) \bigg (-\frac{\partial\epsilon_{ij}^0 (c,\eta_p,\eta_q,\eta_r)}{\partial \eta_p} w \bigg) \big(\epsilon_{kl}-\epsilon_{kl}^0 (c,\eta_p,\eta_q,\eta_r)\big)  ~dV  
+&+ C_{ijkl}(\eta_p,\eta_q,\eta_r) \bigg (-\frac{\partial\epsilon_{ij}^0 (c,\eta_p,\eta_q,\eta_r)}{\partial \eta_p} w \bigg) \big(\epsilon_{kl}-\epsilon_{kl}^0 (c,\eta_p,\eta_q,\eta_r)\big)  ~dV
 \end{align}
 $$
 
@@ -504,7 +504,7 @@ Breaking up each of these terms yields:
 
 $$
 \begin{align}
-\frac{d}{d\alpha} \left[ f_{chem}(c+\alpha w,\eta_p,\eta_q,\eta_r)\right]\_{\alpha=0}  &= \bigg[ \frac{\partial f_{\alpha}(c + \alpha w)}{\partial(c+\alpha w)} \frac{\partial(c+\alpha w)}{\partial \alpha} \left(1-\sum_{p=1}^3 H(\eta_p)\right) 
+\frac{d}{d\alpha} \left[ f_{chem}(c+\alpha w,\eta_p,\eta_q,\eta_r)\right]\_{\alpha=0}  &= \bigg[ \frac{\partial f_{\alpha}(c + \alpha w)}{\partial(c+\alpha w)} \frac{\partial(c+\alpha w)}{\partial \alpha} \left(1-\sum_{p=1}^3 H(\eta_p)\right)
 \end{align}
 $$
 
@@ -534,7 +534,7 @@ $$
 
 $$
 \begin{align}
-&- \big(\epsilon_{ij}-\epsilon_{ij}^0 (c+\alpha w,\eta_p,\eta_q,\eta_r)\big) \frac{\partial \epsilon_{ij}^0 (c+\alpha w,\eta_p,\eta_q,\eta_r)}{\partial (c + \alpha w)} \frac{\partial(c + \alpha w)}{\partial \alpha} \bigg]_{\alpha=0} 
+&- \big(\epsilon_{ij}-\epsilon_{ij}^0 (c+\alpha w,\eta_p,\eta_q,\eta_r)\big) \frac{\partial \epsilon_{ij}^0 (c+\alpha w,\eta_p,\eta_q,\eta_r)}{\partial (c + \alpha w)} \frac{\partial(c + \alpha w)}{\partial \alpha} \bigg]_{\alpha=0}
 \end{align}
 $$
 

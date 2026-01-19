@@ -1,5 +1,6 @@
-import re
 import glob
+import re
+
 import matplotlib.pyplot as plt
 
 

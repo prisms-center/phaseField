@@ -4,7 +4,7 @@ This application is essentially a specialization of the CHAC\_anisotropyRegarize
 
 $$
 \begin{equation}
-  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{1}{2} | \gamma( \mathbf{n} ) \nabla  \eta |^2  + \frac{\delta^2}{2} (\Delta \eta)^2 ~dV 
+  \Pi(c, \eta, \nabla  \eta) = \int_{\Omega}    \left( f_{\alpha}(1-H) + f_{\beta}H \right)  + \frac{1}{2} | \gamma( \mathbf{n} ) \nabla  \eta |^2  + \frac{\delta^2}{2} (\Delta \eta)^2 ~dV
 \end{equation}
 $$
 
@@ -23,7 +23,7 @@ Following standard variational arguments (see Cahn-Hilliard formulation), we obt
 
 $$
 \begin{align}
-  \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)  
+  \mu_{c}  &= (f_{\alpha,c}(1-H)+f_{\beta,c}H)
 \end{align}
 $$
 
@@ -54,7 +54,7 @@ $$
 
 $$
 \begin{align}
-  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H)) 
+  &=M_c~\nabla \cdot (\nabla (f_{\alpha,c}(1-H)+f_{\beta,c}H))
   \end{align}
 $$
 
@@ -62,7 +62,7 @@ and the PDE for Allen-Cahn dynamics is given by:
 
 $$
   \begin{align}
-    \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta 
+    \frac{\partial \eta}{\partial t} &= -M_\eta \mu_\eta
 \end{align}
 $$
 
@@ -80,7 +80,7 @@ $$
 \end{align}
 $$
 
-and the PDE for Allen-Cahn dynamics becomes 
+and the PDE for Allen-Cahn dynamics becomes
 
 $$
 \begin{align}
@@ -93,7 +93,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
- \phi^{n+1} &= \Delta \eta^n 
+ \phi^{n+1} &= \Delta \eta^n
 \end{align}
 $$
 
@@ -114,13 +114,13 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \phi^{n+1}  ~dV &=\int_{\Omega}  \nabla w \cdot \nabla \eta^n  ~dV 
+  \int_{\Omega}   w  \phi^{n+1}  ~dV &=\int_{\Omega}  \nabla w \cdot \nabla \eta^n  ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\phi x} &=  \nabla \eta^n 
+r_{\phi x} &=  \nabla \eta^n
 \end{align}
 $$
 
@@ -132,7 +132,7 @@ $$
 
 $$
 \begin{align}
-  &=\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 \phi^n) ~dV 
+  &=\int_{\Omega}  w  \left( \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 \phi^n) ~dV
 \end{align}
 $$
 
@@ -148,7 +148,7 @@ r_{\eta x} &= (- \Delta t M_{\eta})  ( \mathbf{m}^n - \delta^2 \phi^n)
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
@@ -170,7 +170,7 @@ $$
 
 $$
 \begin{align}
-r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta^n) ] 
+r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta^n) ]
 \end{align}
 $$
 

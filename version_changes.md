@@ -1,11 +1,11 @@
 # Version 2.4.1
-Minor update from 2.4. The main changes are: 
+Minor update from 2.4. The main changes are:
 * Minor bug fixes.
 * Compilation has been fixed for clang, gcc, and intel-oneapi compilers that support the c++17 standard.
 * deal.II 9.5.0 or later is now required.
 
 # Version 2.4
-Moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, 
+Moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements,
 improved testing and continuous integration, code auto-formatting, and bug fixes.
 
 ## Features
@@ -37,11 +37,11 @@ improved testing and continuous integration, code auto-formatting, and bug fixes
 
 # Version 2.3
 
-Moderate update from 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, bug fixes and comparibility with the latest version of deal.II.
+Moderate update from 2.2, released in July 2021. The main changes are new applications, new postprocessing scripts, improvements in performance, bug fixes and compatibility with the latest version of deal.II.
 
 ## Added Features:
 
-- New applications: 
+- New applications:
   - [corrosion_microgalvanic](https://github.com/prisms-center/phaseField/tree/master/applications/corrosion_microgalvanic): Simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between anodic and cathodic metals.
   - [alloySolidification_uniform](https://github.com/prisms-center/phaseField/tree/master/applications/alloySolidification_uniform): Simulates solidification of a binary alloy at uniform temperature.
   - [allenCahn_conserved](https://github.com/prisms-center/phaseField/tree/master/applications/allenCahn_conserved): Simulates a system undergoing Allen-Cahn dynamics subject to global (as opposed to local) conservation.
@@ -49,14 +49,14 @@ Moderate update from 2.2, released in July 2021. The main changes are new applic
   - plot_and_save.py - This script creates a pseudocolor (in 2D) or contour (in 3D) plot for each outputted time states and saves the serieas of plots as png images.
   - domain_stats.py - This script calculates the following quantities for each of the time states:
     - Number of domains, defined as the number or separate regions based on the values of field variable, "n". Each interconnected region for which n>0.5 is counted as a separate domain.
-    
+
     - Average domain size (area in 2D and volume in 3D)
-    
+
     - Standard deviation of the domain sizes
   - splitvtufiles.py - This script splits the output .vtu files into several files, allowing for parallel visualization in VisIt or ParaView.
 - New options for nucleation were added: an option to set the time interval for then nucleation is allowed and an option to allow for microstructure evolution before the first nucleation event.
 - Improved the method for grain detection when reading data from a DREAM3D microstructure file.
-- Added depencency of element degree for time step used in initial smoothing after reading from a DREAM3D microstructure file. This avoids posible numerical instabilities.
+- Added dependency of element degree for time step used in initial smoothing after reading from a DREAM3D microstructure file. This avoids possible numerical instabilities.
 - Added Troubleshooting/FAQ page with the most common compilation/runtime errors and the way to fix them.
 
 ## Bug Fixes:
@@ -68,7 +68,7 @@ Moderate update from 2.2, released in July 2021. The main changes are new applic
 
 ## Other Changes:
 
-- Updated comparibility with deal.II version 9.5.x
+- Updated compatibility with deal.II version 9.5.x
 
 # Version 2.2
 

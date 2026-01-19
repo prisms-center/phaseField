@@ -1,13 +1,11 @@
 name: Clang-Format Check
 
-on: 
+on:
   push:
     branches:
       - master
   pull_request:
-    branches:
-      - master
-      - devel
+  merge_group:
     paths-ignore:
       - 'doc/**'
       - 'contrib/**'

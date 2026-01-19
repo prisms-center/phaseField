@@ -110,7 +110,7 @@ CustomAttributeLoader::load_variable_attributes()
 }
 
 // =============================================================================================
-// explicitEquationRHS (needed only if one or more equation is explict time
+// explicitEquationRHS (needed only if one or more equation is explicit time
 // dependent)
 // =============================================================================================
 // This function calculates the right-hand-side of the explicit time-dependent
@@ -132,7 +132,7 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   // --- Parameters in the explicit equations can be set here  ---
 
   // Timestep
-  scalarvalueType delt = constV(userInputs.dtValue);
+  scalarvalueType dt = constV(userInputs.dtValue);
 
   // The order parameter of the anodic phase
   scalarvalueType nAnodic = variable_list.template get_value<ScalarValue>(0);
@@ -217,16 +217,16 @@ CustomPDE<dim, degree>::explicitEquationRHS(
   scalarvalueType MnV = MconstV * psi * abs(xiAnodic * iAnodic);
 
   // --- Calculation of residual terms for nAnodic  ---
-  scalarvalueType rnAnodic  = nAnodic + v * delt * magpsix;
-  scalargradType  rnAnodicx = -MnV * delt * muAnodicx;
+  scalarvalueType rnAnodic  = nAnodic + v * dt * magpsix;
+  scalargradType  rnAnodicx = -MnV * dt * muAnodicx;
 
   // --- Calculation of residual terms for nCathodic  ---
   scalarvalueType rnCathodic  = nCathodic;
-  scalargradType  rnCathodicx = -MnV * delt * muCathodicx;
+  scalargradType  rnCathodicx = -MnV * dt * muCathodicx;
 
   // --- Calculation of residual terms for psi ---
-  scalarvalueType rpsi  = psi - v * delt * magpsix;
-  scalargradType  rpsix = -MnV * delt * mupsix;
+  scalarvalueType rpsi  = psi - v * dt * magpsix;
+  scalargradType  rpsix = -MnV * dt * mupsix;
 
   // --- Submitting the terms for the governing equations ---
   // Residuals terms for the equation to evolve the order parameter

@@ -1,6 +1,6 @@
 # PRISMS-PF Application Formulation: eshelbyInclusion
 
-This example application implements a simple 3D calculation of the displacement field near a homogenous inclusion. 
+This example application implements a simple 3D calculation of the displacement field near a homogeneous inclusion.
 
 Consider a strain energy expression of the form:
 
@@ -41,11 +41,11 @@ $$
 \end{align}
 $$
 
-If surface tractions are zero: 
+If surface tractions are zero:
 
 $$
 \begin{align}
-R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0 
+R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0
 \end{align}
 $$
 
@@ -62,7 +62,7 @@ where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i w
 
 $$
 \begin{equation}
-\frac{\delta R(u)}{\delta u} \Delta U = -R(u_0) 
+\frac{\delta R(u)}{\delta u} \Delta U = -R(u_0)
 \end{equation}
 $$
 
@@ -70,7 +70,7 @@ The discretized form of this equation can be written as a matrix inversion probl
 
 $$
 \begin{align}
-\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0} 
+\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0}
 \end{align}
 $$
 
@@ -82,13 +82,13 @@ $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha} \left[ \nabla(u+\alpha w) - \epsilon^0 \right]  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C) 
+&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha} \left[ \nabla(u+\alpha w) - \epsilon^0 \right]  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C)
 \end{align}
 $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV 
+&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV
 \end{align}
 $$
 

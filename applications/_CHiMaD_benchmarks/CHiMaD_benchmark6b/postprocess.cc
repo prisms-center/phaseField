@@ -60,11 +60,11 @@ CustomPDE<dim, degree>::postProcessedFields(
 
   scalarvalueType f_tot = constV(0.0);
 
-  // The homogenous chemical free energy
+  // The homogeneous chemical free energy
   scalarvalueType f_chem =
     rho * (c - c_alpha) * (c - c_alpha) * (c_beta - c) * (c_beta - c);
 
-  // The homogenous electrostaric free energy
+  // The homogeneous electrostaric free energy
   scalarvalueType f_elec = 0.5 * k * c * phi;
 
   // The gradient free energy
@@ -72,10 +72,7 @@ CustomPDE<dim, degree>::postProcessedFields(
 
   for (int i = 0; i < dim; i++)
     {
-      for (int j = 0; j < dim; j++)
-        {
-          f_grad += constV(0.5 * KcV) * cx[i] * cx[j];
-        }
+      f_grad += constV(0.5 * KcV) * cx[i] * cx[i];
     }
 
   // The total free energy

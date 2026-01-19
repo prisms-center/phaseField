@@ -77,7 +77,7 @@ public:
   }
 
   /**
-   * @brief Get the value for a homogenous dirichlet boundary condition.
+   * @brief Get the value for a homogeneous dirichlet boundary condition.
    */
   [[nodiscard]] double
   get_dirichlet_value(dealii::types::boundary_id boundary_id) const
@@ -90,7 +90,7 @@ public:
   }
 
   /**
-   * @brief Add the value for a homogenous dirichlet boundary condition.
+   * @brief Add the value for a homogeneous dirichlet boundary condition.
    */
   void
   add_boundary_condition(dealii::types::boundary_id boundary_id, double boundary_value)

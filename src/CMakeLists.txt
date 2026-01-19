@@ -5,7 +5,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_BINARY_DIR}/include)
 
 foreach(TARGET IN ITEMS core solvers user_inputs utilities)
-    add_subdirectory(${TARGET})
+  add_subdirectory(${TARGET})
 endforeach()
 
 # Handles the install path

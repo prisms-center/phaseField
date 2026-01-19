@@ -4,10 +4,10 @@
 #
 
 macro(append_flags SOURCE_FLAGS DEST_FLAGS)
-    if(${SOURCE_FLAGS})
-        separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
-        foreach(flag IN LISTS _temp_flags)
-            list(APPEND ${DEST_FLAGS} "${flag}")
-        endforeach()
-    endif()
+  if(${SOURCE_FLAGS})
+    separate_arguments(_temp_flags NATIVE_COMMAND "${${SOURCE_FLAGS}}")
+    foreach(flag IN LISTS _temp_flags)
+      list(APPEND ${DEST_FLAGS} "${flag}")
+    endforeach()
+  endif()
 endmacro()
