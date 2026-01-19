@@ -23,11 +23,21 @@ if(PRISMS_PF_FOUND)
   prisms_pf_autopilot(${PRISMS_PF_CMAKE_DIR})
 
   # put the binary in the source folder
-  set_target_properties(
-    main-debug main-release
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
-  )
+  if(TARGET main-debug)
+    set_target_properties(
+      main-debug
+      PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+  endif()
+
+  if(TARGET main-release)
+    set_target_properties(
+      main-release
+      PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+  endif()
 else()
   message(FATAL_ERROR "PRISMS-PF package not found. Please make sure it is in path.")
 endif()

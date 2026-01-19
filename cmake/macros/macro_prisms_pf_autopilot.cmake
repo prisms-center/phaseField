@@ -40,6 +40,13 @@ macro(prisms_pf_autopilot PRISMS_PF_CMAKE_DIR)
 
     add_executable(${_target} ${TARGET_SRC})
 
+    # put the binary in the source folder
+    set_target_properties(
+      ${_target}
+      PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+
     add_dependencies(${_target} dummy_inst)
 
     if(TARGET prisms_pf::prisms_pf_${_build_lowercase})
