@@ -20,11 +20,12 @@ var searchData=
   ['installation_17',['Installation',['../installation.html',1,'']]],
   ['installation_20with_20docker_18',['Installation with Docker',['../docker.html#docker_installation',1,'']]],
   ['installing_20from_20source_19',['Installing from Source',['../source.html',1,'']]],
-  ['installing_20with_20docker_20',['Installing with Docker',['../docker.html',1,'']]],
-  ['integrator_21',['integrator',['../classIntegrator.html#a88eee50295e1cc870b0645d1c115db36',1,'Integrator::Integrator()'],['../classIntegrator.html',1,'Integrator&lt; dim, degree, number &gt;']]],
-  ['introduction_20to_20docker_22',['Introduction to Docker',['../docker.html#docker_introduction',1,'']]],
-  ['invmhandler_23',['invmhandler',['../classInvmHandler.html#a81771d4f9a450fb571d166a2198dd325',1,'InvmHandler::InvmHandler()'],['../classInvmHandler.html',1,'InvmHandler&lt; dim, degree, number &gt;']]],
-  ['is_5fnucleation_5frate_24',['is_nucleation_rate',['../structVariableAttributes.html#a2459a89ffbe7331de5a541f77cba2ce3',1,'VariableAttributes']]],
-  ['is_5fpostprocess_25',['is_postprocess',['../structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e',1,'VariableAttributes']]],
-  ['is_5ftime_5fdependent_26',['is_time_dependent',['../structBoundaryParameters.html#a8970f0febe9a31d88f11a770935a1bd4',1,'BoundaryParameters']]]
+  ['installing_20prisms_20pf_20',['Installing PRISMS-PF',['../source.html#install_prismspf',1,'']]],
+  ['installing_20with_20docker_21',['Installing with Docker',['../docker.html',1,'']]],
+  ['integrator_22',['integrator',['../classIntegrator.html#a88eee50295e1cc870b0645d1c115db36',1,'Integrator::Integrator()'],['../classIntegrator.html',1,'Integrator&lt; dim, degree, number &gt;']]],
+  ['introduction_20to_20docker_23',['Introduction to Docker',['../docker.html#docker_introduction',1,'']]],
+  ['invmhandler_24',['invmhandler',['../classInvmHandler.html#a81771d4f9a450fb571d166a2198dd325',1,'InvmHandler::InvmHandler()'],['../classInvmHandler.html',1,'InvmHandler&lt; dim, degree, number &gt;']]],
+  ['is_5fnucleation_5frate_25',['is_nucleation_rate',['../structVariableAttributes.html#a2459a89ffbe7331de5a541f77cba2ce3',1,'VariableAttributes']]],
+  ['is_5fpostprocess_26',['is_postprocess',['../structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e',1,'VariableAttributes']]],
+  ['is_5ftime_5fdependent_27',['is_time_dependent',['../structBoundaryParameters.html#a8970f0febe9a31d88f11a770935a1bd4',1,'BoundaryParameters']]]
 ];

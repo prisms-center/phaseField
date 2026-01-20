@@ -128,11 +128,39 @@ Prerequisites</h2>
 <div class="line">autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin</div>
 <div class="line">openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev</div>
 <div class="line">libsuitesparse-dev</div>
-</div><!-- fragment --> To install p4est, you can follow these instructions:</li>
-<li><b class="tab-title">MacOS</b> This is the content of tab 2</li>
-<li><b class="tab-title">Windows</b> <b>PRISMS-PF has no plans to support Windows.</b> If you are on Windows, we recommend using a virtual machine or Windows Subsystem for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you use either of those options.</li>
+</div><!-- fragment --> To install p4est and deal.II, we recommend following the instructions on the <a href="https://dealii.org/current_release/download/">deal.II installation guide</a>. We suggest building deal.II and p4est using deal.II's automatic installation script <a href="https://github.com/dealii/candi">candi</a>.</li>
 </ul>
-</div><div class="tabbed"></div> </div></div><!-- contents -->
+</div><div class="tabbed"><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/dealii/candi.git</span></div>
+<div class="line">cd candi</div>
+</div><!-- fragment --> Modify the <code>candi.cfg</code> file, commenting out any PACKAGES other than dealii and p4est. Then run: <div class="fragment"><div class="line">./candi.sh</div>
+</div><!-- fragment --> or <div class="fragment"><div class="line">./candi.sh -j &lt;nprocs&gt;</div>
+</div><!-- fragment --> to compile with multiple processors (much faster). (Note that we have found that specifying too many processors can sometimes lead to build failures, so if you run into issues, try reducing the number of processors specified.)</div><div class="tabbed">This will install both p4est and deal.II in a local directory (by default,<code>$HOME/dealii-candi/</code>). Be sure to permanently set the <code>DEAL_II_DIR</code> environment variable to point to the deal.II installation.</div><div class="tabbed">To install VTK, we recommend installing from source. <div class="fragment"><div class="line">git clone https:<span class="comment">//gitlab.kitware.com/vtk/vtk.git vtk-clone</span></div>
+<div class="line">mkdir vtk-build</div>
+<div class="line">mkdir vtk-install</div>
+<div class="line">cd vtk-build</div>
+<div class="line">cmake ../vtk-clone -DCMAKE_BUILD_TYPE=Release -DVTK_GROUP_ENABLE_QT=OFF</div>
+<div class="line">-DVTK_GROUP_ENABLE_MPI=YES -DVTK_USE_MPI=ON -DVTK_BUILD_TESTING=OFF</div>
+<div class="line">-DCMAKE_INSTALL_PREFIX=../vtk-install</div>
+<div class="line"> </div>
+<div class="line">make -j &lt;numprocs&gt; install</div>
+</div><!-- fragment --> Be sure to permanently set the <code>VTK_DIR</code> environment variable to point to the VTK installation (e.g.,<code>$HOME/vtk-install/lib/cmake/vtk-9.xx</code>).</div><div class="tabbed"><ul>
+<li><b class="tab-title">MacOS</b> This is the content of tab 2</li>
+<li><b class="tab-title">Windows</b> <b>PRISMS-PF has no plans to support Windows.</b> If you are on Windows, we recommend using Docker, another virtual machine, or Windows Subsystem for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you use any of those options.</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="install_prismspf"></a>
+Installing PRISMS-PF</h2>
+<p>Once you have all the prerequisites installed, you can clone the PRISMS-PF repository from GitHub, configure the build with CMake, and compile the code: </p><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
+<div class="line">cd phaseField</div>
+<div class="line">mkdir build</div>
+<div class="line">cd build</div>
+<div class="line">cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=&lt;prisms-install-dir&gt; ..</div>
+<div class="line">make -j &lt;nprocs&gt;</div>
+</div><!-- fragment --><p> This will build the PRISMS-PF library in both debug and release modes. Next, set the <code>PRISMS_PF_DIR</code> environment variable to point to the PRISMS-PF installation directory (the directory containing the <code>lib</code> and <code>include</code> directories). You can now compile and run any of the applications in the <code>applications</code> directory. For example, to compile and run the <code>allen_cahn_explicit</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd applications/allen_cahn_explicit</div>
+<div class="line">cmake .</div>
+<div class="line">make</div>
+<div class="line">mpirun -n &lt;nprocs&gt; ./main</div>
+</div><!-- fragment --><p> (Note: there is a known bug with compiling application using multiple processors for the first time. This will be fixed in a future release. After compiling once, the issue should go away.) </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
