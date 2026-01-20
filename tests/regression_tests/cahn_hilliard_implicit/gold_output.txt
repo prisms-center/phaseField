@@ -87,4 +87,3 @@ Iteration: 500
 | reinitialize matrix-free objects  |         1 |    0.0356s |      0.12% |
 | reinitialize solution set         |         1 |   0.00293s |         0% |
 +-----------------------------------+-----------+------------+------------+
-
