@@ -10,9 +10,7 @@ endforeach()
 
 # Handles the install path
 foreach(_target ${PRISMS_PF_TARGETS})
-    target_include_directories(${_target} PUBLIC 
-        $<INSTALL_INTERFACE:include>
-    )
+  target_include_directories(${_target} PUBLIC $<INSTALL_INTERFACE:include>)
 endforeach()
 
 # Add the dummy.cc

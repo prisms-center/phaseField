@@ -5,7 +5,11 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Create a project for the application
-project(myapp C CXX)
+project(
+  myapp
+  C
+  CXX
+)
 
 # Find the PRISMS-PF package
 find_package(
@@ -21,7 +25,6 @@ if(PRISMS_PF_FOUND)
 
   # Set up the application
   prisms_pf_autopilot(${PRISMS_PF_CMAKE_DIR})
-
 else()
   message(FATAL_ERROR "PRISMS-PF package not found. Please make sure it is in path.")
 endif()
