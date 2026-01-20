@@ -5,7 +5,11 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Create a project for the application
-project(myapp C CXX)
+project(
+  myapp
+  C
+  CXX
+)
 
 # Find the PRISMS-PF package
 find_package(
