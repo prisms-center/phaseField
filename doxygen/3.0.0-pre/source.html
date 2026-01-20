@@ -123,18 +123,18 @@ Prerequisites</h2>
 <li>Caliper (for profiling) <b>[optional]</b></li>
 <li>deal.II (version 9.6 or higher)</li>
 </ul>
-<div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">Linux</b> You can install these prerequisites however you like. The first five are typically available on most OSes through your package manager. For example, on Ubuntu, you can install them with: <div class="fragment"><div class="line">sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential</div>
+<p>You can install these prerequisites however you like. The first five are typically available on most OSes through your package manager. For example, on Ubuntu, you can install them with: </p><div class="fragment"><div class="line">sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential</div>
 <div class="line">autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin</div>
 <div class="line">openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev</div>
 <div class="line">libsuitesparse-dev</div>
-</div><!-- fragment --> To install p4est and deal.II, we recommend following the instructions on the <a href="https://dealii.org/current_release/download/">deal.II installation guide</a>. We suggest building deal.II and p4est using deal.II's automatic installation script <a href="https://github.com/dealii/candi">candi</a>.</li>
-</ul>
-</div><div class="tabbed"><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/dealii/candi.git</span></div>
+</div><!-- fragment --><p> To install p4est and deal.II, we recommend following the instructions on the <a href="https://dealii.org/current_release/download/">deal.II installation guide</a>. We suggest building deal.II and p4est using deal.II's automatic installation script <a href="https://github.com/dealii/candi">candi</a>.</p>
+<div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/dealii/candi.git</span></div>
 <div class="line">cd candi</div>
-</div><!-- fragment --> Modify the <code>candi.cfg</code> file, commenting out any PACKAGES other than dealii and p4est. Then run: <div class="fragment"><div class="line">./candi.sh</div>
-</div><!-- fragment --> or <div class="fragment"><div class="line">./candi.sh -j &lt;nprocs&gt;</div>
-</div><!-- fragment --> to compile with multiple processors (much faster). (Note that we have found that specifying too many processors can sometimes lead to build failures, so if you run into issues, try reducing the number of processors specified.)</div><div class="tabbed">This will install both p4est and deal.II in a local directory (by default,<code>$HOME/dealii-candi/</code>). Be sure to permanently set the <code>DEAL_II_DIR</code> environment variable to point to the deal.II installation.</div><div class="tabbed">To install VTK, we recommend installing from source. <div class="fragment"><div class="line">git clone https:<span class="comment">//gitlab.kitware.com/vtk/vtk.git vtk-clone</span></div>
+</div><!-- fragment --><p> Modify the <code>candi.cfg</code> file, commenting out any PACKAGES other than dealii and p4est. Then run: </p><div class="fragment"><div class="line">./candi.sh</div>
+</div><!-- fragment --><p> or </p><div class="fragment"><div class="line">./candi.sh -j &lt;nprocs&gt;</div>
+</div><!-- fragment --><p> to compile with multiple processors (much faster). (Note that we have found that specifying too many processors can sometimes lead to build failures, so if you run into issues, try reducing the number of processors specified.)</p>
+<p>This will install both p4est and deal.II in a local directory (by default,<code>$HOME/dealii-candi/</code>). Be sure to permanently set the <code>DEAL_II_DIR</code> environment variable to point to the deal.II installation.</p>
+<p>To install VTK, we recommend installing from source. </p><div class="fragment"><div class="line">git clone https:<span class="comment">//gitlab.kitware.com/vtk/vtk.git vtk-clone</span></div>
 <div class="line">mkdir vtk-build</div>
 <div class="line">mkdir vtk-install</div>
 <div class="line">cd vtk-build</div>
@@ -143,11 +143,8 @@ Prerequisites</h2>
 <div class="line">-DCMAKE_INSTALL_PREFIX=../vtk-install</div>
 <div class="line"> </div>
 <div class="line">make -j &lt;numprocs&gt; install</div>
-</div><!-- fragment --> Be sure to permanently set the <code>VTK_DIR</code> environment variable to point to the VTK installation (e.g.,<code>$HOME/vtk-install/lib/cmake/vtk-9.xx</code>).</div><div class="tabbed"><ul>
-<li><b class="tab-title">MacOS</b> This is the content of tab 2</li>
-<li><b class="tab-title">Windows</b> <b>PRISMS-PF has no plans to support Windows.</b> If you are on Windows, we recommend using Docker, another virtual machine, or Windows Subsystem for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you use any of those options.</li>
-</ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="install_prismspf"></a>
+</div><!-- fragment --><p> Be sure to permanently set the <code>VTK_DIR</code> environment variable to point to the VTK installation (e.g.,<code>$HOME/vtk-install/lib/cmake/vtk-9.xx</code>).</p>
+<h2><a class="anchor" id="install_prismspf"></a>
 Installing PRISMS-PF</h2>
 <p>Once you have all the prerequisites installed, you can clone the PRISMS-PF repository from GitHub, configure the build with CMake, and compile the code: </p><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
 <div class="line">cd phaseField</div>
@@ -159,8 +156,7 @@ Installing PRISMS-PF</h2>
 <div class="line">cmake .</div>
 <div class="line">make</div>
 <div class="line">mpirun -n &lt;nprocs&gt; ./main</div>
-</div><!-- fragment --><p> (Note: there is a known bug with compiling application using multiple processors for the first time. This will be fixed in a future release. After compiling once, the issue should go away.) </p>
-</div></div><!-- contents -->
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
