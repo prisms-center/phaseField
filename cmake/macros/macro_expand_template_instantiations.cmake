@@ -43,14 +43,12 @@ macro(expand_template_instantiations _target _inst_in_files)
       COMMAND
         ${_command}
       ARGS
-        ${_template_file} < 
-        ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
+        ${_template_file} < ${CMAKE_CURRENT_SOURCE_DIR}/${_inst_in_file} >
         "${_final_output}.tmp"
       COMMAND
         ${CMAKE_COMMAND}
       ARGS
-        -E rename "${_final_output}.tmp"
-        "${_final_output}"
+        -E rename "${_final_output}.tmp" "${_final_output}"
     )
 
     # Append to a list of inst _inst_targets

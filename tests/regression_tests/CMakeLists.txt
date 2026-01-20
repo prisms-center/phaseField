@@ -5,19 +5,20 @@
 message(STATUS "Setting up PRISMS-PF regression tests...")
 
 # A list of the regression applications
-set(REGRESSION_TEST_APPS
-    allen_cahn_explicit
-    allen_cahn_implicit
-    cahn_hilliard_explicit
-    cahn_hilliard_explicit_amr
-    cahn_hilliard_implicit
-    cavity_flow
-    fracture
-    heat_equation_steady_state
-    linear_solve_old_solution
-    mechanics
-    precipitate_explicit
-    solution_blocks
+set(
+  REGRESSION_TEST_APPS
+  allen_cahn_explicit
+  allen_cahn_implicit
+  cahn_hilliard_explicit
+  cahn_hilliard_explicit_amr
+  cahn_hilliard_implicit
+  cavity_flow
+  fracture
+  heat_equation_steady_state
+  linear_solve_old_solution
+  mechanics
+  precipitate_explicit
+  solution_blocks
 )
 
 # For each regression application install the source files, configure, and compile
@@ -80,8 +81,8 @@ if(NOT DEFINED N_THREADS)
 endif()
 
 install(
-    CODE
-        "
+  CODE
+    "
 execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/run.py
     -j ${N_THREADS}

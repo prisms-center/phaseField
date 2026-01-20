@@ -5,7 +5,11 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Create a project for the application
-project(myapp C CXX)
+project(
+  myapp
+  C
+  CXX
+)
 
 # Find the PRISMS-PF package
 find_package(
@@ -27,7 +31,8 @@ if(PRISMS_PF_FOUND)
     set_target_properties(
       main-debug
       PROPERTIES
-      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RUNTIME_OUTPUT_DIRECTORY
+          ${CMAKE_SOURCE_DIR}
     )
   endif()
 
@@ -35,7 +40,8 @@ if(PRISMS_PF_FOUND)
     set_target_properties(
       main-release
       PROPERTIES
-      RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RUNTIME_OUTPUT_DIRECTORY
+          ${CMAKE_SOURCE_DIR}
     )
   endif()
 else()
