@@ -3,7 +3,7 @@ Consider a free energy expression of the form:
 
 $$
 \begin{align}
-\Pi(\eta, \nabla \eta) = \int_{\Omega} f(\eta) + \frac{\kappa}{2} \nabla \eta \cdot \nabla \eta ~dV 
+\Pi(\eta, \nabla \eta) = \int_{\Omega} f(\eta) + \frac{\kappa}{2} \nabla \eta \cdot \nabla \eta ~dV
 \end{align}
 $$
 
@@ -62,7 +62,7 @@ $$
 
 $$
 \begin{align}
-r_{\eta}= \eta^{n} - \Delta t M f_{,\eta}^{n} 
+r_{\eta}= \eta^{n} - \Delta t M f_{,\eta}^{n}
 \end{align}
 $$
 

@@ -57,7 +57,7 @@ GMGSolver<dim, degree, number>::init()
   // Call the base class init
   this->LinearSolverBase<dim, degree, number>::init();
 
-  // Basic intialization that is the same as the identity solve.
+  // Basic initialization that is the same as the identity solve.
   this->clear_system_matrices();
   this->initialize_system_matrices();
   this->finalize_system_matrices();
@@ -195,7 +195,7 @@ GMGSolver<dim, degree, number>::reinit()
   // Call the base class reinit
   this->LinearSolverBase<dim, degree, number>::reinit();
 
-  // Basic intialization that is the same as the identity solve.
+  // Basic initialization that is the same as the identity solve.
   this->clear_system_matrices();
   this->initialize_system_matrices();
   this->finalize_system_matrices();
@@ -345,7 +345,7 @@ GMGSolver<dim, degree, number>::solve(const number &step_length)
                        .get_matrix_free()
                        ->get_vector_partitioner(local_index)
                        ->is_compatible(*mg_src_subset[level].get_partitioner()),
-                     dealii::ExcMessage("Incompatabile vector partitioners"));
+                     dealii::ExcMessage("Incompatible vector partitioners"));
             }
 
           // Interpolate

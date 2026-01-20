@@ -364,7 +364,7 @@ SequentialSolver<dim, degree, number>::solve_linear_solver(
     }
 
   // The solve will have updated the "old solution" vector with the newton update so it's
-  // technically the new solution. In order to update the solutions and perserve the old
+  // technically the new solution. In order to update the solutions and preserve the old
   // states we copy the old solution from above and swap.
   *(this->get_solution_handler().get_new_solution_vector(variable.get_field_index())) =
     old_solution;

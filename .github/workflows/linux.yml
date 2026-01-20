@@ -1,22 +1,15 @@
 name: linux
 
-on: 
-  push:
-    branches:
-      - master
+on:
   pull_request:
+  merge_group:
     branches:
       - master
-      - devel
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
     paths-ignore:
       - 'applications/**'
       - 'doc/**'
       - 'contrib/**'
+      - '**/*.md'
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
@@ -77,6 +70,7 @@ jobs:
           ninja install
 
   linux-optimizations:
+    if: github.event_name == 'merge_group'
     runs-on: [ubuntu-22.04]
     timeout-minutes: 120
 

@@ -1,0 +1,58 @@
+fail_fast: true
+
+repos:
+# General purpose hooks
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: check-added-large-files
+    args: [--maxkb=8192]
+  - id: check-merge-conflict
+  - id: end-of-file-fixer
+    exclude: ^contrib/catch/
+  - id: no-commit-to-branch
+    args: [--branch,master]
+  - id: trailing-whitespace
+    exclude: ^contrib/catch/
+- repo: https://github.com/gitleaks/gitleaks
+  rev: v8.24.2
+  hooks:
+  - id: gitleaks
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.4.1
+  hooks:
+  - id: codespell
+    args: [--config=.codespellrc]
+    exclude: ^contrib/catch/
+# Python formatting and linting tools
+- repo: https://github.com/psf/black
+  rev: 25.9.0
+  hooks:
+    - id: black
+      language_version: python3
+      exclude: contrib/utilities/prm_tools.py
+- repo: https://github.com/pycqa/isort
+  rev: 6.0.1
+  hooks:
+    - id: isort
+      args: ["--profile", "black"]
+      exclude: contrib/utilities/prm_tools.py
+# TODO: Enable flake8 after addressing existing linting issues
+# - repo: https://github.com/pycqa/flake8
+#   rev: 7.3.0
+#   hooks:
+#     - id: flake8
+#       args: [--max-line-length=80]
+#       exclude: contrib/utilities/prm_tools.py
+# CMake formatting
+- repo: https://github.com/BlankSpruce/gersemi
+  rev: 0.25.0
+  hooks:
+  - id: gersemi
+# c++ formatting
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev:  v18.1.8
+  hooks:
+  - id: clang-format
+    types_or: [c++, c, cuda]
+    exclude: ^contrib/catch/

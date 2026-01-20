@@ -11,7 +11,7 @@ Consider a free energy density given by:
 
 $$
 \begin{equation}
-  \Pi = \int_{\Omega}   \left[ \frac{1}{2} W^2(\hat{n})|\nabla \phi|^2+f(\phi,u) \right]   ~dV 
+  \Pi = \int_{\Omega}   \left[ \frac{1}{2} W^2(\hat{n})|\nabla \phi|^2+f(\phi,u) \right]   ~dV
 \end{equation}
 $$
 
@@ -31,7 +31,7 @@ f(\phi,u) = -\frac{1}{2}\phi^2 + \frac{1}{4}\phi^4 + \lambda u \phi \left(1-\fra
 \end{equation}
 $$
 
-where $\lambda$ is a dimensionless coupling constant. The gradient energy coefficient, $W$, is given by 
+where $\lambda$ is a dimensionless coupling constant. The gradient energy coefficient, $W$, is given by
 
 $$
 \begin{equation}
@@ -46,7 +46,7 @@ The evolution equations are:
 $$
 \begin{gather}
 \frac{\partial u}{\partial t} = D \nabla^2 u + \frac{1}{2}  \frac{\partial \phi}{\partial t} \\
-\tau(\hat{n}) \frac{\partial \phi}{\partial t} = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[W^2(\theta) \nabla \phi \right]+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] 
+\tau(\hat{n}) \frac{\partial \phi}{\partial t} = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[W^2(\theta) \nabla \phi \right]+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]
 \end{gather}
 $$
 
@@ -65,7 +65,7 @@ $$
 \begin{gather}
 \frac{\partial u}{\partial t} = D \nabla^2 u + \frac{\mu}{2 \tau} \\
 \tau(\hat{n}) \frac{\partial \phi}{\partial t} = \mu \\
-\mu = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[W^2(\theta) \nabla \phi \right]+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right] 
+\mu = -\frac{\partial f}{\partial \phi} + \nabla \cdot \left[W^2(\theta) \nabla \phi \right]+  \frac{\partial}{\partial x} \left[ |\nabla \phi|^2 W(\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial x} \right)} \right] + \frac{\partial}{\partial y} \left[ |\nabla \phi|^2 W\theta) \frac{\partial W(\theta)}{\partial \left( \frac{\partial \phi}{\partial y} \right)} \right]
 \end{gather}
 $$
 
@@ -90,9 +90,9 @@ $\tau_0$: Controls the phase transformation kinetics, default value of 1.0.
 
 $\epsilon_m$: T the strength of the anisotropy, default value of 0.05.
 
-$D$: The thermal diffusion constant, default value of 1.0. 
+$D$: The thermal diffusion constant, default value of 1.0.
 
-$\Delta: \frac{T_m-T_0}{L/c_p}$: The level of undercooling, default value of 0.75. 
+$\Delta: \frac{T_m-T_0}{L/c_p}$: The level of undercooling, default value of 0.75.
 
 $\theta_0$: The rotation angle of the anisotropy with respect to the simulation frame, default value of 0.125 ($\sim$7.2$^\circ$).
 
@@ -108,7 +108,7 @@ $$
 
 $$
 \begin{align}
-\mu^{n+1} =  \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} 
+\mu^{n+1} =  \left[ \phi^n - \lambda u \left(1 - (\phi^n)^2 \right) \right] \left(1-(\phi^n)^2\right) + \nabla \cdot \bigg[\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}
 \end{align}
 $$
 
@@ -122,13 +122,13 @@ $$
 
 $$
 \begin{align}
-\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right) + \nabla w \cdot (-D \Delta t \nabla u^n) ~dV 
+\int_{\Omega}   w  u^{n+1}  ~dV = \int_{\Omega}   w \left(u^{n} + \frac{\mu^n \Delta t}{2 \tau}\right) + \nabla w \cdot (-D \Delta t \nabla u^n) ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right) ~dV 
+\int_{\Omega}   w  \phi^{n+1}  ~dV = \int_{\Omega}   w \left(\phi^n + \frac{\Delta t \mu^n}{\tau}\right) ~dV
 \end{align}
 $$
 
@@ -159,7 +159,7 @@ $$
 $$
 \begin{align}
 &+ \nabla w \cdot \bigg[-\left(W^2 \frac{\partial \phi^n}{\partial x} + W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x}
-&- \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]  ~dV 
+&- \left(W^2 \frac{\partial \phi^n}{\partial y} -W_0 \epsilon_m m W(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right) \hat{y} \bigg]  ~dV
 \end{align}
 $$
 

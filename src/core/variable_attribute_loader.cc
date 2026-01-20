@@ -34,7 +34,7 @@ VariableAttributeLoader::init_variable_attributes()
   // the length of the vector for the eval flag set at runtime.
   const auto max_fields = static_cast<Types::Index>(var_attributes.size());
 
-  // Determine the max numer of dependency types. This is used to determine the length of
+  // Determine the max number of dependency types. This is used to determine the length of
   // the vector for the eval flag set at runtime.
   const auto max_dependency_types = static_cast<Types::Index>(DependencyType::OldFour);
 
@@ -564,7 +564,7 @@ VariableAttributeLoader::compute_shared_dependencies(
   const Types::Index max_fields       = first_variable->max_fields;
   const Types::Index max_dependencies = first_variable->max_dependency_types;
 
-  // If the field_solve_type is not something we would expect thow an assertion. We could
+  // If the field_solve_type is not something we would expect throw an assertion. We could
   // return early, but I slightly favor an assertion and choosing the appropriate
   // FieldSolveType's upstream.
   Assert(field_solve_type == FieldSolveType::Explicit ||

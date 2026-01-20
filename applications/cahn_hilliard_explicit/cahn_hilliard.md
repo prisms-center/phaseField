@@ -3,24 +3,24 @@ Consider a free energy expression of the form:
 
 $$
 \begin{equation}
-  \Pi(c, \nabla  c) = \int_{\Omega}    f( c ) + \frac{\kappa}{2} \nabla  c  \cdot \nabla  c    ~dV 
+  \Pi(c, \nabla  c) = \int_{\Omega}    f( c ) + \frac{\kappa}{2} \nabla  c  \cdot \nabla  c    ~dV
 \end{equation}
 $$
 
 where $c$ is the composition, and $\kappa$ is the gradient length scale parameter.
-	
+
 ## Variational treatment
 Considering variations on the primal field $c$ of the from $c+\epsilon w$, we have
 
 $$
 \begin{align}
-\delta \Pi &=  \left. \frac{d}{d\epsilon} \int_{\Omega}  f(c+\epsilon w) +  \frac{\kappa}{2} \nabla  (c+\epsilon w)  \cdot  ~\nabla  (c+\epsilon w)   ~dV \right\vert_{\epsilon=0} 
+\delta \Pi &=  \left. \frac{d}{d\epsilon} \int_{\Omega}  f(c+\epsilon w) +  \frac{\kappa}{2} \nabla  (c+\epsilon w)  \cdot  ~\nabla  (c+\epsilon w)   ~dV \right\vert_{\epsilon=0}
 \end{align}
-$$ 
+$$
 
 $$
 \begin{align}
-&=  \int_{\Omega}   w f_{,c} +   \kappa \nabla w \nabla  c    ~dV 
+&=  \int_{\Omega}   w f_{,c} +   \kappa \nabla w \nabla  c    ~dV
 \end{align}
 $$
 
@@ -73,7 +73,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
- c^{n+1} &= c^{n} + \Delta t M~\nabla \cdot (\nabla \mu^{n})
+  c^{n+1} &= c^{n} + \Delta t M~\nabla \cdot (\nabla \mu^{n})
 \end{align}
 $$
 
@@ -96,7 +96,7 @@ $$
 
 $$
 \begin{align}
- &=\int_{\Omega}  w  f_{,c}^{n} + \nabla w \cdot \kappa \nabla c^{n} ~dV  
+ &=\int_{\Omega}  w  f_{,c}^{n} + \nabla w \cdot \kappa \nabla c^{n} ~dV
 \end{align}
 $$
 
@@ -112,17 +112,17 @@ r_{mux} &= \kappa \nabla c^{n}
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
-\int_{\Omega}   w c^{n+1} ~dV&= \int_{\Omega}   w c^{n} + w \Delta t M~\nabla \cdot (\nabla \mu^{n}) ~dV 
+\int_{\Omega}   w c^{n+1} ~dV&= \int_{\Omega}   w c^{n} + w \Delta t M~\nabla \cdot (\nabla \mu^{n}) ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-&= \int_{\Omega}   w c^{n} + \nabla w  (-\Delta t M)~ \cdot (\nabla \mu^{n}) ~dV \quad \text{[neglecting boundary flux]} 
+&= \int_{\Omega}   w c^{n} + \nabla w  (-\Delta t M)~ \cdot (\nabla \mu^{n}) ~dV \quad \text{[neglecting boundary flux]}
 \end{align}
 $$
 
@@ -138,5 +138,5 @@ r_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n})
 \end{align}
 $$
 
-The above values of $r_{mu}$, $r_{mux}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file: 
+The above values of $r_{mu}$, $r_{mux}$, $r_{c}$ and $r_{cx}$ are used to define the residuals in the following parameters file:
 `applications/cahn_hilliard/equations.cc`

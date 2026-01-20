@@ -1,16 +1,16 @@
 # KKS Phase Field Model of Precipitate Evolution (September 14th, 2023)
- 
+
 The model employed in this application is described in detail in the article:
 DeWitt et al., Misfit-driven $\beta'''$ precipitate composition and morphology in Mg-Nd alloys,
 Acta Materialia **137**, 378-389 (2017).
- 
+
 ## Variational formulation
 The total free energy of the system (neglecting boundary terms) is of the form,
 
 
 $$
 \begin{equation}
-\Pi(c, \eta_1, \eta_2, \eta_3, \epsilon) = \int_{\Omega} f(c, \eta_1, \eta_2, \eta_3, \epsilon) ~dV 
+\Pi(c, \eta_1, \eta_2, \eta_3, \epsilon) = \int_{\Omega} f(c, \eta_1, \eta_2, \eta_3, \epsilon) ~dV
 \end{equation}
 $$
 
@@ -34,13 +34,13 @@ $$
 
 $$
 \begin{equation}
-f_{grad}(\eta_1, \eta_2, \eta_3) = \frac{1}{2} \sum_{p=1}^3 \kappa_{ij}^{\eta_p} \eta_{p,i}  \eta_{p,j} 
+f_{grad}(\eta_1, \eta_2, \eta_3) = \frac{1}{2} \sum_{p=1}^3 \kappa_{ij}^{\eta_p} \eta_{p,i}  \eta_{p,j}
 \end{equation}
 $$
 
 $$
 \begin{gather}
-f_{elastic}(c,\eta_1, \eta_2, \eta_3,\epsilon) = \frac{1}{2} C_{ijkl}(\eta_1, \eta_2, \eta_3)  \left( \varepsilon_{ij} - \varepsilon ^0_{ij}(c, \eta_1, \eta_2, \eta_3) \right)\left( \varepsilon_{kl} - \varepsilon^0_{kl}(c, \eta_1, \eta_2, \eta_3)\right) 
+f_{elastic}(c,\eta_1, \eta_2, \eta_3,\epsilon) = \frac{1}{2} C_{ijkl}(\eta_1, \eta_2, \eta_3)  \left( \varepsilon_{ij} - \varepsilon ^0_{ij}(c, \eta_1, \eta_2, \eta_3) \right)\left( \varepsilon_{kl} - \varepsilon^0_{kl}(c, \eta_1, \eta_2, \eta_3)\right)
 \end{gather}
 $$
 
@@ -54,11 +54,11 @@ $$
 
 Here $\varepsilon^0_{\eta_p}$ are the composition dependent stress free strain transformation tensor corresponding to each structural order parameter, which is a function of the $\beta$ phase concentration, $c_{\beta}$, defined below.
 
-In the KKS model (Kim 1999), the interfacial region is modeled as a mixture of the $\alpha$ and $\beta$ phases with concentrations $c_{alpha}$ and $c_{beta}$, respectively. The homogenous free energies for each phase, $f_{\alpha}$ and $f_{\beta}$ in this case, are typically given as functions of $c_{\alpha}$ and $c_{\beta}$, rather than directly as functions of $c$ and $\eta_p$. Thus, $f_{chem}(c, \eta_1, \eta_2, \eta_3)$ can be rewritten as 
+In the KKS model (Kim 1999), the interfacial region is modeled as a mixture of the $\alpha$ and $\beta$ phases with concentrations $c_{alpha}$ and $c_{beta}$, respectively. The homogeneous free energies for each phase, $f_{\alpha}$ and $f_{\beta}$ in this case, are typically given as functions of $c_{\alpha}$ and $c_{\beta}$, rather than directly as functions of $c$ and $\eta_p$. Thus, $f_{chem}(c, \eta_1, \eta_2, \eta_3)$ can be rewritten as
 
 $$
 \begin{equation}
-f_{chem}(c, \eta_1, \eta_2, \eta_3) = f_{\alpha}(c_{\alpha}) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + f_{\beta}(c_{\beta}) \sum_{p=1}^3 H(\eta_p)+ W f_{Landau}(\eta_1, \eta_2, \eta_3) 
+f_{chem}(c, \eta_1, \eta_2, \eta_3) = f_{\alpha}(c_{\alpha}) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + f_{\beta}(c_{\beta}) \sum_{p=1}^3 H(\eta_p)+ W f_{Landau}(\eta_1, \eta_2, \eta_3)
 \end{equation}
 $$
 
@@ -71,7 +71,7 @@ c =  c_{\alpha} \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + c_{\beta} \sum_{p=1}^3
 \end{gather}
 $$
 
-Given the following parabolic functions for the single-phase homogenous free energies:
+Given the following parabolic functions for the single-phase homogeneous free energies:
 
 $$
 \begin{gather}
@@ -85,15 +85,15 @@ the single-phase concentrations are:
 $$
 \begin{gather}
 c_{\alpha} = \frac{ B_2 c + \frac{1}{2} (B_1 - A_1) \sum_{p=1}^3 H(\eta_p) }{A_2 \sum_{p=1}^3 H(\eta_p) + B_2 \left( 1- \sum_{p=1}^3 H(\eta_p)\right) } \\
-c_{\beta} =  \frac{ A_2 c + \frac{1}{2} (A_1 - B_1) \left[1-\sum_{p=1}^3 H(\eta_p)\right] }{A_2 \sum_{p=1}^3 H(\eta_p) + B_2 \left[ 1- \sum_{p=1}^3 H(\eta_p)\right] } 
+c_{\beta} =  \frac{ A_2 c + \frac{1}{2} (A_1 - B_1) \left[1-\sum_{p=1}^3 H(\eta_p)\right] }{A_2 \sum_{p=1}^3 H(\eta_p) + B_2 \left[ 1- \sum_{p=1}^3 H(\eta_p)\right] }
 \end{gather}
 $$
 
 ## Required inputs
 
 - $f_{\alpha}(c_{\alpha}), f_{\beta}(c_{\beta})$ - Homogeneous chemical free energy of the components of the binary system, example form given above
-- $f_{Landau}(\eta_1, \eta_2, \eta_3)$ - Landau free energy term that controls the interfacial energy and prevents precipitates with different orientation varients from overlapping, example form given in Appendix I
-- \$W$ - Barrier height for the Landau free energy term, used to control the thickness of the interface 
+- $f_{Landau}(\eta_1, \eta_2, \eta_3)$ - Landau free energy term that controls the interfacial energy and prevents precipitates with different orientation variants from overlapping, example form given in Appendix I
+- \$W$ - Barrier height for the Landau free energy term, used to control the thickness of the interface
 - $H(\eta_p)$ - Interpolation function for connecting the $\alpha$ phase and the $p^{th}$ orientation variant of the $\beta$ phase, example form given in Appendix I
 - $\kappa^{\eta_p}$  - gradient penalty tensor for the $p^{th}$ orientation variant of the $\beta$ phase
 - $C_{\eta_p}$ - fourth order elasticity tensor (or its equivalent second order Voigt representation) for the $p^{th}$ orientation variant of the $\beta$ phase
@@ -111,7 +111,7 @@ We obtain chemical potentials for the chemical potentials for the concentration 
 
 $$
 \begin{align}
-  \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right) +f_{\beta,c} \left(  H(\eta_1)  + H(\eta_2) + H(\eta_3) \right)  + C_{ijkl} (- \varepsilon^0_{ij,c}) \left( \varepsilon_{kl} - \varepsilon^0_{kl}\right) 
+  \mu_{c}  &= f_{\alpha,c} \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right) +f_{\beta,c} \left(  H(\eta_1)  + H(\eta_2) + H(\eta_3) \right)  + C_{ijkl} (- \varepsilon^0_{ij,c}) \left( \varepsilon_{kl} - \varepsilon^0_{kl}\right)
 \end{align}
 $$
 
@@ -130,30 +130,30 @@ $$
 \frac{\partial c}{\partial t} &= ~\nabla \cdot \left( \frac{1}{f_{,cc}}M \nabla \mu_c \right)
 \end{align}
 $$
- 
-where $M$ is a constant mobility and the factor of $\frac{1}{f_{,cc}}$ is added to guarentee constant diffusivity in the two phases. The PDE for Allen-Cahn dynamics is given by:
+
+where $M$ is a constant mobility and the factor of $\frac{1}{f_{,cc}}$ is added to guarantee constant diffusivity in the two phases. The PDE for Allen-Cahn dynamics is given by:
 
 $$
 \begin{align}
-\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p} 
+\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p}
 \end{align}
 $$
 
-where  $L$ is a constant mobility. 
+where  $L$ is a constant mobility.
 
 ## Mechanics
 Considering variations on the displacement $u$ of the from $u+\epsilon w$, we have
 
 $$
 \begin{align}
-\delta_u \Pi &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \varepsilon - \varepsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+\delta_u \Pi &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \varepsilon - \varepsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
 where $\sigma = C(\eta_1, \eta_2, \eta_3) : \left( \varepsilon - \varepsilon^0(c,\eta_1, \eta_2, \eta_3)\right)$ is the stress tensor.
 
 ## Time discretization
-Using forward Euler explicit time stepping, equations 
+Using forward Euler explicit time stepping, equations
 
 $$
 \begin{align}
@@ -161,11 +161,11 @@ $$
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
-\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p} 
+\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p}
 \end{align}
 $$
 
@@ -184,7 +184,7 @@ $$
 $$
 
 ## Weak formulation
-Writing equations 
+Writing equations
 
 $$
 \begin{align}
@@ -192,15 +192,15 @@ $$
 \end{align}
 $$
 
-and 
+and
 
 $$
 \begin{align}
-\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p} 
+\frac{\partial \eta_p}{\partial t} &= - L \mu_{\eta_p}
 \end{align}
 $$
 
-in the weak form, with the arbirary variation given by $w$ yields:
+in the weak form, with the arbitrary variation given by $w$ yields:
 
 $$
 \begin{align}
@@ -210,7 +210,7 @@ $$
 
 $$
 \begin{align}
-%&= \int_\Omega wc^{n}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV 
+%&= \int_\Omega wc^{n}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
 \end{align}
 $$
 
@@ -224,7 +224,7 @@ The expression of $\frac{1}{f_{,cc}} \nabla \mu_c$ can be written as:
 
 $$
 \begin{align}
-\frac{1}{f_{,cc}}  \nabla \mu_c = & \nabla c + (c_{\alpha}-c_{\beta}) \sum_{p=1}^3 H(\eta_p)_{,\eta_p} \nabla \eta_p 
+\frac{1}{f_{,cc}}  \nabla \mu_c = & \nabla c + (c_{\alpha}-c_{\beta}) \sum_{p=1}^3 H(\eta_p)_{,\eta_p} \nabla \eta_p
 \end{align}
 $$
 
@@ -274,7 +274,7 @@ r_{cx} &= -\Delta t  M \frac{1}{f_{,cc}} \nabla \mu_c
 \end{align}
 $$
 
-Expanding $\mu_{\eta_p}$ in equation 
+Expanding $\mu_{\eta_p}$ in equation
 
 $$
 \begin{align}
@@ -293,11 +293,11 @@ $$
 $$
 \begin{align}
 &\int_\Omega w \left(\eta_p^{n}-\Delta t L \left( (f_{\beta}-f_{\alpha})H_{,\eta_p}(\eta_p^n) -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}H_{,\eta_p}(\eta_p^n) + W f_{Landau,\eta_p}
--C_{ijkl}  (H_{,\eta_p}(\eta_p) \epsilon_{ij}^{0 \eta_p}) (\epsilon_{kl} - \epsilon_{kl}^{0}) + \frac{1}{2} \left((C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H_{,\eta_p}(\eta_p) \right) (\epsilon_{ij} - \epsilon_{ij}^{0}) (\epsilon_{kl} - \epsilon_{kl}^{0}) \right) \right) &+ \nabla w \cdot \left(-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n \right) dV 
+-C_{ijkl}  (H_{,\eta_p}(\eta_p) \epsilon_{ij}^{0 \eta_p}) (\epsilon_{kl} - \epsilon_{kl}^{0}) + \frac{1}{2} \left((C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H_{,\eta_p}(\eta_p) \right) (\epsilon_{ij} - \epsilon_{ij}^{0}) (\epsilon_{kl} - \epsilon_{kl}^{0}) \right) \right) &+ \nabla w \cdot \left(-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n \right) dV
 \end{align}
 $$
 
-where 
+where
 
 $$
 \begin{align}
@@ -312,7 +312,7 @@ r_{\eta_p x} &= -\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n
 \end{align}
 $$
 
-## Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta_p)$ 
+## Appendix I: Example functions for $f_{\alpha}$, $f_{\beta}$, $f_{Landau}$, $H(\eta_p)$
 
 $$
 \begin{gather}

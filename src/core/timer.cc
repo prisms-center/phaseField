@@ -69,8 +69,8 @@ Timer::print_summary()
   return;
 #endif
 
-  // TODO: Revist the deal.II TimerOutput class and reorganize sections so they are tiered
-  // accordingly
+  // TODO: Revisit the deal.II TimerOutput class and reorganize sections so they are
+  // tiered accordingly
 }
 
 PRISMS_PF_END_NAMESPACE

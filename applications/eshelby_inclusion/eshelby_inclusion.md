@@ -1,6 +1,6 @@
 # PRISMS-PF: Eshelby Inclusion
 
-This example application implements a simple 3D calculation of the displacement field near a homogenous inclusion. 
+This example application implements a simple 3D calculation of the displacement field near a homogeneous inclusion.
 
 Consider a strain energy expression of the form:
 
@@ -41,11 +41,11 @@ $$
 \end{align}
 $$
 
-If surface tractions are zero: 
+If surface tractions are zero:
 
 $$
 \begin{align}
-R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0 
+R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0
 \end{align}
 $$
 

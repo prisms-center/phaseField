@@ -1,8 +1,6 @@
 ![](logo_v2.png)
 
 [![GitHub Linux](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml)
-[![Clang-Format](https://github.com/prisms-center/phaseField/actions/workflows/clang-format.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/clang-format.yml)
-[![Clang-Tidy](https://github.com/prisms-center/phaseField/actions/workflows/clang-tidy.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/clang-tidy.yml)
 
 [![License: LGPL v2.1](https://img.shields.io/badge/License-lgpl-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
 [![DOI](https://zenodo.org/badge/22602327.svg)](https://zenodo.org/badge/latestdoi/22602327)
@@ -11,7 +9,7 @@
 
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
-[User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/manual.html ) <br>
+[User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/) <br>
 [User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8) <br>
@@ -40,7 +38,7 @@ For DOI information for other releases, please refer to [this site](https://doi.
 
 ## Quick start guide:
 
-For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen_files/manual.html). A (very) abbreviated version of the instructions is given below.
+For detailed instructions on how to download and use PRISMS-PF, please consult the [PRISMS-PF User Manual](https://prisms-center.github.io/phaseField/doxygen/). A (very) abbreviated version of the instructions is given below.
 
 ### Install:
 
@@ -63,7 +61,7 @@ here `<nprocs>` denotes the number of threads you want to use to compile the lib
 
 ### Running a pre-built application:
 
-Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/running_apps.html) for full details including instructions for visualization of the results.
+Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/) for full details including instructions for visualization of the results.
 
 Examples of various phase field models are located under the
 applications directory. The easiest way to get started on the code is to
@@ -80,7 +78,7 @@ cd applications/cahnHilliard
 cmake .
 make -j <nprocs>
 ```
-This will generate two executable files: `main` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimiziations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
+This will generate two executable files: `main` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimizations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
 
 Debug execution (serial runs):
 ```bash

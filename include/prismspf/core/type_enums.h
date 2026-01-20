@@ -49,7 +49,7 @@ enum ElasticityModel : std::uint8_t
  * different types of solve that are possible. For Explicit solves, all fields of that
  * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
  * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
- * conditionals in the user implmentation. For NonexplicitCononlinear, there are at
+ * conditionals in the user implementation. For NonexplicitCononlinear, there are at
  * least 2 fields that are nonlinear together, as opposed to NonexplicitSelfnonlinear,
  * which must be solved at the same time. A simply case for this is the steady-state
  * Cahn-Hilliard equation. Finally, for ExplicitPostprocess and ExplicitConstant, they

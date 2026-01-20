@@ -243,7 +243,7 @@ class RectangularMesh : public Mesh<dim>
                       }
 
                     // Create a vector of matched pairs that we fill and enforce upon the
-                    // constaints
+                    // constraints
                     std::vector<dealii::GridTools::PeriodicFacePair<
                       typename Mesh<dim>::Triangulation::cell_iterator>>
                       periodicity_vector;
