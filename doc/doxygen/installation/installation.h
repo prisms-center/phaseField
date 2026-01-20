@@ -155,7 +155,7 @@ This will install both p4est and deal.II in a local directory (by
 default,`$HOME/dealii-candi/`). Be sure to permanently set the `DEAL_II_DIR` environment
 variable to point to the deal.II installation.
 
-To install VTK, we reccommend installing from source.
+To install VTK, we recommend installing from source.
 ```
 git clone https://gitlab.kitware.com/vtk/vtk.git vtk-clone
 mkdir vtk-build
