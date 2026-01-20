@@ -1,13 +1,6 @@
 name: compile-applications
 
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - 'doc/**'
-      - 'contrib/**'
-      - '**/*.md'
   merge_group:
     paths-ignore:
       - 'doc/**'
