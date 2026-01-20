@@ -24,9 +24,14 @@ function(define_library _library)
     target_include_directories(
       ${_target}
       SYSTEM
-      PRIVATE
-        ${CMAKE_BINARY_DIR}/include
-        ${CMAKE_BINARY_DIR}/src
+      PUBLIC # Use PUBLIC so it propagates
+        # active during build
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src>
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
+        # used in installed library
+        $<INSTALL_INTERFACE:include>
     )
 
     target_compile_options(

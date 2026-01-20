@@ -2,7 +2,7 @@
 
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
 
-#cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_SOURCE_DIR@"
+#cmakedefine PRISMS_PF_SOURCE_DIR "@PRISMS_PF_INSTALL_DIR@"
 
 // Optional features:
 #cmakedefine PRISMS_PF_WITH_ZLIB

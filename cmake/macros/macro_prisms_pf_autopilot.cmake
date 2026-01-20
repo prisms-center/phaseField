@@ -2,11 +2,11 @@
 # Autopilot function that will set up an application
 #
 
-macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
+macro(prisms_pf_autopilot PRISMS_PF_CMAKE_DIR)
   # Add the script files
   add_subdirectory(
-    "${PRISMS_PF_CORE_DIR}/cmake/scripts"
-    "${CMAKE_BINARY_DIR}/scripts_build"
+    "${PRISMS_PF_CMAKE_DIR}/scripts"
+    "${CMAKE_CURRENT_BINARY_DIR}/scripts_build"
   )
 
   # Enable compile commands export
@@ -39,6 +39,13 @@ macro(prisms_pf_autopilot PRISMS_PF_CORE_DIR)
     set(_target main-${_build_lowercase})
 
     add_executable(${_target} ${TARGET_SRC})
+
+    # put the binary in the source folder
+    set_target_properties(
+      ${_target}
+      PROPERTIES
+      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
 
     add_dependencies(${_target} dummy_inst)
 

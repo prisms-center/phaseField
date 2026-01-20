@@ -90,19 +90,22 @@ message(STATUS "=========================================================")
 message(STATUS "")
 
 # Generate config.h to enable and disable certain features within the source code.
-set(PRISMS_PF_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+set(PRISMS_PF_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 if(ADDITIONAL_DEGREES)
   set(EXPAND_DEGREES "; 3; 4; 5; 6")
 endif()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/include/prismspf/config.h.in
-  ${CMAKE_BINARY_DIR}/include/prismspf/config.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/prismspf/config.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
 )
 
 # Configure the template arguments file
-configure_file(${CMAKE_SOURCE_DIR}/cmake/templates.in ${CMAKE_BINARY_DIR}/cmake/templates)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/templates
+)
 
 # Add the script files
 add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/scripts")
@@ -276,10 +279,9 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
   target_include_directories(
     ${_library}
     PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include/prisms_pf>
-    PRIVATE
-      ${CMAKE_BINARY_DIR}/src
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include>
+    PRIVATE ${CMAKE_SOURCE_DIR}/src
   )
 
   target_compile_options(
@@ -337,12 +339,34 @@ install(
 
 # Install the headers
 install(
-  DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/
-  DESTINATION include/prisms_pf
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+  DESTINATION include
   FILES_MATCHING
   PATTERN "*.h"
   PATTERN "*.hpp"
+)
+
+# Install the generated config.h
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
+  DESTINATION include/prismspf
+)
+
+# Install the cmake folder
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+  FILES_MATCHING
+  PATTERN "*.cmake"
+  PATTERN "*.cc"
+  PATTERN "CMakeLists.txt"
+  PATTERN "*.cmake.in" EXCLUDE
+)
+
+# Install the generated Config file
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
 # Install the CMake config files
@@ -353,9 +377,21 @@ install(
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
+# Install the VERSION file
 install(
-  FILES
-    ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/VERSION
+  DESTINATION .
+)
+
+# Install the LICENSE file
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
+  DESTINATION .
+)
+
+# Install the cmake/template file
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/templates"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
@@ -404,9 +440,9 @@ include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
 # Generate configuration file for applications
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-  ${CMAKE_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
-  ${CMAKE_BINARY_DIR}/cmake/prisms_pf-config.cmake
-  INSTALL_DESTINATION ${CMAKE_BINARY_DIR}/cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
 # Unwrap the compiler compile_commands.json after the build

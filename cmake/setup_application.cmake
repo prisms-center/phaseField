@@ -6,7 +6,7 @@ if(PRISMS_PF_CORE_DIR STREQUAL "")
 endif()
 
 # Load macros
-file(GLOB macro_files "${PRISMS_PF_CORE_DIR}/cmake/macros/*.cmake")
+file(GLOB macro_files "${PRISMS_PF_CMAKE_DIR}/macros/*.cmake")
 foreach(file ${macro_files})
   message(STATUS "Include ${file}")
   include(${file})
