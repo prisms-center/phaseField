@@ -1,14 +1,6 @@
 name: linux
 
 on:
-  push:
-    branches:
-      - master
-    paths-ignore:
-      - 'applications/**'
-      - 'doc/**'
-      - 'contrib/**'
-      - '**/*.md'
   pull_request:
   merge_group:
     branches:

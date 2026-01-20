@@ -281,7 +281,8 @@ foreach(_build ${PRISMS_PF_BUILD_TYPES})
     PUBLIC
       $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:include>
-    PRIVATE ${CMAKE_SOURCE_DIR}/src
+    PRIVATE
+      ${CMAKE_SOURCE_DIR}/src
   )
 
   target_compile_options(
@@ -339,7 +340,8 @@ install(
 
 # Install the headers
 install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+  DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
   DESTINATION include
   FILES_MATCHING
   PATTERN "*.h"
@@ -348,24 +350,28 @@ install(
 
 # Install the generated config.h
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
   DESTINATION include/prismspf
 )
 
 # Install the cmake folder
 install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
+  DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
   FILES_MATCHING
   PATTERN "*.cmake"
   PATTERN "*.cc"
   PATTERN "CMakeLists.txt"
-  PATTERN "*.cmake.in" EXCLUDE
+  PATTERN "*.cmake.in"
+    EXCLUDE
 )
 
 # Install the generated Config file
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
@@ -378,20 +384,15 @@ install(
 )
 
 # Install the VERSION file
-install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/VERSION
-  DESTINATION .
-)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/VERSION DESTINATION .)
 
 # Install the LICENSE file
-install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE
-  DESTINATION .
-)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE DESTINATION .)
 
 # Install the cmake/template file
 install(
-  FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/templates"
+  FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/templates"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
 )
 
