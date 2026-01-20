@@ -162,7 +162,9 @@ mkdir vtk-build
 mkdir vtk-install
 cd vtk-build
 cmake ../vtk-clone -DCMAKE_BUILD_TYPE=Release -DVTK_GROUP_ENABLE_QT=OFF
--DVTK_GROUP_ENABLE_MPI=ON -DVTK_BUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=../vtk-install
+-DVTK_GROUP_ENABLE_MPI=YES -DVTK_USE_MPI=ON -DVTK_BUILD_TESTING=OFF
+-DCMAKE_INSTALL_PREFIX=../vtk-install
+
 make -j <numprocs> install
 ```
 Be sure to permanently set the `VTK_DIR` environment variable to point to the VTK
@@ -185,7 +187,9 @@ from GitHub, configure the build with CMake, and compile the code:
 ```
 git clone https://github.com/prisms-center/phaseField.git
 cd phaseField
-cmake .
+mkdir build
+cd build
+cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=<prisms-install-dir> ..
 make -j <nprocs>
 ```
 This will build the PRISMS-PF library in both debug and release modes.
@@ -205,4 +209,4 @@ first time. This will be fixed in a future release. After compiling once, the is
 go away.)
 
 
- */
+*/
