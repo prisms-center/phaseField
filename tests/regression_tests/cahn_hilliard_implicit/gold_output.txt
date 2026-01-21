@@ -33,57 +33,57 @@ Iteration: 0
 
 Iteration: 100
   Solution index 0 l2-norm: 109.451 integrated value: 1886.53
-  Solution index 1 l2-norm: 12.6513 integrated value: 1.45506e-14
+  Solution index 1 l2-norm: 12.6513 integrated value: -9.27182e-15
   Solution index 2 l2-norm: 4.66535 integrated value: 33.852
 
 Iteration: 200
   Solution index 0 l2-norm: 109.437 integrated value: 1886.52
-  Solution index 1 l2-norm: 12.1533 integrated value: 7.35734e-15
+  Solution index 1 l2-norm: 12.1533 integrated value: 3.2889e-14
   Solution index 2 l2-norm: 4.60564 integrated value: 33.6349
 
 Iteration: 300
   Solution index 0 l2-norm: 109.424 integrated value: 1886.52
-  Solution index 1 l2-norm: 11.8406 integrated value: 4.06032e-14
+  Solution index 1 l2-norm: 11.8406 integrated value: 4.23915e-14
   Solution index 2 l2-norm: 4.56374 integrated value: 33.4845
 
 Iteration: 400
   Solution index 0 l2-norm: 109.413 integrated value: 1886.52
-  Solution index 1 l2-norm: 11.6105 integrated value: 2.41662e-15
+  Solution index 1 l2-norm: 11.6105 integrated value: 2.74139e-14
   Solution index 2 l2-norm: 4.53104 integrated value: 33.3667
 
 Iteration: 500
   Solution index 0 l2-norm: 109.402 integrated value: 1886.52
-  Solution index 1 l2-norm: 11.4283 integrated value: -9.24108e-15
+  Solution index 1 l2-norm: 11.4283 integrated value: -4.50475e-14
   Solution index 2 l2-norm: 4.50413 integrated value: 33.2691
 
 
 
 +-----------------------------------------------+------------+------------+
-| Total wallclock time elapsed since start      |      29.9s |            |
+| Total wallclock time elapsed since start      |      29.2s |            |
 |                                               |            |            |
 | Section                           | no. calls |  wall time | % of total |
 +-----------------------------------+-----------+------------+------------+
-| Auxiliary solver                  |         1 |  1.77e-06s |         0% |
-| Create FESystem                   |         1 |   0.00928s |         0% |
-| Create constraints                |         1 |    0.0035s |         0% |
-| Explicit solver                   |       500 |  0.000688s |         0% |
-| Generate mesh                     |         1 |    0.0116s |         0% |
-| Initialization                    |         1 |     0.196s |      0.66% |
-| Nonexplicit auxiliary solver      |       500 |  0.000477s |         0% |
-| Nonexplicit co-nonlinear solver   |       501 |      29.3s |        98% |
-| Nonexplicit linear solver         |       501 |  0.000427s |         0% |
-| Nonexplicit self-nonlinear solver |       501 |  0.000439s |         0% |
-| Output                            |         6 |     0.211s |       0.7% |
-| Postprocess solver                |         6 |   0.00238s |         0% |
-| Solve Increment                   |       500 |      29.3s |        98% |
-| Solver initialization             |         1 |    0.0234s |         0% |
-| Update ghosts                     |     33621 |    0.0462s |      0.15% |
-| Update time-dependent constraints |       500 |  0.000479s |         0% |
-| Zero ghosts                       |     16563 |    0.0438s |      0.15% |
-| compute element volumes           |         1 |  0.000905s |         0% |
-| reinitialize DoFHandlers          |         1 |    0.0093s |         0% |
-| reinitialize element volumes      |         1 |  0.000794s |         0% |
-| reinitialize invm                 |         1 |    0.0105s |         0% |
-| reinitialize matrix-free objects  |         1 |     0.036s |      0.12% |
-| reinitialize solution set         |         1 |  0.000805s |         0% |
+| Auxiliary solver                  |         1 |  1.61e-06s |         0% |
+| Create FESystem                   |         1 |   0.00522s |         0% |
+| Create constraints                |         1 |   0.00357s |         0% |
+| Explicit solver                   |       500 |  0.000771s |         0% |
+| Generate mesh                     |         1 |    0.0133s |         0% |
+| Initialization                    |         1 |     0.231s |      0.79% |
+| Nonexplicit auxiliary solver      |       500 |   0.00049s |         0% |
+| Nonexplicit co-nonlinear solver   |       501 |      28.5s |        98% |
+| Nonexplicit linear solver         |       501 |  0.000471s |         0% |
+| Nonexplicit self-nonlinear solver |       501 |  0.000427s |         0% |
+| Output                            |         6 |     0.217s |      0.74% |
+| Postprocess solver                |         6 |   0.00267s |         0% |
+| Solve Increment                   |       500 |      28.5s |        98% |
+| Solver initialization             |         1 |    0.0326s |      0.11% |
+| Update ghosts                     |     33621 |    0.0456s |      0.16% |
+| Update time-dependent constraints |       500 |  0.000501s |         0% |
+| Zero ghosts                       |     16563 |    0.0421s |      0.14% |
+| compute element volumes           |         1 |  0.000823s |         0% |
+| reinitialize DoFHandlers          |         1 |   0.00987s |         0% |
+| reinitialize element volumes      |         1 |  0.000534s |         0% |
+| reinitialize invm                 |         1 |    0.0113s |         0% |
+| reinitialize matrix-free objects  |         1 |    0.0356s |      0.12% |
+| reinitialize solution set         |         1 |   0.00293s |         0% |
 +-----------------------------------+-----------+------------+------------+
