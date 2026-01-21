@@ -94,11 +94,10 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
       ScalarValue c      = variable_list.template get_value<ScalarValue>(0);
       ScalarGrad  grad_c = variable_list.template get_gradient<ScalarGrad>(0);
 
-      ScalarValue eq_c = change_c;
-      ScalarGrad  eq_grad_c =
-        McV * get_timestep() *
-        ((12.0 * c * c - 12.0 * c + 2.0) * change_grad_c +
-         (24.0 * c - 12.0) * change_c * grad_c);
+      ScalarValue eq_c      = change_c;
+      ScalarGrad  eq_grad_c = McV * get_timestep() *
+                             ((12.0 * c * c - 12.0 * c + 2.0) * change_grad_c +
+                              (24.0 * c - 12.0) * change_c * grad_c);
 
       variable_list.set_value_term(0, eq_c, Change);
       variable_list.set_gradient_term(0, eq_grad_c, Change);
