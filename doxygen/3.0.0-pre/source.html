@@ -151,7 +151,7 @@ Installing PRISMS-PF</h2>
 <div class="line">mkdir build</div>
 <div class="line">cd build</div>
 <div class="line">cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=&lt;prisms-install-dir&gt; ..</div>
-<div class="line">make -j &lt;nprocs&gt;</div>
+<div class="line">make -j &lt;nprocs&gt; install</div>
 </div><!-- fragment --><p> This will build the PRISMS-PF library in both debug and release modes. Next, set the <code>PRISMS_PF_DIR</code> environment variable to point to the PRISMS-PF installation directory (the directory containing the <code>lib</code> and <code>include</code> directories). You can now compile and run any of the applications in the <code>applications</code> directory. For example, to compile and run the <code>allen_cahn_explicit</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd applications/allen_cahn_explicit</div>
 <div class="line">cmake .</div>
 <div class="line">make</div>
