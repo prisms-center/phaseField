@@ -177,7 +177,7 @@ cd phaseField
 mkdir build
 cd build
 cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=<prisms-install-dir> ..
-make -j <nprocs>
+make -j <nprocs> install
 ```
 This will build the PRISMS-PF library in both debug and release modes.
 Next, set the `PRISMS_PF_DIR` environment variable to point to the PRISMS-PF installation
