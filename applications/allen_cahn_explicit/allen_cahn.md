@@ -24,7 +24,7 @@ Assuming $\kappa \nabla \eta \cdot n = 0$, and using standard variational argume
 
 $$
 \begin{align}
-\mu  = f_{,\eta} -  \kappa \Delta \eta
+\mu  = f_{,\eta} -  \kappa \nabla^2 \eta
 \end{align}
 $$
 
@@ -33,7 +33,7 @@ Now the parabolic PDE for Allen-Cahn dynamics is given by:
 
 $$
 \begin{align}
-\frac{\partial \eta}{\partial t} = -M(f_{,\eta} - \kappa \Delta \eta)
+\frac{\partial \eta}{\partial t} = -M(f_{,\eta} - \kappa \nabla^2 \eta)
 \end{align}
 $$
 
@@ -45,7 +45,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-\eta^{n+1} = \eta^{n} - \Delta t M(f_{,\eta}^{n} - \kappa \Delta \eta^{n})
+\eta^{n+1} = \eta^{n} - \Delta t M(f_{,\eta}^{n} - \kappa \nabla^2 \eta^{n})
 \end{align}
 $$
 
@@ -55,7 +55,7 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-\int_{\Omega} w \eta^{n+1} ~dV &= \int_{\Omega} w \eta^{n} - w \Delta t M(f_{,\eta}^{n} - \kappa \Delta \eta^{n}) ~dV \\
+\int_{\Omega} w \eta^{n+1} ~dV &= \int_{\Omega} w \eta^{n} - w \Delta t M(f_{,\eta}^{n} - \kappa \nabla^2 \eta^{n}) ~dV \\
 &= \int_{\Omega} w \left( \eta^{n} - \Delta t M f_{,\eta}^{n} \right) + \nabla w (-\Delta t M \kappa) \cdot (\nabla \eta^{n}) ~dV \quad [\kappa \nabla \eta \cdot n = 0 \quad \text{on} \quad \partial \Omega]
 \end{align}
 $$
