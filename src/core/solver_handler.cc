@@ -197,9 +197,9 @@ SolverHandler<dim, degree, number>::solve(unsigned int increment,
     {
       for (auto &[block_index, solve_block] : solve_blocks)
         {
-          ConditionalOStreams::pout_base()
-            << "solving 0th timestep for solve block " << std::to_string(block_index)
-            << " ...\n " << std::flush;
+          ConditionalOStreams::pout_base() << "solving 0th timestep for solve block "
+                                           << std::to_string(block_index) << " ...\n"
+                                           << std::flush;
           solve_block.solve(increment, update_postprocessed);
         }
       return;

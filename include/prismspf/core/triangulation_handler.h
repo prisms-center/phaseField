@@ -94,13 +94,13 @@ public:
   get_mg_triangulation(unsigned int level) const;
 
   /**
-   * @brief Return the maximum multigrid level.
+   * @brief Return the minimum multigrid level.
    */
   [[nodiscard]] unsigned int
   get_mg_min_level() const;
 
   /**
-   * @brief Return the minimum multigrid level.
+   * @brief Return the maximum multigrid level.
    */
   [[nodiscard]] unsigned int
   get_mg_max_level() const;
