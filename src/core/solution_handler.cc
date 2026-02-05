@@ -415,10 +415,14 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
                                      Types::Index   variable_index)
 {
   // Helper function to swap vectors for all dependency types
-  auto swap_all_dependency_vectors = [this](Types::Index index, auto &new_vector)
+  auto swap_all_dependency_vectors =
+    [this](Types::Index index, auto &new_vector, bool is_implicit = false)
   {
-    // Always swap the Normal dependency
-    new_vector->swap(*(solution_set.at(std::make_pair(index, DependencyType::Normal))));
+    if (!is_implicit)
+      {
+        new_vector->swap(
+          *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
+      }
 
     // Swap old dependency types if they exist
     const std::array<DependencyType, 4> old_types = {
@@ -433,6 +437,17 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
         if (solution_set.contains(std::make_pair(index, dep_type)))
           {
             new_vector->swap(*(solution_set.at(std::make_pair(index, dep_type))));
+          }
+      }
+
+    if (is_implicit)
+      {
+        if (solution_set.contains(std::make_pair(index, DependencyType::OldOne)))
+          {
+            *new_vector =
+              *(solution_set.at(std::make_pair(index, DependencyType::OldOne)));
+            new_vector->swap(
+              *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
           }
       }
   };
@@ -472,7 +487,7 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
             // For Nonexplicit types we swap all dependency types if the index matches
             if (variable_index == index)
               {
-                swap_all_dependency_vectors(index, new_vector);
+                swap_all_dependency_vectors(index, new_vector, true);
               }
             break;
           default:
