@@ -89,10 +89,6 @@ private:
    */
   std::vector<std::vector<std::shared_ptr<dealii::DoFHandler<dim>>>> dof_handlers;
 
-#ifdef ADDITIONAL_OPTIMIZATIONS
-  std::vector<unsigned int> smallest_index_with_identical_constraints;
-#endif
-
   // TODO (fractalsbyx): move somewhere else. Maybe make an array?
   static const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> fe_systems {
     {FieldInfo::TensorRank::Scalar, dealii::FESystem<dim>(dealii::FE_Q<dim>(1), 1)  },

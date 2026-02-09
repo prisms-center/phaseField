@@ -19,7 +19,10 @@ enum PDEType : std::uint8_t
   ImplicitTimeDependent,
   TimeIndependent,
   Auxiliary,
-  Constant
+  Constant,
+  Explicit,
+  Linear,
+  Newton
 };
 
 /**
