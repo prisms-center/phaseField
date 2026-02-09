@@ -151,6 +151,16 @@ public:
   {}
 
   /**
+   * @brief Update the fields. This is separate from solve because some derived solvers
+   * call solve methods from other solvers.
+   */
+  virtual void
+  update_ghosts()
+  {
+    solutions.update_ghosts();
+  }
+
+  /**
    * @brief Print information about the solver to summary.log.
    */
   virtual void
