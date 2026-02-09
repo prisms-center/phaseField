@@ -12,7 +12,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Class that provides const access to solution vectors spread across different
+ * @brief Class that provides access to solution vectors spread across different
  * groups.
  */
 template <unsigned int dim, typename number>
@@ -33,6 +33,11 @@ public:
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] const SolutionVector &
+  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
+  /**
+   * @brief Get a solution vector of a given field index.
+   */
+  [[nodiscard]] SolutionVector &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
 
   /**
@@ -41,24 +46,46 @@ public:
   [[nodiscard]] const SolutionVector &
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
+                          unsigned int relative_level = 0) const;
+  /**
+   * @brief Get a solution vector of a given field index at a given age.
+   */
+  [[nodiscard]] SolutionVector &
+  get_old_solution_vector(unsigned int age,
+                          unsigned int global_index,
                           unsigned int relative_level = 0);
 
   /**
    * @brief Get the "new" solution vector set.
    */
   [[nodiscard]] const BlockVector &
+  get_new_solution_full_vector(unsigned int relative_level = 0) const;
+  /**
+   * @brief Get the "new" solution vector set.
+   */
+  [[nodiscard]] BlockVector &
   get_new_solution_full_vector(unsigned int relative_level = 0);
 
   /**
    * @brief Get the "new" solution vector of a given field index.
    */
   [[nodiscard]] const SolutionVector &
+  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0) const;
+  /**
+   * @brief Get the "new" solution vector of a given field index.
+   */
+  [[nodiscard]] SolutionVector &
   get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
 
   /**
    * @brief Get the matrixfree object of the group a given field index.
    */
   [[nodiscard]] const MatrixFree &
+  get_matrix_free(unsigned int index, unsigned int relative_level = 0) const;
+  /**
+   * @brief Get the matrixfree object of the group a given field index.
+   */
+  [[nodiscard]] MatrixFree &
   get_matrix_free(unsigned int index, unsigned int relative_level = 0);
 
   /**

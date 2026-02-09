@@ -31,13 +31,15 @@ public:
   using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
   using FieldType = FieldInfo::TensorRank;
 
-  explicit SolveGroup(int                    _id       = -1,
-                      PDEType                _pde_type = PDEType::ExplicitTimeDependent,
-                      std::set<Types::Index> _field_indices    = {},
-                      DependencySet          _dependencies_rhs = {},
-                      DependencySet          _dependencies_lhs = {})
+  explicit SolveGroup(int                    _id                = -1,
+                      PDEType                _pde_type          = PDEType::Explicit,
+                      bool                   _is_time_dependent = true,
+                      std::set<Types::Index> _field_indices     = {},
+                      DependencySet          _dependencies_rhs  = {},
+                      DependencySet          _dependencies_lhs  = {})
     : id(_id)
     , pde_type(_pde_type)
+    , is_time_dependent(_is_time_dependent)
     , field_indices(std::move(_field_indices))
     , dependencies_rhs(std::move(_dependencies_rhs))
     , dependencies_lhs(std::move(_dependencies_lhs))
@@ -45,15 +47,20 @@ public:
 
   /**
    * @brief Unique identifier. Use this in 'if' statements or switch cases in equations
-   * lhs and rhs. This also determines priority for solves of the same type.
+   * lhs and rhs.
    */
   int id;
 
   /**
-   * @brief PDE type (Constant | ExplicitTimeDependent | Explicit | ImplicitTimeDependent
-   * | Implicit | Postprocess).
+   * @brief PDE type (Constant | Explicit | Linear | Newton).
    */
   PDEType pde_type;
+
+  /**
+   * @brief Whether the solve is time dependent. This is used to determine whether to
+   * initialize the solution vector with the initial conditions or just solve.
+   */
+  bool is_time_dependent;
 
   /**
    * @brief Indices of the fields to be solved in this group.
