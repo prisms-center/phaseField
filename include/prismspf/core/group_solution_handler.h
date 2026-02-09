@@ -32,7 +32,6 @@ struct SolutionLevel
   using SolutionVector = BlockVector::BlockType;
   using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
   BlockVector                                            solutions;
-  BlockVector                                            new_solutions;
   std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
   BlockVector                                            change_solutions;
   MatrixFree                                             matrix_free;
