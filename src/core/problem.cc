@@ -3,18 +3,13 @@
 
 #pragma once
 #include <prismspf/core/problem.h>
+#include <prismspf/core/system_wide.h>
 
 #include "prismspf/core/simulation_timer.h"
 #include "prismspf/user_inputs/temporal_discretization.h"
 #include "prismspf/user_inputs/user_input_parameters.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-template <unsigned int dim, unsigned int degree, typename number>
-const std::array<const dealii::FESystem<dim>, 2>
-  Problem<dim, degree, number>::fe_systems = {
-    dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1),
-    dealii::FESystem<dim>(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), dim)};
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
@@ -35,7 +30,7 @@ Problem<dim, degree, number>::Problem(
                    triangulation_manager,
                    constraint_manager,
                    dof_manager,
-                   mapping,
+                   SystemWide<dim, degree>::mapping,
                    _pde_operator)
   , grid_refiner(_user_inputs, triangulation_manager)
 {}
@@ -66,7 +61,7 @@ Problem<dim, degree, number>::init_system()
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.init(triangulation_manager, fe_systems);
+  dof_manager.init(triangulation_manager, SystemWide<dim, degree>::fe_systems);
   Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
@@ -75,7 +70,7 @@ Problem<dim, degree, number>::init_system()
   for (const auto &solve_group : solve_groups)
     {
       // TODO: Loop over levels, pass in current time
-      constraint_manager.make_constraints(mapping,
+      constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
                                           dof_manager.get_dof_handlers(
                                             solve_group.field_indices));
     }
@@ -122,7 +117,7 @@ Problem<dim, degree, number>::init_system()
   // Perform the initial grid refinement. For this one, we have to do a loop to sufficient
   // coarsen cells to the minimum level
   ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
-  grid_refiner.init(fe_systems);
+  grid_refiner.init(SystemWide<dim, degree>::fe_systems);
   grid_refiner.add_refinement_marker(std::make_shared<NucleusRefinementFunction<dim>>(
     user_inputs.get_nucleation_parameters(),
     pf_tools->nuclei_list));
@@ -272,9 +267,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   for (const auto &solve_group : solve_groups)
     {
       // TODO: Loop over levels, pass in current time
-      constraint_manager.update_time_dependent_constraints(mapping,
-                                                           dof_manager.get_dof_handlers(
-                                                             solve_group.field_indices));
+      constraint_manager.update_time_dependent_constraints(
+        SystemWide<dim, degree>::mapping,
+        dof_manager.get_dof_handlers(solve_group.field_indices));
     }
   Timer::end_section("Update time-dependent constraints");
 
