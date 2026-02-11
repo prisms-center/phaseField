@@ -49,15 +49,6 @@ public:
   void
   run();
 
-  /**
-   * @brief Scalar and Vector FE systems.
-   */
-  static const std::array<const dealii::FESystem<dim>, 2> fe_systems;
-  /**
-   * @brief Mappings to and from reference cell.
-   */
-  static dealii::MappingQ1<dim> mapping;
-
 private:
   /**
    * @brief Main time-stepping loop that calls solve_increment, reinit_system,
