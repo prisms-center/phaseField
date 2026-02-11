@@ -86,6 +86,8 @@ public:
 
     // 4. MG Smoother (takes in operators) This is similar to a solver, but is
     // conceptually different.
+    // Preconditioner for smoother.
+    // TODO: use PreconditionBlockJacobi or other block preconditioner instead
     using SmootherPrecond =
       dealii::PreconditionChebyshev<MFOperator<dim, degree, number>, BlockVector>;
     dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
