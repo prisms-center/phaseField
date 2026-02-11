@@ -9,6 +9,8 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
+#include <prismspf/core/grid_refiner.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/solvers.h>
@@ -48,16 +50,13 @@ public:
   run();
 
   /**
-   * @brief Scalar FESystem.
+   * @brief Scalar and Vector FE systems.
    */
-  static const dealii::FESystem<dim>
-    scalar_fe_system(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), 1);
-  /**
-   * @brief Scalar FESystem.
-   */
-  static const dealii::FESystem<dim>
-    vector_fe_system(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)), dim);
   static const std::array<const dealii::FESystem<dim>, 2> fe_systems;
+  /**
+   * @brief Mappings to and from reference cell.
+   */
+  static dealii::MappingQ1<dim> mapping;
 
 private:
   /**
@@ -71,7 +70,7 @@ private:
    * @brief Solve a single increment of the given PDEs.
    */
   void
-  solve_increment();
+  solve_increment(SimulationTimer &sim_timer);
 
   /**
    * @brief Initialize the system.
@@ -106,24 +105,9 @@ private:
   PhaseFieldTools<dim> *pf_tools;
 
   /**
-   * @brief Solvers.
-   */
-  std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
-
-  /**
    * @brief Triangulation handler.
    */
-  TriangulationManager<dim> triangulation_handler;
-
-  /**
-   * @brief Constraint handler.
-   */
-  ConstraintHandler<dim, degree, number> constraint_handler;
-
-  /**
-   * @brief Solution handler.
-   */
-  GroupSolutionHandler<dim, number> solution_handler;
+  TriangulationManager<dim> triangulation_manager;
 
   /**
    * @brief DoF manager.
@@ -131,16 +115,14 @@ private:
   DofManager<dim> dof_manager;
 
   /**
-   * @brief Collection of finite element systems. This is just a collection of two
-   * FESystem's: one for scalar fields and one for vector fields. For now they both use
-   * FE_Q finite elements.
+   * @brief Constraint handler.
    */
-  std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> fe_system;
+  ConstraintManager<dim, degree, number> constraint_manager;
 
   /**
-   * @brief Mappings to and from reference cell.
+   * @brief Solvers.
    */
-  dealii::MappingQ1<dim> mapping;
+  std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
 
   /**
    * @brief Solver context.
