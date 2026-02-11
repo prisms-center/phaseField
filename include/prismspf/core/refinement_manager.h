@@ -7,138 +7,100 @@
 #include <deal.II/fe/fe_values.h>
 
 #include <prismspf/core/cell_marker_base.h>
-#include <prismspf/core/grid_refiner_context.h>
+#include <prismspf/core/system_wide.h>
+
+#include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
 
 #include <memory>
-#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class GridRefiner
+class RefinementManager
 {
 public:
   /**
-   * @brief Constructor.
+   * @brief Constructor. Init the flags for refinement.
    */
-  explicit GridRefiner(
-    GridRefinementContext<dim, degree, number> &grid_refinement_context)
-    : grid_refinement_context(grid_refinement_context)
+  explicit RefinementManager(SolverContext<dim, degree, number> &solver_context)
+    : solver_context(solver_context)
+    , num_quad_points(SystemWide<dim, degree>::quadrature.size())
+    , fe_values_flags()
+    , max_refinement(solver_context.get_user_inputs()
+                       .get_spatial_discretization()
+                       .get_max_refinement())
+    , min_refinement(solver_context.get_user_inputs()
+                       .get_spatial_discretization()
+                       .get_min_refinement())
   {
-    fe_values_flags.resize(static_cast<Types::Index>(FieldInfo::TensorRank::Vector),
-                           dealii::UpdateFlags::update_default);
-
-    for (const auto &criterion : grid_refinement_context.get_user_inputs()
+    fe_values_flags.fill(dealii::UpdateFlags::update_default);
+    for (const auto &criterion : solver_context.get_user_inputs()
                                    .get_spatial_discretization()
                                    .get_refinement_criteria())
       {
         // Grab the index and field type
         const Types::Index          index = criterion.get_index();
-        const FieldInfo::TensorRank local_field_type =
-          grid_refinement_context.get_user_inputs()
-            .get_variable_attributes()
-            .at(index)
-            .field_info.tensor_rank;
+        const FieldInfo::TensorRank rank  = solver_context.get_user_inputs()
+                                             .get_variable_attributes()
+                                             .at(index)
+                                             .field_info.tensor_rank;
 
         if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
           {
-            fe_values_flags[static_cast<Types::Index>(local_field_type) - 1] |=
-              dealii::UpdateFlags::update_values;
+            fe_values_flags[int(rank)] |= dealii::UpdateFlags::update_values;
           }
         else if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
           {
-            fe_values_flags[static_cast<Types::Index>(local_field_type) - 1] |=
-              dealii::UpdateFlags::update_gradients;
+            fe_values_flags[int(rank)] |= dealii::UpdateFlags::update_gradients;
           }
       }
-  };
+    // Create the FEValues
+    for (const auto field_type :
+         {FieldInfo::TensorRank::Scalar, FieldInfo::TensorRank::Vector})
+      {
+        fe_values[field_type] =
+          dealii::FEValues<dim>(SystemWide<dim, degree>::fe_systems[field_type],
+                                SystemWide<dim, degree>::quadrature,
+                                fe_values_flags[int(field_type)]);
+      }
+  }
 
   /**
    * @brief Destructor.
    */
-  ~GridRefiner() = default;
+  ~RefinementManager() = default;
 
   /**
    * @brief Copy constructor.
    *
    * Deleted so grid refiner instances aren't copied.
    */
-  GridRefiner(const GridRefiner &grid_refiner) = delete;
+  RefinementManager(const RefinementManager &grid_refiner) = delete;
 
   /**
    * @brief Copy assignment.
    *
    * Deleted so grid refiner instances aren't copied.
    */
-  GridRefiner &
-  operator=(const GridRefiner &grid_refiner) = delete;
+  RefinementManager &
+  operator=(const RefinementManager &grid_refiner) = delete;
 
   /**
    * @brief Move constructor.
    *
    * Deleted so grid refiner instances aren't moved.
    */
-  GridRefiner(GridRefiner &&grid_refiner) noexcept = delete;
+  RefinementManager(RefinementManager &&grid_refiner) noexcept = delete;
 
   /**
    * @brief Move assignment.
    *
    * Deleted so grid refiner instances aren't moved.
    */
-  GridRefiner &
-  operator=(GridRefiner &&grid_refiner) noexcept = delete;
-
-  /**
-   * @brief Initialize the object.
-   */
-  void
-  init(const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> &fe_system)
-  {
-    // Return early if adaptive meshing is disabled
-    if (!grid_refinement_context.get_user_inputs()
-           .get_spatial_discretization()
-           .get_has_adaptivity())
-      {
-        ConditionalOStreams::pout_base() << "  grid refinement disabled...\n"
-                                         << std::flush;
-        return;
-      }
-
-    // Set quadrature rule
-    const dealii::QGaussLobatto<dim> quadrature(degree + 1);
-
-    for (const auto &[field_type, system] : fe_system)
-      {
-        const unsigned int spacedim =
-          field_type == FieldInfo::TensorRank::Scalar ? 1 : dim;
-
-        // Recreate the FESystem for the field type. I hate to do this, but we have to
-        // ensure that this proper lifetime management and FESystem has it's copy
-        // constructor deleted.
-        fe_systems.try_emplace(field_type,
-                               dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)),
-                               spacedim);
-
-        // Create the FEValues using the stored FESystem
-        fe_values.try_emplace(field_type,
-                              fe_systems.at(field_type),
-                              quadrature,
-                              fe_values_flags[static_cast<Types::Index>(field_type) - 1]);
-      }
-
-    // Get the number of quadrature points
-    num_quad_points = quadrature.size();
-
-    // Get the min and max global refinements
-    max_refinement = grid_refinement_context.get_user_inputs()
-                       .get_spatial_discretization()
-                       .get_max_refinement();
-    min_refinement = grid_refinement_context.get_user_inputs()
-                       .get_spatial_discretization()
-                       .get_min_refinement();
-  }
+  RefinementManager &
+  operator=(RefinementManager &&grid_refiner) noexcept = delete;
 
   /**
    * @brief Do the adaptive refinement
@@ -155,16 +117,13 @@ public:
   do_adaptive_refinement()
   {
     // Return early if adaptive meshing is disabled
-    if (!grid_refinement_context.get_user_inputs()
+    if (!solver_context.get_user_inputs()
            .get_spatial_discretization()
            .get_has_adaptivity())
       {
         return;
       }
 
-    Assert(num_quad_points != 0,
-           dealii::ExcMessage("The init() function must be called before trying to "
-                              "perform adaptive refinement"));
     // Step 1
     mark_cells_for_refinement_and_coarsening();
     bool first_iteration = true;
@@ -173,54 +132,56 @@ public:
       first_iteration)
       {
         first_iteration = false;
-        for (auto &[field_index, solution] :
-             grid_refinement_context.get_solution_handler().get_solution_vector())
+        for (int field_index = 0; field_index < solver_context.field_attributes.size();
+             field_index++)
           {
-            solution->update_ghost_values();
+            solver_context.get_solution_indexer()
+              .get_solution(field_index)
+              .update_ghost_values();
           }
 
         // Step 2
         refine_grid();
 
         // Step 3
-        grid_refinement_context.get_triangulation_handler().reinit();
-        grid_refinement_context.get_dof_handler().reinit(
-          grid_refinement_context.get_triangulation_handler(),
-          grid_refinement_context.get_finite_element_systems(),
-          grid_refinement_context.get_multigrid_info());
-        grid_refinement_context.get_constraint_handler().make_constraints(
-          grid_refinement_context.get_mapping(),
-          grid_refinement_context.get_dof_handler().get_dof_handlers());
-        if (grid_refinement_context.get_multigrid_info().has_multigrid())
+        solver_context.get_triangulation_handler().reinit();
+        solver_context.get_dof_handler().reinit(
+          solver_context.get_triangulation_handler(),
+          solver_context.get_finite_element_systems(),
+          solver_context.get_multigrid_info());
+        solver_context.get_constraint_handler().make_constraints(
+          solver_context.get_mapping(),
+          solver_context.get_dof_handler().get_dof_handlers());
+        if (solver_context.get_multigrid_info().has_multigrid())
           {
             const unsigned int min_level =
-              grid_refinement_context.get_multigrid_info().get_mg_min_level();
+              solver_context.get_multigrid_info().get_mg_min_level();
             const unsigned int max_level =
-              grid_refinement_context.get_multigrid_info().get_mg_max_level();
+              solver_context.get_multigrid_info().get_mg_max_level();
             for (unsigned int level = min_level; level <= max_level; ++level)
               {
-                grid_refinement_context.get_constraint_handler().make_mg_constraints(
-                  grid_refinement_context.get_mapping(),
-                  grid_refinement_context.get_dof_handler().get_mg_dof_handlers(level),
+                solver_context.get_constraint_handler().make_mg_constraints(
+                  solver_context.get_mapping(),
+                  solver_context.get_dof_handler().get_mg_dof_handlers(level),
                   level);
               }
           }
 
-        grid_refinement_context.get_matrix_free_container().template reinit<degree, 1>(
-          grid_refinement_context.get_mapping(),
-          grid_refinement_context.get_dof_handler(),
-          grid_refinement_context.get_constraint_handler(),
+        solver_context.get_matrix_free_container().template reinit<degree, 1>(
+          solver_context.get_mapping(),
+          solver_context.get_dof_handler(),
+          solver_context.get_constraint_handler(),
           dealii::QGaussLobatto<1>(degree + 1));
 
-        grid_refinement_context.get_solution_handler().reinit(
-          grid_refinement_context.get_matrix_free_container());
+        solver_context.get_solution_handler().reinit(
+          solver_context.get_matrix_free_container());
 
         // Step 4
-        grid_refinement_context.get_solution_handler().execute_solution_transfer();
+        solver_context.get_solution_handler().execute_solution_transfer();
 
         // Step 6
-        grid_refinement_context.get_invm_handler().recompute_invm();
-        grid_refinement_context.get_element_volume_container().recompute_element_volume();
+        solver_context.get_invm_handler().recompute_invm();
+        solver_context.get_element_volume_container().recompute_element_volume();
       }
   }
 
@@ -255,10 +216,10 @@ private:
     std::vector<number> values(num_quad_points, 0.0);
 
     // Clear user flags
-    grid_refinement_context.get_triangulation_handler().clear_user_flags();
+    solver_context.get_triangulation_handler().clear_user_flags();
 
     // Loop over the cells provided by the triangulation
-    for (const auto &cell : grid_refinement_context.get_triangulation_handler()
+    for (const auto &cell : solver_context.get_triangulation_handler()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -269,7 +230,7 @@ private:
 
             // TODO (landinjm): We can probably avoid checking some of the neighboring
             // cells when coarsening them
-            for (const auto &criterion : grid_refinement_context.get_user_inputs()
+            for (const auto &criterion : solver_context.get_user_inputs()
                                            .get_spatial_discretization()
                                            .get_refinement_criteria())
               {
@@ -278,14 +239,14 @@ private:
 
                 // Grab the field type
                 const FieldInfo::TensorRank local_field_type =
-                  grid_refinement_context.get_user_inputs()
+                  solver_context.get_user_inputs()
                     .get_variable_attributes()
                     .at(index)
                     .field_info.tensor_rank;
 
                 // Grab the DoFHandler iterator
                 const auto dof_iterator = cell->as_dof_handler_iterator(
-                  grid_refinement_context.get_dof_handler().get_dof_handler(index));
+                  solver_context.get_dof_handler().get_dof_handler(index));
 
                 // Reinit the cell
                 fe_values.at(local_field_type).reinit(dof_iterator);
@@ -297,7 +258,7 @@ private:
                         // Get the values for a scalar field
                         fe_values.at(local_field_type)
                           .get_function_values(
-                            *grid_refinement_context.get_solution_handler()
+                            *solver_context.get_solution_handler()
                                .get_solution_vector(index, DependencyType::Normal),
                             values);
                       }
@@ -310,7 +271,7 @@ private:
                           dealii::Vector<number>(dim));
                         fe_values.at(local_field_type)
                           .get_function_values(
-                            *grid_refinement_context.get_solution_handler()
+                            *solver_context.get_solution_handler()
                                .get_solution_vector(index, DependencyType::Normal),
                             vector_values);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
@@ -346,7 +307,7 @@ private:
                           num_quad_points);
                         fe_values.at(local_field_type)
                           .get_function_gradients(
-                            *grid_refinement_context.get_solution_handler()
+                            *solver_context.get_solution_handler()
                                .get_solution_vector(index, DependencyType::Normal),
                             scalar_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
@@ -364,7 +325,7 @@ private:
                                              dim));
                         fe_values.at(local_field_type)
                           .get_function_gradients(
-                            *grid_refinement_context.get_solution_handler()
+                            *solver_context.get_solution_handler()
                                .get_solution_vector(index, DependencyType::Normal),
                             vector_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
@@ -434,7 +395,7 @@ private:
   mark_cells_for_refinement()
   {
     bool any_cell_marked = false;
-    for (const auto &cell : grid_refinement_context.get_triangulation_handler()
+    for (const auto &cell : solver_context.get_triangulation_handler()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -446,10 +407,9 @@ private:
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
                     {
-                      return marker_function->flag(*cell,
-                                                   grid_refinement_context
-                                                     .get_user_inputs()
-                                                     .get_temporal_discretization());
+                      return marker_function->flag(
+                        *cell,
+                        solver_context.get_user_inputs().get_temporal_discretization());
                     }))
               {
                 cell->set_user_flag();
@@ -472,35 +432,31 @@ private:
   refine_grid()
   {
     // Prepare for grid refinement
-    grid_refinement_context.get_triangulation_handler().prepare_for_grid_refinement();
+    solver_context.get_triangulation_handler().prepare_for_grid_refinement();
 
     // Prepare the solution transfer objects
-    grid_refinement_context.get_solution_handler().prepare_for_solution_transfer();
+    solver_context.get_solution_handler().prepare_for_solution_transfer();
 
     // Execute grid refinement
-    grid_refinement_context.get_triangulation_handler().execute_grid_refinement();
+    solver_context.get_triangulation_handler().execute_grid_refinement();
   }
 
   /**
    * @brief Grid refinement context.
    */
-  GridRefinementContext<dim, degree, number> grid_refinement_context;
+  SolverContext<dim, degree, number> solver_context;
 
   /**
-   * @brief Update flags for the FEValues object as determined by the grid refinement
-   * criterion.
+   * @brief Update flags for the FEValues determined by the grid refinement
+   * criterion. For now, we share one flag set for scalar fields and one for vector
+   * fields.
    */
-  std::vector<dealii::UpdateFlags> fe_values_flags;
-
-  /**
-   * @brief Finite element systems for scalar and vector fields.
-   */
-  std::unordered_map<FieldInfo::TensorRank, dealii::FESystem<dim>> fe_systems;
+  std::array<dealii::UpdateFlags, 2> fe_values_flags;
 
   /**
    * @brief Finite element values for scalar and vector fields.
    */
-  std::unordered_map<FieldInfo::TensorRank, dealii::FEValues<dim>> fe_values;
+  std::array<dealii::FEValues<dim>, 2> fe_values;
 
   /**
    * @brief Number of quadrature points.
