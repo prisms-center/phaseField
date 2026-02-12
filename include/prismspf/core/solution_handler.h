@@ -52,8 +52,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, typename number>
 struct SolutionBlock
 {
-  using BlockVector =
-    dealii::LinearAlgebra::distributed::BlockVector<number, dealii::MemorySpace::Host>;
+  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
   using SolutionVector = BlockVector::BlockType;
 
   /**
