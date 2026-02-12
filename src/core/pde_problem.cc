@@ -27,7 +27,8 @@
 #include <prismspf/core/triangulation_handler.h>
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
+#include <prismspf/nucleation/nucleation.h>
+#include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include <prismspf/solvers/concurrent_constant_solver.h>
 #include <prismspf/solvers/concurrent_explicit_postprocess_solver.h>
@@ -39,12 +40,12 @@
 #include <prismspf/solvers/sequential_self_nonlinear_solver.h>
 #include <prismspf/solvers/solver_context.h>
 
+#include <prismspf/user_inputs/user_input_parameters.h>
+
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleation.h>
-#include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include "prismspf/user_inputs/temporal_discretization.h"
 

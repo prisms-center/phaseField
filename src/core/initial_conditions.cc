@@ -9,8 +9,9 @@
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
-#include <prismspf/config.h>
 #include <prismspf/field_input/read_field_factory.h>
+
+#include <prismspf/config.h>
 
 #include <memory>
 #include <string>

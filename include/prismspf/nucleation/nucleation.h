@@ -10,17 +10,18 @@
 #include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/nucleation/nucleus.h>
+
+#include <prismspf/solvers/solver_context.h>
+
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
 #include <prismspf/user_inputs/nucleation_parameters.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/solvers/solver_context.h>
-
 #include <prismspf/utilities/periodic_distance.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleus.h>
 
 #include <algorithm>
 #include <list>

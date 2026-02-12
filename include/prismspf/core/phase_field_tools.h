@@ -5,8 +5,9 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/config.h>
 #include <prismspf/nucleation/nucleus.h>
+
+#include <prismspf/config.h>
 
 #include <vector>
 
