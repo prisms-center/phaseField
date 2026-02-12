@@ -25,6 +25,7 @@ compile_commands.json
 
 # Python virtual environments
 **/venv
+**/.venv
 
 # clangd
 **/.cache

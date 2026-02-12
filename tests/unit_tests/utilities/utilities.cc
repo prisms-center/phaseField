@@ -12,6 +12,69 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
+ * This unit test looks at the string to type utility functions
+ */
+TEST_CASE("String to types")
+{
+  const std::unordered_map<std::string, unsigned int> unsigned_int_map = {
+    {"",    0},
+    {"one", 1},
+    {"two", 2}
+  };
+  const std::unordered_map<std::string, int> int_map = {
+    {"one",      1 },
+    {"negative", -1}
+  };
+
+  SECTION("Single")
+  {
+    REQUIRE(string_to_type("one", unsigned_int_map) == 1);
+    REQUIRE_THROWS(string_to_type("three", int_map));
+  }
+  SECTION("Pair")
+  {
+    auto pair_one = string_to_type_pair_with_delimiters("negative",
+                                                        unsigned_int_map,
+                                                        int_map,
+                                                        {'(', ')'});
+    auto pair_two = string_to_type_pair_with_delimiters("two(negative)",
+                                                        unsigned_int_map,
+                                                        int_map,
+                                                        {'(', ')'});
+
+    REQUIRE(pair_one.first == -1);
+    REQUIRE(pair_one.second == 0);
+    REQUIRE(pair_two.first == -1);
+    REQUIRE(pair_two.second == 2);
+
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("invalid",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("invalid(negative)",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("two(negative)(extra)",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("two)(negative)",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("two((negative))",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+    REQUIRE_THROWS(string_to_type_pair_with_delimiters("two{negative}",
+                                                       unsigned_int_map,
+                                                       int_map,
+                                                       {'(', ')'}));
+  }
+}
+
+/**
  * This unit test looks at the compute stress utility function
  */
 TEST_CASE("Compute stress")

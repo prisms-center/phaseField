@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
@@ -14,8 +15,100 @@
 #include <prismspf/config.h>
 
 #include <array>
+#include <string>
+#include <string_view>
+#include <unordered_map>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief Helper function that converts a string to some type, given a mapping.
+ */
+template <typename Type>
+Type
+string_to_type(const std::string                           &string,
+               const std::unordered_map<std::string, Type> &table)
+{
+  auto iterator = table.find(string);
+  AssertThrow(iterator != table.end(),
+              dealii::ExcMessage("Unknown table entry: " + string));
+  return iterator->second;
+}
+
+/**
+ * @brief Helper function that converts a string to some type pair, given two mappings and
+ * a set of delimiters.
+ *
+ * Note that this function requires the general form of one of the below cases.
+ * Parentheses are used for delimiters for simplicity.
+ *
+ * Case 1:
+ *  Input - Type(OtherType)
+ *  Output - {OtherType, Type}
+ * Case 2:
+ *  Input - OtherType
+ *  Output - {OtherType, Type}
+ *
+ * The input string would have the types replaced with their respective mappings.
+ *
+ */
+template <typename Type, typename OtherType>
+std::pair<OtherType, Type>
+string_to_type_pair_with_delimiters(
+  const std::string                                &string,
+  const std::unordered_map<std::string, Type>      &table,
+  const std::unordered_map<std::string, OtherType> &other_table,
+  const std::pair<char, char>                      &delimiters = {'(', ')'})
+{
+  // Check to see if the string has any delimiters
+  const auto opening_delimiter_position = string.find(delimiters.first);
+  const auto closing_delimiter_position = string.find(delimiters.second);
+
+  bool has_opening_delimiter = opening_delimiter_position != std::string_view::npos;
+  bool has_closing_delimiter = closing_delimiter_position != std::string_view::npos;
+
+  // Some checks for malformed input
+  AssertThrow(closing_delimiter_position >= opening_delimiter_position,
+              dealii::ExcMessage(
+                "Opening delimiter must precede the closing delimiter. You had " +
+                string));
+  AssertThrow(has_closing_delimiter == has_opening_delimiter,
+              dealii::ExcMessage("You must either have a delimiter pair or not. You seem "
+                                 "to only have one delimiter. You had " +
+                                 string));
+
+  // Case 2 - no delimiters
+  if (!has_closing_delimiter && !has_opening_delimiter)
+    {
+      const auto second_type = string_to_type("", table);
+      const auto first_type  = string_to_type(string, other_table);
+      return {first_type, second_type};
+    }
+
+  // More checks for malformed input
+  AssertThrow(closing_delimiter_position == string.size() - 1,
+              dealii::ExcMessage(
+                "Closing delimiter must be at the end of the string. You had " + string));
+
+  // Case 1 - delimiters
+  std::string_view input_view {string};
+  std::string_view outer_string = input_view.substr(0, opening_delimiter_position);
+  std::string_view inner_string =
+    input_view.substr(opening_delimiter_position + 1,
+                      closing_delimiter_position - opening_delimiter_position - 1);
+
+  AssertThrow(!outer_string.empty() && !inner_string.empty(),
+              dealii::ExcMessage(
+                "Inner and outer map entries must not be empty. You had " + string));
+  // NOTE: This will allocate the string views to strings on the heap. Hopefully this
+  // isn't so bad in performance, but I didn't wanna support heterogeneous lookup tables.
+  // I can't imagine this becoming a performance problem right now since we only deal with
+  // strings in the initialization of simulations; however, if it does, it shouldn't be
+  // two hard to support heterogeneous lookup or a table that uses std::string_view.
+  const auto second_type = string_to_type(std::string(outer_string), table);
+  const auto first_type  = string_to_type(std::string(inner_string), other_table);
+  return {first_type, second_type};
+}
 
 /**
  * @brief Positive moldulo (remainder)
