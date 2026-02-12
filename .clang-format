@@ -88,18 +88,27 @@ IncludeCategories:
   # prismspf core headers:
   - Regex:    '<prismspf/core.*>'
     Priority:       10
-  # prismspf user input headers:
-  - Regex:    '<prismspf/user_inputs.*>'
+  # prismspf field input headers:
+  - Regex:    '<prismspf/field_input.*>'
     Priority:       11
+  # prismspf grain headers:
+  - Regex:    '<prismspf/grains.*>'
+    Priority:       12
+  # prismspf nucleation headers:
+  - Regex:    '<prismspf/nucleation.*>'
+    Priority:       13
   # prismspf solver headers:
   - Regex:    '<prismspf/solvers.*>'
-    Priority:       12
+    Priority:       14
+  # prismspf user input headers:
+  - Regex:    '<prismspf/user_inputs.*>'
+    Priority:       15
   # prismspf utilities headers:
   - Regex:    '<prismspf/utilities.*>'
-    Priority:       13
+    Priority:       16
   # prismspf headers:
   - Regex:    '<prismspf.*>'
-    Priority:       14
+    Priority:       17
   # all standard <...> headers
   - Regex:    '<[-\w\/-_]+[\.\/]*[-\w\/-_]+>>'
     Priority:       99
