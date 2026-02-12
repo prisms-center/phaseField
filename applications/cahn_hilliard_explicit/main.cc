@@ -17,12 +17,12 @@
 #include <prismspf/core/variable_attribute_loader.h>
 #include <prismspf/core/variable_attributes.h>
 
-#include <prismspf/user_inputs/input_file_reader.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/solvers/linear_solver_gmg.h>
 #include <prismspf/solvers/linear_solver_identity.h>
 #include <prismspf/solvers/solver_context.h>
+
+#include <prismspf/user_inputs/input_file_reader.h>
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/utilities/element_volume.h>
 #include <prismspf/utilities/integrator.h>

@@ -6,12 +6,13 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
+#include <prismspf/nucleation/nucleus.h>
+
 #include <prismspf/user_inputs/temporal_discretization.h>
 
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleus.h>
 
 #include "prismspf/core/variable_attributes.h"
 
