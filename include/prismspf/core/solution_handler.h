@@ -35,7 +35,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  *  u^{n} = \sum_{j=1}^m a_j u^{n-j} = a_1 u^{n-1} + a_2 u^{n-2} ... a_j u^{n-j}
  * \f]
  *
- * \note \f$ m \f$ is finite and determined at compile time through
+ * \remark \f$ m \f$ is finite and determined at compile time through
  * `prismspf::Numbers::max_saved_solutions`.
  *
  * For implicit updates, this becomes a little more complicated due to the use of
