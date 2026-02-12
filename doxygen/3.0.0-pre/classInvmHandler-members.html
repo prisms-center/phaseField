@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,12 +122,23 @@ $(document).ready(function(){initNavTree('classInvmHandler.html',''); initResiza
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#ab1d14f618dbd35ad83c7b24992b11fd8">clear</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a130fda8ab7178181e5d57d99deeeec22">compute_invm</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a961674de981f9026485cf2940feadcc2">get_invm</a>(const unsigned int &amp;index) const</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#adfc78c9f850252e00288ccbd9da8d936">initialize</a>(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt; _data)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a81771d4f9a450fb571d166a2198dd325">InvmHandler</a>(const std::map&lt; unsigned int, VariableAttributes &gt; &amp;_variable_attributes)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a26f753475484c404d9a5872988237e6d">recompute_invm</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SizeType</b> typedef (defined in <a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a>)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>VectorType</b> typedef (defined in <a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a>)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a680ff6e80446139abacef50ac0577d64">compute_scalar_invm</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a44961786582308d9a8ff4876f7eb662f">compute_vector_invm</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf">data</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a961674de981f9026485cf2940feadcc2">get_invm</a>(const unsigned int &amp;index) const</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#adfc78c9f850252e00288ccbd9da8d936">initialize</a>(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt; _data)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a423cf4320a8d5512a38336a5012b9bcf">invm_scalar</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a609c5a87b488c2fe88a55862777c6442">invm_vector</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a81771d4f9a450fb571d166a2198dd325">InvmHandler</a>(const std::map&lt; unsigned int, VariableAttributes &gt; &amp;_variable_attributes)</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a26f753475484c404d9a5872988237e6d">recompute_invm</a>()</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#ac5d98ca3b1ff52b0abddedf8a1a68bc5">scalar_index</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a605efbbb5c33fb9f5b6fb0849b20a2a2">scalar_needed</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a2785dd02f10f837f702fba519d5b3f01">SizeType</a> typedef</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a674773e687cf1c3f9b9c546b62a1829a">tolerance</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a51df4f8ad5bdb961579def3664c9b78b">variable_attributes</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a01cb741f3db1b0996a61438147b5bbce">vector_index</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classInvmHandler.html#a8804650d4e237667d7d11ce9a0b82339">vector_needed</a></td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">VectorType</a> typedef</td><td class="entry"><a class="el" href="classInvmHandler.html">InvmHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -22,5 +22,10 @@ var classInputFileReader =
     [ "get_parameter_handler", "classInputFileReader.html#a43516d8890cdc244ac27cdc8ca65b932", null ],
     [ "get_var_attributes", "classInputFileReader.html#a62c3ef7cb2b39de9b1154bedd1e8060b", null ],
     [ "parse_line", "classInputFileReader.html#a49718a48a25ed056dca1a0e5f572f4bd", null ],
-    [ "strip_spaces", "classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55", null ]
+    [ "strip_spaces", "classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55", null ],
+    [ "model_constant_names", "classInputFileReader.html#a93ad706e1d3a07193cf65e0a8ebc114a", null ],
+    [ "number_of_dimensions", "classInputFileReader.html#aa7efcb7b7f35c10235d3457d83108a0d", null ],
+    [ "parameter_handler", "classInputFileReader.html#a177ab8b953d26f43125c89ac6f8fdfad", null ],
+    [ "parameters_file_name", "classInputFileReader.html#a1a51f646c4f23ee863a44e6ac9d52363", null ],
+    [ "var_attributes", "classInputFileReader.html#aac7d4ca7ce62c669f924c34d0c1f18b6", null ]
 ];

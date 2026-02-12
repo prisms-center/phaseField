@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('timer_8h_source.html',''); initResizab
   <div class="headertitle"><div class="title">timer.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="timer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,7 +131,7 @@ $(document).ready(function(){initNavTree('timer_8h_source.html',''); initResizab
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classTimer.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classTimer.html">Timer</a></div>
@@ -157,12 +164,13 @@ $(document).ready(function(){initNavTree('timer_8h_source.html',''); initResizab
 <div class="ttc" id="aclassTimer_html_abab11b7f11ebabd0ec136f93c3a7f556"><div class="ttname"><a href="classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556">Timer::serial_timer</a></div><div class="ttdeci">static dealii::TimerOutput &amp; serial_timer()</div><div class="ttdoc">deal.II timer for the 0th MPI process</div><div class="ttdef"><b>Definition</b> timer.cc:44</div></div>
 <div class="ttc" id="aclassTimer_html_abc2a3f33c55dca79a3f9ae61c90a42ed"><div class="ttname"><a href="classTimer.html#abc2a3f33c55dca79a3f9ae61c90a42ed">Timer::print_summary</a></div><div class="ttdeci">static void print_summary()</div><div class="ttdoc">Print a sorted summary of the timed sections.</div><div class="ttdef"><b>Definition</b> timer.cc:65</div></div>
 <div class="ttc" id="aclassTimer_html_ae1dc504d4bd75188b95693a4951149fd"><div class="ttname"><a href="classTimer.html#ae1dc504d4bd75188b95693a4951149fd">Timer::end_section</a></div><div class="ttdeci">static void end_section(const char *name)</div><div class="ttdoc">End the timer section.</div><div class="ttdef"><b>Definition</b> timer.cc:34</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>timer.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="timer_8h.html">timer.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

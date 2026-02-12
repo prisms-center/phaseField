@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classDofHandler.html',''); initResizab
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classDofHandler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">DofHandler&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,41 +129,453 @@ $(document).ready(function(){initNavTree('classDofHandler.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a155b8c37aaa1f22725a6f4c69e64e7fc" id="r_a155b8c37aaa1f22725a6f4c69e64e7fc"><td class="memItemLeft" align="right" valign="top"><a id="a155b8c37aaa1f22725a6f4c69e64e7fc" name="a155b8c37aaa1f22725a6f4c69e64e7fc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DofHandler</b> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">_user_inputs</a>, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;mg_info)</td></tr>
-<tr class="memdesc:a155b8c37aaa1f22725a6f4c69e64e7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a155b8c37aaa1f22725a6f4c69e64e7fc" id="r_a155b8c37aaa1f22725a6f4c69e64e7fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a155b8c37aaa1f22725a6f4c69e64e7fc">DofHandler</a> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">_user_inputs</a>, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;mg_info)</td></tr>
+<tr class="memdesc:a155b8c37aaa1f22725a6f4c69e64e7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a155b8c37aaa1f22725a6f4c69e64e7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ba0feccc08c97b438c304be5fab69ff" id="r_a9ba0feccc08c97b438c304be5fab69ff"><td class="memItemLeft" align="right" valign="top"><a id="a9ba0feccc08c97b438c304be5fab69ff" name="a9ba0feccc08c97b438c304be5fab69ff"></a>
-<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;triangulation_handler, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &gt; &amp;fe_system, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;mg_info)</td></tr>
-<tr class="memdesc:a9ba0feccc08c97b438c304be5fab69ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the DoFHandlers. <br /></td></tr>
+<tr class="memitem:a9ba0feccc08c97b438c304be5fab69ff" id="r_a9ba0feccc08c97b438c304be5fab69ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a9ba0feccc08c97b438c304be5fab69ff">init</a> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;triangulation_handler, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &gt; &amp;fe_system, <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;mg_info)</td></tr>
+<tr class="memdesc:a9ba0feccc08c97b438c304be5fab69ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the DoFHandlers.  <br /></td></tr>
 <tr class="separator:a9ba0feccc08c97b438c304be5fab69ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf223cfa11ed59eb4c0fbd4d15995ce" id="r_abbf223cfa11ed59eb4c0fbd4d15995ce"><td class="memItemLeft" align="right" valign="top"><a id="abbf223cfa11ed59eb4c0fbd4d15995ce" name="abbf223cfa11ed59eb4c0fbd4d15995ce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reinit</b> (const <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;mg_info)</td></tr>
-<tr class="memdesc:abbf223cfa11ed59eb4c0fbd4d15995ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the DoFHandlers. <br /></td></tr>
+<tr class="memitem:abbf223cfa11ed59eb4c0fbd4d15995ce" id="r_abbf223cfa11ed59eb4c0fbd4d15995ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">reinit</a> (const <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;mg_info)</td></tr>
+<tr class="memdesc:abbf223cfa11ed59eb4c0fbd4d15995ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the DoFHandlers.  <br /></td></tr>
 <tr class="separator:abbf223cfa11ed59eb4c0fbd4d15995ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad898d174791b06a42677bc444eae14da" id="r_ad898d174791b06a42677bc444eae14da"><td class="memItemLeft" align="right" valign="top"><a id="ad898d174791b06a42677bc444eae14da" name="ad898d174791b06a42677bc444eae14da"></a>
-<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handlers</b> () <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
-<tr class="memdesc:ad898d174791b06a42677bc444eae14da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandlers (constant reference). <br /></td></tr>
+<tr class="memitem:ad898d174791b06a42677bc444eae14da" id="r_ad898d174791b06a42677bc444eae14da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#ad898d174791b06a42677bc444eae14da">get_dof_handlers</a> () <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
+<tr class="memdesc:ad898d174791b06a42677bc444eae14da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandlers (constant reference).  <br /></td></tr>
 <tr class="separator:ad898d174791b06a42677bc444eae14da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42537bb8c354a2e1b72bd4d8722797c2" id="r_a42537bb8c354a2e1b72bd4d8722797c2"><td class="memItemLeft" align="right" valign="top"><a id="a42537bb8c354a2e1b72bd4d8722797c2" name="a42537bb8c354a2e1b72bd4d8722797c2"></a>
-<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_dof_handlers</b> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">level</a>) <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
-<tr class="memdesc:a42537bb8c354a2e1b72bd4d8722797c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandlers at a given multigrid level (constant reference). <br /></td></tr>
+<tr class="memitem:a42537bb8c354a2e1b72bd4d8722797c2" id="r_a42537bb8c354a2e1b72bd4d8722797c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a42537bb8c354a2e1b72bd4d8722797c2">get_mg_dof_handlers</a> (<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">level</a>) <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
+<tr class="memdesc:a42537bb8c354a2e1b72bd4d8722797c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandlers at a given multigrid level (constant reference).  <br /></td></tr>
 <tr class="separator:a42537bb8c354a2e1b72bd4d8722797c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8948ad7df187ddd2736da6ec2e068b5" id="r_ad8948ad7df187ddd2736da6ec2e068b5"><td class="memItemLeft" align="right" valign="top"><a id="ad8948ad7df187ddd2736da6ec2e068b5" name="ad8948ad7df187ddd2736da6ec2e068b5"></a>
-<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handler</b> (Types::Index index) <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
-<tr class="memdesc:ad8948ad7df187ddd2736da6ec2e068b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandler (reference). <br /></td></tr>
+<tr class="memitem:ad8948ad7df187ddd2736da6ec2e068b5" id="r_ad8948ad7df187ddd2736da6ec2e068b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">get_dof_handler</a> (<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index) <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
+<tr class="memdesc:ad8948ad7df187ddd2736da6ec2e068b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the DoFHandler (reference).  <br /></td></tr>
 <tr class="separator:ad8948ad7df187ddd2736da6ec2e068b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a639089ec5f2c4ce72fe3c64c578ee6ee" id="r_a639089ec5f2c4ce72fe3c64c578ee6ee"><td class="memItemLeft" align="right" valign="top"><a id="a639089ec5f2c4ce72fe3c64c578ee6ee" name="a639089ec5f2c4ce72fe3c64c578ee6ee"></a>
-dealii::types::global_dof_index&#160;</td><td class="memItemRight" valign="bottom"><b>get_total_dofs</b> () <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
-<tr class="memdesc:a639089ec5f2c4ce72fe3c64c578ee6ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total DoFs excluding multigrid DoFs. <br /></td></tr>
+<tr class="memitem:a639089ec5f2c4ce72fe3c64c578ee6ee" id="r_a639089ec5f2c4ce72fe3c64c578ee6ee"><td class="memItemLeft" align="right" valign="top">dealii::types::global_dof_index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a639089ec5f2c4ce72fe3c64c578ee6ee">get_total_dofs</a> () <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a></td></tr>
+<tr class="memdesc:a639089ec5f2c4ce72fe3c64c578ee6ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total DoFs excluding multigrid DoFs.  <br /></td></tr>
 <tr class="separator:a639089ec5f2c4ce72fe3c64c578ee6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8f871fdf38ddfe71e052406d66518ec4" id="r_a8f871fdf38ddfe71e052406d66518ec4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a8f871fdf38ddfe71e052406d66518ec4">user_inputs</a></td></tr>
+<tr class="memdesc:a8f871fdf38ddfe71e052406d66518ec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs.  <br /></td></tr>
+<tr class="separator:a8f871fdf38ddfe71e052406d66518ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d910518b6e382f66d0f8271f5ac7cb" id="r_a04d910518b6e382f66d0f8271f5ac7cb"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>, std::unique_ptr&lt; dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a></td></tr>
+<tr class="memdesc:a04d910518b6e382f66d0f8271f5ac7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of the triangulation DoFs. The number of DoFHandlers should be equal to or less than the number of fields. Technically, there's a small optimization we can use when multiple fields have the same constraints and quadrature rule, allowing us to share the same DoFHandler. An example of this might be grain growth.  <br /></td></tr>
+<tr class="separator:a04d910518b6e382f66d0f8271f5ac7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe86e70891218789d0b6a9f4de8fbce4" id="r_afe86e70891218789d0b6a9f4de8fbce4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#afe86e70891218789d0b6a9f4de8fbce4">const_dof_handlers</a></td></tr>
+<tr class="memdesc:afe86e70891218789d0b6a9f4de8fbce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const copy of the dof_handlers.  <br /></td></tr>
+<tr class="separator:afe86e70891218789d0b6a9f4de8fbce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52f24233864ce29ca747170c1cb88ae9" id="r_a52f24233864ce29ca747170c1cb88ae9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a52f24233864ce29ca747170c1cb88ae9">has_multigrid</a> = <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">false</a></td></tr>
+<tr class="memdesc:a52f24233864ce29ca747170c1cb88ae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have multigrid.  <br /></td></tr>
+<tr class="separator:a52f24233864ce29ca747170c1cb88ae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3d45c1b5e3bac2e9d9c615b5b981ca" id="r_a0b3d45c1b5e3bac2e9d9c615b5b981ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a0b3d45c1b5e3bac2e9d9c615b5b981ca">global_min_level</a> = 0</td></tr>
+<tr class="memdesc:a0b3d45c1b5e3bac2e9d9c615b5b981ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global minimum level for multigrid.  <br /></td></tr>
+<tr class="separator:a0b3d45c1b5e3bac2e9d9c615b5b981ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b7f238a7bd2696ce450076064f32877" id="r_a5b7f238a7bd2696ce450076064f32877"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>, dealii::MGLevelObject&lt; std::unique_ptr&lt; dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#a5b7f238a7bd2696ce450076064f32877">mg_dof_handlers</a></td></tr>
+<tr class="memdesc:a5b7f238a7bd2696ce450076064f32877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of the triangulation DoFs for each multigrid level for all fields that require it. Like before, we can share the same DoFHandler for multiple fields in special cases.  <br /></td></tr>
+<tr class="separator:a5b7f238a7bd2696ce450076064f32877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeda6ff816e8fdade89941c5dfd0c01ba" id="r_aeda6ff816e8fdade89941c5dfd0c01ba"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDofHandler.html#aeda6ff816e8fdade89941c5dfd0c01ba">const_mg_dof_handlers</a></td></tr>
+<tr class="memdesc:aeda6ff816e8fdade89941c5dfd0c01ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Const copy of the mg_dof_handlers.  <br /></td></tr>
+<tr class="separator:aeda6ff816e8fdade89941c5dfd0c01ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt;<br />
 class DofHandler&lt; dim &gt;</div><p>Class that manages the deal.II DoFHandlers. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a155b8c37aaa1f22725a6f4c69e64e7fc" name="a155b8c37aaa1f22725a6f4c69e64e7fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a155b8c37aaa1f22725a6f4c69e64e7fc">&#9670;&#160;</a></span>DofHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;<a class="el" href="classDofHandler.html">::DofHandler</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mg_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad8948ad7df187ddd2736da6ec2e068b5" name="ad8948ad7df187ddd2736da6ec2e068b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8948ad7df187ddd2736da6ec2e068b5">&#9670;&#160;</a></span>get_dof_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::get_dof_handler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Getter function for the DoFHandler (reference). </p>
+
+</div>
+</div>
+<a id="ad898d174791b06a42677bc444eae14da" name="ad898d174791b06a42677bc444eae14da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad898d174791b06a42677bc444eae14da">&#9670;&#160;</a></span>get_dof_handlers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::get_dof_handlers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the DoFHandlers (constant reference). </p>
+
+</div>
+</div>
+<a id="a42537bb8c354a2e1b72bd4d8722797c2" name="a42537bb8c354a2e1b72bd4d8722797c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42537bb8c354a2e1b72bd4d8722797c2">&#9670;&#160;</a></span>get_mg_dof_handlers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::vector&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; * &gt; &amp; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::get_mg_dof_handlers </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the DoFHandlers at a given multigrid level (constant reference). </p>
+
+</div>
+</div>
+<a id="a639089ec5f2c4ce72fe3c64c578ee6ee" name="a639089ec5f2c4ce72fe3c64c578ee6ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a639089ec5f2c4ce72fe3c64c578ee6ee">&#9670;&#160;</a></span>get_total_dofs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::types::global_dof_index <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::get_total_dofs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the total DoFs excluding multigrid DoFs. </p>
+
+</div>
+</div>
+<a id="a9ba0feccc08c97b438c304be5fab69ff" name="a9ba0feccc08c97b438c304be5fab69ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ba0feccc08c97b438c304be5fab69ff">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">void</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>triangulation_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fe_system</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mg_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the DoFHandlers. </p>
+
+</div>
+</div>
+<a id="abbf223cfa11ed59eb4c0fbd4d15995ce" name="abbf223cfa11ed59eb4c0fbd4d15995ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbf223cfa11ed59eb4c0fbd4d15995ce">&#9670;&#160;</a></span>reinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt;::reinit </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>triangulation_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fe_system</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mg_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reinitialize the DoFHandlers. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="afe86e70891218789d0b6a9f4de8fbce4" name="afe86e70891218789d0b6a9f4de8fbce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe86e70891218789d0b6a9f4de8fbce4">&#9670;&#160;</a></span>const_dof_handlers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a>&gt; *&gt; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::const_dof_handlers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Const copy of the dof_handlers. </p>
+
+</div>
+</div>
+<a id="aeda6ff816e8fdade89941c5dfd0c01ba" name="aeda6ff816e8fdade89941c5dfd0c01ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeda6ff816e8fdade89941c5dfd0c01ba">&#9670;&#160;</a></span>const_mg_dof_handlers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> dealii::DoFHandler&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a>&gt; *&gt; &gt; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::const_mg_dof_handlers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Const copy of the mg_dof_handlers. </p>
+
+</div>
+</div>
+<a id="a04d910518b6e382f66d0f8271f5ac7cb" name="a04d910518b6e382f66d0f8271f5ac7cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d910518b6e382f66d0f8271f5ac7cb">&#9670;&#160;</a></span>dof_handlers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>, std::unique_ptr&lt;dealii::DoFHandler&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a>&gt; &gt; &gt; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::dof_handlers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Collection of the triangulation DoFs. The number of DoFHandlers should be equal to or less than the number of fields. Technically, there's a small optimization we can use when multiple fields have the same constraints and quadrature rule, allowing us to share the same DoFHandler. An example of this might be grain growth. </p>
+
+</div>
+</div>
+<a id="a0b3d45c1b5e3bac2e9d9c615b5b981ca" name="a0b3d45c1b5e3bac2e9d9c615b5b981ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b3d45c1b5e3bac2e9d9c615b5b981ca">&#9670;&#160;</a></span>global_min_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::global_min_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Global minimum level for multigrid. </p>
+
+</div>
+</div>
+<a id="a52f24233864ce29ca747170c1cb88ae9" name="a52f24233864ce29ca747170c1cb88ae9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52f24233864ce29ca747170c1cb88ae9">&#9670;&#160;</a></span>has_multigrid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">bool</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::has_multigrid = <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">false</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether we have multigrid. </p>
+
+</div>
+</div>
+<a id="a5b7f238a7bd2696ce450076064f32877" name="a5b7f238a7bd2696ce450076064f32877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b7f238a7bd2696ce450076064f32877">&#9670;&#160;</a></span>mg_dof_handlers</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a>, dealii::MGLevelObject&lt;std::unique_ptr&lt;dealii::DoFHandler&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a>&gt; &gt; &gt; &gt; <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::mg_dof_handlers</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Collection of the triangulation DoFs for each multigrid level for all fields that require it. Like before, we can share the same DoFHandler for multiple fields in special cases. </p>
+
+</div>
+</div>
+<a id="a8f871fdf38ddfe71e052406d66518ec4" name="a8f871fdf38ddfe71e052406d66518ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f871fdf38ddfe71e052406d66518ec4">&#9670;&#160;</a></span>user_inputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">unsigned</a> <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt;<a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a>&gt;* <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">dim</a> &gt;::user_inputs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-inputs. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="dof__handler_8h_source.html">dof_handler.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>dof_handler.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="dof__handler_8cc.html">dof_handler.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

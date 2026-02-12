@@ -1,5 +1,7 @@
 var classLinearSolverBase =
 [
+    [ "SystemMatrixType", "classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319", null ],
+    [ "VectorType", "classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f", null ],
     [ "LinearSolverBase", "classLinearSolverBase.html#a5648f863c367f567c8a8e3f0a30f8c6c", null ],
     [ "~LinearSolverBase", "classLinearSolverBase.html#adcca6fc35fd8f8039287acfed6849368", null ],
     [ "LinearSolverBase", "classLinearSolverBase.html#ac1be885be9a3c637647b8eba13aa74bb", null ],
@@ -37,5 +39,19 @@ var classLinearSolverBase =
     [ "operator=", "classLinearSolverBase.html#ac9b87fe5fdd47a9998819640e45d58fa", null ],
     [ "operator=", "classLinearSolverBase.html#a23d2b6bc2ba0ad7b54653b2c6cd6642d", null ],
     [ "reinit", "classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc", null ],
-    [ "solve", "classLinearSolverBase.html#aefbb4ad4b99b75f90b653afa8e41cc15", null ]
+    [ "solve", "classLinearSolverBase.html#aefbb4ad4b99b75f90b653afa8e41cc15", null ],
+    [ "field_index", "classLinearSolverBase.html#a044f6fa6da5670aa1b5b3bb5732aebd4", null ],
+    [ "newton_update", "classLinearSolverBase.html#a2b175a85b5c84f7c7b3697363d714a23", null ],
+    [ "newton_update_global_to_local_solution", "classLinearSolverBase.html#a402848db218728f49fc6d8338f1bcabb", null ],
+    [ "newton_update_src", "classLinearSolverBase.html#a7bd4246d0a822b212ed0248504ded627", null ],
+    [ "residual", "classLinearSolverBase.html#a10bb7c222aaac330d8d2a9bebcae353b", null ],
+    [ "residual_global_to_local_solution", "classLinearSolverBase.html#af6cc7976d587ddf56b7b53d70b1d800a", null ],
+    [ "residual_src", "classLinearSolverBase.html#a97e9cb044cc4abf897b6774cc4888b0d", null ],
+    [ "solver_context", "classLinearSolverBase.html#a99095b7809756d2e555fb85be85ecba7", null ],
+    [ "solver_control", "classLinearSolverBase.html#adc9e5162d63baefdf35e87a62aa45f9c", null ],
+    [ "subset_attributes", "classLinearSolverBase.html#acc5d3a0564642c14df429c31af552adf", null ],
+    [ "system_matrix", "classLinearSolverBase.html#a12b5d4290833626afa9fcc8de63b7604", null ],
+    [ "tolerance", "classLinearSolverBase.html#ae561675f9ba3bc7cfd8e5639e98bf72d", null ],
+    [ "update_system_matrix", "classLinearSolverBase.html#aeb40fecf81e3a9a525b2771f1d04603a", null ],
+    [ "variable_attributes", "classLinearSolverBase.html#ab4f0a6a8e5ed4b46b924f59df5264827", null ]
 ];

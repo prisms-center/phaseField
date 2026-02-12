@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,7 @@ $(document).ready(function(){initNavTree('classMesh.html',''); initResizable(); 
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classMesh-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Mesh&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -127,41 +135,342 @@ Inheritance diagram for Mesh&lt; dim &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a2ed9c724e274c72038be6dfffe063067" id="r_a2ed9c724e274c72038be6dfffe063067"><td class="memItemLeft" align="right" valign="top"><a id="a2ed9c724e274c72038be6dfffe063067" name="a2ed9c724e274c72038be6dfffe063067"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>Triangulation</b> = std::conditional_t&lt; dim==1, dealii::Triangulation&lt; dim &gt;, dealii::parallel::distributed::Triangulation&lt; dim &gt; &gt;</td></tr>
+<tr class="memitem:a2ed9c724e274c72038be6dfffe063067" id="r_a2ed9c724e274c72038be6dfffe063067"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> = std::conditional_t&lt; dim==1, dealii::Triangulation&lt; dim &gt;, dealii::parallel::distributed::Triangulation&lt; dim &gt; &gt;</td></tr>
 <tr class="separator:a2ed9c724e274c72038be6dfffe063067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae25ebef6af2022a6a13fca216b75d18e" id="r_ae25ebef6af2022a6a13fca216b75d18e"><td class="memItemLeft" align="right" valign="top"><a id="ae25ebef6af2022a6a13fca216b75d18e" name="ae25ebef6af2022a6a13fca216b75d18e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Mesh</b> ()=default</td></tr>
-<tr class="memdesc:ae25ebef6af2022a6a13fca216b75d18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:ae25ebef6af2022a6a13fca216b75d18e" id="r_ae25ebef6af2022a6a13fca216b75d18e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#ae25ebef6af2022a6a13fca216b75d18e">Mesh</a> ()=default</td></tr>
+<tr class="memdesc:ae25ebef6af2022a6a13fca216b75d18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:ae25ebef6af2022a6a13fca216b75d18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cbe60ffe357767566ea03946a878234" id="r_a8cbe60ffe357767566ea03946a878234"><td class="memItemLeft" align="right" valign="top"><a id="a8cbe60ffe357767566ea03946a878234" name="a8cbe60ffe357767566ea03946a878234"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~Mesh</b> ()=default</td></tr>
-<tr class="memdesc:a8cbe60ffe357767566ea03946a878234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br /></td></tr>
+<tr class="memitem:a8cbe60ffe357767566ea03946a878234" id="r_a8cbe60ffe357767566ea03946a878234"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a8cbe60ffe357767566ea03946a878234">~Mesh</a> ()=default</td></tr>
+<tr class="memdesc:a8cbe60ffe357767566ea03946a878234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:a8cbe60ffe357767566ea03946a878234"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0793da0367691c51176aaeb796366e47" id="r_a0793da0367691c51176aaeb796366e47"><td class="memItemLeft" align="right" valign="top"><a id="a0793da0367691c51176aaeb796366e47" name="a0793da0367691c51176aaeb796366e47"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>generate_mesh</b> (std::shared_ptr&lt; Triangulation &gt; triangulation)</td></tr>
-<tr class="memdesc:a0793da0367691c51176aaeb796366e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the mesh. <br /></td></tr>
+<tr class="memitem:a0793da0367691c51176aaeb796366e47" id="r_a0793da0367691c51176aaeb796366e47"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a0793da0367691c51176aaeb796366e47">generate_mesh</a> (std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt; triangulation)</td></tr>
+<tr class="memdesc:a0793da0367691c51176aaeb796366e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the mesh.  <br /></td></tr>
 <tr class="separator:a0793da0367691c51176aaeb796366e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6de87afafb64cbde9c4d559fe292b19" id="r_aa6de87afafb64cbde9c4d559fe292b19"><td class="memItemLeft" align="right" valign="top"><a id="aa6de87afafb64cbde9c4d559fe292b19" name="aa6de87afafb64cbde9c4d559fe292b19"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>mark_boundaries</b> (std::shared_ptr&lt; Triangulation &gt; triangulation, const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</td></tr>
-<tr class="memdesc:aa6de87afafb64cbde9c4d559fe292b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the boundaries of the mesh. <br /></td></tr>
+<tr class="memitem:aa6de87afafb64cbde9c4d559fe292b19" id="r_aa6de87afafb64cbde9c4d559fe292b19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">mark_boundaries</a> (std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt; triangulation, const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</td></tr>
+<tr class="memdesc:aa6de87afafb64cbde9c4d559fe292b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the boundaries of the mesh.  <br /></td></tr>
 <tr class="separator:aa6de87afafb64cbde9c4d559fe292b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a705b9de25b5352102c28aebebf1537ba" id="r_a705b9de25b5352102c28aebebf1537ba"><td class="memItemLeft" align="right" valign="top"><a id="a705b9de25b5352102c28aebebf1537ba" name="a705b9de25b5352102c28aebebf1537ba"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>mark_periodic</b> (std::shared_ptr&lt; Triangulation &gt; triangulation, const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</td></tr>
-<tr class="memdesc:a705b9de25b5352102c28aebebf1537ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh. <br /></td></tr>
+<tr class="memitem:a705b9de25b5352102c28aebebf1537ba" id="r_a705b9de25b5352102c28aebebf1537ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">mark_periodic</a> (std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt; triangulation, const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</td></tr>
+<tr class="memdesc:a705b9de25b5352102c28aebebf1537ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the periodic faces of the mesh.  <br /></td></tr>
 <tr class="separator:a705b9de25b5352102c28aebebf1537ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4afa426818752321a2f24e7ca54b7fc" id="r_aa4afa426818752321a2f24e7ca54b7fc"><td class="memItemLeft" align="right" valign="top"><a id="aa4afa426818752321a2f24e7ca54b7fc" name="aa4afa426818752321a2f24e7ca54b7fc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_initialized</b> ()</td></tr>
-<tr class="memdesc:aa4afa426818752321a2f24e7ca54b7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set that the mesh parameters are initialized correctly. <br /></td></tr>
+<tr class="memitem:aa4afa426818752321a2f24e7ca54b7fc" id="r_aa4afa426818752321a2f24e7ca54b7fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">set_initialized</a> ()</td></tr>
+<tr class="memdesc:aa4afa426818752321a2f24e7ca54b7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set that the mesh parameters are initialized correctly.  <br /></td></tr>
 <tr class="separator:aa4afa426818752321a2f24e7ca54b7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:abeeace4a09c84421ab1ae23255d2a97e" id="r_abeeace4a09c84421ab1ae23255d2a97e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">is_initialized</a> = false</td></tr>
+<tr class="memdesc:abeeace4a09c84421ab1ae23255d2a97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the class is initialized correctly.  <br /></td></tr>
+<tr class="separator:abeeace4a09c84421ab1ae23255d2a97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a502b4915f73249fd267ec86d522e268b" id="r_a502b4915f73249fd267ec86d522e268b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">is_generated</a> = false</td></tr>
+<tr class="memdesc:a502b4915f73249fd267ec86d522e268b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the mesh has been generated.  <br /></td></tr>
+<tr class="separator:a502b4915f73249fd267ec86d522e268b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98ebc908ebb4ef6d5fb3bb0bc8ec4932" id="r_a98ebc908ebb4ef6d5fb3bb0bc8ec4932"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">boundaries_marked</a> = false</td></tr>
+<tr class="memdesc:a98ebc908ebb4ef6d5fb3bb0bc8ec4932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the boundaries have been marked.  <br /></td></tr>
+<tr class="separator:a98ebc908ebb4ef6d5fb3bb0bc8ec4932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 class Mesh&lt; dim &gt;</div><p>Base class for mesh parameters with a generator functions. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a2ed9c724e274c72038be6dfffe063067" name="a2ed9c724e274c72038be6dfffe063067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ed9c724e274c72038be6dfffe063067">&#9670;&#160;</a></span>Triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::Triangulation =  std::conditional_t&lt;dim == 1, dealii::Triangulation&lt;dim&gt;, dealii::parallel::distributed::Triangulation&lt;dim&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae25ebef6af2022a6a13fca216b75d18e" name="ae25ebef6af2022a6a13fca216b75d18e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25ebef6af2022a6a13fca216b75d18e">&#9670;&#160;</a></span>Mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;<a class="el" href="classMesh.html">::Mesh</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a8cbe60ffe357767566ea03946a878234" name="a8cbe60ffe357767566ea03946a878234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cbe60ffe357767566ea03946a878234">&#9670;&#160;</a></span>~Mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::~<a class="el" href="classMesh.html">Mesh</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Virtual destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0793da0367691c51176aaeb796366e47" name="a0793da0367691c51176aaeb796366e47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0793da0367691c51176aaeb796366e47">&#9670;&#160;</a></span>generate_mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::generate_mesh </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt;&#160;</td>
+          <td class="paramname"><em>triangulation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generate the mesh. </p>
+
+</div>
+</div>
+<a id="aa6de87afafb64cbde9c4d559fe292b19" name="aa6de87afafb64cbde9c4d559fe292b19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6de87afafb64cbde9c4d559fe292b19">&#9670;&#160;</a></span>mark_boundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::mark_boundaries </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt;&#160;</td>
+          <td class="paramname"><em>triangulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;&#160;</td>
+          <td class="paramname"><em>boundary_condition_list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark the boundaries of the mesh. </p>
+
+</div>
+</div>
+<a id="a705b9de25b5352102c28aebebf1537ba" name="a705b9de25b5352102c28aebebf1537ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a705b9de25b5352102c28aebebf1537ba">&#9670;&#160;</a></span>mark_periodic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::mark_periodic </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> &gt;&#160;</td>
+          <td class="paramname"><em>triangulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap &amp;&#160;</td>
+          <td class="paramname"><em>boundary_condition_list</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark the periodic faces of the mesh. </p>
+
+</div>
+</div>
+<a id="aa4afa426818752321a2f24e7ca54b7fc" name="aa4afa426818752321a2f24e7ca54b7fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4afa426818752321a2f24e7ca54b7fc">&#9670;&#160;</a></span>set_initialized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::set_initialized </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set that the mesh parameters are initialized correctly. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a98ebc908ebb4ef6d5fb3bb0bc8ec4932" name="a98ebc908ebb4ef6d5fb3bb0bc8ec4932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">&#9670;&#160;</a></span>boundaries_marked</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::boundaries_marked = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the boundaries have been marked. </p>
+
+</div>
+</div>
+<a id="a502b4915f73249fd267ec86d522e268b" name="a502b4915f73249fd267ec86d522e268b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a502b4915f73249fd267ec86d522e268b">&#9670;&#160;</a></span>is_generated</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::is_generated = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the mesh has been generated. </p>
+
+</div>
+</div>
+<a id="abeeace4a09c84421ab1ae23255d2a97e" name="abeeace4a09c84421ab1ae23255d2a97e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeeace4a09c84421ab1ae23255d2a97e">&#9670;&#160;</a></span>is_initialized</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classMesh.html">Mesh</a>&lt; dim &gt;::is_initialized = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the class is initialized correctly. </p>
+<p>This is necessary because the parameters are determined at runtime, leading to the generation of a bunch of empty mesh objects. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="spatial__discretization_8h_source.html">spatial_discretization.h</a></li>
 </ul>
 </div><!-- contents -->

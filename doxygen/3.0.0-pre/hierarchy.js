@@ -60,6 +60,7 @@ var hierarchy =
       [ "ReadUnstructuredVTK< dim, number >", "classReadUnstructuredVTK.html", null ]
     ] ],
     [ "GridRefinement::RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", null ],
+    [ "SolutionBlock< dim, number >", "structSolutionBlock.html", null ],
     [ "SolutionHandler< dim, number >", "classSolutionHandler.html", null ],
     [ "SolutionOutput< dim, number >", "classSolutionOutput.html", null ],
     [ "SolveBlock< dim, degree, number >", "classSolveBlock.html", null ],
@@ -80,6 +81,12 @@ var hierarchy =
     [ "SolverHandler< dim, degree, number >", "classSolverHandler.html", null ],
     [ "SpatialDiscretization< dim >", "structSpatialDiscretization.html", null ],
     [ "SphericalMesh< dim >", "classSphericalMesh.html", null ],
+    [ "boost::static_visitor", null, [
+      [ "UserConstants< dim >::VariantPrinter", "classUserConstants_1_1VariantPrinter.html", null ]
+    ] ],
+    [ "std::streambuf", null, [
+      [ "TeeStream::TeeBuffer", "classTeeStream_1_1TeeBuffer.html", null ]
+    ] ],
     [ "TemporalDiscretization", "structTemporalDiscretization.html", null ],
     [ "Timer", "classTimer.html", null ],
     [ "TriangulationHandler< dim >", "classTriangulationHandler.html", null ],

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
   <div class="headertitle"><div class="title">load_initial_condition_parameters.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="load__initial__condition__parameters_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -123,8 +130,8 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/exceptions.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/types.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/core/conditional_ostreams.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="conditional__ostreams_8h.html">prismspf/core/conditional_ostreams.h</a>&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
@@ -133,27 +140,29 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// File name</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  std::string filename;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">   27</a></span>  std::string <a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="comment">// Grid type</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  DataFormatType dataset_format;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">   30</a></span>  <a class="code hl_enumeration" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a> <a class="code hl_variable" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">dataset_format</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// File variable names</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  std::vector&lt;std::string&gt; file_variable_names;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">   33</a></span>  std::vector&lt;std::string&gt; <a class="code hl_variable" href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">file_variable_names</a>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// Simulation variable names</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  std::vector&lt;std::string&gt; simulation_variable_names;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9">   36</a></span>  std::vector&lt;std::string&gt; <a class="code hl_variable" href="structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9">simulation_variable_names</a>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// Number of data points in each direction</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::array&lt;dealii::types::global_dof_index, 3&gt; n_data_points = {</div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">   39</a></span>  std::array&lt;dealii::types::global_dof_index, 3&gt; <a class="code hl_variable" href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">n_data_points</a> = {</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {0, 0, 0}</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  };</div>
+</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
 </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
@@ -173,8 +182,8 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#af152262d872c80c51c1bba8e057f2b0a">   71</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#af152262d872c80c51c1bba8e057f2b0a">clear</a>()</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    read_initial_conditions_from_file = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    ic_files.clear();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>.clear();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
 </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
@@ -182,7 +191,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#ad1ef1a4858f69371d5eaecf4d1e1dadd">   81</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#ad1ef1a4858f69371d5eaecf4d1e1dadd">set_read_initial_conditions_from_file</a>(<span class="keywordtype">bool</span> _read_initial_conditions_from_file)</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    read_initial_conditions_from_file = _read_initial_conditions_from_file;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a> = _read_initial_conditions_from_file;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
 </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
@@ -190,7 +199,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">   90</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">get_read_initial_conditions_from_file</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> read_initial_conditions_from_file;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a>;</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
 </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
@@ -198,9 +207,9 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">   99</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">add_initial_condition_file</a>(<a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a> _ic_file)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> (read_initial_conditions_from_file)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a>)</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        ic_files.push_back(_ic_file);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>.push_back(_ic_file);</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      }</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  }</div>
 </div>
@@ -209,7 +218,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">  111</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">get_n_initial_condition_files</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> ic_files.size();</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>.size();</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  }</div>
 </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
@@ -217,16 +226,16 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a9b4f44cab20ec79dc2e475a3ca034749">  120</a></span>  <a class="code hl_function" href="structLoadInitialConditionParameters.html#a9b4f44cab20ec79dc2e475a3ca034749">get_initial_condition_files</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">return</span> ic_files;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  }</div>
 </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// Whether to read initial conditions from file</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordtype">bool</span> read_initial_conditions_from_file = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">  127</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="comment">// IC files</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  std::vector&lt;InitialConditionFile&gt; ic_files;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">  130</a></span>  std::vector&lt;InitialConditionFile&gt; <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>;</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>};</div>
 </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
@@ -234,7 +243,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a04b303c7cba699aafa61739906edf095">  134</a></span><a class="code hl_function" href="structLoadInitialConditionParameters.html#a04b303c7cba699aafa61739906edf095">LoadInitialConditionParameters::postprocess_and_validate</a>()</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>{</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ic_file : ic_files)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ic_file : <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>)</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    {</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="comment">// Check that the file variables are the same length as the simulation variables</span></div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      AssertThrow(ic_file.file_variable_names.size() ==</div>
@@ -252,18 +261,18 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="structLoadInitialConditionParameters.html#a2cb600f44cd107bf230da57f6aa034ff">  150</a></span><a class="code hl_function" href="structLoadInitialConditionParameters.html#a2cb600f44cd107bf230da57f6aa034ff">LoadInitialConditionParameters::print_parameter_summary</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">if</span> (read_initial_conditions_from_file)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a>)</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    {</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>()</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        &lt;&lt; <span class="stringliteral">&quot;  Load IC Parameters\n&quot;</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span>;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ic_file : ic_files)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ic_file : <a class="code hl_variable" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a>)</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        {</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>()</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            &lt;&lt; <span class="stringliteral">&quot;File name: &quot;</span> &lt;&lt; ic_file.filename &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            &lt;&lt; <span class="stringliteral">&quot;Dataset format: &quot;</span> &lt;&lt; to_string(ic_file.dataset_format) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            &lt;&lt; <span class="stringliteral">&quot;Dataset format: &quot;</span> &lt;&lt; <a class="code hl_function" href="type__enums_8h.html#aab559c8275b5c8cd049fd5f9004f3763">to_string</a>(ic_file.dataset_format) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            &lt;&lt; <span class="stringliteral">&quot;File variable names: &quot;</span>;</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>          <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;file_variable_name : ic_file.file_variable_names)</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            {</div>
@@ -275,7 +284,7 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            {</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>              <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; simulation_variable_name &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            }</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>          <span class="keywordflow">if</span> (ic_file.dataset_format == FlatBinary)</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>          <span class="keywordflow">if</span> (ic_file.dataset_format == <a class="code hl_enumvalue" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">FlatBinary</a>)</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            {</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>              <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n Data points in each direction: &quot;</span>;</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>              <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;n_data_points : ic_file.n_data_points)</div>
@@ -292,23 +301,36 @@ $(document).ready(function(){initNavTree('load__initial__condition__parameters_8
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
+<div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 <div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a1085d0ad3f23744df264a18ee789f0c9"><div class="ttname"><a href="structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9">InitialConditionFile::simulation_variable_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; simulation_variable_names</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:36</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><div class="ttname"><a href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">InitialConditionFile::n_data_points</a></div><div class="ttdeci">std::array&lt; dealii::types::global_dof_index, 3 &gt; n_data_points</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:39</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a2e94b523e7ae1d5d49aee48768997338"><div class="ttname"><a href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">InitialConditionFile::file_variable_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; file_variable_names</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:33</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac22979950186aee16fe98b2d06632262"><div class="ttname"><a href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">InitialConditionFile::dataset_format</a></div><div class="ttdeci">DataFormatType dataset_format</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:30</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac5f3a08a6606a305cc633cf150c891f5"><div class="ttname"><a href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">InitialConditionFile::filename</a></div><div class="ttdeci">std::string filename</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:27</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html"><div class="ttname"><a href="structLoadInitialConditionParameters.html">LoadInitialConditionParameters</a></div><div class="ttdoc">Struct that stores relevant load initial condition information.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:48</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a04b303c7cba699aafa61739906edf095"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a04b303c7cba699aafa61739906edf095">LoadInitialConditionParameters::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:134</div></div>
+<div class="ttc" id="astructLoadInitialConditionParameters_html_a11dfb63880c51d147d272a7f815d535d"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">LoadInitialConditionParameters::read_initial_conditions_from_file</a></div><div class="ttdeci">bool read_initial_conditions_from_file</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:127</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a122cb6ba3a2b97a026bf02ec114f4f42"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">LoadInitialConditionParameters::get_n_initial_condition_files</a></div><div class="ttdeci">unsigned int get_n_initial_condition_files() const</div><div class="ttdoc">Get the number of initial condition files.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:111</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a2cb600f44cd107bf230da57f6aa034ff"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a2cb600f44cd107bf230da57f6aa034ff">LoadInitialConditionParameters::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:150</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a62397adf9f751e01d411a983d9201e29"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a62397adf9f751e01d411a983d9201e29">LoadInitialConditionParameters::max_files</a></div><div class="ttdeci">static constexpr unsigned int max_files</div><div class="ttdoc">Maximum number of initial condition files.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:53</div></div>
+<div class="ttc" id="astructLoadInitialConditionParameters_html_a7de456080b628c9351bde1e393e1c7be"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">LoadInitialConditionParameters::ic_files</a></div><div class="ttdeci">std::vector&lt; InitialConditionFile &gt; ic_files</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:130</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a81b8731dbc20dedc8938493476169b28"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">LoadInitialConditionParameters::add_initial_condition_file</a></div><div class="ttdeci">void add_initial_condition_file(InitialConditionFile _ic_file)</div><div class="ttdoc">Add a initial condition file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:99</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_a9b4f44cab20ec79dc2e475a3ca034749"><div class="ttname"><a href="structLoadInitialConditionParameters.html#a9b4f44cab20ec79dc2e475a3ca034749">LoadInitialConditionParameters::get_initial_condition_files</a></div><div class="ttdeci">const std::vector&lt; InitialConditionFile &gt; &amp; get_initial_condition_files() const</div><div class="ttdoc">Get the initial condition files.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:120</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_aba56dc8491df4d2fa9f3bfa81401d3c5"><div class="ttname"><a href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">LoadInitialConditionParameters::get_read_initial_conditions_from_file</a></div><div class="ttdeci">bool get_read_initial_conditions_from_file() const</div><div class="ttdoc">Get the read initial conditions from file flag.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:90</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_ad1ef1a4858f69371d5eaecf4d1e1dadd"><div class="ttname"><a href="structLoadInitialConditionParameters.html#ad1ef1a4858f69371d5eaecf4d1e1dadd">LoadInitialConditionParameters::set_read_initial_conditions_from_file</a></div><div class="ttdeci">void set_read_initial_conditions_from_file(bool _read_initial_conditions_from_file)</div><div class="ttdoc">Set the read initial conditions from file flag.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:81</div></div>
 <div class="ttc" id="astructLoadInitialConditionParameters_html_af152262d872c80c51c1bba8e057f2b0a"><div class="ttname"><a href="structLoadInitialConditionParameters.html#af152262d872c80c51c1bba8e057f2b0a">LoadInitialConditionParameters::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the initial condition parameters.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:71</div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
+<div class="ttc" id="atype__enums_8h_html_a4b6daaa2b300483df81d068cf4a65768"><div class="ttname"><a href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a></div><div class="ttdeci">DataFormatType</div><div class="ttdoc">Data formats for input initial conditions. LastEntry is used for loop bounds.</div><div class="ttdef"><b>Definition</b> type_enums.h:105</div></div>
+<div class="ttc" id="atype__enums_8h_html_a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9"><div class="ttname"><a href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">FlatBinary</a></div><div class="ttdeci">@ FlatBinary</div><div class="ttdef"><b>Definition</b> type_enums.h:107</div></div>
+<div class="ttc" id="atype__enums_8h_html_aab559c8275b5c8cd049fd5f9004f3763"><div class="ttname"><a href="type__enums_8h.html#aab559c8275b5c8cd049fd5f9004f3763">to_string</a></div><div class="ttdeci">std::string to_string(PDEType type)</div><div class="ttdoc">Enum to string for PDEType.</div><div class="ttdef"><b>Definition</b> type_enums.h:115</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><b>load_initial_condition_parameters.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><a class="el" href="load__initial__condition__parameters_8h.html">load_initial_condition_parameters.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

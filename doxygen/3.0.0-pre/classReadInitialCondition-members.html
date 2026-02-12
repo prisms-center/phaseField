@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,8 +120,11 @@ $(document).ready(function(){initNavTree('classReadInitialCondition.html',''); i
 
 <p>This is the complete list of members for <a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classReadInitialCondition.html#a6dcac943a8a1c89ffc6ea71d2dc195c3">ReadInitialCondition</a>(std::string _field_name, const FieldInfo::TensorRank &amp;_field_type, const InitialConditionFile &amp;ic_file, const SpatialDiscretization&lt; dim &gt; &amp;spatial_discretization)</td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">vector_value</a>(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadInitialCondition.html#a8352d51254e7ae6ab607caf1f8465ff6">field_name</a></td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadInitialCondition.html#a39ffbc667cd4f17b0d2328145f2e8641">field_type</a></td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadInitialCondition.html#a13ed06e47530cbf6aa395c3e19358800">reader</a></td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadInitialCondition.html#a6dcac943a8a1c89ffc6ea71d2dc195c3">ReadInitialCondition</a>(std::string _field_name, const FieldInfo::TensorRank &amp;_field_type, const InitialConditionFile &amp;ic_file, const SpatialDiscretization&lt; dim &gt; &amp;spatial_discretization)</td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">vector_value</a>(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td><td class="entry"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,11 +120,14 @@ $(document).ready(function(){initNavTree('classMatrixFreeHandler.html',''); init
 
 <p>This is the complete list of members for <a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#afc3e36bb3c6d842e27c093eb729f6f79">get_matrix_free</a>() const</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8">MatrixFreeHandler</a>()</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a16e411b993de8008c71a1c2e7bf064e9">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::Quadrature&lt; 1 &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a2e2c6d4a6951b7d03947a2af40b083e0">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handler, const std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt; &amp;constraint, const dealii::Quadrature&lt; 1 &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#ab645cc2197bf0b2fb6152d2b134d1458">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handler, const std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt; &amp;constraint, const std::vector&lt; dealii::Quadrature&lt; 1 &gt; &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a982b27b5475e431c51f14843ad96747b">additional_data</a></td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#afc3e36bb3c6d842e27c093eb729f6f79">get_matrix_free</a>() const</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#af5bc0dad61cbeb3ddd43eb8c34f977f1">is_initialized</a></td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#abfc09072b82f533b7c64fc3a5d77ace3">matrix_free_object</a></td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8">MatrixFreeHandler</a>()</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a16e411b993de8008c71a1c2e7bf064e9">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const dealii::AffineConstraints&lt; number &gt; &amp;constraint, const dealii::Quadrature&lt; 1 &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#a2e2c6d4a6951b7d03947a2af40b083e0">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handler, const std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt; &amp;constraint, const dealii::Quadrature&lt; 1 &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeHandler.html#ab645cc2197bf0b2fb6152d2b134d1458">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handler, const std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt; &amp;constraint, const std::vector&lt; dealii::Quadrature&lt; 1 &gt; &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

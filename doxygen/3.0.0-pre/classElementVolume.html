@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classElementVolume.html',''); initResi
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classElementVolume-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ElementVolume&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,30 +129,184 @@ $(document).ready(function(){initNavTree('classElementVolume.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abd811dddfdfd404e0a963dad68ca57db" id="r_abd811dddfdfd404e0a963dad68ca57db"><td class="memItemLeft" align="right" valign="top"><a id="abd811dddfdfd404e0a963dad68ca57db" name="abd811dddfdfd404e0a963dad68ca57db"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ElementVolume</b> ()=default</td></tr>
-<tr class="memdesc:abd811dddfdfd404e0a963dad68ca57db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:abd811dddfdfd404e0a963dad68ca57db" id="r_abd811dddfdfd404e0a963dad68ca57db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#abd811dddfdfd404e0a963dad68ca57db">ElementVolume</a> ()=default</td></tr>
+<tr class="memdesc:abd811dddfdfd404e0a963dad68ca57db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:abd811dddfdfd404e0a963dad68ca57db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a614b9b9d705ac5b3a5918f5e27f9c39b" id="r_a614b9b9d705ac5b3a5918f5e27f9c39b"><td class="memItemLeft" align="right" valign="top"><a id="a614b9b9d705ac5b3a5918f5e27f9c39b" name="a614b9b9d705ac5b3a5918f5e27f9c39b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; _data)</td></tr>
-<tr class="memdesc:a614b9b9d705ac5b3a5918f5e27f9c39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize. <br /></td></tr>
+<tr class="memitem:a614b9b9d705ac5b3a5918f5e27f9c39b" id="r_a614b9b9d705ac5b3a5918f5e27f9c39b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#a614b9b9d705ac5b3a5918f5e27f9c39b">initialize</a> (std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; _data)</td></tr>
+<tr class="memdesc:a614b9b9d705ac5b3a5918f5e27f9c39b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize.  <br /></td></tr>
 <tr class="separator:a614b9b9d705ac5b3a5918f5e27f9c39b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24aa9c572073c12645862f9bcf0469e8" id="r_a24aa9c572073c12645862f9bcf0469e8"><td class="memItemLeft" align="right" valign="top"><a id="a24aa9c572073c12645862f9bcf0469e8" name="a24aa9c572073c12645862f9bcf0469e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_element_volume</b> ()</td></tr>
-<tr class="memdesc:a24aa9c572073c12645862f9bcf0469e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute element volume for the triangulation. <br /></td></tr>
+<tr class="memitem:a24aa9c572073c12645862f9bcf0469e8" id="r_a24aa9c572073c12645862f9bcf0469e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#a24aa9c572073c12645862f9bcf0469e8">compute_element_volume</a> ()</td></tr>
+<tr class="memdesc:a24aa9c572073c12645862f9bcf0469e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute element volume for the triangulation.  <br /></td></tr>
 <tr class="separator:a24aa9c572073c12645862f9bcf0469e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad34e6d8328cd292df1628b6a3fda5b0c" id="r_ad34e6d8328cd292df1628b6a3fda5b0c"><td class="memItemLeft" align="right" valign="top"><a id="ad34e6d8328cd292df1628b6a3fda5b0c" name="ad34e6d8328cd292df1628b6a3fda5b0c"></a>
-const dealii::VectorizedArray&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_element_volume</b> (unsigned cell) const</td></tr>
-<tr class="memdesc:ad34e6d8328cd292df1628b6a3fda5b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume of a certain cell (const reference). <br /></td></tr>
+<tr class="memitem:ad34e6d8328cd292df1628b6a3fda5b0c" id="r_ad34e6d8328cd292df1628b6a3fda5b0c"><td class="memItemLeft" align="right" valign="top">const dealii::VectorizedArray&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#ad34e6d8328cd292df1628b6a3fda5b0c">get_element_volume</a> (unsigned cell) const</td></tr>
+<tr class="memdesc:ad34e6d8328cd292df1628b6a3fda5b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume of a certain cell (const reference).  <br /></td></tr>
 <tr class="separator:ad34e6d8328cd292df1628b6a3fda5b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:abcdd0b06887844914fc34af65f34407a" id="r_abcdd0b06887844914fc34af65f34407a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">data</a></td></tr>
+<tr class="memdesc:abcdd0b06887844914fc34af65f34407a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object.  <br /></td></tr>
+<tr class="separator:abcdd0b06887844914fc34af65f34407a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fc703c0fe07464a91aecb5236199cf3" id="r_a3fc703c0fe07464a91aecb5236199cf3"><td class="memItemLeft" align="right" valign="top">dealii::AlignedVector&lt; dealii::VectorizedArray&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">element_volume</a></td></tr>
+<tr class="memdesc:a3fc703c0fe07464a91aecb5236199cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector that stores element volumes.  <br /></td></tr>
+<tr class="separator:a3fc703c0fe07464a91aecb5236199cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class ElementVolume&lt; dim, degree, number &gt;</div><p>A little class that computes the element volume for our triangulation. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="abd811dddfdfd404e0a963dad68ca57db" name="abd811dddfdfd404e0a963dad68ca57db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd811dddfdfd404e0a963dad68ca57db">&#9670;&#160;</a></span>ElementVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;<a class="el" href="classElementVolume.html">::ElementVolume</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a24aa9c572073c12645862f9bcf0469e8" name="a24aa9c572073c12645862f9bcf0469e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24aa9c572073c12645862f9bcf0469e8">&#9670;&#160;</a></span>compute_element_volume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;::compute_element_volume </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute element volume for the triangulation. </p>
+
+</div>
+</div>
+<a id="ad34e6d8328cd292df1628b6a3fda5b0c" name="ad34e6d8328cd292df1628b6a3fda5b0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad34e6d8328cd292df1628b6a3fda5b0c">&#9670;&#160;</a></span>get_element_volume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::VectorizedArray&lt; number &gt; &amp; <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;::get_element_volume </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>cell</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the element volume of a certain cell (const reference). </p>
+
+</div>
+</div>
+<a id="a614b9b9d705ac5b3a5918f5e27f9c39b" name="a614b9b9d705ac5b3a5918f5e27f9c39b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a614b9b9d705ac5b3a5918f5e27f9c39b">&#9670;&#160;</a></span>initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;::initialize </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt;&#160;</td>
+          <td class="paramname"><em>_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="abcdd0b06887844914fc34af65f34407a" name="abcdd0b06887844914fc34af65f34407a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcdd0b06887844914fc34af65f34407a">&#9670;&#160;</a></span>data</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number, dealii::VectorizedArray&lt;number&gt; &gt; &gt; <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;::data</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object. </p>
+
+</div>
+</div>
+<a id="a3fc703c0fe07464a91aecb5236199cf3" name="a3fc703c0fe07464a91aecb5236199cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fc703c0fe07464a91aecb5236199cf3">&#9670;&#160;</a></span>element_volume</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::AlignedVector&lt;dealii::VectorizedArray&lt;number&gt; &gt; <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt;::element_volume</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vector that stores element volumes. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="matrix__free__operator_8h_source.html">matrix_free_operator.h</a></li>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/utilities/<a class="el" href="element__volume_8h_source.html">element_volume.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/utilities/<b>element_volume.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/utilities/<a class="el" href="element__volume_8cc.html">element_volume.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

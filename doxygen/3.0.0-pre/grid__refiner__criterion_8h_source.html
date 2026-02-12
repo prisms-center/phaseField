@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,14 +122,14 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
   <div class="headertitle"><div class="title">grid_refiner_criterion.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="grid__refiner__criterion_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/exceptions.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -130,83 +137,94 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span>GridRefinement</div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html">   18</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceGridRefinement.html">GridRefinement</a></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">enum</span> RefinementFlags : std::uint8_t</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">   23</a></span>  <span class="keyword">enum</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> : std::uint8_t</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    Nothing = 0,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">   28</a></span>    <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">Nothing</a> = 0,</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    Value = 0x0001,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a">   33</a></span>    <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a">Value</a> = 0x0001,</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    Gradient = 0x0002,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155">   38</a></span>    <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155">Gradient</a> = 0x0002,</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  };</div>
+</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="comment">// Function that enables bitwise OR between flags</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">inline</span> RefinementFlags</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  operator|(<span class="keyword">const</span> RefinementFlags flag_1, <span class="keyword">const</span> RefinementFlags flag_2)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">inline</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a></div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#ad46ffba985f2ca7b468964cc5a1ee549">   43</a></span>  <a class="code hl_function" href="namespaceGridRefinement.html#ad46ffba985f2ca7b468964cc5a1ee549">operator|</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_1, <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_2)</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>RefinementFlags<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_1) |</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_1) |</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                        <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_2));</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
+</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// Function that enables bitwise compound OR between flags</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">inline</span> RefinementFlags &amp;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  operator|=(RefinementFlags &amp;flag_1, <span class="keyword">const</span> RefinementFlags flag_2)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">inline</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;</div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#afdbf9f82a24e09bd0100f10118b47c57">   51</a></span>  <a class="code hl_function" href="namespaceGridRefinement.html#afdbf9f82a24e09bd0100f10118b47c57">operator|=</a>(<a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;flag_1, <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_2)</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  {</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    flag_1 = flag_1 | flag_2;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> flag_1;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// Function that enables bitwise AND between flags</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">inline</span> RefinementFlags</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  operator&amp;(<span class="keyword">const</span> RefinementFlags flag_1, <span class="keyword">const</span> RefinementFlags flag_2)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">inline</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a></div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#abb1ff11a2a142cbf545827751cd36bc2">   59</a></span>  <a class="code hl_function" href="namespaceGridRefinement.html#abb1ff11a2a142cbf545827751cd36bc2">operator&amp;</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_1, <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_2)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>RefinementFlags<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_1) &amp;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_1) &amp;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                        <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(flag_2));</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
+</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// Function that enables bitwise compound AND between flags</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">inline</span> RefinementFlags &amp;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  operator&amp;=(RefinementFlags &amp;flag_1, <span class="keyword">const</span> RefinementFlags flag_2)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">inline</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;</div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespaceGridRefinement.html#aa851b45a481541dc641a7785c6f9a087">   67</a></span>  <a class="code hl_function" href="namespaceGridRefinement.html#aa851b45a481541dc641a7785c6f9a087">operator&amp;=</a>(<a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;flag_1, <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> flag_2)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    flag_1 = flag_1 &amp; flag_2;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> flag_1;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="foldopen" id="foldopen00079" data-start="{" data-end="};">
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html">   79</a></span>  <span class="keyword">class </span><a class="code hl_class" href="classGridRefinement_1_1RefinementCriterion.html">RefinementCriterion</a></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  {</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">   88</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">RefinementCriterion</a>(<span class="keyword">const</span> Types::Index    &amp;_global_field_index,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                                 <span class="keyword">const</span> RefinementFlags &amp;_criterion,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">   88</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">RefinementCriterion</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>    &amp;_global_field_index,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                                 <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;_criterion,</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                                 <span class="keyword">const</span> <span class="keywordtype">double</span>          &amp;_value_lower_bound    = DBL_MAX,</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                                 <span class="keyword">const</span> <span class="keywordtype">double</span>          &amp;_value_upper_bound    = DBL_MAX,</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                                 <span class="keyword">const</span> <span class="keywordtype">double</span>          &amp;_gradient_lower_bound = DBL_MAX)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      : global_field_index(_global_field_index)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      , criterion(_criterion)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      , value_lower_bound(_value_lower_bound)</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      , value_upper_bound(_value_upper_bound)</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      , gradient_lower_bound(_gradient_lower_bound) {};</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      : <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">global_field_index</a>(_global_field_index)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      , <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a>(_criterion)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      , <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a>(_value_lower_bound)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      , <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a>(_value_upper_bound)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      , <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a>(_gradient_lower_bound) {};</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">void</span></div>
 <div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">  103</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">set_index</a>(<span class="keyword">const</span> Types::Index &amp;_global_field_index)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">  103</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">set_index</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;_global_field_index)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    {</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      global_field_index = _global_field_index;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">global_field_index</a> = _global_field_index;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    };</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">void</span></div>
 <div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">  113</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">set_criterion</a>(<span class="keyword">const</span> RefinementFlags &amp;_criterion)</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">  113</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">set_criterion</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;_criterion)</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    {</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      criterion = _criterion;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> = _criterion;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    };</div>
 </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
@@ -215,7 +233,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#aaa5f10cf762923ef0b22dc803f7ba89f">  123</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#aaa5f10cf762923ef0b22dc803f7ba89f">set_value_lower_bound</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_value_lower_bound)</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    {</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      value_lower_bound = _value_lower_bound;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a> = _value_lower_bound;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    };</div>
 </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
@@ -224,7 +242,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e">  133</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e">set_value_upper_bound</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_value_upper_bound)</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    {</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      value_upper_bound = _value_upper_bound;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a> = _value_upper_bound;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    };</div>
 </div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
@@ -233,25 +251,25 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a851c3bebf0572ec6b856bf917436c8e1">  143</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a851c3bebf0572ec6b856bf917436c8e1">set_gradient_lower_bound</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_gradient_lower_bound)</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    {</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      gradient_lower_bound = _gradient_lower_bound;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a> = _gradient_lower_bound;</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    };</div>
 </div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    [[nodiscard]] <span class="keyword">const</span> Types::Index &amp;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    [[nodiscard]] <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;</div>
 <div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a3b21cb5cfb10fb9977221e619996ede8">  153</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a3b21cb5cfb10fb9977221e619996ede8">get_index</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">return</span> global_field_index;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">global_field_index</a>;</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    };</div>
 </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    [[nodiscard]] <span class="keyword">const</span> RefinementFlags &amp;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    [[nodiscard]] <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;</div>
 <div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#ad45aad738d5a8581b4b292c8c06071b0">  163</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#ad45aad738d5a8581b4b292c8c06071b0">get_criterion</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      <span class="keywordflow">return</span> criterion;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a>;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    };</div>
 </div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
@@ -260,7 +278,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#ad3fc7658e41eb166e32a4cca4facff5d">  173</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#ad3fc7658e41eb166e32a4cca4facff5d">get_value_lower_bound</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      <span class="keywordflow">return</span> value_lower_bound;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a>;</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    };</div>
 </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
@@ -269,7 +287,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a4f708f87381ba9db3d206fad05b8030f">  183</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a4f708f87381ba9db3d206fad05b8030f">get_value_upper_bound</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      <span class="keywordflow">return</span> value_upper_bound;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a>;</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    };</div>
 </div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
@@ -278,7 +296,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a9a96d457ef7019412c3df9edc9bd90ec">  193</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a9a96d457ef7019412c3df9edc9bd90ec">get_gradient_lower_bound</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <span class="comment">// TODO (landinjm): Add assertions for nontrivial getters/setters</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordflow">return</span> gradient_lower_bound;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordflow">return</span> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a>;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    };</div>
 </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
@@ -286,7 +304,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="foldopen" id="foldopen00204" data-start="{" data-end="}">
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1">  204</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1">value_in_open_range</a>(<span class="keywordtype">double</span> value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      <span class="keywordflow">return</span> value &gt; value_lower_bound &amp;&amp; value &lt; value_upper_bound;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>      <span class="keywordflow">return</span> value &gt; <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a> &amp;&amp; value &lt; <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a>;</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
 </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
@@ -294,7 +312,7 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="foldopen" id="foldopen00213" data-start="{" data-end="}">
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#ac7ed0b368e82e0221ef02db5d637f18e">  213</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#ac7ed0b368e82e0221ef02db5d637f18e">gradient_magnitude_above_threshold</a>(<span class="keywordtype">double</span> gradient_magnitude)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="keywordflow">return</span> gradient_magnitude &gt; gradient_lower_bound;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>      <span class="keywordflow">return</span> gradient_magnitude &gt; <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a>;</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    }</div>
 </div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
@@ -302,20 +320,20 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="foldopen" id="foldopen00222" data-start="{" data-end="}">
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a3912745231f2fd878cafdd148874178f">  222</a></span>    <a class="code hl_function" href="classGridRefinement_1_1RefinementCriterion.html#a3912745231f2fd878cafdd148874178f">criterion_to_string</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>      <span class="keywordflow">if</span> (criterion == RefinementFlags::Nothing)</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> == <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">RefinementFlags::Nothing</a>)</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        {</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>          <span class="keywordflow">return</span> <span class="stringliteral">&quot;None&quot;</span>;</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        }</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      <span class="keywordflow">if</span> (((criterion &amp; RefinementFlags::Value) != 0U) &amp;&amp;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>          ((criterion &amp; RefinementFlags::Gradient) != 0U))</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>      <span class="keywordflow">if</span> (((<a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> &amp; <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a">RefinementFlags::Value</a>) != 0U) &amp;&amp;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>          ((<a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> &amp; <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155">RefinementFlags::Gradient</a>) != 0U))</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        {</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>          <span class="keywordflow">return</span> <span class="stringliteral">&quot;Value and gradient&quot;</span>;</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        }</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      <span class="keywordflow">if</span> ((criterion &amp; RefinementFlags::Value) != 0U)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>      <span class="keywordflow">if</span> ((<a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> &amp; <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a">RefinementFlags::Value</a>) != 0U)</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        {</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>          <span class="keywordflow">return</span> <span class="stringliteral">&quot;Value&quot;</span>;</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        }</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <span class="keywordflow">if</span> ((criterion &amp; RefinementFlags::Gradient) != 0U)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      <span class="keywordflow">if</span> ((<a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> &amp; <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155">RefinementFlags::Gradient</a>) != 0U)</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        {</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>          <span class="keywordflow">return</span> <span class="stringliteral">&quot;Gradient&quot;</span>;</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        }</div>
@@ -325,22 +343,28 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    Types::Index    global_field_index   = Numbers::invalid_index;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    RefinementFlags criterion            = RefinementFlags::Nothing;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordtype">double</span>          value_lower_bound    = DBL_MAX;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordtype">double</span>          value_upper_bound    = DBL_MAX;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordtype">double</span>          gradient_lower_bound = DBL_MAX;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">  246</a></span>    <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>    <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">global_field_index</a>   = <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">  247</a></span>    <a class="code hl_enumeration" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a>            = <a class="code hl_enumvalue" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">RefinementFlags::Nothing</a>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">  248</a></span>    <span class="keywordtype">double</span>          <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a>    = DBL_MAX;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">  249</a></span>    <span class="keywordtype">double</span>          <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a>    = DBL_MAX;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno"><a class="line" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">  250</a></span>    <span class="keywordtype">double</span>          <a class="code hl_variable" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a> = DBL_MAX;</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  };</div>
 </div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>} <span class="comment">// namespace GridRefinement</span></div>
+</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html">GridRefinement::RefinementCriterion</a></div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:80</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a0d77bc6219f2e399121c851550225dbf"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">GridRefinement::RefinementCriterion::RefinementCriterion</a></div><div class="ttdeci">RefinementCriterion(const Types::Index &amp;_global_field_index, const RefinementFlags &amp;_criterion, const double &amp;_value_lower_bound=DBL_MAX, const double &amp;_value_upper_bound=DBL_MAX, const double &amp;_gradient_lower_bound=DBL_MAX)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:88</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a27bb08d4decfc6f836cc73e1cac9fc67"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">GridRefinement::RefinementCriterion::set_index</a></div><div class="ttdeci">void set_index(const Types::Index &amp;_global_field_index)</div><div class="ttdoc">Set the global field index.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:103</div></div>
+<div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a2a37b4a698647e101f4a6976588da304"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">GridRefinement::RefinementCriterion::value_upper_bound</a></div><div class="ttdeci">double value_upper_bound</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:249</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a3912745231f2fd878cafdd148874178f"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a3912745231f2fd878cafdd148874178f">GridRefinement::RefinementCriterion::criterion_to_string</a></div><div class="ttdeci">std::string criterion_to_string() const</div><div class="ttdoc">Convert refinement criterion type to string.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:222</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a3b21cb5cfb10fb9977221e619996ede8"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a3b21cb5cfb10fb9977221e619996ede8">GridRefinement::RefinementCriterion::get_index</a></div><div class="ttdeci">const Types::Index &amp; get_index() const</div><div class="ttdoc">Get the global field index.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:153</div></div>
+<div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a47247524d2025a9d114134935b00b57a"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">GridRefinement::RefinementCriterion::criterion</a></div><div class="ttdeci">RefinementFlags criterion</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:247</div></div>
+<div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a475bbf66b917822f1bc58ec2326f3539"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">GridRefinement::RefinementCriterion::gradient_lower_bound</a></div><div class="ttdeci">double gradient_lower_bound</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:250</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a4f708f87381ba9db3d206fad05b8030f"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a4f708f87381ba9db3d206fad05b8030f">GridRefinement::RefinementCriterion::get_value_upper_bound</a></div><div class="ttdeci">const double &amp; get_value_upper_bound() const</div><div class="ttdoc">Get the value upper bound.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:183</div></div>
+<div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a50695c6d34ce9a809e9090b92a16541d"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">GridRefinement::RefinementCriterion::value_lower_bound</a></div><div class="ttdeci">double value_lower_bound</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:248</div></div>
+<div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a635e51f4f7112cf16b636595d407035e"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">GridRefinement::RefinementCriterion::global_field_index</a></div><div class="ttdeci">Types::Index global_field_index</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:246</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a63cf9ce8d2b537998f9876d6604f704e"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e">GridRefinement::RefinementCriterion::set_value_upper_bound</a></div><div class="ttdeci">void set_value_upper_bound(const double &amp;_value_upper_bound)</div><div class="ttdoc">Set the value upper bound.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:133</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a851c3bebf0572ec6b856bf917436c8e1"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a851c3bebf0572ec6b856bf917436c8e1">GridRefinement::RefinementCriterion::set_gradient_lower_bound</a></div><div class="ttdeci">void set_gradient_lower_bound(const double &amp;_gradient_lower_bound)</div><div class="ttdoc">Set the gradient lower bound.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:143</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_a88074c147144edea82f7f2310adea9db"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">GridRefinement::RefinementCriterion::set_criterion</a></div><div class="ttdeci">void set_criterion(const RefinementFlags &amp;_criterion)</div><div class="ttdoc">Set the refinement criterion.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:113</div></div>
@@ -350,12 +374,25 @@ $(document).ready(function(){initNavTree('grid__refiner__criterion_8h_source.htm
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_accb9a792d6f3d952db90b7e35e0cf9b1"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1">GridRefinement::RefinementCriterion::value_in_open_range</a></div><div class="ttdeci">bool value_in_open_range(double value) const</div><div class="ttdoc">Whether the provided value is in the open range for the value refinement criteria.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:204</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_ad3fc7658e41eb166e32a4cca4facff5d"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#ad3fc7658e41eb166e32a4cca4facff5d">GridRefinement::RefinementCriterion::get_value_lower_bound</a></div><div class="ttdeci">const double &amp; get_value_lower_bound() const</div><div class="ttdoc">Get the value lower bound.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:173</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html_ad45aad738d5a8581b4b292c8c06071b0"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html#ad45aad738d5a8581b4b292c8c06071b0">GridRefinement::RefinementCriterion::get_criterion</a></div><div class="ttdeci">const RefinementFlags &amp; get_criterion() const</div><div class="ttdoc">Get the refinement criterion.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:163</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html"><div class="ttname"><a href="namespaceGridRefinement.html">GridRefinement</a></div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:19</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_aa851b45a481541dc641a7785c6f9a087"><div class="ttname"><a href="namespaceGridRefinement.html#aa851b45a481541dc641a7785c6f9a087">GridRefinement::operator&amp;=</a></div><div class="ttdeci">RefinementFlags &amp; operator&amp;=(RefinementFlags &amp;flag_1, const RefinementFlags flag_2)</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:67</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_ab9b7ee7fde2face4f0c61f237649510a"><div class="ttname"><a href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">GridRefinement::RefinementFlags</a></div><div class="ttdeci">RefinementFlags</div><div class="ttdoc">Flags for refinement criterion.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:24</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a"><div class="ttname"><a href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa4996df5a186bc14da129ac340446d58a">GridRefinement::Value</a></div><div class="ttdeci">@ Value</div><div class="ttdoc">Use value of the variable as a criterion for refinement.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:33</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b"><div class="ttname"><a href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">GridRefinement::Nothing</a></div><div class="ttdeci">@ Nothing</div><div class="ttdoc">No adaptive refinement criterion.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:28</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155"><div class="ttname"><a href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa9f266dc1ee59fb2e1c6df5e9e6b53155">GridRefinement::Gradient</a></div><div class="ttdeci">@ Gradient</div><div class="ttdoc">Use gradient of the variable as a criterion for refinement.</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:38</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_abb1ff11a2a142cbf545827751cd36bc2"><div class="ttname"><a href="namespaceGridRefinement.html#abb1ff11a2a142cbf545827751cd36bc2">GridRefinement::operator&amp;</a></div><div class="ttdeci">RefinementFlags operator&amp;(const RefinementFlags flag_1, const RefinementFlags flag_2)</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:59</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_ad46ffba985f2ca7b468964cc5a1ee549"><div class="ttname"><a href="namespaceGridRefinement.html#ad46ffba985f2ca7b468964cc5a1ee549">GridRefinement::operator|</a></div><div class="ttdeci">RefinementFlags operator|(const RefinementFlags flag_1, const RefinementFlags flag_2)</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:43</div></div>
+<div class="ttc" id="anamespaceGridRefinement_html_afdbf9f82a24e09bd0100f10118b47c57"><div class="ttname"><a href="namespaceGridRefinement.html#afdbf9f82a24e09bd0100f10118b47c57">GridRefinement::operator|=</a></div><div class="ttdeci">RefinementFlags &amp; operator|=(RefinementFlags &amp;flag_1, const RefinementFlags flag_2)</div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:51</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a6c9b90814b4eb8306f621bb5e8f1a343"><div class="ttname"><a href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></div><div class="ttdeci">static const Types::Index invalid_index</div><div class="ttdoc">Invalid field index.</div><div class="ttdef"><b>Definition</b> types.h:28</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>grid_refiner_criterion.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="grid__refiner__criterion_8h.html">grid_refiner_criterion.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

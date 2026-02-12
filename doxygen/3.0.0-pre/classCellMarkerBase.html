@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -127,28 +134,150 @@ Inheritance diagram for CellMarkerBase&lt; dim &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a96b80a4d22fc29af2acdd3fe061ad528" id="r_a96b80a4d22fc29af2acdd3fe061ad528"><td class="memItemLeft" align="right" valign="top"><a id="a96b80a4d22fc29af2acdd3fe061ad528" name="a96b80a4d22fc29af2acdd3fe061ad528"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>CellIterator</b> = dealii::CellAccessor&lt; dim &gt;</td></tr>
+<tr class="memitem:a96b80a4d22fc29af2acdd3fe061ad528" id="r_a96b80a4d22fc29af2acdd3fe061ad528"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellIterator</a> = dealii::CellAccessor&lt; dim &gt;</td></tr>
 <tr class="separator:a96b80a4d22fc29af2acdd3fe061ad528"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a10ba574bf0a796968941e952238be991" id="r_a10ba574bf0a796968941e952238be991"><td class="memItemLeft" align="right" valign="top"><a id="a10ba574bf0a796968941e952238be991" name="a10ba574bf0a796968941e952238be991"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~CellMarkerBase</b> ()=default</td></tr>
-<tr class="memdesc:a10ba574bf0a796968941e952238be991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:a10ba574bf0a796968941e952238be991" id="r_a10ba574bf0a796968941e952238be991"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellMarkerBase.html#a10ba574bf0a796968941e952238be991">~CellMarkerBase</a> ()=default</td></tr>
+<tr class="memdesc:a10ba574bf0a796968941e952238be991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a10ba574bf0a796968941e952238be991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad35eb9af55050f4012b339f918b111c9" id="r_ad35eb9af55050f4012b339f918b111c9"><td class="memItemLeft" align="right" valign="top"><a id="ad35eb9af55050f4012b339f918b111c9" name="ad35eb9af55050f4012b339f918b111c9"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>flag</b> (const CellIterator &amp;cell, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info) const</td></tr>
+<tr class="memitem:ad35eb9af55050f4012b339f918b111c9" id="r_ad35eb9af55050f4012b339f918b111c9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellMarkerBase.html#ad35eb9af55050f4012b339f918b111c9">flag</a> (const <a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellIterator</a> &amp;cell, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info) const</td></tr>
 <tr class="separator:ad35eb9af55050f4012b339f918b111c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae433d1bba50536a1723a3aa4a31ec493" id="r_ae433d1bba50536a1723a3aa4a31ec493"><td class="memItemLeft" align="right" valign="top"><a id="ae433d1bba50536a1723a3aa4a31ec493" name="ae433d1bba50536a1723a3aa4a31ec493"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>flag</b> (const dealii::Point&lt; dim &gt; &amp;point, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info) const</td></tr>
+<tr class="memitem:ae433d1bba50536a1723a3aa4a31ec493" id="r_ae433d1bba50536a1723a3aa4a31ec493"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCellMarkerBase.html#ae433d1bba50536a1723a3aa4a31ec493">flag</a> (const dealii::Point&lt; dim &gt; &amp;point, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;time_info) const</td></tr>
 <tr class="separator:ae433d1bba50536a1723a3aa4a31ec493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 class CellMarkerBase&lt; dim &gt;</div><p>Base class for cell markers. </p>
 <p>This class provides an interface for marking cells in the simulation domain for refinement based on position. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a96b80a4d22fc29af2acdd3fe061ad528" name="a96b80a4d22fc29af2acdd3fe061ad528"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b80a4d22fc29af2acdd3fe061ad528">&#9670;&#160;</a></span>CellIterator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt;::CellIterator =  dealii::CellAccessor&lt;dim&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a10ba574bf0a796968941e952238be991" name="a10ba574bf0a796968941e952238be991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10ba574bf0a796968941e952238be991">&#9670;&#160;</a></span>~CellMarkerBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt;::~<a class="el" href="classCellMarkerBase.html">CellMarkerBase</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad35eb9af55050f4012b339f918b111c9" name="ad35eb9af55050f4012b339f918b111c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad35eb9af55050f4012b339f918b111c9">&#9670;&#160;</a></span>flag() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt;::flag </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellIterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>cell</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;&#160;</td>
+          <td class="paramname"><em>time_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classNucleusRefinementFunction.html#a225c48e1905fc5e419313687272f0ccf">NucleusRefinementFunction&lt; dim &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ae433d1bba50536a1723a3aa4a31ec493" name="ae433d1bba50536a1723a3aa4a31ec493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae433d1bba50536a1723a3aa4a31ec493">&#9670;&#160;</a></span>flag() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt;::flag </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;&#160;</td>
+          <td class="paramname"><em>time_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="cell__marker__base_8h_source.html">cell_marker_base.h</a></li>
 </ul>
 </div><!-- contents -->

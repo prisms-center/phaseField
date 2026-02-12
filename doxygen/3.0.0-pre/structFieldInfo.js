@@ -32,5 +32,17 @@ var structFieldInfo =
       [ "Undefined", "structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360", null ],
       [ "Scalar", "structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467af60357a8d17e45793298323f1b372a74", null ],
       [ "Vector", "structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467a57dea6f5039281b7fee517fc43bf3110", null ]
-    ] ]
+    ] ],
+    [ "operator&", "structFieldInfo.html#a9d67668efeb0986f375e7411f12e8c2e", null ],
+    [ "operator&=", "structFieldInfo.html#ada63969800c46d51e8ecd7225e8fbbd6", null ],
+    [ "operator|", "structFieldInfo.html#a0a001fb9205193984c482b653d032d8f", null ],
+    [ "operator|=", "structFieldInfo.html#a104705cde7c89f3eef2a842823333e18", null ],
+    [ "dependency_type_flags", "structFieldInfo.html#aa84782f47b95c146ae3fd356b5b73785", null ],
+    [ "global_index", "structFieldInfo.html#a484a52ac5f0122ae6bc7ce118ee4c253", null ],
+    [ "is_nucleation_rate", "structFieldInfo.html#a5763bc27bf261d50bd165ba54c87ba2a", null ],
+    [ "is_postprocess", "structFieldInfo.html#a98ee8d499b631d2793a22e315c7a6ff9", null ],
+    [ "pde_type", "structFieldInfo.html#a779fc74f7948a567292218bb96aea698", null ],
+    [ "solve_block_index", "structFieldInfo.html#a89d01d9e822b543d2582780cbd895cf6", null ],
+    [ "solve_type", "structFieldInfo.html#ade0177957006c5f42fe1498edd419cfa", null ],
+    [ "tensor_rank", "structFieldInfo.html#a39fd4f2bc1596035e0173c8fe0489ca6", null ]
 ];

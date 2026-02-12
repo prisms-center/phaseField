@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,8 @@ $(document).ready(function(){initNavTree('classPDEProblem.html',''); initResizab
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classPDEProblem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">PDEProblem&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,21 +130,714 @@ $(document).ready(function(){initNavTree('classPDEProblem.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a835ed254186c3ab70a10383e46b35f3f" id="r_a835ed254186c3ab70a10383e46b35f3f"><td class="memItemLeft" align="right" valign="top"><a id="a835ed254186c3ab70a10383e46b35f3f" name="a835ed254186c3ab70a10383e46b35f3f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PDEProblem</b> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;_pf_tools, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;_pde_operator_float)</td></tr>
-<tr class="memdesc:a835ed254186c3ab70a10383e46b35f3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a835ed254186c3ab70a10383e46b35f3f" id="r_a835ed254186c3ab70a10383e46b35f3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a835ed254186c3ab70a10383e46b35f3f">PDEProblem</a> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;_pf_tools, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;_pde_operator_float)</td></tr>
+<tr class="memdesc:a835ed254186c3ab70a10383e46b35f3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a835ed254186c3ab70a10383e46b35f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6fd6f7ce829f5608e7c0d8a0a02eeb2" id="r_ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><td class="memItemLeft" align="right" valign="top"><a id="ac6fd6f7ce829f5608e7c0d8a0a02eeb2" name="ac6fd6f7ce829f5608e7c0d8a0a02eeb2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> ()</td></tr>
-<tr class="memdesc:ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run initialization and solving steps of the given problem. <br /></td></tr>
+<tr class="memitem:ac6fd6f7ce829f5608e7c0d8a0a02eeb2" id="r_ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">run</a> ()</td></tr>
+<tr class="memdesc:ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run initialization and solving steps of the given problem.  <br /></td></tr>
 <tr class="separator:ac6fd6f7ce829f5608e7c0d8a0a02eeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a96efe44030cbbae82e78b6dbe7f7320b" id="r_a96efe44030cbbae82e78b6dbe7f7320b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a96efe44030cbbae82e78b6dbe7f7320b">solve</a> ()</td></tr>
+<tr class="memdesc:a96efe44030cbbae82e78b6dbe7f7320b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main time-stepping loop that calls solve_increment, reinit_system, output_results, etc...  <br /></td></tr>
+<tr class="separator:a96efe44030cbbae82e78b6dbe7f7320b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac88293482c8b458168f7d98991ccab44" id="r_ac88293482c8b458168f7d98991ccab44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#ac88293482c8b458168f7d98991ccab44">solve_increment</a> ()</td></tr>
+<tr class="memdesc:ac88293482c8b458168f7d98991ccab44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a single increment of the given PDEs.  <br /></td></tr>
+<tr class="separator:ac88293482c8b458168f7d98991ccab44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35cca97746ae90e0a30e5a026073774" id="r_ab35cca97746ae90e0a30e5a026073774"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#ab35cca97746ae90e0a30e5a026073774">init_system</a> ()</td></tr>
+<tr class="memdesc:ab35cca97746ae90e0a30e5a026073774"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the system.  <br /></td></tr>
+<tr class="separator:ab35cca97746ae90e0a30e5a026073774"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acebc4fa35d20506028a9eeb2207f02c6" id="r_acebc4fa35d20506028a9eeb2207f02c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#acebc4fa35d20506028a9eeb2207f02c6">reinit_system</a> ()</td></tr>
+<tr class="memdesc:acebc4fa35d20506028a9eeb2207f02c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the system.  <br /></td></tr>
+<tr class="separator:acebc4fa35d20506028a9eeb2207f02c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2544df8c2bc21b77765a0a1b316a20fa" id="r_a2544df8c2bc21b77765a0a1b316a20fa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a2544df8c2bc21b77765a0a1b316a20fa">user_inputs</a></td></tr>
+<tr class="memdesc:a2544df8c2bc21b77765a0a1b316a20fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs.  <br /></td></tr>
+<tr class="separator:a2544df8c2bc21b77765a0a1b316a20fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cfb17f7854cd907ce5b17ad85169021" id="r_a6cfb17f7854cd907ce5b17ad85169021"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a6cfb17f7854cd907ce5b17ad85169021">pf_tools</a></td></tr>
+<tr class="memdesc:a6cfb17f7854cd907ce5b17ad85169021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phase field tools.  <br /></td></tr>
+<tr class="separator:a6cfb17f7854cd907ce5b17ad85169021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18a731d32f0538abd6562174d17f01d5" id="r_a18a731d32f0538abd6562174d17f01d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a18a731d32f0538abd6562174d17f01d5">mg_info</a></td></tr>
+<tr class="memdesc:a18a731d32f0538abd6562174d17f01d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid info class.  <br /></td></tr>
+<tr class="separator:a18a731d32f0538abd6562174d17f01d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d047857ce7ef964c74fda54d4421ade" id="r_a1d047857ce7ef964c74fda54d4421ade"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a1d047857ce7ef964c74fda54d4421ade">triangulation_handler</a></td></tr>
+<tr class="memdesc:a1d047857ce7ef964c74fda54d4421ade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulation handler.  <br /></td></tr>
+<tr class="separator:a1d047857ce7ef964c74fda54d4421ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b65014240c1e2c8c492fbdc33d55a16" id="r_a0b65014240c1e2c8c492fbdc33d55a16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a0b65014240c1e2c8c492fbdc33d55a16">constraint_handler</a></td></tr>
+<tr class="memdesc:a0b65014240c1e2c8c492fbdc33d55a16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraint handler.  <br /></td></tr>
+<tr class="separator:a0b65014240c1e2c8c492fbdc33d55a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbea8233e41feee0e745010147d3c6ee" id="r_afbea8233e41feee0e745010147d3c6ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#afbea8233e41feee0e745010147d3c6ee">matrix_free_container</a></td></tr>
+<tr class="memdesc:afbea8233e41feee0e745010147d3c6ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object container.  <br /></td></tr>
+<tr class="separator:afbea8233e41feee0e745010147d3c6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab09033db1a53ad50fe6e809bd6a54d9c" id="r_ab09033db1a53ad50fe6e809bd6a54d9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#ab09033db1a53ad50fe6e809bd6a54d9c">invm_handler</a></td></tr>
+<tr class="memdesc:ab09033db1a53ad50fe6e809bd6a54d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">invm handler.  <br /></td></tr>
+<tr class="separator:ab09033db1a53ad50fe6e809bd6a54d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8305c01f9229c44d0669c7b91b2118" id="r_a0d8305c01f9229c44d0669c7b91b2118"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a0d8305c01f9229c44d0669c7b91b2118">solution_handler</a></td></tr>
+<tr class="memdesc:a0d8305c01f9229c44d0669c7b91b2118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solution handler.  <br /></td></tr>
+<tr class="separator:a0d8305c01f9229c44d0669c7b91b2118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd36bc65d93e4ed72939df79549793d" id="r_a6dd36bc65d93e4ed72939df79549793d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d">dof_handler</a></td></tr>
+<tr class="memdesc:a6dd36bc65d93e4ed72939df79549793d"><td class="mdescLeft">&#160;</td><td class="mdescRight">DoF handler.  <br /></td></tr>
+<tr class="separator:a6dd36bc65d93e4ed72939df79549793d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a484e624852487bb94c86825136e9553f" id="r_a484e624852487bb94c86825136e9553f"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a484e624852487bb94c86825136e9553f">fe_system</a></td></tr>
+<tr class="memdesc:a484e624852487bb94c86825136e9553f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of finite element systems. This is just a collection of two FESystem's: one for scalar fields and one for vector fields. For now they both use FE_Q finite elements.  <br /></td></tr>
+<tr class="separator:a484e624852487bb94c86825136e9553f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90b5b06f3b54feda2ca008b4f922939c" id="r_a90b5b06f3b54feda2ca008b4f922939c"><td class="memItemLeft" align="right" valign="top">dealii::MappingQ1&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a90b5b06f3b54feda2ca008b4f922939c">mapping</a></td></tr>
+<tr class="memdesc:a90b5b06f3b54feda2ca008b4f922939c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mappings to and from reference cell.  <br /></td></tr>
+<tr class="separator:a90b5b06f3b54feda2ca008b4f922939c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6713bde2051c90cf8455ac82bf6ce140" id="r_a6713bde2051c90cf8455ac82bf6ce140"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a6713bde2051c90cf8455ac82bf6ce140">element_volume_container</a></td></tr>
+<tr class="memdesc:a6713bde2051c90cf8455ac82bf6ce140"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element volume container.  <br /></td></tr>
+<tr class="separator:a6713bde2051c90cf8455ac82bf6ce140"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d7826fdbd81e02413ca599f10675b7d" id="r_a9d7826fdbd81e02413ca599f10675b7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverContext.html">SolverContext</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a9d7826fdbd81e02413ca599f10675b7d">solver_context</a></td></tr>
+<tr class="memdesc:a9d7826fdbd81e02413ca599f10675b7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver context.  <br /></td></tr>
+<tr class="separator:a9d7826fdbd81e02413ca599f10675b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30821a224f268ab0c790d5d07a9e3771" id="r_a30821a224f268ab0c790d5d07a9e3771"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a30821a224f268ab0c790d5d07a9e3771">integrator</a></td></tr>
+<tr class="memdesc:a30821a224f268ab0c790d5d07a9e3771"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classIntegrator.html" title="Compute the integral of a given field.">Integrator</a> utility.  <br /></td></tr>
+<tr class="separator:a30821a224f268ab0c790d5d07a9e3771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66951704dc23105992d9053c6dd2c536" id="r_a66951704dc23105992d9053c6dd2c536"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a66951704dc23105992d9053c6dd2c536">grid_refiner_context</a></td></tr>
+<tr class="memdesc:a66951704dc23105992d9053c6dd2c536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grid refiner context.  <br /></td></tr>
+<tr class="separator:a66951704dc23105992d9053c6dd2c536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81305eca89f044512353513f1ee22bed" id="r_a81305eca89f044512353513f1ee22bed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a81305eca89f044512353513f1ee22bed">grid_refiner</a></td></tr>
+<tr class="memdesc:a81305eca89f044512353513f1ee22bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grid refiner.  <br /></td></tr>
+<tr class="separator:a81305eca89f044512353513f1ee22bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dbf5013b7d8d788867226e7907c7dc9" id="r_a2dbf5013b7d8d788867226e7907c7dc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverHandler.html">SolverHandler</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPDEProblem.html#a2dbf5013b7d8d788867226e7907c7dc9">solver_handler</a></td></tr>
+<tr class="memdesc:a2dbf5013b7d8d788867226e7907c7dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver handler.  <br /></td></tr>
+<tr class="separator:a2dbf5013b7d8d788867226e7907c7dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class PDEProblem&lt; dim, degree, number &gt;</div><p>This is the main class that handles the construction and solving of user-specified PDEs. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a835ed254186c3ab70a10383e46b35f3f" name="a835ed254186c3ab70a10383e46b35f3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a835ed254186c3ab70a10383e46b35f3f">&#9670;&#160;</a></span>PDEProblem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;<a class="el" href="classPDEProblem.html">::PDEProblem</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pf_tools</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator_float</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab35cca97746ae90e0a30e5a026073774" name="ab35cca97746ae90e0a30e5a026073774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35cca97746ae90e0a30e5a026073774">&#9670;&#160;</a></span>init_system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::init_system </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the system. </p>
+
+</div>
+</div>
+<a id="acebc4fa35d20506028a9eeb2207f02c6" name="acebc4fa35d20506028a9eeb2207f02c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acebc4fa35d20506028a9eeb2207f02c6">&#9670;&#160;</a></span>reinit_system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::reinit_system </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reinitialize the system. </p>
+
+</div>
+</div>
+<a id="ac6fd6f7ce829f5608e7c0d8a0a02eeb2" name="ac6fd6f7ce829f5608e7c0d8a0a02eeb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6fd6f7ce829f5608e7c0d8a0a02eeb2">&#9670;&#160;</a></span>run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::run </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run initialization and solving steps of the given problem. </p>
+
+</div>
+</div>
+<a id="a96efe44030cbbae82e78b6dbe7f7320b" name="a96efe44030cbbae82e78b6dbe7f7320b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96efe44030cbbae82e78b6dbe7f7320b">&#9670;&#160;</a></span>solve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::solve </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Main time-stepping loop that calls solve_increment, reinit_system, output_results, etc... </p>
+
+</div>
+</div>
+<a id="ac88293482c8b458168f7d98991ccab44" name="ac88293482c8b458168f7d98991ccab44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac88293482c8b458168f7d98991ccab44">&#9670;&#160;</a></span>solve_increment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::solve_increment </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solve a single increment of the given PDEs. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0b65014240c1e2c8c492fbdc33d55a16" name="a0b65014240c1e2c8c492fbdc33d55a16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b65014240c1e2c8c492fbdc33d55a16">&#9670;&#160;</a></span>constraint_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::constraint_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constraint handler. </p>
+
+</div>
+</div>
+<a id="a6dd36bc65d93e4ed72939df79549793d" name="a6dd36bc65d93e4ed72939df79549793d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dd36bc65d93e4ed72939df79549793d">&#9670;&#160;</a></span>dof_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html">DofHandler</a>&lt;dim&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::dof_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>DoF handler. </p>
+
+</div>
+</div>
+<a id="a6713bde2051c90cf8455ac82bf6ce140" name="a6713bde2051c90cf8455ac82bf6ce140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6713bde2051c90cf8455ac82bf6ce140">&#9670;&#160;</a></span>element_volume_container</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::element_volume_container</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Element volume container. </p>
+
+</div>
+</div>
+<a id="a484e624852487bb94c86825136e9553f" name="a484e624852487bb94c86825136e9553f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a484e624852487bb94c86825136e9553f">&#9670;&#160;</a></span>fe_system</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt;dim&gt; &gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::fe_system</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Collection of finite element systems. This is just a collection of two FESystem's: one for scalar fields and one for vector fields. For now they both use FE_Q finite elements. </p>
+
+</div>
+</div>
+<a id="a81305eca89f044512353513f1ee22bed" name="a81305eca89f044512353513f1ee22bed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81305eca89f044512353513f1ee22bed">&#9670;&#160;</a></span>grid_refiner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefiner.html">GridRefiner</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::grid_refiner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Grid refiner. </p>
+
+</div>
+</div>
+<a id="a66951704dc23105992d9053c6dd2c536" name="a66951704dc23105992d9053c6dd2c536"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66951704dc23105992d9053c6dd2c536">&#9670;&#160;</a></span>grid_refiner_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::grid_refiner_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Grid refiner context. </p>
+
+</div>
+</div>
+<a id="a30821a224f268ab0c790d5d07a9e3771" name="a30821a224f268ab0c790d5d07a9e3771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30821a224f268ab0c790d5d07a9e3771">&#9670;&#160;</a></span>integrator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classIntegrator.html">Integrator</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::integrator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classIntegrator.html" title="Compute the integral of a given field.">Integrator</a> utility. </p>
+
+</div>
+</div>
+<a id="ab09033db1a53ad50fe6e809bd6a54d9c" name="ab09033db1a53ad50fe6e809bd6a54d9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab09033db1a53ad50fe6e809bd6a54d9c">&#9670;&#160;</a></span>invm_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::invm_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>invm handler. </p>
+
+</div>
+</div>
+<a id="a90b5b06f3b54feda2ca008b4f922939c" name="a90b5b06f3b54feda2ca008b4f922939c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90b5b06f3b54feda2ca008b4f922939c">&#9670;&#160;</a></span>mapping</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::MappingQ1&lt;dim&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::mapping</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mappings to and from reference cell. </p>
+
+</div>
+</div>
+<a id="afbea8233e41feee0e745010147d3c6ee" name="afbea8233e41feee0e745010147d3c6ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbea8233e41feee0e745010147d3c6ee">&#9670;&#160;</a></span>matrix_free_container</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt;dim, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::matrix_free_container</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object container. </p>
+
+</div>
+</div>
+<a id="a18a731d32f0538abd6562174d17f01d5" name="a18a731d32f0538abd6562174d17f01d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18a731d32f0538abd6562174d17f01d5">&#9670;&#160;</a></span>mg_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMGInfo.html">MGInfo</a>&lt;dim&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::mg_info</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid info class. </p>
+
+</div>
+</div>
+<a id="a6cfb17f7854cd907ce5b17ad85169021" name="a6cfb17f7854cd907ce5b17ad85169021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cfb17f7854cd907ce5b17ad85169021">&#9670;&#160;</a></span>pf_tools</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt;dim&gt;* <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::pf_tools</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Phase field tools. </p>
+
+</div>
+</div>
+<a id="a0d8305c01f9229c44d0669c7b91b2118" name="a0d8305c01f9229c44d0669c7b91b2118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d8305c01f9229c44d0669c7b91b2118">&#9670;&#160;</a></span>solution_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt;dim, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::solution_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solution handler. </p>
+
+</div>
+</div>
+<a id="a9d7826fdbd81e02413ca599f10675b7d" name="a9d7826fdbd81e02413ca599f10675b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d7826fdbd81e02413ca599f10675b7d">&#9670;&#160;</a></span>solver_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverContext.html">SolverContext</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::solver_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver context. </p>
+
+</div>
+</div>
+<a id="a2dbf5013b7d8d788867226e7907c7dc9" name="a2dbf5013b7d8d788867226e7907c7dc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dbf5013b7d8d788867226e7907c7dc9">&#9670;&#160;</a></span>solver_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverHandler.html">SolverHandler</a>&lt;dim, degree, number&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::solver_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver handler. </p>
+
+</div>
+</div>
+<a id="a1d047857ce7ef964c74fda54d4421ade" name="a1d047857ce7ef964c74fda54d4421ade"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d047857ce7ef964c74fda54d4421ade">&#9670;&#160;</a></span>triangulation_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt;dim&gt; <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::triangulation_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Triangulation handler. </p>
+
+</div>
+</div>
+<a id="a2544df8c2bc21b77765a0a1b316a20fa" name="a2544df8c2bc21b77765a0a1b316a20fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2544df8c2bc21b77765a0a1b316a20fa">&#9670;&#160;</a></span>user_inputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt;dim&gt;* <a class="el" href="classPDEProblem.html">PDEProblem</a>&lt; dim, degree, number &gt;::user_inputs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-inputs. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="pde__problem_8h_source.html">pde_problem.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>pde_problem.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="pde__problem_8cc.html">pde_problem.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

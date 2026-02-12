@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -111,6 +118,8 @@ $(document).ready(function(){initNavTree('structVariableAttributes.html',''); in
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="structVariableAttributes-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">VariableAttributes Struct Reference</div></div>
@@ -124,104 +133,1455 @@ $(document).ready(function(){initNavTree('structVariableAttributes.html',''); in
 <div class="dynheader">
 Collaboration diagram for VariableAttributes:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structVariableAttributes__coll__graph.svg" width="150" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structVariableAttributes__coll__graph.svg" width="291" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ad41bd187fcdd408238d84a2bc8beecb0" id="r_ad41bd187fcdd408238d84a2bc8beecb0"><td class="memItemLeft" align="right" valign="top"><a id="ad41bd187fcdd408238d84a2bc8beecb0" name="ad41bd187fcdd408238d84a2bc8beecb0"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>EvalFlags</b> = dealii::EvaluationFlags::EvaluationFlags</td></tr>
+<tr class="memitem:ad41bd187fcdd408238d84a2bc8beecb0" id="r_ad41bd187fcdd408238d84a2bc8beecb0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> = dealii::EvaluationFlags::EvaluationFlags</td></tr>
 <tr class="separator:ad41bd187fcdd408238d84a2bc8beecb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a912399c784fdf168bf5150bb1afb484e" id="r_a912399c784fdf168bf5150bb1afb484e"><td class="memItemLeft" align="right" valign="top"><a id="a912399c784fdf168bf5150bb1afb484e" name="a912399c784fdf168bf5150bb1afb484e"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_name</b> () const</td></tr>
-<tr class="memdesc:a912399c784fdf168bf5150bb1afb484e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field name. <br /></td></tr>
+<tr class="memitem:a912399c784fdf168bf5150bb1afb484e" id="r_a912399c784fdf168bf5150bb1afb484e"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a912399c784fdf168bf5150bb1afb484e">get_name</a> () const</td></tr>
+<tr class="memdesc:a912399c784fdf168bf5150bb1afb484e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field name.  <br /></td></tr>
 <tr class="separator:a912399c784fdf168bf5150bb1afb484e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae51fa16c2f5d3989668993e99265420d" id="r_ae51fa16c2f5d3989668993e99265420d"><td class="memItemLeft" align="right" valign="top"><a id="ae51fa16c2f5d3989668993e99265420d" name="ae51fa16c2f5d3989668993e99265420d"></a>
-const Types::Index &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_field_index</b> () const</td></tr>
-<tr class="memdesc:ae51fa16c2f5d3989668993e99265420d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field index. <br /></td></tr>
+<tr class="memitem:ae51fa16c2f5d3989668993e99265420d" id="r_ae51fa16c2f5d3989668993e99265420d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ae51fa16c2f5d3989668993e99265420d">get_field_index</a> () const</td></tr>
+<tr class="memdesc:ae51fa16c2f5d3989668993e99265420d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field index.  <br /></td></tr>
 <tr class="separator:ae51fa16c2f5d3989668993e99265420d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff2506452f6847ce518c44e7689cb412" id="r_aff2506452f6847ce518c44e7689cb412"><td class="memItemLeft" align="right" valign="top"><a id="aff2506452f6847ce518c44e7689cb412" name="aff2506452f6847ce518c44e7689cb412"></a>
-const PDEType &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pde_type</b> () const</td></tr>
-<tr class="memdesc:aff2506452f6847ce518c44e7689cb412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the PDE type. <br /></td></tr>
+<tr class="memitem:aff2506452f6847ce518c44e7689cb412" id="r_aff2506452f6847ce518c44e7689cb412"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#aff2506452f6847ce518c44e7689cb412">get_pde_type</a> () const</td></tr>
+<tr class="memdesc:aff2506452f6847ce518c44e7689cb412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the PDE type.  <br /></td></tr>
 <tr class="separator:aff2506452f6847ce518c44e7689cb412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394193f5751c4a28aed9e805415d671e" id="r_a394193f5751c4a28aed9e805415d671e"><td class="memItemLeft" align="right" valign="top"><a id="a394193f5751c4a28aed9e805415d671e" name="a394193f5751c4a28aed9e805415d671e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_postprocess</b> () const</td></tr>
-<tr class="memdesc:a394193f5751c4a28aed9e805415d671e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the field is a postprocess variable. <br /></td></tr>
+<tr class="memitem:a394193f5751c4a28aed9e805415d671e" id="r_a394193f5751c4a28aed9e805415d671e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a394193f5751c4a28aed9e805415d671e">is_postprocess</a> () const</td></tr>
+<tr class="memdesc:a394193f5751c4a28aed9e805415d671e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the field is a postprocess variable.  <br /></td></tr>
 <tr class="separator:a394193f5751c4a28aed9e805415d671e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2459a89ffbe7331de5a541f77cba2ce3" id="r_a2459a89ffbe7331de5a541f77cba2ce3"><td class="memItemLeft" align="right" valign="top"><a id="a2459a89ffbe7331de5a541f77cba2ce3" name="a2459a89ffbe7331de5a541f77cba2ce3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_nucleation_rate</b> () const</td></tr>
-<tr class="memdesc:a2459a89ffbe7331de5a541f77cba2ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the field is a nucleation rate variable. <br /></td></tr>
+<tr class="memitem:a2459a89ffbe7331de5a541f77cba2ce3" id="r_a2459a89ffbe7331de5a541f77cba2ce3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a2459a89ffbe7331de5a541f77cba2ce3">is_nucleation_rate</a> () const</td></tr>
+<tr class="memdesc:a2459a89ffbe7331de5a541f77cba2ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the field is a nucleation rate variable.  <br /></td></tr>
 <tr class="separator:a2459a89ffbe7331de5a541f77cba2ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b54e992d5ecf0243be3d3ea73cdc3d7" id="r_a5b54e992d5ecf0243be3d3ea73cdc3d7"><td class="memItemLeft" align="right" valign="top"><a id="a5b54e992d5ecf0243be3d3ea73cdc3d7" name="a5b54e992d5ecf0243be3d3ea73cdc3d7"></a>
-const std::vector&lt; Types::Index &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_nucleating_field_indices</b> () const</td></tr>
-<tr class="memdesc:a5b54e992d5ecf0243be3d3ea73cdc3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nucleating field indices. <br /></td></tr>
+<tr class="memitem:a5b54e992d5ecf0243be3d3ea73cdc3d7" id="r_a5b54e992d5ecf0243be3d3ea73cdc3d7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a5b54e992d5ecf0243be3d3ea73cdc3d7">get_nucleating_field_indices</a> () const</td></tr>
+<tr class="memdesc:a5b54e992d5ecf0243be3d3ea73cdc3d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nucleating field indices.  <br /></td></tr>
 <tr class="separator:a5b54e992d5ecf0243be3d3ea73cdc3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1111b93b64f7400ca09f0cf6e582ae0" id="r_ab1111b93b64f7400ca09f0cf6e582ae0"><td class="memItemLeft" align="right" valign="top"><a id="ab1111b93b64f7400ca09f0cf6e582ae0" name="ab1111b93b64f7400ca09f0cf6e582ae0"></a>
-Types::Index&#160;</td><td class="memItemRight" valign="bottom"><b>get_solve_block</b> () const</td></tr>
-<tr class="memdesc:ab1111b93b64f7400ca09f0cf6e582ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solve block. <br /></td></tr>
+<tr class="memitem:ab1111b93b64f7400ca09f0cf6e582ae0" id="r_ab1111b93b64f7400ca09f0cf6e582ae0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ab1111b93b64f7400ca09f0cf6e582ae0">get_solve_block</a> () const</td></tr>
+<tr class="memdesc:ab1111b93b64f7400ca09f0cf6e582ae0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solve block.  <br /></td></tr>
 <tr class="separator:ab1111b93b64f7400ca09f0cf6e582ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a912787d4a861dc01037d8ee0ed22c5f7" id="r_a912787d4a861dc01037d8ee0ed22c5f7"><td class="memItemLeft" align="right" valign="top"><a id="a912787d4a861dc01037d8ee0ed22c5f7" name="a912787d4a861dc01037d8ee0ed22c5f7"></a>
-FieldSolveType&#160;</td><td class="memItemRight" valign="bottom"><b>get_field_solve_type</b> () const</td></tr>
-<tr class="memdesc:a912787d4a861dc01037d8ee0ed22c5f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field solve type. <br /></td></tr>
+<tr class="memitem:a912787d4a861dc01037d8ee0ed22c5f7" id="r_a912787d4a861dc01037d8ee0ed22c5f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a912787d4a861dc01037d8ee0ed22c5f7">get_field_solve_type</a> () const</td></tr>
+<tr class="memdesc:a912787d4a861dc01037d8ee0ed22c5f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field solve type.  <br /></td></tr>
 <tr class="separator:a912787d4a861dc01037d8ee0ed22c5f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a622997f1bd66ef4d921ecce0e2cc2366" id="r_a622997f1bd66ef4d921ecce0e2cc2366"><td class="memItemLeft" align="right" valign="top"><a id="a622997f1bd66ef4d921ecce0e2cc2366" name="a622997f1bd66ef4d921ecce0e2cc2366"></a>
-const std::vector&lt; std::vector&lt; EvalFlags &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_eval_flag_set_rhs</b> () const</td></tr>
-<tr class="memdesc:a622997f1bd66ef4d921ecce0e2cc2366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the RHS evaluation flags. <br /></td></tr>
+<tr class="memitem:a622997f1bd66ef4d921ecce0e2cc2366" id="r_a622997f1bd66ef4d921ecce0e2cc2366"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a622997f1bd66ef4d921ecce0e2cc2366">get_eval_flag_set_rhs</a> () const</td></tr>
+<tr class="memdesc:a622997f1bd66ef4d921ecce0e2cc2366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the RHS evaluation flags.  <br /></td></tr>
 <tr class="separator:a622997f1bd66ef4d921ecce0e2cc2366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fcdb233b6886cc4d6dcdb4d259b317a" id="r_a8fcdb233b6886cc4d6dcdb4d259b317a"><td class="memItemLeft" align="right" valign="top"><a id="a8fcdb233b6886cc4d6dcdb4d259b317a" name="a8fcdb233b6886cc4d6dcdb4d259b317a"></a>
-const std::vector&lt; std::vector&lt; EvalFlags &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_eval_flag_set_lhs</b> () const</td></tr>
-<tr class="memdesc:a8fcdb233b6886cc4d6dcdb4d259b317a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LHS evaluation flags. <br /></td></tr>
+<tr class="memitem:a8fcdb233b6886cc4d6dcdb4d259b317a" id="r_a8fcdb233b6886cc4d6dcdb4d259b317a"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a8fcdb233b6886cc4d6dcdb4d259b317a">get_eval_flag_set_lhs</a> () const</td></tr>
+<tr class="memdesc:a8fcdb233b6886cc4d6dcdb4d259b317a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LHS evaluation flags.  <br /></td></tr>
 <tr class="separator:a8fcdb233b6886cc4d6dcdb4d259b317a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2e6cab69a8ecfee79bab4b4eccce12d" id="r_ab2e6cab69a8ecfee79bab4b4eccce12d"><td class="memItemLeft" align="right" valign="top"><a id="ab2e6cab69a8ecfee79bab4b4eccce12d" name="ab2e6cab69a8ecfee79bab4b4eccce12d"></a>
-const EvalFlags &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_eval_flags_residual_rhs</b> () const</td></tr>
-<tr class="memdesc:ab2e6cab69a8ecfee79bab4b4eccce12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the RHS evaluation flags. <br /></td></tr>
+<tr class="memitem:ab2e6cab69a8ecfee79bab4b4eccce12d" id="r_ab2e6cab69a8ecfee79bab4b4eccce12d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ab2e6cab69a8ecfee79bab4b4eccce12d">get_eval_flags_residual_rhs</a> () const</td></tr>
+<tr class="memdesc:ab2e6cab69a8ecfee79bab4b4eccce12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the RHS evaluation flags.  <br /></td></tr>
 <tr class="separator:ab2e6cab69a8ecfee79bab4b4eccce12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5b6f7e80fa020a5bf191f9229cc4cb5" id="r_ac5b6f7e80fa020a5bf191f9229cc4cb5"><td class="memItemLeft" align="right" valign="top"><a id="ac5b6f7e80fa020a5bf191f9229cc4cb5" name="ac5b6f7e80fa020a5bf191f9229cc4cb5"></a>
-const EvalFlags &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_eval_flags_residual_lhs</b> () const</td></tr>
-<tr class="memdesc:ac5b6f7e80fa020a5bf191f9229cc4cb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LHS evaluation flags. <br /></td></tr>
+<tr class="memitem:ac5b6f7e80fa020a5bf191f9229cc4cb5" id="r_ac5b6f7e80fa020a5bf191f9229cc4cb5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ac5b6f7e80fa020a5bf191f9229cc4cb5">get_eval_flags_residual_lhs</a> () const</td></tr>
+<tr class="memdesc:ac5b6f7e80fa020a5bf191f9229cc4cb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LHS evaluation flags.  <br /></td></tr>
 <tr class="separator:ac5b6f7e80fa020a5bf191f9229cc4cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a39fcf0238e5cbdf7ead88bdb3a04a6" id="r_a7a39fcf0238e5cbdf7ead88bdb3a04a6"><td class="memItemLeft" align="right" valign="top"><a id="a7a39fcf0238e5cbdf7ead88bdb3a04a6" name="a7a39fcf0238e5cbdf7ead88bdb3a04a6"></a>
-const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dependency_set_rhs</b> () const</td></tr>
-<tr class="memdesc:a7a39fcf0238e5cbdf7ead88bdb3a04a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dependency set for the RHS. <br /></td></tr>
+<tr class="memitem:a7a39fcf0238e5cbdf7ead88bdb3a04a6" id="r_a7a39fcf0238e5cbdf7ead88bdb3a04a6"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a7a39fcf0238e5cbdf7ead88bdb3a04a6">get_dependency_set_rhs</a> () const</td></tr>
+<tr class="memdesc:a7a39fcf0238e5cbdf7ead88bdb3a04a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dependency set for the RHS.  <br /></td></tr>
 <tr class="separator:a7a39fcf0238e5cbdf7ead88bdb3a04a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22c98ff5da52cad335c49733e6ca3592" id="r_a22c98ff5da52cad335c49733e6ca3592"><td class="memItemLeft" align="right" valign="top"><a id="a22c98ff5da52cad335c49733e6ca3592" name="a22c98ff5da52cad335c49733e6ca3592"></a>
-const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dependency_set_lhs</b> () const</td></tr>
-<tr class="memdesc:a22c98ff5da52cad335c49733e6ca3592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dependency set for the LHS. <br /></td></tr>
+<tr class="memitem:a22c98ff5da52cad335c49733e6ca3592" id="r_a22c98ff5da52cad335c49733e6ca3592"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a22c98ff5da52cad335c49733e6ca3592">get_dependency_set_lhs</a> () const</td></tr>
+<tr class="memdesc:a22c98ff5da52cad335c49733e6ca3592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dependency set for the LHS.  <br /></td></tr>
 <tr class="separator:a22c98ff5da52cad335c49733e6ca3592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a773a17429fe6dc85fe895233fc8ddfbf" id="r_a773a17429fe6dc85fe895233fc8ddfbf"><td class="memItemLeft" align="right" valign="top"><a id="a773a17429fe6dc85fe895233fc8ddfbf" name="a773a17429fe6dc85fe895233fc8ddfbf"></a>
-Types::Index&#160;</td><td class="memItemRight" valign="bottom"><b>get_max_fields</b> () const</td></tr>
-<tr class="memdesc:a773a17429fe6dc85fe895233fc8ddfbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the max number of fields. <br /></td></tr>
+<tr class="memitem:a773a17429fe6dc85fe895233fc8ddfbf" id="r_a773a17429fe6dc85fe895233fc8ddfbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a773a17429fe6dc85fe895233fc8ddfbf">get_max_fields</a> () const</td></tr>
+<tr class="memdesc:a773a17429fe6dc85fe895233fc8ddfbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the max number of fields.  <br /></td></tr>
 <tr class="separator:a773a17429fe6dc85fe895233fc8ddfbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3ca2c4d460913f543ad4b13808b9df0" id="r_ac3ca2c4d460913f543ad4b13808b9df0"><td class="memItemLeft" align="right" valign="top"><a id="ac3ca2c4d460913f543ad4b13808b9df0" name="ac3ca2c4d460913f543ad4b13808b9df0"></a>
-Types::Index&#160;</td><td class="memItemRight" valign="bottom"><b>get_max_dependency_types</b> () const</td></tr>
-<tr class="memdesc:ac3ca2c4d460913f543ad4b13808b9df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the max number of dependency types. <br /></td></tr>
+<tr class="memitem:ac3ca2c4d460913f543ad4b13808b9df0" id="r_ac3ca2c4d460913f543ad4b13808b9df0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ac3ca2c4d460913f543ad4b13808b9df0">get_max_dependency_types</a> () const</td></tr>
+<tr class="memdesc:ac3ca2c4d460913f543ad4b13808b9df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the max number of dependency types.  <br /></td></tr>
 <tr class="separator:ac3ca2c4d460913f543ad4b13808b9df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a893668fb7c87a53b5ef8a404431fd445" id="r_a893668fb7c87a53b5ef8a404431fd445"><td class="memItemLeft" align="right" valign="top"><a id="a893668fb7c87a53b5ef8a404431fd445" name="a893668fb7c87a53b5ef8a404431fd445"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> () const</td></tr>
-<tr class="memdesc:a893668fb7c87a53b5ef8a404431fd445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print variable attributes to summary.log. <br /></td></tr>
+<tr class="memitem:a893668fb7c87a53b5ef8a404431fd445" id="r_a893668fb7c87a53b5ef8a404431fd445"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a893668fb7c87a53b5ef8a404431fd445">print</a> () const</td></tr>
+<tr class="memdesc:a893668fb7c87a53b5ef8a404431fd445"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print variable attributes to summary.log.  <br /></td></tr>
 <tr class="separator:a893668fb7c87a53b5ef8a404431fd445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:add8764363da71727826563707a04c971" id="r_add8764363da71727826563707a04c971"><td class="memItemLeft" align="right" valign="top"><a id="add8764363da71727826563707a04c971" name="add8764363da71727826563707a04c971"></a>
-<a class="el" href="structFieldInfo.html">FieldInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>field_info</b></td></tr>
+<tr class="memitem:add8764363da71727826563707a04c971" id="r_add8764363da71727826563707a04c971"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html">FieldInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#add8764363da71727826563707a04c971">field_info</a></td></tr>
 <tr class="separator:add8764363da71727826563707a04c971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a6d755863b4cbf579a926df45f129e149" id="r_a6d755863b4cbf579a926df45f129e149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a6d755863b4cbf579a926df45f129e149">format_dependencies</a> ()</td></tr>
+<tr class="memdesc:a6d755863b4cbf579a926df45f129e149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combine 'value' and 'gradient' residual dependencies to one dependency set per RHS and LHS. This will populate <code>dependencies_rhs</code> and <code>dependencies_lhs</code>.  <br /></td></tr>
+<tr class="separator:a6d755863b4cbf579a926df45f129e149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6189a557da2955e38d7ac32278067293" id="r_a6189a557da2955e38d7ac32278067293"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a6189a557da2955e38d7ac32278067293">parse_residual_dependencies</a> ()</td></tr>
+<tr class="memdesc:a6189a557da2955e38d7ac32278067293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take user-defined dependency sets to set the residual flags for each variable.  <br /></td></tr>
+<tr class="separator:a6189a557da2955e38d7ac32278067293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93059a8aa7925f3e793bc435b00a2ac1" id="r_a93059a8aa7925f3e793bc435b00a2ac1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a93059a8aa7925f3e793bc435b00a2ac1">parse_dependencies</a> (std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;_max_fields, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;_max_dependency_types)</td></tr>
+<tr class="memdesc:a93059a8aa7925f3e793bc435b00a2ac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take user-defined dependency sets to set the evaluation flags for each variable.  <br /></td></tr>
+<tr class="separator:a93059a8aa7925f3e793bc435b00a2ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ad053972c2c558d7bfaf1adb2ea7f5f" id="r_a7ad053972c2c558d7bfaf1adb2ea7f5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a7ad053972c2c558d7bfaf1adb2ea7f5f">determine_field_solve_type</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes)</td></tr>
+<tr class="memdesc:a7ad053972c2c558d7bfaf1adb2ea7f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Using the assigned evaluation flags determine the solve type for this equation.  <br /></td></tr>
+<tr class="separator:a7ad053972c2c558d7bfaf1adb2ea7f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae511f0560dd3e041a1607d3640adcb32" id="r_ae511f0560dd3e041a1607d3640adcb32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ae511f0560dd3e041a1607d3640adcb32">validate_dependency</a> (const std::string &amp;variation, <a class="el" href="type__enums_8h.html#a20c436f6bde8f907120a37fac56183c7">DependencyType</a> dep_type, const unsigned int &amp;other_index, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;other_field_type, const std::string &amp;context) const</td></tr>
+<tr class="memdesc:ae511f0560dd3e041a1607d3640adcb32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate a dependency.  <br /></td></tr>
+<tr class="separator:ae511f0560dd3e041a1607d3640adcb32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0f645a2707c5845d5ef69e031e39c20" id="r_ac0f645a2707c5845d5ef69e031e39c20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ac0f645a2707c5845d5ef69e031e39c20">compute_dependency_set</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes)</td></tr>
+<tr class="memdesc:ac0f645a2707c5845d5ef69e031e39c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dependency sets from eval_flag_set_rhs &amp; eval_flag_set_lhs.  <br /></td></tr>
+<tr class="separator:ac0f645a2707c5845d5ef69e031e39c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c8f3eaa8d67a7c61b5780b3bf10355" id="r_a81c8f3eaa8d67a7c61b5780b3bf10355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a81c8f3eaa8d67a7c61b5780b3bf10355">compute_simplified_dependency_set</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes)</td></tr>
+<tr class="memdesc:a81c8f3eaa8d67a7c61b5780b3bf10355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the simplified dependency set from eval_flag_set_rhs &amp; eval_flag_set_lhs.  <br /></td></tr>
+<tr class="separator:a81c8f3eaa8d67a7c61b5780b3bf10355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f0075645e49ff23f52e5a0cdd426472" id="r_a2f0075645e49ff23f52e5a0cdd426472"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a2f0075645e49ff23f52e5a0cdd426472">find_circular_dependencies</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes)</td></tr>
+<tr class="memdesc:a2f0075645e49ff23f52e5a0cdd426472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the circular dependencies based on simple DFS algorithm.  <br /></td></tr>
+<tr class="separator:a2f0075645e49ff23f52e5a0cdd426472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fb6f484388241aaf584a1abfd1b3293" id="r_a9fb6f484388241aaf584a1abfd1b3293"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a9fb6f484388241aaf584a1abfd1b3293">recursive_depth_first_search</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;other_var_attributes, std::set&lt; unsigned int &gt; &amp;visited, std::set&lt; unsigned int &gt; &amp;current_stack, const unsigned int &amp;vertex)</td></tr>
+<tr class="memdesc:a9fb6f484388241aaf584a1abfd1b3293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursive DFS.  <br /></td></tr>
+<tr class="separator:a9fb6f484388241aaf584a1abfd1b3293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ae2e6d22f263eef45abf980a990672af1" id="r_ae2e6d22f263eef45abf980a990672af1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ae2e6d22f263eef45abf980a990672af1">name</a></td></tr>
+<tr class="memdesc:ae2e6d22f263eef45abf980a990672af1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field name.  <br /></td></tr>
+<tr class="separator:ae2e6d22f263eef45abf980a990672af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29f7bcc52a2046b505c70806be5b5d38" id="r_a29f7bcc52a2046b505c70806be5b5d38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a29f7bcc52a2046b505c70806be5b5d38">field_index</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="memdesc:a29f7bcc52a2046b505c70806be5b5d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field index.  <br /></td></tr>
+<tr class="separator:a29f7bcc52a2046b505c70806be5b5d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ea8bef3ff037fce98f85052fb28a542" id="r_a1ea8bef3ff037fce98f85052fb28a542"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a1ea8bef3ff037fce98f85052fb28a542">pde_type</a> = <a class="el" href="namespaceNumbers.html#aa1701d0370e33ddd3577b7906bc40c42">Numbers::invalid_pde_type</a></td></tr>
+<tr class="memdesc:a1ea8bef3ff037fce98f85052fb28a542"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE type (Explicit/NONEXPLICIT).  <br /></td></tr>
+<tr class="separator:a1ea8bef3ff037fce98f85052fb28a542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a976b885c290138d57286f999c36f377d" id="r_a976b885c290138d57286f999c36f377d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a976b885c290138d57286f999c36f377d">is_postprocessed_variable</a> = false</td></tr>
+<tr class="memdesc:a976b885c290138d57286f999c36f377d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess variable.  <br /></td></tr>
+<tr class="separator:a976b885c290138d57286f999c36f377d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385d73431d9c654aebcde143cecb901b" id="r_a385d73431d9c654aebcde143cecb901b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a385d73431d9c654aebcde143cecb901b">is_nucleation_rate_variable</a> = false</td></tr>
+<tr class="memdesc:a385d73431d9c654aebcde143cecb901b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is a nucleation rate.  <br /></td></tr>
+<tr class="separator:a385d73431d9c654aebcde143cecb901b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16876b7cc9bdde6cab3ffba5e85b733a" id="r_a16876b7cc9bdde6cab3ffba5e85b733a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a16876b7cc9bdde6cab3ffba5e85b733a">nucleation_indices</a></td></tr>
+<tr class="memdesc:a16876b7cc9bdde6cab3ffba5e85b733a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this is a nucleation rate, the indices of the nucleating fields.  <br /></td></tr>
+<tr class="separator:a16876b7cc9bdde6cab3ffba5e85b733a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdf788c44db46b6dc752385aec4feb65" id="r_afdf788c44db46b6dc752385aec4feb65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#afdf788c44db46b6dc752385aec4feb65">solve_block</a> = 0</td></tr>
+<tr class="memdesc:afdf788c44db46b6dc752385aec4feb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve block.  <br /></td></tr>
+<tr class="separator:afdf788c44db46b6dc752385aec4feb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04248692bba8c1410ec1bfa29c3b87a1" id="r_a04248692bba8c1410ec1bfa29c3b87a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a04248692bba8c1410ec1bfa29c3b87a1">field_solve_type</a> = <a class="el" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">Numbers::invalid_field_solve_type</a></td></tr>
+<tr class="memdesc:a04248692bba8c1410ec1bfa29c3b87a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal classification for the field solve type.  <br /></td></tr>
+<tr class="separator:a04248692bba8c1410ec1bfa29c3b87a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1a13728557f78566815c562fc413ea8" id="r_ab1a13728557f78566815c562fc413ea8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ab1a13728557f78566815c562fc413ea8">max_fields</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="memdesc:ab1a13728557f78566815c562fc413ea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max number of fields.  <br /></td></tr>
+<tr class="separator:ab1a13728557f78566815c562fc413ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d3e611e78da9820c6a595423dce3f6f" id="r_a5d3e611e78da9820c6a595423dce3f6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a5d3e611e78da9820c6a595423dce3f6f">max_dependency_types</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="memdesc:a5d3e611e78da9820c6a595423dce3f6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max number of dependency types.  <br /></td></tr>
+<tr class="separator:a5d3e611e78da9820c6a595423dce3f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4138f14145cfa5591e35af4e47c6757" id="r_aa4138f14145cfa5591e35af4e47c6757"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#aa4138f14145cfa5591e35af4e47c6757">eval_flag_set_rhs</a></td></tr>
+<tr class="memdesc:aa4138f14145cfa5591e35af4e47c6757"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map of evaluation flags for the dependencies of the variable's RHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field.  <br /></td></tr>
+<tr class="separator:aa4138f14145cfa5591e35af4e47c6757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e68c5b7fe168efd0b43ca97c3de7a0b" id="r_a8e68c5b7fe168efd0b43ca97c3de7a0b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a8e68c5b7fe168efd0b43ca97c3de7a0b">eval_flag_set_lhs</a></td></tr>
+<tr class="memdesc:a8e68c5b7fe168efd0b43ca97c3de7a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map of evaluation flags for the dependencies of the variable's LHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field.  <br /></td></tr>
+<tr class="separator:a8e68c5b7fe168efd0b43ca97c3de7a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7707cc8a6cc6ff9614ecdb4425548809" id="r_a7707cc8a6cc6ff9614ecdb4425548809"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a7707cc8a6cc6ff9614ecdb4425548809">eval_flags_residual_rhs</a> = dealii::EvaluationFlags::EvaluationFlags::nothing</td></tr>
+<tr class="memdesc:a7707cc8a6cc6ff9614ecdb4425548809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluation flags for the types of residual the user is expected to submit to on the RHS.  <br /></td></tr>
+<tr class="separator:a7707cc8a6cc6ff9614ecdb4425548809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac482fa330ab695389921be86cc35e436" id="r_ac482fa330ab695389921be86cc35e436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ac482fa330ab695389921be86cc35e436">eval_flags_residual_lhs</a> = dealii::EvaluationFlags::EvaluationFlags::nothing</td></tr>
+<tr class="memdesc:ac482fa330ab695389921be86cc35e436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluation flags for the types of residual the user is expected to submit to on the LHS. This is empty for Explicit fields.  <br /></td></tr>
+<tr class="separator:ac482fa330ab695389921be86cc35e436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14be1dbb38ca28f76bc6c692442eeed9" id="r_a14be1dbb38ca28f76bc6c692442eeed9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a14be1dbb38ca28f76bc6c692442eeed9">dependency_set_rhs</a></td></tr>
+<tr class="memdesc:a14be1dbb38ca28f76bc6c692442eeed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO (Landinjm): Add brief description.  <br /></td></tr>
+<tr class="separator:a14be1dbb38ca28f76bc6c692442eeed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa0d0597db5b9abf8a53e2af4ef91e09" id="r_afa0d0597db5b9abf8a53e2af4ef91e09"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#afa0d0597db5b9abf8a53e2af4ef91e09">dependency_set_lhs</a></td></tr>
+<tr class="memdesc:afa0d0597db5b9abf8a53e2af4ef91e09"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO (Landinjm): Add brief description.  <br /></td></tr>
+<tr class="separator:afa0d0597db5b9abf8a53e2af4ef91e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1701f37eb56ca56e3a044d2d924553e" id="r_ac1701f37eb56ca56e3a044d2d924553e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structRawDependencies.html">RawDependencies</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ac1701f37eb56ca56e3a044d2d924553e">raw_dependencies</a></td></tr>
+<tr class="memdesc:ac1701f37eb56ca56e3a044d2d924553e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw dependencies of the field.  <br /></td></tr>
+<tr class="separator:ac1701f37eb56ca56e3a044d2d924553e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9148d739c97cce037bfa5c3401a445a6" id="r_a9148d739c97cce037bfa5c3401a445a6"><td class="memItemLeft" align="right" valign="top">std::set&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#a9148d739c97cce037bfa5c3401a445a6">simplified_dependency_set</a></td></tr>
+<tr class="memdesc:a9148d739c97cce037bfa5c3401a445a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simplified set of evaluation flags for the dependencies of the variable's LHS &amp; RHS. This will help determine the FieldSolveType of the field. Fields indices where the evaluation flags are not 0 (not nothing) are included. Additionally, explicit fields are excluded to speed up the graph search.  <br /></td></tr>
+<tr class="separator:a9148d739c97cce037bfa5c3401a445a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:ad37a74507ce9fba4966d6eba54d39c00" id="r_ad37a74507ce9fba4966d6eba54d39c00"><td class="memItemLeft" align="right" valign="top"><a id="ad37a74507ce9fba4966d6eba54d39c00" name="ad37a74507ce9fba4966d6eba54d39c00"></a>
-class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ad37a74507ce9fba4966d6eba54d39c00">VariableAttributeLoader</a></td></tr>
-<tr class="memdesc:ad37a74507ce9fba4966d6eba54d39c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow <a class="el" href="classVariableAttributeLoader.html" title="Class to manage the variable attributes that the user specifies.">VariableAttributeLoader</a> to access private members. <br /></td></tr>
+<tr class="memitem:ad37a74507ce9fba4966d6eba54d39c00" id="r_ad37a74507ce9fba4966d6eba54d39c00"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structVariableAttributes.html#ad37a74507ce9fba4966d6eba54d39c00">VariableAttributeLoader</a></td></tr>
+<tr class="memdesc:ad37a74507ce9fba4966d6eba54d39c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow <a class="el" href="classVariableAttributeLoader.html" title="Class to manage the variable attributes that the user specifies.">VariableAttributeLoader</a> to access private members.  <br /></td></tr>
 <tr class="separator:ad37a74507ce9fba4966d6eba54d39c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to hold the variable attributes of a field. This includes things like the name, equation type, whether it's nonlinear, and its dependence on other variables. </p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad41bd187fcdd408238d84a2bc8beecb0" name="ad41bd187fcdd408238d84a2bc8beecb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad41bd187fcdd408238d84a2bc8beecb0">&#9670;&#160;</a></span>EvalFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">VariableAttributes::EvalFlags</a> =  dealii::EvaluationFlags::EvaluationFlags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac0f645a2707c5845d5ef69e031e39c20" name="ac0f645a2707c5845d5ef69e031e39c20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0f645a2707c5845d5ef69e031e39c20">&#9670;&#160;</a></span>compute_dependency_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::compute_dependency_set </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the dependency sets from eval_flag_set_rhs &amp; eval_flag_set_lhs. </p>
+
+</div>
+</div>
+<a id="a81c8f3eaa8d67a7c61b5780b3bf10355" name="a81c8f3eaa8d67a7c61b5780b3bf10355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c8f3eaa8d67a7c61b5780b3bf10355">&#9670;&#160;</a></span>compute_simplified_dependency_set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::compute_simplified_dependency_set </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the simplified dependency set from eval_flag_set_rhs &amp; eval_flag_set_lhs. </p>
+
+</div>
+</div>
+<a id="a7ad053972c2c558d7bfaf1adb2ea7f5f" name="a7ad053972c2c558d7bfaf1adb2ea7f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ad053972c2c558d7bfaf1adb2ea7f5f">&#9670;&#160;</a></span>determine_field_solve_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::determine_field_solve_type </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Using the assigned evaluation flags determine the solve type for this equation. </p>
+
+</div>
+</div>
+<a id="a2f0075645e49ff23f52e5a0cdd426472" name="a2f0075645e49ff23f52e5a0cdd426472"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f0075645e49ff23f52e5a0cdd426472">&#9670;&#160;</a></span>find_circular_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::find_circular_dependencies </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find the circular dependencies based on simple DFS algorithm. </p>
+
+</div>
+</div>
+<a id="a6d755863b4cbf579a926df45f129e149" name="a6d755863b4cbf579a926df45f129e149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d755863b4cbf579a926df45f129e149">&#9670;&#160;</a></span>format_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void VariableAttributes::format_dependencies </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Combine 'value' and 'gradient' residual dependencies to one dependency set per RHS and LHS. This will populate <code>dependencies_rhs</code> and <code>dependencies_lhs</code>. </p>
+
+</div>
+</div>
+<a id="a22c98ff5da52cad335c49733e6ca3592" name="a22c98ff5da52cad335c49733e6ca3592"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22c98ff5da52cad335c49733e6ca3592">&#9670;&#160;</a></span>get_dependency_set_lhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp; VariableAttributes::get_dependency_set_lhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dependency set for the LHS. </p>
+
+</div>
+</div>
+<a id="a7a39fcf0238e5cbdf7ead88bdb3a04a6" name="a7a39fcf0238e5cbdf7ead88bdb3a04a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a39fcf0238e5cbdf7ead88bdb3a04a6">&#9670;&#160;</a></span>get_dependency_set_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &gt; &gt; &amp; VariableAttributes::get_dependency_set_rhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dependency set for the RHS. </p>
+
+</div>
+</div>
+<a id="a8fcdb233b6886cc4d6dcdb4d259b317a" name="a8fcdb233b6886cc4d6dcdb4d259b317a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fcdb233b6886cc4d6dcdb4d259b317a">&#9670;&#160;</a></span>get_eval_flag_set_lhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt; &amp; VariableAttributes::get_eval_flag_set_lhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the LHS evaluation flags. </p>
+
+</div>
+</div>
+<a id="a622997f1bd66ef4d921ecce0e2cc2366" name="a622997f1bd66ef4d921ecce0e2cc2366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a622997f1bd66ef4d921ecce0e2cc2366">&#9670;&#160;</a></span>get_eval_flag_set_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::vector&lt; <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &gt; &gt; &amp; VariableAttributes::get_eval_flag_set_rhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the RHS evaluation flags. </p>
+
+</div>
+</div>
+<a id="ac5b6f7e80fa020a5bf191f9229cc4cb5" name="ac5b6f7e80fa020a5bf191f9229cc4cb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5b6f7e80fa020a5bf191f9229cc4cb5">&#9670;&#160;</a></span>get_eval_flags_residual_lhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &amp; VariableAttributes::get_eval_flags_residual_lhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the LHS evaluation flags. </p>
+
+</div>
+</div>
+<a id="ab2e6cab69a8ecfee79bab4b4eccce12d" name="ab2e6cab69a8ecfee79bab4b4eccce12d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2e6cab69a8ecfee79bab4b4eccce12d">&#9670;&#160;</a></span>get_eval_flags_residual_rhs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> &amp; VariableAttributes::get_eval_flags_residual_rhs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the RHS evaluation flags. </p>
+
+</div>
+</div>
+<a id="ae51fa16c2f5d3989668993e99265420d" name="ae51fa16c2f5d3989668993e99265420d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae51fa16c2f5d3989668993e99265420d">&#9670;&#160;</a></span>get_field_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp; VariableAttributes::get_field_index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the field index. </p>
+
+</div>
+</div>
+<a id="a912787d4a861dc01037d8ee0ed22c5f7" name="a912787d4a861dc01037d8ee0ed22c5f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a912787d4a861dc01037d8ee0ed22c5f7">&#9670;&#160;</a></span>get_field_solve_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> VariableAttributes::get_field_solve_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the field solve type. </p>
+
+</div>
+</div>
+<a id="ac3ca2c4d460913f543ad4b13808b9df0" name="ac3ca2c4d460913f543ad4b13808b9df0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ca2c4d460913f543ad4b13808b9df0">&#9670;&#160;</a></span>get_max_dependency_types()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::get_max_dependency_types </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the max number of dependency types. </p>
+
+</div>
+</div>
+<a id="a773a17429fe6dc85fe895233fc8ddfbf" name="a773a17429fe6dc85fe895233fc8ddfbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773a17429fe6dc85fe895233fc8ddfbf">&#9670;&#160;</a></span>get_max_fields()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::get_max_fields </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the max number of fields. </p>
+
+</div>
+</div>
+<a id="a912399c784fdf168bf5150bb1afb484e" name="a912399c784fdf168bf5150bb1afb484e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a912399c784fdf168bf5150bb1afb484e">&#9670;&#160;</a></span>get_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; VariableAttributes::get_name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the field name. </p>
+
+</div>
+</div>
+<a id="a5b54e992d5ecf0243be3d3ea73cdc3d7" name="a5b54e992d5ecf0243be3d3ea73cdc3d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b54e992d5ecf0243be3d3ea73cdc3d7">&#9670;&#160;</a></span>get_nucleating_field_indices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp; VariableAttributes::get_nucleating_field_indices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the nucleating field indices. </p>
+
+</div>
+</div>
+<a id="aff2506452f6847ce518c44e7689cb412" name="aff2506452f6847ce518c44e7689cb412"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff2506452f6847ce518c44e7689cb412">&#9670;&#160;</a></span>get_pde_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> &amp; VariableAttributes::get_pde_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the PDE type. </p>
+
+</div>
+</div>
+<a id="ab1111b93b64f7400ca09f0cf6e582ae0" name="ab1111b93b64f7400ca09f0cf6e582ae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1111b93b64f7400ca09f0cf6e582ae0">&#9670;&#160;</a></span>get_solve_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::get_solve_block </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solve block. </p>
+
+</div>
+</div>
+<a id="a2459a89ffbe7331de5a541f77cba2ce3" name="a2459a89ffbe7331de5a541f77cba2ce3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2459a89ffbe7331de5a541f77cba2ce3">&#9670;&#160;</a></span>is_nucleation_rate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool VariableAttributes::is_nucleation_rate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the field is a nucleation rate variable. </p>
+
+</div>
+</div>
+<a id="a394193f5751c4a28aed9e805415d671e" name="a394193f5751c4a28aed9e805415d671e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a394193f5751c4a28aed9e805415d671e">&#9670;&#160;</a></span>is_postprocess()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool VariableAttributes::is_postprocess </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the field is a postprocess variable. </p>
+
+</div>
+</div>
+<a id="a93059a8aa7925f3e793bc435b00a2ac1" name="a93059a8aa7925f3e793bc435b00a2ac1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93059a8aa7925f3e793bc435b00a2ac1">&#9670;&#160;</a></span>parse_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::parse_dependencies </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>_max_fields</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>_max_dependency_types</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Take user-defined dependency sets to set the evaluation flags for each variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">other_var_attributes</td><td>The other variable attributes. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_max_fields</td><td>The max number of fields that user has defined. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_max_dependency_types</td><td>The max number of dependency types. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6189a557da2955e38d7ac32278067293" name="a6189a557da2955e38d7ac32278067293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6189a557da2955e38d7ac32278067293">&#9670;&#160;</a></span>parse_residual_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::parse_residual_dependencies </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Take user-defined dependency sets to set the residual flags for each variable. </p>
+
+</div>
+</div>
+<a id="a893668fb7c87a53b5ef8a404431fd445" name="a893668fb7c87a53b5ef8a404431fd445"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a893668fb7c87a53b5ef8a404431fd445">&#9670;&#160;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::print </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print variable attributes to summary.log. </p>
+
+</div>
+</div>
+<a id="a9fb6f484388241aaf584a1abfd1b3293" name="a9fb6f484388241aaf584a1abfd1b3293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fb6f484388241aaf584a1abfd1b3293">&#9670;&#160;</a></span>recursive_depth_first_search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::recursive_depth_first_search </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_var_attributes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>visited</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>current_stack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>vertex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursive DFS. </p>
+
+</div>
+</div>
+<a id="ae511f0560dd3e041a1607d3640adcb32" name="ae511f0560dd3e041a1607d3640adcb32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae511f0560dd3e041a1607d3640adcb32">&#9670;&#160;</a></span>validate_dependency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributes::validate_dependency </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>variation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="type__enums_8h.html#a20c436f6bde8f907120a37fac56183c7">DependencyType</a>&#160;</td>
+          <td class="paramname"><em>dep_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>other_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;&#160;</td>
+          <td class="paramname"><em>other_field_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate a dependency. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="ad37a74507ce9fba4966d6eba54d39c00" name="ad37a74507ce9fba4966d6eba54d39c00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad37a74507ce9fba4966d6eba54d39c00">&#9670;&#160;</a></span>VariableAttributeLoader</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allow <a class="el" href="classVariableAttributeLoader.html" title="Class to manage the variable attributes that the user specifies.">VariableAttributeLoader</a> to access private members. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="afa0d0597db5b9abf8a53e2af4ef91e09" name="afa0d0597db5b9abf8a53e2af4ef91e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa0d0597db5b9abf8a53e2af4ef91e09">&#9670;&#160;</a></span>dependency_set_lhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>&gt; &gt; VariableAttributes::dependency_set_lhs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO (Landinjm): Add brief description. </p>
+<p>To create the FEEvaluation object, we need to know two things: the index that corresponds to the matrix-free object and the spacedim of the field (e.g., scalar or vector). Notably, to avoid some burden of creating extra matrix-free objects for multigrid, we occasionly use local indexing rather than a global index.</p>
+<p>The goal of this dependency set is to create a vector of FEEvaluation objects in <code><a class="el" href="classVariableContainer.html" title="This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...">VariableContainer</a></code>. For performance reasons, we represent this as a vector.</p>
+<p>TODO (Landinjm): Add some more details about the vector representation.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="a14be1dbb38ca28f76bc6c692442eeed9" name="a14be1dbb38ca28f76bc6c692442eeed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14be1dbb38ca28f76bc6c692442eeed9">&#9670;&#160;</a></span>dependency_set_rhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>&gt; &gt; VariableAttributes::dependency_set_rhs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO (Landinjm): Add brief description. </p>
+<p>To create the FEEvaluation object, we need to know two things: the index that corresponds to the matrix-free object and the spacedim of the field (e.g., scalar or vector). Notably, to avoid some burden of creating extra matrix-free objects for multigrid, we occasionly use local indexing rather than a global index.</p>
+<p>The goal of this dependency set is to create a vector of FEEvaluation objects in <code><a class="el" href="classVariableContainer.html" title="This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...">VariableContainer</a></code>. For performance reasons, we represent this as a vector.</p>
+<p>TODO (Landinjm): Add some more details about the vector representation.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="a8e68c5b7fe168efd0b43ca97c3de7a0b" name="a8e68c5b7fe168efd0b43ca97c3de7a0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e68c5b7fe168efd0b43ca97c3de7a0b">&#9670;&#160;</a></span>eval_flag_set_lhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a>&gt; &gt; VariableAttributes::eval_flag_set_lhs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A map of evaluation flags for the dependencies of the variable's LHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field. </p>
+<p>The first dimension is the field index, the second dimension is the dependency type. </p><dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="aa4138f14145cfa5591e35af4e47c6757" name="aa4138f14145cfa5591e35af4e47c6757"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4138f14145cfa5591e35af4e47c6757">&#9670;&#160;</a></span>eval_flag_set_rhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;<a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a>&gt; &gt; VariableAttributes::eval_flag_set_rhs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A map of evaluation flags for the dependencies of the variable's RHS. This will tell deal.II whether to evaluate the value, gradient, and/or hessian for the specified field. </p>
+<p>The first dimension is the field index, the second dimension is the dependency type. </p><dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="ac482fa330ab695389921be86cc35e436" name="ac482fa330ab695389921be86cc35e436"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac482fa330ab695389921be86cc35e436">&#9670;&#160;</a></span>eval_flags_residual_lhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> VariableAttributes::eval_flags_residual_lhs = dealii::EvaluationFlags::EvaluationFlags::nothing</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evaluation flags for the types of residual the user is expected to submit to on the LHS. This is empty for Explicit fields. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="a7707cc8a6cc6ff9614ecdb4425548809" name="a7707cc8a6cc6ff9614ecdb4425548809"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7707cc8a6cc6ff9614ecdb4425548809">&#9670;&#160;</a></span>eval_flags_residual_rhs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">EvalFlags</a> VariableAttributes::eval_flags_residual_rhs = dealii::EvaluationFlags::EvaluationFlags::nothing</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evaluation flags for the types of residual the user is expected to submit to on the RHS. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="a29f7bcc52a2046b505c70806be5b5d38" name="a29f7bcc52a2046b505c70806be5b5d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29f7bcc52a2046b505c70806be5b5d38">&#9670;&#160;</a></span>field_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::field_index = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Field index. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="add8764363da71727826563707a04c971" name="add8764363da71727826563707a04c971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add8764363da71727826563707a04c971">&#9670;&#160;</a></span>field_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html">FieldInfo</a> VariableAttributes::field_info</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a04248692bba8c1410ec1bfa29c3b87a1" name="a04248692bba8c1410ec1bfa29c3b87a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04248692bba8c1410ec1bfa29c3b87a1">&#9670;&#160;</a></span>field_solve_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> VariableAttributes::field_solve_type = <a class="el" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">Numbers::invalid_field_solve_type</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal classification for the field solve type. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="a385d73431d9c654aebcde143cecb901b" name="a385d73431d9c654aebcde143cecb901b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a385d73431d9c654aebcde143cecb901b">&#9670;&#160;</a></span>is_nucleation_rate_variable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool VariableAttributes::is_nucleation_rate_variable = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Is a nucleation rate. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="a976b885c290138d57286f999c36f377d" name="a976b885c290138d57286f999c36f377d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a976b885c290138d57286f999c36f377d">&#9670;&#160;</a></span>is_postprocessed_variable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool VariableAttributes::is_postprocessed_variable = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess variable. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="a5d3e611e78da9820c6a595423dce3f6f" name="a5d3e611e78da9820c6a595423dce3f6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d3e611e78da9820c6a595423dce3f6f">&#9670;&#160;</a></span>max_dependency_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::max_dependency_types = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Max number of dependency types. </p>
+
+</div>
+</div>
+<a id="ab1a13728557f78566815c562fc413ea8" name="ab1a13728557f78566815c562fc413ea8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1a13728557f78566815c562fc413ea8">&#9670;&#160;</a></span>max_fields</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::max_fields = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Max number of fields. </p>
+
+</div>
+</div>
+<a id="ae2e6d22f263eef45abf980a990672af1" name="ae2e6d22f263eef45abf980a990672af1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2e6d22f263eef45abf980a990672af1">&#9670;&#160;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string VariableAttributes::name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Field name. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="a16876b7cc9bdde6cab3ffba5e85b733a" name="a16876b7cc9bdde6cab3ffba5e85b733a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16876b7cc9bdde6cab3ffba5e85b733a">&#9670;&#160;</a></span>nucleation_indices</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&gt; VariableAttributes::nucleation_indices</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If this is a nucleation rate, the indices of the nucleating fields. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="a1ea8bef3ff037fce98f85052fb28a542" name="a1ea8bef3ff037fce98f85052fb28a542"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ea8bef3ff037fce98f85052fb28a542">&#9670;&#160;</a></span>pde_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> VariableAttributes::pde_type = <a class="el" href="namespaceNumbers.html#aa1701d0370e33ddd3577b7906bc40c42">Numbers::invalid_pde_type</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>PDE type (Explicit/NONEXPLICIT). </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<a id="ac1701f37eb56ca56e3a044d2d924553e" name="ac1701f37eb56ca56e3a044d2d924553e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1701f37eb56ca56e3a044d2d924553e">&#9670;&#160;</a></span>raw_dependencies</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structRawDependencies.html">RawDependencies</a> VariableAttributes::raw_dependencies</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Raw dependencies of the field. </p>
+
+</div>
+</div>
+<a id="a9148d739c97cce037bfa5c3401a445a6" name="a9148d739c97cce037bfa5c3401a445a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9148d739c97cce037bfa5c3401a445a6">&#9670;&#160;</a></span>simplified_dependency_set</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;unsigned int&gt; VariableAttributes::simplified_dependency_set</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A simplified set of evaluation flags for the dependencies of the variable's LHS &amp; RHS. This will help determine the FieldSolveType of the field. Fields indices where the evaluation flags are not 0 (not nothing) are included. Additionally, explicit fields are excluded to speed up the graph search. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>Internally determined </dd></dl>
+
+</div>
+</div>
+<a id="afdf788c44db46b6dc752385aec4feb65" name="afdf788c44db46b6dc752385aec4feb65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdf788c44db46b6dc752385aec4feb65">&#9670;&#160;</a></span>solve_block</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> VariableAttributes::solve_block = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solve block. </p>
+<dl class="section remark"><dt>Remarks</dt><dd>User-set </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="variable__attributes_8h_source.html">variable_attributes.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>variable_attributes.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="variable__attributes_8cc.html">variable_attributes.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

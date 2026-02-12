@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,9 +120,9 @@ $(document).ready(function(){initNavTree('classCellMarkerBase.html',''); initRes
 
 <p>This is the complete list of members for <a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>CellIterator</b> typedef (defined in <a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>flag</b>(const CellIterator &amp;cell, const TemporalDiscretization &amp;time_info) const (defined in <a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>flag</b>(const dealii::Point&lt; dim &gt; &amp;point, const TemporalDiscretization &amp;time_info) const (defined in <a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellIterator</a> typedef</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classCellMarkerBase.html#ad35eb9af55050f4012b339f918b111c9">flag</a>(const CellIterator &amp;cell, const TemporalDiscretization &amp;time_info) const</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classCellMarkerBase.html#ae433d1bba50536a1723a3aa4a31ec493">flag</a>(const dealii::Point&lt; dim &gt; &amp;point, const TemporalDiscretization &amp;time_info) const</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classCellMarkerBase.html#a10ba574bf0a796968941e952238be991">~CellMarkerBase</a>()=default</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('invm__handler_8h_source.html',''); ini
   <div class="headertitle"><div class="title">invm_handler.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="invm__handler_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -123,11 +130,11 @@ $(document).ready(function(){initNavTree('invm__handler_8h_source.html',''); ini
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/lac/la_parallel_vector.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/matrix_free/matrix_free.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
@@ -139,8 +146,8 @@ $(document).ready(function(){initNavTree('invm__handler_8h_source.html',''); ini
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classInvmHandler.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="classInvmHandler.html">InvmHandler</a></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">using </span>VectorType = dealii::LinearAlgebra::distributed::Vector&lt;number&gt;;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">using </span>SizeType   = dealii::VectorizedArray&lt;number&gt;;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">   28</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt;number&gt;;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a2785dd02f10f837f702fba519d5b3f01">   29</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="classInvmHandler.html#a2785dd02f10f837f702fba519d5b3f01">SizeType</a>   = dealii::VectorizedArray&lt;number&gt;;</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classInvmHandler.html">InvmHandler</a>(</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> std::map&lt;unsigned int, VariableAttributes&gt; &amp;_variable_attributes);</div>
@@ -154,7 +161,7 @@ $(document).ready(function(){initNavTree('invm__handler_8h_source.html',''); ini
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <a class="code hl_function" href="classInvmHandler.html#a26f753475484c404d9a5872988237e6d">recompute_invm</a>();</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  [[nodiscard]] <span class="keyword">const</span> VectorType &amp;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_typedef" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">VectorType</a> &amp;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_function" href="classInvmHandler.html#a961674de981f9026485cf2940feadcc2">get_invm</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;index) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">void</span></div>
@@ -162,46 +169,63 @@ $(document).ready(function(){initNavTree('invm__handler_8h_source.html',''); ini
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  compute_scalar_invm();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_function" href="classInvmHandler.html#a680ff6e80446139abacef50ac0577d64">compute_scalar_invm</a>();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  compute_vector_invm();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_function" href="classInvmHandler.html#a44961786582308d9a8ff4876f7eb662f">compute_vector_invm</a>();</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">const</span> std::map&lt;unsigned int, VariableAttributes&gt; *variable_attributes;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a51df4f8ad5bdb961579def3664c9b78b">   86</a></span>  <span class="keyword">const</span> std::map&lt;unsigned int, VariableAttributes&gt; *<a class="code hl_variable" href="classInvmHandler.html#a51df4f8ad5bdb961579def3664c9b78b">variable_attributes</a>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number, SizeType&gt;&gt; data;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf">   91</a></span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number, SizeType&gt;&gt; <a class="code hl_variable" href="classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf">data</a>;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  VectorType invm_scalar;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a423cf4320a8d5512a38336a5012b9bcf">   96</a></span>  <a class="code hl_typedef" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">VectorType</a> <a class="code hl_variable" href="classInvmHandler.html#a423cf4320a8d5512a38336a5012b9bcf">invm_scalar</a>;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  VectorType invm_vector;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a609c5a87b488c2fe88a55862777c6442">  101</a></span>  <a class="code hl_typedef" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">VectorType</a> <a class="code hl_variable" href="classInvmHandler.html#a609c5a87b488c2fe88a55862777c6442">invm_vector</a>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">bool</span> scalar_needed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a605efbbb5c33fb9f5b6fb0849b20a2a2">  106</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classInvmHandler.html#a605efbbb5c33fb9f5b6fb0849b20a2a2">scalar_needed</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">bool</span> vector_needed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a8804650d4e237667d7d11ce9a0b82339">  111</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classInvmHandler.html#a8804650d4e237667d7d11ce9a0b82339">vector_needed</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> scalar_index = Numbers::invalid_index;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classInvmHandler.html#ac5d98ca3b1ff52b0abddedf8a1a68bc5">  117</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classInvmHandler.html#ac5d98ca3b1ff52b0abddedf8a1a68bc5">scalar_index</a> = <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> vector_index = Numbers::invalid_index;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a01cb741f3db1b0996a61438147b5bbce">  123</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classInvmHandler.html#a01cb741f3db1b0996a61438147b5bbce">vector_index</a> = <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  number tolerance = Defaults::mesh_tolerance;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classInvmHandler.html#a674773e687cf1c3f9b9c546b62a1829a">  128</a></span>  number <a class="code hl_variable" href="classInvmHandler.html#a674773e687cf1c3f9b9c546b62a1829a">tolerance</a> = <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>};</div>
 </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassInvmHandler_html"><div class="ttname"><a href="classInvmHandler.html">InvmHandler</a></div><div class="ttdoc">This class handles the computation and access of the inverted mass matrix for explicit solves.</div><div class="ttdef"><b>Definition</b> invm_handler.h:26</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a01cb741f3db1b0996a61438147b5bbce"><div class="ttname"><a href="classInvmHandler.html#a01cb741f3db1b0996a61438147b5bbce">InvmHandler::vector_index</a></div><div class="ttdeci">unsigned int vector_index</div><div class="ttdoc">Field index of the first occurring vector field. This is the index for which we attached the FEEvalua...</div><div class="ttdef"><b>Definition</b> invm_handler.h:123</div></div>
 <div class="ttc" id="aclassInvmHandler_html_a130fda8ab7178181e5d57d99deeeec22"><div class="ttname"><a href="classInvmHandler.html#a130fda8ab7178181e5d57d99deeeec22">InvmHandler::compute_invm</a></div><div class="ttdeci">void compute_invm()</div><div class="ttdoc">Compute the mass matrix for scalar/vector fields.</div><div class="ttdef"><b>Definition</b> invm_handler.cc:71</div></div>
 <div class="ttc" id="aclassInvmHandler_html_a26f753475484c404d9a5872988237e6d"><div class="ttname"><a href="classInvmHandler.html#a26f753475484c404d9a5872988237e6d">InvmHandler::recompute_invm</a></div><div class="ttdeci">void recompute_invm()</div><div class="ttdoc">Recompute the mass matrix for scalar/vector fields. This just points to compute_invm() and is used fo...</div><div class="ttdef"><b>Definition</b> invm_handler.cc:87</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a2785dd02f10f837f702fba519d5b3f01"><div class="ttname"><a href="classInvmHandler.html#a2785dd02f10f837f702fba519d5b3f01">InvmHandler::SizeType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; number &gt; SizeType</div><div class="ttdef"><b>Definition</b> invm_handler.h:29</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a423cf4320a8d5512a38336a5012b9bcf"><div class="ttname"><a href="classInvmHandler.html#a423cf4320a8d5512a38336a5012b9bcf">InvmHandler::invm_scalar</a></div><div class="ttdeci">VectorType invm_scalar</div><div class="ttdoc">Inverse of the mass matrix for scalar fields.</div><div class="ttdef"><b>Definition</b> invm_handler.h:96</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a44961786582308d9a8ff4876f7eb662f"><div class="ttname"><a href="classInvmHandler.html#a44961786582308d9a8ff4876f7eb662f">InvmHandler::compute_vector_invm</a></div><div class="ttdeci">void compute_vector_invm()</div><div class="ttdoc">Compute the invm for vector fields.</div><div class="ttdef"><b>Definition</b> invm_handler.cc:184</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a51df4f8ad5bdb961579def3664c9b78b"><div class="ttname"><a href="classInvmHandler.html#a51df4f8ad5bdb961579def3664c9b78b">InvmHandler::variable_attributes</a></div><div class="ttdeci">const std::map&lt; unsigned int, VariableAttributes &gt; * variable_attributes</div><div class="ttdoc">Variable attributes. This is used to determine the proper return type for the invm when given a field...</div><div class="ttdef"><b>Definition</b> invm_handler.h:86</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a531505e7f266c42a1a4f06a944073a45"><div class="ttname"><a href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">InvmHandler::VectorType</a></div><div class="ttdeci">dealii::LinearAlgebra::distributed::Vector&lt; number &gt; VectorType</div><div class="ttdef"><b>Definition</b> invm_handler.h:28</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a605efbbb5c33fb9f5b6fb0849b20a2a2"><div class="ttname"><a href="classInvmHandler.html#a605efbbb5c33fb9f5b6fb0849b20a2a2">InvmHandler::scalar_needed</a></div><div class="ttdeci">bool scalar_needed</div><div class="ttdoc">Whether a scalar invm is needed.</div><div class="ttdef"><b>Definition</b> invm_handler.h:106</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a609c5a87b488c2fe88a55862777c6442"><div class="ttname"><a href="classInvmHandler.html#a609c5a87b488c2fe88a55862777c6442">InvmHandler::invm_vector</a></div><div class="ttdeci">VectorType invm_vector</div><div class="ttdoc">Inverse of the mass matrix for vector fields.</div><div class="ttdef"><b>Definition</b> invm_handler.h:101</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a674773e687cf1c3f9b9c546b62a1829a"><div class="ttname"><a href="classInvmHandler.html#a674773e687cf1c3f9b9c546b62a1829a">InvmHandler::tolerance</a></div><div class="ttdeci">number tolerance</div><div class="ttdoc">Tolerance for minimum value of the mass matrix when inverting.</div><div class="ttdef"><b>Definition</b> invm_handler.h:128</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a680ff6e80446139abacef50ac0577d64"><div class="ttname"><a href="classInvmHandler.html#a680ff6e80446139abacef50ac0577d64">InvmHandler::compute_scalar_invm</a></div><div class="ttdeci">void compute_scalar_invm()</div><div class="ttdoc">Compute the invm for scalar fields.</div><div class="ttdef"><b>Definition</b> invm_handler.cc:149</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a8804650d4e237667d7d11ce9a0b82339"><div class="ttname"><a href="classInvmHandler.html#a8804650d4e237667d7d11ce9a0b82339">InvmHandler::vector_needed</a></div><div class="ttdeci">bool vector_needed</div><div class="ttdoc">Whether a vector invm is needed.</div><div class="ttdef"><b>Definition</b> invm_handler.h:111</div></div>
 <div class="ttc" id="aclassInvmHandler_html_a961674de981f9026485cf2940feadcc2"><div class="ttname"><a href="classInvmHandler.html#a961674de981f9026485cf2940feadcc2">InvmHandler::get_invm</a></div><div class="ttdeci">const VectorType &amp; get_invm(const unsigned int &amp;index) const</div><div class="ttdoc">Getter function for the mass matrix for the given field index (constant reference).</div><div class="ttdef"><b>Definition</b> invm_handler.cc:94</div></div>
+<div class="ttc" id="aclassInvmHandler_html_a9f7dec5f590681f988eabae9f086e7bf"><div class="ttname"><a href="classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf">InvmHandler::data</a></div><div class="ttdeci">std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt; data</div><div class="ttdoc">Matrix-free object.</div><div class="ttdef"><b>Definition</b> invm_handler.h:91</div></div>
 <div class="ttc" id="aclassInvmHandler_html_ab1d14f618dbd35ad83c7b24992b11fd8"><div class="ttname"><a href="classInvmHandler.html#ab1d14f618dbd35ad83c7b24992b11fd8">InvmHandler::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear the data so we have something that resembles the base constructor.</div><div class="ttdef"><b>Definition</b> invm_handler.cc:136</div></div>
+<div class="ttc" id="aclassInvmHandler_html_ac5d98ca3b1ff52b0abddedf8a1a68bc5"><div class="ttname"><a href="classInvmHandler.html#ac5d98ca3b1ff52b0abddedf8a1a68bc5">InvmHandler::scalar_index</a></div><div class="ttdeci">unsigned int scalar_index</div><div class="ttdoc">Field index of the first occurring scalar field. This is the index for which we attached the FEEvalua...</div><div class="ttdef"><b>Definition</b> invm_handler.h:117</div></div>
 <div class="ttc" id="aclassInvmHandler_html_adfc78c9f850252e00288ccbd9da8d936"><div class="ttname"><a href="classInvmHandler.html#adfc78c9f850252e00288ccbd9da8d936">InvmHandler::initialize</a></div><div class="ttdeci">void initialize(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt; _data)</div><div class="ttdoc">Initialize.</div><div class="ttdef"><b>Definition</b> invm_handler.cc:58</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
+<div class="ttc" id="anamespaceDefaults_html_abb74becde7e9e8a9bd770d7b89d2f902"><div class="ttname"><a href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a></div><div class="ttdeci">static const double mesh_tolerance</div><div class="ttdoc">Default mesh tolerance.</div><div class="ttdef"><b>Definition</b> types.h:72</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a6c9b90814b4eb8306f621bb5e8f1a343"><div class="ttname"><a href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></div><div class="ttdeci">static const Types::Index invalid_index</div><div class="ttdoc">Invalid field index.</div><div class="ttdef"><b>Definition</b> types.h:28</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 <div class="ttc" id="astructVariableAttributes_html"><div class="ttname"><a href="structVariableAttributes.html">VariableAttributes</a></div><div class="ttdoc">Structure to hold the variable attributes of a field. This includes things like the name,...</div><div class="ttdef"><b>Definition</b> variable_attributes.h:208</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>invm_handler.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="invm__handler_8h.html">invm_handler.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

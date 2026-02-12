@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,16 +114,32 @@ $(document).ready(function(){initNavTree('functions_v.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
+<li>validate_attributes()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#a5001e06fdcff765c4b08cd81f01c13ac">VariableAttributeLoader</a></li>
+<li>validate_boundary_conditions()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#add6580c7b005e47f5efbda48958700d8">BoundaryParameters&lt; dim &gt;</a></li>
+<li>validate_dependencies()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#aca2a0f753f134f2499776db44e89b4d0">VariableAttributeLoader</a></li>
+<li>validate_dependency()&#160;:&#160;<a class="el" href="structVariableAttributes.html#ae511f0560dd3e041a1607d3640adcb32">VariableAttributes</a></li>
+<li>validate_old_solution_dependencies()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#aa4d11f49c625260ef3446a66df9248dc">VariableAttributeLoader</a></li>
+<li>validate_variable_name()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#a4e4cde131d056a496793b4a50d93ffe5">VariableAttributeLoader</a></li>
 <li>value()&#160;:&#160;<a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">NonuniformDirichlet&lt; dim, degree, number &gt;</a></li>
 <li>value_in_open_range()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1">GridRefinement::RefinementCriterion</a></li>
+<li>value_lower_bound&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">GridRefinement::RefinementCriterion</a></li>
+<li>value_upper_bound&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">GridRefinement::RefinementCriterion</a></li>
+<li>var_attributes&#160;:&#160;<a class="el" href="classInputFileReader.html#aac7d4ca7ce62c669f924c34d0c1f18b6">InputFileReader</a>, <a class="el" href="classUserInputParameters.html#a712f5be6f21a3bff7f644d83df17062d">UserInputParameters&lt; dim &gt;</a>, <a class="el" href="classVariableAttributeLoader.html#affa75595fc50c71c1c0fb3b387062ae1">VariableAttributeLoader</a></li>
+<li>variable_attributes&#160;:&#160;<a class="el" href="classInvmHandler.html#a51df4f8ad5bdb961579def3664c9b78b">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#ab4f0a6a8e5ed4b46b924f59df5264827">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>VariableAttributeLoader()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#a66fcd8fb6d6535ec22f04f17971db332">VariableAttributeLoader</a>, <a class="el" href="structVariableAttributes.html#ad37a74507ce9fba4966d6eba54d39c00">VariableAttributes</a></li>
 <li>VariableContainer()&#160;:&#160;<a class="el" href="classVariableContainer.html#ab0c5955ceed0d5a608b693fdb15873cf">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VariantDiagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#a238a485538d556089b89315fd0d99053">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VariantFEEvaluation&#160;:&#160;<a class="el" href="classVariableContainer.html#a8442ca6622d96f2ff853e60c0a048bd4">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>vector_index&#160;:&#160;<a class="el" href="classInvmHandler.html#a01cb741f3db1b0996a61438147b5bbce">InvmHandler&lt; dim, degree, number &gt;</a></li>
+<li>vector_needed&#160;:&#160;<a class="el" href="classInvmHandler.html#a8804650d4e237667d7d11ce9a0b82339">InvmHandler&lt; dim, degree, number &gt;</a></li>
 <li>vector_value()&#160;:&#160;<a class="el" href="classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606">InitialCondition&lt; dim, degree, number &gt;</a>, <a class="el" href="classNonuniformDirichlet.html#aaa79e399c8e7aa27768557d1c2faa75a">NonuniformDirichlet&lt; dim, degree, number &gt;</a>, <a class="el" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">ReadInitialCondition&lt; dim, number &gt;</a></li>
+<li>VectorDiagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#ae154a778b9c66d13161096e25ec499ee">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VectorFEEvaluation&#160;:&#160;<a class="el" href="classVariableContainer.html#a64b930dfecf6997d894c40ad29aac537">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>VectorMappings()&#160;:&#160;<a class="el" href="classVectorMappings.html#acdcd8d256989d9c177fde39c9264fb03">VectorMappings&lt; Number &gt;</a></li>
-<li>VectorType&#160;:&#160;<a class="el" href="classVariableContainer.html#ad1c72bfca3b2589b0880ca2de87521bc">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VectorType&#160;:&#160;<a class="el" href="classGMGSolver.html#ad864f44e031833c43fca31c30525b1d9">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classIdentitySolver.html#a713e8a4b35a1634fede3b8c46e662294">IdentitySolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">Integrator&lt; dim, degree, number &gt;</a>, <a class="el" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#ab7648521b69d7c7e3c04b7058ea917aa">SolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">SolutionOutput&lt; dim, number &gt;</a>, <a class="el" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableContainer.html#ad1c72bfca3b2589b0880ca2de87521bc">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>vmult()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#affdc94ba174a4d206e282cc82b7d128d">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->

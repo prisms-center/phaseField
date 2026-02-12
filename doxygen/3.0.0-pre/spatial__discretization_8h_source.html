@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
   <div class="headertitle"><div class="title">spatial_discretization.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="spatial__discretization_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -125,25 +132,25 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/grid/grid_tools.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;deal.II/grid/tria.h&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/core/conditional_ostreams.h&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/exceptions.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/core/grid_refiner_criterion.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="conditional__ostreams_8h.html">prismspf/core/conditional_ostreams.h</a>&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;<a class="code" href="exceptions_8h.html">prismspf/core/exceptions.h</a>&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="grid__refiner__criterion_8h.html">prismspf/core/grid_refiner_criterion.h</a>&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;prismspf/user_inputs/boundary_parameters.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;<a class="code" href="boundary__parameters_8h.html">prismspf/user_inputs/boundary_parameters.h</a>&gt;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;prismspf/utilities/utilities.h&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classMesh.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="classMesh.html">Mesh</a></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">using </span>Triangulation =</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">   31</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Triangulation</a> =</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    std::conditional_t&lt;dim == 1,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                       dealii::Triangulation&lt;dim&gt;,</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                       dealii::parallel::distributed::Triangulation&lt;dim&gt;&gt;;</div>
@@ -157,7 +164,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classMesh.html#a0793da0367691c51176aaeb796366e47">   50</a></span>  <a class="code hl_function" href="classMesh.html#a0793da0367691c51176aaeb796366e47">generate_mesh</a>([[maybe_unused]] std::shared_ptr&lt;Triangulation&gt; triangulation)</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    AssertThrow(</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      is_initialized,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <a class="code hl_variable" href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">is_initialized</a>,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      dealii::ExcMessage(</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="stringliteral">&quot;Mesh parameters not initialized correctly. You tried to generate a mesh that &quot;</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="stringliteral">&quot;has default parameters. Typically this yields a mesh with size 0.0.&quot;</span>));</div>
@@ -169,7 +176,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="stringliteral">&quot;Please ensure that you have set the parameters before generating &quot;</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="stringliteral">&quot;the mesh. Another possibility is that you tried to generate multiple meshes. &quot;</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="stringliteral">&quot;Check that you only have one subsection in the parameters file for the mesh.&quot;</span>));</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    is_generated = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_variable" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">is_generated</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  };</div>
 </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
@@ -177,13 +184,13 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">   72</a></span>  <a class="code hl_function" href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">mark_boundaries</a>(</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    [[maybe_unused]] std::shared_ptr&lt;Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    [[maybe_unused]] <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    [[maybe_unused]] <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      &amp;boundary_condition_list)</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    AssertThrow(is_generated,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    AssertThrow(<a class="code hl_variable" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">is_generated</a>,</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                dealii::ExcMessage(</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                  <span class="stringliteral">&quot;Mesh must be generated before marking boundary ids.&quot;</span>));</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    boundaries_marked = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <a class="code hl_variable" href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">boundaries_marked</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  };</div>
 </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
@@ -191,13 +198,13 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">   87</a></span>  <a class="code hl_function" href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">mark_periodic</a>(</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    [[maybe_unused]] std::shared_ptr&lt;Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    [[maybe_unused]] <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    [[maybe_unused]] <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      &amp;boundary_condition_list)</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    AssertThrow(is_generated,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    AssertThrow(<a class="code hl_variable" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">is_generated</a>,</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                dealii::ExcMessage(</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                  <span class="stringliteral">&quot;Mesh must be generated before marking periodic boundaries.&quot;</span>));</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    AssertThrow(boundaries_marked,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    AssertThrow(<a class="code hl_variable" href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">boundaries_marked</a>,</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                dealii::ExcMessage(</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                  <span class="stringliteral">&quot;Mesh boundaries must be marked before marking periodic boundaries.&quot;</span>));</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  };</div>
@@ -207,16 +214,16 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">  104</a></span>  <a class="code hl_function" href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">set_initialized</a>()</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    is_initialized = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_variable" href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">is_initialized</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  };</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">bool</span> is_initialized = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">  116</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">is_initialized</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordtype">bool</span> is_generated = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">  121</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classMesh.html#a502b4915f73249fd267ec86d522e268b">is_generated</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordtype">bool</span> boundaries_marked = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">  126</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">boundaries_marked</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>};</div>
 </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
@@ -224,38 +231,43 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00133" data-start="{" data-end="};">
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classRectangularMesh.html">  133</a></span><span class="keyword">class </span><a class="code hl_class" href="classRectangularMesh.html">RectangularMesh</a> : <span class="keyword">public</span> <a class="code hl_class" href="classMesh.html">Mesh</a>&lt;dim&gt;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>{</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <a class="code hl_class" href="classRectangularMesh.html">RectangularMesh</a>(dealii::Tensor&lt;1, dim, double&gt; _size,</div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a3810973c5b3cb06c069de6a0e0f153f5">  138</a></span>  <a class="code hl_function" href="classRectangularMesh.html#a3810973c5b3cb06c069de6a0e0f153f5">RectangularMesh</a>(dealii::Tensor&lt;1, dim, double&gt; _size,</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                  std::vector&lt;unsigned int&gt;      _subdivisions)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    : size(_size)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    : <a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>(_size)</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  {</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    Assert(_subdivisions.size() == dim,</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>           dealii::ExcMessage(</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>             <span class="stringliteral">&quot;Subdivisions vector size must match the number of dimensions&quot;</span>));</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    subdivisions = _subdivisions;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <a class="code hl_variable" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">subdivisions</a> = _subdivisions;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// If the x direction is greater than 0, we set the mesh as initialized.</span></div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="comment">// TODO (landinjm): Check that the other directions are also greater than 0.</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordflow">if</span> (size[0] &gt; 0.0)</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[0] &gt; 0.0)</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>      {</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        this-&gt;<a class="code hl_function" href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">Mesh&lt;dim&gt;::set_initialized</a>();</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      }</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  };</div>
+</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  generate_mesh(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation)<span class="keyword"> override</span></div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#aa6068adb9f2d66743fbe56e90b153239">  159</a></span>  <a class="code hl_function" href="classRectangularMesh.html#aa6068adb9f2d66743fbe56e90b153239">generate_mesh</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// Call base class generate mesh to check initialization</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    this-&gt;<a class="code hl_function" href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh&lt;dim&gt;::generate_mesh</a>(triangulation);</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    dealii::GridGenerator::subdivided_hyper_rectangle(*triangulation,</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                                                      subdivisions,</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                                                      <a class="code hl_variable" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">subdivisions</a>,</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                                                      dealii::Point&lt;dim&gt;(),</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                                      dealii::Point&lt;dim&gt;(size));</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                                      dealii::Point&lt;dim&gt;(<a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>));</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  };</div>
+</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  mark_boundaries(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                  <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a81d1e0498a1397529a3a2e3cf09abf4e">  174</a></span>  <a class="code hl_function" href="classRectangularMesh.html#a81d1e0498a1397529a3a2e3cf09abf4e">mark_boundaries</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation,</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                  <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                    &amp;boundary_condition_list)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="comment">// Call base class mark boundaries to check that the mesh has been generated</span></div>
@@ -283,19 +295,21 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            <span class="comment">// Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max</span></div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <span class="keywordflow">if</span> (std::fabs(cell-&gt;face(face_number)-&gt;center()(direction) - 0) &lt;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                  Defaults::mesh_tolerance ||</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                  <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a> ||</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                std::fabs(cell-&gt;face(face_number)-&gt;center()(direction) -</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                          (size[direction])) &lt; Defaults::mesh_tolerance)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                          (<a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[direction])) &lt; <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>)</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>              {</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                cell-&gt;face(face_number)-&gt;set_boundary_id(face_number);</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>              }</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>          }</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>      }</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  };</div>
+</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  mark_periodic(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="foldopen" id="foldopen00217" data-start="{" data-end="}">
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a1ca4446863546c907f934e786f88f44a">  217</a></span>  <a class="code hl_function" href="classRectangularMesh.html#a1ca4446863546c907f934e786f88f44a">mark_periodic</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation,</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                  &amp;boundary_condition_list)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="comment">// Call base class mark boundaries to check that the mesh has been generated and</span></div>
@@ -314,7 +328,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[boundary_id, boundary_type] :</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>                 condition.get_boundary_condition_map())</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>              {</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                <span class="keywordflow">if</span> (boundary_type == BoundaryCondition::Type::Periodic)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                <span class="keywordflow">if</span> (boundary_type == <a class="code hl_enumvalue" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25">BoundaryCondition::Type::Periodic</a>)</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                  {</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                    <span class="comment">// Skip boundary ids that are odd since those map to the even faces</span></div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                    <span class="keywordflow">if</span> (boundary_id % 2 != 0)</div>
@@ -346,34 +360,39 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>          }</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>      }</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  };</div>
+</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  [[nodiscard]] <span class="keywordtype">double</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  get_size(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> direction)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00274" data-start="{" data-end="}">
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a0067cf007378cfea4337441a0df39de4">  274</a></span>  <a class="code hl_function" href="classRectangularMesh.html#a0067cf007378cfea4337441a0df39de4">get_size</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> direction)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    Assert(direction &lt; dim,</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>           dealii::ExcMessage(<span class="stringliteral">&quot;Direction must be less than the number of dimensions&quot;</span>));</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    Assert(size[direction] &gt; 0.0,</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    Assert(<a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[direction] &gt; 0.0,</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>           dealii::ExcMessage(<span class="stringliteral">&quot;Size in the specified direction must be greater than zero &quot;</span></div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                              <span class="stringliteral">&quot;for rectangular meshes&quot;</span>));</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> size[direction];</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[direction];</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  };</div>
+</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  [[nodiscard]] <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  get_subdivisions(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> direction)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00288" data-start="{" data-end="}">
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a46c4d23d37a9ebf0d2e2fad8b12ee4d8">  288</a></span>  <a class="code hl_function" href="classRectangularMesh.html#a46c4d23d37a9ebf0d2e2fad8b12ee4d8">get_subdivisions</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> direction)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    Assert(direction &lt; dim,</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>           dealii::ExcMessage(<span class="stringliteral">&quot;Direction must be less than the number of dimensions&quot;</span>));</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    Assert(subdivisions[direction] &gt; 0,</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    Assert(<a class="code hl_variable" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">subdivisions</a>[direction] &gt; 0,</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>           dealii::ExcMessage(</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>             <span class="stringliteral">&quot;Subdivisions in the specified direction must be greater than zero &quot;</span></div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>             <span class="stringliteral">&quot;for rectangular meshes&quot;</span>));</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="keywordflow">return</span> subdivisions[direction];</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">subdivisions</a>[direction];</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  }</div>
+</div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  dealii::Tensor&lt;1, dim, double&gt; size;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">  303</a></span>  dealii::Tensor&lt;1, dim, double&gt; <a class="code hl_variable" href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>;</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  std::vector&lt;unsigned int&gt; subdivisions = std::vector&lt;unsigned int&gt;(dim, 1);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">  308</a></span>  std::vector&lt;unsigned int&gt; <a class="code hl_variable" href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">subdivisions</a> = std::vector&lt;unsigned int&gt;(dim, 1);</div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>};</div>
 </div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
@@ -384,9 +403,9 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00321" data-start="{" data-end="}">
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1">  321</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1">SphericalMesh</a>(<span class="keywordtype">double</span> _radius)</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    : radius(_radius)</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    : <a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a>(_radius)</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  {</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">if</span> (radius &gt; 0.0)</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a> &gt; 0.0)</div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      {</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        this-&gt;<a class="code hl_function" href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">Mesh&lt;dim&gt;::set_initialized</a>();</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>      }</div>
@@ -395,20 +414,20 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  <span class="keywordtype">void</span></div>
 <div class="foldopen" id="foldopen00334" data-start="{" data-end="}">
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">  334</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">generate_mesh</a>(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation)<span class="keyword"> override</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">  334</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">generate_mesh</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="comment">// Call base class generate mesh to check initialization</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    this-&gt;<a class="code hl_function" href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh&lt;dim&gt;::generate_mesh</a>(triangulation);</div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    AssertThrow(dim != 1, dealii::ExcMessage(<span class="stringliteral">&quot;Spherical mesh not valid in 1D&quot;</span>));</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    dealii::GridGenerator::hyper_ball(*triangulation, dealii::Point&lt;dim&gt;(), radius);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    dealii::GridGenerator::hyper_ball(*triangulation, dealii::Point&lt;dim&gt;(), <a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a>);</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  };</div>
 </div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <span class="keywordtype">void</span></div>
 <div class="foldopen" id="foldopen00347" data-start="{" data-end="}">
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">  347</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">mark_boundaries</a>(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                  <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">  347</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">mark_boundaries</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation,</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>                  <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>                    &amp;boundary_condition_list)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    <span class="comment">// Call base class mark boundaries to check that the mesh has been generated</span></div>
@@ -428,8 +447,8 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="keywordtype">void</span></div>
 <div class="foldopen" id="foldopen00369" data-start="{" data-end="}">
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">  369</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">mark_periodic</a>(std::shared_ptr&lt;<span class="keyword">typename</span> Mesh&lt;dim&gt;::Triangulation&gt; triangulation,</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>                <span class="keyword">const</span> <span class="keyword">typename</span> BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">  369</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">mark_periodic</a>(std::shared_ptr&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt;dim&gt;::Triangulation</a>&gt; triangulation,</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>                <span class="keyword">const</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt;dim&gt;::BoundaryConditionMap</a></div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>                  &amp;boundary_condition_list)<span class="keyword"> override</span></div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="comment">// Call base class mark boundaries to check that the mesh has been generated and</span></div>
@@ -441,7 +460,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, boundary_conditions] : boundary_condition_list)</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>      {</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        AssertThrow(boundary_conditions.get_boundary_condition_map().begin()-&gt;second !=</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                      BoundaryCondition::Type::Periodic,</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>                      <a class="code hl_enumvalue" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25">BoundaryCondition::Type::Periodic</a>,</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                    dealii::ExcMessage(<span class="stringliteral">&quot;Spherical meshes cannot have periodic boundary &quot;</span></div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>                                       <span class="stringliteral">&quot;conditions.&quot;</span>));</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>      }</div>
@@ -452,14 +471,14 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00392" data-start="{" data-end="}">
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">  392</a></span>  <a class="code hl_function" href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">get_radius</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    Assert(radius &gt; 0.0,</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    Assert(<a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a> &gt; 0.0,</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>           dealii::ExcMessage(<span class="stringliteral">&quot;Spherical mesh radius must be greater than zero.&quot;</span>));</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="keywordflow">return</span> radius;</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a>;</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  }</div>
 </div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>  <span class="keywordtype">double</span> radius = 0.0;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno"><a class="line" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">  403</a></span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a> = 0.0;</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>};</div>
 </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
@@ -471,9 +490,9 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00416" data-start="{" data-end="};">
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2">  416</a></span>  <span class="keyword">enum</span> <a class="code hl_enumeration" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2">TriangulationType</a> : std::uint8_t</div>
 <div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  {</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    Rectangular,</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    Spherical</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  };</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2a7b8c9136735dfee820925fcef575bb92">  418</a></span>    <a class="code hl_enumvalue" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2a7b8c9136735dfee820925fcef575bb92">Rectangular</a>,</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <a class="code hl_enumvalue" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2aa14afe7177250de68d95f4897bd81c63">Spherical</a></div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2aa14afe7177250de68d95f4897bd81c63">  420</a></span>  };</div>
 </div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a9db1e6e520f09f35a643beb5b02d15c7">  425</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a9db1e6e520f09f35a643beb5b02d15c7">SpatialDiscretization</a>() = <span class="keywordflow">default</span>;</div>
@@ -488,7 +507,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00443" data-start="{" data-end="}">
 <div class="line"><a id="l00443" name="l00443"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a">  443</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a">should_refine_mesh</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> increment)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    <span class="keywordflow">return</span> increment % remeshing_period == 0;</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    <span class="keywordflow">return</span> increment % <a class="code hl_variable" href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">remeshing_period</a> == 0;</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>  }</div>
 </div>
 <div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span> </div>
@@ -496,7 +515,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00452" data-start="{" data-end="}">
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">  452</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">get_size</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    <span class="keywordflow">return</span> size;</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">size</a>;</div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>  }</div>
 </div>
 <div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
@@ -504,7 +523,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00461" data-start="{" data-end="}">
 <div class="line"><a id="l00461" name="l00461"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a88c0a2b03c6197a99ab4761bfb7fee91">  461</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a88c0a2b03c6197a99ab4761bfb7fee91">set_size</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;direction, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_size)</div>
 <div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>  {</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    size[direction] = _size;</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">size</a>[direction] = _size;</div>
 <div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>  }</div>
 </div>
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
@@ -512,7 +531,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00470" data-start="{" data-end="}">
 <div class="line"><a id="l00470" name="l00470"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#acf1bb39a8e60f8d228feaa78faac4255">  470</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#acf1bb39a8e60f8d228feaa78faac4255">get_radius</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    <span class="keywordflow">return</span> radius;</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244">radius</a>;</div>
 <div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>  }</div>
 </div>
 <div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span> </div>
@@ -520,7 +539,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00479" data-start="{" data-end="}">
 <div class="line"><a id="l00479" name="l00479"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a447e695223cdcd27cf8a6325800da3a2">  479</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a447e695223cdcd27cf8a6325800da3a2">set_radius</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_radius)</div>
 <div class="line"><a id="l00480" name="l00480"></a><span class="lineno">  480</span>  {</div>
-<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>    radius = _radius;</div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244">radius</a> = _radius;</div>
 <div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>  }</div>
 </div>
 <div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span> </div>
@@ -528,7 +547,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00488" data-start="{" data-end="}">
 <div class="line"><a id="l00488" name="l00488"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414">  488</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414">get_subdivisions</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>    <span class="keywordflow">return</span> subdivisions;</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd">subdivisions</a>;</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>  }</div>
 </div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
@@ -536,7 +555,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00497" data-start="{" data-end="}">
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ada3b9338ac8e4d161c800dbb8f004492">  497</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ada3b9338ac8e4d161c800dbb8f004492">set_subdivisions</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;direction, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_subdivisions)</div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>  {</div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>    subdivisions[direction] = _subdivisions;</div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd">subdivisions</a>[direction] = _subdivisions;</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>  }</div>
 </div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span> </div>
@@ -544,7 +563,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00506" data-start="{" data-end="}">
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#abbbf8b3ea80c0c98ae5270a0fde0fe96">  506</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#abbbf8b3ea80c0c98ae5270a0fde0fe96">get_global_refinement</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>    <span class="keywordflow">return</span> global_refinement;</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">global_refinement</a>;</div>
 <div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  }</div>
 </div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span> </div>
@@ -552,7 +571,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00515" data-start="{" data-end="}">
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a093f80cd249b95e9640902bd2400b05f">  515</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a093f80cd249b95e9640902bd2400b05f">set_global_refinement</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_global_refinement)</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>  {</div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>    global_refinement = _global_refinement;</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">global_refinement</a> = _global_refinement;</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>  }</div>
 </div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span> </div>
@@ -560,7 +579,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00524" data-start="{" data-end="}">
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ac151767ec34e9935506bb8227697f44f">  524</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ac151767ec34e9935506bb8227697f44f">get_degree</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>    <span class="keywordflow">return</span> degree;</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">degree</a>;</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>  }</div>
 </div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span> </div>
@@ -568,7 +587,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00533" data-start="{" data-end="}">
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a6a8bf005b681a6f20bfabd1e2c7bfacf">  533</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a6a8bf005b681a6f20bfabd1e2c7bfacf">set_degree</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_degree)</div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>  {</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>    degree = _degree;</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">degree</a> = _degree;</div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>  }</div>
 </div>
 <div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span> </div>
@@ -576,7 +595,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00542" data-start="{" data-end="}">
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ac67bc9b7907ca3acd217826e1567d03a">  542</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ac67bc9b7907ca3acd217826e1567d03a">get_has_adaptivity</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>    <span class="keywordflow">return</span> has_adaptivity;</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">has_adaptivity</a>;</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>  }</div>
 </div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span> </div>
@@ -584,7 +603,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00551" data-start="{" data-end="}">
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a4edd5da26a520aaa80dec2a42956d9ce">  551</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a4edd5da26a520aaa80dec2a42956d9ce">set_has_adaptivity</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;_has_adaptivity)</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>  {</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    has_adaptivity = _has_adaptivity;</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">has_adaptivity</a> = _has_adaptivity;</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>  }</div>
 </div>
 <div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span> </div>
@@ -592,7 +611,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00560" data-start="{" data-end="}">
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a82b6c7ff9a85a1130a721c339b9bff39">  560</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a82b6c7ff9a85a1130a721c339b9bff39">get_max_refinement</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    <span class="keywordflow">return</span> max_refinement;</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">max_refinement</a>;</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>  }</div>
 </div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
@@ -600,7 +619,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00569" data-start="{" data-end="}">
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a903984b2c50942fe3bd7461620677a89">  569</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a903984b2c50942fe3bd7461620677a89">set_max_refinement</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_max_refinement)</div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>  {</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    max_refinement = _max_refinement;</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">max_refinement</a> = _max_refinement;</div>
 <div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>  }</div>
 </div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span> </div>
@@ -608,7 +627,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00578" data-start="{" data-end="}">
 <div class="line"><a id="l00578" name="l00578"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aeb9fe493daf3d92593588bfa25b86101">  578</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#aeb9fe493daf3d92593588bfa25b86101">get_min_refinement</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">return</span> min_refinement;</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">min_refinement</a>;</div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>  }</div>
 </div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
@@ -616,7 +635,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00587" data-start="{" data-end="}">
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a2bca9c16b448dab3bd5f7ed212fdaafb">  587</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a2bca9c16b448dab3bd5f7ed212fdaafb">set_min_refinement</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_min_refinement)</div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>  {</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    min_refinement = _min_refinement;</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">min_refinement</a> = _min_refinement;</div>
 <div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>  }</div>
 </div>
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
@@ -624,7 +643,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00596" data-start="{" data-end="}">
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a">  596</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a">get_remeshing_period</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    <span class="keywordflow">return</span> remeshing_period;</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">remeshing_period</a>;</div>
 <div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>  }</div>
 </div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
@@ -632,7 +651,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00605" data-start="{" data-end="}">
 <div class="line"><a id="l00605" name="l00605"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f">  605</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f">set_remeshing_period</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_remeshing_period)</div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>  {</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    remeshing_period = _remeshing_period;</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">remeshing_period</a> = _remeshing_period;</div>
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>  }</div>
 </div>
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
@@ -640,7 +659,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00614" data-start="{" data-end="}">
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ac741099c1cd22298732b8856e662147e">  614</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ac741099c1cd22298732b8856e662147e">get_refinement_criteria</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>    <span class="keywordflow">return</span> refinement_criteria;</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312">refinement_criteria</a>;</div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>  }</div>
 </div>
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span> </div>
@@ -649,7 +668,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00623" name="l00623"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aeed8092eed6dc8412e7ffb547b02a036">  623</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#aeed8092eed6dc8412e7ffb547b02a036">add_refinement_criteria</a>(</div>
 <div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    <span class="keyword">const</span> <a class="code hl_class" href="classGridRefinement_1_1RefinementCriterion.html">GridRefinement::RefinementCriterion</a> &amp;_refinement_criterion)</div>
 <div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>  {</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    refinement_criteria.push_back(_refinement_criterion);</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312">refinement_criteria</a>.push_back(_refinement_criterion);</div>
 <div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>  }</div>
 </div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
@@ -657,7 +676,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00633" data-start="{" data-end="}">
 <div class="line"><a id="l00633" name="l00633"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#aac4c2728f19ef1cd28853821c75156b4">  633</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#aac4c2728f19ef1cd28853821c75156b4">get_type</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    <span class="keywordflow">return</span> type;</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb">type</a>;</div>
 <div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>  }</div>
 </div>
 <div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span> </div>
@@ -665,7 +684,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00642" data-start="{" data-end="}">
 <div class="line"><a id="l00642" name="l00642"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a8796aa79209c86cea3094aa2d0ed729d">  642</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a8796aa79209c86cea3094aa2d0ed729d">set_lower_bound</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;direction, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;_lower_bound)</div>
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>  {</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    lower_bound[direction] = _lower_bound;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">lower_bound</a>[direction] = _lower_bound;</div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>  }</div>
 </div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
@@ -673,7 +692,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00651" data-start="{" data-end="}">
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ace7508bea5621dd932f020c3e64ca96a">  651</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#ace7508bea5621dd932f020c3e64ca96a">get_lower_bound</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keywordflow">return</span> lower_bound;</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">lower_bound</a>;</div>
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>  }</div>
 </div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
@@ -681,50 +700,50 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="foldopen" id="foldopen00660" data-start="{" data-end="}">
 <div class="line"><a id="l00660" name="l00660"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a2bc7092512142e8f884b1b5c9a6950a9">  660</a></span>  <a class="code hl_function" href="structSpatialDiscretization.html#a2bc7092512142e8f884b1b5c9a6950a9">get_upper_bound</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>    upper_bound = dealii::Point&lt;dim&gt;(size) + lower_bound;</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>    <span class="keywordflow">return</span> upper_bound;</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>    <a class="code hl_variable" href="structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b">upper_bound</a> = dealii::Point&lt;dim&gt;(<a class="code hl_variable" href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">size</a>) + <a class="code hl_variable" href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">lower_bound</a>;</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b">upper_bound</a>;</div>
 <div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>  }</div>
 </div>
 <div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span> </div>
 <div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>  <span class="comment">// Triangulation type</span></div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>  <a class="code hl_enumeration" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2">TriangulationType</a> type = TriangulationType::Rectangular;</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb">  668</a></span>  <a class="code hl_enumeration" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2">TriangulationType</a> <a class="code hl_variable" href="structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb">type</a> = <a class="code hl_enumvalue" href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2a7b8c9136735dfee820925fcef575bb92">TriangulationType::Rectangular</a>;</div>
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span> </div>
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>  <span class="comment">// Domain lower bound for rectangular domains</span></div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  dealii::Point&lt;dim, double&gt; lower_bound;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">  671</a></span>  dealii::Point&lt;dim, double&gt; <a class="code hl_variable" href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">lower_bound</a>;</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span> </div>
 <div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>  <span class="comment">// Domain upper bound for rectangular domains</span></div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>  <span class="keyword">mutable</span> dealii::Point&lt;dim, double&gt; upper_bound;</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b">  674</a></span>  <span class="keyword">mutable</span> dealii::Point&lt;dim, double&gt; <a class="code hl_variable" href="structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b">upper_bound</a>;</div>
 <div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span> </div>
 <div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>  <span class="comment">// Domain extents in each cartesian direction</span></div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>  dealii::Tensor&lt;1, dim, double&gt; size;</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">  677</a></span>  dealii::Tensor&lt;1, dim, double&gt; <a class="code hl_variable" href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">size</a>;</div>
 <div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span> </div>
 <div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>  <span class="comment">// Radius of the Spherical domain</span></div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>  <span class="keywordtype">double</span> radius = 0.0;</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244">  680</a></span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244">radius</a> = 0.0;</div>
 <div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span> </div>
 <div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>  <span class="comment">// Mesh subdivisions in each cartesian direction</span></div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>  std::vector&lt;unsigned int&gt; subdivisions = std::vector&lt;unsigned int&gt;(dim, 1);</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd">  683</a></span>  std::vector&lt;unsigned int&gt; <a class="code hl_variable" href="structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd">subdivisions</a> = std::vector&lt;unsigned int&gt;(dim, 1);</div>
 <div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span> </div>
 <div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>  <span class="comment">// Global refinement of mesh</span></div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> global_refinement = 0;</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">  686</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">global_refinement</a> = 0;</div>
 <div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> </div>
 <div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>  <span class="comment">// Element polynomial degree</span></div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree = 1;</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">  689</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">degree</a> = 1;</div>
 <div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
 <div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>  <span class="comment">// Whether adaptive meshing (AMR) is enabled</span></div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>  <span class="keywordtype">bool</span> has_adaptivity = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">  692</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">has_adaptivity</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span> </div>
 <div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>  <span class="comment">// Maximum global refinement for AMR</span></div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_refinement = 0;</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">  695</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">max_refinement</a> = 0;</div>
 <div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span> </div>
 <div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>  <span class="comment">// Minimum global refinement for AMR</span></div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> min_refinement = 0;</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">  698</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">min_refinement</a> = 0;</div>
 <div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span> </div>
 <div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>  <span class="comment">// The number of steps between remeshing</span></div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> remeshing_period = UINT_MAX;</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">  701</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">remeshing_period</a> = UINT_MAX;</div>
 <div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span> </div>
 <div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>  <span class="comment">// The criteria used for remeshing</span></div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>  std::vector&lt;GridRefinement::RefinementCriterion&gt; refinement_criteria;</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno"><a class="line" href="structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312">  704</a></span>  std::vector&lt;GridRefinement::RefinementCriterion&gt; <a class="code hl_variable" href="structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312">refinement_criteria</a>;</div>
 <div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>};</div>
 </div>
 <div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span> </div>
@@ -828,7 +847,7 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 <div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>  <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>()</div>
 <div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    &lt;&lt; <span class="stringliteral">&quot;Global refinement: &quot;</span> &lt;&lt; global_refinement &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    &lt;&lt; <span class="stringliteral">&quot;Degree: &quot;</span> &lt;&lt; degree &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    &lt;&lt; <span class="stringliteral">&quot;Adaptivity enabled: &quot;</span> &lt;&lt; bool_to_string(has_adaptivity) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    &lt;&lt; <span class="stringliteral">&quot;Adaptivity enabled: &quot;</span> &lt;&lt; <a class="code hl_function" href="utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a">bool_to_string</a>(has_adaptivity) &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    &lt;&lt; <span class="stringliteral">&quot;Max refinement: &quot;</span> &lt;&lt; max_refinement &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    &lt;&lt; <span class="stringliteral">&quot;Min refinement: &quot;</span> &lt;&lt; min_refinement &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    &lt;&lt; <span class="stringliteral">&quot;Remeshing period: &quot;</span> &lt;&lt; remeshing_period &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
@@ -850,58 +869,97 @@ $(document).ready(function(){initNavTree('spatial__discretization_8h_source.html
 </div>
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span> </div>
 <div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aboundary__parameters_8h_html"><div class="ttname"><a href="boundary__parameters_8h.html">boundary_parameters.h</a></div></div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
 <div class="ttc" id="aclassGridRefinement_1_1RefinementCriterion_html"><div class="ttname"><a href="classGridRefinement_1_1RefinementCriterion.html">GridRefinement::RefinementCriterion</a></div><div class="ttdef"><b>Definition</b> grid_refiner_criterion.h:80</div></div>
 <div class="ttc" id="aclassMesh_html"><div class="ttname"><a href="classMesh.html">Mesh</a></div><div class="ttdoc">Base class for mesh parameters with a generator functions.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:29</div></div>
 <div class="ttc" id="aclassMesh_html_a0793da0367691c51176aaeb796366e47"><div class="ttname"><a href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh::generate_mesh</a></div><div class="ttdeci">virtual void generate_mesh(std::shared_ptr&lt; Triangulation &gt; triangulation)</div><div class="ttdoc">Generate the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:50</div></div>
+<div class="ttc" id="aclassMesh_html_a2ed9c724e274c72038be6dfffe063067"><div class="ttname"><a href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh::Triangulation</a></div><div class="ttdeci">std::conditional_t&lt; dim==1, dealii::Triangulation&lt; dim &gt;, dealii::parallel::distributed::Triangulation&lt; dim &gt; &gt; Triangulation</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:34</div></div>
+<div class="ttc" id="aclassMesh_html_a502b4915f73249fd267ec86d522e268b"><div class="ttname"><a href="classMesh.html#a502b4915f73249fd267ec86d522e268b">Mesh::is_generated</a></div><div class="ttdeci">bool is_generated</div><div class="ttdoc">Whether the mesh has been generated.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:121</div></div>
 <div class="ttc" id="aclassMesh_html_a705b9de25b5352102c28aebebf1537ba"><div class="ttname"><a href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">Mesh::mark_periodic</a></div><div class="ttdeci">void mark_periodic(std::shared_ptr&lt; Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</div><div class="ttdoc">Mark the periodic faces of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:87</div></div>
 <div class="ttc" id="aclassMesh_html_a8cbe60ffe357767566ea03946a878234"><div class="ttname"><a href="classMesh.html#a8cbe60ffe357767566ea03946a878234">Mesh::~Mesh</a></div><div class="ttdeci">virtual ~Mesh()=default</div><div class="ttdoc">Virtual destructor.</div></div>
+<div class="ttc" id="aclassMesh_html_a98ebc908ebb4ef6d5fb3bb0bc8ec4932"><div class="ttname"><a href="classMesh.html#a98ebc908ebb4ef6d5fb3bb0bc8ec4932">Mesh::boundaries_marked</a></div><div class="ttdeci">bool boundaries_marked</div><div class="ttdoc">Whether the boundaries have been marked.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:126</div></div>
 <div class="ttc" id="aclassMesh_html_aa4afa426818752321a2f24e7ca54b7fc"><div class="ttname"><a href="classMesh.html#aa4afa426818752321a2f24e7ca54b7fc">Mesh::set_initialized</a></div><div class="ttdeci">void set_initialized()</div><div class="ttdoc">Set that the mesh parameters are initialized correctly.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:104</div></div>
 <div class="ttc" id="aclassMesh_html_aa6de87afafb64cbde9c4d559fe292b19"><div class="ttname"><a href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">Mesh::mark_boundaries</a></div><div class="ttdeci">void mark_boundaries(std::shared_ptr&lt; Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list)</div><div class="ttdoc">Mark the boundaries of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:72</div></div>
+<div class="ttc" id="aclassMesh_html_abeeace4a09c84421ab1ae23255d2a97e"><div class="ttname"><a href="classMesh.html#abeeace4a09c84421ab1ae23255d2a97e">Mesh::is_initialized</a></div><div class="ttdeci">bool is_initialized</div><div class="ttdoc">Whether the class is initialized correctly.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:116</div></div>
 <div class="ttc" id="aclassMesh_html_ae25ebef6af2022a6a13fca216b75d18e"><div class="ttname"><a href="classMesh.html#ae25ebef6af2022a6a13fca216b75d18e">Mesh::Mesh</a></div><div class="ttdeci">Mesh()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclassRectangularMesh_html"><div class="ttname"><a href="classRectangularMesh.html">RectangularMesh</a></div><div class="ttdoc">Class for rectangular mesh parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:134</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a0067cf007378cfea4337441a0df39de4"><div class="ttname"><a href="classRectangularMesh.html#a0067cf007378cfea4337441a0df39de4">RectangularMesh::get_size</a></div><div class="ttdeci">double get_size(unsigned int direction) const</div><div class="ttdoc">Get the size in a certain direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:274</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a1ca4446863546c907f934e786f88f44a"><div class="ttname"><a href="classRectangularMesh.html#a1ca4446863546c907f934e786f88f44a">RectangularMesh::mark_periodic</a></div><div class="ttdeci">void mark_periodic(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</div><div class="ttdoc">Mark the periodic faces of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:217</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a3810973c5b3cb06c069de6a0e0f153f5"><div class="ttname"><a href="classRectangularMesh.html#a3810973c5b3cb06c069de6a0e0f153f5">RectangularMesh::RectangularMesh</a></div><div class="ttdeci">RectangularMesh(dealii::Tensor&lt; 1, dim, double &gt; _size, std::vector&lt; unsigned int &gt; _subdivisions)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:138</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a46c4d23d37a9ebf0d2e2fad8b12ee4d8"><div class="ttname"><a href="classRectangularMesh.html#a46c4d23d37a9ebf0d2e2fad8b12ee4d8">RectangularMesh::get_subdivisions</a></div><div class="ttdeci">unsigned int get_subdivisions(unsigned int direction) const</div><div class="ttdoc">Get the subdivisions in a certain direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:288</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a5794eebe958cd7c4a737b83bfcf63db9"><div class="ttname"><a href="classRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">RectangularMesh::size</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, double &gt; size</div><div class="ttdoc">Domain extents in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:303</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a81d1e0498a1397529a3a2e3cf09abf4e"><div class="ttname"><a href="classRectangularMesh.html#a81d1e0498a1397529a3a2e3cf09abf4e">RectangularMesh::mark_boundaries</a></div><div class="ttdeci">void mark_boundaries(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</div><div class="ttdoc">Mark the boundaries of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:174</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_a8d1a902c46696c76ba014245003d279e"><div class="ttname"><a href="classRectangularMesh.html#a8d1a902c46696c76ba014245003d279e">RectangularMesh::subdivisions</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; subdivisions</div><div class="ttdoc">Mesh subdivisions in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:308</div></div>
+<div class="ttc" id="aclassRectangularMesh_html_aa6068adb9f2d66743fbe56e90b153239"><div class="ttname"><a href="classRectangularMesh.html#aa6068adb9f2d66743fbe56e90b153239">RectangularMesh::generate_mesh</a></div><div class="ttdeci">void generate_mesh(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation) override</div><div class="ttdoc">Generate the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:159</div></div>
 <div class="ttc" id="aclassSphericalMesh_html"><div class="ttname"><a href="classSphericalMesh.html">SphericalMesh</a></div><div class="ttdoc">Class for spherical mesh parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:316</div></div>
 <div class="ttc" id="aclassSphericalMesh_html_a1374378e479ba02b08652e979d0fea8c"><div class="ttname"><a href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">SphericalMesh::generate_mesh</a></div><div class="ttdeci">void generate_mesh(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation) override</div><div class="ttdoc">Generate the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:334</div></div>
 <div class="ttc" id="aclassSphericalMesh_html_a27aa49a738115ee172ce459d5a8beeac"><div class="ttname"><a href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">SphericalMesh::mark_periodic</a></div><div class="ttdeci">void mark_periodic(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</div><div class="ttdoc">Mark the periodic faces of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:369</div></div>
+<div class="ttc" id="aclassSphericalMesh_html_a5206977ddf19a999af06c42e1ec89994"><div class="ttname"><a href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">SphericalMesh::radius</a></div><div class="ttdeci">double radius</div><div class="ttdoc">Radius of the spherical domain.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:403</div></div>
 <div class="ttc" id="aclassSphericalMesh_html_a581ae3baf41987c8b50ce41952b036ec"><div class="ttname"><a href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">SphericalMesh::mark_boundaries</a></div><div class="ttdeci">void mark_boundaries(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</div><div class="ttdoc">Mark the boundaries of the mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:347</div></div>
 <div class="ttc" id="aclassSphericalMesh_html_a956ea745f028c4cbd8028e679628661f"><div class="ttname"><a href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">SphericalMesh::get_radius</a></div><div class="ttdeci">double get_radius() const</div><div class="ttdoc">Get the radius of the spherical domain.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:392</div></div>
 <div class="ttc" id="aclassSphericalMesh_html_ad6da88a01ab53c2630c7f1f74ead6ca1"><div class="ttname"><a href="classSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1">SphericalMesh::SphericalMesh</a></div><div class="ttdeci">SphericalMesh(double _radius)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:321</div></div>
+<div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
+<div class="ttc" id="aexceptions_8h_html"><div class="ttname"><a href="exceptions_8h.html">exceptions.h</a></div></div>
+<div class="ttc" id="agrid__refiner__criterion_8h_html"><div class="ttname"><a href="grid__refiner__criterion_8h.html">grid_refiner_criterion.h</a></div></div>
+<div class="ttc" id="anamespaceDefaults_html_abb74becde7e9e8a9bd770d7b89d2f902"><div class="ttname"><a href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a></div><div class="ttdeci">static const double mesh_tolerance</div><div class="ttdoc">Default mesh tolerance.</div><div class="ttdef"><b>Definition</b> types.h:72</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="astructBoundaryCondition_html_a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25"><div class="ttname"><a href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25">BoundaryCondition::Periodic</a></div><div class="ttdeci">@ Periodic</div><div class="ttdef"><b>Definition</b> boundary_parameters.h:43</div></div>
+<div class="ttc" id="astructBoundaryParameters_html_a74ea4180d5733ab3f623d1284343f565"><div class="ttname"><a href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters::BoundaryConditionMap</a></div><div class="ttdeci">std::map&lt; Types::Index, std::map&lt; unsigned int, BoundaryCondition &gt; &gt; BoundaryConditionMap</div><div class="ttdef"><b>Definition</b> boundary_parameters.h:153</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a093f80cd249b95e9640902bd2400b05f"><div class="ttname"><a href="structSpatialDiscretization.html#a093f80cd249b95e9640902bd2400b05f">SpatialDiscretization::set_global_refinement</a></div><div class="ttdeci">void set_global_refinement(const unsigned int &amp;_global_refinement)</div><div class="ttdoc">Set the global refinement of mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:515</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a0bf2dedefadb73930f75d145ea8e2244"><div class="ttname"><a href="structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244">SpatialDiscretization::radius</a></div><div class="ttdeci">double radius</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:680</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a158f04a989353c64db8eb0ce53ba8fcd"><div class="ttname"><a href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">SpatialDiscretization::min_refinement</a></div><div class="ttdeci">unsigned int min_refinement</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:698</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a1856ceb654034be5a9b667b98e735c43"><div class="ttname"><a href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">SpatialDiscretization::degree</a></div><div class="ttdeci">unsigned int degree</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:689</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a1da92dca8feba69b1ccb3bb6695798eb"><div class="ttname"><a href="structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb">SpatialDiscretization::type</a></div><div class="ttdeci">TriangulationType type</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:668</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a2bc7092512142e8f884b1b5c9a6950a9"><div class="ttname"><a href="structSpatialDiscretization.html#a2bc7092512142e8f884b1b5c9a6950a9">SpatialDiscretization::get_upper_bound</a></div><div class="ttdeci">const dealii::Point&lt; dim, double &gt; &amp; get_upper_bound() const</div><div class="ttdoc">Get the upper bound for the rectangular grid.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:660</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a2bca9c16b448dab3bd5f7ed212fdaafb"><div class="ttname"><a href="structSpatialDiscretization.html#a2bca9c16b448dab3bd5f7ed212fdaafb">SpatialDiscretization::set_min_refinement</a></div><div class="ttdeci">void set_min_refinement(const unsigned int &amp;_min_refinement)</div><div class="ttdoc">Set the minimum global refinement for AMR.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:587</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a3bb4652a7f5d2e5d9620b9dbfee2c786"><div class="ttname"><a href="structSpatialDiscretization.html#a3bb4652a7f5d2e5d9620b9dbfee2c786">SpatialDiscretization::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:709</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a40149bfd525bccbc27e9154fa790c312"><div class="ttname"><a href="structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312">SpatialDiscretization::refinement_criteria</a></div><div class="ttdeci">std::vector&lt; GridRefinement::RefinementCriterion &gt; refinement_criteria</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:704</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a420f7174b0846df371151201c49b331f"><div class="ttname"><a href="structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f">SpatialDiscretization::set_remeshing_period</a></div><div class="ttdeci">void set_remeshing_period(const unsigned int &amp;_remeshing_period)</div><div class="ttdoc">Set the number of steps between remeshing.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:605</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a42eb18131ab4ff7a2bfd521fd1b72414"><div class="ttname"><a href="structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414">SpatialDiscretization::get_subdivisions</a></div><div class="ttdeci">const std::vector&lt; unsigned int &gt; &amp; get_subdivisions() const</div><div class="ttdoc">Get the mesh subdivisions in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:488</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a447e695223cdcd27cf8a6325800da3a2"><div class="ttname"><a href="structSpatialDiscretization.html#a447e695223cdcd27cf8a6325800da3a2">SpatialDiscretization::set_radius</a></div><div class="ttdeci">void set_radius(const double &amp;_radius)</div><div class="ttdoc">Set the radius of the Spherical domain.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:479</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a4edd5da26a520aaa80dec2a42956d9ce"><div class="ttname"><a href="structSpatialDiscretization.html#a4edd5da26a520aaa80dec2a42956d9ce">SpatialDiscretization::set_has_adaptivity</a></div><div class="ttdeci">void set_has_adaptivity(const bool &amp;_has_adaptivity)</div><div class="ttdoc">Set whether adaptive meshing (AMR) is enabled.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:551</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a5c182ac9db199903aaec78b5c61295e4"><div class="ttname"><a href="structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4">SpatialDiscretization::size</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim, double &gt; size</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:677</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a6a8bf005b681a6f20bfabd1e2c7bfacf"><div class="ttname"><a href="structSpatialDiscretization.html#a6a8bf005b681a6f20bfabd1e2c7bfacf">SpatialDiscretization::set_degree</a></div><div class="ttdeci">void set_degree(const unsigned int &amp;_degree)</div><div class="ttdoc">Set the element polynomial degree.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:533</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a72206c43eb9d9215d6f819cca52ab79f"><div class="ttname"><a href="structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f">SpatialDiscretization::lower_bound</a></div><div class="ttdeci">dealii::Point&lt; dim, double &gt; lower_bound</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:671</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a82b6c7ff9a85a1130a721c339b9bff39"><div class="ttname"><a href="structSpatialDiscretization.html#a82b6c7ff9a85a1130a721c339b9bff39">SpatialDiscretization::get_max_refinement</a></div><div class="ttdeci">unsigned int get_max_refinement() const</div><div class="ttdoc">Get the maximum global refinement for AMR.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:560</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a8796aa79209c86cea3094aa2d0ed729d"><div class="ttname"><a href="structSpatialDiscretization.html#a8796aa79209c86cea3094aa2d0ed729d">SpatialDiscretization::set_lower_bound</a></div><div class="ttdeci">void set_lower_bound(const unsigned int &amp;direction, const double &amp;_lower_bound)</div><div class="ttdoc">Set the lower bound in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:642</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a88c0a2b03c6197a99ab4761bfb7fee91"><div class="ttname"><a href="structSpatialDiscretization.html#a88c0a2b03c6197a99ab4761bfb7fee91">SpatialDiscretization::set_size</a></div><div class="ttdeci">void set_size(const unsigned int &amp;direction, const double &amp;_size)</div><div class="ttdoc">Set the domain extents in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:461</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_a8e6c8693f7b441ea32188f332d22366b"><div class="ttname"><a href="structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b">SpatialDiscretization::upper_bound</a></div><div class="ttdeci">dealii::Point&lt; dim, double &gt; upper_bound</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:674</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a8f57dac6076fe3111dc45acd675b426a"><div class="ttname"><a href="structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a">SpatialDiscretization::get_remeshing_period</a></div><div class="ttdeci">unsigned int get_remeshing_period() const</div><div class="ttdoc">Get the number of steps between remeshing.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:596</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a903984b2c50942fe3bd7461620677a89"><div class="ttname"><a href="structSpatialDiscretization.html#a903984b2c50942fe3bd7461620677a89">SpatialDiscretization::set_max_refinement</a></div><div class="ttdeci">void set_max_refinement(const unsigned int &amp;_max_refinement)</div><div class="ttdoc">Set the maximum global refinement for AMR.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:569</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_a9db1e6e520f09f35a643beb5b02d15c7"><div class="ttname"><a href="structSpatialDiscretization.html#a9db1e6e520f09f35a643beb5b02d15c7">SpatialDiscretization::SpatialDiscretization</a></div><div class="ttdeci">SpatialDiscretization()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_aac4c2728f19ef1cd28853821c75156b4"><div class="ttname"><a href="structSpatialDiscretization.html#aac4c2728f19ef1cd28853821c75156b4">SpatialDiscretization::get_type</a></div><div class="ttdeci">TriangulationType get_type() const</div><div class="ttdoc">Get the triangulation type.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:633</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_ab4a2abd7611162024c251d1980e01320"><div class="ttname"><a href="structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320">SpatialDiscretization::remeshing_period</a></div><div class="ttdeci">unsigned int remeshing_period</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:701</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ab74292ff1361be375336600a383f3ef5"><div class="ttname"><a href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">SpatialDiscretization::get_size</a></div><div class="ttdeci">const dealii::Tensor&lt; 1, dim, double &gt; &amp; get_size() const</div><div class="ttdoc">Get the domain extents in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:452</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_ab84bf855e1c8453c2dcd01350cf607e2"><div class="ttname"><a href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">SpatialDiscretization::global_refinement</a></div><div class="ttdeci">unsigned int global_refinement</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:686</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_abb46608c90654b84560721fe15f48b4a"><div class="ttname"><a href="structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a">SpatialDiscretization::should_refine_mesh</a></div><div class="ttdeci">bool should_refine_mesh(unsigned int increment) const</div><div class="ttdoc">Whether the provided increment is a valid grid refinement step.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:443</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_abbbf8b3ea80c0c98ae5270a0fde0fe96"><div class="ttname"><a href="structSpatialDiscretization.html#abbbf8b3ea80c0c98ae5270a0fde0fe96">SpatialDiscretization::get_global_refinement</a></div><div class="ttdeci">unsigned int get_global_refinement() const</div><div class="ttdoc">Get the global refinement of mesh.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:506</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_abf72c6d2375fce0910ad157338f689bd"><div class="ttname"><a href="structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd">SpatialDiscretization::subdivisions</a></div><div class="ttdeci">std::vector&lt; unsigned int &gt; subdivisions</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:683</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ac151767ec34e9935506bb8227697f44f"><div class="ttname"><a href="structSpatialDiscretization.html#ac151767ec34e9935506bb8227697f44f">SpatialDiscretization::get_degree</a></div><div class="ttdeci">unsigned int get_degree() const</div><div class="ttdoc">Get the element polynomial degree.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:524</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ac67bc9b7907ca3acd217826e1567d03a"><div class="ttname"><a href="structSpatialDiscretization.html#ac67bc9b7907ca3acd217826e1567d03a">SpatialDiscretization::get_has_adaptivity</a></div><div class="ttdeci">bool get_has_adaptivity() const</div><div class="ttdoc">Get whether adaptive meshing (AMR) is enabled.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:542</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ac741099c1cd22298732b8856e662147e"><div class="ttname"><a href="structSpatialDiscretization.html#ac741099c1cd22298732b8856e662147e">SpatialDiscretization::get_refinement_criteria</a></div><div class="ttdeci">const std::vector&lt; GridRefinement::RefinementCriterion &gt; &amp; get_refinement_criteria() const</div><div class="ttdoc">Get the refinement criteria.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:614</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_ac94c81900825941c185e9bbb91783699"><div class="ttname"><a href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">SpatialDiscretization::max_refinement</a></div><div class="ttdeci">unsigned int max_refinement</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:695</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ace7508bea5621dd932f020c3e64ca96a"><div class="ttname"><a href="structSpatialDiscretization.html#ace7508bea5621dd932f020c3e64ca96a">SpatialDiscretization::get_lower_bound</a></div><div class="ttdeci">const dealii::Point&lt; dim, double &gt; &amp; get_lower_bound() const</div><div class="ttdoc">Get the lower bound for the rectangular grid.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:651</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_acf1bb39a8e60f8d228feaa78faac4255"><div class="ttname"><a href="structSpatialDiscretization.html#acf1bb39a8e60f8d228feaa78faac4255">SpatialDiscretization::get_radius</a></div><div class="ttdeci">double get_radius() const</div><div class="ttdoc">Get the radius of the Spherical domain.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:470</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_ad4c43c35aa366aec39c2a2d2ac80c2d6"><div class="ttname"><a href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">SpatialDiscretization::has_adaptivity</a></div><div class="ttdeci">bool has_adaptivity</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:692</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_ada3b9338ac8e4d161c800dbb8f004492"><div class="ttname"><a href="structSpatialDiscretization.html#ada3b9338ac8e4d161c800dbb8f004492">SpatialDiscretization::set_subdivisions</a></div><div class="ttdeci">void set_subdivisions(const unsigned int &amp;direction, const unsigned int &amp;_subdivisions)</div><div class="ttdoc">Set the mesh subdivisions in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:497</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_aeaf226fa4ff4ba0c0749eddae75b72b2"><div class="ttname"><a href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2">SpatialDiscretization::TriangulationType</a></div><div class="ttdeci">TriangulationType</div><div class="ttdoc">Internal enum for various triangulation types.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:417</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_aeaf226fa4ff4ba0c0749eddae75b72b2a7b8c9136735dfee820925fcef575bb92"><div class="ttname"><a href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2a7b8c9136735dfee820925fcef575bb92">SpatialDiscretization::Rectangular</a></div><div class="ttdeci">@ Rectangular</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:418</div></div>
+<div class="ttc" id="astructSpatialDiscretization_html_aeaf226fa4ff4ba0c0749eddae75b72b2aa14afe7177250de68d95f4897bd81c63"><div class="ttname"><a href="structSpatialDiscretization.html#aeaf226fa4ff4ba0c0749eddae75b72b2aa14afe7177250de68d95f4897bd81c63">SpatialDiscretization::Spherical</a></div><div class="ttdeci">@ Spherical</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:419</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_aeb9fe493daf3d92593588bfa25b86101"><div class="ttname"><a href="structSpatialDiscretization.html#aeb9fe493daf3d92593588bfa25b86101">SpatialDiscretization::get_min_refinement</a></div><div class="ttdeci">unsigned int get_min_refinement() const</div><div class="ttdoc">Get the minimum global refinement for AMR.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:578</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_aeed8092eed6dc8412e7ffb547b02a036"><div class="ttname"><a href="structSpatialDiscretization.html#aeed8092eed6dc8412e7ffb547b02a036">SpatialDiscretization::add_refinement_criteria</a></div><div class="ttdeci">void add_refinement_criteria(const GridRefinement::RefinementCriterion &amp;_refinement_criterion)</div><div class="ttdoc">Set the refinement criteria.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:623</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_afcb82b50f54ed9a6609d8332f4242e1d"><div class="ttname"><a href="structSpatialDiscretization.html#afcb82b50f54ed9a6609d8332f4242e1d">SpatialDiscretization::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:762</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
+<div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
+<div class="ttc" id="autilities_8h_html_aee6045a81583b0f6442439f3a7c06d9a"><div class="ttname"><a href="utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a">bool_to_string</a></div><div class="ttdeci">const char * bool_to_string(bool boolean)</div><div class="ttdoc">Convert bool to string.</div><div class="ttdef"><b>Definition</b> utilities.h:139</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><b>spatial_discretization.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><a class="el" href="spatial__discretization_8h.html">spatial_discretization.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

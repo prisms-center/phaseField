@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,17 +128,13 @@ $(document).ready(function(){initNavTree('structInitialConditionFile.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac5f3a08a6606a305cc633cf150c891f5" id="r_ac5f3a08a6606a305cc633cf150c891f5"><td class="memItemLeft" align="right" valign="top"><a id="ac5f3a08a6606a305cc633cf150c891f5" name="ac5f3a08a6606a305cc633cf150c891f5"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>filename</b></td></tr>
+<tr class="memitem:ac5f3a08a6606a305cc633cf150c891f5" id="r_ac5f3a08a6606a305cc633cf150c891f5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a></td></tr>
 <tr class="separator:ac5f3a08a6606a305cc633cf150c891f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac22979950186aee16fe98b2d06632262" id="r_ac22979950186aee16fe98b2d06632262"><td class="memItemLeft" align="right" valign="top"><a id="ac22979950186aee16fe98b2d06632262" name="ac22979950186aee16fe98b2d06632262"></a>
-DataFormatType&#160;</td><td class="memItemRight" valign="bottom"><b>dataset_format</b></td></tr>
+<tr class="memitem:ac22979950186aee16fe98b2d06632262" id="r_ac22979950186aee16fe98b2d06632262"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">dataset_format</a></td></tr>
 <tr class="separator:ac22979950186aee16fe98b2d06632262"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e94b523e7ae1d5d49aee48768997338" id="r_a2e94b523e7ae1d5d49aee48768997338"><td class="memItemLeft" align="right" valign="top"><a id="a2e94b523e7ae1d5d49aee48768997338" name="a2e94b523e7ae1d5d49aee48768997338"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>file_variable_names</b></td></tr>
+<tr class="memitem:a2e94b523e7ae1d5d49aee48768997338" id="r_a2e94b523e7ae1d5d49aee48768997338"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">file_variable_names</a></td></tr>
 <tr class="separator:a2e94b523e7ae1d5d49aee48768997338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1085d0ad3f23744df264a18ee789f0c9" id="r_a1085d0ad3f23744df264a18ee789f0c9"><td class="memItemLeft" align="right" valign="top"><a id="a1085d0ad3f23744df264a18ee789f0c9" name="a1085d0ad3f23744df264a18ee789f0c9"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>simulation_variable_names</b></td></tr>
+<tr class="memitem:a1085d0ad3f23744df264a18ee789f0c9" id="r_a1085d0ad3f23744df264a18ee789f0c9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9">simulation_variable_names</a></td></tr>
 <tr class="separator:a1085d0ad3f23744df264a18ee789f0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e2ff0ebb97ba5ba6cda2acf9eea3da1" id="r_a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><td class="memItemLeft" align="right" valign="top">std::array&lt; dealii::types::global_dof_index, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">n_data_points</a></td></tr>
 <tr class="separator:a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +142,48 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that store the read-in information for a single file. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac22979950186aee16fe98b2d06632262" name="ac22979950186aee16fe98b2d06632262"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac22979950186aee16fe98b2d06632262">&#9670;&#160;</a></span>dataset_format</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768">DataFormatType</a> InitialConditionFile::dataset_format</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e94b523e7ae1d5d49aee48768997338" name="a2e94b523e7ae1d5d49aee48768997338"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e94b523e7ae1d5d49aee48768997338">&#9670;&#160;</a></span>file_variable_names</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; InitialConditionFile::file_variable_names</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac5f3a08a6606a305cc633cf150c891f5" name="ac5f3a08a6606a305cc633cf150c891f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5f3a08a6606a305cc633cf150c891f5">&#9670;&#160;</a></span>filename</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string InitialConditionFile::filename</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2e2ff0ebb97ba5ba6cda2acf9eea3da1" name="a2e2ff0ebb97ba5ba6cda2acf9eea3da1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">&#9670;&#160;</a></span>n_data_points</h2>
 
@@ -154,6 +199,20 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <div class="line">    {0, 0, 0}</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a1085d0ad3f23744df264a18ee789f0c9" name="a1085d0ad3f23744df264a18ee789f0c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1085d0ad3f23744df264a18ee789f0c9">&#9670;&#160;</a></span>simulation_variable_names</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; InitialConditionFile::simulation_variable_names</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>

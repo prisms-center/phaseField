@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,11 +120,19 @@ $(document).ready(function(){initNavTree('structOutputParameters.html',''); init
 
 <p>This is the complete list of members for <a class="el" href="structOutputParameters.html">OutputParameters</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a700e8430563f86e34dbf30bda9f2fdff">get_file_name</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#aa92505cfded84622fe6150155451541d">get_file_type</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a4c7ff6a16a7b1317fb61a5838a5d710b">get_patch_subdivisions</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#aef1e7d14588566bb3ce51ac49c99c9f6">condition</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a6d76eb8d97954e7ac5a1822b4cedd1e8">file_name</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#ab0df2db42a18657d93b5f388f2117413">file_type</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a700e8430563f86e34dbf30bda9f2fdff">get_file_name</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#aa92505cfded84622fe6150155451541d">get_file_type</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a4c7ff6a16a7b1317fb61a5838a5d710b">get_patch_subdivisions</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#acac885d2a2255a775ec6754188585515">n_outputs</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a9771dee0609ee12001963d53b58f3373">output_list</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a261d1ae78ce3adf6629f4a9ec12576c4">patch_subdivisions</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a0e08b5562872c64aeee7957d0d8720a7">postprocess_and_validate</a>(const TemporalDiscretization &amp;temporal_discretization)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a8c5c30cb129285cf40f8dfa7b8cc9f8d">print_parameter_summary</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade">print_output_period</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a8c5c30cb129285cf40f8dfa7b8cc9f8d">print_parameter_summary</a>() const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a0666fa7e06fc537f358e586953b76735">print_timing_with_output</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a256f02732ef0536f31317bde1aacd6b9">set_file_name</a>(const std::string &amp;_file_name)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a97ae6f0c11b7dd328e9c1eb192c4a25f">set_file_type</a>(const std::string &amp;_file_type)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a6269d63101d0b9857afe682340fd06a9">set_n_outputs</a>(const unsigned int &amp;_n_outputs)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -127,6 +142,7 @@ $(document).ready(function(){initNavTree('structOutputParameters.html',''); init
   <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a941d065005c80ccb3b2110fab85e951a">set_print_timing_with_output</a>(const bool &amp;_print_timing_with_output)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#ae911e84b256a1ea163b6bb8d8b8d698a">set_user_output_list</a>(const std::vector&lt; int &gt; &amp;_user_output_list)</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structOutputParameters.html#a9dc9e90a0a6db418605ee918d6ba102d">should_output</a>(unsigned int increment) const</td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structOutputParameters.html#a33b00e7cf76a6d7694df79fa94aff1a5">user_output_list</a></td><td class="entry"><a class="el" href="structOutputParameters.html">OutputParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

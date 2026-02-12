@@ -18,5 +18,13 @@ var classSequentialSolver =
     [ "solve", "classSequentialSolver.html#a54268dc670409f7dfe15a0616e748b9c", null ],
     [ "solve_explicit_solver", "classSequentialSolver.html#ae01de9b8689ca49c350788d50f8a8378", null ],
     [ "solve_linear_solver", "classSequentialSolver.html#aaba1d33c22d4deb4e78bf1579e8459bc", null ],
-    [ "solve_linear_solver", "classSequentialSolver.html#ae88bfc68d0ed3928753f0f10764d7c74", null ]
+    [ "solve_linear_solver", "classSequentialSolver.html#ae88bfc68d0ed3928753f0f10764d7c74", null ],
+    [ "global_to_local_solution", "classSequentialSolver.html#a299105cc97d6cd0ae7f701ab0c78fa0d", null ],
+    [ "gmg_solvers", "classSequentialSolver.html#a9ad6e1a70fd5c2f8050e023208e49ed3", null ],
+    [ "identity_solvers", "classSequentialSolver.html#ac6aca5d1fadd1799334133e3f27ae9e1", null ],
+    [ "new_solution_subset", "classSequentialSolver.html#a6d1e25387a923dbeffc95cae47fe3ffa", null ],
+    [ "solution_subset", "classSequentialSolver.html#adfd546e1022a840519668606cb3e9162", null ],
+    [ "subset_attributes_list", "classSequentialSolver.html#a3c952302dd4dbe36db104acfd7e048a5", null ],
+    [ "system_matrix", "classSequentialSolver.html#ab7ce5f8fc3c81207b047a3ec30739ad4", null ],
+    [ "update_system_matrix", "classSequentialSolver.html#a7168f5fbafc0ab027f168b53a4f237d5", null ]
 ];

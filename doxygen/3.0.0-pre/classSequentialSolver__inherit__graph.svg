@@ -98,7 +98,7 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classSolverBase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="144,-102 0,-102 0,-72 144,-72 144,-102"/>
+<polygon fill="white" stroke="#666666" points="144,-102 0,-102 0,-72 144,-72 144,-102"/>
 <text text-anchor="start" x="8" y="-90" font-family="Helvetica,sans-Serif" font-size="10.00">SolverBase&lt; dim, degree,</text>
 <text text-anchor="middle" x="72" y="-79" font-family="Helvetica,sans-Serif" font-size="10.00"> number &gt;</text>
 </a>

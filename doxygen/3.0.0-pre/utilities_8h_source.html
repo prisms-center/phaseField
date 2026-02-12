@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('utilities_8h_source.html',''); initRes
   <div class="headertitle"><div class="title">utilities.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="utilities_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -132,31 +139,36 @@ $(document).ready(function(){initNavTree('utilities_8h_source.html',''); initRes
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;array&gt;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Real, <span class="keyword">typename</span> OtherReal&gt;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">inline</span> Real</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>pmod(<span class="keyword">const</span> Real &amp;value, <span class="keyword">const</span> OtherReal &amp;modulus)</div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">   26</a></span><a class="code hl_function" href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">pmod</a>(<span class="keyword">const</span> Real &amp;value, <span class="keyword">const</span> OtherReal &amp;modulus)</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">using </span>std::fmod;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> fmod(fmod(value, modulus) + modulus, modulus);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
+</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> voigt_tensor_size = (2 * dim) - 1 + (dim / 3);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">   36</a></span><span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a> = (2 * dim) - 1 + (dim / 3);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>compute_stress(<span class="keyword">const</span> dealii::Tensor&lt;2, voigt_tensor_size&lt;dim&gt;, T&gt; &amp;elasticity_tensor,</div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="utilities_8h.html#a9f87f41d5e8d087ca7181c79897c4dd8">   44</a></span><a class="code hl_function" href="utilities_8h.html#a9f87f41d5e8d087ca7181c79897c4dd8">compute_stress</a>(<span class="keyword">const</span> dealii::Tensor&lt;2, voigt_tensor_size&lt;dim&gt;, T&gt; &amp;elasticity_tensor,</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>               <span class="keyword">const</span> dealii::Tensor&lt;1, voigt_tensor_size&lt;dim&gt;, T&gt; &amp;strain,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>               dealii::Tensor&lt;1, voigt_tensor_size&lt;dim&gt;, T&gt;       &amp;stress)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  stress = elasticity_tensor * strain;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>compute_stress(<span class="keyword">const</span> dealii::Tensor&lt;2, voigt_tensor_size&lt;dim&gt;, T&gt; &amp;elasticity_tensor,</div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="utilities_8h.html#aa3b4434209ffa501043cb8c3ad650e65">   57</a></span><a class="code hl_function" href="utilities_8h.html#a9f87f41d5e8d087ca7181c79897c4dd8">compute_stress</a>(<span class="keyword">const</span> dealii::Tensor&lt;2, voigt_tensor_size&lt;dim&gt;, T&gt; &amp;elasticity_tensor,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>               <span class="keyword">const</span> dealii::Tensor&lt;2, dim, T&gt;                    &amp;strain,</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>               dealii::Tensor&lt;2, dim, T&gt;                          &amp;stress)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
@@ -222,23 +234,29 @@ $(document).ready(function(){initNavTree('utilities_8h_source.html',''); initRes
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      stress[xx_dir][xx_dir] = elasticity_tensor[xx_dir][xx_dir] * strain[xx_dir][xx_dir];</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
+</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword">inline</span> std::string</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>strip_whitespace(<span class="keyword">const</span> std::string &amp;_text)</div>
+<div class="foldopen" id="foldopen00128" data-start="{" data-end="}">
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2">  128</a></span><a class="code hl_function" href="utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2">strip_whitespace</a>(<span class="keyword">const</span> std::string &amp;_text)</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  std::string text = _text;</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  boost::range::remove_erase_if(text, ::isspace);</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">return</span> text;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>bool_to_string(<span class="keywordtype">bool</span> <span class="keywordtype">boolean</span>)</div>
+<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a">  139</a></span><a class="code hl_function" href="utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a">bool_to_string</a>(<span class="keywordtype">bool</span> <span class="keywordtype">boolean</span>)</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>{</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keywordflow">return</span> <span class="keywordtype">boolean</span> ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>;</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>}</div>
+</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">inline</span> std::string</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)</div>
+<div class="foldopen" id="foldopen00148" data-start="{" data-end="}">
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="utilities_8h.html#a480bbcaf894aee490f6ae4e1f5a798db">  148</a></span><a class="code hl_function" href="utilities_8h.html#a480bbcaf894aee490f6ae4e1f5a798db">eval_flags_to_string</a>(dealii::EvaluationFlags::EvaluationFlags flag)</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>{</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  std::string result;</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
@@ -270,10 +288,12 @@ $(document).ready(function(){initNavTree('utilities_8h_source.html',''); initRes
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keywordflow">return</span> result;</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>}</div>
+</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keyword">inline</span> std::vector&lt;number&gt;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>dealii_point_to_vector(<span class="keyword">const</span> dealii::Point&lt;dim, number&gt; &amp;point)</div>
+<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">  183</a></span><a class="code hl_function" href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector</a>(<span class="keyword">const</span> dealii::Point&lt;dim, number&gt; &amp;point)</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>{</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">static_assert</span>(dim &lt; 4, <span class="stringliteral">&quot;We only allow 3 space dimensions&quot;</span>);</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
@@ -290,16 +310,26 @@ $(document).ready(function(){initNavTree('utilities_8h_source.html',''); initRes
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keywordflow">return</span> vec;</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>}</div>
+</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">#include &lt;prismspf/utilities/vectorized_operations.h&gt;</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="preprocessor">#include &lt;<a class="code" href="vectorized__operations_8h.html">prismspf/utilities/vectorized_operations.h</a>&gt;</span></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="autilities_8h_html_a235abb5b94d2d1f594561b4ee4f061e2"><div class="ttname"><a href="utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2">strip_whitespace</a></div><div class="ttdeci">std::string strip_whitespace(const std::string &amp;_text)</div><div class="ttdoc">Remove whitespace from strings.</div><div class="ttdef"><b>Definition</b> utilities.h:128</div></div>
+<div class="ttc" id="autilities_8h_html_a480bbcaf894aee490f6ae4e1f5a798db"><div class="ttname"><a href="utilities_8h.html#a480bbcaf894aee490f6ae4e1f5a798db">eval_flags_to_string</a></div><div class="ttdeci">std::string eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)</div><div class="ttdoc">Convert evaluation flags to string.</div><div class="ttdef"><b>Definition</b> utilities.h:148</div></div>
+<div class="ttc" id="autilities_8h_html_a5e53f5d41b901d9cb616e0d90c5eb8c0"><div class="ttname"><a href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector</a></div><div class="ttdeci">std::vector&lt; number &gt; dealii_point_to_vector(const dealii::Point&lt; dim, number &gt; &amp;point)</div><div class="ttdef"><b>Definition</b> utilities.h:183</div></div>
+<div class="ttc" id="autilities_8h_html_a601988aed6d84cf87f8a7a7bd9981df2"><div class="ttname"><a href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a></div><div class="ttdeci">constexpr unsigned int voigt_tensor_size</div><div class="ttdoc">Voigt notation index range.</div><div class="ttdef"><b>Definition</b> utilities.h:36</div></div>
+<div class="ttc" id="autilities_8h_html_a9f87f41d5e8d087ca7181c79897c4dd8"><div class="ttname"><a href="utilities_8h.html#a9f87f41d5e8d087ca7181c79897c4dd8">compute_stress</a></div><div class="ttdeci">void compute_stress(const dealii::Tensor&lt; 2, voigt_tensor_size&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, voigt_tensor_size&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, voigt_tensor_size&lt; dim &gt;, T &gt; &amp;stress)</div><div class="ttdoc">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided pa...</div><div class="ttdef"><b>Definition</b> utilities.h:44</div></div>
+<div class="ttc" id="autilities_8h_html_aa5fa44cb376bf1e32d84a5bf6b51ade3"><div class="ttname"><a href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">pmod</a></div><div class="ttdeci">PRISMS_PF_BEGIN_NAMESPACE Real pmod(const Real &amp;value, const OtherReal &amp;modulus)</div><div class="ttdoc">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negati...</div><div class="ttdef"><b>Definition</b> utilities.h:26</div></div>
+<div class="ttc" id="autilities_8h_html_aee6045a81583b0f6442439f3a7c06d9a"><div class="ttname"><a href="utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a">bool_to_string</a></div><div class="ttdeci">const char * bool_to_string(bool boolean)</div><div class="ttdoc">Convert bool to string.</div><div class="ttdef"><b>Definition</b> utilities.h:139</div></div>
+<div class="ttc" id="avectorized__operations_8h_html"><div class="ttname"><a href="vectorized__operations_8h.html">vectorized_operations.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><b>utilities.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><a class="el" href="utilities_8h.html">utilities.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

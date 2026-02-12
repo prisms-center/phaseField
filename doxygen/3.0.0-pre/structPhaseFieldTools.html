@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,15 +128,33 @@ $(document).ready(function(){initNavTree('structPhaseFieldTools.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac1539b32070dd5207aada2b83009fca4" id="r_ac1539b32070dd5207aada2b83009fca4"><td class="memItemLeft" align="right" valign="top"><a id="ac1539b32070dd5207aada2b83009fca4" name="ac1539b32070dd5207aada2b83009fca4"></a>
-std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>nuclei_list</b></td></tr>
-<tr class="memdesc:ac1539b32070dd5207aada2b83009fca4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structNucleus.html" title="This class contains mutable utilities for phase field problems.">Nucleus</a> list. <br /></td></tr>
+<tr class="memitem:ac1539b32070dd5207aada2b83009fca4" id="r_ac1539b32070dd5207aada2b83009fca4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPhaseFieldTools.html#ac1539b32070dd5207aada2b83009fca4">nuclei_list</a></td></tr>
+<tr class="memdesc:ac1539b32070dd5207aada2b83009fca4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structNucleus.html" title="This class contains mutable utilities for phase field problems.">Nucleus</a> list.  <br /></td></tr>
 <tr class="separator:ac1539b32070dd5207aada2b83009fca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct PhaseFieldTools&lt; dim &gt;</div><p>This class contains mutable utilities for phase field problems. </p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac1539b32070dd5207aada2b83009fca4" name="ac1539b32070dd5207aada2b83009fca4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1539b32070dd5207aada2b83009fca4">&#9670;&#160;</a></span>nuclei_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structNucleus.html">Nucleus</a>&lt;dim&gt; &gt; <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt;::nuclei_list</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="structNucleus.html" title="This class contains mutable utilities for phase field problems.">Nucleus</a> list. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="pde__operator_8h_source.html">pde_operator.h</a></li>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="phase__field__tools_8h_source.html">phase_field_tools.h</a></li>
 </ul>

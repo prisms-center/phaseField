@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,18 +122,77 @@ $(document).ready(function(){initNavTree('namespacedealii.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a02324c11b5b6f4cc5af53c8c8e15245a" id="r_a02324c11b5b6f4cc5af53c8c8e15245a"><td class="memTemplParams" colspan="2"><a id="a02324c11b5b6f4cc5af53c8c8e15245a" name="a02324c11b5b6f4cc5af53c8c8e15245a"></a>
-template&lt;typename number , typename other_number &gt; </td></tr>
-<tr class="memitem:a02324c11b5b6f4cc5af53c8c8e15245a"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>fmod</b> (const dealii::VectorizedArray&lt; number &gt; &amp;value, const other_number &amp;modulus)</td></tr>
+<tr class="memitem:a02324c11b5b6f4cc5af53c8c8e15245a" id="r_a02324c11b5b6f4cc5af53c8c8e15245a"><td class="memTemplParams" colspan="2">template&lt;typename number , typename other_number &gt; </td></tr>
+<tr class="memitem:a02324c11b5b6f4cc5af53c8c8e15245a"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedealii.html#a02324c11b5b6f4cc5af53c8c8e15245a">fmod</a> (const dealii::VectorizedArray&lt; number &gt; &amp;value, const other_number &amp;modulus)</td></tr>
 <tr class="separator:a02324c11b5b6f4cc5af53c8c8e15245a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac250781333ff0fc03c9a2a504db64f34" id="r_ac250781333ff0fc03c9a2a504db64f34"><td class="memTemplParams" colspan="2"><a id="ac250781333ff0fc03c9a2a504db64f34" name="ac250781333ff0fc03c9a2a504db64f34"></a>
-template&lt;typename number , typename other_number &gt; </td></tr>
-<tr class="memitem:ac250781333ff0fc03c9a2a504db64f34"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>fmod</b> (const dealii::VectorizedArray&lt; number &gt; &amp;value, const dealii::VectorizedArray&lt; other_number &gt; &amp;modulus)</td></tr>
+<tr class="memitem:ac250781333ff0fc03c9a2a504db64f34" id="r_ac250781333ff0fc03c9a2a504db64f34"><td class="memTemplParams" colspan="2">template&lt;typename number , typename other_number &gt; </td></tr>
+<tr class="memitem:ac250781333ff0fc03c9a2a504db64f34"><td class="memTemplItemLeft" align="right" valign="top">dealii::VectorizedArray&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedealii.html#ac250781333ff0fc03c9a2a504db64f34">fmod</a> (const dealii::VectorizedArray&lt; number &gt; &amp;value, const dealii::VectorizedArray&lt; other_number &gt; &amp;modulus)</td></tr>
 <tr class="separator:ac250781333ff0fc03c9a2a504db64f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file provides some operations on dealii::VectorizedArray that are not provided by dealii </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ac250781333ff0fc03c9a2a504db64f34" name="ac250781333ff0fc03c9a2a504db64f34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac250781333ff0fc03c9a2a504db64f34">&#9670;&#160;</a></span>fmod() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename number , typename other_number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::VectorizedArray&lt; number &gt; dealii::fmod </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; other_number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>modulus</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02324c11b5b6f4cc5af53c8c8e15245a" name="a02324c11b5b6f4cc5af53c8c8e15245a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02324c11b5b6f4cc5af53c8c8e15245a">&#9670;&#160;</a></span>fmod() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename number , typename other_number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::VectorizedArray&lt; number &gt; dealii::fmod </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::VectorizedArray&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const other_number &amp;&#160;</td>
+          <td class="paramname"><em>modulus</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,7 +114,7 @@ $(document).ready(function(){initNavTree('functions_func_d.html',''); initResiza
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented functions with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all functions with links to the classes they belong to:</div>
 
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
 <li>declare_bc_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a3db85f85fb8ab9ffa214aa00ceb4733e">InputFileReader</a></li>
@@ -124,6 +131,7 @@ $(document).ready(function(){initNavTree('functions_func_d.html',''); initResiza
 <li>declare_pinning_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a6e19a40fc15e1b6a86243e4af54c06e6">InputFileReader</a></li>
 <li>declare_solver_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a19f9a717da4104fb30e7405d2414dd4e">InputFileReader</a></li>
 <li>declare_time_discretization()&#160;:&#160;<a class="el" href="classInputFileReader.html#a171bba6b1bf7077d07b8eb76d0f91909">InputFileReader</a></li>
+<li>determine_field_solve_type()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a7ad053972c2c558d7bfaf1adb2ea7f5f">VariableAttributes</a></li>
 <li>do_adaptive_refinement()&#160;:&#160;<a class="el" href="classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c">GridRefiner&lt; dim, degree, number &gt;</a></li>
 <li>DofHandler()&#160;:&#160;<a class="el" href="classDofHandler.html#a155b8c37aaa1f22725a6f4c69e64e7fc">DofHandler&lt; dim &gt;</a></li>
 </ul>

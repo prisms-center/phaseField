@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,18 +122,18 @@ $(document).ready(function(){initNavTree('sequential__linear__solver_8h_source.h
   <div class="headertitle"><div class="title">sequential_linear_solver.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="sequential__linear__solver_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/solvers/sequential_solver.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="sequential__solver_8h.html">prismspf/solvers/sequential_solver.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">class </span><a class="code hl_class" href="classSolverContext.html">SolverContext</a>;</div>
@@ -138,7 +145,7 @@ $(document).ready(function(){initNavTree('sequential__linear__solver_8h_source.h
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classSequentialLinearSolver.html">SequentialLinearSolver</a>(</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">const</span> <a class="code hl_class" href="classSolverContext.html">SolverContext&lt;dim, degree, number&gt;</a> &amp;<a class="code hl_function" href="classSequentialLinearSolver.html#abadfb1c954be358a79e040347b7769e4">_solver_context</a>,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    Types::Index                              <a class="code hl_function" href="classSequentialLinearSolver.html#abadfb1c954be358a79e040347b7769e4">_solve_priority</a> = 0);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>                              <a class="code hl_function" href="classSequentialLinearSolver.html#abadfb1c954be358a79e040347b7769e4">_solve_priority</a> = 0);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classSequentialLinearSolver.html#a2984feebd34b462ea0944ed8e9316fa4">   34</a></span>  <a class="code hl_function" href="classSequentialLinearSolver.html#a2984feebd34b462ea0944ed8e9316fa4">~SequentialLinearSolver</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
@@ -179,12 +186,16 @@ $(document).ready(function(){initNavTree('sequential__linear__solver_8h_source.h
 <div class="ttc" id="aclassSequentialLinearSolver_html_abadfb1c954be358a79e040347b7769e4"><div class="ttname"><a href="classSequentialLinearSolver.html#abadfb1c954be358a79e040347b7769e4">SequentialLinearSolver::reinit</a></div><div class="ttdeci">void reinit() override</div><div class="ttdoc">Reinitialize the solver.</div><div class="ttdef"><b>Definition</b> sequential_linear_solver.cc:47</div></div>
 <div class="ttc" id="aclassSequentialSolver_html"><div class="ttname"><a href="classSequentialSolver.html">SequentialSolver</a></div><div class="ttdef"><b>Definition</b> sequential_solver.h:32</div></div>
 <div class="ttc" id="aclassSolverContext_html"><div class="ttname"><a href="classSolverContext.html">SolverContext</a></div><div class="ttdoc">This class provides context for a solver with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> solver_context.h:36</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
+<div class="ttc" id="asequential__solver_8h_html"><div class="ttname"><a href="sequential__solver_8h.html">sequential_solver.h</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html">solvers</a></li><li class="navelem"><b>sequential_linear_solver.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html">solvers</a></li><li class="navelem"><a class="el" href="sequential__linear__solver_8h.html">sequential_linear_solver.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('structLinearSolveParameters.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structLinearSolveParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LinearSolveParameters Struct Reference</div></div>
 </div><!--header-->
@@ -121,38 +129,262 @@ $(document).ready(function(){initNavTree('structLinearSolveParameters.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a16481c3ed4e7252395ec7081ea9903c3" id="r_a16481c3ed4e7252395ec7081ea9903c3"><td class="memItemLeft" align="right" valign="top"><a id="a16481c3ed4e7252395ec7081ea9903c3" name="a16481c3ed4e7252395ec7081ea9903c3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> ()</td></tr>
-<tr class="memdesc:a16481c3ed4e7252395ec7081ea9903c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a16481c3ed4e7252395ec7081ea9903c3" id="r_a16481c3ed4e7252395ec7081ea9903c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#a16481c3ed4e7252395ec7081ea9903c3">postprocess_and_validate</a> ()</td></tr>
+<tr class="memdesc:a16481c3ed4e7252395ec7081ea9903c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a16481c3ed4e7252395ec7081ea9903c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab17d374849a9c2d5596de791fd8b25fb" id="r_ab17d374849a9c2d5596de791fd8b25fb"><td class="memItemLeft" align="right" valign="top"><a id="ab17d374849a9c2d5596de791fd8b25fb" name="ab17d374849a9c2d5596de791fd8b25fb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:ab17d374849a9c2d5596de791fd8b25fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:ab17d374849a9c2d5596de791fd8b25fb" id="r_ab17d374849a9c2d5596de791fd8b25fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#ab17d374849a9c2d5596de791fd8b25fb">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:ab17d374849a9c2d5596de791fd8b25fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:ab17d374849a9c2d5596de791fd8b25fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5c131bfabc56be9b91897fb9714e824" id="r_aa5c131bfabc56be9b91897fb9714e824"><td class="memItemLeft" align="right" valign="top"><a id="aa5c131bfabc56be9b91897fb9714e824" name="aa5c131bfabc56be9b91897fb9714e824"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_linear_solve_parameters</b> () const</td></tr>
-<tr class="memdesc:aa5c131bfabc56be9b91897fb9714e824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have any linear solve parameters. <br /></td></tr>
+<tr class="memitem:aa5c131bfabc56be9b91897fb9714e824" id="r_aa5c131bfabc56be9b91897fb9714e824"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#aa5c131bfabc56be9b91897fb9714e824">has_linear_solve_parameters</a> () const</td></tr>
+<tr class="memdesc:aa5c131bfabc56be9b91897fb9714e824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have any linear solve parameters.  <br /></td></tr>
 <tr class="separator:aa5c131bfabc56be9b91897fb9714e824"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1279e3f8e228b346b9084dc9866c9c13" id="r_a1279e3f8e228b346b9084dc9866c9c13"><td class="memItemLeft" align="right" valign="top"><a id="a1279e3f8e228b346b9084dc9866c9c13" name="a1279e3f8e228b346b9084dc9866c9c13"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_linear_solve_parameters</b> (unsigned int field_index) const</td></tr>
-<tr class="memdesc:a1279e3f8e228b346b9084dc9866c9c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have linear solve parameters for a given field. <br /></td></tr>
+<tr class="memitem:a1279e3f8e228b346b9084dc9866c9c13" id="r_a1279e3f8e228b346b9084dc9866c9c13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#a1279e3f8e228b346b9084dc9866c9c13">has_linear_solve_parameters</a> (unsigned int field_index) const</td></tr>
+<tr class="memdesc:a1279e3f8e228b346b9084dc9866c9c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have linear solve parameters for a given field.  <br /></td></tr>
 <tr class="separator:a1279e3f8e228b346b9084dc9866c9c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add587294b08960845a02c1ff68446642" id="r_add587294b08960845a02c1ff68446642"><td class="memItemLeft" align="right" valign="top"><a id="add587294b08960845a02c1ff68446642" name="add587294b08960845a02c1ff68446642"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_linear_solve_parameters</b> (unsigned int field_index, const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;linear_solver_parameters)</td></tr>
-<tr class="memdesc:add587294b08960845a02c1ff68446642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the linear solve parameters for a given field. <br /></td></tr>
+<tr class="memitem:add587294b08960845a02c1ff68446642" id="r_add587294b08960845a02c1ff68446642"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#add587294b08960845a02c1ff68446642">set_linear_solve_parameters</a> (unsigned int field_index, const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;linear_solver_parameters)</td></tr>
+<tr class="memdesc:add587294b08960845a02c1ff68446642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the linear solve parameters for a given field.  <br /></td></tr>
 <tr class="separator:add587294b08960845a02c1ff68446642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7a51c3522a517574c31e8b2816766d6" id="r_ad7a51c3522a517574c31e8b2816766d6"><td class="memItemLeft" align="right" valign="top"><a id="ad7a51c3522a517574c31e8b2816766d6" name="ad7a51c3522a517574c31e8b2816766d6"></a>
-const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_linear_solve_parameters</b> (unsigned int field_index) const</td></tr>
-<tr class="memdesc:ad7a51c3522a517574c31e8b2816766d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the linear solve parameters for a given field. <br /></td></tr>
+<tr class="memitem:ad7a51c3522a517574c31e8b2816766d6" id="r_ad7a51c3522a517574c31e8b2816766d6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#ad7a51c3522a517574c31e8b2816766d6">get_linear_solve_parameters</a> (unsigned int field_index) const</td></tr>
+<tr class="memdesc:ad7a51c3522a517574c31e8b2816766d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the linear solve parameters for a given field.  <br /></td></tr>
 <tr class="separator:ad7a51c3522a517574c31e8b2816766d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cf8ea2e7ed79bba9950aaadcf6cada9" id="r_a1cf8ea2e7ed79bba9950aaadcf6cada9"><td class="memItemLeft" align="right" valign="top"><a id="a1cf8ea2e7ed79bba9950aaadcf6cada9" name="a1cf8ea2e7ed79bba9950aaadcf6cada9"></a>
-const std::map&lt; unsigned int, <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_linear_solve_parameters</b> () const</td></tr>
-<tr class="memdesc:a1cf8ea2e7ed79bba9950aaadcf6cada9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the linear solve parameters for a given field. <br /></td></tr>
+<tr class="memitem:a1cf8ea2e7ed79bba9950aaadcf6cada9" id="r_a1cf8ea2e7ed79bba9950aaadcf6cada9"><td class="memItemLeft" align="right" valign="top">const std::map&lt; unsigned int, <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#a1cf8ea2e7ed79bba9950aaadcf6cada9">get_linear_solve_parameters</a> () const</td></tr>
+<tr class="memdesc:a1cf8ea2e7ed79bba9950aaadcf6cada9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the linear solve parameters for a given field.  <br /></td></tr>
 <tr class="separator:a1cf8ea2e7ed79bba9950aaadcf6cada9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a3431e714395fc2548f984a231b271135" id="r_a3431e714395fc2548f984a231b271135"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolveParameters.html#a3431e714395fc2548f984a231b271135">linear_solve</a></td></tr>
+<tr class="separator:a3431e714395fc2548f984a231b271135"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds linear solver parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1cf8ea2e7ed79bba9950aaadcf6cada9" name="a1cf8ea2e7ed79bba9950aaadcf6cada9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cf8ea2e7ed79bba9950aaadcf6cada9">&#9670;&#160;</a></span>get_linear_solve_parameters() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt; unsigned int, <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &gt; &amp; LinearSolveParameters::get_linear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the linear solve parameters for a given field. </p>
+
+</div>
+</div>
+<a id="ad7a51c3522a517574c31e8b2816766d6" name="ad7a51c3522a517574c31e8b2816766d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7a51c3522a517574c31e8b2816766d6">&#9670;&#160;</a></span>get_linear_solve_parameters() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp; LinearSolveParameters::get_linear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>field_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the linear solve parameters for a given field. </p>
+
+</div>
+</div>
+<a id="aa5c131bfabc56be9b91897fb9714e824" name="aa5c131bfabc56be9b91897fb9714e824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5c131bfabc56be9b91897fb9714e824">&#9670;&#160;</a></span>has_linear_solve_parameters() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LinearSolveParameters::has_linear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether we have any linear solve parameters. </p>
+
+</div>
+</div>
+<a id="a1279e3f8e228b346b9084dc9866c9c13" name="a1279e3f8e228b346b9084dc9866c9c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1279e3f8e228b346b9084dc9866c9c13">&#9670;&#160;</a></span>has_linear_solve_parameters() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LinearSolveParameters::has_linear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>field_index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether we have linear solve parameters for a given field. </p>
+
+</div>
+</div>
+<a id="a16481c3ed4e7252395ec7081ea9903c3" name="a16481c3ed4e7252395ec7081ea9903c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16481c3ed4e7252395ec7081ea9903c3">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LinearSolveParameters::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="ab17d374849a9c2d5596de791fd8b25fb" name="ab17d374849a9c2d5596de791fd8b25fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab17d374849a9c2d5596de791fd8b25fb">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LinearSolveParameters::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="add587294b08960845a02c1ff68446642" name="add587294b08960845a02c1ff68446642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add587294b08960845a02c1ff68446642">&#9670;&#160;</a></span>set_linear_solve_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LinearSolveParameters::set_linear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>field_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> &amp;&#160;</td>
+          <td class="paramname"><em>linear_solver_parameters</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the linear solve parameters for a given field. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3431e714395fc2548f984a231b271135" name="a3431e714395fc2548f984a231b271135"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3431e714395fc2548f984a231b271135">&#9670;&#160;</a></span>linear_solve</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;unsigned int, <a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a>&gt; LinearSolveParameters::linear_solve</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="linear__solve__parameters_8h_source.html">linear_solve_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

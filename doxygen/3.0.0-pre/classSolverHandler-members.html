@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -118,10 +125,11 @@ $(document).ready(function(){initNavTree('classSolverHandler.html',''); initResi
   <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#a8970e8feab9014e26d376a9789495941">operator=</a>(SolverHandler &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#a8dd37f53dac7526dbe7b59e0d9d60bb7">reinit</a>()</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#a048f43519954a048008839f412cf9b26">solve</a>(unsigned int increment, bool update_postprocessed)</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#a5fee07b313dea4437c2c6501a3148a77">SolverHandler</a>(const SolverContext&lt; dim, degree, number &gt; &amp;_solver_context)</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#a58e9ea311c002d1e8124d6bd7c75c95a">SolverHandler</a>(const SolverHandler &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#a38d3abedf32e855260d1722d35386741">SolverHandler</a>(SolverHandler &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#ac54efcb0eae6fa0a6725e14e3e76ac5f">~SolverHandler</a>()=default</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#a0c31fe7f88f3baeb8b620db39fb27068">solve_blocks</a></td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#a5fee07b313dea4437c2c6501a3148a77">SolverHandler</a>(const SolverContext&lt; dim, degree, number &gt; &amp;_solver_context)</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#a58e9ea311c002d1e8124d6bd7c75c95a">SolverHandler</a>(const SolverHandler &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolverHandler.html#a38d3abedf32e855260d1722d35386741">SolverHandler</a>(SolverHandler &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolverHandler.html#ac54efcb0eae6fa0a6725e14e3e76ac5f">~SolverHandler</a>()=default</td><td class="entry"><a class="el" href="classSolverHandler.html">SolverHandler&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

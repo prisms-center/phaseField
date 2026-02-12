@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,12 +120,12 @@ $(document).ready(function(){initNavTree('classNucleusRefinementFunction.html','
 
 <p>This is the complete list of members for <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>CellIterator</b> typedef (defined in <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>flag</b>(const CellIterator &amp;cell, const TemporalDiscretization &amp;time_info) const override (defined in <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>flag</b>(const dealii::Point&lt; dim &gt; &amp;point, const TemporalDiscretization &amp;time_info) const (defined in <a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>nuc_params</b> (defined in <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>nuclei_list</b> (defined in <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>NucleusRefinementFunction</b>(const NucleationParameters &amp;_nuc_params, const std::vector&lt; Nucleus&lt; dim &gt; &gt; &amp;_nuclei_list) (defined in <a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a>)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNucleusRefinementFunction.html#ad30139a1c1fbcb5b1a107d8ca97e9bde">CellIterator</a> typedef</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNucleusRefinementFunction.html#a225c48e1905fc5e419313687272f0ccf">flag</a>(const CellIterator &amp;cell, const TemporalDiscretization &amp;time_info) const override</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classCellMarkerBase.html#ae433d1bba50536a1723a3aa4a31ec493">CellMarkerBase::flag</a>(const dealii::Point&lt; dim &gt; &amp;point, const TemporalDiscretization &amp;time_info) const</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNucleusRefinementFunction.html#ab80a58ea6514bd397a0055e55abe83d3">nuc_params</a></td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNucleusRefinementFunction.html#a596fc87a41cde78a171b23d80913c3cc">nuclei_list</a></td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNucleusRefinementFunction.html#a6e8be28b9b15c7071a7b18b21af465f6">NucleusRefinementFunction</a>(const NucleationParameters &amp;_nuc_params, const std::vector&lt; Nucleus&lt; dim &gt; &gt; &amp;_nuclei_list)</td><td class="entry"><a class="el" href="classNucleusRefinementFunction.html">NucleusRefinementFunction&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classCellMarkerBase.html#a10ba574bf0a796968941e952238be991">~CellMarkerBase</a>()=default</td><td class="entry"><a class="el" href="classCellMarkerBase.html">CellMarkerBase&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

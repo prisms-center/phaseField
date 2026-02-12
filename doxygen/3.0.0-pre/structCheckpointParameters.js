@@ -6,5 +6,10 @@ var structCheckpointParameters =
     [ "set_load_from_checkpoint", "structCheckpointParameters.html#a0f847189cfd6739f5e40cfe818094a9d", null ],
     [ "set_n_checkpoints", "structCheckpointParameters.html#a1b3720d0e0f92d49dd15f5942201f23a", null ],
     [ "set_user_checkpoint_list", "structCheckpointParameters.html#a889529aa8259fde37c1e4c810746a3ec", null ],
-    [ "should_checkpoint", "structCheckpointParameters.html#ad8f3a01402a29419eaa4fa5e13d56611", null ]
+    [ "should_checkpoint", "structCheckpointParameters.html#ad8f3a01402a29419eaa4fa5e13d56611", null ],
+    [ "checkpoint_list", "structCheckpointParameters.html#a078b90a817bbc50ddfa40d0718f4af4c", null ],
+    [ "condition", "structCheckpointParameters.html#a10c03046ef76e38bb4cadaf43222fdbe", null ],
+    [ "load_from_checkpoint", "structCheckpointParameters.html#adfb01bc786210ab007dd4fb689d492de", null ],
+    [ "n_checkpoints", "structCheckpointParameters.html#a3e004e544a5dc86e501ecbe6e904c7e6", null ],
+    [ "user_checkpoint_list", "structCheckpointParameters.html#a27904f434b5e32f6006fc4f98e1ad81e", null ]
 ];

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,22 +114,58 @@ $(document).ready(function(){initNavTree('functions_m.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
 <li>m()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aec9d07b697b534bad5e271c05d45dd69">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>make_constraint()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a7fe9e793c0014fdb6048da46e0aa6a8c">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
 <li>make_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a50b55d37411c663f2132580787603506">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>make_mg_constraint()&#160;:&#160;<a class="el" href="classConstraintHandler.html#aafd3eb8a10480a6b0b5a7d7fcc4dd495">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
 <li>make_mg_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#ad3d5682e43acaa9e42abdd46b714c702">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
-<li>mark_boundaries()&#160;:&#160;<a class="el" href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">Mesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">SphericalMesh&lt; dim &gt;</a></li>
-<li>mark_periodic()&#160;:&#160;<a class="el" href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">Mesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">SphericalMesh&lt; dim &gt;</a></li>
+<li>mapping&#160;:&#160;<a class="el" href="classGMGSolver.html#acd772468804ddc86602a5d8d62ff2032">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classGridRefinementContext.html#af1c0a81ad56afae07c33bf68a0508253">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#a90b5b06f3b54feda2ca008b4f922939c">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a442bb4fbaef723278a0bcf13143a1141">SolverContext&lt; dim, degree, number &gt;</a></li>
+<li>mark_boundaries()&#160;:&#160;<a class="el" href="classMesh.html#aa6de87afafb64cbde9c4d559fe292b19">Mesh&lt; dim &gt;</a>, <a class="el" href="classRectangularMesh.html#a81d1e0498a1397529a3a2e3cf09abf4e">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#a9ae158f5474e629fb0d60c2099d4bb89">TriangulationHandler&lt; dim &gt;</a></li>
+<li>mark_cells_for_refinement()&#160;:&#160;<a class="el" href="classGridRefiner.html#a0b2a2f8a5cb3c646f63aca894eb5b01b">GridRefiner&lt; dim, degree, number &gt;</a></li>
+<li>mark_cells_for_refinement_and_coarsening()&#160;:&#160;<a class="el" href="classGridRefiner.html#af335971dc17df607da4e6b2c857f6674">GridRefiner&lt; dim, degree, number &gt;</a></li>
+<li>mark_periodic()&#160;:&#160;<a class="el" href="classMesh.html#a705b9de25b5352102c28aebebf1537ba">Mesh&lt; dim &gt;</a>, <a class="el" href="classRectangularMesh.html#a1ca4446863546c907f934e786f88f44a">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#a0a56423aeca2f69ffcb00c0800027eb9">TriangulationHandler&lt; dim &gt;</a></li>
+<li>marker_functions&#160;:&#160;<a class="el" href="classGridRefiner.html#a9bb6162f4a315b380300b4504d90b9b4">GridRefiner&lt; dim, degree, number &gt;</a></li>
+<li>matrix_free&#160;:&#160;<a class="el" href="classMatrixFreeContainer.html#af73fd3278d4fd730334a1091120f5ecf">MatrixFreeContainer&lt; dim, number &gt;</a></li>
+<li>matrix_free_container&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a019fad8cb34543698a0cd70bee8e8612">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#afbea8233e41feee0e745010147d3c6ee">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#ac99548d686bf7aa38fd080ea33091247">SolverContext&lt; dim, degree, number &gt;</a></li>
+<li>matrix_free_object&#160;:&#160;<a class="el" href="classMatrixFreeHandler.html#abfc09072b82f533b7c64fc3a5d77ace3">MatrixFreeHandler&lt; dim, number &gt;</a></li>
 <li>MatrixFreeContainer()&#160;:&#160;<a class="el" href="classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d">MatrixFreeContainer&lt; dim, number &gt;</a></li>
 <li>MatrixFreeHandler()&#160;:&#160;<a class="el" href="classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8">MatrixFreeHandler&lt; dim, number &gt;</a></li>
 <li>MatrixFreeOperator()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>Max&#160;:&#160;<a class="el" href="classMGInfo.html#a68ccd6f0d7cf737b231f5c169101c109">MGInfo&lt; dim &gt;</a></li>
+<li>max_dependency_types&#160;:&#160;<a class="el" href="structVariableAttributes.html#a5d3e611e78da9820c6a595423dce3f6f">VariableAttributes</a>, <a class="el" href="classVariableContainer.html#af5a5f2f72574ac390523e23d2dde95c0">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>max_fields&#160;:&#160;<a class="el" href="structVariableAttributes.html#ab1a13728557f78566815c562fc413ea8">VariableAttributes</a>, <a class="el" href="classVariableContainer.html#a477d9f9ca6df963bf29f8ea80629d96d">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>max_files&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a62397adf9f751e01d411a983d9201e29">LoadInitialConditionParameters</a></li>
+<li>max_iterations&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">LinearSolverParameters</a>, <a class="el" href="structNonlinearSolverParameters.html#ad9c2d85cf60c6d8ca722c1e44ebd5a6d">NonlinearSolverParameters</a></li>
+<li>max_level&#160;:&#160;<a class="el" href="classElementVolumeContainer.html#ad4f926e6221e9afe66aa2290a3543383">ElementVolumeContainer&lt; dim, degree, number &gt;</a>, <a class="el" href="classGMGSolver.html#a534eeb15cbdc34e2b205c49da199797f">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeContainer.html#a0e539cfc43f917dff0bf1eff9f67e7f8">MatrixFreeContainer&lt; dim, number &gt;</a>, <a class="el" href="classTriangulationHandler.html#a57c1f147e6763f8aba524de5f104eb9f">TriangulationHandler&lt; dim &gt;</a></li>
+<li>max_refinement&#160;:&#160;<a class="el" href="classGridRefiner.html#a86ea724159a58652ceb4f887991eca46">GridRefiner&lt; dim, degree, number &gt;</a>, <a class="el" href="structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>Mesh()&#160;:&#160;<a class="el" href="classMesh.html#ae25ebef6af2022a6a13fca216b75d18e">Mesh&lt; dim &gt;</a></li>
+<li>mg_constraints&#160;:&#160;<a class="el" href="classConstraintHandler.html#aa4ce5d12e82d49ae4abbce28162788a2">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>mg_dof_handlers&#160;:&#160;<a class="el" href="classDofHandler.html#a5b7f238a7bd2696ce450076064f32877">DofHandler&lt; dim &gt;</a></li>
+<li>mg_info&#160;:&#160;<a class="el" href="classConstraintHandler.html#aa28e58278334dd300e58d7d5f8f9f7dd">ConstraintHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classGridRefinementContext.html#a8debea3003daf0bd33d4570aa27ee66f">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#a18a731d32f0538abd6562174d17f01d5">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#a7421dfbd582f0fbc7c0451a002a7da8c">SolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classSolverContext.html#ae43d04b7c4beb505da418929b2d74bf9">SolverContext&lt; dim, degree, number &gt;</a></li>
+<li>mg_levels&#160;:&#160;<a class="el" href="classMGInfo.html#a01200dde060be73b2053b3dc95dc2893">MGInfo&lt; dim &gt;</a></li>
+<li>mg_matrix&#160;:&#160;<a class="el" href="classGMGSolver.html#a32b47494fa6c399dad68d04f25b16f86">GMGSolver&lt; dim, degree, number &gt;</a></li>
+<li>mg_operators&#160;:&#160;<a class="el" href="classGMGSolver.html#a87369f12389fc2c3a25347ceb4f1b8f5">GMGSolver&lt; dim, degree, number &gt;</a></li>
+<li>mg_solution_set&#160;:&#160;<a class="el" href="classSolutionHandler.html#aa75c42c88b657321ab3e96121a93f324">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>mg_transfer&#160;:&#160;<a class="el" href="classGMGSolver.html#a213ddd11007c64dce514c230b7f0d9ae">GMGSolver&lt; dim, degree, number &gt;</a></li>
+<li>mg_transfer_operators&#160;:&#160;<a class="el" href="classGMGSolver.html#afacffa86d9f6d591a41485e7bae404f1">GMGSolver&lt; dim, degree, number &gt;</a></li>
 <li>MGInfo()&#160;:&#160;<a class="el" href="classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26">MGInfo&lt; dim &gt;</a></li>
+<li>MGVectorType&#160;:&#160;<a class="el" href="classGMGSolver.html#a3a71d9b124717d2f99e610104a596a29">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#a296df7dc524283d0edf9436f1382e1eb">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>Min&#160;:&#160;<a class="el" href="classMGInfo.html#a1b4c6efb5e133129907fb469a8346b62">MGInfo&lt; dim &gt;</a></li>
+<li>min_level&#160;:&#160;<a class="el" href="classElementVolumeContainer.html#aadc7755636133337a1aa68a65205182d">ElementVolumeContainer&lt; dim, degree, number &gt;</a>, <a class="el" href="classGMGSolver.html#ae400340f4bab63e9dfb54d06de659568">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeContainer.html#a337b44e0c6c52cede441650910bb1fb5">MatrixFreeContainer&lt; dim, number &gt;</a>, <a class="el" href="classTriangulationHandler.html#acc09cc4491d7f389d037743f942aecd1">TriangulationHandler&lt; dim &gt;</a></li>
+<li>min_mg_level&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">LinearSolverParameters</a></li>
+<li>min_refinement&#160;:&#160;<a class="el" href="classGridRefiner.html#a67ba1105f2b9193b04d6d5dc5f54c12d">GridRefiner&lt; dim, degree, number &gt;</a>, <a class="el" href="structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>misc_parameters&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">UserInputParameters&lt; dim &gt;</a></li>
+<li>model_constant_names&#160;:&#160;<a class="el" href="classInputFileReader.html#a93ad706e1d3a07193cf65e0a8ebc114a">InputFileReader</a></li>
+<li>model_constants&#160;:&#160;<a class="el" href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">UserConstants&lt; dim &gt;</a></li>
 <li>mpi_broadcast_nuclei()&#160;:&#160;<a class="el" href="classNucleationHandler.html#af35183a2b6e3306f758933ed511f3d14">NucleationHandler&lt; dim, degree, number &gt;</a></li>
+<li>mpi_datatype()&#160;:&#160;<a class="el" href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">Nucleus&lt; dim &gt;</a></li>
 <li>mpi_gather_nuclei()&#160;:&#160;<a class="el" href="classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f">NucleationHandler&lt; dim, degree, number &gt;</a></li>
+<li>multigrid_element_volume&#160;:&#160;<a class="el" href="classElementVolumeContainer.html#a029ce4675fc9a92bcbc262e63fd9fe6b">ElementVolumeContainer&lt; dim, degree, number &gt;</a></li>
+<li>multigrid_matrix_free&#160;:&#160;<a class="el" href="classMatrixFreeContainer.html#a871f97f2434a9f5a1253cbd1548248ab">MatrixFreeContainer&lt; dim, number &gt;</a></li>
+<li>multigrid_on&#160;:&#160;<a class="el" href="classMGInfo.html#ab596102c600c683612066cd55afef26e">MGInfo&lt; dim &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

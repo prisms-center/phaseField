@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,11 +114,14 @@ $(document).ready(function(){initNavTree('functions_func_l.html',''); initResiza
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented functions with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all functions with links to the classes they belong to:</div>
 
 <h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
 <li>LinearSolverBase()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a5648f863c367f567c8a8e3f0a30f8c6c">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
+<li>load_model_constants()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573">UserInputParameters&lt; dim &gt;</a></li>
 <li>load_variable_attributes()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8">VariableAttributeLoader</a></li>
+<li>local_compute_diagonal()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a54fc08655bfcdbbd485bc87fbf81bdca">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>location_vectorized()&#160;:&#160;<a class="el" href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">Nucleus&lt; dim &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

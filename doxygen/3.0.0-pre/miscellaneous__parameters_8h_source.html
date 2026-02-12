@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,25 +122,25 @@ $(document).ready(function(){initNavTree('miscellaneous__parameters_8h_source.ht
   <div class="headertitle"><div class="title">miscellaneous_parameters.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="miscellaneous__parameters_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/mpi.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/conditional_ostreams.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/core/exceptions.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="conditional__ostreams_8h.html">prismspf/core/conditional_ostreams.h</a>&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="exceptions_8h.html">prismspf/core/exceptions.h</a>&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/utilities/utilities.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;random&gt;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>PRISMS_PF_BEGIN_NAMESPACE</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">using </span>RNGEngine = std::mt19937;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">   19</a></span><span class="keyword">using </span><a class="code hl_typedef" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a> = std::mt19937;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structMiscellaneousParameters.html">   24</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structMiscellaneousParameters.html">MiscellaneousParameters</a></div>
@@ -149,14 +156,14 @@ $(document).ready(function(){initNavTree('miscellaneous__parameters_8h_source.ht
 <div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structMiscellaneousParameters.html#a7eeedf3e3c99408c14d6ad70bd856db4">   43</a></span>  <a class="code hl_function" href="structMiscellaneousParameters.html#a7eeedf3e3c99408c14d6ad70bd856db4">set_random_seed</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> &amp;_random_seed)</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    random_seed = _random_seed;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    rng.seed(random_seed);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_variable" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a> = _random_seed;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_variable" href="structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93">rng</a>.seed(<a class="code hl_variable" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
 </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> random_seed = 2025;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">   49</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a> = 2025;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Use a different seed for each MPI process to avoid correlated events</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">mutable</span> RNGEngine rng {random_seed};</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93">   51</a></span>  <span class="keyword">mutable</span> <a class="code hl_typedef" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a> <a class="code hl_variable" href="structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93">rng</a> {<a class="code hl_variable" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a>};</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
@@ -174,23 +181,30 @@ $(document).ready(function(){initNavTree('miscellaneous__parameters_8h_source.ht
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    &lt;&lt; <span class="stringliteral">&quot;  Miscellaneous Parameters\n&quot;</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    &lt;&lt; <span class="stringliteral">&quot;================================================\n&quot;</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    &lt;&lt; <span class="stringliteral">&quot;Random seed: &quot;</span> &lt;&lt; random_seed &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    &lt;&lt; <span class="stringliteral">&quot;Random seed: &quot;</span> &lt;&lt; <a class="code hl_variable" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a> &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    &lt;&lt; std::flush;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
 </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
+<div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
+<div class="ttc" id="aexceptions_8h_html"><div class="ttname"><a href="exceptions_8h.html">exceptions.h</a></div></div>
+<div class="ttc" id="amiscellaneous__parameters_8h_html_a2fe62be60f96bff6325ff1c9a36aef93"><div class="ttname"><a href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a></div><div class="ttdeci">std::mt19937 RNGEngine</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:19</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 <div class="ttc" id="astructMiscellaneousParameters_html"><div class="ttname"><a href="structMiscellaneousParameters.html">MiscellaneousParameters</a></div><div class="ttdoc">Struct that holds miscellaneous parameters.</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:25</div></div>
 <div class="ttc" id="astructMiscellaneousParameters_html_a119513c00e64536b5fd58beb8af9512a"><div class="ttname"><a href="structMiscellaneousParameters.html#a119513c00e64536b5fd58beb8af9512a">MiscellaneousParameters::print_parameter_summary</a></div><div class="ttdeci">void print_parameter_summary() const</div><div class="ttdoc">Print parameters to summary.log.</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:59</div></div>
 <div class="ttc" id="astructMiscellaneousParameters_html_a7eeedf3e3c99408c14d6ad70bd856db4"><div class="ttname"><a href="structMiscellaneousParameters.html#a7eeedf3e3c99408c14d6ad70bd856db4">MiscellaneousParameters::set_random_seed</a></div><div class="ttdeci">void set_random_seed(const unsigned int &amp;_random_seed)</div><div class="ttdoc">Set the random seed and initialize the RNG.</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:43</div></div>
 <div class="ttc" id="astructMiscellaneousParameters_html_aba161e4fdfd5843a6295f41eccaa3a7a"><div class="ttname"><a href="structMiscellaneousParameters.html#aba161e4fdfd5843a6295f41eccaa3a7a">MiscellaneousParameters::postprocess_and_validate</a></div><div class="ttdeci">void postprocess_and_validate()</div><div class="ttdoc">Postprocess and validate parameters.</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:55</div></div>
+<div class="ttc" id="astructMiscellaneousParameters_html_ad8c58d9a535b72b35342ce324257ae93"><div class="ttname"><a href="structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93">MiscellaneousParameters::rng</a></div><div class="ttdeci">RNGEngine rng</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:51</div></div>
+<div class="ttc" id="astructMiscellaneousParameters_html_ae99d7228c0ad13341567a084360c6aa7"><div class="ttname"><a href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">MiscellaneousParameters::random_seed</a></div><div class="ttdeci">unsigned int random_seed</div><div class="ttdef"><b>Definition</b> miscellaneous_parameters.h:49</div></div>
+<div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><b>miscellaneous_parameters.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><a class="el" href="miscellaneous__parameters_8h.html">miscellaneous_parameters.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

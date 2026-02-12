@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,9 +114,68 @@ $(document).ready(function(){initNavTree('functions_type.html',''); initResizabl
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented typedefs with links to the class documentation for each member:</div><ul>
-<li>SizeType&#160;:&#160;<a class="el" href="classVariableContainer.html#a0497d1c2cc1bd7b91c9bf3872b0653d9">VariableContainer&lt; dim, degree, number &gt;</a></li>
-<li>VectorType&#160;:&#160;<a class="el" href="classVariableContainer.html#ad1c72bfca3b2589b0880ca2de87521bc">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<div class="textblock">Here is a list of all typedefs with links to the classes they belong to:</div>
+
+<h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
+<li>BCList&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a456c04ccc6348d264c49e8f639383293">BoundaryParameters&lt; dim &gt;</a></li>
+<li>BlockVector&#160;:&#160;<a class="el" href="structSolutionBlock.html#ad8476cb03873d9219cc9a79a2550a76c">SolutionBlock&lt; dim, number &gt;</a></li>
+<li>BoundaryConditionMap&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryParameters&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
+<li>CellIterator&#160;:&#160;<a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellMarkerBase&lt; dim &gt;</a>, <a class="el" href="classNucleusRefinementFunction.html#ad30139a1c1fbcb5b1a107d8ca97e9bde">NucleusRefinementFunction&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>EvalFlags&#160;:&#160;<a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">VariableAttributes</a></li>
+</ul>
+
+
+<h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
+<li>InputVariant&#160;:&#160;<a class="el" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">UserConstants&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
+<li>LevelMatrixType&#160;:&#160;<a class="el" href="classGMGSolver.html#abb77c1399bc5d6b98bde367d90523a47">GMGSolver&lt; dim, degree, number &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
+<li>Max&#160;:&#160;<a class="el" href="classMGInfo.html#a68ccd6f0d7cf737b231f5c169101c109">MGInfo&lt; dim &gt;</a></li>
+<li>MGVectorType&#160;:&#160;<a class="el" href="classGMGSolver.html#a3a71d9b124717d2f99e610104a596a29">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#a296df7dc524283d0edf9436f1382e1eb">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>Min&#160;:&#160;<a class="el" href="classMGInfo.html#a1b4c6efb5e133129907fb469a8346b62">MGInfo&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_p" name="index_p"></a>- p -</h3><ul>
+<li>PinnedPointMap&#160;:&#160;<a class="el" href="structBoundaryParameters.html#ac0fb4faba4e596770706a586c69d1f49">BoundaryParameters&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
+<li>ScalarDiagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#a9e99179cb879997d3d89dcd7caf98dc1">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>ScalarFEEvaluation&#160;:&#160;<a class="el" href="classVariableContainer.html#a111a6a7f95af49633c702c8302371cd7">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>SizeType&#160;:&#160;<a class="el" href="classInvmHandler.html#a2785dd02f10f837f702fba519d5b3f01">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">PDEOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableContainer.html#a0497d1c2cc1bd7b91c9bf3872b0653d9">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>SolutionTransfer&#160;:&#160;<a class="el" href="classSolutionHandler.html#abbe1974d8e7173f0f0da551fa7c8a113">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>SolutionVector&#160;:&#160;<a class="el" href="structSolutionBlock.html#a2a50771d42fd29274d81c52e834ea480">SolutionBlock&lt; dim, number &gt;</a></li>
+<li>SystemMatrixType&#160;:&#160;<a class="el" href="classGMGSolver.html#ad99ff67f65278e23938628f08b493eb5">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classIdentitySolver.html#a852349ae40283cafff99e075afe15971">IdentitySolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a194cf6d5ad47868ee4bf15af748bb234">SolverBase&lt; dim, degree, number &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>Triangulation&#160;:&#160;<a class="el" href="classMesh.html#a2ed9c724e274c72038be6dfffe063067">Mesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">TriangulationHandler&lt; dim &gt;</a></li>
+</ul>
+
+
+<h3><a id="index_v" name="index_v"></a>- v -</h3><ul>
+<li>VariantDiagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#a238a485538d556089b89315fd0d99053">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VariantFEEvaluation&#160;:&#160;<a class="el" href="classVariableContainer.html#a8442ca6622d96f2ff853e60c0a048bd4">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VectorDiagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#ae154a778b9c66d13161096e25ec499ee">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VectorFEEvaluation&#160;:&#160;<a class="el" href="classVariableContainer.html#a64b930dfecf6997d894c40ad29aac537">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>VectorType&#160;:&#160;<a class="el" href="classGMGSolver.html#ad864f44e031833c43fca31c30525b1d9">GMGSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classIdentitySolver.html#a713e8a4b35a1634fede3b8c46e662294">IdentitySolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">Integrator&lt; dim, degree, number &gt;</a>, <a class="el" href="classInvmHandler.html#a531505e7f266c42a1a4f06a944073a45">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#ab7648521b69d7c7e3c04b7058ea917aa">SolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">SolutionOutput&lt; dim, number &gt;</a>, <a class="el" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableContainer.html#ad1c72bfca3b2589b0880ca2de87521bc">VariableContainer&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

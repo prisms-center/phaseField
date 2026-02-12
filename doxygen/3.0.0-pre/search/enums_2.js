@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['solvetype_0',['SolveType',['../structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e',1,'FieldInfo']]]
+  ['fieldsolvetype_0',['FieldSolveType',['../type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f',1,'type_enums.h']]]
 ];

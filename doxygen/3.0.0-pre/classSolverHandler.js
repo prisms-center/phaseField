@@ -8,5 +8,6 @@ var classSolverHandler =
     [ "operator=", "classSolverHandler.html#a92e81bb5f1c50da42402c4de3c72d4d6", null ],
     [ "operator=", "classSolverHandler.html#a8970e8feab9014e26d376a9789495941", null ],
     [ "reinit", "classSolverHandler.html#a8dd37f53dac7526dbe7b59e0d9d60bb7", null ],
-    [ "solve", "classSolverHandler.html#a048f43519954a048008839f412cf9b26", null ]
+    [ "solve", "classSolverHandler.html#a048f43519954a048008839f412cf9b26", null ],
+    [ "solve_blocks", "classSolverHandler.html#a0c31fe7f88f3baeb8b620db39fb27068", null ]
 ];

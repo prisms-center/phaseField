@@ -14,5 +14,9 @@ var classConcurrentSolver =
     [ "print", "classConcurrentSolver.html#a0aef7bc628a5848650a7313af275f2ee", null ],
     [ "reinit", "classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5", null ],
     [ "solve", "classConcurrentSolver.html#ad58de6f1407812ffdbf25660fdb30f84", null ],
-    [ "solve_explicit_equations", "classConcurrentSolver.html#a86405c1c8787031e2c97d55e68a2b89e", null ]
+    [ "solve_explicit_equations", "classConcurrentSolver.html#a86405c1c8787031e2c97d55e68a2b89e", null ],
+    [ "global_to_local_solution", "classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc", null ],
+    [ "new_solution_subset", "classConcurrentSolver.html#ac8b9bc6e602b40f58a65d652b8cbc779", null ],
+    [ "solution_subset", "classConcurrentSolver.html#a1fb2cf9080123ae6af48de6cdd353c82", null ],
+    [ "system_matrix", "classConcurrentSolver.html#a3496ac08662fe7762658460256d7b096", null ]
 ];

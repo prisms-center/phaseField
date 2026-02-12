@@ -1,5 +1,8 @@
 var classSolutionHandler =
 [
+    [ "MGVectorType", "classSolutionHandler.html#a296df7dc524283d0edf9436f1382e1eb", null ],
+    [ "SolutionTransfer", "classSolutionHandler.html#abbe1974d8e7173f0f0da551fa7c8a113", null ],
+    [ "VectorType", "classSolutionHandler.html#ab7648521b69d7c7e3c04b7058ea917aa", null ],
     [ "SolutionHandler", "classSolutionHandler.html#aa81c5d8d5dcafe7e6410b1f33a52201c", null ],
     [ "apply_constraints", "classSolutionHandler.html#af9e62b69963f1ec8c65b60afbfcad14c", null ],
     [ "apply_initial_condition_for_old_fields", "classSolutionHandler.html#a60a099dfa3a4789ea6968d0c46f1b32b", null ],
@@ -17,5 +20,13 @@ var classSolutionHandler =
     [ "reinit_solution_transfer", "classSolutionHandler.html#aa497d8c3f8d6d5dcd28e03b251cd47af", null ],
     [ "update", "classSolutionHandler.html#a853596c281f99632f2c225b8abeccedc", null ],
     [ "update_ghosts", "classSolutionHandler.html#a6311685dfd0553b5b1acb405e28a6223", null ],
-    [ "zero_out_ghosts", "classSolutionHandler.html#a7fed149a73b63eb3f179e85c767d3dc6", null ]
+    [ "zero_out_ghosts", "classSolutionHandler.html#a7fed149a73b63eb3f179e85c767d3dc6", null ],
+    [ "attributes_list", "classSolutionHandler.html#ae081884ce77eaef2db7ca2e2e19f8e25", null ],
+    [ "global_min_level", "classSolutionHandler.html#a949b23377f3e29658eae2978236869e4", null ],
+    [ "has_multigrid", "classSolutionHandler.html#a281fb3d7f688c06102557735b0b8522e", null ],
+    [ "mg_info", "classSolutionHandler.html#a7421dfbd582f0fbc7c0451a002a7da8c", null ],
+    [ "mg_solution_set", "classSolutionHandler.html#aa75c42c88b657321ab3e96121a93f324", null ],
+    [ "new_solution_set", "classSolutionHandler.html#a7d7e04d14de22e5de627a3897f35c546", null ],
+    [ "solution_set", "classSolutionHandler.html#a41b61ba72797341b2e0eebf1ce78223e", null ],
+    [ "solution_transfer_set", "classSolutionHandler.html#a00545fcdcd32ca6406cfb81151e235ee", null ]
 ];

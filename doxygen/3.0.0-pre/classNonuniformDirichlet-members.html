@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,9 +120,12 @@ $(document).ready(function(){initNavTree('classNonuniformDirichlet.html',''); in
 
 <p>This is the complete list of members for <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#aea9438d8e5c81f1accdcd20c7d79e8f6">boundary_id</a></td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#ab07f9bfc5d3ebd6582602356574581ea">index</a></td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#a37a432d30845b8ffbadfbc2b8a5e2e5f">NonuniformDirichlet</a>(unsigned int _index, unsigned int _boundary_id, const std::shared_ptr&lt; const PDEOperator&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, unsigned int spacedim)</td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">value</a>(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#aaa79e399c8e7aa27768557d1c2faa75a">vector_value</a>(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#a8d6a853e60a18040c54116a868eba8dc">pde_operator</a></td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">value</a>(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classNonuniformDirichlet.html#aaa79e399c8e7aa27768557d1c2faa75a">vector_value</a>(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td><td class="entry"><a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

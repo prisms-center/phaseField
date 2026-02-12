@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classGridRefinementContext.html',''); 
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classGridRefinementContext-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GridRefinementContext&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,67 +129,882 @@ $(document).ready(function(){initNavTree('classGridRefinementContext.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae91ccb11f166f6880a1adcce261d0dce" id="r_ae91ccb11f166f6880a1adcce261d0dce"><td class="memItemLeft" align="right" valign="top"><a id="ae91ccb11f166f6880a1adcce261d0dce" name="ae91ccb11f166f6880a1adcce261d0dce"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GridRefinementContext</b> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;_pf_tools, <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;_triangulation_handler, <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;_constraint_handler, <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp;_matrix_free_container, <a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp;_invm_handler, <a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp;_solution_handler, <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;_dof_handler, std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;_fe_system, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp;_element_volume_container, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;_mg_info)</td></tr>
-<tr class="memdesc:ae91ccb11f166f6880a1adcce261d0dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:ae91ccb11f166f6880a1adcce261d0dce" id="r_ae91ccb11f166f6880a1adcce261d0dce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#ae91ccb11f166f6880a1adcce261d0dce">GridRefinementContext</a> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;_pf_tools, <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;_triangulation_handler, <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;_constraint_handler, <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp;_matrix_free_container, <a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp;_invm_handler, <a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp;_solution_handler, <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;_dof_handler, std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;_fe_system, const dealii::MappingQ1&lt; dim &gt; &amp;_mapping, <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp;_element_volume_container, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;_mg_info)</td></tr>
+<tr class="memdesc:ae91ccb11f166f6880a1adcce261d0dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:ae91ccb11f166f6880a1adcce261d0dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b4ced8f7834bfeaeeec229e5ff7825" id="r_a36b4ced8f7834bfeaeeec229e5ff7825"><td class="memItemLeft" align="right" valign="top"><a id="a36b4ced8f7834bfeaeeec229e5ff7825" name="a36b4ced8f7834bfeaeeec229e5ff7825"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~GridRefinementContext</b> ()=default</td></tr>
-<tr class="memdesc:a36b4ced8f7834bfeaeeec229e5ff7825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:a36b4ced8f7834bfeaeeec229e5ff7825" id="r_a36b4ced8f7834bfeaeeec229e5ff7825"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a36b4ced8f7834bfeaeeec229e5ff7825">~GridRefinementContext</a> ()=default</td></tr>
+<tr class="memdesc:a36b4ced8f7834bfeaeeec229e5ff7825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a36b4ced8f7834bfeaeeec229e5ff7825"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23ff117fb4794a212882934a4c2a31ae" id="r_a23ff117fb4794a212882934a4c2a31ae"><td class="memItemLeft" align="right" valign="top"><a id="a23ff117fb4794a212882934a4c2a31ae" name="a23ff117fb4794a212882934a4c2a31ae"></a>
-const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_user_inputs</b> () const</td></tr>
-<tr class="memdesc:a23ff117fb4794a212882934a4c2a31ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs. <br /></td></tr>
+<tr class="memitem:a23ff117fb4794a212882934a4c2a31ae" id="r_a23ff117fb4794a212882934a4c2a31ae"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">get_user_inputs</a> () const</td></tr>
+<tr class="memdesc:a23ff117fb4794a212882934a4c2a31ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs.  <br /></td></tr>
 <tr class="separator:a23ff117fb4794a212882934a4c2a31ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a1168aa44a44f2cc2add15507911141" id="r_a7a1168aa44a44f2cc2add15507911141"><td class="memItemLeft" align="right" valign="top"><a id="a7a1168aa44a44f2cc2add15507911141" name="a7a1168aa44a44f2cc2add15507911141"></a>
-<a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pf_tools</b> () const</td></tr>
+<tr class="memitem:a7a1168aa44a44f2cc2add15507911141" id="r_a7a1168aa44a44f2cc2add15507911141"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a7a1168aa44a44f2cc2add15507911141">get_pf_tools</a> () const</td></tr>
 <tr class="separator:a7a1168aa44a44f2cc2add15507911141"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af25c41b0db602a392afccc1c875e9ace" id="r_af25c41b0db602a392afccc1c875e9ace"><td class="memItemLeft" align="right" valign="top"><a id="af25c41b0db602a392afccc1c875e9ace" name="af25c41b0db602a392afccc1c875e9ace"></a>
-<a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraint_handler</b> () const</td></tr>
-<tr class="memdesc:af25c41b0db602a392afccc1c875e9ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler. <br /></td></tr>
+<tr class="memitem:af25c41b0db602a392afccc1c875e9ace" id="r_af25c41b0db602a392afccc1c875e9ace"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">get_constraint_handler</a> () const</td></tr>
+<tr class="memdesc:af25c41b0db602a392afccc1c875e9ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler.  <br /></td></tr>
 <tr class="separator:af25c41b0db602a392afccc1c875e9ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40164a7d157f2fbc7343877084100ab3" id="r_a40164a7d157f2fbc7343877084100ab3"><td class="memItemLeft" align="right" valign="top"><a id="a40164a7d157f2fbc7343877084100ab3" name="a40164a7d157f2fbc7343877084100ab3"></a>
-<a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_free_container</b> () const</td></tr>
-<tr class="memdesc:a40164a7d157f2fbc7343877084100ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container. <br /></td></tr>
+<tr class="memitem:a40164a7d157f2fbc7343877084100ab3" id="r_a40164a7d157f2fbc7343877084100ab3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3">get_matrix_free_container</a> () const</td></tr>
+<tr class="memdesc:a40164a7d157f2fbc7343877084100ab3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container.  <br /></td></tr>
 <tr class="separator:a40164a7d157f2fbc7343877084100ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cbfbe5811c4f114ab69685acfac38cb" id="r_a0cbfbe5811c4f114ab69685acfac38cb"><td class="memItemLeft" align="right" valign="top"><a id="a0cbfbe5811c4f114ab69685acfac38cb" name="a0cbfbe5811c4f114ab69685acfac38cb"></a>
-<a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation_handler</b> () const</td></tr>
-<tr class="memdesc:a0cbfbe5811c4f114ab69685acfac38cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler. <br /></td></tr>
+<tr class="memitem:a0cbfbe5811c4f114ab69685acfac38cb" id="r_a0cbfbe5811c4f114ab69685acfac38cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb">get_triangulation_handler</a> () const</td></tr>
+<tr class="memdesc:a0cbfbe5811c4f114ab69685acfac38cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler.  <br /></td></tr>
 <tr class="separator:a0cbfbe5811c4f114ab69685acfac38cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e714f8bf97c8cf80f7dcc990b3aa2ac" id="r_a6e714f8bf97c8cf80f7dcc990b3aa2ac"><td class="memItemLeft" align="right" valign="top"><a id="a6e714f8bf97c8cf80f7dcc990b3aa2ac" name="a6e714f8bf97c8cf80f7dcc990b3aa2ac"></a>
-<a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_invm_handler</b> () const</td></tr>
-<tr class="memdesc:a6e714f8bf97c8cf80f7dcc990b3aa2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm handler. <br /></td></tr>
+<tr class="memitem:a6e714f8bf97c8cf80f7dcc990b3aa2ac" id="r_a6e714f8bf97c8cf80f7dcc990b3aa2ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">get_invm_handler</a> () const</td></tr>
+<tr class="memdesc:a6e714f8bf97c8cf80f7dcc990b3aa2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm handler.  <br /></td></tr>
 <tr class="separator:a6e714f8bf97c8cf80f7dcc990b3aa2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad64b8b9eb29b0ab1f122154b8912b8d0" id="r_ad64b8b9eb29b0ab1f122154b8912b8d0"><td class="memItemLeft" align="right" valign="top"><a id="ad64b8b9eb29b0ab1f122154b8912b8d0" name="ad64b8b9eb29b0ab1f122154b8912b8d0"></a>
-<a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handler</b> () const</td></tr>
-<tr class="memdesc:ad64b8b9eb29b0ab1f122154b8912b8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler. <br /></td></tr>
+<tr class="memitem:ad64b8b9eb29b0ab1f122154b8912b8d0" id="r_ad64b8b9eb29b0ab1f122154b8912b8d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#ad64b8b9eb29b0ab1f122154b8912b8d0">get_dof_handler</a> () const</td></tr>
+<tr class="memdesc:ad64b8b9eb29b0ab1f122154b8912b8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler.  <br /></td></tr>
 <tr class="separator:ad64b8b9eb29b0ab1f122154b8912b8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59faa3d3eacc229a0b28f6d4d2e3f199" id="r_a59faa3d3eacc229a0b28f6d4d2e3f199"><td class="memItemLeft" align="right" valign="top"><a id="a59faa3d3eacc229a0b28f6d4d2e3f199" name="a59faa3d3eacc229a0b28f6d4d2e3f199"></a>
-const dealii::MappingQ1&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mapping</b> () const</td></tr>
-<tr class="memdesc:a59faa3d3eacc229a0b28f6d4d2e3f199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping. <br /></td></tr>
+<tr class="memitem:a59faa3d3eacc229a0b28f6d4d2e3f199" id="r_a59faa3d3eacc229a0b28f6d4d2e3f199"><td class="memItemLeft" align="right" valign="top">const dealii::MappingQ1&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">get_mapping</a> () const</td></tr>
+<tr class="memdesc:a59faa3d3eacc229a0b28f6d4d2e3f199"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping.  <br /></td></tr>
 <tr class="separator:a59faa3d3eacc229a0b28f6d4d2e3f199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbb56d01319ae922fd42be920ac5a127" id="r_acbb56d01319ae922fd42be920ac5a127"><td class="memItemLeft" align="right" valign="top"><a id="acbb56d01319ae922fd42be920ac5a127" name="acbb56d01319ae922fd42be920ac5a127"></a>
-<a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solution_handler</b> () const</td></tr>
-<tr class="memdesc:acbb56d01319ae922fd42be920ac5a127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler. <br /></td></tr>
+<tr class="memitem:acbb56d01319ae922fd42be920ac5a127" id="r_acbb56d01319ae922fd42be920ac5a127"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">get_solution_handler</a> () const</td></tr>
+<tr class="memdesc:acbb56d01319ae922fd42be920ac5a127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler.  <br /></td></tr>
 <tr class="separator:acbb56d01319ae922fd42be920ac5a127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf2b187b4500dab1e5a15a2daec0c742" id="r_aaf2b187b4500dab1e5a15a2daec0c742"><td class="memItemLeft" align="right" valign="top"><a id="aaf2b187b4500dab1e5a15a2daec0c742" name="aaf2b187b4500dab1e5a15a2daec0c742"></a>
-const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_finite_element_systems</b> () const</td></tr>
-<tr class="memdesc:aaf2b187b4500dab1e5a15a2daec0c742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the collection of finite element systems. <br /></td></tr>
+<tr class="memitem:aaf2b187b4500dab1e5a15a2daec0c742" id="r_aaf2b187b4500dab1e5a15a2daec0c742"><td class="memItemLeft" align="right" valign="top">const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#aaf2b187b4500dab1e5a15a2daec0c742">get_finite_element_systems</a> () const</td></tr>
+<tr class="memdesc:aaf2b187b4500dab1e5a15a2daec0c742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the collection of finite element systems.  <br /></td></tr>
 <tr class="separator:aaf2b187b4500dab1e5a15a2daec0c742"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b714b77398ae0e9ebda092039f481e" id="r_a11b714b77398ae0e9ebda092039f481e"><td class="memItemLeft" align="right" valign="top"><a id="a11b714b77398ae0e9ebda092039f481e" name="a11b714b77398ae0e9ebda092039f481e"></a>
-<a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_element_volume_container</b> () const</td></tr>
-<tr class="memdesc:a11b714b77398ae0e9ebda092039f481e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container. <br /></td></tr>
+<tr class="memitem:a11b714b77398ae0e9ebda092039f481e" id="r_a11b714b77398ae0e9ebda092039f481e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a11b714b77398ae0e9ebda092039f481e">get_element_volume_container</a> () const</td></tr>
+<tr class="memdesc:a11b714b77398ae0e9ebda092039f481e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container.  <br /></td></tr>
 <tr class="separator:a11b714b77398ae0e9ebda092039f481e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b33fc07cf26173f3552951971502fa9" id="r_a4b33fc07cf26173f3552951971502fa9"><td class="memItemLeft" align="right" valign="top"><a id="a4b33fc07cf26173f3552951971502fa9" name="a4b33fc07cf26173f3552951971502fa9"></a>
-const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_multigrid_info</b> () const</td></tr>
-<tr class="memdesc:a4b33fc07cf26173f3552951971502fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info. <br /></td></tr>
+<tr class="memitem:a4b33fc07cf26173f3552951971502fa9" id="r_a4b33fc07cf26173f3552951971502fa9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9">get_multigrid_info</a> () const</td></tr>
+<tr class="memdesc:a4b33fc07cf26173f3552951971502fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info.  <br /></td></tr>
 <tr class="separator:a4b33fc07cf26173f3552951971502fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8608e3cd9a9b72c034fc1c77c7a4ac82" id="r_a8608e3cd9a9b72c034fc1c77c7a4ac82"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a8608e3cd9a9b72c034fc1c77c7a4ac82">user_inputs</a></td></tr>
+<tr class="memdesc:a8608e3cd9a9b72c034fc1c77c7a4ac82"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs.  <br /></td></tr>
+<tr class="separator:a8608e3cd9a9b72c034fc1c77c7a4ac82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa09e3e0fec7e4f140849daede3a5449a" id="r_aa09e3e0fec7e4f140849daede3a5449a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#aa09e3e0fec7e4f140849daede3a5449a">pf_tools</a></td></tr>
+<tr class="memdesc:aa09e3e0fec7e4f140849daede3a5449a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phase field tools.  <br /></td></tr>
+<tr class="separator:aa09e3e0fec7e4f140849daede3a5449a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4f7d8de357f5a5c30cab3d5916ace12" id="r_aa4f7d8de357f5a5c30cab3d5916ace12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#aa4f7d8de357f5a5c30cab3d5916ace12">triangulation_handler</a></td></tr>
+<tr class="memdesc:aa4f7d8de357f5a5c30cab3d5916ace12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triangulation handler.  <br /></td></tr>
+<tr class="separator:aa4f7d8de357f5a5c30cab3d5916ace12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38ca62542c7a22f9a1a4a0d57d9b32eb" id="r_a38ca62542c7a22f9a1a4a0d57d9b32eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a38ca62542c7a22f9a1a4a0d57d9b32eb">constraint_handler</a></td></tr>
+<tr class="memdesc:a38ca62542c7a22f9a1a4a0d57d9b32eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraint handler.  <br /></td></tr>
+<tr class="separator:a38ca62542c7a22f9a1a4a0d57d9b32eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019fad8cb34543698a0cd70bee8e8612" id="r_a019fad8cb34543698a0cd70bee8e8612"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a019fad8cb34543698a0cd70bee8e8612">matrix_free_container</a></td></tr>
+<tr class="memdesc:a019fad8cb34543698a0cd70bee8e8612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object container.  <br /></td></tr>
+<tr class="separator:a019fad8cb34543698a0cd70bee8e8612"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1280b90d3ba5f507d5cb77dc894c97de" id="r_a1280b90d3ba5f507d5cb77dc894c97de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a1280b90d3ba5f507d5cb77dc894c97de">invm_handler</a></td></tr>
+<tr class="memdesc:a1280b90d3ba5f507d5cb77dc894c97de"><td class="mdescLeft">&#160;</td><td class="mdescRight">invm handler.  <br /></td></tr>
+<tr class="separator:a1280b90d3ba5f507d5cb77dc894c97de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9643c73a9fd8a1a160936130e8a927f" id="r_af9643c73a9fd8a1a160936130e8a927f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#af9643c73a9fd8a1a160936130e8a927f">solution_handler</a></td></tr>
+<tr class="memdesc:af9643c73a9fd8a1a160936130e8a927f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solution handler.  <br /></td></tr>
+<tr class="separator:af9643c73a9fd8a1a160936130e8a927f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b3600e322172ec8227f0eef7c26615" id="r_ae3b3600e322172ec8227f0eef7c26615"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615">dof_handler</a></td></tr>
+<tr class="memdesc:ae3b3600e322172ec8227f0eef7c26615"><td class="mdescLeft">&#160;</td><td class="mdescRight">DoF handler.  <br /></td></tr>
+<tr class="separator:ae3b3600e322172ec8227f0eef7c26615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7952b46455158b43846e66dc6be3bf6" id="r_aa7952b46455158b43846e66dc6be3bf6"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#aa7952b46455158b43846e66dc6be3bf6">fe_system</a></td></tr>
+<tr class="memdesc:aa7952b46455158b43846e66dc6be3bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of finite element systems. This is just a collection of two FESystem's: one for scalar fields and one for vector fields. For now they both use FE_Q finite elements.  <br /></td></tr>
+<tr class="separator:aa7952b46455158b43846e66dc6be3bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1c0a81ad56afae07c33bf68a0508253" id="r_af1c0a81ad56afae07c33bf68a0508253"><td class="memItemLeft" align="right" valign="top">const dealii::MappingQ1&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#af1c0a81ad56afae07c33bf68a0508253">mapping</a></td></tr>
+<tr class="memdesc:af1c0a81ad56afae07c33bf68a0508253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mappings to and from reference cell.  <br /></td></tr>
+<tr class="separator:af1c0a81ad56afae07c33bf68a0508253"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc3df0c2e4a72bad65b750c20ce06b94" id="r_abc3df0c2e4a72bad65b750c20ce06b94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#abc3df0c2e4a72bad65b750c20ce06b94">element_volume_container</a></td></tr>
+<tr class="memdesc:abc3df0c2e4a72bad65b750c20ce06b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element volume container.  <br /></td></tr>
+<tr class="separator:abc3df0c2e4a72bad65b750c20ce06b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8debea3003daf0bd33d4570aa27ee66f" id="r_a8debea3003daf0bd33d4570aa27ee66f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinementContext.html#a8debea3003daf0bd33d4570aa27ee66f">mg_info</a></td></tr>
+<tr class="memdesc:a8debea3003daf0bd33d4570aa27ee66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid information.  <br /></td></tr>
+<tr class="separator:a8debea3003daf0bd33d4570aa27ee66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class GridRefinementContext&lt; dim, degree, number &gt;</div><p>This class provides the context for the grid refiner with ptrs to all the relevant dependencies. </p>
 <p>The context in this case refers to all the finite element machinery needed to refine the grid and solutions. For example, it contains the triangulation handler and the DoF handler. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae91ccb11f166f6880a1adcce261d0dce" name="ae91ccb11f166f6880a1adcce261d0dce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae91ccb11f166f6880a1adcce261d0dce">&#9670;&#160;</a></span>GridRefinementContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;<a class="el" href="classGridRefinementContext.html">::GridRefinementContext</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pf_tools</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_triangulation_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraint_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_matrix_free_container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_invm_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_solution_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_fe_system</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::MappingQ1&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_element_volume_container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_mg_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a36b4ced8f7834bfeaeeec229e5ff7825" name="a36b4ced8f7834bfeaeeec229e5ff7825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b4ced8f7834bfeaeeec229e5ff7825">&#9670;&#160;</a></span>~GridRefinementContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::~<a class="el" href="classGridRefinementContext.html">GridRefinementContext</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af25c41b0db602a392afccc1c875e9ace" name="af25c41b0db602a392afccc1c875e9ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af25c41b0db602a392afccc1c875e9ace">&#9670;&#160;</a></span>get_constraint_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_constraint_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the constraint handler. </p>
+
+</div>
+</div>
+<a id="ad64b8b9eb29b0ab1f122154b8912b8d0" name="ad64b8b9eb29b0ab1f122154b8912b8d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64b8b9eb29b0ab1f122154b8912b8d0">&#9670;&#160;</a></span>get_dof_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_dof_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dof handler. </p>
+
+</div>
+</div>
+<a id="a11b714b77398ae0e9ebda092039f481e" name="a11b714b77398ae0e9ebda092039f481e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11b714b77398ae0e9ebda092039f481e">&#9670;&#160;</a></span>get_element_volume_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; dim, degree, number &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_element_volume_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the element volume container. </p>
+
+</div>
+</div>
+<a id="aaf2b187b4500dab1e5a15a2daec0c742" name="aaf2b187b4500dab1e5a15a2daec0c742"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf2b187b4500dab1e5a15a2daec0c742">&#9670;&#160;</a></span>get_finite_element_systems()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_finite_element_systems </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the collection of finite element systems. </p>
+
+</div>
+</div>
+<a id="a6e714f8bf97c8cf80f7dcc990b3aa2ac" name="a6e714f8bf97c8cf80f7dcc990b3aa2ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e714f8bf97c8cf80f7dcc990b3aa2ac">&#9670;&#160;</a></span>get_invm_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; dim, degree, number &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_invm_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the invm handler. </p>
+
+</div>
+</div>
+<a id="a59faa3d3eacc229a0b28f6d4d2e3f199" name="a59faa3d3eacc229a0b28f6d4d2e3f199"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59faa3d3eacc229a0b28f6d4d2e3f199">&#9670;&#160;</a></span>get_mapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::MappingQ1&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_mapping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the mapping. </p>
+
+</div>
+</div>
+<a id="a40164a7d157f2fbc7343877084100ab3" name="a40164a7d157f2fbc7343877084100ab3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40164a7d157f2fbc7343877084100ab3">&#9670;&#160;</a></span>get_matrix_free_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_matrix_free_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the matrix-free container. </p>
+
+</div>
+</div>
+<a id="a4b33fc07cf26173f3552951971502fa9" name="a4b33fc07cf26173f3552951971502fa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b33fc07cf26173f3552951971502fa9">&#9670;&#160;</a></span>get_multigrid_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_multigrid_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the multigrid info. </p>
+
+</div>
+</div>
+<a id="a7a1168aa44a44f2cc2add15507911141" name="a7a1168aa44a44f2cc2add15507911141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a1168aa44a44f2cc2add15507911141">&#9670;&#160;</a></span>get_pf_tools()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_pf_tools </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acbb56d01319ae922fd42be920ac5a127" name="acbb56d01319ae922fd42be920ac5a127"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbb56d01319ae922fd42be920ac5a127">&#9670;&#160;</a></span>get_solution_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; dim, number &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_solution_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solution handler. </p>
+
+</div>
+</div>
+<a id="a0cbfbe5811c4f114ab69685acfac38cb" name="a0cbfbe5811c4f114ab69685acfac38cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cbfbe5811c4f114ab69685acfac38cb">&#9670;&#160;</a></span>get_triangulation_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_triangulation_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the triangulation handler. </p>
+
+</div>
+</div>
+<a id="a23ff117fb4794a212882934a4c2a31ae" name="a23ff117fb4794a212882934a4c2a31ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ff117fb4794a212882934a4c2a31ae">&#9670;&#160;</a></span>get_user_inputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp; <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::get_user_inputs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the user-inputs. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a38ca62542c7a22f9a1a4a0d57d9b32eb" name="a38ca62542c7a22f9a1a4a0d57d9b32eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38ca62542c7a22f9a1a4a0d57d9b32eb">&#9670;&#160;</a></span>constraint_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt;dim, degree, number&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::constraint_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constraint handler. </p>
+
+</div>
+</div>
+<a id="ae3b3600e322172ec8227f0eef7c26615" name="ae3b3600e322172ec8227f0eef7c26615"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3b3600e322172ec8227f0eef7c26615">&#9670;&#160;</a></span>dof_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classDofHandler.html">DofHandler</a>&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::dof_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>DoF handler. </p>
+
+</div>
+</div>
+<a id="abc3df0c2e4a72bad65b750c20ce06b94" name="abc3df0c2e4a72bad65b750c20ce06b94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc3df0c2e4a72bad65b750c20ce06b94">&#9670;&#160;</a></span>element_volume_container</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt;dim, degree, number&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::element_volume_container</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Element volume container. </p>
+
+</div>
+</div>
+<a id="aa7952b46455158b43846e66dc6be3bf6" name="aa7952b46455158b43846e66dc6be3bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7952b46455158b43846e66dc6be3bf6">&#9670;&#160;</a></span>fe_system</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt;dim&gt; &gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::fe_system</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Collection of finite element systems. This is just a collection of two FESystem's: one for scalar fields and one for vector fields. For now they both use FE_Q finite elements. </p>
+
+</div>
+</div>
+<a id="a1280b90d3ba5f507d5cb77dc894c97de" name="a1280b90d3ba5f507d5cb77dc894c97de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1280b90d3ba5f507d5cb77dc894c97de">&#9670;&#160;</a></span>invm_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classInvmHandler.html">InvmHandler</a>&lt;dim, degree, number&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::invm_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>invm handler. </p>
+
+</div>
+</div>
+<a id="af1c0a81ad56afae07c33bf68a0508253" name="af1c0a81ad56afae07c33bf68a0508253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1c0a81ad56afae07c33bf68a0508253">&#9670;&#160;</a></span>mapping</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::MappingQ1&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::mapping</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mappings to and from reference cell. </p>
+
+</div>
+</div>
+<a id="a019fad8cb34543698a0cd70bee8e8612" name="a019fad8cb34543698a0cd70bee8e8612"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019fad8cb34543698a0cd70bee8e8612">&#9670;&#160;</a></span>matrix_free_container</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt;dim, number&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::matrix_free_container</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object container. </p>
+
+</div>
+</div>
+<a id="a8debea3003daf0bd33d4570aa27ee66f" name="a8debea3003daf0bd33d4570aa27ee66f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8debea3003daf0bd33d4570aa27ee66f">&#9670;&#160;</a></span>mg_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::mg_info</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid information. </p>
+
+</div>
+</div>
+<a id="aa09e3e0fec7e4f140849daede3a5449a" name="aa09e3e0fec7e4f140849daede3a5449a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa09e3e0fec7e4f140849daede3a5449a">&#9670;&#160;</a></span>pf_tools</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::pf_tools</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Phase field tools. </p>
+
+</div>
+</div>
+<a id="af9643c73a9fd8a1a160936130e8a927f" name="af9643c73a9fd8a1a160936130e8a927f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9643c73a9fd8a1a160936130e8a927f">&#9670;&#160;</a></span>solution_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt;dim, number&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::solution_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solution handler. </p>
+
+</div>
+</div>
+<a id="aa4f7d8de357f5a5c30cab3d5916ace12" name="aa4f7d8de357f5a5c30cab3d5916ace12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4f7d8de357f5a5c30cab3d5916ace12">&#9670;&#160;</a></span>triangulation_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::triangulation_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Triangulation handler. </p>
+
+</div>
+</div>
+<a id="a8608e3cd9a9b72c034fc1c77c7a4ac82" name="a8608e3cd9a9b72c034fc1c77c7a4ac82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8608e3cd9a9b72c034fc1c77c7a4ac82">&#9670;&#160;</a></span>user_inputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt;dim&gt;* <a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;::user_inputs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-inputs. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="grid__refiner__context_8h_source.html">grid_refiner_context.h</a></li>
 </ul>
 </div><!-- contents -->

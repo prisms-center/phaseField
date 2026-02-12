@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,22 +122,22 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
   <div class="headertitle"><div class="title">concurrent_solver.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="concurrent__solver_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/solvers/solver_base.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="solver__base_8h.html">prismspf/solvers/solver_base.h</a>&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;functional&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> degree, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span><a class="code hl_class" href="classSolverContext.html">SolverContext</a>;</div>
@@ -141,8 +148,8 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <a class="code hl_class" href="classConcurrentSolver.html">ConcurrentSolver</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSolverContext.html">SolverContext&lt;dim, degree, number&gt;</a> &amp;<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">_solver_context</a>,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                   <span class="keyword">const</span> FieldSolveType                     &amp;<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">_field_solve_type</a>,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                   Types::Index                              <a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">_solve_priority</a> = 0);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                   <span class="keyword">const</span> <a class="code hl_enumeration" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a>                     &amp;<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">_field_solve_type</a>,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                   <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>                              <a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">_solve_priority</a> = 0);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a186dfa4258dc7372c04c450e9cfa263c">   35</a></span>  <a class="code hl_function" href="classConcurrentSolver.html#a186dfa4258dc7372c04c450e9cfa263c">~ConcurrentSolver</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
@@ -171,8 +178,8 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_function" href="classConcurrentSolver.html#a86405c1c8787031e2c97d55e68a2b89e">solve_explicit_equations</a>(</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keyword">const</span> std::function&lt;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="keywordtype">void</span>(std::vector&lt;<span class="keyword">typename</span> SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; &amp;,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>           <span class="keyword">const</span> std::vector&lt;<span class="keyword">typename</span> SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; &amp;)&gt;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      <span class="keywordtype">void</span>(std::vector&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase&lt;dim, degree, number&gt;::VectorType</a> *&gt; &amp;,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>           <span class="keyword">const</span> std::vector&lt;<span class="keyword">typename</span> <a class="code hl_typedef" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase&lt;dim, degree, number&gt;::VectorType</a> *&gt; &amp;)&gt;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      &amp;<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">function</a>);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  [[<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">nodiscard</a>]] std::unique_ptr&lt;</div>
@@ -180,7 +187,7 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a6919798c751973e98ea3566404376430">  113</a></span>  <a class="code hl_function" href="classConcurrentSolver.html#a6919798c751973e98ea3566404376430">get_system_matrix</a>()</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">return</span> system_matrix;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classConcurrentSolver.html#a3496ac08662fe7762658460256d7b096">system_matrix</a>;</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  }</div>
 </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
@@ -188,16 +195,16 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#aaab027dd8ede7c4f950f7962683f9cc6">  122</a></span>  <a class="code hl_function" href="classConcurrentSolver.html#aaab027dd8ede7c4f950f7962683f9cc6">get_global_to_local_solution_mapping</a>()</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">return</span> global_to_local_solution;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc">global_to_local_solution</a>;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  }</div>
 </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  [[<a class="code hl_function" href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">nodiscard</a>]] <span class="keyword">const</span> std::vector&lt;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">typename</span> SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; &amp;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">typename</span> <a class="code hl_typedef" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase&lt;dim, degree, number&gt;::VectorType</a> *&gt; &amp;</div>
 <div class="foldopen" id="foldopen00132" data-start="{" data-end="}">
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a6dccd4cbf125481df183d7bde7e51c72">  132</a></span>  <a class="code hl_function" href="classConcurrentSolver.html#a6dccd4cbf125481df183d7bde7e51c72">get_src_solution_subset</a>()</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">return</span> solution_subset;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classConcurrentSolver.html#a1fb2cf9080123ae6af48de6cdd353c82">solution_subset</a>;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  }</div>
 </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
@@ -205,19 +212,19 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a712274eb9ea93700e0fabfefc137e371">  141</a></span>  <a class="code hl_function" href="classConcurrentSolver.html#a712274eb9ea93700e0fabfefc137e371">get_dst_solution_subset</a>()</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  {</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordflow">return</span> new_solution_subset;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classConcurrentSolver.html#ac8b9bc6e602b40f58a65d652b8cbc779">new_solution_subset</a>;</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
 </div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  std::unique_ptr&lt;typename SolverBase&lt;dim, degree, number&gt;::SystemMatrixType&gt;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    system_matrix;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a3496ac08662fe7762658460256d7b096">  151</a></span>    <a class="code hl_variable" href="classConcurrentSolver.html#a3496ac08662fe7762658460256d7b096">system_matrix</a>;</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  std::vector&lt;Types::Index&gt; global_to_local_solution;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc">  156</a></span>  std::vector&lt;Types::Index&gt; <a class="code hl_variable" href="classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc">global_to_local_solution</a>;</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  std::vector&lt;typename SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; solution_subset;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#a1fb2cf9080123ae6af48de6cdd353c82">  161</a></span>  std::vector&lt;typename SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; <a class="code hl_variable" href="classConcurrentSolver.html#a1fb2cf9080123ae6af48de6cdd353c82">solution_subset</a>;</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  std::vector&lt;typename SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; new_solution_subset;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classConcurrentSolver.html#ac8b9bc6e602b40f58a65d652b8cbc779">  166</a></span>  std::vector&lt;typename SolverBase&lt;dim, degree, number&gt;::VectorType *&gt; <a class="code hl_variable" href="classConcurrentSolver.html#ac8b9bc6e602b40f58a65d652b8cbc779">new_solution_subset</a>;</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>};</div>
 </div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
@@ -227,25 +234,36 @@ $(document).ready(function(){initNavTree('concurrent__solver_8h_source.html','')
 <div class="ttc" id="aclassConcurrentSolver_html_a0fc4d3cd6073e7dbbb073b5db43bb9ea"><div class="ttname"><a href="classConcurrentSolver.html#a0fc4d3cd6073e7dbbb073b5db43bb9ea">ConcurrentSolver::operator=</a></div><div class="ttdeci">ConcurrentSolver &amp; operator=(const ConcurrentSolver &amp;solver_base)=delete</div><div class="ttdoc">Copy assignment.</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a17204781f61e062195c9fa9e0231e84e"><div class="ttname"><a href="classConcurrentSolver.html#a17204781f61e062195c9fa9e0231e84e">ConcurrentSolver::operator=</a></div><div class="ttdeci">ConcurrentSolver &amp; operator=(ConcurrentSolver &amp;&amp;solver_base) noexcept=delete</div><div class="ttdoc">Move assignment.</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a186dfa4258dc7372c04c450e9cfa263c"><div class="ttname"><a href="classConcurrentSolver.html#a186dfa4258dc7372c04c450e9cfa263c">ConcurrentSolver::~ConcurrentSolver</a></div><div class="ttdeci">~ConcurrentSolver() override=default</div><div class="ttdoc">Destructor.</div></div>
+<div class="ttc" id="aclassConcurrentSolver_html_a1fb2cf9080123ae6af48de6cdd353c82"><div class="ttname"><a href="classConcurrentSolver.html#a1fb2cf9080123ae6af48de6cdd353c82">ConcurrentSolver::solution_subset</a></div><div class="ttdeci">std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; solution_subset</div><div class="ttdoc">Subset of solutions fields that are necessary for concurrent solves.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:161</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a2546f6a1779f7c8aab90b9da306c4038"><div class="ttname"><a href="classConcurrentSolver.html#a2546f6a1779f7c8aab90b9da306c4038">ConcurrentSolver::ConcurrentSolver</a></div><div class="ttdeci">ConcurrentSolver(const ConcurrentSolver &amp;solver_base)=delete</div><div class="ttdoc">Copy constructor.</div></div>
+<div class="ttc" id="aclassConcurrentSolver_html_a3496ac08662fe7762658460256d7b096"><div class="ttname"><a href="classConcurrentSolver.html#a3496ac08662fe7762658460256d7b096">ConcurrentSolver::system_matrix</a></div><div class="ttdeci">std::unique_ptr&lt; typename SolverBase&lt; dim, degree, number &gt;::SystemMatrixType &gt; system_matrix</div><div class="ttdoc">Matrix-free operator.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:151</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a3556a6152d66010129af194d9ecf62a5"><div class="ttname"><a href="classConcurrentSolver.html#a3556a6152d66010129af194d9ecf62a5">ConcurrentSolver::reinit</a></div><div class="ttdeci">void reinit() override</div><div class="ttdoc">Reinitialize the solver.</div><div class="ttdef"><b>Definition</b> concurrent_solver.cc:101</div></div>
+<div class="ttc" id="aclassConcurrentSolver_html_a3de092ced11addb2bf1e834144f5eebc"><div class="ttname"><a href="classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc">ConcurrentSolver::global_to_local_solution</a></div><div class="ttdeci">std::vector&lt; Types::Index &gt; global_to_local_solution</div><div class="ttdoc">Mapping from global solution vectors to the local ones.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:156</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a61a66cf38572bcf7d80ca0a03b4472d4"><div class="ttname"><a href="classConcurrentSolver.html#a61a66cf38572bcf7d80ca0a03b4472d4">ConcurrentSolver::init</a></div><div class="ttdeci">void init() override</div><div class="ttdoc">Initialize the solver.</div><div class="ttdef"><b>Definition</b> concurrent_solver.cc:29</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a6919798c751973e98ea3566404376430"><div class="ttname"><a href="classConcurrentSolver.html#a6919798c751973e98ea3566404376430">ConcurrentSolver::get_system_matrix</a></div><div class="ttdeci">std::unique_ptr&lt; typename SolverBase&lt; dim, degree, number &gt;::SystemMatrixType &gt; &amp; get_system_matrix()</div><div class="ttdoc">Get the system matrix.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:113</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a6dccd4cbf125481df183d7bde7e51c72"><div class="ttname"><a href="classConcurrentSolver.html#a6dccd4cbf125481df183d7bde7e51c72">ConcurrentSolver::get_src_solution_subset</a></div><div class="ttdeci">const std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; &amp; get_src_solution_subset()</div><div class="ttdoc">Get the src solution subset.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:132</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a712274eb9ea93700e0fabfefc137e371"><div class="ttname"><a href="classConcurrentSolver.html#a712274eb9ea93700e0fabfefc137e371">ConcurrentSolver::get_dst_solution_subset</a></div><div class="ttdeci">std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; &amp; get_dst_solution_subset()</div><div class="ttdoc">Get the dst solution subset.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:141</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_a86405c1c8787031e2c97d55e68a2b89e"><div class="ttname"><a href="classConcurrentSolver.html#a86405c1c8787031e2c97d55e68a2b89e">ConcurrentSolver::solve_explicit_equations</a></div><div class="ttdeci">void solve_explicit_equations(const std::function&lt; void(std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; &amp;, const std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; &amp;)&gt; &amp;function)</div><div class="ttdoc">Solve the explicit equations.</div><div class="ttdef"><b>Definition</b> concurrent_solver.cc:194</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_aaab027dd8ede7c4f950f7962683f9cc6"><div class="ttname"><a href="classConcurrentSolver.html#aaab027dd8ede7c4f950f7962683f9cc6">ConcurrentSolver::get_global_to_local_solution_mapping</a></div><div class="ttdeci">const std::vector&lt; Types::Index &gt; &amp; get_global_to_local_solution_mapping()</div><div class="ttdoc">Get the mapping from global solution vectors to the local ones.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:122</div></div>
+<div class="ttc" id="aclassConcurrentSolver_html_ac8b9bc6e602b40f58a65d652b8cbc779"><div class="ttname"><a href="classConcurrentSolver.html#ac8b9bc6e602b40f58a65d652b8cbc779">ConcurrentSolver::new_solution_subset</a></div><div class="ttdeci">std::vector&lt; typename SolverBase&lt; dim, degree, number &gt;::VectorType * &gt; new_solution_subset</div><div class="ttdoc">Subset of new solutions fields that are necessary for concurrent solves.</div><div class="ttdef"><b>Definition</b> concurrent_solver.h:166</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_ad58de6f1407812ffdbf25660fdb30f84"><div class="ttname"><a href="classConcurrentSolver.html#ad58de6f1407812ffdbf25660fdb30f84">ConcurrentSolver::solve</a></div><div class="ttdeci">void solve() override</div><div class="ttdoc">Solve for a single update step.</div><div class="ttdef"><b>Definition</b> concurrent_solver.cc:171</div></div>
 <div class="ttc" id="aclassConcurrentSolver_html_ae5edaa410fc29a7561c81adf3310796f"><div class="ttname"><a href="classConcurrentSolver.html#ae5edaa410fc29a7561c81adf3310796f">ConcurrentSolver::ConcurrentSolver</a></div><div class="ttdeci">ConcurrentSolver(ConcurrentSolver &amp;&amp;solver_base) noexcept=delete</div><div class="ttdoc">Move constructor.</div></div>
 <div class="ttc" id="aclassMatrixFreeOperator_html"><div class="ttname"><a href="classMatrixFreeOperator.html">MatrixFreeOperator</a></div><div class="ttdoc">This is the abstract base class for the matrix-free implementation of some PDE.</div><div class="ttdef"><b>Definition</b> matrix_free_operator.h:51</div></div>
 <div class="ttc" id="aclassSolverBase_html"><div class="ttname"><a href="classSolverBase.html">SolverBase</a></div><div class="ttdef"><b>Definition</b> solver_base.h:62</div></div>
+<div class="ttc" id="aclassSolverBase_html_a4fc2bddc51a7ba2bf6943cf1c27765de"><div class="ttname"><a href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">SolverBase::VectorType</a></div><div class="ttdeci">dealii::LinearAlgebra::distributed::Vector&lt; number &gt; VectorType</div><div class="ttdef"><b>Definition</b> solver_base.h:65</div></div>
 <div class="ttc" id="aclassSolverContext_html"><div class="ttname"><a href="classSolverContext.html">SolverContext</a></div><div class="ttdoc">This class provides context for a solver with ptrs to all the relevant dependencies.</div><div class="ttdef"><b>Definition</b> solver_context.h:36</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
+<div class="ttc" id="asolver__base_8h_html"><div class="ttname"><a href="solver__base_8h.html">solver_base.h</a></div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
+<div class="ttc" id="atype__enums_8h_html_acc04211570c93ba4ba084a8f71a3491f"><div class="ttname"><a href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a></div><div class="ttdeci">FieldSolveType</div><div class="ttdoc">Internal classification of combined field and solve types. There are six different types of solve tha...</div><div class="ttdef"><b>Definition</b> type_enums.h:59</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html">solvers</a></li><li class="navelem"><b>concurrent_solver.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_1b89f3ef2cea2c4e7a7e310b8e37f1bd.html">solvers</a></li><li class="navelem"><a class="el" href="concurrent__solver_8h.html">concurrent_solver.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

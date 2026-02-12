@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,34 +128,139 @@ $(document).ready(function(){initNavTree('structLinearSolverParameters.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a35d761b1365ce4b7104fcb9d2349cf76" id="r_a35d761b1365ce4b7104fcb9d2349cf76"><td class="memItemLeft" align="right" valign="top"><a id="a35d761b1365ce4b7104fcb9d2349cf76" name="a35d761b1365ce4b7104fcb9d2349cf76"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>tolerance</b> = Defaults::tolerance</td></tr>
+<tr class="memitem:a35d761b1365ce4b7104fcb9d2349cf76" id="r_a35d761b1365ce4b7104fcb9d2349cf76"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76">tolerance</a> = Defaults::tolerance</td></tr>
 <tr class="separator:a35d761b1365ce4b7104fcb9d2349cf76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c94596720e70821dda70f423a422680" id="r_a5c94596720e70821dda70f423a422680"><td class="memItemLeft" align="right" valign="top"><a id="a5c94596720e70821dda70f423a422680" name="a5c94596720e70821dda70f423a422680"></a>
-SolverToleranceType&#160;</td><td class="memItemRight" valign="bottom"><b>tolerance_type</b> = SolverToleranceType::RelativeResidualChange</td></tr>
+<tr class="memitem:a5c94596720e70821dda70f423a422680" id="r_a5c94596720e70821dda70f423a422680"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700">SolverToleranceType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680">tolerance_type</a> = <a class="el" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a288c896e495cd658c87fd346c4056cae">SolverToleranceType::RelativeResidualChange</a></td></tr>
 <tr class="separator:a5c94596720e70821dda70f423a422680"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a009eb184b311853eb752e173b2c7999c" id="r_a009eb184b311853eb752e173b2c7999c"><td class="memItemLeft" align="right" valign="top"><a id="a009eb184b311853eb752e173b2c7999c" name="a009eb184b311853eb752e173b2c7999c"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>max_iterations</b> = Defaults::iterations</td></tr>
+<tr class="memitem:a009eb184b311853eb752e173b2c7999c" id="r_a009eb184b311853eb752e173b2c7999c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c">max_iterations</a> = <a class="el" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></td></tr>
 <tr class="separator:a009eb184b311853eb752e173b2c7999c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ce3a6e58fc1f327502450351cb1a986" id="r_a7ce3a6e58fc1f327502450351cb1a986"><td class="memItemLeft" align="right" valign="top"><a id="a7ce3a6e58fc1f327502450351cb1a986" name="a7ce3a6e58fc1f327502450351cb1a986"></a>
-PreconditionerType&#160;</td><td class="memItemRight" valign="bottom"><b>preconditioner</b> = PreconditionerType::GMG</td></tr>
+<tr class="memitem:a7ce3a6e58fc1f327502450351cb1a986" id="r_a7ce3a6e58fc1f327502450351cb1a986"><td class="memItemLeft" align="right" valign="top"><a class="el" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700b">PreconditionerType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986">preconditioner</a> = <a class="el" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">PreconditionerType::GMG</a></td></tr>
 <tr class="separator:a7ce3a6e58fc1f327502450351cb1a986"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdf7bb1ca9629c165cc7c31878984f4e" id="r_afdf7bb1ca9629c165cc7c31878984f4e"><td class="memItemLeft" align="right" valign="top"><a id="afdf7bb1ca9629c165cc7c31878984f4e" name="afdf7bb1ca9629c165cc7c31878984f4e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>smoothing_range</b> = Defaults::smoothing_range</td></tr>
+<tr class="memitem:afdf7bb1ca9629c165cc7c31878984f4e" id="r_afdf7bb1ca9629c165cc7c31878984f4e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#afdf7bb1ca9629c165cc7c31878984f4e">smoothing_range</a> = Defaults::smoothing_range</td></tr>
 <tr class="separator:afdf7bb1ca9629c165cc7c31878984f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab59e11a916740acb1c0b20f9eb28712" id="r_aab59e11a916740acb1c0b20f9eb28712"><td class="memItemLeft" align="right" valign="top"><a id="aab59e11a916740acb1c0b20f9eb28712" name="aab59e11a916740acb1c0b20f9eb28712"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>smoother_degree</b> = Defaults::smoother_degree</td></tr>
+<tr class="memitem:aab59e11a916740acb1c0b20f9eb28712" id="r_aab59e11a916740acb1c0b20f9eb28712"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#aab59e11a916740acb1c0b20f9eb28712">smoother_degree</a> = Defaults::smoother_degree</td></tr>
 <tr class="separator:aab59e11a916740acb1c0b20f9eb28712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a332de98b33d544018bc47924bee53920" id="r_a332de98b33d544018bc47924bee53920"><td class="memItemLeft" align="right" valign="top"><a id="a332de98b33d544018bc47924bee53920" name="a332de98b33d544018bc47924bee53920"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>eig_cg_n_iterations</b> = Defaults::eig_cg_n_iterations</td></tr>
+<tr class="memitem:a332de98b33d544018bc47924bee53920" id="r_a332de98b33d544018bc47924bee53920"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a332de98b33d544018bc47924bee53920">eig_cg_n_iterations</a> = Defaults::eig_cg_n_iterations</td></tr>
 <tr class="separator:a332de98b33d544018bc47924bee53920"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bace2f96efd6f8d66ebd2f4204472a3" id="r_a2bace2f96efd6f8d66ebd2f4204472a3"><td class="memItemLeft" align="right" valign="top"><a id="a2bace2f96efd6f8d66ebd2f4204472a3" name="a2bace2f96efd6f8d66ebd2f4204472a3"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>min_mg_level</b> = 0</td></tr>
+<tr class="memitem:a2bace2f96efd6f8d66ebd2f4204472a3" id="r_a2bace2f96efd6f8d66ebd2f4204472a3"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3">min_mg_level</a> = 0</td></tr>
 <tr class="separator:a2bace2f96efd6f8d66ebd2f4204472a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that stores relevant linear solve information of a certain field. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a332de98b33d544018bc47924bee53920" name="a332de98b33d544018bc47924bee53920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332de98b33d544018bc47924bee53920">&#9670;&#160;</a></span>eig_cg_n_iterations</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int LinearSolverParameters::eig_cg_n_iterations = Defaults::eig_cg_n_iterations</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a009eb184b311853eb752e173b2c7999c" name="a009eb184b311853eb752e173b2c7999c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a009eb184b311853eb752e173b2c7999c">&#9670;&#160;</a></span>max_iterations</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int LinearSolverParameters::max_iterations = <a class="el" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2bace2f96efd6f8d66ebd2f4204472a3" name="a2bace2f96efd6f8d66ebd2f4204472a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bace2f96efd6f8d66ebd2f4204472a3">&#9670;&#160;</a></span>min_mg_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int LinearSolverParameters::min_mg_level = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ce3a6e58fc1f327502450351cb1a986" name="a7ce3a6e58fc1f327502450351cb1a986"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ce3a6e58fc1f327502450351cb1a986">&#9670;&#160;</a></span>preconditioner</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700b">PreconditionerType</a> LinearSolverParameters::preconditioner = <a class="el" href="type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53">PreconditionerType::GMG</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aab59e11a916740acb1c0b20f9eb28712" name="aab59e11a916740acb1c0b20f9eb28712"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab59e11a916740acb1c0b20f9eb28712">&#9670;&#160;</a></span>smoother_degree</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int LinearSolverParameters::smoother_degree = Defaults::smoother_degree</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afdf7bb1ca9629c165cc7c31878984f4e" name="afdf7bb1ca9629c165cc7c31878984f4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdf7bb1ca9629c165cc7c31878984f4e">&#9670;&#160;</a></span>smoothing_range</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double LinearSolverParameters::smoothing_range = Defaults::smoothing_range</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a35d761b1365ce4b7104fcb9d2349cf76" name="a35d761b1365ce4b7104fcb9d2349cf76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35d761b1365ce4b7104fcb9d2349cf76">&#9670;&#160;</a></span>tolerance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double LinearSolverParameters::tolerance = Defaults::tolerance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c94596720e70821dda70f423a422680" name="a5c94596720e70821dda70f423a422680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c94596720e70821dda70f423a422680">&#9670;&#160;</a></span>tolerance_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700">SolverToleranceType</a> LinearSolverParameters::tolerance_type = <a class="el" href="type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a288c896e495cd658c87fd346c4056cae">SolverToleranceType::RelativeResidualChange</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="linear__solve__parameters_8h_source.html">linear_solve_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

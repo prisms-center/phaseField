@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('structCheckpointParameters.html',''); 
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structCheckpointParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">CheckpointParameters Struct Reference</div></div>
 </div><!--header-->
@@ -121,38 +129,351 @@ $(document).ready(function(){initNavTree('structCheckpointParameters.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad8f3a01402a29419eaa4fa5e13d56611" id="r_ad8f3a01402a29419eaa4fa5e13d56611"><td class="memItemLeft" align="right" valign="top"><a id="ad8f3a01402a29419eaa4fa5e13d56611" name="ad8f3a01402a29419eaa4fa5e13d56611"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>should_checkpoint</b> (unsigned int increment) const</td></tr>
-<tr class="memdesc:ad8f3a01402a29419eaa4fa5e13d56611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the increment should be checkpointed. <br /></td></tr>
+<tr class="memitem:ad8f3a01402a29419eaa4fa5e13d56611" id="r_ad8f3a01402a29419eaa4fa5e13d56611"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#ad8f3a01402a29419eaa4fa5e13d56611">should_checkpoint</a> (unsigned int increment) const</td></tr>
+<tr class="memdesc:ad8f3a01402a29419eaa4fa5e13d56611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the increment should be checkpointed.  <br /></td></tr>
 <tr class="separator:ad8f3a01402a29419eaa4fa5e13d56611"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9d6b311c42f34af2af1e53ec3f5080c" id="r_af9d6b311c42f34af2af1e53ec3f5080c"><td class="memItemLeft" align="right" valign="top"><a id="af9d6b311c42f34af2af1e53ec3f5080c" name="af9d6b311c42f34af2af1e53ec3f5080c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> (const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
-<tr class="memdesc:af9d6b311c42f34af2af1e53ec3f5080c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:af9d6b311c42f34af2af1e53ec3f5080c" id="r_af9d6b311c42f34af2af1e53ec3f5080c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#af9d6b311c42f34af2af1e53ec3f5080c">postprocess_and_validate</a> (const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
+<tr class="memdesc:af9d6b311c42f34af2af1e53ec3f5080c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:af9d6b311c42f34af2af1e53ec3f5080c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35db0292d2d6f64d162991006b6abdb4" id="r_a35db0292d2d6f64d162991006b6abdb4"><td class="memItemLeft" align="right" valign="top"><a id="a35db0292d2d6f64d162991006b6abdb4" name="a35db0292d2d6f64d162991006b6abdb4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:a35db0292d2d6f64d162991006b6abdb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:a35db0292d2d6f64d162991006b6abdb4" id="r_a35db0292d2d6f64d162991006b6abdb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a35db0292d2d6f64d162991006b6abdb4">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:a35db0292d2d6f64d162991006b6abdb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:a35db0292d2d6f64d162991006b6abdb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f847189cfd6739f5e40cfe818094a9d" id="r_a0f847189cfd6739f5e40cfe818094a9d"><td class="memItemLeft" align="right" valign="top"><a id="a0f847189cfd6739f5e40cfe818094a9d" name="a0f847189cfd6739f5e40cfe818094a9d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_load_from_checkpoint</b> (bool _load_from_checkpoint)</td></tr>
-<tr class="memdesc:a0f847189cfd6739f5e40cfe818094a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether to load from a checkpoint. <br /></td></tr>
+<tr class="memitem:a0f847189cfd6739f5e40cfe818094a9d" id="r_a0f847189cfd6739f5e40cfe818094a9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a0f847189cfd6739f5e40cfe818094a9d">set_load_from_checkpoint</a> (bool _load_from_checkpoint)</td></tr>
+<tr class="memdesc:a0f847189cfd6739f5e40cfe818094a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether to load from a checkpoint.  <br /></td></tr>
 <tr class="separator:a0f847189cfd6739f5e40cfe818094a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10aed4085f4b3cd5ab61c6937743ca45" id="r_a10aed4085f4b3cd5ab61c6937743ca45"><td class="memItemLeft" align="right" valign="top"><a id="a10aed4085f4b3cd5ab61c6937743ca45" name="a10aed4085f4b3cd5ab61c6937743ca45"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_condition</b> (const std::string &amp;_condition)</td></tr>
-<tr class="memdesc:a10aed4085f4b3cd5ab61c6937743ca45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the checkpoint condition. <br /></td></tr>
+<tr class="memitem:a10aed4085f4b3cd5ab61c6937743ca45" id="r_a10aed4085f4b3cd5ab61c6937743ca45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a10aed4085f4b3cd5ab61c6937743ca45">set_condition</a> (const std::string &amp;_condition)</td></tr>
+<tr class="memdesc:a10aed4085f4b3cd5ab61c6937743ca45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the checkpoint condition.  <br /></td></tr>
 <tr class="separator:a10aed4085f4b3cd5ab61c6937743ca45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b3720d0e0f92d49dd15f5942201f23a" id="r_a1b3720d0e0f92d49dd15f5942201f23a"><td class="memItemLeft" align="right" valign="top"><a id="a1b3720d0e0f92d49dd15f5942201f23a" name="a1b3720d0e0f92d49dd15f5942201f23a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_n_checkpoints</b> (unsigned int _n_checkpoints)</td></tr>
-<tr class="memdesc:a1b3720d0e0f92d49dd15f5942201f23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of checkpoints. <br /></td></tr>
+<tr class="memitem:a1b3720d0e0f92d49dd15f5942201f23a" id="r_a1b3720d0e0f92d49dd15f5942201f23a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a1b3720d0e0f92d49dd15f5942201f23a">set_n_checkpoints</a> (unsigned int _n_checkpoints)</td></tr>
+<tr class="memdesc:a1b3720d0e0f92d49dd15f5942201f23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of checkpoints.  <br /></td></tr>
 <tr class="separator:a1b3720d0e0f92d49dd15f5942201f23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a889529aa8259fde37c1e4c810746a3ec" id="r_a889529aa8259fde37c1e4c810746a3ec"><td class="memItemLeft" align="right" valign="top"><a id="a889529aa8259fde37c1e4c810746a3ec" name="a889529aa8259fde37c1e4c810746a3ec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_user_checkpoint_list</b> (const std::vector&lt; int &gt; &amp;_user_checkpoint_list)</td></tr>
-<tr class="memdesc:a889529aa8259fde37c1e4c810746a3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user checkpoint list. <br /></td></tr>
+<tr class="memitem:a889529aa8259fde37c1e4c810746a3ec" id="r_a889529aa8259fde37c1e4c810746a3ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a889529aa8259fde37c1e4c810746a3ec">set_user_checkpoint_list</a> (const std::vector&lt; int &gt; &amp;_user_checkpoint_list)</td></tr>
+<tr class="memdesc:a889529aa8259fde37c1e4c810746a3ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user checkpoint list.  <br /></td></tr>
 <tr class="separator:a889529aa8259fde37c1e4c810746a3ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:adfb01bc786210ab007dd4fb689d492de" id="r_adfb01bc786210ab007dd4fb689d492de"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#adfb01bc786210ab007dd4fb689d492de">load_from_checkpoint</a> = false</td></tr>
+<tr class="separator:adfb01bc786210ab007dd4fb689d492de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10c03046ef76e38bb4cadaf43222fdbe" id="r_a10c03046ef76e38bb4cadaf43222fdbe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a10c03046ef76e38bb4cadaf43222fdbe">condition</a></td></tr>
+<tr class="separator:a10c03046ef76e38bb4cadaf43222fdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e004e544a5dc86e501ecbe6e904c7e6" id="r_a3e004e544a5dc86e501ecbe6e904c7e6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a3e004e544a5dc86e501ecbe6e904c7e6">n_checkpoints</a> = 0</td></tr>
+<tr class="separator:a3e004e544a5dc86e501ecbe6e904c7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27904f434b5e32f6006fc4f98e1ad81e" id="r_a27904f434b5e32f6006fc4f98e1ad81e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a27904f434b5e32f6006fc4f98e1ad81e">user_checkpoint_list</a></td></tr>
+<tr class="separator:a27904f434b5e32f6006fc4f98e1ad81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078b90a817bbc50ddfa40d0718f4af4c" id="r_a078b90a817bbc50ddfa40d0718f4af4c"><td class="memItemLeft" align="right" valign="top">std::set&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structCheckpointParameters.html#a078b90a817bbc50ddfa40d0718f4af4c">checkpoint_list</a></td></tr>
+<tr class="separator:a078b90a817bbc50ddfa40d0718f4af4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds checkpoint parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af9d6b311c42f34af2af1e53ec3f5080c" name="af9d6b311c42f34af2af1e53ec3f5080c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9d6b311c42f34af2af1e53ec3f5080c">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;&#160;</td>
+          <td class="paramname"><em>temporal_discretization</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="a35db0292d2d6f64d162991006b6abdb4" name="a35db0292d2d6f64d162991006b6abdb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35db0292d2d6f64d162991006b6abdb4">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="a10aed4085f4b3cd5ab61c6937743ca45" name="a10aed4085f4b3cd5ab61c6937743ca45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10aed4085f4b3cd5ab61c6937743ca45">&#9670;&#160;</a></span>set_condition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::set_condition </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_condition</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the checkpoint condition. </p>
+
+</div>
+</div>
+<a id="a0f847189cfd6739f5e40cfe818094a9d" name="a0f847189cfd6739f5e40cfe818094a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f847189cfd6739f5e40cfe818094a9d">&#9670;&#160;</a></span>set_load_from_checkpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::set_load_from_checkpoint </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>_load_from_checkpoint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set whether to load from a checkpoint. </p>
+
+</div>
+</div>
+<a id="a1b3720d0e0f92d49dd15f5942201f23a" name="a1b3720d0e0f92d49dd15f5942201f23a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b3720d0e0f92d49dd15f5942201f23a">&#9670;&#160;</a></span>set_n_checkpoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::set_n_checkpoints </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>_n_checkpoints</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the number of checkpoints. </p>
+
+</div>
+</div>
+<a id="a889529aa8259fde37c1e4c810746a3ec" name="a889529aa8259fde37c1e4c810746a3ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a889529aa8259fde37c1e4c810746a3ec">&#9670;&#160;</a></span>set_user_checkpoint_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::set_user_checkpoint_list </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_checkpoint_list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the user checkpoint list. </p>
+
+</div>
+</div>
+<a id="ad8f3a01402a29419eaa4fa5e13d56611" name="ad8f3a01402a29419eaa4fa5e13d56611"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8f3a01402a29419eaa4fa5e13d56611">&#9670;&#160;</a></span>should_checkpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CheckpointParameters::should_checkpoint </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>increment</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return if the increment should be checkpointed. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a078b90a817bbc50ddfa40d0718f4af4c" name="a078b90a817bbc50ddfa40d0718f4af4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078b90a817bbc50ddfa40d0718f4af4c">&#9670;&#160;</a></span>checkpoint_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;unsigned int&gt; CheckpointParameters::checkpoint_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10c03046ef76e38bb4cadaf43222fdbe" name="a10c03046ef76e38bb4cadaf43222fdbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10c03046ef76e38bb4cadaf43222fdbe">&#9670;&#160;</a></span>condition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CheckpointParameters::condition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adfb01bc786210ab007dd4fb689d492de" name="adfb01bc786210ab007dd4fb689d492de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfb01bc786210ab007dd4fb689d492de">&#9670;&#160;</a></span>load_from_checkpoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CheckpointParameters::load_from_checkpoint = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3e004e544a5dc86e501ecbe6e904c7e6" name="a3e004e544a5dc86e501ecbe6e904c7e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e004e544a5dc86e501ecbe6e904c7e6">&#9670;&#160;</a></span>n_checkpoints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int CheckpointParameters::n_checkpoints = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a27904f434b5e32f6006fc4f98e1ad81e" name="a27904f434b5e32f6006fc4f98e1ad81e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27904f434b5e32f6006fc4f98e1ad81e">&#9670;&#160;</a></span>user_checkpoint_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; CheckpointParameters::user_checkpoint_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="checkpoint__parameters_8h_source.html">checkpoint_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

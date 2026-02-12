@@ -1,0 +1,19 @@
+<map id="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/linear_solver_identity.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/linear_solver_identity.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="874,5,1102,60"/>
+<area shape="rect" id="Node000002" href="$pde__problem_8cc.html" title=" " alt="" coords="5,108,224,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="860,45,573,69,405,88,236,111,225,113,224,107,236,105,404,82,573,64,859,40"/>
+<area shape="rect" id="Node000003" href="$solver__handler_8cc.html" title=" " alt="" coords="248,108,467,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="861,53,680,78,479,111,468,113,467,108,478,105,679,73,860,48"/>
+<area shape="rect" id="Node000004" href="$linear__solver__identity_8cc.html" title=" " alt="" coords="491,108,709,163"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="875,66,702,111,700,105,873,61"/>
+<area shape="rect" id="Node000005" href="$sequential__auxiliary__solver_8cc.html" title=" " alt="" coords="733,108,976,163"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="944,70,891,110,888,106,941,66"/>
+<area shape="rect" id="Node000006" href="$sequential__co__nonlinear__solver_8cc.html" title=" " alt="" coords="1000,108,1243,163"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1035,66,1088,106,1085,110,1032,70"/>
+<area shape="rect" id="Node000007" href="$sequential__linear__solver_8cc.html" title=" " alt="" coords="1267,108,1509,163"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1106,61,1284,105,1283,111,1104,66"/>
+<area shape="rect" id="Node000008" href="$sequential__self__nonlinear__solver_8cc.html" title=" " alt="" coords="1533,108,1776,163"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1116,47,1308,73,1522,105,1533,107,1533,113,1521,111,1307,78,1115,52"/>
+<area shape="rect" id="Node000009" href="$sequential__solver_8cc.html" title=" " alt="" coords="1800,108,2043,163"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1116,39,1423,64,1606,82,1788,105,1800,107,1799,112,1788,111,1605,88,1423,69,1116,45"/>
+</map>

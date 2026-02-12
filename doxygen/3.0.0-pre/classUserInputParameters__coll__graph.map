@@ -1,0 +1,19 @@
+<map id="UserInputParameters&lt; dim &gt;" name="UserInputParameters&lt; dim &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="469,185,628,225"/>
+<area shape="rect" id="Node000002" href="$structTemporalDiscretization.html" title="Struct that holds temporal discretization parameters." alt="" coords="33,19,205,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,18,273,17,332,22,391,35,447,59,481,86,508,120,529,155,542,184,537,186,524,157,504,123,477,90,444,64,390,40,331,27,273,22,218,23"/>
+<area shape="rect" id="Node000003" href="$structLinearSolveParameters.html" title="Struct that holds linear solver parameters." alt="" coords="33,69,205,94"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,77,272,80,330,87,390,99,446,119,472,132,495,149,531,183,528,187,491,153,469,137,444,124,388,105,329,92,272,85,218,82"/>
+<area shape="rect" id="Node000004" href="$structNonlinearSolveParameterSet.html" title="Struct that holds nonlinear solver parameters." alt="" coords="14,118,223,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="237,136,339,147,446,167,498,183,497,188,445,172,339,153,237,141"/>
+<area shape="rect" id="Node000005" href="$structOutputParameters.html" title="Struct that holds output parameters." alt="" coords="49,167,189,193"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="203,182,469,198,469,203,202,188"/>
+<area shape="rect" id="Node000006" href="$structCheckpointParameters.html" title="Struct that holds checkpoint parameters." alt="" coords="34,217,203,242"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="217,229,327,228,445,221,469,218,469,224,446,227,327,234,217,235"/>
+<area shape="rect" id="Node000007" href="$structLoadInitialConditionParameters.html" title="Struct that stores relevant load initial condition information." alt="" coords="5,266,232,291"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="246,277,344,269,445,251,480,238,512,223,514,228,482,243,446,256,345,275,246,282"/>
+<area shape="rect" id="Node000008" href="$structNucleationParameters.html" title="Struct that holds nucleation parameters." alt="" coords="35,315,202,341"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="216,333,270,333,328,328,388,317,444,298,471,282,494,263,531,224,535,227,498,267,474,287,446,302,389,322,329,333,270,338,216,338"/>
+<area shape="rect" id="Node000009" href="$structMiscellaneousParameters.html" title="Struct that holds miscellaneous parameters." alt="" coords="24,365,213,390"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="207,389,263,392,325,389,387,377,444,354,478,326,505,291,525,255,538,225,543,227,530,258,509,294,482,330,447,358,388,383,325,394,263,397,207,394"/>
+</map>

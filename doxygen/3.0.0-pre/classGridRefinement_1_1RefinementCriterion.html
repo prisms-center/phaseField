@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classGridRefinement_1_1RefinementCrite
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classGridRefinement_1_1RefinementCriterion-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GridRefinement::RefinementCriterion Class Reference</div></div>
 </div><!--header-->
@@ -118,61 +126,61 @@ $(document).ready(function(){initNavTree('classGridRefinement_1_1RefinementCrite
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d77bc6219f2e399121c851550225dbf" id="r_a0d77bc6219f2e399121c851550225dbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">RefinementCriterion</a> (const Types::Index &amp;_global_field_index, const RefinementFlags &amp;_criterion, const double &amp;_value_lower_bound=DBL_MAX, const double &amp;_value_upper_bound=DBL_MAX, const double &amp;_gradient_lower_bound=DBL_MAX)</td></tr>
+<tr class="memitem:a0d77bc6219f2e399121c851550225dbf" id="r_a0d77bc6219f2e399121c851550225dbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a0d77bc6219f2e399121c851550225dbf">RefinementCriterion</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;_global_field_index, const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;_criterion, const double &amp;_value_lower_bound=DBL_MAX, const double &amp;_value_upper_bound=DBL_MAX, const double &amp;_gradient_lower_bound=DBL_MAX)</td></tr>
 <tr class="memdesc:a0d77bc6219f2e399121c851550225dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a0d77bc6219f2e399121c851550225dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bb08d4decfc6f836cc73e1cac9fc67" id="r_a27bb08d4decfc6f836cc73e1cac9fc67"><td class="memItemLeft" align="right" valign="top"><a id="a27bb08d4decfc6f836cc73e1cac9fc67" name="a27bb08d4decfc6f836cc73e1cac9fc67"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_index</b> (const Types::Index &amp;_global_field_index)</td></tr>
-<tr class="memdesc:a27bb08d4decfc6f836cc73e1cac9fc67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the global field index. <br /></td></tr>
+<tr class="memitem:a27bb08d4decfc6f836cc73e1cac9fc67" id="r_a27bb08d4decfc6f836cc73e1cac9fc67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67">set_index</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;_global_field_index)</td></tr>
+<tr class="memdesc:a27bb08d4decfc6f836cc73e1cac9fc67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the global field index.  <br /></td></tr>
 <tr class="separator:a27bb08d4decfc6f836cc73e1cac9fc67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88074c147144edea82f7f2310adea9db" id="r_a88074c147144edea82f7f2310adea9db"><td class="memItemLeft" align="right" valign="top"><a id="a88074c147144edea82f7f2310adea9db" name="a88074c147144edea82f7f2310adea9db"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_criterion</b> (const RefinementFlags &amp;_criterion)</td></tr>
-<tr class="memdesc:a88074c147144edea82f7f2310adea9db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the refinement criterion. <br /></td></tr>
+<tr class="memitem:a88074c147144edea82f7f2310adea9db" id="r_a88074c147144edea82f7f2310adea9db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a88074c147144edea82f7f2310adea9db">set_criterion</a> (const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;_criterion)</td></tr>
+<tr class="memdesc:a88074c147144edea82f7f2310adea9db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the refinement criterion.  <br /></td></tr>
 <tr class="separator:a88074c147144edea82f7f2310adea9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa5f10cf762923ef0b22dc803f7ba89f" id="r_aaa5f10cf762923ef0b22dc803f7ba89f"><td class="memItemLeft" align="right" valign="top"><a id="aaa5f10cf762923ef0b22dc803f7ba89f" name="aaa5f10cf762923ef0b22dc803f7ba89f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_value_lower_bound</b> (const double &amp;_value_lower_bound)</td></tr>
-<tr class="memdesc:aaa5f10cf762923ef0b22dc803f7ba89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value lower bound. <br /></td></tr>
+<tr class="memitem:aaa5f10cf762923ef0b22dc803f7ba89f" id="r_aaa5f10cf762923ef0b22dc803f7ba89f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#aaa5f10cf762923ef0b22dc803f7ba89f">set_value_lower_bound</a> (const double &amp;_value_lower_bound)</td></tr>
+<tr class="memdesc:aaa5f10cf762923ef0b22dc803f7ba89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value lower bound.  <br /></td></tr>
 <tr class="separator:aaa5f10cf762923ef0b22dc803f7ba89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63cf9ce8d2b537998f9876d6604f704e" id="r_a63cf9ce8d2b537998f9876d6604f704e"><td class="memItemLeft" align="right" valign="top"><a id="a63cf9ce8d2b537998f9876d6604f704e" name="a63cf9ce8d2b537998f9876d6604f704e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_value_upper_bound</b> (const double &amp;_value_upper_bound)</td></tr>
-<tr class="memdesc:a63cf9ce8d2b537998f9876d6604f704e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value upper bound. <br /></td></tr>
+<tr class="memitem:a63cf9ce8d2b537998f9876d6604f704e" id="r_a63cf9ce8d2b537998f9876d6604f704e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e">set_value_upper_bound</a> (const double &amp;_value_upper_bound)</td></tr>
+<tr class="memdesc:a63cf9ce8d2b537998f9876d6604f704e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value upper bound.  <br /></td></tr>
 <tr class="separator:a63cf9ce8d2b537998f9876d6604f704e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a851c3bebf0572ec6b856bf917436c8e1" id="r_a851c3bebf0572ec6b856bf917436c8e1"><td class="memItemLeft" align="right" valign="top"><a id="a851c3bebf0572ec6b856bf917436c8e1" name="a851c3bebf0572ec6b856bf917436c8e1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_gradient_lower_bound</b> (const double &amp;_gradient_lower_bound)</td></tr>
-<tr class="memdesc:a851c3bebf0572ec6b856bf917436c8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the gradient lower bound. <br /></td></tr>
+<tr class="memitem:a851c3bebf0572ec6b856bf917436c8e1" id="r_a851c3bebf0572ec6b856bf917436c8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a851c3bebf0572ec6b856bf917436c8e1">set_gradient_lower_bound</a> (const double &amp;_gradient_lower_bound)</td></tr>
+<tr class="memdesc:a851c3bebf0572ec6b856bf917436c8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the gradient lower bound.  <br /></td></tr>
 <tr class="separator:a851c3bebf0572ec6b856bf917436c8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b21cb5cfb10fb9977221e619996ede8" id="r_a3b21cb5cfb10fb9977221e619996ede8"><td class="memItemLeft" align="right" valign="top"><a id="a3b21cb5cfb10fb9977221e619996ede8" name="a3b21cb5cfb10fb9977221e619996ede8"></a>
-const Types::Index &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_index</b> () const</td></tr>
-<tr class="memdesc:a3b21cb5cfb10fb9977221e619996ede8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global field index. <br /></td></tr>
+<tr class="memitem:a3b21cb5cfb10fb9977221e619996ede8" id="r_a3b21cb5cfb10fb9977221e619996ede8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a3b21cb5cfb10fb9977221e619996ede8">get_index</a> () const</td></tr>
+<tr class="memdesc:a3b21cb5cfb10fb9977221e619996ede8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global field index.  <br /></td></tr>
 <tr class="separator:a3b21cb5cfb10fb9977221e619996ede8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad45aad738d5a8581b4b292c8c06071b0" id="r_ad45aad738d5a8581b4b292c8c06071b0"><td class="memItemLeft" align="right" valign="top"><a id="ad45aad738d5a8581b4b292c8c06071b0" name="ad45aad738d5a8581b4b292c8c06071b0"></a>
-const RefinementFlags &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_criterion</b> () const</td></tr>
-<tr class="memdesc:ad45aad738d5a8581b4b292c8c06071b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the refinement criterion. <br /></td></tr>
+<tr class="memitem:ad45aad738d5a8581b4b292c8c06071b0" id="r_ad45aad738d5a8581b4b292c8c06071b0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ad45aad738d5a8581b4b292c8c06071b0">get_criterion</a> () const</td></tr>
+<tr class="memdesc:ad45aad738d5a8581b4b292c8c06071b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the refinement criterion.  <br /></td></tr>
 <tr class="separator:ad45aad738d5a8581b4b292c8c06071b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3fc7658e41eb166e32a4cca4facff5d" id="r_ad3fc7658e41eb166e32a4cca4facff5d"><td class="memItemLeft" align="right" valign="top"><a id="ad3fc7658e41eb166e32a4cca4facff5d" name="ad3fc7658e41eb166e32a4cca4facff5d"></a>
-const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_value_lower_bound</b> () const</td></tr>
-<tr class="memdesc:ad3fc7658e41eb166e32a4cca4facff5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value lower bound. <br /></td></tr>
+<tr class="memitem:ad3fc7658e41eb166e32a4cca4facff5d" id="r_ad3fc7658e41eb166e32a4cca4facff5d"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ad3fc7658e41eb166e32a4cca4facff5d">get_value_lower_bound</a> () const</td></tr>
+<tr class="memdesc:ad3fc7658e41eb166e32a4cca4facff5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value lower bound.  <br /></td></tr>
 <tr class="separator:ad3fc7658e41eb166e32a4cca4facff5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f708f87381ba9db3d206fad05b8030f" id="r_a4f708f87381ba9db3d206fad05b8030f"><td class="memItemLeft" align="right" valign="top"><a id="a4f708f87381ba9db3d206fad05b8030f" name="a4f708f87381ba9db3d206fad05b8030f"></a>
-const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_value_upper_bound</b> () const</td></tr>
-<tr class="memdesc:a4f708f87381ba9db3d206fad05b8030f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value upper bound. <br /></td></tr>
+<tr class="memitem:a4f708f87381ba9db3d206fad05b8030f" id="r_a4f708f87381ba9db3d206fad05b8030f"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a4f708f87381ba9db3d206fad05b8030f">get_value_upper_bound</a> () const</td></tr>
+<tr class="memdesc:a4f708f87381ba9db3d206fad05b8030f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value upper bound.  <br /></td></tr>
 <tr class="separator:a4f708f87381ba9db3d206fad05b8030f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a96d457ef7019412c3df9edc9bd90ec" id="r_a9a96d457ef7019412c3df9edc9bd90ec"><td class="memItemLeft" align="right" valign="top"><a id="a9a96d457ef7019412c3df9edc9bd90ec" name="a9a96d457ef7019412c3df9edc9bd90ec"></a>
-const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_gradient_lower_bound</b> () const</td></tr>
-<tr class="memdesc:a9a96d457ef7019412c3df9edc9bd90ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the gradient lower bound. <br /></td></tr>
+<tr class="memitem:a9a96d457ef7019412c3df9edc9bd90ec" id="r_a9a96d457ef7019412c3df9edc9bd90ec"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a9a96d457ef7019412c3df9edc9bd90ec">get_gradient_lower_bound</a> () const</td></tr>
+<tr class="memdesc:a9a96d457ef7019412c3df9edc9bd90ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the gradient lower bound.  <br /></td></tr>
 <tr class="separator:a9a96d457ef7019412c3df9edc9bd90ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accb9a792d6f3d952db90b7e35e0cf9b1" id="r_accb9a792d6f3d952db90b7e35e0cf9b1"><td class="memItemLeft" align="right" valign="top"><a id="accb9a792d6f3d952db90b7e35e0cf9b1" name="accb9a792d6f3d952db90b7e35e0cf9b1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>value_in_open_range</b> (double value) const</td></tr>
-<tr class="memdesc:accb9a792d6f3d952db90b7e35e0cf9b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided value is in the open range for the value refinement criteria. <br /></td></tr>
+<tr class="memitem:accb9a792d6f3d952db90b7e35e0cf9b1" id="r_accb9a792d6f3d952db90b7e35e0cf9b1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1">value_in_open_range</a> (double value) const</td></tr>
+<tr class="memdesc:accb9a792d6f3d952db90b7e35e0cf9b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided value is in the open range for the value refinement criteria.  <br /></td></tr>
 <tr class="separator:accb9a792d6f3d952db90b7e35e0cf9b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7ed0b368e82e0221ef02db5d637f18e" id="r_ac7ed0b368e82e0221ef02db5d637f18e"><td class="memItemLeft" align="right" valign="top"><a id="ac7ed0b368e82e0221ef02db5d637f18e" name="ac7ed0b368e82e0221ef02db5d637f18e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>gradient_magnitude_above_threshold</b> (double gradient_magnitude) const</td></tr>
-<tr class="memdesc:ac7ed0b368e82e0221ef02db5d637f18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided gradient magnitude is greater than the minimum value. <br /></td></tr>
+<tr class="memitem:ac7ed0b368e82e0221ef02db5d637f18e" id="r_ac7ed0b368e82e0221ef02db5d637f18e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ac7ed0b368e82e0221ef02db5d637f18e">gradient_magnitude_above_threshold</a> (double gradient_magnitude) const</td></tr>
+<tr class="memdesc:ac7ed0b368e82e0221ef02db5d637f18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided gradient magnitude is greater than the minimum value.  <br /></td></tr>
 <tr class="separator:ac7ed0b368e82e0221ef02db5d637f18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3912745231f2fd878cafdd148874178f" id="r_a3912745231f2fd878cafdd148874178f"><td class="memItemLeft" align="right" valign="top"><a id="a3912745231f2fd878cafdd148874178f" name="a3912745231f2fd878cafdd148874178f"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_to_string</b> () const</td></tr>
-<tr class="memdesc:a3912745231f2fd878cafdd148874178f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert refinement criterion type to string. <br /></td></tr>
+<tr class="memitem:a3912745231f2fd878cafdd148874178f" id="r_a3912745231f2fd878cafdd148874178f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a3912745231f2fd878cafdd148874178f">criterion_to_string</a> () const</td></tr>
+<tr class="memdesc:a3912745231f2fd878cafdd148874178f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert refinement criterion type to string.  <br /></td></tr>
 <tr class="separator:a3912745231f2fd878cafdd148874178f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a635e51f4f7112cf16b636595d407035e" id="r_a635e51f4f7112cf16b636595d407035e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">global_field_index</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="separator:a635e51f4f7112cf16b636595d407035e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47247524d2025a9d114134935b00b57a" id="r_a47247524d2025a9d114134935b00b57a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">criterion</a> = <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">RefinementFlags::Nothing</a></td></tr>
+<tr class="separator:a47247524d2025a9d114134935b00b57a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50695c6d34ce9a809e9090b92a16541d" id="r_a50695c6d34ce9a809e9090b92a16541d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d">value_lower_bound</a> = DBL_MAX</td></tr>
+<tr class="separator:a50695c6d34ce9a809e9090b92a16541d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a37b4a698647e101f4a6976588da304" id="r_a2a37b4a698647e101f4a6976588da304"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304">value_upper_bound</a> = DBL_MAX</td></tr>
+<tr class="separator:a2a37b4a698647e101f4a6976588da304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a475bbf66b917822f1bc58ec2326f3539" id="r_a475bbf66b917822f1bc58ec2326f3539"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">gradient_lower_bound</a> = DBL_MAX</td></tr>
+<tr class="separator:a475bbf66b917822f1bc58ec2326f3539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class holds information for a determining whether the mesh should be refined.</p>
@@ -190,13 +198,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_to_s
         <tr>
           <td class="memname">GridRefinement::RefinementCriterion::RefinementCriterion </td>
           <td>(</td>
-          <td class="paramtype">const Types::Index &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
           <td class="paramname"><em>_global_field_index</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const RefinementFlags &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;&#160;</td>
           <td class="paramname"><em>_criterion</em>, </td>
         </tr>
         <tr>
@@ -235,6 +243,476 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_to_s
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3912745231f2fd878cafdd148874178f" name="a3912745231f2fd878cafdd148874178f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3912745231f2fd878cafdd148874178f">&#9670;&#160;</a></span>criterion_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string GridRefinement::RefinementCriterion::criterion_to_string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert refinement criterion type to string. </p>
+
+</div>
+</div>
+<a id="ad45aad738d5a8581b4b292c8c06071b0" name="ad45aad738d5a8581b4b292c8c06071b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad45aad738d5a8581b4b292c8c06071b0">&#9670;&#160;</a></span>get_criterion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp; GridRefinement::RefinementCriterion::get_criterion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the refinement criterion. </p>
+
+</div>
+</div>
+<a id="a9a96d457ef7019412c3df9edc9bd90ec" name="a9a96d457ef7019412c3df9edc9bd90ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a96d457ef7019412c3df9edc9bd90ec">&#9670;&#160;</a></span>get_gradient_lower_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double &amp; GridRefinement::RefinementCriterion::get_gradient_lower_bound </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the gradient lower bound. </p>
+
+</div>
+</div>
+<a id="a3b21cb5cfb10fb9977221e619996ede8" name="a3b21cb5cfb10fb9977221e619996ede8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b21cb5cfb10fb9977221e619996ede8">&#9670;&#160;</a></span>get_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp; GridRefinement::RefinementCriterion::get_index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the global field index. </p>
+
+</div>
+</div>
+<a id="ad3fc7658e41eb166e32a4cca4facff5d" name="ad3fc7658e41eb166e32a4cca4facff5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3fc7658e41eb166e32a4cca4facff5d">&#9670;&#160;</a></span>get_value_lower_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double &amp; GridRefinement::RefinementCriterion::get_value_lower_bound </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the value lower bound. </p>
+
+</div>
+</div>
+<a id="a4f708f87381ba9db3d206fad05b8030f" name="a4f708f87381ba9db3d206fad05b8030f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f708f87381ba9db3d206fad05b8030f">&#9670;&#160;</a></span>get_value_upper_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const double &amp; GridRefinement::RefinementCriterion::get_value_upper_bound </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the value upper bound. </p>
+
+</div>
+</div>
+<a id="ac7ed0b368e82e0221ef02db5d637f18e" name="ac7ed0b368e82e0221ef02db5d637f18e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7ed0b368e82e0221ef02db5d637f18e">&#9670;&#160;</a></span>gradient_magnitude_above_threshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GridRefinement::RefinementCriterion::gradient_magnitude_above_threshold </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>gradient_magnitude</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the provided gradient magnitude is greater than the minimum value. </p>
+
+</div>
+</div>
+<a id="a88074c147144edea82f7f2310adea9db" name="a88074c147144edea82f7f2310adea9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88074c147144edea82f7f2310adea9db">&#9670;&#160;</a></span>set_criterion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridRefinement::RefinementCriterion::set_criterion </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> &amp;&#160;</td>
+          <td class="paramname"><em>_criterion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the refinement criterion. </p>
+
+</div>
+</div>
+<a id="a851c3bebf0572ec6b856bf917436c8e1" name="a851c3bebf0572ec6b856bf917436c8e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a851c3bebf0572ec6b856bf917436c8e1">&#9670;&#160;</a></span>set_gradient_lower_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridRefinement::RefinementCriterion::set_gradient_lower_bound </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>_gradient_lower_bound</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the gradient lower bound. </p>
+
+</div>
+</div>
+<a id="a27bb08d4decfc6f836cc73e1cac9fc67" name="a27bb08d4decfc6f836cc73e1cac9fc67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27bb08d4decfc6f836cc73e1cac9fc67">&#9670;&#160;</a></span>set_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridRefinement::RefinementCriterion::set_index </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>_global_field_index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the global field index. </p>
+
+</div>
+</div>
+<a id="aaa5f10cf762923ef0b22dc803f7ba89f" name="aaa5f10cf762923ef0b22dc803f7ba89f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa5f10cf762923ef0b22dc803f7ba89f">&#9670;&#160;</a></span>set_value_lower_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridRefinement::RefinementCriterion::set_value_lower_bound </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>_value_lower_bound</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the value lower bound. </p>
+
+</div>
+</div>
+<a id="a63cf9ce8d2b537998f9876d6604f704e" name="a63cf9ce8d2b537998f9876d6604f704e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63cf9ce8d2b537998f9876d6604f704e">&#9670;&#160;</a></span>set_value_upper_bound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GridRefinement::RefinementCriterion::set_value_upper_bound </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>_value_upper_bound</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the value upper bound. </p>
+
+</div>
+</div>
+<a id="accb9a792d6f3d952db90b7e35e0cf9b1" name="accb9a792d6f3d952db90b7e35e0cf9b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accb9a792d6f3d952db90b7e35e0cf9b1">&#9670;&#160;</a></span>value_in_open_range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GridRefinement::RefinementCriterion::value_in_open_range </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the provided value is in the open range for the value refinement criteria. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a47247524d2025a9d114134935b00b57a" name="a47247524d2025a9d114134935b00b57a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47247524d2025a9d114134935b00b57a">&#9670;&#160;</a></span>criterion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510a">RefinementFlags</a> GridRefinement::RefinementCriterion::criterion = <a class="el" href="namespaceGridRefinement.html#ab9b7ee7fde2face4f0c61f237649510aa53fd2e2e312daa5a94a5a08f2f41965b">RefinementFlags::Nothing</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a635e51f4f7112cf16b636595d407035e" name="a635e51f4f7112cf16b636595d407035e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a635e51f4f7112cf16b636595d407035e">&#9670;&#160;</a></span>global_field_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> GridRefinement::RefinementCriterion::global_field_index = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a475bbf66b917822f1bc58ec2326f3539" name="a475bbf66b917822f1bc58ec2326f3539"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a475bbf66b917822f1bc58ec2326f3539">&#9670;&#160;</a></span>gradient_lower_bound</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double GridRefinement::RefinementCriterion::gradient_lower_bound = DBL_MAX</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a50695c6d34ce9a809e9090b92a16541d" name="a50695c6d34ce9a809e9090b92a16541d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50695c6d34ce9a809e9090b92a16541d">&#9670;&#160;</a></span>value_lower_bound</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double GridRefinement::RefinementCriterion::value_lower_bound = DBL_MAX</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a37b4a698647e101f4a6976588da304" name="a2a37b4a698647e101f4a6976588da304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a37b4a698647e101f4a6976588da304">&#9670;&#160;</a></span>value_upper_bound</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double GridRefinement::RefinementCriterion::value_upper_bound = DBL_MAX</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="grid__refiner__criterion_8h_source.html">grid_refiner_criterion.h</a></li>
 </ul>
@@ -243,7 +721,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_to_s
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><b>GridRefinement</b></li><li class="navelem"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html">RefinementCriterion</a></li>
+    <li class="navelem"><a class="el" href="namespaceGridRefinement.html">GridRefinement</a></li><li class="navelem"><a class="el" href="classGridRefinement_1_1RefinementCriterion.html">RefinementCriterion</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

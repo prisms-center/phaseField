@@ -22,7 +22,7 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="173,-85 0,-85 0,-66 173,-66 173,-85"/>
+<polygon fill="white" stroke="#666666" points="173,-85 0,-85 0,-66 173,-66 173,-85"/>
 <text text-anchor="middle" x="86.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">MATRIX_FREE_OPERATOR_BASE</text>
 </a>
 </g>

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,8 @@ $(document).ready(function(){initNavTree('classTriangulationHandler.html',''); i
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classTriangulationHandler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TriangulationHandler&lt; dim &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -122,64 +131,427 @@ $(document).ready(function(){initNavTree('classTriangulationHandler.html',''); i
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:accae320bc6c353f5c59261ce57d436ee" id="r_accae320bc6c353f5c59261ce57d436ee"><td class="memItemLeft" align="right" valign="top"><a id="accae320bc6c353f5c59261ce57d436ee" name="accae320bc6c353f5c59261ce57d436ee"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Triangulation</b> = std::conditional_t&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>==1, dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;, dealii::parallel::distributed::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt;</td></tr>
+<tr class="memitem:accae320bc6c353f5c59261ce57d436ee" id="r_accae320bc6c353f5c59261ce57d436ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">Triangulation</a> = std::conditional_t&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>==1, dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;, dealii::parallel::distributed::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt;</td></tr>
 <tr class="separator:accae320bc6c353f5c59261ce57d436ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6c6ef25add0a513ef51d8b13f8d8fcba" id="r_a6c6ef25add0a513ef51d8b13f8d8fcba"><td class="memItemLeft" align="right" valign="top"><a id="a6c6ef25add0a513ef51d8b13f8d8fcba" name="a6c6ef25add0a513ef51d8b13f8d8fcba"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TriangulationHandler</b> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">_user_inputs</a>, <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;mg_info)</td></tr>
-<tr class="memdesc:a6c6ef25add0a513ef51d8b13f8d8fcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a6c6ef25add0a513ef51d8b13f8d8fcba" id="r_a6c6ef25add0a513ef51d8b13f8d8fcba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a6c6ef25add0a513ef51d8b13f8d8fcba">TriangulationHandler</a> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">_user_inputs</a>, <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;mg_info)</td></tr>
+<tr class="memdesc:a6c6ef25add0a513ef51d8b13f8d8fcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a6c6ef25add0a513ef51d8b13f8d8fcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13f2e2095b4cf8a1ae7f06488cc79221" id="r_a13f2e2095b4cf8a1ae7f06488cc79221"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">reinit</a> ()</td></tr>
 <tr class="memdesc:a13f2e2095b4cf8a1ae7f06488cc79221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the triangulation handler.  <br /></td></tr>
 <tr class="separator:a13f2e2095b4cf8a1ae7f06488cc79221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31b8c11973df87e1374a69e7ea33b13e" id="r_a31b8c11973df87e1374a69e7ea33b13e"><td class="memItemLeft" align="right" valign="top"><a id="a31b8c11973df87e1374a69e7ea33b13e" name="a31b8c11973df87e1374a69e7ea33b13e"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> Triangulation &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation</b> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:a31b8c11973df87e1374a69e7ea33b13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation (constant reference). <br /></td></tr>
+<tr class="memitem:a31b8c11973df87e1374a69e7ea33b13e" id="r_a31b8c11973df87e1374a69e7ea33b13e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">Triangulation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a31b8c11973df87e1374a69e7ea33b13e">get_triangulation</a> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:a31b8c11973df87e1374a69e7ea33b13e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for triangulation (constant reference).  <br /></td></tr>
 <tr class="separator:a31b8c11973df87e1374a69e7ea33b13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a957a50163440d45b74fe64ec46ad21cd" id="r_a957a50163440d45b74fe64ec46ad21cd"><td class="memItemLeft" align="right" valign="top"><a id="a957a50163440d45b74fe64ec46ad21cd" name="a957a50163440d45b74fe64ec46ad21cd"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::vector&lt; std::shared_ptr&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_triangulation</b> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:a957a50163440d45b74fe64ec46ad21cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid triangulation (constant reference). <br /></td></tr>
+<tr class="memitem:a957a50163440d45b74fe64ec46ad21cd" id="r_a957a50163440d45b74fe64ec46ad21cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::vector&lt; std::shared_ptr&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a957a50163440d45b74fe64ec46ad21cd">get_mg_triangulation</a> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:a957a50163440d45b74fe64ec46ad21cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid triangulation (constant reference).  <br /></td></tr>
 <tr class="separator:a957a50163440d45b74fe64ec46ad21cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad720401cff3ecc0fec8b7127712730d6" id="r_ad720401cff3ecc0fec8b7127712730d6"><td class="memItemLeft" align="right" valign="top"><a id="ad720401cff3ecc0fec8b7127712730d6" name="ad720401cff3ecc0fec8b7127712730d6"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_triangulation</b> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">level</a>) <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:ad720401cff3ecc0fec8b7127712730d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for a level in the globally coarsening multigrid triangulation (constant reference). <br /></td></tr>
+<tr class="memitem:ad720401cff3ecc0fec8b7127712730d6" id="r_ad720401cff3ecc0fec8b7127712730d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#ad720401cff3ecc0fec8b7127712730d6">get_mg_triangulation</a> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">level</a>) <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:ad720401cff3ecc0fec8b7127712730d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for a level in the globally coarsening multigrid triangulation (constant reference).  <br /></td></tr>
 <tr class="separator:ad720401cff3ecc0fec8b7127712730d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac05dcb63e44afac0f7531e6cf0d69d5" id="r_aac05dcb63e44afac0f7531e6cf0d69d5"><td class="memItemLeft" align="right" valign="top"><a id="aac05dcb63e44afac0f7531e6cf0d69d5" name="aac05dcb63e44afac0f7531e6cf0d69d5"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_min_level</b> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:aac05dcb63e44afac0f7531e6cf0d69d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the minimum multigrid level. <br /></td></tr>
+<tr class="memitem:aac05dcb63e44afac0f7531e6cf0d69d5" id="r_aac05dcb63e44afac0f7531e6cf0d69d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#aac05dcb63e44afac0f7531e6cf0d69d5">get_mg_min_level</a> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:aac05dcb63e44afac0f7531e6cf0d69d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the minimum multigrid level.  <br /></td></tr>
 <tr class="separator:aac05dcb63e44afac0f7531e6cf0d69d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e83315a04dfc4d7fdef2a3a401bab5e" id="r_a8e83315a04dfc4d7fdef2a3a401bab5e"><td class="memItemLeft" align="right" valign="top"><a id="a8e83315a04dfc4d7fdef2a3a401bab5e" name="a8e83315a04dfc4d7fdef2a3a401bab5e"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_max_level</b> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:a8e83315a04dfc4d7fdef2a3a401bab5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the maximum multigrid level. <br /></td></tr>
+<tr class="memitem:a8e83315a04dfc4d7fdef2a3a401bab5e" id="r_a8e83315a04dfc4d7fdef2a3a401bab5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a8e83315a04dfc4d7fdef2a3a401bab5e">get_mg_max_level</a> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:a8e83315a04dfc4d7fdef2a3a401bab5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the maximum multigrid level.  <br /></td></tr>
 <tr class="separator:a8e83315a04dfc4d7fdef2a3a401bab5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7281276d928e6586b1921522009d10a" id="r_af7281276d928e6586b1921522009d10a"><td class="memItemLeft" align="right" valign="top"><a id="af7281276d928e6586b1921522009d10a" name="af7281276d928e6586b1921522009d10a"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>generate_mesh</b> ()</td></tr>
-<tr class="memdesc:af7281276d928e6586b1921522009d10a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh based on the inputs provided by the user. <br /></td></tr>
+<tr class="memitem:af7281276d928e6586b1921522009d10a" id="r_af7281276d928e6586b1921522009d10a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#af7281276d928e6586b1921522009d10a">generate_mesh</a> ()</td></tr>
+<tr class="memdesc:af7281276d928e6586b1921522009d10a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate mesh based on the inputs provided by the user.  <br /></td></tr>
 <tr class="separator:af7281276d928e6586b1921522009d10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a964b79030881a41fbe1e314561752c66" id="r_a964b79030881a41fbe1e314561752c66"><td class="memItemLeft" align="right" valign="top"><a id="a964b79030881a41fbe1e314561752c66" name="a964b79030881a41fbe1e314561752c66"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>export_triangulation_as_vtk</b> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::string &amp;filename) <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
-<tr class="memdesc:a964b79030881a41fbe1e314561752c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export triangulation to vtk. This is done for debugging purposes when dealing with unusual meshes (e.g., circular domains). <br /></td></tr>
+<tr class="memitem:a964b79030881a41fbe1e314561752c66" id="r_a964b79030881a41fbe1e314561752c66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a964b79030881a41fbe1e314561752c66">export_triangulation_as_vtk</a> (<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::string &amp;filename) <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:a964b79030881a41fbe1e314561752c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export triangulation to vtk. This is done for debugging purposes when dealing with unusual meshes (e.g., circular domains).  <br /></td></tr>
 <tr class="separator:a964b79030881a41fbe1e314561752c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4330f5d1bee43ac2d69af62739fdb067" id="r_a4330f5d1bee43ac2d69af62739fdb067"><td class="memItemLeft" align="right" valign="top"><a id="a4330f5d1bee43ac2d69af62739fdb067" name="a4330f5d1bee43ac2d69af62739fdb067"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>prepare_for_grid_refinement</b> ()</td></tr>
-<tr class="memdesc:a4330f5d1bee43ac2d69af62739fdb067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the triangulation for grid refinement. <br /></td></tr>
+<tr class="memitem:a4330f5d1bee43ac2d69af62739fdb067" id="r_a4330f5d1bee43ac2d69af62739fdb067"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a4330f5d1bee43ac2d69af62739fdb067">prepare_for_grid_refinement</a> ()</td></tr>
+<tr class="memdesc:a4330f5d1bee43ac2d69af62739fdb067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the triangulation for grid refinement.  <br /></td></tr>
 <tr class="separator:a4330f5d1bee43ac2d69af62739fdb067"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31e8d9d80fbc855ad93afb054b038b09" id="r_a31e8d9d80fbc855ad93afb054b038b09"><td class="memItemLeft" align="right" valign="top"><a id="a31e8d9d80fbc855ad93afb054b038b09" name="a31e8d9d80fbc855ad93afb054b038b09"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>execute_grid_refinement</b> ()</td></tr>
-<tr class="memdesc:a31e8d9d80fbc855ad93afb054b038b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute grid refinement on the triangulation. <br /></td></tr>
+<tr class="memitem:a31e8d9d80fbc855ad93afb054b038b09" id="r_a31e8d9d80fbc855ad93afb054b038b09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a31e8d9d80fbc855ad93afb054b038b09">execute_grid_refinement</a> ()</td></tr>
+<tr class="memdesc:a31e8d9d80fbc855ad93afb054b038b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute grid refinement on the triangulation.  <br /></td></tr>
 <tr class="separator:a31e8d9d80fbc855ad93afb054b038b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea0c4fe598da46d53de7a64a2046b312" id="r_aea0c4fe598da46d53de7a64a2046b312"><td class="memItemLeft" align="right" valign="top"><a id="aea0c4fe598da46d53de7a64a2046b312" name="aea0c4fe598da46d53de7a64a2046b312"></a>
-<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clear_user_flags</b> ()</td></tr>
-<tr class="memdesc:aea0c4fe598da46d53de7a64a2046b312"><td class="mdescLeft">&#160;</td><td class="mdescRight">CLear all user flags. <br /></td></tr>
+<tr class="memitem:aea0c4fe598da46d53de7a64a2046b312" id="r_aea0c4fe598da46d53de7a64a2046b312"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#aea0c4fe598da46d53de7a64a2046b312">clear_user_flags</a> ()</td></tr>
+<tr class="memdesc:aea0c4fe598da46d53de7a64a2046b312"><td class="mdescLeft">&#160;</td><td class="mdescRight">CLear all user flags.  <br /></td></tr>
 <tr class="separator:aea0c4fe598da46d53de7a64a2046b312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a9ae158f5474e629fb0d60c2099d4bb89" id="r_a9ae158f5474e629fb0d60c2099d4bb89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a9ae158f5474e629fb0d60c2099d4bb89">mark_boundaries</a> () <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a></td></tr>
+<tr class="memdesc:a9ae158f5474e629fb0d60c2099d4bb89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark the domain ids on the triangulation to get the proper mapping of specified boundary conditions.  <br /></td></tr>
+<tr class="separator:a9ae158f5474e629fb0d60c2099d4bb89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a56423aeca2f69ffcb00c0800027eb9" id="r_a0a56423aeca2f69ffcb00c0800027eb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a0a56423aeca2f69ffcb00c0800027eb9">mark_periodic</a> ()</td></tr>
+<tr class="memdesc:a0a56423aeca2f69ffcb00c0800027eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark certain faces of the triangulation periodic.  <br /></td></tr>
+<tr class="separator:a0a56423aeca2f69ffcb00c0800027eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a281e6aa5fd9ac18bcec7a035c71d0e40" id="r_a281e6aa5fd9ac18bcec7a035c71d0e40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a281e6aa5fd9ac18bcec7a035c71d0e40">user_inputs</a></td></tr>
+<tr class="memdesc:a281e6aa5fd9ac18bcec7a035c71d0e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs.  <br /></td></tr>
+<tr class="separator:a281e6aa5fd9ac18bcec7a035c71d0e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f42d3ec0c399f926a7494f37c086143" id="r_a0f42d3ec0c399f926a7494f37c086143"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">Triangulation</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a0f42d3ec0c399f926a7494f37c086143">triangulation</a></td></tr>
+<tr class="memdesc:a0f42d3ec0c399f926a7494f37c086143"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main triangulation.  <br /></td></tr>
+<tr class="separator:a0f42d3ec0c399f926a7494f37c086143"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ecdfa989eb0633a1ef2e8613e19a5a3" id="r_a2ecdfa989eb0633a1ef2e8613e19a5a3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a2ecdfa989eb0633a1ef2e8613e19a5a3">coarsened_triangulations</a></td></tr>
+<tr class="memdesc:a2ecdfa989eb0633a1ef2e8613e19a5a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collection of triangulations for each multigrid level.  <br /></td></tr>
+<tr class="separator:a2ecdfa989eb0633a1ef2e8613e19a5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a147c84e87c52e63157c356ec48369ff0" id="r_a147c84e87c52e63157c356ec48369ff0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a147c84e87c52e63157c356ec48369ff0">has_multigrid</a> = <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">false</a></td></tr>
+<tr class="memdesc:a147c84e87c52e63157c356ec48369ff0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have multigrid.  <br /></td></tr>
+<tr class="separator:a147c84e87c52e63157c356ec48369ff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc09cc4491d7f389d037743f942aecd1" id="r_acc09cc4491d7f389d037743f942aecd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#acc09cc4491d7f389d037743f942aecd1">min_level</a> = 0</td></tr>
+<tr class="memdesc:acc09cc4491d7f389d037743f942aecd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum multigrid level.  <br /></td></tr>
+<tr class="separator:acc09cc4491d7f389d037743f942aecd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c1f147e6763f8aba524de5f104eb9f" id="r_a57c1f147e6763f8aba524de5f104eb9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTriangulationHandler.html#a57c1f147e6763f8aba524de5f104eb9f">max_level</a> = 0</td></tr>
+<tr class="memdesc:a57c1f147e6763f8aba524de5f104eb9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum multigrid level.  <br /></td></tr>
+<tr class="separator:a57c1f147e6763f8aba524de5f104eb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt;<br />
 class TriangulationHandler&lt; dim &gt;</div><p>This class handlers the generation and manipulation of triangulations. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="accae320bc6c353f5c59261ce57d436ee" name="accae320bc6c353f5c59261ce57d436ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accae320bc6c353f5c59261ce57d436ee">&#9670;&#160;</a></span>Triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">using</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::Triangulation =  std::conditional_t&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> == 1, dealii::Triangulation&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>&gt;, dealii::parallel::distributed::Triangulation&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6c6ef25add0a513ef51d8b13f8d8fcba" name="a6c6ef25add0a513ef51d8b13f8d8fcba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c6ef25add0a513ef51d8b13f8d8fcba">&#9670;&#160;</a></span>TriangulationHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;<a class="el" href="classTriangulationHandler.html">::TriangulationHandler</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mg_info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aea0c4fe598da46d53de7a64a2046b312" name="aea0c4fe598da46d53de7a64a2046b312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea0c4fe598da46d53de7a64a2046b312">&#9670;&#160;</a></span>clear_user_flags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::clear_user_flags </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>CLear all user flags. </p>
+
+</div>
+</div>
+<a id="a31e8d9d80fbc855ad93afb054b038b09" name="a31e8d9d80fbc855ad93afb054b038b09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31e8d9d80fbc855ad93afb054b038b09">&#9670;&#160;</a></span>execute_grid_refinement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::execute_grid_refinement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Execute grid refinement on the triangulation. </p>
+
+</div>
+</div>
+<a id="a964b79030881a41fbe1e314561752c66" name="a964b79030881a41fbe1e314561752c66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a964b79030881a41fbe1e314561752c66">&#9670;&#160;</a></span>export_triangulation_as_vtk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::export_triangulation_as_vtk </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Export triangulation to vtk. This is done for debugging purposes when dealing with unusual meshes (e.g., circular domains). </p>
+
+</div>
+</div>
+<a id="af7281276d928e6586b1921522009d10a" name="af7281276d928e6586b1921522009d10a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7281276d928e6586b1921522009d10a">&#9670;&#160;</a></span>generate_mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::generate_mesh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate mesh based on the inputs provided by the user. </p>
+
+</div>
+</div>
+<a id="a8e83315a04dfc4d7fdef2a3a401bab5e" name="a8e83315a04dfc4d7fdef2a3a401bab5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e83315a04dfc4d7fdef2a3a401bab5e">&#9670;&#160;</a></span>get_mg_max_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::get_mg_max_level </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the maximum multigrid level. </p>
+
+</div>
+</div>
+<a id="aac05dcb63e44afac0f7531e6cf0d69d5" name="aac05dcb63e44afac0f7531e6cf0d69d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac05dcb63e44afac0f7531e6cf0d69d5">&#9670;&#160;</a></span>get_mg_min_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::get_mg_min_level </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the minimum multigrid level. </p>
+
+</div>
+</div>
+<a id="a957a50163440d45b74fe64ec46ad21cd" name="a957a50163440d45b74fe64ec46ad21cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a957a50163440d45b74fe64ec46ad21cd">&#9670;&#160;</a></span>get_mg_triangulation() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> std::vector&lt; std::shared_ptr&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &gt; &gt; &amp; <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::get_mg_triangulation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the multigrid triangulation (constant reference). </p>
+
+</div>
+</div>
+<a id="ad720401cff3ecc0fec8b7127712730d6" name="ad720401cff3ecc0fec8b7127712730d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad720401cff3ecc0fec8b7127712730d6">&#9670;&#160;</a></span>get_mg_triangulation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt; &amp; <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::get_mg_triangulation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for a level in the globally coarsening multigrid triangulation (constant reference). </p>
+
+</div>
+</div>
+<a id="a31b8c11973df87e1374a69e7ea33b13e" name="a31b8c11973df87e1374a69e7ea33b13e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31b8c11973df87e1374a69e7ea33b13e">&#9670;&#160;</a></span>get_triangulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;<a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">::Triangulation</a> &amp; <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::get_triangulation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for triangulation (constant reference). </p>
+
+</div>
+</div>
+<a id="a9ae158f5474e629fb0d60c2099d4bb89" name="a9ae158f5474e629fb0d60c2099d4bb89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ae158f5474e629fb0d60c2099d4bb89">&#9670;&#160;</a></span>mark_boundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::mark_boundaries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark the domain ids on the triangulation to get the proper mapping of specified boundary conditions. </p>
+<p>TODO (landinjm): When the user has different meshs (or custom for that matter), we should let them manually set the boundary ids. </p>
+
+</div>
+</div>
+<a id="a0a56423aeca2f69ffcb00c0800027eb9" name="a0a56423aeca2f69ffcb00c0800027eb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a56423aeca2f69ffcb00c0800027eb9">&#9670;&#160;</a></span>mark_periodic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::mark_periodic </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark certain faces of the triangulation periodic. </p>
+
+</div>
+</div>
+<a id="a4330f5d1bee43ac2d69af62739fdb067" name="a4330f5d1bee43ac2d69af62739fdb067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4330f5d1bee43ac2d69af62739fdb067">&#9670;&#160;</a></span>prepare_for_grid_refinement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">void</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::prepare_for_grid_refinement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepare the triangulation for grid refinement. </p>
+
+</div>
+</div>
 <a id="a13f2e2095b4cf8a1ae7f06488cc79221" name="a13f2e2095b4cf8a1ae7f06488cc79221"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13f2e2095b4cf8a1ae7f06488cc79221">&#9670;&#160;</a></span>reinit()</h2>
 
@@ -210,10 +582,168 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2ecdfa989eb0633a1ef2e8613e19a5a3" name="a2ecdfa989eb0633a1ef2e8613e19a5a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ecdfa989eb0633a1ef2e8613e19a5a3">&#9670;&#160;</a></span>coarsened_triangulations</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> dealii::Triangulation&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>&gt; &gt; &gt; <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::coarsened_triangulations</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Collection of triangulations for each multigrid level. </p>
+<p>TODO (landinjm): p-multigrid TODO (landinjm): Should we allow for multiple instances of multigrid? Most likely not. </p>
+
+</div>
+</div>
+<a id="a147c84e87c52e63157c356ec48369ff0" name="a147c84e87c52e63157c356ec48369ff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a147c84e87c52e63157c356ec48369ff0">&#9670;&#160;</a></span>has_multigrid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">bool</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::has_multigrid = <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">false</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether we have multigrid. </p>
+
+</div>
+</div>
+<a id="a57c1f147e6763f8aba524de5f104eb9f" name="a57c1f147e6763f8aba524de5f104eb9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c1f147e6763f8aba524de5f104eb9f">&#9670;&#160;</a></span>max_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::max_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum multigrid level. </p>
+
+</div>
+</div>
+<a id="acc09cc4491d7f389d037743f942aecd1" name="acc09cc4491d7f389d037743f942aecd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc09cc4491d7f389d037743f942aecd1">&#9670;&#160;</a></span>min_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::min_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Minimum multigrid level. </p>
+
+</div>
+</div>
+<a id="a0f42d3ec0c399f926a7494f37c086143" name="a0f42d3ec0c399f926a7494f37c086143"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f42d3ec0c399f926a7494f37c086143">&#9670;&#160;</a></span>triangulation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee">Triangulation</a>&gt; <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::triangulation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Main triangulation. </p>
+
+</div>
+</div>
+<a id="a281e6aa5fd9ac18bcec7a035c71d0e40" name="a281e6aa5fd9ac18bcec7a035c71d0e40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a281e6aa5fd9ac18bcec7a035c71d0e40">&#9670;&#160;</a></span>user_inputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">unsigned</a> <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">int</a> dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt;<a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a>&gt;* <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classTriangulationHandler.html#a13f2e2095b4cf8a1ae7f06488cc79221">dim</a> &gt;::user_inputs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-inputs. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="dof__handler_8h_source.html">dof_handler.h</a></li>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="triangulation__handler_8h_source.html">triangulation_handler.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>triangulation_handler.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="triangulation__handler_8cc.html">triangulation_handler.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

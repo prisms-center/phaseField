@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -122,32 +129,152 @@ $(document).ready(function(){initNavTree('classIntegrator.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:af9efd8729c661e6ab1ad89bc9779b122" id="r_af9efd8729c661e6ab1ad89bc9779b122"><td class="memItemLeft" align="right" valign="top"><a id="af9efd8729c661e6ab1ad89bc9779b122" name="af9efd8729c661e6ab1ad89bc9779b122"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
+<tr class="memitem:af9efd8729c661e6ab1ad89bc9779b122" id="r_af9efd8729c661e6ab1ad89bc9779b122"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
 <tr class="separator:af9efd8729c661e6ab1ad89bc9779b122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a88eee50295e1cc870b0645d1c115db36" id="r_a88eee50295e1cc870b0645d1c115db36"><td class="memItemLeft" align="right" valign="top"><a id="a88eee50295e1cc870b0645d1c115db36" name="a88eee50295e1cc870b0645d1c115db36"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Integrator</b> ()=default</td></tr>
-<tr class="memdesc:a88eee50295e1cc870b0645d1c115db36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a88eee50295e1cc870b0645d1c115db36" id="r_a88eee50295e1cc870b0645d1c115db36"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntegrator.html#a88eee50295e1cc870b0645d1c115db36">Integrator</a> ()=default</td></tr>
+<tr class="memdesc:a88eee50295e1cc870b0645d1c115db36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a88eee50295e1cc870b0645d1c115db36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af213516700f67f3fcb9d30c48fe90a8b" id="r_af213516700f67f3fcb9d30c48fe90a8b"><td class="memItemLeft" align="right" valign="top"><a id="af213516700f67f3fcb9d30c48fe90a8b" name="af213516700f67f3fcb9d30c48fe90a8b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_integral</b> (number &amp;integral_value, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const VectorType &amp;vector) const</td></tr>
-<tr class="memdesc:af213516700f67f3fcb9d30c48fe90a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the integral for a scalar field. <br /></td></tr>
+<tr class="memitem:af213516700f67f3fcb9d30c48fe90a8b" id="r_af213516700f67f3fcb9d30c48fe90a8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntegrator.html#af213516700f67f3fcb9d30c48fe90a8b">compute_integral</a> (number &amp;integral_value, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">VectorType</a> &amp;vector) const</td></tr>
+<tr class="memdesc:af213516700f67f3fcb9d30c48fe90a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the integral for a scalar field.  <br /></td></tr>
 <tr class="separator:af213516700f67f3fcb9d30c48fe90a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95d87ed19af86bcbc28090f4df3517a8" id="r_a95d87ed19af86bcbc28090f4df3517a8"><td class="memItemLeft" align="right" valign="top"><a id="a95d87ed19af86bcbc28090f4df3517a8" name="a95d87ed19af86bcbc28090f4df3517a8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_integral</b> (std::vector&lt; number &gt; &amp;integral_value, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const VectorType &amp;vector) const</td></tr>
-<tr class="memdesc:a95d87ed19af86bcbc28090f4df3517a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the integral for a vector field. <br /></td></tr>
+<tr class="memitem:a95d87ed19af86bcbc28090f4df3517a8" id="r_a95d87ed19af86bcbc28090f4df3517a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIntegrator.html#a95d87ed19af86bcbc28090f4df3517a8">compute_integral</a> (std::vector&lt; number &gt; &amp;integral_value, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">VectorType</a> &amp;vector) const</td></tr>
+<tr class="memdesc:a95d87ed19af86bcbc28090f4df3517a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the integral for a vector field.  <br /></td></tr>
 <tr class="separator:a95d87ed19af86bcbc28090f4df3517a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class Integrator&lt; dim, degree, number &gt;</div><p>Compute the integral of a given field. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="af9efd8729c661e6ab1ad89bc9779b122" name="af9efd8729c661e6ab1ad89bc9779b122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9efd8729c661e6ab1ad89bc9779b122">&#9670;&#160;</a></span>VectorType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;::VectorType =  dealii::LinearAlgebra::distributed::Vector&lt;number&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a88eee50295e1cc870b0645d1c115db36" name="a88eee50295e1cc870b0645d1c115db36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88eee50295e1cc870b0645d1c115db36">&#9670;&#160;</a></span>Integrator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;<a class="el" href="classIntegrator.html">::Integrator</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af213516700f67f3fcb9d30c48fe90a8b" name="af213516700f67f3fcb9d30c48fe90a8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af213516700f67f3fcb9d30c48fe90a8b">&#9670;&#160;</a></span>compute_integral() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void <a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;::compute_integral </td>
+          <td>(</td>
+          <td class="paramtype">number &amp;&#160;</td>
+          <td class="paramname"><em>integral_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>vector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the integral for a scalar field. </p>
+
+</div>
+</div>
+<a id="a95d87ed19af86bcbc28090f4df3517a8" name="a95d87ed19af86bcbc28090f4df3517a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95d87ed19af86bcbc28090f4df3517a8">&#9670;&#160;</a></span>compute_integral() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classIntegrator.html">Integrator</a>&lt; dim, degree, number &gt;::compute_integral </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>integral_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classIntegrator.html#af9efd8729c661e6ab1ad89bc9779b122">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>vector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the integral for a vector field. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="pde__problem_8h_source.html">pde_problem.h</a></li>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/utilities/<a class="el" href="integrator_8h_source.html">integrator.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/utilities/<b>integrator.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/utilities/<a class="el" href="integrator_8cc.html">integrator.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

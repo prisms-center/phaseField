@@ -22,7 +22,7 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classSequentialSolver.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="148.5,-96 16.5,-96 16.5,-66 148.5,-66 148.5,-96"/>
+<polygon fill="white" stroke="#666666" points="148.5,-96 16.5,-96 16.5,-66 148.5,-66 148.5,-96"/>
 <text text-anchor="start" x="24.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">SequentialSolver&lt; dim,</text>
 <text text-anchor="middle" x="82.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00"> degree, number &gt;</text>
 </a>
@@ -41,7 +41,7 @@
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classSolverBase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="154.5,-162 10.5,-162 10.5,-132 154.5,-132 154.5,-162"/>
+<polygon fill="white" stroke="#666666" points="154.5,-162 10.5,-162 10.5,-132 154.5,-132 154.5,-162"/>
 <text text-anchor="start" x="18.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">SolverBase&lt; dim, degree,</text>
 <text text-anchor="middle" x="82.5" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00"> number &gt;</text>
 </a>

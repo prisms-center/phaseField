@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,14 +122,14 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
   <div class="headertitle"><div class="title">nucleus.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="nucleus_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
@@ -130,7 +137,7 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
@@ -139,32 +146,35 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structNucleus.html#a82163cca7ad486f8580beab89a3089e0">   28</a></span>  <a class="code hl_function" href="structNucleus.html#a82163cca7ad486f8580beab89a3089e0">Nucleus</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_function" href="structNucleus.html#a82163cca7ad486f8580beab89a3089e0">Nucleus</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       &amp;_field_index,</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structNucleus.html#a6dbc12c4cf9051bde83641865311cbf3">   30</a></span>  <a class="code hl_function" href="structNucleus.html#a6dbc12c4cf9051bde83641865311cbf3">Nucleus</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       &amp;_field_index,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>          <span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;_location,</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>          <span class="keyword">const</span> <span class="keywordtype">double</span>             &amp;_seed_time,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>          <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       &amp;_seed_increment)</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    : field_index(_field_index)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    , location(_location)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    , seed_time(_seed_time)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    , seed_increment(_seed_increment)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    : <a class="code hl_variable" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">field_index</a>(_field_index)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    , <a class="code hl_variable" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">location</a>(_location)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    , <a class="code hl_variable" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">seed_time</a>(_seed_time)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    , <a class="code hl_variable" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">seed_increment</a>(_seed_increment)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {}</div>
+</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt;&gt;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  location_vectorized() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">location_vectorized</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       field_index = 0;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  dealii::Point&lt;dim&gt; location;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">double</span>             seed_time      = 0.0;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       seed_increment = 0;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">   43</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       <a class="code hl_variable" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">field_index</a> = 0;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">   44</a></span>  dealii::Point&lt;dim&gt; <a class="code hl_variable" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">location</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">   45</a></span>  <span class="keywordtype">double</span>             <a class="code hl_variable" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">seed_time</a>      = 0.0;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">   46</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>       <a class="code hl_variable" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">seed_increment</a> = 0;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">static</span> MPI_Datatype</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  mpi_datatype();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <a class="code hl_function" href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">mpi_datatype</a>();</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
 </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">inline</span> dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt;&gt;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><a class="code hl_struct" href="structNucleus.html">Nucleus&lt;dim&gt;::location_vectorized</a>()<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">   54</a></span><a class="code hl_function" href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">Nucleus&lt;dim&gt;::location_vectorized</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  dealii::Point&lt;dim, dealii::VectorizedArray&lt;double&gt;&gt; result;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; dim; ++d)</div>
@@ -173,21 +183,25 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> result;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> OStream&gt;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>OStream &amp;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>operator&lt;&lt;(OStream &amp;ost, <span class="keyword">const</span> <a class="code hl_struct" href="structNucleus.html">Nucleus&lt;dim&gt;</a> &amp;nucleus)</div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96">   65</a></span>OStream &amp;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><a class="code hl_function" href="nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96">operator&lt;&lt;</a>(OStream &amp;ost, <span class="keyword">const</span> <a class="code hl_struct" href="structNucleus.html">Nucleus&lt;dim&gt;</a> &amp;nucleus)</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>{</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  ost &lt;&lt; <span class="stringliteral">&quot;Field Index: &quot;</span> &lt;&lt; std::to_string(nucleus.field_index)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      &lt;&lt; <span class="stringliteral">&quot; ; Location: &quot;</span> &lt;&lt; nucleus.location</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      &lt;&lt; <span class="stringliteral">&quot; ; Seed Time: &quot;</span> &lt;&lt; std::to_string(nucleus.seed_time)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      &lt;&lt; <span class="stringliteral">&quot; ; Seed Increment: &quot;</span> &lt;&lt; std::to_string(nucleus.seed_increment);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  ost &lt;&lt; <span class="stringliteral">&quot;Field Index: &quot;</span> &lt;&lt; std::to_string(nucleus.<a class="code hl_variable" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">field_index</a>)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      &lt;&lt; <span class="stringliteral">&quot; ; Location: &quot;</span> &lt;&lt; nucleus.<a class="code hl_variable" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">location</a></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      &lt;&lt; <span class="stringliteral">&quot; ; Seed Time: &quot;</span> &lt;&lt; std::to_string(nucleus.<a class="code hl_variable" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">seed_time</a>)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      &lt;&lt; <span class="stringliteral">&quot; ; Seed Increment: &quot;</span> &lt;&lt; std::to_string(nucleus.<a class="code hl_variable" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">seed_increment</a>);</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">return</span> ost;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="keyword">inline</span> MPI_Datatype</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><a class="code hl_struct" href="structNucleus.html">Nucleus&lt;dim&gt;::mpi_datatype</a>()</div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">   77</a></span><a class="code hl_function" href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">Nucleus&lt;dim&gt;::mpi_datatype</a>()</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">static</span> MPI_Datatype MPI_NUCLEUS = MPI_DATATYPE_NULL;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (MPI_NUCLEUS != MPI_DATATYPE_NULL)</div>
@@ -203,10 +217,10 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  MPI_Aint     base;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  MPI_Get_address(&amp;dummy, &amp;base);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  MPI_Get_address(&amp;dummy.field_index, &amp;displacements[0]);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  MPI_Get_address(&amp;dummy.location[0], &amp;displacements[1]);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  MPI_Get_address(&amp;dummy.seed_time, &amp;displacements[2]);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  MPI_Get_address(&amp;dummy.seed_increment, &amp;displacements[3]);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  MPI_Get_address(&amp;dummy.<a class="code hl_variable" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">field_index</a>, &amp;displacements[0]);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  MPI_Get_address(&amp;dummy.<a class="code hl_variable" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">location</a>[0], &amp;displacements[1]);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  MPI_Get_address(&amp;dummy.<a class="code hl_variable" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">seed_time</a>, &amp;displacements[2]);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  MPI_Get_address(&amp;dummy.<a class="code hl_variable" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">seed_increment</a>, &amp;displacements[3]);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 4; ++i)</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    {</div>
@@ -218,16 +232,27 @@ $(document).ready(function(){initNavTree('nucleus_8h_source.html',''); initResiz
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">return</span> MPI_NUCLEUS;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anucleus_8h_html_a339452e658a71f2adac32af0d5ba7f96"><div class="ttname"><a href="nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96">operator&lt;&lt;</a></div><div class="ttdeci">OStream &amp; operator&lt;&lt;(OStream &amp;ost, const Nucleus&lt; dim &gt; &amp;nucleus)</div><div class="ttdef"><b>Definition</b> nucleus.h:66</div></div>
 <div class="ttc" id="astructNucleus_html"><div class="ttname"><a href="structNucleus.html">Nucleus</a></div><div class="ttdoc">This class contains mutable utilities for phase field problems.</div><div class="ttdef"><b>Definition</b> nucleus.h:23</div></div>
+<div class="ttc" id="astructNucleus_html_a567edb715eee48cd250f9eece9a8008b"><div class="ttname"><a href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">Nucleus::mpi_datatype</a></div><div class="ttdeci">static MPI_Datatype mpi_datatype()</div><div class="ttdef"><b>Definition</b> nucleus.h:77</div></div>
+<div class="ttc" id="astructNucleus_html_a65645a28ec2c1d62dbae42e288c1cf6b"><div class="ttname"><a href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">Nucleus::location_vectorized</a></div><div class="ttdeci">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; location_vectorized() const</div><div class="ttdef"><b>Definition</b> nucleus.h:54</div></div>
+<div class="ttc" id="astructNucleus_html_a6dbc12c4cf9051bde83641865311cbf3"><div class="ttname"><a href="structNucleus.html#a6dbc12c4cf9051bde83641865311cbf3">Nucleus::Nucleus</a></div><div class="ttdeci">Nucleus(const unsigned int &amp;_field_index, const dealii::Point&lt; dim &gt; &amp;_location, const double &amp;_seed_time, const unsigned int &amp;_seed_increment)</div><div class="ttdef"><b>Definition</b> nucleus.h:30</div></div>
 <div class="ttc" id="astructNucleus_html_a82163cca7ad486f8580beab89a3089e0"><div class="ttname"><a href="structNucleus.html#a82163cca7ad486f8580beab89a3089e0">Nucleus::Nucleus</a></div><div class="ttdeci">Nucleus()=default</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="astructNucleus_html_a9896d837664d2ab8dc582fddb0a1bdc6"><div class="ttname"><a href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">Nucleus::field_index</a></div><div class="ttdeci">unsigned int field_index</div><div class="ttdef"><b>Definition</b> nucleus.h:43</div></div>
+<div class="ttc" id="astructNucleus_html_aa7ccb0a79bfccf2642ca8ff10ab2f28e"><div class="ttname"><a href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">Nucleus::seed_time</a></div><div class="ttdeci">double seed_time</div><div class="ttdef"><b>Definition</b> nucleus.h:45</div></div>
+<div class="ttc" id="astructNucleus_html_adda8cd9d71c22c4495174740389b8e5a"><div class="ttname"><a href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">Nucleus::seed_increment</a></div><div class="ttdeci">unsigned int seed_increment</div><div class="ttdef"><b>Definition</b> nucleus.h:46</div></div>
+<div class="ttc" id="astructNucleus_html_addb86426dbd7ded2fc1cb9f1e624788f"><div class="ttname"><a href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">Nucleus::location</a></div><div class="ttdeci">dealii::Point&lt; dim &gt; location</div><div class="ttdef"><b>Definition</b> nucleus.h:44</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_cce3571c19e1460ab7bfdfaca6a2c71d.html">nucleation</a></li><li class="navelem"><b>nucleus.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_cce3571c19e1460ab7bfdfaca6a2c71d.html">nucleation</a></li><li class="navelem"><a class="el" href="nucleus_8h.html">nucleus.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

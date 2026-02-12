@@ -13,5 +13,10 @@ var classGridRefinement_1_1RefinementCriterion =
     [ "set_index", "classGridRefinement_1_1RefinementCriterion.html#a27bb08d4decfc6f836cc73e1cac9fc67", null ],
     [ "set_value_lower_bound", "classGridRefinement_1_1RefinementCriterion.html#aaa5f10cf762923ef0b22dc803f7ba89f", null ],
     [ "set_value_upper_bound", "classGridRefinement_1_1RefinementCriterion.html#a63cf9ce8d2b537998f9876d6604f704e", null ],
-    [ "value_in_open_range", "classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1", null ]
+    [ "value_in_open_range", "classGridRefinement_1_1RefinementCriterion.html#accb9a792d6f3d952db90b7e35e0cf9b1", null ],
+    [ "criterion", "classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a", null ],
+    [ "global_field_index", "classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e", null ],
+    [ "gradient_lower_bound", "classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539", null ],
+    [ "value_lower_bound", "classGridRefinement_1_1RefinementCriterion.html#a50695c6d34ce9a809e9090b92a16541d", null ],
+    [ "value_upper_bound", "classGridRefinement_1_1RefinementCriterion.html#a2a37b4a698647e101f4a6976588da304", null ]
 ];

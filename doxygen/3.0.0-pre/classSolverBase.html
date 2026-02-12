@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,10 +117,13 @@ $(document).ready(function(){initNavTree('classSolverBase.html',''); initResizab
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classSolverBase-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SolverBase&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="solver__base_8h_source.html">solver_base.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SolverBase&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
@@ -122,22 +132,18 @@ Inheritance diagram for SolverBase&lt; dim, degree, number &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a194cf6d5ad47868ee4bf15af748bb234" id="r_a194cf6d5ad47868ee4bf15af748bb234"><td class="memItemLeft" align="right" valign="top"><a id="a194cf6d5ad47868ee4bf15af748bb234" name="a194cf6d5ad47868ee4bf15af748bb234"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SystemMatrixType</b> = <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;</td></tr>
+<tr class="memitem:a194cf6d5ad47868ee4bf15af748bb234" id="r_a194cf6d5ad47868ee4bf15af748bb234"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a194cf6d5ad47868ee4bf15af748bb234">SystemMatrixType</a> = <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;</td></tr>
 <tr class="separator:a194cf6d5ad47868ee4bf15af748bb234"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fc2bddc51a7ba2bf6943cf1c27765de" id="r_a4fc2bddc51a7ba2bf6943cf1c27765de"><td class="memItemLeft" align="right" valign="top"><a id="a4fc2bddc51a7ba2bf6943cf1c27765de" name="a4fc2bddc51a7ba2bf6943cf1c27765de"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;</td></tr>
+<tr class="memitem:a4fc2bddc51a7ba2bf6943cf1c27765de" id="r_a4fc2bddc51a7ba2bf6943cf1c27765de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;</td></tr>
 <tr class="separator:a4fc2bddc51a7ba2bf6943cf1c27765de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a48080f572ee148e5c3d89e52b99a9455" id="r_a48080f572ee148e5c3d89e52b99a9455"><td class="memItemLeft" align="right" valign="top"><a id="a48080f572ee148e5c3d89e52b99a9455" name="a48080f572ee148e5c3d89e52b99a9455"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolverBase</b> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solver_context</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, Types::Index <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>=0)</td></tr>
-<tr class="memdesc:a48080f572ee148e5c3d89e52b99a9455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a48080f572ee148e5c3d89e52b99a9455" id="r_a48080f572ee148e5c3d89e52b99a9455"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a48080f572ee148e5c3d89e52b99a9455">SolverBase</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solver_context</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>=0)</td></tr>
+<tr class="memdesc:a48080f572ee148e5c3d89e52b99a9455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a48080f572ee148e5c3d89e52b99a9455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad5a8e2d8bacc3b0f05c95a7342786b" id="r_a4ad5a8e2d8bacc3b0f05c95a7342786b"><td class="memItemLeft" align="right" valign="top"><a id="a4ad5a8e2d8bacc3b0f05c95a7342786b" name="a4ad5a8e2d8bacc3b0f05c95a7342786b"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><b>~SolverBase</b> ()=<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">default</a></td></tr>
-<tr class="memdesc:a4ad5a8e2d8bacc3b0f05c95a7342786b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:a4ad5a8e2d8bacc3b0f05c95a7342786b" id="r_a4ad5a8e2d8bacc3b0f05c95a7342786b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b">~SolverBase</a> ()=<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">default</a></td></tr>
+<tr class="memdesc:a4ad5a8e2d8bacc3b0f05c95a7342786b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a4ad5a8e2d8bacc3b0f05c95a7342786b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5bce98970b784ac227ef51fbb9b8e1af" id="r_a5bce98970b784ac227ef51fbb9b8e1af"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a5bce98970b784ac227ef51fbb9b8e1af">SolverBase</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverBase.html">SolverBase</a> &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">solver_base</a>)=<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">delete</a></td></tr>
 <tr class="memdesc:a5bce98970b784ac227ef51fbb9b8e1af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
@@ -166,83 +172,182 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5356fdef1e92c6b4ad239052bbb14bc2" id="r_a5356fdef1e92c6b4ad239052bbb14bc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a5356fdef1e92c6b4ad239052bbb14bc2">solver_is_empty</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
 <tr class="memdesc:a5356fdef1e92c6b4ad239052bbb14bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the subset attributes is empty.  <br /></td></tr>
 <tr class="separator:a5356fdef1e92c6b4ad239052bbb14bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a38d96617c5e3adc8c88dfd9427db05" id="r_a9a38d96617c5e3adc8c88dfd9427db05"><td class="memItemLeft" align="right" valign="top">std::map&lt; Types::Index, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a9a38d96617c5e3adc8c88dfd9427db05">compute_subset_attributes</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, Types::Index <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>) <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memitem:a9a38d96617c5e3adc8c88dfd9427db05" id="r_a9a38d96617c5e3adc8c88dfd9427db05"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a9a38d96617c5e3adc8c88dfd9427db05">compute_subset_attributes</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>) <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
 <tr class="memdesc:a9a38d96617c5e3adc8c88dfd9427db05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belongs to a given FieldSolveType and solver order.  <br /></td></tr>
 <tr class="separator:a9a38d96617c5e3adc8c88dfd9427db05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79acd8aa61d877f6ab023cf2471f8d26" id="r_a79acd8aa61d877f6ab023cf2471f8d26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a79acd8aa61d877f6ab023cf2471f8d26">update_subset_attributes</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, Types::Index <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>)</td></tr>
+<tr class="memitem:a79acd8aa61d877f6ab023cf2471f8d26" id="r_a79acd8aa61d877f6ab023cf2471f8d26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a79acd8aa61d877f6ab023cf2471f8d26">update_subset_attributes</a> (<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_field_solve_type</a>, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">_solve_priority</a>)</td></tr>
 <tr class="memdesc:a79acd8aa61d877f6ab023cf2471f8d26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute and update the subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belongs to a given FieldSolveType and solver order.  <br /></td></tr>
 <tr class="separator:a79acd8aa61d877f6ab023cf2471f8d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea3231db13cc32b113e487f859a41ef" id="r_a1ea3231db13cc32b113e487f859a41ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a1ea3231db13cc32b113e487f859a41ef">set_initial_condition</a> ()</td></tr>
 <tr class="memdesc:a1ea3231db13cc32b113e487f859a41ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the initial condition according to subset_attributes.  <br /></td></tr>
 <tr class="separator:a1ea3231db13cc32b113e487f859a41ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad04cc95439b41fd2120af073ee1cdd9f" id="r_ad04cc95439b41fd2120af073ee1cdd9f"><td class="memItemLeft" align="right" valign="top"><a id="ad04cc95439b41fd2120af073ee1cdd9f" name="ad04cc95439b41fd2120af073ee1cdd9f"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_user_inputs</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:ad04cc95439b41fd2120af073ee1cdd9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs. <br /></td></tr>
+<tr class="memitem:ad04cc95439b41fd2120af073ee1cdd9f" id="r_ad04cc95439b41fd2120af073ee1cdd9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#ad04cc95439b41fd2120af073ee1cdd9f">get_user_inputs</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:ad04cc95439b41fd2120af073ee1cdd9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs.  <br /></td></tr>
 <tr class="separator:ad04cc95439b41fd2120af073ee1cdd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa304289b497ff288c65689967d63b361" id="r_aa304289b497ff288c65689967d63b361"><td class="memItemLeft" align="right" valign="top"><a id="aa304289b497ff288c65689967d63b361" name="aa304289b497ff288c65689967d63b361"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_free_container</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:aa304289b497ff288c65689967d63b361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container. <br /></td></tr>
+<tr class="memitem:aa304289b497ff288c65689967d63b361" id="r_aa304289b497ff288c65689967d63b361"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#aa304289b497ff288c65689967d63b361">get_matrix_free_container</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:aa304289b497ff288c65689967d63b361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container.  <br /></td></tr>
 <tr class="separator:aa304289b497ff288c65689967d63b361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc7e894505908a00d27b89d5f58f5bd8" id="r_adc7e894505908a00d27b89d5f58f5bd8"><td class="memItemLeft" align="right" valign="top"><a id="adc7e894505908a00d27b89d5f58f5bd8" name="adc7e894505908a00d27b89d5f58f5bd8"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation_handler</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:adc7e894505908a00d27b89d5f58f5bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler. <br /></td></tr>
+<tr class="memitem:adc7e894505908a00d27b89d5f58f5bd8" id="r_adc7e894505908a00d27b89d5f58f5bd8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#adc7e894505908a00d27b89d5f58f5bd8">get_triangulation_handler</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:adc7e894505908a00d27b89d5f58f5bd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler.  <br /></td></tr>
 <tr class="separator:adc7e894505908a00d27b89d5f58f5bd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66bac73b8f10cd0e462e3a93269948b8" id="r_a66bac73b8f10cd0e462e3a93269948b8"><td class="memItemLeft" align="right" valign="top"><a id="a66bac73b8f10cd0e462e3a93269948b8" name="a66bac73b8f10cd0e462e3a93269948b8"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_invm_handler</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a66bac73b8f10cd0e462e3a93269948b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm handler. <br /></td></tr>
+<tr class="memitem:a66bac73b8f10cd0e462e3a93269948b8" id="r_a66bac73b8f10cd0e462e3a93269948b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a66bac73b8f10cd0e462e3a93269948b8">get_invm_handler</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a66bac73b8f10cd0e462e3a93269948b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the invm handler.  <br /></td></tr>
 <tr class="separator:a66bac73b8f10cd0e462e3a93269948b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed61b68cdc45532ef09defeba2405ca6" id="r_aed61b68cdc45532ef09defeba2405ca6"><td class="memItemLeft" align="right" valign="top"><a id="aed61b68cdc45532ef09defeba2405ca6" name="aed61b68cdc45532ef09defeba2405ca6"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraint_handler</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:aed61b68cdc45532ef09defeba2405ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler. <br /></td></tr>
+<tr class="memitem:aed61b68cdc45532ef09defeba2405ca6" id="r_aed61b68cdc45532ef09defeba2405ca6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#aed61b68cdc45532ef09defeba2405ca6">get_constraint_handler</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:aed61b68cdc45532ef09defeba2405ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler.  <br /></td></tr>
 <tr class="separator:aed61b68cdc45532ef09defeba2405ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe8a5c7ed36047e4e3fb2a83270695bb" id="r_abe8a5c7ed36047e4e3fb2a83270695bb"><td class="memItemLeft" align="right" valign="top"><a id="abe8a5c7ed36047e4e3fb2a83270695bb" name="abe8a5c7ed36047e4e3fb2a83270695bb"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handler</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:abe8a5c7ed36047e4e3fb2a83270695bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler. <br /></td></tr>
+<tr class="memitem:abe8a5c7ed36047e4e3fb2a83270695bb" id="r_abe8a5c7ed36047e4e3fb2a83270695bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#abe8a5c7ed36047e4e3fb2a83270695bb">get_dof_handler</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:abe8a5c7ed36047e4e3fb2a83270695bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler.  <br /></td></tr>
 <tr class="separator:abe8a5c7ed36047e4e3fb2a83270695bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c13ddf0ae193e8db6c58b2470c7af2" id="r_a92c13ddf0ae193e8db6c58b2470c7af2"><td class="memItemLeft" align="right" valign="top"><a id="a92c13ddf0ae193e8db6c58b2470c7af2" name="a92c13ddf0ae193e8db6c58b2470c7af2"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> dealii::MappingQ1&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mapping</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a92c13ddf0ae193e8db6c58b2470c7af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping. <br /></td></tr>
+<tr class="memitem:a92c13ddf0ae193e8db6c58b2470c7af2" id="r_a92c13ddf0ae193e8db6c58b2470c7af2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> dealii::MappingQ1&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a92c13ddf0ae193e8db6c58b2470c7af2">get_mapping</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a92c13ddf0ae193e8db6c58b2470c7af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping.  <br /></td></tr>
 <tr class="separator:a92c13ddf0ae193e8db6c58b2470c7af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c3be9046e9b363fcfd6f7dc1ecc3987" id="r_a9c3be9046e9b363fcfd6f7dc1ecc3987"><td class="memItemLeft" align="right" valign="top"><a id="a9c3be9046e9b363fcfd6f7dc1ecc3987" name="a9c3be9046e9b363fcfd6f7dc1ecc3987"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_info</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a9c3be9046e9b363fcfd6f7dc1ecc3987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info. <br /></td></tr>
+<tr class="memitem:a9c3be9046e9b363fcfd6f7dc1ecc3987" id="r_a9c3be9046e9b363fcfd6f7dc1ecc3987"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a9c3be9046e9b363fcfd6f7dc1ecc3987">get_mg_info</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a9c3be9046e9b363fcfd6f7dc1ecc3987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info.  <br /></td></tr>
 <tr class="separator:a9c3be9046e9b363fcfd6f7dc1ecc3987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a382d46ddd79012ef69a52348f9bd4bc2" id="r_a382d46ddd79012ef69a52348f9bd4bc2"><td class="memItemLeft" align="right" valign="top"><a id="a382d46ddd79012ef69a52348f9bd4bc2" name="a382d46ddd79012ef69a52348f9bd4bc2"></a>
-<a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solution_handler</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a382d46ddd79012ef69a52348f9bd4bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler. <br /></td></tr>
+<tr class="memitem:a382d46ddd79012ef69a52348f9bd4bc2" id="r_a382d46ddd79012ef69a52348f9bd4bc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a382d46ddd79012ef69a52348f9bd4bc2">get_solution_handler</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a382d46ddd79012ef69a52348f9bd4bc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler.  <br /></td></tr>
 <tr class="separator:a382d46ddd79012ef69a52348f9bd4bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc42185e6368b467caf4ff2d53b8ae2" id="r_adfc42185e6368b467caf4ff2d53b8ae2"><td class="memItemLeft" align="right" valign="top"><a id="adfc42185e6368b467caf4ff2d53b8ae2" name="adfc42185e6368b467caf4ff2d53b8ae2"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_element_volume_container</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:adfc42185e6368b467caf4ff2d53b8ae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container. <br /></td></tr>
+<tr class="memitem:adfc42185e6368b467caf4ff2d53b8ae2" id="r_adfc42185e6368b467caf4ff2d53b8ae2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#adfc42185e6368b467caf4ff2d53b8ae2">get_element_volume_container</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:adfc42185e6368b467caf4ff2d53b8ae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container.  <br /></td></tr>
 <tr class="separator:adfc42185e6368b467caf4ff2d53b8ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3371e5fdf3265e19a265407d3ff63178" id="r_a3371e5fdf3265e19a265407d3ff63178"><td class="memItemLeft" align="right" valign="top"><a id="a3371e5fdf3265e19a265407d3ff63178" name="a3371e5fdf3265e19a265407d3ff63178"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::map&lt; Types::Index, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_subset_attributes</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a3371e5fdf3265e19a265407d3ff63178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset attributes. <br /></td></tr>
+<tr class="memitem:a3371e5fdf3265e19a265407d3ff63178" id="r_a3371e5fdf3265e19a265407d3ff63178"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a3371e5fdf3265e19a265407d3ff63178">get_subset_attributes</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a3371e5fdf3265e19a265407d3ff63178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset attributes.  <br /></td></tr>
 <tr class="separator:a3371e5fdf3265e19a265407d3ff63178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c03660522ed7abc933fc35b4c81044c" id="r_a8c03660522ed7abc933fc35b4c81044c"><td class="memItemLeft" align="right" valign="top"><a id="a8c03660522ed7abc933fc35b4c81044c" name="a8c03660522ed7abc933fc35b4c81044c"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pde_operator</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a8c03660522ed7abc933fc35b4c81044c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator. <br /></td></tr>
+<tr class="memitem:a8c03660522ed7abc933fc35b4c81044c" id="r_a8c03660522ed7abc933fc35b4c81044c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a8c03660522ed7abc933fc35b4c81044c">get_pde_operator</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a8c03660522ed7abc933fc35b4c81044c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator.  <br /></td></tr>
 <tr class="separator:a8c03660522ed7abc933fc35b4c81044c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac42452c750847f3bc0a01864341dc656" id="r_ac42452c750847f3bc0a01864341dc656"><td class="memItemLeft" align="right" valign="top"><a id="ac42452c750847f3bc0a01864341dc656" name="ac42452c750847f3bc0a01864341dc656"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">float</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pde_operator_float</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:ac42452c750847f3bc0a01864341dc656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator for float. <br /></td></tr>
+<tr class="memitem:ac42452c750847f3bc0a01864341dc656" id="r_ac42452c750847f3bc0a01864341dc656"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">float</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#ac42452c750847f3bc0a01864341dc656">get_pde_operator_float</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:ac42452c750847f3bc0a01864341dc656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator for float.  <br /></td></tr>
 <tr class="separator:ac42452c750847f3bc0a01864341dc656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec39ee189618d0d21f362dcea55727d8" id="r_aec39ee189618d0d21f362dcea55727d8"><td class="memItemLeft" align="right" valign="top"><a id="aec39ee189618d0d21f362dcea55727d8" name="aec39ee189618d0d21f362dcea55727d8"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_field_solve_type</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:aec39ee189618d0d21f362dcea55727d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field solve type. <br /></td></tr>
+<tr class="memitem:aec39ee189618d0d21f362dcea55727d8" id="r_aec39ee189618d0d21f362dcea55727d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#aec39ee189618d0d21f362dcea55727d8">get_field_solve_type</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:aec39ee189618d0d21f362dcea55727d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field solve type.  <br /></td></tr>
 <tr class="separator:aec39ee189618d0d21f362dcea55727d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fe9748e84b22f239cead0cc6d4b8ef0" id="r_a4fe9748e84b22f239cead0cc6d4b8ef0"><td class="memItemLeft" align="right" valign="top"><a id="a4fe9748e84b22f239cead0cc6d4b8ef0" name="a4fe9748e84b22f239cead0cc6d4b8ef0"></a>
-Types::Index&#160;</td><td class="memItemRight" valign="bottom"><b>get_solve_block</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a4fe9748e84b22f239cead0cc6d4b8ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solve block. <br /></td></tr>
+<tr class="memitem:a4fe9748e84b22f239cead0cc6d4b8ef0" id="r_a4fe9748e84b22f239cead0cc6d4b8ef0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a4fe9748e84b22f239cead0cc6d4b8ef0">get_solve_block</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a4fe9748e84b22f239cead0cc6d4b8ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solve block.  <br /></td></tr>
 <tr class="separator:a4fe9748e84b22f239cead0cc6d4b8ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a5d964b30eeae5f7db3b55d01d25de5" id="r_a3a5d964b30eeae5f7db3b55d01d25de5"><td class="memItemLeft" align="right" valign="top"><a id="a3a5d964b30eeae5f7db3b55d01d25de5" name="a3a5d964b30eeae5f7db3b55d01d25de5"></a>
-<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solver_context</b> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
-<tr class="memdesc:a3a5d964b30eeae5f7db3b55d01d25de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver context. <br /></td></tr>
+<tr class="memitem:a3a5d964b30eeae5f7db3b55d01d25de5" id="r_a3a5d964b30eeae5f7db3b55d01d25de5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a3a5d964b30eeae5f7db3b55d01d25de5">get_solver_context</a> () <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a></td></tr>
+<tr class="memdesc:a3a5d964b30eeae5f7db3b55d01d25de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver context.  <br /></td></tr>
 <tr class="separator:a3a5d964b30eeae5f7db3b55d01d25de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a4782c896fa9e0f4deeeae1bc88470fbc" id="r_a4782c896fa9e0f4deeeae1bc88470fbc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a4782c896fa9e0f4deeeae1bc88470fbc">solver_context</a></td></tr>
+<tr class="memdesc:a4782c896fa9e0f4deeeae1bc88470fbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver context.  <br /></td></tr>
+<tr class="separator:a4782c896fa9e0f4deeeae1bc88470fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40230ed29ef1f5254a6e369f0aecba7d" id="r_a40230ed29ef1f5254a6e369f0aecba7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a40230ed29ef1f5254a6e369f0aecba7d">field_solve_type</a> = <a class="el" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">Numbers::invalid_field_solve_type</a></td></tr>
+<tr class="memdesc:a40230ed29ef1f5254a6e369f0aecba7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field solve type.  <br /></td></tr>
+<tr class="separator:a40230ed29ef1f5254a6e369f0aecba7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1db7d9d1441c90a4c13140e907b95b3" id="r_ac1db7d9d1441c90a4c13140e907b95b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#ac1db7d9d1441c90a4c13140e907b95b3">solve_priority</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="memdesc:ac1db7d9d1441c90a4c13140e907b95b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve priority.  <br /></td></tr>
+<tr class="separator:ac1db7d9d1441c90a4c13140e907b95b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3232d9e275d2164a98141a37ff8cd0f0" id="r_a3232d9e275d2164a98141a37ff8cd0f0"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a3232d9e275d2164a98141a37ff8cd0f0">subset_attributes</a></td></tr>
+<tr class="memdesc:a3232d9e275d2164a98141a37ff8cd0f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subset of variable attributes.  <br /></td></tr>
+<tr class="separator:a3232d9e275d2164a98141a37ff8cd0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a194cf6d5ad47868ee4bf15af748bb234" name="a194cf6d5ad47868ee4bf15af748bb234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a194cf6d5ad47868ee4bf15af748bb234">&#9670;&#160;</a></span>SystemMatrixType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::SystemMatrixType =  <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4fc2bddc51a7ba2bf6943cf1c27765de" name="a4fc2bddc51a7ba2bf6943cf1c27765de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc2bddc51a7ba2bf6943cf1c27765de">&#9670;&#160;</a></span>VectorType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">using</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::VectorType =  dealii::LinearAlgebra::distributed::Vector&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a48080f572ee148e5c3d89e52b99a9455" name="a48080f572ee148e5c3d89e52b99a9455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48080f572ee148e5c3d89e52b99a9455">&#9670;&#160;</a></span>SolverBase() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;<a class="el" href="classSolverBase.html">::SolverBase</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_solver_context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;&#160;</td>
+          <td class="paramname"><em>_field_solve_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>_solve_priority</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a4ad5a8e2d8bacc3b0f05c95a7342786b" name="a4ad5a8e2d8bacc3b0f05c95a7342786b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad5a8e2d8bacc3b0f05c95a7342786b">&#9670;&#160;</a></span>~SolverBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">virtual</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::~<a class="el" href="classSolverBase.html">SolverBase</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
 <a id="a5bce98970b784ac227ef51fbb9b8e1af" name="a5bce98970b784ac227ef51fbb9b8e1af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bce98970b784ac227ef51fbb9b8e1af">&#9670;&#160;</a></span>SolverBase() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bce98970b784ac227ef51fbb9b8e1af">&#9670;&#160;</a></span>SolverBase() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +378,7 @@ template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76df
 </div>
 </div>
 <a id="a7aaaabe2e3a109fea97747184d4c3add" name="a7aaaabe2e3a109fea97747184d4c3add"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7aaaabe2e3a109fea97747184d4c3add">&#9670;&#160;</a></span>SolverBase() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aaaabe2e3a109fea97747184d4c3add">&#9670;&#160;</a></span>SolverBase() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,15 +418,15 @@ template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76df
 template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt; Types::Index, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::compute_subset_attributes </td>
+          <td class="memname">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::compute_subset_attributes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;&#160;</td>
           <td class="paramname"><em>_field_solve_type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Types::Index&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
           <td class="paramname"><em>_solve_priority</em>&#160;</td>
         </tr>
         <tr>
@@ -334,6 +439,470 @@ template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76df
 
 <p>Compute the subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belongs to a given FieldSolveType and solver order. </p>
 <p>This function creates and returns a map of the VariablesAttributes that belong to a FieldSolveType and solve order. </p>
+
+</div>
+</div>
+<a id="aed61b68cdc45532ef09defeba2405ca6" name="aed61b68cdc45532ef09defeba2405ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed61b68cdc45532ef09defeba2405ca6">&#9670;&#160;</a></span>get_constraint_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_constraint_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the constraint handler. </p>
+
+</div>
+</div>
+<a id="abe8a5c7ed36047e4e3fb2a83270695bb" name="abe8a5c7ed36047e4e3fb2a83270695bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe8a5c7ed36047e4e3fb2a83270695bb">&#9670;&#160;</a></span>get_dof_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_dof_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dof handler. </p>
+
+</div>
+</div>
+<a id="adfc42185e6368b467caf4ff2d53b8ae2" name="adfc42185e6368b467caf4ff2d53b8ae2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfc42185e6368b467caf4ff2d53b8ae2">&#9670;&#160;</a></span>get_element_volume_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_element_volume_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the element volume container. </p>
+
+</div>
+</div>
+<a id="aec39ee189618d0d21f362dcea55727d8" name="aec39ee189618d0d21f362dcea55727d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec39ee189618d0d21f362dcea55727d8">&#9670;&#160;</a></span>get_field_solve_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_field_solve_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the field solve type. </p>
+
+</div>
+</div>
+<a id="a66bac73b8f10cd0e462e3a93269948b8" name="a66bac73b8f10cd0e462e3a93269948b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66bac73b8f10cd0e462e3a93269948b8">&#9670;&#160;</a></span>get_invm_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classInvmHandler.html">InvmHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_invm_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the invm handler. </p>
+
+</div>
+</div>
+<a id="a92c13ddf0ae193e8db6c58b2470c7af2" name="a92c13ddf0ae193e8db6c58b2470c7af2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c13ddf0ae193e8db6c58b2470c7af2">&#9670;&#160;</a></span>get_mapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> dealii::MappingQ1&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_mapping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the mapping. </p>
+
+</div>
+</div>
+<a id="aa304289b497ff288c65689967d63b361" name="aa304289b497ff288c65689967d63b361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa304289b497ff288c65689967d63b361">&#9670;&#160;</a></span>get_matrix_free_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_matrix_free_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the matrix-free container. </p>
+
+</div>
+</div>
+<a id="a9c3be9046e9b363fcfd6f7dc1ecc3987" name="a9c3be9046e9b363fcfd6f7dc1ecc3987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3be9046e9b363fcfd6f7dc1ecc3987">&#9670;&#160;</a></span>get_mg_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_mg_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the multigrid info. </p>
+
+</div>
+</div>
+<a id="a8c03660522ed7abc933fc35b4c81044c" name="a8c03660522ed7abc933fc35b4c81044c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c03660522ed7abc933fc35b4c81044c">&#9670;&#160;</a></span>get_pde_operator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_pde_operator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the pde operator. </p>
+
+</div>
+</div>
+<a id="ac42452c750847f3bc0a01864341dc656" name="ac42452c750847f3bc0a01864341dc656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac42452c750847f3bc0a01864341dc656">&#9670;&#160;</a></span>get_pde_operator_float()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">float</a> &gt; &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_pde_operator_float </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the pde operator for float. </p>
+
+</div>
+</div>
+<a id="a382d46ddd79012ef69a52348f9bd4bc2" name="a382d46ddd79012ef69a52348f9bd4bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a382d46ddd79012ef69a52348f9bd4bc2">&#9670;&#160;</a></span>get_solution_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_solution_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solution handler. </p>
+
+</div>
+</div>
+<a id="a4fe9748e84b22f239cead0cc6d4b8ef0" name="a4fe9748e84b22f239cead0cc6d4b8ef0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe9748e84b22f239cead0cc6d4b8ef0">&#9670;&#160;</a></span>get_solve_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_solve_block </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solve block. </p>
+
+</div>
+</div>
+<a id="a3a5d964b30eeae5f7db3b55d01d25de5" name="a3a5d964b30eeae5f7db3b55d01d25de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a5d964b30eeae5f7db3b55d01d25de5">&#9670;&#160;</a></span>get_solver_context()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_solver_context </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solver context. </p>
+
+</div>
+</div>
+<a id="a3371e5fdf3265e19a265407d3ff63178" name="a3371e5fdf3265e19a265407d3ff63178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3371e5fdf3265e19a265407d3ff63178">&#9670;&#160;</a></span>get_subset_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_subset_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the subset attributes. </p>
+
+</div>
+</div>
+<a id="adc7e894505908a00d27b89d5f58f5bd8" name="adc7e894505908a00d27b89d5f58f5bd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc7e894505908a00d27b89d5f58f5bd8">&#9670;&#160;</a></span>get_triangulation_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_triangulation_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the triangulation handler. </p>
+
+</div>
+</div>
+<a id="ad04cc95439b41fd2120af073ee1cdd9f" name="ad04cc95439b41fd2120af073ee1cdd9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad04cc95439b41fd2120af073ee1cdd9f">&#9670;&#160;</a></span>get_user_inputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a> &gt; &amp; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::get_user_inputs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the user-inputs. </p>
 
 </div>
 </div>
@@ -578,13 +1147,13 @@ template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76df
         <tr>
           <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">void</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::update_subset_attributes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> FieldSolveType &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> &amp;&#160;</td>
           <td class="paramname"><em>_field_solve_type</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Types::Index&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
           <td class="paramname"><em>_solve_priority</em>&#160;</td>
         </tr>
         <tr>
@@ -600,9 +1169,114 @@ template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76df
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a40230ed29ef1f5254a6e369f0aecba7d" name="a40230ed29ef1f5254a6e369f0aecba7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40230ed29ef1f5254a6e369f0aecba7d">&#9670;&#160;</a></span>field_solve_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::field_solve_type = <a class="el" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">Numbers::invalid_field_solve_type</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Field solve type. </p>
+
+</div>
+</div>
+<a id="ac1db7d9d1441c90a4c13140e907b95b3" name="ac1db7d9d1441c90a4c13140e907b95b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1db7d9d1441c90a4c13140e907b95b3">&#9670;&#160;</a></span>solve_priority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::solve_priority = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solve priority. </p>
+
+</div>
+</div>
+<a id="a4782c896fa9e0f4deeeae1bc88470fbc" name="a4782c896fa9e0f4deeeae1bc88470fbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4782c896fa9e0f4deeeae1bc88470fbc">&#9670;&#160;</a></span>solver_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">const</a> std::shared_ptr&lt;<a class="el" href="classSolverContext.html">SolverContext</a>&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a>&gt; &gt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::solver_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver context. </p>
+
+</div>
+</div>
+<a id="a3232d9e275d2164a98141a37ff8cd0f0" name="a3232d9e275d2164a98141a37ff8cd0f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3232d9e275d2164a98141a37ff8cd0f0">&#9670;&#160;</a></span>subset_attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> dim, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">unsigned</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">int</a> degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">typename</a> <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a>&gt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">dim</a>, degree, <a class="el" href="classSolverBase.html#a4ae2d06b0f2cedb7c8234d76dfbbd5e3">number</a> &gt;::subset_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subset of variable attributes. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/solvers/<a class="el" href="solver__base_8h_source.html">solver_base.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/solvers/<b>solver_base.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/solvers/<a class="el" href="solver__base_8cc.html">solver_base.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

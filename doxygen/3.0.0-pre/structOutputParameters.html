@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('structOutputParameters.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structOutputParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">OutputParameters Struct Reference</div></div>
 </div><!--header-->
@@ -121,66 +129,661 @@ $(document).ready(function(){initNavTree('structOutputParameters.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9dc9e90a0a6db418605ee918d6ba102d" id="r_a9dc9e90a0a6db418605ee918d6ba102d"><td class="memItemLeft" align="right" valign="top"><a id="a9dc9e90a0a6db418605ee918d6ba102d" name="a9dc9e90a0a6db418605ee918d6ba102d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>should_output</b> (unsigned int increment) const</td></tr>
-<tr class="memdesc:a9dc9e90a0a6db418605ee918d6ba102d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the increment should be outputted. <br /></td></tr>
+<tr class="memitem:a9dc9e90a0a6db418605ee918d6ba102d" id="r_a9dc9e90a0a6db418605ee918d6ba102d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a9dc9e90a0a6db418605ee918d6ba102d">should_output</a> (unsigned int increment) const</td></tr>
+<tr class="memdesc:a9dc9e90a0a6db418605ee918d6ba102d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return if the increment should be outputted.  <br /></td></tr>
 <tr class="separator:a9dc9e90a0a6db418605ee918d6ba102d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e08b5562872c64aeee7957d0d8720a7" id="r_a0e08b5562872c64aeee7957d0d8720a7"><td class="memItemLeft" align="right" valign="top"><a id="a0e08b5562872c64aeee7957d0d8720a7" name="a0e08b5562872c64aeee7957d0d8720a7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> (const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
-<tr class="memdesc:a0e08b5562872c64aeee7957d0d8720a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a0e08b5562872c64aeee7957d0d8720a7" id="r_a0e08b5562872c64aeee7957d0d8720a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a0e08b5562872c64aeee7957d0d8720a7">postprocess_and_validate</a> (const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
+<tr class="memdesc:a0e08b5562872c64aeee7957d0d8720a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a0e08b5562872c64aeee7957d0d8720a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c5c30cb129285cf40f8dfa7b8cc9f8d" id="r_a8c5c30cb129285cf40f8dfa7b8cc9f8d"><td class="memItemLeft" align="right" valign="top"><a id="a8c5c30cb129285cf40f8dfa7b8cc9f8d" name="a8c5c30cb129285cf40f8dfa7b8cc9f8d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:a8c5c30cb129285cf40f8dfa7b8cc9f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:a8c5c30cb129285cf40f8dfa7b8cc9f8d" id="r_a8c5c30cb129285cf40f8dfa7b8cc9f8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a8c5c30cb129285cf40f8dfa7b8cc9f8d">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:a8c5c30cb129285cf40f8dfa7b8cc9f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:a8c5c30cb129285cf40f8dfa7b8cc9f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa92505cfded84622fe6150155451541d" id="r_aa92505cfded84622fe6150155451541d"><td class="memItemLeft" align="right" valign="top"><a id="aa92505cfded84622fe6150155451541d" name="aa92505cfded84622fe6150155451541d"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_file_type</b> () const</td></tr>
-<tr class="memdesc:aa92505cfded84622fe6150155451541d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the file type. <br /></td></tr>
+<tr class="memitem:aa92505cfded84622fe6150155451541d" id="r_aa92505cfded84622fe6150155451541d"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#aa92505cfded84622fe6150155451541d">get_file_type</a> () const</td></tr>
+<tr class="memdesc:aa92505cfded84622fe6150155451541d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the file type.  <br /></td></tr>
 <tr class="separator:aa92505cfded84622fe6150155451541d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97ae6f0c11b7dd328e9c1eb192c4a25f" id="r_a97ae6f0c11b7dd328e9c1eb192c4a25f"><td class="memItemLeft" align="right" valign="top"><a id="a97ae6f0c11b7dd328e9c1eb192c4a25f" name="a97ae6f0c11b7dd328e9c1eb192c4a25f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_file_type</b> (const std::string &amp;_file_type)</td></tr>
-<tr class="memdesc:a97ae6f0c11b7dd328e9c1eb192c4a25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the file type. <br /></td></tr>
+<tr class="memitem:a97ae6f0c11b7dd328e9c1eb192c4a25f" id="r_a97ae6f0c11b7dd328e9c1eb192c4a25f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a97ae6f0c11b7dd328e9c1eb192c4a25f">set_file_type</a> (const std::string &amp;_file_type)</td></tr>
+<tr class="memdesc:a97ae6f0c11b7dd328e9c1eb192c4a25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the file type.  <br /></td></tr>
 <tr class="separator:a97ae6f0c11b7dd328e9c1eb192c4a25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a700e8430563f86e34dbf30bda9f2fdff" id="r_a700e8430563f86e34dbf30bda9f2fdff"><td class="memItemLeft" align="right" valign="top"><a id="a700e8430563f86e34dbf30bda9f2fdff" name="a700e8430563f86e34dbf30bda9f2fdff"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_file_name</b> () const</td></tr>
-<tr class="memdesc:a700e8430563f86e34dbf30bda9f2fdff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the file name. <br /></td></tr>
+<tr class="memitem:a700e8430563f86e34dbf30bda9f2fdff" id="r_a700e8430563f86e34dbf30bda9f2fdff"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a700e8430563f86e34dbf30bda9f2fdff">get_file_name</a> () const</td></tr>
+<tr class="memdesc:a700e8430563f86e34dbf30bda9f2fdff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the file name.  <br /></td></tr>
 <tr class="separator:a700e8430563f86e34dbf30bda9f2fdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256f02732ef0536f31317bde1aacd6b9" id="r_a256f02732ef0536f31317bde1aacd6b9"><td class="memItemLeft" align="right" valign="top"><a id="a256f02732ef0536f31317bde1aacd6b9" name="a256f02732ef0536f31317bde1aacd6b9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_file_name</b> (const std::string &amp;_file_name)</td></tr>
-<tr class="memdesc:a256f02732ef0536f31317bde1aacd6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the file name. <br /></td></tr>
+<tr class="memitem:a256f02732ef0536f31317bde1aacd6b9" id="r_a256f02732ef0536f31317bde1aacd6b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a256f02732ef0536f31317bde1aacd6b9">set_file_name</a> (const std::string &amp;_file_name)</td></tr>
+<tr class="memdesc:a256f02732ef0536f31317bde1aacd6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the file name.  <br /></td></tr>
 <tr class="separator:a256f02732ef0536f31317bde1aacd6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fa6cc46a4e5b7f24380ece97dd18316" id="r_a5fa6cc46a4e5b7f24380ece97dd18316"><td class="memItemLeft" align="right" valign="top"><a id="a5fa6cc46a4e5b7f24380ece97dd18316" name="a5fa6cc46a4e5b7f24380ece97dd18316"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_print_output_period</b> (const unsigned int &amp;_print_output_period)</td></tr>
-<tr class="memdesc:a5fa6cc46a4e5b7f24380ece97dd18316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the print output period. <br /></td></tr>
+<tr class="memitem:a5fa6cc46a4e5b7f24380ece97dd18316" id="r_a5fa6cc46a4e5b7f24380ece97dd18316"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a5fa6cc46a4e5b7f24380ece97dd18316">set_print_output_period</a> (const unsigned int &amp;_print_output_period)</td></tr>
+<tr class="memdesc:a5fa6cc46a4e5b7f24380ece97dd18316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the print output period.  <br /></td></tr>
 <tr class="separator:a5fa6cc46a4e5b7f24380ece97dd18316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c7ff6a16a7b1317fb61a5838a5d710b" id="r_a4c7ff6a16a7b1317fb61a5838a5d710b"><td class="memItemLeft" align="right" valign="top"><a id="a4c7ff6a16a7b1317fb61a5838a5d710b" name="a4c7ff6a16a7b1317fb61a5838a5d710b"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_patch_subdivisions</b> () const</td></tr>
-<tr class="memdesc:a4c7ff6a16a7b1317fb61a5838a5d710b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the patch subdivisions. <br /></td></tr>
+<tr class="memitem:a4c7ff6a16a7b1317fb61a5838a5d710b" id="r_a4c7ff6a16a7b1317fb61a5838a5d710b"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a4c7ff6a16a7b1317fb61a5838a5d710b">get_patch_subdivisions</a> () const</td></tr>
+<tr class="memdesc:a4c7ff6a16a7b1317fb61a5838a5d710b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the patch subdivisions.  <br /></td></tr>
 <tr class="separator:a4c7ff6a16a7b1317fb61a5838a5d710b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a224866b908ad2ce0e838ce29665eefbf" id="r_a224866b908ad2ce0e838ce29665eefbf"><td class="memItemLeft" align="right" valign="top"><a id="a224866b908ad2ce0e838ce29665eefbf" name="a224866b908ad2ce0e838ce29665eefbf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_patch_subdivisions</b> (const unsigned int &amp;_patch_subdivisions)</td></tr>
-<tr class="memdesc:a224866b908ad2ce0e838ce29665eefbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the patch subdivisions. <br /></td></tr>
+<tr class="memitem:a224866b908ad2ce0e838ce29665eefbf" id="r_a224866b908ad2ce0e838ce29665eefbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a224866b908ad2ce0e838ce29665eefbf">set_patch_subdivisions</a> (const unsigned int &amp;_patch_subdivisions)</td></tr>
+<tr class="memdesc:a224866b908ad2ce0e838ce29665eefbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the patch subdivisions.  <br /></td></tr>
 <tr class="separator:a224866b908ad2ce0e838ce29665eefbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd10a038d715bd9524e851fca5cb75ae" id="r_afd10a038d715bd9524e851fca5cb75ae"><td class="memItemLeft" align="right" valign="top"><a id="afd10a038d715bd9524e851fca5cb75ae" name="afd10a038d715bd9524e851fca5cb75ae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_output_condition</b> (const std::string &amp;_condition)</td></tr>
-<tr class="memdesc:afd10a038d715bd9524e851fca5cb75ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the output condition. <br /></td></tr>
+<tr class="memitem:afd10a038d715bd9524e851fca5cb75ae" id="r_afd10a038d715bd9524e851fca5cb75ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#afd10a038d715bd9524e851fca5cb75ae">set_output_condition</a> (const std::string &amp;_condition)</td></tr>
+<tr class="memdesc:afd10a038d715bd9524e851fca5cb75ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the output condition.  <br /></td></tr>
 <tr class="separator:afd10a038d715bd9524e851fca5cb75ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6269d63101d0b9857afe682340fd06a9" id="r_a6269d63101d0b9857afe682340fd06a9"><td class="memItemLeft" align="right" valign="top"><a id="a6269d63101d0b9857afe682340fd06a9" name="a6269d63101d0b9857afe682340fd06a9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_n_outputs</b> (const unsigned int &amp;_n_outputs)</td></tr>
-<tr class="memdesc:a6269d63101d0b9857afe682340fd06a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of outputs. <br /></td></tr>
+<tr class="memitem:a6269d63101d0b9857afe682340fd06a9" id="r_a6269d63101d0b9857afe682340fd06a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a6269d63101d0b9857afe682340fd06a9">set_n_outputs</a> (const unsigned int &amp;_n_outputs)</td></tr>
+<tr class="memdesc:a6269d63101d0b9857afe682340fd06a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of outputs.  <br /></td></tr>
 <tr class="separator:a6269d63101d0b9857afe682340fd06a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae911e84b256a1ea163b6bb8d8b8d698a" id="r_ae911e84b256a1ea163b6bb8d8b8d698a"><td class="memItemLeft" align="right" valign="top"><a id="ae911e84b256a1ea163b6bb8d8b8d698a" name="ae911e84b256a1ea163b6bb8d8b8d698a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_user_output_list</b> (const std::vector&lt; int &gt; &amp;_user_output_list)</td></tr>
-<tr class="memdesc:ae911e84b256a1ea163b6bb8d8b8d698a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user output list. <br /></td></tr>
+<tr class="memitem:ae911e84b256a1ea163b6bb8d8b8d698a" id="r_ae911e84b256a1ea163b6bb8d8b8d698a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#ae911e84b256a1ea163b6bb8d8b8d698a">set_user_output_list</a> (const std::vector&lt; int &gt; &amp;_user_output_list)</td></tr>
+<tr class="memdesc:ae911e84b256a1ea163b6bb8d8b8d698a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the user output list.  <br /></td></tr>
 <tr class="separator:ae911e84b256a1ea163b6bb8d8b8d698a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a941d065005c80ccb3b2110fab85e951a" id="r_a941d065005c80ccb3b2110fab85e951a"><td class="memItemLeft" align="right" valign="top"><a id="a941d065005c80ccb3b2110fab85e951a" name="a941d065005c80ccb3b2110fab85e951a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_print_timing_with_output</b> (const bool &amp;_print_timing_with_output)</td></tr>
-<tr class="memdesc:a941d065005c80ccb3b2110fab85e951a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to print timing information with output. <br /></td></tr>
+<tr class="memitem:a941d065005c80ccb3b2110fab85e951a" id="r_a941d065005c80ccb3b2110fab85e951a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a941d065005c80ccb3b2110fab85e951a">set_print_timing_with_output</a> (const bool &amp;_print_timing_with_output)</td></tr>
+<tr class="memdesc:a941d065005c80ccb3b2110fab85e951a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to print timing information with output.  <br /></td></tr>
 <tr class="separator:a941d065005c80ccb3b2110fab85e951a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab0df2db42a18657d93b5f388f2117413" id="r_ab0df2db42a18657d93b5f388f2117413"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#ab0df2db42a18657d93b5f388f2117413">file_type</a></td></tr>
+<tr class="separator:ab0df2db42a18657d93b5f388f2117413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d76eb8d97954e7ac5a1822b4cedd1e8" id="r_a6d76eb8d97954e7ac5a1822b4cedd1e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a6d76eb8d97954e7ac5a1822b4cedd1e8">file_name</a></td></tr>
+<tr class="separator:a6d76eb8d97954e7ac5a1822b4cedd1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63099768759ac6a3eef5a08370ac7ade" id="r_a63099768759ac6a3eef5a08370ac7ade"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade">print_output_period</a> = UINT_MAX</td></tr>
+<tr class="separator:a63099768759ac6a3eef5a08370ac7ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261d1ae78ce3adf6629f4a9ec12576c4" id="r_a261d1ae78ce3adf6629f4a9ec12576c4"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a261d1ae78ce3adf6629f4a9ec12576c4">patch_subdivisions</a> = 0</td></tr>
+<tr class="separator:a261d1ae78ce3adf6629f4a9ec12576c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef1e7d14588566bb3ce51ac49c99c9f6" id="r_aef1e7d14588566bb3ce51ac49c99c9f6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#aef1e7d14588566bb3ce51ac49c99c9f6">condition</a></td></tr>
+<tr class="separator:aef1e7d14588566bb3ce51ac49c99c9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acac885d2a2255a775ec6754188585515" id="r_acac885d2a2255a775ec6754188585515"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#acac885d2a2255a775ec6754188585515">n_outputs</a> = 0</td></tr>
+<tr class="separator:acac885d2a2255a775ec6754188585515"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33b00e7cf76a6d7694df79fa94aff1a5" id="r_a33b00e7cf76a6d7694df79fa94aff1a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a33b00e7cf76a6d7694df79fa94aff1a5">user_output_list</a></td></tr>
+<tr class="separator:a33b00e7cf76a6d7694df79fa94aff1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0666fa7e06fc537f358e586953b76735" id="r_a0666fa7e06fc537f358e586953b76735"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a0666fa7e06fc537f358e586953b76735">print_timing_with_output</a> = false</td></tr>
+<tr class="separator:a0666fa7e06fc537f358e586953b76735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9771dee0609ee12001963d53b58f3373" id="r_a9771dee0609ee12001963d53b58f3373"><td class="memItemLeft" align="right" valign="top">std::set&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structOutputParameters.html#a9771dee0609ee12001963d53b58f3373">output_list</a></td></tr>
+<tr class="separator:a9771dee0609ee12001963d53b58f3373"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds output parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a700e8430563f86e34dbf30bda9f2fdff" name="a700e8430563f86e34dbf30bda9f2fdff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a700e8430563f86e34dbf30bda9f2fdff">&#9670;&#160;</a></span>get_file_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; OutputParameters::get_file_name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the file name. </p>
+
+</div>
+</div>
+<a id="aa92505cfded84622fe6150155451541d" name="aa92505cfded84622fe6150155451541d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa92505cfded84622fe6150155451541d">&#9670;&#160;</a></span>get_file_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; OutputParameters::get_file_type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the file type. </p>
+
+</div>
+</div>
+<a id="a4c7ff6a16a7b1317fb61a5838a5d710b" name="a4c7ff6a16a7b1317fb61a5838a5d710b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c7ff6a16a7b1317fb61a5838a5d710b">&#9670;&#160;</a></span>get_patch_subdivisions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int OutputParameters::get_patch_subdivisions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the patch subdivisions. </p>
+
+</div>
+</div>
+<a id="a0e08b5562872c64aeee7957d0d8720a7" name="a0e08b5562872c64aeee7957d0d8720a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e08b5562872c64aeee7957d0d8720a7">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;&#160;</td>
+          <td class="paramname"><em>temporal_discretization</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="a8c5c30cb129285cf40f8dfa7b8cc9f8d" name="a8c5c30cb129285cf40f8dfa7b8cc9f8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c5c30cb129285cf40f8dfa7b8cc9f8d">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="a256f02732ef0536f31317bde1aacd6b9" name="a256f02732ef0536f31317bde1aacd6b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a256f02732ef0536f31317bde1aacd6b9">&#9670;&#160;</a></span>set_file_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_file_name </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_file_name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the file name. </p>
+
+</div>
+</div>
+<a id="a97ae6f0c11b7dd328e9c1eb192c4a25f" name="a97ae6f0c11b7dd328e9c1eb192c4a25f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97ae6f0c11b7dd328e9c1eb192c4a25f">&#9670;&#160;</a></span>set_file_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_file_type </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_file_type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the file type. </p>
+
+</div>
+</div>
+<a id="a6269d63101d0b9857afe682340fd06a9" name="a6269d63101d0b9857afe682340fd06a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6269d63101d0b9857afe682340fd06a9">&#9670;&#160;</a></span>set_n_outputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_n_outputs </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_n_outputs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the number of outputs. </p>
+
+</div>
+</div>
+<a id="afd10a038d715bd9524e851fca5cb75ae" name="afd10a038d715bd9524e851fca5cb75ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd10a038d715bd9524e851fca5cb75ae">&#9670;&#160;</a></span>set_output_condition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_output_condition </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_condition</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the output condition. </p>
+
+</div>
+</div>
+<a id="a224866b908ad2ce0e838ce29665eefbf" name="a224866b908ad2ce0e838ce29665eefbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224866b908ad2ce0e838ce29665eefbf">&#9670;&#160;</a></span>set_patch_subdivisions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_patch_subdivisions </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_patch_subdivisions</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the patch subdivisions. </p>
+
+</div>
+</div>
+<a id="a5fa6cc46a4e5b7f24380ece97dd18316" name="a5fa6cc46a4e5b7f24380ece97dd18316"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fa6cc46a4e5b7f24380ece97dd18316">&#9670;&#160;</a></span>set_print_output_period()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_print_output_period </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_print_output_period</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the print output period. </p>
+
+</div>
+</div>
+<a id="a941d065005c80ccb3b2110fab85e951a" name="a941d065005c80ccb3b2110fab85e951a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a941d065005c80ccb3b2110fab85e951a">&#9670;&#160;</a></span>set_print_timing_with_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_print_timing_with_output </td>
+          <td>(</td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>_print_timing_with_output</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether to print timing information with output. </p>
+
+</div>
+</div>
+<a id="ae911e84b256a1ea163b6bb8d8b8d698a" name="ae911e84b256a1ea163b6bb8d8b8d698a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae911e84b256a1ea163b6bb8d8b8d698a">&#9670;&#160;</a></span>set_user_output_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::set_user_output_list </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_output_list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the user output list. </p>
+
+</div>
+</div>
+<a id="a9dc9e90a0a6db418605ee918d6ba102d" name="a9dc9e90a0a6db418605ee918d6ba102d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dc9e90a0a6db418605ee918d6ba102d">&#9670;&#160;</a></span>should_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OutputParameters::should_output </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>increment</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return if the increment should be outputted. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aef1e7d14588566bb3ce51ac49c99c9f6" name="aef1e7d14588566bb3ce51ac49c99c9f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef1e7d14588566bb3ce51ac49c99c9f6">&#9670;&#160;</a></span>condition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string OutputParameters::condition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d76eb8d97954e7ac5a1822b4cedd1e8" name="a6d76eb8d97954e7ac5a1822b4cedd1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d76eb8d97954e7ac5a1822b4cedd1e8">&#9670;&#160;</a></span>file_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string OutputParameters::file_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab0df2db42a18657d93b5f388f2117413" name="ab0df2db42a18657d93b5f388f2117413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0df2db42a18657d93b5f388f2117413">&#9670;&#160;</a></span>file_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string OutputParameters::file_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acac885d2a2255a775ec6754188585515" name="acac885d2a2255a775ec6754188585515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acac885d2a2255a775ec6754188585515">&#9670;&#160;</a></span>n_outputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int OutputParameters::n_outputs = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9771dee0609ee12001963d53b58f3373" name="a9771dee0609ee12001963d53b58f3373"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9771dee0609ee12001963d53b58f3373">&#9670;&#160;</a></span>output_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;unsigned int&gt; OutputParameters::output_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a261d1ae78ce3adf6629f4a9ec12576c4" name="a261d1ae78ce3adf6629f4a9ec12576c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a261d1ae78ce3adf6629f4a9ec12576c4">&#9670;&#160;</a></span>patch_subdivisions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int OutputParameters::patch_subdivisions = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63099768759ac6a3eef5a08370ac7ade" name="a63099768759ac6a3eef5a08370ac7ade"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63099768759ac6a3eef5a08370ac7ade">&#9670;&#160;</a></span>print_output_period</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int OutputParameters::print_output_period = UINT_MAX</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0666fa7e06fc537f358e586953b76735" name="a0666fa7e06fc537f358e586953b76735"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0666fa7e06fc537f358e586953b76735">&#9670;&#160;</a></span>print_timing_with_output</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OutputParameters::print_timing_with_output = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a33b00e7cf76a6d7694df79fa94aff1a5" name="a33b00e7cf76a6d7694df79fa94aff1a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b00e7cf76a6d7694df79fa94aff1a5">&#9670;&#160;</a></span>user_output_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; OutputParameters::user_output_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="output__parameters_8h_source.html">output_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

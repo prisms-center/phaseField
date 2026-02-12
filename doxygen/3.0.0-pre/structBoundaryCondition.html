@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,7 @@ $(document).ready(function(){initNavTree('structBoundaryCondition.html',''); ini
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structBoundaryCondition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">BoundaryCondition Struct Reference</div></div>
 </div><!--header-->
@@ -122,53 +130,315 @@ $(document).ready(function(){initNavTree('structBoundaryCondition.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a11ebfe2a932d8fa52f3d6d6e7ad927c1" id="r_a11ebfe2a932d8fa52f3d6d6e7ad927c1"><td class="memItemLeft" align="right" valign="top"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> : std::uint8_t { <br />
-&#160;&#160;<b>UndefinedBoundary</b>
-, <b>Natural</b>
-, <b>Dirichlet</b>
-, <b>Periodic</b>
+<tr class="memitem:a11ebfe2a932d8fa52f3d6d6e7ad927c1" id="r_a11ebfe2a932d8fa52f3d6d6e7ad927c1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a040964e547e0b591760ae3c828cd0f36">UndefinedBoundary</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a820812422effafc6d44fc3c364fa1a9b">Natural</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a24e8c16f7de58c3b0897bda59907616f">Dirichlet</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25">Periodic</a>
 , <br />
-&#160;&#160;<b>Neumann</b>
-, <b>NonuniformDirichlet</b>
-, <b>NonuniformNeumann</b>
-, <b>TimeDependentNonuniformDirichlet</b>
+&#160;&#160;<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1adea0abf8ce060fb94e596b1d23ef40e2">Neumann</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1ac5ba2911d4d011ed20b2205890dcc80a">NonuniformDirichlet</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a418d4db0ed12033aaf3b0ee2393ffd52">NonuniformNeumann</a>
+, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a711b8503e7d3157fd0172963a86631ae">TimeDependentNonuniformDirichlet</a>
 , <br />
-&#160;&#160;<b>TimeDependentNonuniformNeumann</b>
+&#160;&#160;<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1aac8396befe8671c23de9b81cf8a23669">TimeDependentNonuniformNeumann</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a11ebfe2a932d8fa52f3d6d6e7ad927c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of boundary condition. <br /></td></tr>
+<tr class="memdesc:a11ebfe2a932d8fa52f3d6d6e7ad927c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of boundary condition.  <a href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">More...</a><br /></td></tr>
 <tr class="separator:a11ebfe2a932d8fa52f3d6d6e7ad927c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7724eca82134670d65e76468a2573a48" id="r_a7724eca82134670d65e76468a2573a48"><td class="memItemLeft" align="right" valign="top"><a id="a7724eca82134670d65e76468a2573a48" name="a7724eca82134670d65e76468a2573a48"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &amp;other) const</td></tr>
-<tr class="memdesc:a7724eca82134670d65e76468a2573a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test for equality of two boundary conditions. <br /></td></tr>
+<tr class="memitem:a7724eca82134670d65e76468a2573a48" id="r_a7724eca82134670d65e76468a2573a48"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a7724eca82134670d65e76468a2573a48">operator==</a> (const <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &amp;other) const</td></tr>
+<tr class="memdesc:a7724eca82134670d65e76468a2573a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test for equality of two boundary conditions.  <br /></td></tr>
 <tr class="separator:a7724eca82134670d65e76468a2573a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a532ffec182189a883e0f31dcc82284c8" id="r_a532ffec182189a883e0f31dcc82284c8"><td class="memItemLeft" align="right" valign="top"><a id="a532ffec182189a883e0f31dcc82284c8" name="a532ffec182189a883e0f31dcc82284c8"></a>
-const std::map&lt; dealii::types::boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_boundary_condition_map</b> () const</td></tr>
-<tr class="memdesc:a532ffec182189a883e0f31dcc82284c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the map of boundary conditions. <br /></td></tr>
+<tr class="memitem:a532ffec182189a883e0f31dcc82284c8" id="r_a532ffec182189a883e0f31dcc82284c8"><td class="memItemLeft" align="right" valign="top">const std::map&lt; dealii::types::boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a532ffec182189a883e0f31dcc82284c8">get_boundary_condition_map</a> () const</td></tr>
+<tr class="memdesc:a532ffec182189a883e0f31dcc82284c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the map of boundary conditions.  <br /></td></tr>
 <tr class="separator:a532ffec182189a883e0f31dcc82284c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478baa97f133edb43d8a5e17501e4e27" id="r_a478baa97f133edb43d8a5e17501e4e27"><td class="memItemLeft" align="right" valign="top"><a id="a478baa97f133edb43d8a5e17501e4e27" name="a478baa97f133edb43d8a5e17501e4e27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_boundary_condition</b> (dealii::types::boundary_id boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> boundary_type)</td></tr>
-<tr class="memdesc:a478baa97f133edb43d8a5e17501e4e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a boundary conditions. <br /></td></tr>
+<tr class="memitem:a478baa97f133edb43d8a5e17501e4e27" id="r_a478baa97f133edb43d8a5e17501e4e27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a478baa97f133edb43d8a5e17501e4e27">add_boundary_condition</a> (dealii::types::boundary_id boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> boundary_type)</td></tr>
+<tr class="memdesc:a478baa97f133edb43d8a5e17501e4e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a boundary conditions.  <br /></td></tr>
 <tr class="separator:a478baa97f133edb43d8a5e17501e4e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c3e8abec2b25f4d55cca517b6498f51" id="r_a8c3e8abec2b25f4d55cca517b6498f51"><td class="memItemLeft" align="right" valign="top"><a id="a8c3e8abec2b25f4d55cca517b6498f51" name="a8c3e8abec2b25f4d55cca517b6498f51"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>get_dirichlet_value</b> (dealii::types::boundary_id boundary_id) const</td></tr>
-<tr class="memdesc:a8c3e8abec2b25f4d55cca517b6498f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value for a homogeneous dirichlet boundary condition. <br /></td></tr>
+<tr class="memitem:a8c3e8abec2b25f4d55cca517b6498f51" id="r_a8c3e8abec2b25f4d55cca517b6498f51"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a8c3e8abec2b25f4d55cca517b6498f51">get_dirichlet_value</a> (dealii::types::boundary_id boundary_id) const</td></tr>
+<tr class="memdesc:a8c3e8abec2b25f4d55cca517b6498f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value for a homogeneous dirichlet boundary condition.  <br /></td></tr>
 <tr class="separator:a8c3e8abec2b25f4d55cca517b6498f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08cb67f65169e81aed245c78b9ddb439" id="r_a08cb67f65169e81aed245c78b9ddb439"><td class="memItemLeft" align="right" valign="top"><a id="a08cb67f65169e81aed245c78b9ddb439" name="a08cb67f65169e81aed245c78b9ddb439"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_boundary_condition</b> (dealii::types::boundary_id boundary_id, double boundary_value)</td></tr>
-<tr class="memdesc:a08cb67f65169e81aed245c78b9ddb439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the value for a homogeneous dirichlet boundary condition. <br /></td></tr>
+<tr class="memitem:a08cb67f65169e81aed245c78b9ddb439" id="r_a08cb67f65169e81aed245c78b9ddb439"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a08cb67f65169e81aed245c78b9ddb439">add_boundary_condition</a> (dealii::types::boundary_id boundary_id, double boundary_value)</td></tr>
+<tr class="memdesc:a08cb67f65169e81aed245c78b9ddb439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the value for a homogeneous dirichlet boundary condition.  <br /></td></tr>
 <tr class="separator:a08cb67f65169e81aed245c78b9ddb439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da711a29e6535c02197ad71418500c7" id="r_a5da711a29e6535c02197ad71418500c7"><td class="memItemLeft" align="right" valign="top"><a id="a5da711a29e6535c02197ad71418500c7" name="a5da711a29e6535c02197ad71418500c7"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_string</b> (<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> boundary_type) const</td></tr>
-<tr class="memdesc:a5da711a29e6535c02197ad71418500c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for type. <br /></td></tr>
+<tr class="memitem:a5da711a29e6535c02197ad71418500c7" id="r_a5da711a29e6535c02197ad71418500c7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a5da711a29e6535c02197ad71418500c7">to_string</a> (<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> boundary_type) const</td></tr>
+<tr class="memdesc:a5da711a29e6535c02197ad71418500c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for type.  <br /></td></tr>
 <tr class="separator:a5da711a29e6535c02197ad71418500c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a1137d55300dbe17c0bb72af16d2dc60c" id="r_a1137d55300dbe17c0bb72af16d2dc60c"><td class="memItemLeft" align="right" valign="top">std::map&lt; dealii::types::boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a1137d55300dbe17c0bb72af16d2dc60c">boundary_condition_map</a></td></tr>
+<tr class="separator:a1137d55300dbe17c0bb72af16d2dc60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f1cbcf1871ec96a576315f16fdccd58" id="r_a0f1cbcf1871ec96a576315f16fdccd58"><td class="memItemLeft" align="right" valign="top">std::map&lt; dealii::types::boundary_id, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58">dirichlet_value_map</a></td></tr>
+<tr class="separator:a0f1cbcf1871ec96a576315f16fdccd58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that stores relevant information for boundary conditions of a certain field. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11ebfe2a932d8fa52f3d6d6e7ad927c1">&#9670;&#160;</a></span>Type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">BoundaryCondition::Type</a> : std::uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type of boundary condition. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a040964e547e0b591760ae3c828cd0f36" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a040964e547e0b591760ae3c828cd0f36"></a>UndefinedBoundary&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a820812422effafc6d44fc3c364fa1a9b" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a820812422effafc6d44fc3c364fa1a9b"></a>Natural&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a24e8c16f7de58c3b0897bda59907616f" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a24e8c16f7de58c3b0897bda59907616f"></a>Dirichlet&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a1ebe2e8758bc07d09df48ae3e1693f25"></a>Periodic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1adea0abf8ce060fb94e596b1d23ef40e2" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1adea0abf8ce060fb94e596b1d23ef40e2"></a>Neumann&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1ac5ba2911d4d011ed20b2205890dcc80a" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1ac5ba2911d4d011ed20b2205890dcc80a"></a>NonuniformDirichlet&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a418d4db0ed12033aaf3b0ee2393ffd52" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a418d4db0ed12033aaf3b0ee2393ffd52"></a>NonuniformNeumann&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1a711b8503e7d3157fd0172963a86631ae" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1a711b8503e7d3157fd0172963a86631ae"></a>TimeDependentNonuniformDirichlet&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11ebfe2a932d8fa52f3d6d6e7ad927c1aac8396befe8671c23de9b81cf8a23669" name="a11ebfe2a932d8fa52f3d6d6e7ad927c1aac8396befe8671c23de9b81cf8a23669"></a>TimeDependentNonuniformNeumann&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a08cb67f65169e81aed245c78b9ddb439" name="a08cb67f65169e81aed245c78b9ddb439"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08cb67f65169e81aed245c78b9ddb439">&#9670;&#160;</a></span>add_boundary_condition() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BoundaryCondition::add_boundary_condition </td>
+          <td>(</td>
+          <td class="paramtype">dealii::types::boundary_id&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>boundary_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add the value for a homogeneous dirichlet boundary condition. </p>
+
+</div>
+</div>
+<a id="a478baa97f133edb43d8a5e17501e4e27" name="a478baa97f133edb43d8a5e17501e4e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a478baa97f133edb43d8a5e17501e4e27">&#9670;&#160;</a></span>add_boundary_condition() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BoundaryCondition::add_boundary_condition </td>
+          <td>(</td>
+          <td class="paramtype">dealii::types::boundary_id&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a>&#160;</td>
+          <td class="paramname"><em>boundary_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a boundary conditions. </p>
+
+</div>
+</div>
+<a id="a532ffec182189a883e0f31dcc82284c8" name="a532ffec182189a883e0f31dcc82284c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a532ffec182189a883e0f31dcc82284c8">&#9670;&#160;</a></span>get_boundary_condition_map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt; dealii::types::boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a> &gt; &amp; BoundaryCondition::get_boundary_condition_map </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the map of boundary conditions. </p>
+
+</div>
+</div>
+<a id="a8c3e8abec2b25f4d55cca517b6498f51" name="a8c3e8abec2b25f4d55cca517b6498f51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c3e8abec2b25f4d55cca517b6498f51">&#9670;&#160;</a></span>get_dirichlet_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double BoundaryCondition::get_dirichlet_value </td>
+          <td>(</td>
+          <td class="paramtype">dealii::types::boundary_id&#160;</td>
+          <td class="paramname"><em>boundary_id</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the value for a homogeneous dirichlet boundary condition. </p>
+
+</div>
+</div>
+<a id="a7724eca82134670d65e76468a2573a48" name="a7724eca82134670d65e76468a2573a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7724eca82134670d65e76468a2573a48">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BoundaryCondition::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Test for equality of two boundary conditions. </p>
+
+</div>
+</div>
+<a id="a5da711a29e6535c02197ad71418500c7" name="a5da711a29e6535c02197ad71418500c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5da711a29e6535c02197ad71418500c7">&#9670;&#160;</a></span>to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string BoundaryCondition::to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a>&#160;</td>
+          <td class="paramname"><em>boundary_type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enum to string for type. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a1137d55300dbe17c0bb72af16d2dc60c" name="a1137d55300dbe17c0bb72af16d2dc60c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1137d55300dbe17c0bb72af16d2dc60c">&#9670;&#160;</a></span>boundary_condition_map</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;dealii::types::boundary_id, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">Type</a>&gt; BoundaryCondition::boundary_condition_map</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f1cbcf1871ec96a576315f16fdccd58" name="a0f1cbcf1871ec96a576315f16fdccd58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f1cbcf1871ec96a576315f16fdccd58">&#9670;&#160;</a></span>dirichlet_value_map</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;dealii::types::boundary_id, double&gt; BoundaryCondition::dirichlet_value_map</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="boundary__parameters_8h_source.html">boundary_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

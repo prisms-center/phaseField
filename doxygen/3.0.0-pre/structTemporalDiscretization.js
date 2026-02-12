@@ -11,5 +11,10 @@ var structTemporalDiscretization =
     [ "set_timestep", "structTemporalDiscretization.html#a347e7edad71e62e95a80200f1f0c17f0", null ],
     [ "set_total_increments", "structTemporalDiscretization.html#a878947013dfd663e1385af2428a29500", null ],
     [ "update_increment", "structTemporalDiscretization.html#a9483c864f8047a234506f23d6a2f9c57", null ],
-    [ "update_time", "structTemporalDiscretization.html#a4721d46dbbd1ddfa34c7767ee6253aa3", null ]
+    [ "update_time", "structTemporalDiscretization.html#a4721d46dbbd1ddfa34c7767ee6253aa3", null ],
+    [ "dt", "structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a", null ],
+    [ "final_time", "structTemporalDiscretization.html#ae656c53e1fd16f1089c35a262f28bf1d", null ],
+    [ "increment", "structTemporalDiscretization.html#a56a3151737ba62d0d95c523a3d6a8762", null ],
+    [ "time", "structTemporalDiscretization.html#a4c8da2730d6b6041efb7890a69d216b1", null ],
+    [ "total_increments", "structTemporalDiscretization.html#a40d22fe8fac27ef5599e9d682683d866", null ]
 ];

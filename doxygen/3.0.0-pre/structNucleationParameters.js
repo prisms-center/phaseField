@@ -17,5 +17,13 @@ var structNucleationParameters =
     [ "set_same_field_exclusion_distance", "structNucleationParameters.html#a535d81a27ca0807f914444a546d17d98", null ],
     [ "set_seeding_increments", "structNucleationParameters.html#af5159a196e3b1dbe8dea26237c4356f6", null ],
     [ "set_seeding_time", "structNucleationParameters.html#a335734a3c5d43260a9fee22d658d8f88", null ],
-    [ "should_attempt_nucleation", "structNucleationParameters.html#a21d2f4391351915560882c5b8491d459", null ]
+    [ "should_attempt_nucleation", "structNucleationParameters.html#a21d2f4391351915560882c5b8491d459", null ],
+    [ "nucleation_period", "structNucleationParameters.html#a1957920bc7601dfc1db08b2616e9ab27", null ],
+    [ "nucleus_exclusion_distance", "structNucleationParameters.html#a8b8ae2bf211b71ac73fd2629f9327a12", null ],
+    [ "pp_nucleation_rate_exists", "structNucleationParameters.html#ab636c7b8965b6f6b4ea1f5511e1d8aee", null ],
+    [ "print_timing_with_nucleation", "structNucleationParameters.html#afd63ab42366ddc94a18d726e69d92da2", null ],
+    [ "refinement_radius", "structNucleationParameters.html#a631f5292c002f777c70414e07e6ac994", null ],
+    [ "same_field_nucleus_exclusion_distance", "structNucleationParameters.html#a7d85b207721475dc5da813b4d5ed085f", null ],
+    [ "seeding_increments", "structNucleationParameters.html#a30de0b07e317934473724f73d447a39e", null ],
+    [ "seeding_time", "structNucleationParameters.html#abf20b0a8d21b2e5b2b85d32d7eaf55f6", null ]
 ];

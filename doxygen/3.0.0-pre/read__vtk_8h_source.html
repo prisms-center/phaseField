@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
   <div class="headertitle"><div class="title">read_vtk.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="read__vtk_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,7 +131,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/lac/vector.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/field_input/read_field_base.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="read__field__base_8h.html">prismspf/field_input/read_field_base.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;vtkCellLocator.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vtkDataArray.h&gt;</span></div>
@@ -134,7 +141,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;vtkUnstructuredGrid.h&gt;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;vtkUnstructuredGridReader.h&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
@@ -171,19 +178,19 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                   <span class="keyword">const</span> std::string        &amp;vector_name) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  vtkNew&lt;vtkUnstructuredGridReader&gt; reader;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">   86</a></span>  vtkNew&lt;vtkUnstructuredGridReader&gt; <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  dealii::types::global_dof_index n_points;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#a659409fc81679d227beb68c2b8d70f17">   91</a></span>  dealii::types::global_dof_index <a class="code hl_variable" href="classReadUnstructuredVTK.html#a659409fc81679d227beb68c2b8d70f17">n_points</a>;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  dealii::types::global_dof_index n_cells;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#a7d5fdfbd5d037e0d5e42eee998c73e30">   96</a></span>  dealii::types::global_dof_index <a class="code hl_variable" href="classReadUnstructuredVTK.html#a7d5fdfbd5d037e0d5e42eee998c73e30">n_cells</a>;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_scalars;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#a05c3eca371f68c90d5edbcf85053ec0c">  101</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classReadUnstructuredVTK.html#a05c3eca371f68c90d5edbcf85053ec0c">n_scalars</a>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_vectors;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5">  106</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5">n_vectors</a>;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_points_per_hex_cell = 8;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#aaed73b4a9818969c43c2d216f1aa8147">  111</a></span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classReadUnstructuredVTK.html#aaed73b4a9818969c43c2d216f1aa8147">n_points_per_hex_cell</a> = 8;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_space_coordinates = 3;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classReadUnstructuredVTK.html#ac57fc1dec7be986bfe5f8676f7bf0815">  116</a></span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classReadUnstructuredVTK.html#ac57fc1dec7be986bfe5f8676f7bf0815">n_space_coordinates</a> = 3;</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>};</div>
 </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
@@ -196,16 +203,16 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>{</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// Create a reader for the vtk file and update it</span></div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="comment">// vtkNew is a smart pointer so we don&#39;t need to manage it with delete</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  reader = vtkNew&lt;vtkUnstructuredGridReader&gt;();</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  reader-&gt;SetFileName(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.filename.c_str());</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  reader-&gt;Update();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a> = vtkNew&lt;vtkUnstructuredGridReader&gt;();</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;SetFileName(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>.c_str());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;Update();</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// Check that the file is an unstructured grid</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  AssertThrow(reader-&gt;IsFileUnstructuredGrid(),</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  AssertThrow(<a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;IsFileUnstructuredGrid(),</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>              dealii::ExcMessage(<span class="stringliteral">&quot;The vtk file must be an unstructured grid&quot;</span>));</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// Check that we only have one cell type</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keyword">auto</span> *output = reader-&gt;GetOutput();</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keyword">auto</span> *output = <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;GetOutput();</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  AssertThrow(</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    output-&gt;IsHomogeneous(),</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    dealii::ExcMessage(</div>
@@ -246,12 +253,12 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                <span class="stringliteral">&quot;recompiling deal.II with 64-bit indices.&quot;</span>));</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="comment">// Convert the number of points and cells to the dealii type</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  n_points = n_points_vtk;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  n_cells  = n_cells_vtk;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#a659409fc81679d227beb68c2b8d70f17">n_points</a> = n_points_vtk;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#a7d5fdfbd5d037e0d5e42eee998c73e30">n_cells</a>  = n_cells_vtk;</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="comment">// Get the number of scalars and vectors</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  n_scalars = reader-&gt;GetNumberOfScalarsInFile();</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  n_vectors = reader-&gt;GetNumberOfVectorsInFile();</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#a05c3eca371f68c90d5edbcf85053ec0c">n_scalars</a> = <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;GetNumberOfScalarsInFile();</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5">n_vectors</a> = <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;GetNumberOfVectorsInFile();</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>}</div>
 </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
@@ -359,7 +366,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++)</div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    {</div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>      <span class="comment">// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">if</span> (std::abs(point_in_dataset[i] - point_vector[i]) &gt; Defaults::mesh_tolerance)</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">if</span> (std::abs(point_in_dataset[i] - point_vector[i]) &gt; <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>)</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        {</div>
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>          interpolate = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        }</div>
@@ -386,7 +393,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>      vtkGenericCell *cell = vtkGenericCell::New();</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>      <span class="comment">// NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)</span></div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>      <span class="keyword">const</span> vtkIdType cell_id = cell_locator-&gt;FindCell(point_vector.data(),</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                                                       Defaults::mesh_tolerance,</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>                                                       <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>,</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>                                                       cell,</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>                                                       sub_id,</div>
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>                                                       pcoords.data(),</div>
@@ -454,7 +461,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; i++)</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    {</div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      <span class="comment">// NOLINTBEGIN(cppcoreguidelines-pro-bounds-constant-array-index)</span></div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      <span class="keywordflow">if</span> (std::abs(point_in_dataset[i] - point_vector[i]) &gt; Defaults::mesh_tolerance)</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      <span class="keywordflow">if</span> (std::abs(point_in_dataset[i] - point_vector[i]) &gt; <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>)</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        {</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>          interpolate = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        }</div>
@@ -485,7 +492,7 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>          vtkGenericCell *cell = vtkGenericCell::New();</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>          <span class="comment">// NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)</span></div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>          <span class="keyword">const</span> vtkIdType cell_id = cell_locator-&gt;FindCell(point_vector.data(),</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                                                           Defaults::mesh_tolerance,</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                                                           <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a>,</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                                                           cell,</div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                                                           sub_id,</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                                                           pcoords.data(),</div>
@@ -525,22 +532,33 @@ $(document).ready(function(){initNavTree('read__vtk_8h_source.html',''); initRes
 <div class="ttc" id="aclassReadFieldBase_html_a43841d5a7c93676c7e6076cd19b0c904"><div class="ttname"><a href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ReadFieldBase::ic_file</a></div><div class="ttdeci">const InitialConditionFile &amp; ic_file</div><div class="ttdoc">Initial condition file object.</div><div class="ttdef"><b>Definition</b> read_field_base.h:86</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html"><div class="ttname"><a href="classReadUnstructuredVTK.html">ReadUnstructuredVTK</a></div><div class="ttdef"><b>Definition</b> read_vtk.h:24</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a025261ecdaccf28fc4835529c69e3ed2"><div class="ttname"><a href="classReadUnstructuredVTK.html#a025261ecdaccf28fc4835529c69e3ed2">ReadUnstructuredVTK::get_n_points</a></div><div class="ttdeci">dealii::types::global_dof_index get_n_points() const</div><div class="ttdoc">Get the number of points.</div><div class="ttdef"><b>Definition</b> read_vtk.h:194</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_a05c3eca371f68c90d5edbcf85053ec0c"><div class="ttname"><a href="classReadUnstructuredVTK.html#a05c3eca371f68c90d5edbcf85053ec0c">ReadUnstructuredVTK::n_scalars</a></div><div class="ttdeci">unsigned int n_scalars</div><div class="ttdoc">Number of scalars in file.</div><div class="ttdef"><b>Definition</b> read_vtk.h:101</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a1f6523330c678791164507ca30efffd0"><div class="ttname"><a href="classReadUnstructuredVTK.html#a1f6523330c678791164507ca30efffd0">ReadUnstructuredVTK::get_scalar_value</a></div><div class="ttdeci">number get_scalar_value(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;scalar_name) override</div><div class="ttdoc">Get scalar value for a given point.</div><div class="ttdef"><b>Definition</b> read_vtk.h:240</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a38b6eb828f026967cfcdd047414ff322"><div class="ttname"><a href="classReadUnstructuredVTK.html#a38b6eb828f026967cfcdd047414ff322">ReadUnstructuredVTK::get_scalars_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; get_scalars_names()</div><div class="ttdoc">Get the names of the scalars in the vtk file.</div><div class="ttdef"><b>Definition</b> read_vtk.h:216</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a59b44bdd14602633f788b92c7dbc93f6"><div class="ttname"><a href="classReadUnstructuredVTK.html#a59b44bdd14602633f788b92c7dbc93f6">ReadUnstructuredVTK::get_vectors_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; get_vectors_names()</div><div class="ttdoc">Get the names of the vectors in the vtk file.</div><div class="ttdef"><b>Definition</b> read_vtk.h:228</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a5f7267cc7b3ddecbb5843b5d2e84af0b"><div class="ttname"><a href="classReadUnstructuredVTK.html#a5f7267cc7b3ddecbb5843b5d2e84af0b">ReadUnstructuredVTK::ReadUnstructuredVTK</a></div><div class="ttdeci">ReadUnstructuredVTK(const InitialConditionFile &amp;_ic_file, const SpatialDiscretization&lt; dim &gt; &amp;_spatial_discretization)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> read_vtk.h:120</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_a659409fc81679d227beb68c2b8d70f17"><div class="ttname"><a href="classReadUnstructuredVTK.html#a659409fc81679d227beb68c2b8d70f17">ReadUnstructuredVTK::n_points</a></div><div class="ttdeci">dealii::types::global_dof_index n_points</div><div class="ttdoc">Number of points.</div><div class="ttdef"><b>Definition</b> read_vtk.h:91</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a6cdaaa5d7880f6e1182627a0932849c8"><div class="ttname"><a href="classReadUnstructuredVTK.html#a6cdaaa5d7880f6e1182627a0932849c8">ReadUnstructuredVTK::get_output</a></div><div class="ttdeci">vtkUnstructuredGrid * get_output()</div><div class="ttdoc">Get the vtk output.</div><div class="ttdef"><b>Definition</b> read_vtk.h:187</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_a6fcebfe92631edeaa378e9650186f4ee"><div class="ttname"><a href="classReadUnstructuredVTK.html#a6fcebfe92631edeaa378e9650186f4ee">ReadUnstructuredVTK::get_n_cells</a></div><div class="ttdeci">dealii::types::global_dof_index get_n_cells() const</div><div class="ttdoc">Get the number of cells.</div><div class="ttdef"><b>Definition</b> read_vtk.h:201</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_a7d5fdfbd5d037e0d5e42eee998c73e30"><div class="ttname"><a href="classReadUnstructuredVTK.html#a7d5fdfbd5d037e0d5e42eee998c73e30">ReadUnstructuredVTK::n_cells</a></div><div class="ttdeci">dealii::types::global_dof_index n_cells</div><div class="ttdoc">Number of cells.</div><div class="ttdef"><b>Definition</b> read_vtk.h:96</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_aaa708de479767511c6f86fbb2a75c040"><div class="ttname"><a href="classReadUnstructuredVTK.html#aaa708de479767511c6f86fbb2a75c040">ReadUnstructuredVTK::print_file</a></div><div class="ttdeci">void print_file() override</div><div class="ttdoc">Print the vtk file for debugging.</div><div class="ttdef"><b>Definition</b> read_vtk.h:208</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_aae197959e5362d5bf2b2faeb18600b08"><div class="ttname"><a href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">ReadUnstructuredVTK::reader</a></div><div class="ttdeci">vtkNew&lt; vtkUnstructuredGridReader &gt; reader</div><div class="ttdoc">Reader for the vtk file.</div><div class="ttdef"><b>Definition</b> read_vtk.h:86</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_aaed73b4a9818969c43c2d216f1aa8147"><div class="ttname"><a href="classReadUnstructuredVTK.html#aaed73b4a9818969c43c2d216f1aa8147">ReadUnstructuredVTK::n_points_per_hex_cell</a></div><div class="ttdeci">const unsigned int n_points_per_hex_cell</div><div class="ttdoc">Number of points in a hex cell.</div><div class="ttdef"><b>Definition</b> read_vtk.h:111</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_ac57fc1dec7be986bfe5f8676f7bf0815"><div class="ttname"><a href="classReadUnstructuredVTK.html#ac57fc1dec7be986bfe5f8676f7bf0815">ReadUnstructuredVTK::n_space_coordinates</a></div><div class="ttdeci">const unsigned int n_space_coordinates</div><div class="ttdoc">Number of space coordinates in a point.</div><div class="ttdef"><b>Definition</b> read_vtk.h:116</div></div>
 <div class="ttc" id="aclassReadUnstructuredVTK_html_ae37e92a2860fe3b410f10997e5354d84"><div class="ttname"><a href="classReadUnstructuredVTK.html#ae37e92a2860fe3b410f10997e5354d84">ReadUnstructuredVTK::get_vector_value</a></div><div class="ttdeci">dealii::Vector&lt; number &gt; get_vector_value(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;vector_name) override</div><div class="ttdoc">Get vector value for a given point.</div><div class="ttdef"><b>Definition</b> read_vtk.h:333</div></div>
+<div class="ttc" id="aclassReadUnstructuredVTK_html_af6c83773daac7c0694d8fa787422aef5"><div class="ttname"><a href="classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5">ReadUnstructuredVTK::n_vectors</a></div><div class="ttdeci">unsigned int n_vectors</div><div class="ttdoc">Number of vectors in file.</div><div class="ttdef"><b>Definition</b> read_vtk.h:106</div></div>
+<div class="ttc" id="anamespaceDefaults_html_abb74becde7e9e8a9bd770d7b89d2f902"><div class="ttname"><a href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a></div><div class="ttdeci">static const double mesh_tolerance</div><div class="ttdoc">Default mesh tolerance.</div><div class="ttdef"><b>Definition</b> types.h:72</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="aread__field__base_8h_html"><div class="ttname"><a href="read__field__base_8h.html">read_field_base.h</a></div></div>
 <div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac5f3a08a6606a305cc633cf150c891f5"><div class="ttname"><a href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">InitialConditionFile::filename</a></div><div class="ttdeci">std::string filename</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:27</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><b>read_vtk.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><a class="el" href="read__vtk_8h.html">read_vtk.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

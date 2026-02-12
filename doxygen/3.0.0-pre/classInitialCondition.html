@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classInitialCondition.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classInitialCondition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">InitialCondition&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -131,21 +139,181 @@ Collaboration diagram for InitialCondition&lt; dim, degree, number &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a55c9988ae5f48d539d878dced904d819" id="r_a55c9988ae5f48d539d878dced904d819"><td class="memItemLeft" align="right" valign="top"><a id="a55c9988ae5f48d539d878dced904d819" name="a55c9988ae5f48d539d878dced904d819"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>InitialCondition</b> (const unsigned int &amp;_index, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;_field_type, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator)</td></tr>
-<tr class="memdesc:a55c9988ae5f48d539d878dced904d819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a55c9988ae5f48d539d878dced904d819" id="r_a55c9988ae5f48d539d878dced904d819"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInitialCondition.html#a55c9988ae5f48d539d878dced904d819">InitialCondition</a> (const unsigned int &amp;_index, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;_field_type, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator)</td></tr>
+<tr class="memdesc:a55c9988ae5f48d539d878dced904d819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a55c9988ae5f48d539d878dced904d819"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1e1c28adb3c0b9feadd2c381f507606" id="r_ae1e1c28adb3c0b9feadd2c381f507606"><td class="memItemLeft" align="right" valign="top"><a id="ae1e1c28adb3c0b9feadd2c381f507606" name="ae1e1c28adb3c0b9feadd2c381f507606"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>vector_value</b> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td></tr>
-<tr class="memdesc:ae1e1c28adb3c0b9feadd2c381f507606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar/Vector value. <br /></td></tr>
+<tr class="memitem:ae1e1c28adb3c0b9feadd2c381f507606" id="r_ae1e1c28adb3c0b9feadd2c381f507606"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInitialCondition.html#ae1e1c28adb3c0b9feadd2c381f507606">vector_value</a> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td></tr>
+<tr class="memdesc:ae1e1c28adb3c0b9feadd2c381f507606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar/Vector value.  <br /></td></tr>
 <tr class="separator:ae1e1c28adb3c0b9feadd2c381f507606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a32bdec52618583c64d75613855fbf524" id="r_a32bdec52618583c64d75613855fbf524"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInitialCondition.html#a32bdec52618583c64d75613855fbf524">index</a></td></tr>
+<tr class="separator:a32bdec52618583c64d75613855fbf524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a5a4cce7d1a31bc40bc7f6ba997372" id="r_ad5a5a4cce7d1a31bc40bc7f6ba997372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInitialCondition.html#ad5a5a4cce7d1a31bc40bc7f6ba997372">field_type</a></td></tr>
+<tr class="separator:ad5a5a4cce7d1a31bc40bc7f6ba997372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96930618135493fd82d887d1e2b66b31" id="r_a96930618135493fd82d887d1e2b66b31"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInitialCondition.html#a96930618135493fd82d887d1e2b66b31">pde_operator</a></td></tr>
+<tr class="separator:a96930618135493fd82d887d1e2b66b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class InitialCondition&lt; dim, degree, number &gt;</div><p>Function for user-implemented initial conditions. These are only ever calculated for explicit time dependent fields and implicit time dependent, as all others are calculated at runtime. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a55c9988ae5f48d539d878dced904d819" name="a55c9988ae5f48d539d878dced904d819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55c9988ae5f48d539d878dced904d819">&#9670;&#160;</a></span>InitialCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classInitialCondition.html">InitialCondition</a>&lt; dim, degree, number &gt;<a class="el" href="classInitialCondition.html">::InitialCondition</a> </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;&#160;</td>
+          <td class="paramname"><em>_field_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae1e1c28adb3c0b9feadd2c381f507606" name="ae1e1c28adb3c0b9feadd2c381f507606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1e1c28adb3c0b9feadd2c381f507606">&#9670;&#160;</a></span>vector_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classInitialCondition.html">InitialCondition</a>&lt; dim, degree, number &gt;::vector_value </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Vector&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scalar/Vector value. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad5a5a4cce7d1a31bc40bc7f6ba997372" name="ad5a5a4cce7d1a31bc40bc7f6ba997372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5a5a4cce7d1a31bc40bc7f6ba997372">&#9670;&#160;</a></span>field_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> <a class="el" href="classInitialCondition.html">InitialCondition</a>&lt; dim, degree, number &gt;::field_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32bdec52618583c64d75613855fbf524" name="a32bdec52618583c64d75613855fbf524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32bdec52618583c64d75613855fbf524">&#9670;&#160;</a></span>index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classInitialCondition.html">InitialCondition</a>&lt; dim, degree, number &gt;::index</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96930618135493fd82d887d1e2b66b31" name="a96930618135493fd82d887d1e2b66b31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96930618135493fd82d887d1e2b66b31">&#9670;&#160;</a></span>pde_operator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt;dim, degree, number&gt; &gt; <a class="el" href="classInitialCondition.html">InitialCondition</a>&lt; dim, degree, number &gt;::pde_operator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="initial__conditions_8h_source.html">initial_conditions.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>initial_conditions.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="initial__conditions_8cc.html">initial_conditions.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

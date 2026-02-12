@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classVectorMappings.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classVectorMappings-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">VectorMappings&lt; Number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -118,16 +126,109 @@ $(document).ready(function(){initNavTree('classVectorMappings.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acdcd8d256989d9c177fde39c9264fb03" id="r_acdcd8d256989d9c177fde39c9264fb03"><td class="memItemLeft" align="right" valign="top"><a id="acdcd8d256989d9c177fde39c9264fb03" name="acdcd8d256989d9c177fde39c9264fb03"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>VectorMappings</b> (const std::vector&lt; <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;variable_attributes)</td></tr>
-<tr class="memdesc:acdcd8d256989d9c177fde39c9264fb03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:acdcd8d256989d9c177fde39c9264fb03" id="r_acdcd8d256989d9c177fde39c9264fb03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorMappings.html#acdcd8d256989d9c177fde39c9264fb03">VectorMappings</a> (const std::vector&lt; <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;variable_attributes)</td></tr>
+<tr class="memdesc:acdcd8d256989d9c177fde39c9264fb03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:acdcd8d256989d9c177fde39c9264fb03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a576f2a5aa4ee739b470cdf612960762a" id="r_a576f2a5aa4ee739b470cdf612960762a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorMappings.html#a576f2a5aa4ee739b470cdf612960762a">n_blocks</a> = 0</td></tr>
+<tr class="memdesc:a576f2a5aa4ee739b470cdf612960762a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of blocks.  <br /></td></tr>
+<tr class="separator:a576f2a5aa4ee739b470cdf612960762a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0efc8e795f742680dc16679cf01d6585" id="r_a0efc8e795f742680dc16679cf01d6585"><td class="memItemLeft" align="right" valign="top">dealii::BlockVector&lt; Number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVectorMappings.html#a0efc8e795f742680dc16679cf01d6585">block_vector</a></td></tr>
+<tr class="memdesc:a0efc8e795f742680dc16679cf01d6585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block vector of all necessary vectors for the PDE problem.  <br /></td></tr>
+<tr class="separator:a0efc8e795f742680dc16679cf01d6585"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename Number&gt;<br />
 class VectorMappings&lt; Number &gt;</div><p>Due the generalized nature of PRISMS-PF and how we handle the solving of PDEs on the backend, we end up with a slew of vectors that have to be managed and updated as we solve fields. While we can stored these in hierarchical data structure to preserve the logic and intuition this becomes unwieldy on the backend and is less performant than storing them in a flat structure or vector blocks.</p>
 <p>This class has a unified description of these mappings so that everywhere else in the code we can simply use 1D vector indices. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="acdcd8d256989d9c177fde39c9264fb03" name="acdcd8d256989d9c177fde39c9264fb03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdcd8d256989d9c177fde39c9264fb03">&#9670;&#160;</a></span>VectorMappings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classVectorMappings.html">VectorMappings</a>&lt; Number &gt;<a class="el" href="classVectorMappings.html">::VectorMappings</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0efc8e795f742680dc16679cf01d6585" name="a0efc8e795f742680dc16679cf01d6585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0efc8e795f742680dc16679cf01d6585">&#9670;&#160;</a></span>block_vector</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::BlockVector&lt;Number&gt; <a class="el" href="classVectorMappings.html">VectorMappings</a>&lt; Number &gt;::block_vector</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Block vector of all necessary vectors for the PDE problem. </p>
+
+</div>
+</div>
+<a id="a576f2a5aa4ee739b470cdf612960762a" name="a576f2a5aa4ee739b470cdf612960762a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a576f2a5aa4ee739b470cdf612960762a">&#9670;&#160;</a></span>n_blocks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classVectorMappings.html">VectorMappings</a>&lt; Number &gt;::n_blocks = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of blocks. </p>
+<p>The number of blocks is determined by the dependencies of each field upon construction of this class. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="vector__mapping_8h_source.html">vector_mapping.h</a></li>
 </ul>
 </div><!-- contents -->

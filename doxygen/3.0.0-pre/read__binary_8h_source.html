@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
   <div class="headertitle"><div class="title">read_binary.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="read__binary_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,13 +131,13 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/lac/vector.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/utilities/utilities.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/field_input/read_field_base.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;<a class="code" href="read__field__base_8h.html">prismspf/field_input/read_field_base.h</a>&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;prismspf/core/conditional_ostreams.h&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="conditional__ostreams_8h.html">prismspf/core/conditional_ostreams.h</a>&quot;</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;bit&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;fstream&gt;</span></div>
@@ -139,7 +146,7 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
@@ -153,7 +160,7 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="classReadBinary.html#ade03e461dc530beb288be54573216de2">print_file</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">static</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_function" href="classReadBinary.html#ad616b95c00b6066948367a441cda490c">write_file</a>(<span class="keyword">const</span> std::vector&lt;number&gt; &amp;data, <span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_function" href="classReadBinary.html#ad616b95c00b6066948367a441cda490c">write_file</a>(<span class="keyword">const</span> std::vector&lt;number&gt; &amp;<a class="code hl_variable" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">data</a>, <span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  number</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <a class="code hl_function" href="classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b">get_scalar_value</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;point,</div>
@@ -165,19 +172,19 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  check_file_size();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_function" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">check_file_size</a>();</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  dealii::Vector&lt;number&gt;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  get_value(<span class="keyword">const</span> dealii::types::global_dof_index index, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_function" href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">get_value</a>(<span class="keyword">const</span> dealii::types::global_dof_index index, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  dealii::Vector&lt;number&gt;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  interpolate(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;point, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_function" href="classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123">interpolate</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;point, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_components);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  dealii::types::global_dof_index n_points = 1;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classReadBinary.html#acc24e749113a7f6e8655688f17021657">   99</a></span>  dealii::types::global_dof_index <a class="code hl_variable" href="classReadBinary.html#acc24e749113a7f6e8655688f17021657">n_points</a> = 1;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  dealii::types::global_dof_index n_values = 0;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">  104</a></span>  dealii::types::global_dof_index <a class="code hl_variable" href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">n_values</a> = 0;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  std::vector&lt;number&gt; data;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">  109</a></span>  std::vector&lt;number&gt; <a class="code hl_variable" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">data</a>;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>};</div>
 </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
@@ -189,11 +196,11 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  : <a class="code hl_class" href="classReadFieldBase.html">ReadFieldBase</a>&lt;dim, number&gt;(_ic_file, _spatial_discretization)</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>{</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="comment">// Make sure the dataset format is correct</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  AssertThrow(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.dataset_format == DataFormatType::FlatBinary,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  AssertThrow(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">dataset_format</a> == <a class="code hl_enumvalue" href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">DataFormatType::FlatBinary</a>,</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>              dealii::ExcMessage(<span class="stringliteral">&quot;Dataset format must be FlatBinary&quot;</span>));</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// Check that only one field is being read in</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  AssertThrow(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.file_variable_names.size() == 1 &amp;&amp;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  AssertThrow(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">file_variable_names</a>.size() == 1 &amp;&amp;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                this-&gt;ic_file.simulation_variable_names.size() == 1,</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>              dealii::ExcMessage(<span class="stringliteral">&quot;Only one field can be read in from a binary file&quot;</span>));</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
@@ -206,27 +213,27 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="comment">// Compute the total number of points in the binary file</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d : std::views::iota(0U, dim))</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      n_points *= this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.n_data_points[d];</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <a class="code hl_variable" href="classReadBinary.html#acc24e749113a7f6e8655688f17021657">n_points</a> *= this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">n_data_points</a>[d];</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="comment">// Check that the binary matches an expected size</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  check_file_size();</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <a class="code hl_function" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">check_file_size</a>();</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="comment">// Read in the binary file</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  std::ifstream data_file(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.filename, std::ios::binary);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  std::ifstream data_file(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>, std::ios::binary);</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  AssertThrow(data_file,</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>              dealii::ExcMessage(<span class="stringliteral">&quot;Could not open binary file: &quot;</span> +</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                                 this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.filename));</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                                 this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>));</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// Reserve space in the data vector</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  data.reserve(n_values);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <a class="code hl_variable" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">data</a>.reserve(<a class="code hl_variable" href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">n_values</a>);</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="comment">// Read in the data</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">for</span> (dealii::types::global_dof_index i : std::views::iota(0U, n_values))</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordflow">for</span> (dealii::types::global_dof_index i : std::views::iota(0U, <a class="code hl_variable" href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">n_values</a>))</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    {</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      std::array&lt;char, <span class="keyword">sizeof</span>(number)&gt; buffer;</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      data_file.read(buffer.data(), <span class="keyword">sizeof</span>(number));</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      data.push_back(std::bit_cast&lt;number&gt;(buffer));</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>      <a class="code hl_variable" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">data</a>.push_back(std::bit_cast&lt;number&gt;(buffer));</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  data_file.close();</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>}</div>
@@ -234,7 +241,8 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><a class="code hl_class" href="classReadBinary.html">ReadBinary&lt;dim, number&gt;::check_file_size</a>()</div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">  163</a></span><a class="code hl_function" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">ReadBinary&lt;dim, number&gt;::check_file_size</a>()</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>{</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// Grab the file size of the binary file in bytes</span></div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keyword">auto</span> file_size = std::filesystem::file_size(this-&gt;ic_file.filename);</div>
@@ -262,6 +270,7 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="comment">// Set the number of values</span></div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  n_values = file_size == expected_size_scalar ? n_points : dim * n_points;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
+</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
@@ -270,9 +279,9 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                                    <span class="keyword">const</span> <a class="code hl_struct" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;ic_file)</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>{</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">// Try to open the file</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  std::ofstream data_file(ic_file.filename, std::ios::binary);</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  std::ofstream data_file(ic_file.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>, std::ios::binary);</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  AssertThrow(data_file,</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>              dealii::ExcMessage(<span class="stringliteral">&quot;Could not open binary file: &quot;</span> + ic_file.filename));</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>              dealii::ExcMessage(<span class="stringliteral">&quot;Could not open binary file: &quot;</span> + ic_file.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>));</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="comment">// Write the data</span></div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="keywordflow">for</span> (dealii::types::global_dof_index j : std::views::iota(0U, data.size()))</div>
@@ -286,7 +295,8 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keyword">inline</span> dealii::Vector&lt;number&gt;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><a class="code hl_class" href="classReadBinary.html">ReadBinary&lt;dim, number&gt;::get_value</a>(<span class="keyword">const</span> dealii::types::global_dof_index index,</div>
+<div class="foldopen" id="foldopen00213" data-start="{" data-end="}">
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">  213</a></span><a class="code hl_function" href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">ReadBinary&lt;dim, number&gt;::get_value</a>(<span class="keyword">const</span> dealii::types::global_dof_index index,</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>                                   <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>                    n_components)</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>{</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <span class="comment">// Create vector to hold the value with the correct number of components</span></div>
@@ -307,10 +317,12 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keywordflow">return</span> value;</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>}</div>
+</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keyword">inline</span> dealii::Vector&lt;number&gt;</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><a class="code hl_class" href="classReadBinary.html">ReadBinary&lt;dim, number&gt;::interpolate</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;point,</div>
+<div class="foldopen" id="foldopen00237" data-start="{" data-end="}">
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno"><a class="line" href="classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123">  237</a></span><a class="code hl_function" href="classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123">ReadBinary&lt;dim, number&gt;::interpolate</a>(<span class="keyword">const</span> dealii::Point&lt;dim&gt; &amp;point,</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                                     <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>        n_components)</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>{</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  Assert(n_components == 1 || n_components == dim,</div>
@@ -487,6 +499,7 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keywordflow">return</span> value;</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>}</div>
+</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="keyword">inline</span> number</div>
@@ -536,22 +549,38 @@ $(document).ready(function(){initNavTree('read__binary_8h_source.html',''); init
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
 <div class="ttc" id="aclassReadBinary_html"><div class="ttname"><a href="classReadBinary.html">ReadBinary</a></div><div class="ttdoc">Class to read in a flat binary file and provide values at given points.</div><div class="ttdef"><b>Definition</b> read_binary.h:32</div></div>
+<div class="ttc" id="aclassReadBinary_html_a036a6ebd12854907038fa3bb22e01d28"><div class="ttname"><a href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">ReadBinary::get_value</a></div><div class="ttdeci">dealii::Vector&lt; number &gt; get_value(const dealii::types::global_dof_index index, const unsigned int n_components)</div><div class="ttdoc">Get vector value for a given index.</div><div class="ttdef"><b>Definition</b> read_binary.h:213</div></div>
+<div class="ttc" id="aclassReadBinary_html_a0dbc42c34fa79933645a46ef85149064"><div class="ttname"><a href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">ReadBinary::data</a></div><div class="ttdeci">std::vector&lt; number &gt; data</div><div class="ttdoc">Data array to hold the read in values.</div><div class="ttdef"><b>Definition</b> read_binary.h:109</div></div>
 <div class="ttc" id="aclassReadBinary_html_a1ffbb18aec3eb4f2408954bfa7a25d01"><div class="ttname"><a href="classReadBinary.html#a1ffbb18aec3eb4f2408954bfa7a25d01">ReadBinary::ReadBinary</a></div><div class="ttdeci">ReadBinary(const InitialConditionFile &amp;_ic_file, const SpatialDiscretization&lt; dim &gt; &amp;_spatial_discretization)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> read_binary.h:113</div></div>
 <div class="ttc" id="aclassReadBinary_html_a399fb95e0fc120d7b3b76dcf4f7d915b"><div class="ttname"><a href="classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b">ReadBinary::get_scalar_value</a></div><div class="ttdeci">number get_scalar_value(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;scalar_name) override</div><div class="ttdoc">Get scalar value for a given point.</div><div class="ttdef"><b>Definition</b> read_binary.h:417</div></div>
+<div class="ttc" id="aclassReadBinary_html_a9052cfb142e6c758e2fa78ef19356116"><div class="ttname"><a href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">ReadBinary::check_file_size</a></div><div class="ttdeci">void check_file_size()</div><div class="ttdoc">Check the size of the binary file and make sure it matches the expected size (in bytes).</div><div class="ttdef"><b>Definition</b> read_binary.h:163</div></div>
+<div class="ttc" id="aclassReadBinary_html_abd5c48fc6cade6fc580aa891aec56123"><div class="ttname"><a href="classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123">ReadBinary::interpolate</a></div><div class="ttdeci">dealii::Vector&lt; number &gt; interpolate(const dealii::Point&lt; dim &gt; &amp;point, const unsigned int n_components)</div><div class="ttdoc">Get vector value for a given point.</div><div class="ttdef"><b>Definition</b> read_binary.h:237</div></div>
+<div class="ttc" id="aclassReadBinary_html_ac08af7e1e52d2b5000f56ad1612f0de8"><div class="ttname"><a href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">ReadBinary::n_values</a></div><div class="ttdeci">dealii::types::global_dof_index n_values</div><div class="ttdoc">Number of values (n_points * n_components).</div><div class="ttdef"><b>Definition</b> read_binary.h:104</div></div>
+<div class="ttc" id="aclassReadBinary_html_acc24e749113a7f6e8655688f17021657"><div class="ttname"><a href="classReadBinary.html#acc24e749113a7f6e8655688f17021657">ReadBinary::n_points</a></div><div class="ttdeci">dealii::types::global_dof_index n_points</div><div class="ttdoc">Number of grid points.</div><div class="ttdef"><b>Definition</b> read_binary.h:99</div></div>
 <div class="ttc" id="aclassReadBinary_html_ad616b95c00b6066948367a441cda490c"><div class="ttname"><a href="classReadBinary.html#ad616b95c00b6066948367a441cda490c">ReadBinary::write_file</a></div><div class="ttdeci">static void write_file(const std::vector&lt; number &gt; &amp;data, const InitialConditionFile &amp;ic_file)</div><div class="ttdoc">Write a binary file for testing.</div><div class="ttdef"><b>Definition</b> read_binary.h:194</div></div>
 <div class="ttc" id="aclassReadBinary_html_ade03e461dc530beb288be54573216de2"><div class="ttname"><a href="classReadBinary.html#ade03e461dc530beb288be54573216de2">ReadBinary::print_file</a></div><div class="ttdeci">void print_file() override</div><div class="ttdoc">Print the binary file to text for debugging.</div><div class="ttdef"><b>Definition</b> read_binary.h:443</div></div>
 <div class="ttc" id="aclassReadBinary_html_ae9af07a8712437645674e88279f1bbdd"><div class="ttname"><a href="classReadBinary.html#ae9af07a8712437645674e88279f1bbdd">ReadBinary::get_vector_value</a></div><div class="ttdeci">dealii::Vector&lt; number &gt; get_vector_value(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;vector_name) override</div><div class="ttdoc">Get vector value for a given point.</div><div class="ttdef"><b>Definition</b> read_binary.h:429</div></div>
 <div class="ttc" id="aclassReadFieldBase_html"><div class="ttname"><a href="classReadFieldBase.html">ReadFieldBase</a></div><div class="ttdef"><b>Definition</b> read_field_base.h:23</div></div>
 <div class="ttc" id="aclassReadFieldBase_html_a43841d5a7c93676c7e6076cd19b0c904"><div class="ttname"><a href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ReadFieldBase::ic_file</a></div><div class="ttdeci">const InitialConditionFile &amp; ic_file</div><div class="ttdoc">Initial condition file object.</div><div class="ttdef"><b>Definition</b> read_field_base.h:86</div></div>
+<div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="aread__field__base_8h_html"><div class="ttname"><a href="read__field__base_8h.html">read_field_base.h</a></div></div>
 <div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a2e2ff0ebb97ba5ba6cda2acf9eea3da1"><div class="ttname"><a href="structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1">InitialConditionFile::n_data_points</a></div><div class="ttdeci">std::array&lt; dealii::types::global_dof_index, 3 &gt; n_data_points</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:39</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_a2e94b523e7ae1d5d49aee48768997338"><div class="ttname"><a href="structInitialConditionFile.html#a2e94b523e7ae1d5d49aee48768997338">InitialConditionFile::file_variable_names</a></div><div class="ttdeci">std::vector&lt; std::string &gt; file_variable_names</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:33</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac22979950186aee16fe98b2d06632262"><div class="ttname"><a href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">InitialConditionFile::dataset_format</a></div><div class="ttdeci">DataFormatType dataset_format</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:30</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac5f3a08a6606a305cc633cf150c891f5"><div class="ttname"><a href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">InitialConditionFile::filename</a></div><div class="ttdeci">std::string filename</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:27</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html_aac4c2728f19ef1cd28853821c75156b4"><div class="ttname"><a href="structSpatialDiscretization.html#aac4c2728f19ef1cd28853821c75156b4">SpatialDiscretization::get_type</a></div><div class="ttdeci">TriangulationType get_type() const</div><div class="ttdoc">Get the triangulation type.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:633</div></div>
+<div class="ttc" id="atype__enums_8h_html_a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9"><div class="ttname"><a href="type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a34212fd2a4664fc0162bb521638c03a9">FlatBinary</a></div><div class="ttdeci">@ FlatBinary</div><div class="ttdef"><b>Definition</b> type_enums.h:107</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
+<div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><b>read_binary.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><a class="el" href="read__binary_8h.html">read_binary.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

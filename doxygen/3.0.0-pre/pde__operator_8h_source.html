@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,18 +122,18 @@ $(document).ready(function(){initNavTree('pde__operator_8h_source.html',''); ini
   <div class="headertitle"><div class="title">pde_operator.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="pde__operator_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
@@ -142,7 +149,7 @@ $(document).ready(function(){initNavTree('pde__operator_8h_source.html',''); ini
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classPDEOperator.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classPDEOperator.html">PDEOperator</a></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">using </span>SizeType = dealii::VectorizedArray&lt;number&gt;;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">   30</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a> = dealii::VectorizedArray&lt;number&gt;;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classPDEOperator.html">PDEOperator</a>(<span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> &amp;_user_inputs,</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                       <span class="keyword">const</span> <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a>     &amp;_pf_tools);</div>
@@ -167,28 +174,28 @@ $(document).ready(function(){initNavTree('pde__operator_8h_source.html',''); ini
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classPDEOperator.html#ac9c2f6fc833016ed26eebfebe0b3904f">   68</a></span>  <a class="code hl_function" href="classPDEOperator.html#ac9c2f6fc833016ed26eebfebe0b3904f">compute_explicit_rhs</a>(<a class="code hl_class" href="classVariableContainer.html">VariableContainer&lt;dim, degree, number&gt;</a> &amp;variable_list,</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                       <span class="keyword">const</span> dealii::Point&lt;dim, SizeType&gt;     &amp;q_point_loc,</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                       <span class="keyword">const</span> SizeType                         &amp;element_volume,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                       Types::Index                            solve_block) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                       <span class="keyword">const</span> <a class="code hl_typedef" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a>                         &amp;element_volume,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                       <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>                            solve_block) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classPDEOperator.html#a14e010a28fdb96d9ef0cfd3d0ff3c14c">   77</a></span>  <a class="code hl_function" href="classPDEOperator.html#a14e010a28fdb96d9ef0cfd3d0ff3c14c">compute_nonexplicit_rhs</a>(<a class="code hl_class" href="classVariableContainer.html">VariableContainer&lt;dim, degree, number&gt;</a> &amp;variable_list,</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                          <span class="keyword">const</span> dealii::Point&lt;dim, SizeType&gt;     &amp;q_point_loc,</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                          <span class="keyword">const</span> SizeType                         &amp;element_volume,</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                          Types::Index                            solve_block,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                          Types::Index index = Numbers::invalid_index) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                          <span class="keyword">const</span> <a class="code hl_typedef" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a>                         &amp;element_volume,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                          <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>                            solve_block,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                          <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index = <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classPDEOperator.html#a9349b9a104cb15ed159858735c177941">   87</a></span>  <a class="code hl_function" href="classPDEOperator.html#a9349b9a104cb15ed159858735c177941">compute_nonexplicit_lhs</a>(<a class="code hl_class" href="classVariableContainer.html">VariableContainer&lt;dim, degree, number&gt;</a> &amp;variable_list,</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                          <span class="keyword">const</span> dealii::Point&lt;dim, SizeType&gt;     &amp;q_point_loc,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                          <span class="keyword">const</span> SizeType                         &amp;element_volume,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                          Types::Index                            solve_block,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                          Types::Index index = Numbers::invalid_index) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                          <span class="keyword">const</span> <a class="code hl_typedef" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a>                         &amp;element_volume,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                          <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>                            solve_block,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                          <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index = <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classPDEOperator.html#abaa74fc6b1c92d4f62d00f36ea3166cc">   97</a></span>  <a class="code hl_function" href="classPDEOperator.html#abaa74fc6b1c92d4f62d00f36ea3166cc">compute_postprocess_explicit_rhs</a>(<a class="code hl_class" href="classVariableContainer.html">VariableContainer&lt;dim, degree, number&gt;</a> &amp;variable_list,</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                                   <span class="keyword">const</span> dealii::Point&lt;dim, SizeType&gt;     &amp;q_point_loc,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                                   <span class="keyword">const</span> SizeType                         &amp;element_volume,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                   Types::Index solve_block) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                                   <span class="keyword">const</span> <a class="code hl_typedef" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a>                         &amp;element_volume,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                                   <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> solve_block) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  [[nodiscard]] <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> &amp;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_function" href="classPDEOperator.html#ab6b0d9458704bfa92c9dd9fe040d4aeb">get_user_inputs</a>() <span class="keyword">const</span>;</div>
@@ -200,15 +207,18 @@ $(document).ready(function(){initNavTree('pde__operator_8h_source.html',''); ini
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <a class="code hl_function" href="classPDEOperator.html#ab4e64aa11ac3a17fffaccf91e3ecbeb4">get_timestep</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classPDEOperator.html#a71dcf4d304d34d7672edf0d0a318c435">  124</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *<a class="code hl_variable" href="classPDEOperator.html#a71dcf4d304d34d7672edf0d0a318c435">user_inputs</a>;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">const</span> <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a> *pf_tools;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classPDEOperator.html#a302ecfc8312de87f27caad4d83051f52">  129</a></span>  <span class="keyword">const</span> <a class="code hl_struct" href="structPhaseFieldTools.html">PhaseFieldTools&lt;dim&gt;</a> *<a class="code hl_variable" href="classPDEOperator.html#a302ecfc8312de87f27caad4d83051f52">pf_tools</a>;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>};</div>
 </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassPDEOperator_html"><div class="ttname"><a href="classPDEOperator.html">PDEOperator</a></div><div class="ttdoc">This class contains the user implementation of each PDE operator.</div><div class="ttdef"><b>Definition</b> pde_operator.h:28</div></div>
 <div class="ttc" id="aclassPDEOperator_html_a14e010a28fdb96d9ef0cfd3d0ff3c14c"><div class="ttname"><a href="classPDEOperator.html#a14e010a28fdb96d9ef0cfd3d0ff3c14c">PDEOperator::compute_nonexplicit_rhs</a></div><div class="ttdeci">virtual void compute_nonexplicit_rhs(VariableContainer&lt; dim, degree, number &gt; &amp;variable_list, const dealii::Point&lt; dim, SizeType &gt; &amp;q_point_loc, const SizeType &amp;element_volume, Types::Index solve_block, Types::Index index=Numbers::invalid_index) const =0</div><div class="ttdoc">User-implemented class for the RHS of nonexplicit equations.</div></div>
+<div class="ttc" id="aclassPDEOperator_html_a302ecfc8312de87f27caad4d83051f52"><div class="ttname"><a href="classPDEOperator.html#a302ecfc8312de87f27caad4d83051f52">PDEOperator::pf_tools</a></div><div class="ttdeci">const PhaseFieldTools&lt; dim &gt; * pf_tools</div><div class="ttdoc">Phase field tools.</div><div class="ttdef"><b>Definition</b> pde_operator.h:129</div></div>
+<div class="ttc" id="aclassPDEOperator_html_a50e13cfa3d0f197b9d1e94e60cb7581a"><div class="ttname"><a href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">PDEOperator::SizeType</a></div><div class="ttdeci">dealii::VectorizedArray&lt; number &gt; SizeType</div><div class="ttdef"><b>Definition</b> pde_operator.h:30</div></div>
+<div class="ttc" id="aclassPDEOperator_html_a71dcf4d304d34d7672edf0d0a318c435"><div class="ttname"><a href="classPDEOperator.html#a71dcf4d304d34d7672edf0d0a318c435">PDEOperator::user_inputs</a></div><div class="ttdeci">const UserInputParameters&lt; dim &gt; * user_inputs</div><div class="ttdoc">The user-inputs.</div><div class="ttdef"><b>Definition</b> pde_operator.h:124</div></div>
 <div class="ttc" id="aclassPDEOperator_html_a7edd8b269425268bbc67d7a9351519dd"><div class="ttname"><a href="classPDEOperator.html#a7edd8b269425268bbc67d7a9351519dd">PDEOperator::get_pf_tools</a></div><div class="ttdeci">const PhaseFieldTools&lt; dim &gt; &amp; get_pf_tools() const</div><div class="ttdoc">Get the phase field tools (constant reference).</div><div class="ttdef"><b>Definition</b> pde_operator.cc:42</div></div>
 <div class="ttc" id="aclassPDEOperator_html_a9349b9a104cb15ed159858735c177941"><div class="ttname"><a href="classPDEOperator.html#a9349b9a104cb15ed159858735c177941">PDEOperator::compute_nonexplicit_lhs</a></div><div class="ttdeci">virtual void compute_nonexplicit_lhs(VariableContainer&lt; dim, degree, number &gt; &amp;variable_list, const dealii::Point&lt; dim, SizeType &gt; &amp;q_point_loc, const SizeType &amp;element_volume, Types::Index solve_block, Types::Index index=Numbers::invalid_index) const =0</div><div class="ttdoc">User-implemented class for the LHS of nonexplicit equations.</div></div>
 <div class="ttc" id="aclassPDEOperator_html_ab4e64aa11ac3a17fffaccf91e3ecbeb4"><div class="ttname"><a href="classPDEOperator.html#ab4e64aa11ac3a17fffaccf91e3ecbeb4">PDEOperator::get_timestep</a></div><div class="ttdeci">number get_timestep() const</div><div class="ttdoc">Get the timestep (copy).</div><div class="ttdef"><b>Definition</b> pde_operator.cc:34</div></div>
@@ -220,13 +230,17 @@ $(document).ready(function(){initNavTree('pde__operator_8h_source.html',''); ini
 <div class="ttc" id="aclassPDEOperator_html_afcd5093a7ca3f742287e3f15450ebe8d"><div class="ttname"><a href="classPDEOperator.html#afcd5093a7ca3f742287e3f15450ebe8d">PDEOperator::~PDEOperator</a></div><div class="ttdeci">virtual ~PDEOperator()=default</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
 <div class="ttc" id="aclassVariableContainer_html"><div class="ttname"><a href="classVariableContainer.html">VariableContainer</a></div><div class="ttdoc">This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...</div><div class="ttdef"><b>Definition</b> variable_container.h:51</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a6c9b90814b4eb8306f621bb5e8f1a343"><div class="ttname"><a href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></div><div class="ttdeci">static const Types::Index invalid_index</div><div class="ttdoc">Invalid field index.</div><div class="ttdef"><b>Definition</b> types.h:28</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
 <div class="ttc" id="astructPhaseFieldTools_html"><div class="ttname"><a href="structPhaseFieldTools.html">PhaseFieldTools</a></div><div class="ttdoc">This class contains mutable utilities for phase field problems.</div><div class="ttdef"><b>Definition</b> phase_field_tools.h:20</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>pde_operator.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="pde__operator_8h.html">pde_operator.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

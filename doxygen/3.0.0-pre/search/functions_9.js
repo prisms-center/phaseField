@@ -1,15 +1,8 @@
 var searchData=
 [
-  ['m_0',['m',['../classMatrixFreeOperator.html#aec9d07b697b534bad5e271c05d45dd69',1,'MatrixFreeOperator']]],
-  ['make_5fconstraints_1',['make_constraints',['../classConstraintHandler.html#a50b55d37411c663f2132580787603506',1,'ConstraintHandler']]],
-  ['make_5fmg_5fconstraints_2',['make_mg_constraints',['../classConstraintHandler.html#ad3d5682e43acaa9e42abdd46b714c702',1,'ConstraintHandler']]],
-  ['mark_5fboundaries_3',['mark_boundaries',['../classMesh.html#aa6de87afafb64cbde9c4d559fe292b19',1,'Mesh::mark_boundaries()'],['../classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec',1,'SphericalMesh::mark_boundaries()']]],
-  ['mark_5fperiodic_4',['mark_periodic',['../classMesh.html#a705b9de25b5352102c28aebebf1537ba',1,'Mesh::mark_periodic()'],['../classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac',1,'SphericalMesh::mark_periodic()']]],
-  ['matrixfreecontainer_5',['MatrixFreeContainer',['../classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d',1,'MatrixFreeContainer']]],
-  ['matrixfreehandler_6',['MatrixFreeHandler',['../classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8',1,'MatrixFreeHandler']]],
-  ['matrixfreeoperator_7',['MatrixFreeOperator',['../classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca',1,'MatrixFreeOperator']]],
-  ['mesh_8',['Mesh',['../classMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
-  ['mginfo_9',['MGInfo',['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo']]],
-  ['mpi_5fbroadcast_5fnuclei_10',['mpi_broadcast_nuclei',['../classNucleationHandler.html#af35183a2b6e3306f758933ed511f3d14',1,'NucleationHandler']]],
-  ['mpi_5fgather_5fnuclei_11',['mpi_gather_nuclei',['../classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f',1,'NucleationHandler']]]
+  ['linearsolverbase_0',['linearsolverbase',['../classLinearSolverBase.html#a5648f863c367f567c8a8e3f0a30f8c6c',1,'LinearSolverBase::LinearSolverBase(const SolverContext&lt; dim, degree, number &gt; &amp;_solver_context, const VariableAttributes &amp;_variable_attributes)'],['../classLinearSolverBase.html#ac1be885be9a3c637647b8eba13aa74bb',1,'LinearSolverBase::LinearSolverBase(const LinearSolverBase &amp;solver)=delete'],['../classLinearSolverBase.html#a5c27afdd71825c8c9b6baf0fe8e4626d',1,'LinearSolverBase::LinearSolverBase(LinearSolverBase &amp;&amp;solver) noexcept=delete']]],
+  ['load_5fmodel_5fconstants_1',['load_model_constants',['../classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573',1,'UserInputParameters']]],
+  ['load_5fvariable_5fattributes_2',['load_variable_attributes',['../classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8',1,'VariableAttributeLoader']]],
+  ['local_5fcompute_5fdiagonal_3',['local_compute_diagonal',['../classMatrixFreeOperator.html#a54fc08655bfcdbbd485bc87fbf81bdca',1,'MatrixFreeOperator']]],
+  ['location_5fvectorized_4',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]]
 ];

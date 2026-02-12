@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,28 +122,28 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
   <div class="headertitle"><div class="title">user_input_parameters.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="user__input__parameters_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/parameter_handler.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/user_inputs/boundary_parameters.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;prismspf/user_inputs/checkpoint_parameters.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/user_inputs/linear_solve_parameters.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/user_inputs/load_initial_condition_parameters.h&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/user_inputs/miscellaneous_parameters.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/user_inputs/nonlinear_solve_parameters.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/user_inputs/nucleation_parameters.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/user_inputs/output_parameters.h&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;prismspf/user_inputs/spatial_discretization.h&gt;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;prismspf/user_inputs/temporal_discretization.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;prismspf/user_inputs/user_constants.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="boundary__parameters_8h.html">prismspf/user_inputs/boundary_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="checkpoint__parameters_8h.html">prismspf/user_inputs/checkpoint_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="linear__solve__parameters_8h.html">prismspf/user_inputs/linear_solve_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="load__initial__condition__parameters_8h.html">prismspf/user_inputs/load_initial_condition_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;<a class="code" href="miscellaneous__parameters_8h.html">prismspf/user_inputs/miscellaneous_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="nonlinear__solve__parameters_8h.html">prismspf/user_inputs/nonlinear_solve_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;<a class="code" href="nucleation__parameters_8h.html">prismspf/user_inputs/nucleation_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;<a class="code" href="output__parameters_8h.html">prismspf/user_inputs/output_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;<a class="code" href="spatial__discretization_8h.html">prismspf/user_inputs/spatial_discretization.h</a>&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;<a class="code" href="temporal__discretization_8h.html">prismspf/user_inputs/temporal_discretization.h</a>&gt;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;<a class="code" href="user__constants_8h.html">prismspf/user_inputs/user_constants.h</a>&gt;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">struct </span><a class="code hl_struct" href="structVariableAttributes.html">VariableAttributes</a>;</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
@@ -154,7 +161,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a8ff770bdb2e1d1c3f85ecd3073bbf7c6">   43</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a8ff770bdb2e1d1c3f85ecd3073bbf7c6">get_variable_attributes</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> var_attributes;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a712f5be6f21a3bff7f644d83df17062d">var_attributes</a>;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
 </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
@@ -162,7 +169,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aba6a259333d8086d8417b6d2e4b32771">   52</a></span>  <a class="code hl_function" href="classUserInputParameters.html#aba6a259333d8086d8417b6d2e4b32771">get_spatial_discretization</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> spatial_discretization;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc">spatial_discretization</a>;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
 </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
@@ -170,7 +177,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aed5032ca7181f8dff9152c5b2e6f74fd">   61</a></span>  <a class="code hl_function" href="classUserInputParameters.html#aed5032ca7181f8dff9152c5b2e6f74fd">get_temporal_discretization</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> temporal_discretization;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#aa145806b67475d99432284d91edde027">temporal_discretization</a>;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
 </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
@@ -178,7 +185,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a61d570fb6ce886c9117e1f94b4d1c337">   70</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a61d570fb6ce886c9117e1f94b4d1c337">get_linear_solve_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> linear_solve_parameters;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f">linear_solve_parameters</a>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
 </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
@@ -186,7 +193,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aba5d5beba4e128ba6a65b83736cd4019">   79</a></span>  <a class="code hl_function" href="classUserInputParameters.html#aba5d5beba4e128ba6a65b83736cd4019">get_nonlinear_solve_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> nonlinear_solve_parameters;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788">nonlinear_solve_parameters</a>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
 </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
@@ -194,7 +201,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a0ce6ddd620f2c9a5eeb701e6fa738d13">   88</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a0ce6ddd620f2c9a5eeb701e6fa738d13">get_output_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">return</span> output_parameters;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a86385b33b08ba62c9ce41a33b47d9438">output_parameters</a>;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
 </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
@@ -202,7 +209,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a9f3863e6ec0735641b08d72f16fea490">   97</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a9f3863e6ec0735641b08d72f16fea490">get_checkpoint_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> checkpoint_parameters;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef">checkpoint_parameters</a>;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  }</div>
 </div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
@@ -210,7 +217,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aea494b06547c936780e66bf3809618c4">  106</a></span>  <a class="code hl_function" href="classUserInputParameters.html#aea494b06547c936780e66bf3809618c4">get_boundary_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> boundary_parameters;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c">boundary_parameters</a>;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
 </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
@@ -218,7 +225,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a1de65b26110b8e297a7e81ce08ad4d54">  115</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a1de65b26110b8e297a7e81ce08ad4d54">get_load_initial_condition_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">return</span> load_ic_parameters;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245">load_ic_parameters</a>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  }</div>
 </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
@@ -226,7 +233,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a20d82277fa1ca1f10afac6135c538e23">  124</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a20d82277fa1ca1f10afac6135c538e23">get_nucleation_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> nucleation_parameters;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a9db6d31c2b8debf71fbbcb1f89946102">nucleation_parameters</a>;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
 </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
@@ -234,7 +241,7 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a7fe7f9d583a52c357f9baef0f56099bf">  133</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a7fe7f9d583a52c357f9baef0f56099bf">get_miscellaneous_parameters</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">return</span> misc_parameters;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">misc_parameters</a>;</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  }</div>
 </div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
@@ -242,102 +249,136 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aa8919249b1d943666f03461f6016dbe1">  142</a></span>  <a class="code hl_function" href="classUserInputParameters.html#aa8919249b1d943666f03461f6016dbe1">get_user_constants</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">return</span> user_constants;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9">user_constants</a>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  }</div>
 </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  assign_spatial_discretization_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <a class="code hl_function" href="classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">assign_spatial_discretization_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  assign_temporal_discretization_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <a class="code hl_function" href="classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f">assign_temporal_discretization_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  assign_linear_solve_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <a class="code hl_function" href="classUserInputParameters.html#a1050c51b634b9c33d9647af7f922a3a5">assign_linear_solve_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  assign_nonlinear_solve_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  <a class="code hl_function" href="classUserInputParameters.html#a7ef02e115ea13695b185cbc78989820c">assign_nonlinear_solve_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  assign_output_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <a class="code hl_function" href="classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0">assign_output_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  assign_checkpoint_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <a class="code hl_function" href="classUserInputParameters.html#af12d1068105bfcddd9b6e49cd3d80400">assign_checkpoint_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  assign_load_initial_condition_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <a class="code hl_function" href="classUserInputParameters.html#a6b616c195352863b5b69aa6bd4055fb1">assign_load_initial_condition_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  assign_nucleation_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <a class="code hl_function" href="classUserInputParameters.html#a584575f6f8c2cfa44c9b420f35e1a83e">assign_nucleation_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  assign_grain_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a1d2673b835a4c8f59b073ecbe29513af">  209</a></span>  <a class="code hl_function" href="classUserInputParameters.html#a1d2673b835a4c8f59b073ecbe29513af">assign_grain_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  assign_boundary_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>  <a class="code hl_function" href="classUserInputParameters.html#a7909becd32d37c394dde69710010bde6">assign_boundary_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  assign_miscellaneous_parameters(dealii::ParameterHandler &amp;parameter_handler);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  <a class="code hl_function" href="classUserInputParameters.html#a8f3e2fa561880287afc797e8375abe97">assign_miscellaneous_parameters</a>(dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  load_model_constants(<span class="keyword">const</span> <a class="code hl_class" href="classInputFileReader.html">InputFileReader</a>    &amp;input_file_reader,</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  <a class="code hl_function" href="classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573">load_model_constants</a>(<span class="keyword">const</span> <a class="code hl_class" href="classInputFileReader.html">InputFileReader</a>    &amp;input_file_reader,</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                       dealii::ParameterHandler &amp;parameter_handler);</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="comment">// Variable attributes</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  std::map&lt;unsigned int, VariableAttributes&gt; var_attributes;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a712f5be6f21a3bff7f644d83df17062d">  233</a></span>  std::map&lt;unsigned int, VariableAttributes&gt; <a class="code hl_variable" href="classUserInputParameters.html#a712f5be6f21a3bff7f644d83df17062d">var_attributes</a>;</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="comment">// Spatial discretization parameters</span></div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <a class="code hl_struct" href="structSpatialDiscretization.html">SpatialDiscretization&lt;dim&gt;</a> spatial_discretization;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc">  236</a></span>  <a class="code hl_struct" href="structSpatialDiscretization.html">SpatialDiscretization&lt;dim&gt;</a> <a class="code hl_variable" href="classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc">spatial_discretization</a>;</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  <span class="comment">// Temporal discretization parameters</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <a class="code hl_struct" href="structTemporalDiscretization.html">TemporalDiscretization</a> temporal_discretization;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aa145806b67475d99432284d91edde027">  239</a></span>  <a class="code hl_struct" href="structTemporalDiscretization.html">TemporalDiscretization</a> <a class="code hl_variable" href="classUserInputParameters.html#aa145806b67475d99432284d91edde027">temporal_discretization</a>;</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="comment">// Linear solve parameters</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  <a class="code hl_struct" href="structLinearSolveParameters.html">LinearSolveParameters</a> linear_solve_parameters;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f">  242</a></span>  <a class="code hl_struct" href="structLinearSolveParameters.html">LinearSolveParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f">linear_solve_parameters</a>;</div>
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="comment">// Nonlinear solve parameters</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  <a class="code hl_struct" href="structNonlinearSolveParameterSet.html">NonlinearSolveParameterSet</a> nonlinear_solve_parameters;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788">  245</a></span>  <a class="code hl_struct" href="structNonlinearSolveParameterSet.html">NonlinearSolveParameterSet</a> <a class="code hl_variable" href="classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788">nonlinear_solve_parameters</a>;</div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="comment">// Output parameters</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <a class="code hl_struct" href="structOutputParameters.html">OutputParameters</a> output_parameters;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a86385b33b08ba62c9ce41a33b47d9438">  248</a></span>  <a class="code hl_struct" href="structOutputParameters.html">OutputParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a86385b33b08ba62c9ce41a33b47d9438">output_parameters</a>;</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="comment">// Checkpoint parameters</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <a class="code hl_struct" href="structCheckpointParameters.html">CheckpointParameters</a> checkpoint_parameters;</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef">  251</a></span>  <a class="code hl_struct" href="structCheckpointParameters.html">CheckpointParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef">checkpoint_parameters</a>;</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="comment">// Boundary parameters</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <a class="code hl_struct" href="structBoundaryParameters.html">BoundaryParameters&lt;dim&gt;</a> boundary_parameters;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c">  254</a></span>  <a class="code hl_struct" href="structBoundaryParameters.html">BoundaryParameters&lt;dim&gt;</a> <a class="code hl_variable" href="classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c">boundary_parameters</a>;</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="comment">// Load IC parameters</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <a class="code hl_struct" href="structLoadInitialConditionParameters.html">LoadInitialConditionParameters</a> load_ic_parameters;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245">  257</a></span>  <a class="code hl_struct" href="structLoadInitialConditionParameters.html">LoadInitialConditionParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245">load_ic_parameters</a>;</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="comment">// Nucleation parameters</span></div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <a class="code hl_struct" href="structNucleationParameters.html">NucleationParameters</a> nucleation_parameters;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a9db6d31c2b8debf71fbbcb1f89946102">  260</a></span>  <a class="code hl_struct" href="structNucleationParameters.html">NucleationParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a9db6d31c2b8debf71fbbcb1f89946102">nucleation_parameters</a>;</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="comment">// Miscellaneous parameters</span></div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <a class="code hl_struct" href="structMiscellaneousParameters.html">MiscellaneousParameters</a> misc_parameters;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">  263</a></span>  <a class="code hl_struct" href="structMiscellaneousParameters.html">MiscellaneousParameters</a> <a class="code hl_variable" href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">misc_parameters</a>;</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="comment">// User constants</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;</a> user_constants;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno"><a class="line" href="classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9">  266</a></span>  <a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;</a> <a class="code hl_variable" href="classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9">user_constants</a>;</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>};</div>
 </div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aboundary__parameters_8h_html"><div class="ttname"><a href="boundary__parameters_8h.html">boundary_parameters.h</a></div></div>
+<div class="ttc" id="acheckpoint__parameters_8h_html"><div class="ttname"><a href="checkpoint__parameters_8h.html">checkpoint_parameters.h</a></div></div>
 <div class="ttc" id="aclassInputFileReader_html"><div class="ttname"><a href="classInputFileReader.html">InputFileReader</a></div><div class="ttdoc">Parameters file reader. Declares parameter names in a dealii parameter_handler and parses the file fo...</div><div class="ttdef"><b>Definition</b> input_file_reader.h:23</div></div>
 <div class="ttc" id="aclassUserConstants_html"><div class="ttname"><a href="classUserConstants.html">UserConstants</a></div><div class="ttdoc">Class the stores and manages user-defined constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:28</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a0ce6ddd620f2c9a5eeb701e6fa738d13"><div class="ttname"><a href="classUserInputParameters.html#a0ce6ddd620f2c9a5eeb701e6fa738d13">UserInputParameters::get_output_parameters</a></div><div class="ttdeci">const OutputParameters &amp; get_output_parameters() const</div><div class="ttdoc">Return the output parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:88</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a0f162328bb15924d5c106c6730bf5e0f"><div class="ttname"><a href="classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f">UserInputParameters::assign_temporal_discretization_parameters</a></div><div class="ttdeci">void assign_temporal_discretization_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to the temporal discretiziation.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:164</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a1050c51b634b9c33d9647af7f922a3a5"><div class="ttname"><a href="classUserInputParameters.html#a1050c51b634b9c33d9647af7f922a3a5">UserInputParameters::assign_linear_solve_parameters</a></div><div class="ttdeci">void assign_linear_solve_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to linear solves.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:294</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a128cf310372defe3c5411bd0a61d8573"><div class="ttname"><a href="classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573">UserInputParameters::load_model_constants</a></div><div class="ttdeci">void load_model_constants(const InputFileReader &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user constants.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:485</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a19bfa05b741c5b49ccdf80ffc08351fc"><div class="ttname"><a href="classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc">UserInputParameters::spatial_discretization</a></div><div class="ttdeci">SpatialDiscretization&lt; dim &gt; spatial_discretization</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:236</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a1d2673b835a4c8f59b073ecbe29513af"><div class="ttname"><a href="classUserInputParameters.html#a1d2673b835a4c8f59b073ecbe29513af">UserInputParameters::assign_grain_parameters</a></div><div class="ttdeci">void assign_grain_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to grain remapping and grain vtk l...</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a1de65b26110b8e297a7e81ce08ad4d54"><div class="ttname"><a href="classUserInputParameters.html#a1de65b26110b8e297a7e81ce08ad4d54">UserInputParameters::get_load_initial_condition_parameters</a></div><div class="ttdeci">const LoadInitialConditionParameters &amp; get_load_initial_condition_parameters() const</div><div class="ttdoc">Return the load IC parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:115</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a20d82277fa1ca1f10afac6135c538e23"><div class="ttname"><a href="classUserInputParameters.html#a20d82277fa1ca1f10afac6135c538e23">UserInputParameters::get_nucleation_parameters</a></div><div class="ttdeci">const NucleationParameters &amp; get_nucleation_parameters() const</div><div class="ttdoc">Return the nucleation parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:124</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a32392f9e393662e2ef58d08f08b80788"><div class="ttname"><a href="classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788">UserInputParameters::nonlinear_solve_parameters</a></div><div class="ttdeci">NonlinearSolveParameterSet nonlinear_solve_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:245</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a53fa02b5add7145a2dc3e02350222e4f"><div class="ttname"><a href="classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f">UserInputParameters::linear_solve_parameters</a></div><div class="ttdeci">LinearSolveParameters linear_solve_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:242</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a584575f6f8c2cfa44c9b420f35e1a83e"><div class="ttname"><a href="classUserInputParameters.html#a584575f6f8c2cfa44c9b420f35e1a83e">UserInputParameters::assign_nucleation_parameters</a></div><div class="ttdeci">void assign_nucleation_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to nucleation.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:444</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a61d570fb6ce886c9117e1f94b4d1c337"><div class="ttname"><a href="classUserInputParameters.html#a61d570fb6ce886c9117e1f94b4d1c337">UserInputParameters::get_linear_solve_parameters</a></div><div class="ttdeci">const LinearSolveParameters &amp; get_linear_solve_parameters() const</div><div class="ttdoc">Return the linear solve parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:70</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a6651bef02013ca63d78c3deb49f031f0"><div class="ttname"><a href="classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0">UserInputParameters::assign_output_parameters</a></div><div class="ttdeci">void assign_output_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to outputs.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:175</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a6b616c195352863b5b69aa6bd4055fb1"><div class="ttname"><a href="classUserInputParameters.html#a6b616c195352863b5b69aa6bd4055fb1">UserInputParameters::assign_load_initial_condition_parameters</a></div><div class="ttdeci">void assign_load_initial_condition_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to loading in initial condition.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:390</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a6f0fcf43c69787009be290550403e4ec"><div class="ttname"><a href="classUserInputParameters.html#a6f0fcf43c69787009be290550403e4ec">UserInputParameters::misc_parameters</a></div><div class="ttdeci">MiscellaneousParameters misc_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:263</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a6f7551ac1a336225f19b951e02fe4245"><div class="ttname"><a href="classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245">UserInputParameters::load_ic_parameters</a></div><div class="ttdeci">LoadInitialConditionParameters load_ic_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:257</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a6ffce11a04c3fe2e2edc9c6fb0f7aa6f"><div class="ttname"><a href="classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">UserInputParameters::assign_spatial_discretization_parameters</a></div><div class="ttdeci">void assign_spatial_discretization_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to the spatial discretiziation.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:77</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a712f5be6f21a3bff7f644d83df17062d"><div class="ttname"><a href="classUserInputParameters.html#a712f5be6f21a3bff7f644d83df17062d">UserInputParameters::var_attributes</a></div><div class="ttdeci">std::map&lt; unsigned int, VariableAttributes &gt; var_attributes</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:233</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a779b73013b2e21809aeabcb1d97a06ef"><div class="ttname"><a href="classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef">UserInputParameters::checkpoint_parameters</a></div><div class="ttdeci">CheckpointParameters checkpoint_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:251</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a7909becd32d37c394dde69710010bde6"><div class="ttname"><a href="classUserInputParameters.html#a7909becd32d37c394dde69710010bde6">UserInputParameters::assign_boundary_parameters</a></div><div class="ttdeci">void assign_boundary_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to boundaries.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:217</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a7ef02e115ea13695b185cbc78989820c"><div class="ttname"><a href="classUserInputParameters.html#a7ef02e115ea13695b185cbc78989820c">UserInputParameters::assign_nonlinear_solve_parameters</a></div><div class="ttdeci">void assign_nonlinear_solve_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to nonlinear solves.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:361</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a7fe7f9d583a52c357f9baef0f56099bf"><div class="ttname"><a href="classUserInputParameters.html#a7fe7f9d583a52c357f9baef0f56099bf">UserInputParameters::get_miscellaneous_parameters</a></div><div class="ttdeci">const MiscellaneousParameters &amp; get_miscellaneous_parameters() const</div><div class="ttdoc">Return the miscellaneous parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:133</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a86385b33b08ba62c9ce41a33b47d9438"><div class="ttname"><a href="classUserInputParameters.html#a86385b33b08ba62c9ce41a33b47d9438">UserInputParameters::output_parameters</a></div><div class="ttdeci">OutputParameters output_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:248</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a8f3e2fa561880287afc797e8375abe97"><div class="ttname"><a href="classUserInputParameters.html#a8f3e2fa561880287afc797e8375abe97">UserInputParameters::assign_miscellaneous_parameters</a></div><div class="ttdeci">void assign_miscellaneous_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to miscellaneous parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:471</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a8ff770bdb2e1d1c3f85ecd3073bbf7c6"><div class="ttname"><a href="classUserInputParameters.html#a8ff770bdb2e1d1c3f85ecd3073bbf7c6">UserInputParameters::get_variable_attributes</a></div><div class="ttdeci">const std::map&lt; unsigned int, VariableAttributes &gt; &amp; get_variable_attributes() const</div><div class="ttdoc">Return the variable attributes.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:43</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_a9db6d31c2b8debf71fbbcb1f89946102"><div class="ttname"><a href="classUserInputParameters.html#a9db6d31c2b8debf71fbbcb1f89946102">UserInputParameters::nucleation_parameters</a></div><div class="ttdeci">NucleationParameters nucleation_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:260</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_a9f3863e6ec0735641b08d72f16fea490"><div class="ttname"><a href="classUserInputParameters.html#a9f3863e6ec0735641b08d72f16fea490">UserInputParameters::get_checkpoint_parameters</a></div><div class="ttdeci">const CheckpointParameters &amp; get_checkpoint_parameters() const</div><div class="ttdoc">Return the checkpoint parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:97</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_aa145806b67475d99432284d91edde027"><div class="ttname"><a href="classUserInputParameters.html#aa145806b67475d99432284d91edde027">UserInputParameters::temporal_discretization</a></div><div class="ttdeci">TemporalDiscretization temporal_discretization</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:239</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_aa5d23cb09251f292b1b5c9c54c19cf5c"><div class="ttname"><a href="classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c">UserInputParameters::boundary_parameters</a></div><div class="ttdeci">BoundaryParameters&lt; dim &gt; boundary_parameters</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:254</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_aa8919249b1d943666f03461f6016dbe1"><div class="ttname"><a href="classUserInputParameters.html#aa8919249b1d943666f03461f6016dbe1">UserInputParameters::get_user_constants</a></div><div class="ttdeci">const UserConstants&lt; dim &gt; &amp; get_user_constants() const</div><div class="ttdoc">Return the user constants.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:142</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_aba5d5beba4e128ba6a65b83736cd4019"><div class="ttname"><a href="classUserInputParameters.html#aba5d5beba4e128ba6a65b83736cd4019">UserInputParameters::get_nonlinear_solve_parameters</a></div><div class="ttdeci">const NonlinearSolveParameterSet &amp; get_nonlinear_solve_parameters() const</div><div class="ttdoc">Return the nonlinear solve parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:79</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_aba6a259333d8086d8417b6d2e4b32771"><div class="ttname"><a href="classUserInputParameters.html#aba6a259333d8086d8417b6d2e4b32771">UserInputParameters::get_spatial_discretization</a></div><div class="ttdeci">const SpatialDiscretization&lt; dim &gt; &amp; get_spatial_discretization() const</div><div class="ttdoc">Return the spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:52</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_aea494b06547c936780e66bf3809618c4"><div class="ttname"><a href="classUserInputParameters.html#aea494b06547c936780e66bf3809618c4">UserInputParameters::get_boundary_parameters</a></div><div class="ttdeci">const BoundaryParameters&lt; dim &gt; &amp; get_boundary_parameters() const</div><div class="ttdoc">Return the boundary parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:106</div></div>
 <div class="ttc" id="aclassUserInputParameters_html_aed5032ca7181f8dff9152c5b2e6f74fd"><div class="ttname"><a href="classUserInputParameters.html#aed5032ca7181f8dff9152c5b2e6f74fd">UserInputParameters::get_temporal_discretization</a></div><div class="ttdeci">const TemporalDiscretization &amp; get_temporal_discretization() const</div><div class="ttdoc">Return the temporal discretization parameters.</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:61</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_af12d1068105bfcddd9b6e49cd3d80400"><div class="ttname"><a href="classUserInputParameters.html#af12d1068105bfcddd9b6e49cd3d80400">UserInputParameters::assign_checkpoint_parameters</a></div><div class="ttdeci">void assign_checkpoint_parameters(dealii::ParameterHandler &amp;parameter_handler)</div><div class="ttdoc">Assign the provided user inputs to parameters for anything related to checkpoints.</div><div class="ttdef"><b>Definition</b> user_input_parameters.cc:199</div></div>
+<div class="ttc" id="aclassUserInputParameters_html_aff16df7f532fd2f58fa2863e63461be9"><div class="ttname"><a href="classUserInputParameters.html#aff16df7f532fd2f58fa2863e63461be9">UserInputParameters::user_constants</a></div><div class="ttdeci">UserConstants&lt; dim &gt; user_constants</div><div class="ttdef"><b>Definition</b> user_input_parameters.h:266</div></div>
+<div class="ttc" id="alinear__solve__parameters_8h_html"><div class="ttname"><a href="linear__solve__parameters_8h.html">linear_solve_parameters.h</a></div></div>
+<div class="ttc" id="aload__initial__condition__parameters_8h_html"><div class="ttname"><a href="load__initial__condition__parameters_8h.html">load_initial_condition_parameters.h</a></div></div>
+<div class="ttc" id="amiscellaneous__parameters_8h_html"><div class="ttname"><a href="miscellaneous__parameters_8h.html">miscellaneous_parameters.h</a></div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anonlinear__solve__parameters_8h_html"><div class="ttname"><a href="nonlinear__solve__parameters_8h.html">nonlinear_solve_parameters.h</a></div></div>
+<div class="ttc" id="anucleation__parameters_8h_html"><div class="ttname"><a href="nucleation__parameters_8h.html">nucleation_parameters.h</a></div></div>
+<div class="ttc" id="aoutput__parameters_8h_html"><div class="ttname"><a href="output__parameters_8h.html">output_parameters.h</a></div></div>
+<div class="ttc" id="aspatial__discretization_8h_html"><div class="ttname"><a href="spatial__discretization_8h.html">spatial_discretization.h</a></div></div>
 <div class="ttc" id="astructBoundaryParameters_html"><div class="ttname"><a href="structBoundaryParameters.html">BoundaryParameters</a></div><div class="ttdoc">Struct that holds boundary parameters.</div><div class="ttdef"><b>Definition</b> boundary_parameters.h:150</div></div>
 <div class="ttc" id="astructCheckpointParameters_html"><div class="ttname"><a href="structCheckpointParameters.html">CheckpointParameters</a></div><div class="ttdoc">Struct that holds checkpoint parameters.</div><div class="ttdef"><b>Definition</b> checkpoint_parameters.h:25</div></div>
 <div class="ttc" id="astructLinearSolveParameters_html"><div class="ttname"><a href="structLinearSolveParameters.html">LinearSolveParameters</a></div><div class="ttdoc">Struct that holds linear solver parameters.</div><div class="ttdef"><b>Definition</b> linear_solve_parameters.h:56</div></div>
@@ -349,12 +390,14 @@ $(document).ready(function(){initNavTree('user__input__parameters_8h_source.html
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
 <div class="ttc" id="astructTemporalDiscretization_html"><div class="ttname"><a href="structTemporalDiscretization.html">TemporalDiscretization</a></div><div class="ttdoc">Struct that holds temporal discretization parameters.</div><div class="ttdef"><b>Definition</b> temporal_discretization.h:17</div></div>
 <div class="ttc" id="astructVariableAttributes_html"><div class="ttname"><a href="structVariableAttributes.html">VariableAttributes</a></div><div class="ttdoc">Structure to hold the variable attributes of a field. This includes things like the name,...</div><div class="ttdef"><b>Definition</b> variable_attributes.h:208</div></div>
+<div class="ttc" id="atemporal__discretization_8h_html"><div class="ttname"><a href="temporal__discretization_8h.html">temporal_discretization.h</a></div></div>
+<div class="ttc" id="auser__constants_8h_html"><div class="ttname"><a href="user__constants_8h.html">user_constants.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><b>user_input_parameters.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><a class="el" href="user__input__parameters_8h.html">user_input_parameters.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

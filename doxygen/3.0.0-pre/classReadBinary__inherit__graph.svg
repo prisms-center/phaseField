@@ -21,7 +21,7 @@
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classReadFieldBase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#bfbfbf" points="140,-85 18,-85 18,-55 140,-55 140,-85"/>
+<polygon fill="white" stroke="#666666" points="140,-85 18,-85 18,-55 140,-55 140,-85"/>
 <text text-anchor="start" x="26" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">ReadFieldBase&lt; dim,</text>
 <text text-anchor="middle" x="79" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00"> number &gt;</text>
 </a>

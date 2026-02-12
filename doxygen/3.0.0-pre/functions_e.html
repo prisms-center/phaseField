@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,18 +114,32 @@ $(document).ready(function(){initNavTree('functions_e.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>edge_constrained_indices&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#ad23622bf3c534e3be9dce104e2871907">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>eig_cg_n_iterations&#160;:&#160;<a class="el" href="structLinearSolverParameters.html#a332de98b33d544018bc47924bee53920">LinearSolverParameters</a></li>
 <li>el()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aa0c13ef0ab61145e52c3dd37661a51fb">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>element_volume&#160;:&#160;<a class="el" href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">ElementVolume&lt; dim, degree, number &gt;</a>, <a class="el" href="classElementVolumeContainer.html#af19295ffc58e882585d410efa195a1e8">ElementVolumeContainer&lt; dim, degree, number &gt;</a></li>
+<li>element_volume_container&#160;:&#160;<a class="el" href="classGridRefinementContext.html#abc3df0c2e4a72bad65b750c20ce06b94">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#a6713bde2051c90cf8455ac82bf6ce140">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a1847e2cb387bf6118b629ec021e50081">SolverContext&lt; dim, degree, number &gt;</a></li>
+<li>element_volume_handler&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a236e4b7d3315ba12418dd4000f84c1a6">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableContainer.html#a0651d220da6cc49b2a9e3760b77ca797">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>ElementVolume()&#160;:&#160;<a class="el" href="classElementVolume.html#abd811dddfdfd404e0a963dad68ca57db">ElementVolume&lt; dim, degree, number &gt;</a></li>
 <li>ElementVolumeContainer()&#160;:&#160;<a class="el" href="classElementVolumeContainer.html#a909d6c0504daa16e7025acdb619f3101">ElementVolumeContainer&lt; dim, degree, number &gt;</a></li>
 <li>end_section()&#160;:&#160;<a class="el" href="classTimer.html#ae1dc504d4bd75188b95693a4951149fd">Timer</a></li>
+<li>eval()&#160;:&#160;<a class="el" href="classVariableContainer.html#aeba5f9a5dde609c91f40f72dc2f18771">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>eval_cell_diagonal()&#160;:&#160;<a class="el" href="classVariableContainer.html#a3d1d2c361b5a17dd00285fd8af8617bb">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>eval_flag_set_lhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#a8e68c5b7fe168efd0b43ca97c3de7a0b">VariableAttributes</a></li>
+<li>eval_flag_set_rhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#aa4138f14145cfa5591e35af4e47c6757">VariableAttributes</a></li>
+<li>eval_flags_residual_lhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#ac482fa330ab695389921be86cc35e436">VariableAttributes</a></li>
+<li>eval_flags_residual_rhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#a7707cc8a6cc6ff9614ecdb4425548809">VariableAttributes</a></li>
 <li>eval_local_diagonal()&#160;:&#160;<a class="el" href="classVariableContainer.html#a71c5237928b80be0b7b4b5d80ce8e872">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>eval_local_operator()&#160;:&#160;<a class="el" href="classVariableContainer.html#ab1049ac9bfb8e56c1a3d57b8b2d71d40">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>EvalFlags&#160;:&#160;<a class="el" href="structVariableAttributes.html#ad41bd187fcdd408238d84a2bc8beecb0">VariableAttributes</a></li>
 <li>execute_grid_refinement()&#160;:&#160;<a class="el" href="classTriangulationHandler.html#a31e8d9d80fbc855ad93afb054b038b09">TriangulationHandler&lt; dim &gt;</a></li>
 <li>execute_solution_transfer()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a30edd228edc75cfed767308dcb384ffa">SolutionHandler&lt; dim, number &gt;</a></li>
 <li>export_triangulation_as_vtk()&#160;:&#160;<a class="el" href="classTriangulationHandler.html#a964b79030881a41fbe1e314561752c66">TriangulationHandler&lt; dim &gt;</a></li>
+<li>extract_diagonal_ptr()&#160;:&#160;<a class="el" href="classVariableContainer.html#a46607517eeec3dcb00b367fb4b21ea4b">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>extract_feeval_ptr()&#160;:&#160;<a class="el" href="classVariableContainer.html#ad1a8e998c69373a3edb89611f31812af">VariableContainer&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

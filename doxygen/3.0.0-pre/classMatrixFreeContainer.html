@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classMatrixFreeContainer.html',''); in
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classMatrixFreeContainer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MatrixFreeContainer&lt; dim, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,30 +129,267 @@ $(document).ready(function(){initNavTree('classMatrixFreeContainer.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a18c48e07782d9b1a880a7182c3005b1d" id="r_a18c48e07782d9b1a880a7182c3005b1d"><td class="memItemLeft" align="right" valign="top"><a id="a18c48e07782d9b1a880a7182c3005b1d" name="a18c48e07782d9b1a880a7182c3005b1d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MatrixFreeContainer</b> (<a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a> &gt; &amp;mg_info)</td></tr>
-<tr class="memdesc:a18c48e07782d9b1a880a7182c3005b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a18c48e07782d9b1a880a7182c3005b1d" id="r_a18c48e07782d9b1a880a7182c3005b1d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d">MatrixFreeContainer</a> (<a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a> &gt; &amp;mg_info)</td></tr>
+<tr class="memdesc:a18c48e07782d9b1a880a7182c3005b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a18c48e07782d9b1a880a7182c3005b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ba0a0cdb017fb1c1099288fe0e97326" id="r_a5ba0a0cdb017fb1c1099288fe0e97326"><td class="memTemplParams" colspan="2"><a id="a5ba0a0cdb017fb1c1099288fe0e97326" name="a5ba0a0cdb017fb1c1099288fe0e97326"></a>
-template&lt;unsigned int degree, unsigned int quad_dim&gt; </td></tr>
-<tr class="memitem:a5ba0a0cdb017fb1c1099288fe0e97326"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>reinit</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;dof_container, const <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;constraint_container, const dealii::Quadrature&lt; quad_dim &gt; &amp;quad)</td></tr>
-<tr class="memdesc:a5ba0a0cdb017fb1c1099288fe0e97326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the matrix-free object(s). <br /></td></tr>
+<tr class="memitem:a5ba0a0cdb017fb1c1099288fe0e97326" id="r_a5ba0a0cdb017fb1c1099288fe0e97326"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree, unsigned int quad_dim&gt; </td></tr>
+<tr class="memitem:a5ba0a0cdb017fb1c1099288fe0e97326"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">reinit</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;dof_container, const <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;constraint_container, const dealii::Quadrature&lt; quad_dim &gt; &amp;quad)</td></tr>
+<tr class="memdesc:a5ba0a0cdb017fb1c1099288fe0e97326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the matrix-free object(s).  <br /></td></tr>
 <tr class="separator:a5ba0a0cdb017fb1c1099288fe0e97326"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f732bb07e399b04aaba486c60bb57c0" id="r_a7f732bb07e399b04aaba486c60bb57c0"><td class="memItemLeft" align="right" valign="top"><a id="a7f732bb07e399b04aaba486c60bb57c0" name="a7f732bb07e399b04aaba486c60bb57c0"></a>
-std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_free</b> () <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">const</a></td></tr>
-<tr class="memdesc:a7f732bb07e399b04aaba486c60bb57c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the matrix-free object (shared ptr). <br /></td></tr>
+<tr class="memitem:a7f732bb07e399b04aaba486c60bb57c0" id="r_a7f732bb07e399b04aaba486c60bb57c0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a7f732bb07e399b04aaba486c60bb57c0">get_matrix_free</a> () <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">const</a></td></tr>
+<tr class="memdesc:a7f732bb07e399b04aaba486c60bb57c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the matrix-free object (shared ptr).  <br /></td></tr>
 <tr class="separator:a7f732bb07e399b04aaba486c60bb57c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaa68c771ffa495bb3f489ebccd7b21d" id="r_afaa68c771ffa495bb3f489ebccd7b21d"><td class="memItemLeft" align="right" valign="top"><a id="afaa68c771ffa495bb3f489ebccd7b21d" name="afaa68c771ffa495bb3f489ebccd7b21d"></a>
-std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_matrix_free</b> (<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">level</a>) <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">const</a></td></tr>
-<tr class="memdesc:afaa68c771ffa495bb3f489ebccd7b21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid matrix-free object (shared ptr). <br /></td></tr>
+<tr class="memitem:afaa68c771ffa495bb3f489ebccd7b21d" id="r_afaa68c771ffa495bb3f489ebccd7b21d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#afaa68c771ffa495bb3f489ebccd7b21d">get_mg_matrix_free</a> (<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">level</a>) <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">const</a></td></tr>
+<tr class="memdesc:afaa68c771ffa495bb3f489ebccd7b21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid matrix-free object (shared ptr).  <br /></td></tr>
 <tr class="separator:afaa68c771ffa495bb3f489ebccd7b21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:af73fd3278d4fd730334a1091120f5ecf" id="r_af73fd3278d4fd730334a1091120f5ecf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#af73fd3278d4fd730334a1091120f5ecf">matrix_free</a></td></tr>
+<tr class="memdesc:af73fd3278d4fd730334a1091120f5ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object handler for non-multigrid data.  <br /></td></tr>
+<tr class="separator:af73fd3278d4fd730334a1091120f5ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871f97f2434a9f5a1253cbd1548248ab" id="r_a871f97f2434a9f5a1253cbd1548248ab"><td class="memItemLeft" align="right" valign="top">dealii::MGLevelObject&lt; <a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a871f97f2434a9f5a1253cbd1548248ab">multigrid_matrix_free</a></td></tr>
+<tr class="memdesc:a871f97f2434a9f5a1253cbd1548248ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object handler for multigrid data.  <br /></td></tr>
+<tr class="separator:a871f97f2434a9f5a1253cbd1548248ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a337b44e0c6c52cede441650910bb1fb5" id="r_a337b44e0c6c52cede441650910bb1fb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a337b44e0c6c52cede441650910bb1fb5">min_level</a> = 0</td></tr>
+<tr class="memdesc:a337b44e0c6c52cede441650910bb1fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min multigrid level.  <br /></td></tr>
+<tr class="separator:a337b44e0c6c52cede441650910bb1fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e539cfc43f917dff0bf1eff9f67e7f8" id="r_a0e539cfc43f917dff0bf1eff9f67e7f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeContainer.html#a0e539cfc43f917dff0bf1eff9f67e7f8">max_level</a> = 0</td></tr>
+<tr class="memdesc:a0e539cfc43f917dff0bf1eff9f67e7f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max multigrid level.  <br /></td></tr>
+<tr class="separator:a0e539cfc43f917dff0bf1eff9f67e7f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a>&gt;<br />
 class MatrixFreeContainer&lt; dim, number &gt;</div><p>This class is a simple container for the matrix-free objects used in PRISMS-PF. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a18c48e07782d9b1a880a7182c3005b1d" name="a18c48e07782d9b1a880a7182c3005b1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18c48e07782d9b1a880a7182c3005b1d">&#9670;&#160;</a></span>MatrixFreeContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;<a class="el" href="classMatrixFreeContainer.html">::MatrixFreeContainer</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mg_info</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7f732bb07e399b04aaba486c60bb57c0" name="a7f732bb07e399b04aaba486c60bb57c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f732bb07e399b04aaba486c60bb57c0">&#9670;&#160;</a></span>get_matrix_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; &gt; &gt; <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::get_matrix_free </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the matrix-free object (shared ptr). </p>
+
+</div>
+</div>
+<a id="afaa68c771ffa495bb3f489ebccd7b21d" name="afaa68c771ffa495bb3f489ebccd7b21d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaa68c771ffa495bb3f489ebccd7b21d">&#9670;&#160;</a></span>get_mg_matrix_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; dealii::MatrixFree&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a>, dealii::VectorizedArray&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a> &gt; &gt; &gt; <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::get_mg_matrix_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a>&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the multigrid matrix-free object (shared ptr). </p>
+
+</div>
+</div>
+<a id="a5ba0a0cdb017fb1c1099288fe0e97326" name="a5ba0a0cdb017fb1c1099288fe0e97326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ba0a0cdb017fb1c1099288fe0e97326">&#9670;&#160;</a></span>reinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;unsigned int degree, unsigned int quad_dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; dim, number &gt;::reinit </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classDofHandler.html">DofHandler</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>constraint_container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Quadrature&lt; quad_dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>quad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reinitialize the matrix-free object(s). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="af73fd3278d4fd730334a1091120f5ecf" name="af73fd3278d4fd730334a1091120f5ecf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73fd3278d4fd730334a1091120f5ecf">&#9670;&#160;</a></span>matrix_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler</a>&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a>&gt; <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::matrix_free</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object handler for non-multigrid data. </p>
+
+</div>
+</div>
+<a id="a0e539cfc43f917dff0bf1eff9f67e7f8" name="a0e539cfc43f917dff0bf1eff9f67e7f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e539cfc43f917dff0bf1eff9f67e7f8">&#9670;&#160;</a></span>max_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::max_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Max multigrid level. </p>
+
+</div>
+</div>
+<a id="a337b44e0c6c52cede441650910bb1fb5" name="a337b44e0c6c52cede441650910bb1fb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a337b44e0c6c52cede441650910bb1fb5">&#9670;&#160;</a></span>min_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::min_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Min multigrid level. </p>
+
+</div>
+</div>
+<a id="a871f97f2434a9f5a1253cbd1548248ab" name="a871f97f2434a9f5a1253cbd1548248ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a871f97f2434a9f5a1253cbd1548248ab">&#9670;&#160;</a></span>multigrid_matrix_free</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">unsigned</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">int</a> dim, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">typename</a> <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::MGLevelObject&lt;<a class="el" href="classMatrixFreeHandler.html">MatrixFreeHandler</a>&lt;<a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">float</a>&gt; &gt; <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">dim</a>, <a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">number</a> &gt;::multigrid_matrix_free</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object handler for multigrid data. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="matrix__free__handler_8h_source.html">matrix_free_handler.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>matrix_free_handler.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="matrix__free__handler_8cc.html">matrix_free_handler.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

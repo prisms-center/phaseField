@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,8 @@ $(document).ready(function(){initNavTree('classVariableAttributeLoader.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classVariableAttributeLoader-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">VariableAttributeLoader Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -121,40 +130,32 @@ $(document).ready(function(){initNavTree('classVariableAttributeLoader.html','')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a66fcd8fb6d6535ec22f04f17971db332" id="r_a66fcd8fb6d6535ec22f04f17971db332"><td class="memItemLeft" align="right" valign="top"><a id="a66fcd8fb6d6535ec22f04f17971db332" name="a66fcd8fb6d6535ec22f04f17971db332"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>VariableAttributeLoader</b> ()=default</td></tr>
-<tr class="memdesc:a66fcd8fb6d6535ec22f04f17971db332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a66fcd8fb6d6535ec22f04f17971db332" id="r_a66fcd8fb6d6535ec22f04f17971db332"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a66fcd8fb6d6535ec22f04f17971db332">VariableAttributeLoader</a> ()=default</td></tr>
+<tr class="memdesc:a66fcd8fb6d6535ec22f04f17971db332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a66fcd8fb6d6535ec22f04f17971db332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4ff697662bcae8e80863156e1b3c573" id="r_ab4ff697662bcae8e80863156e1b3c573"><td class="memItemLeft" align="right" valign="top"><a id="ab4ff697662bcae8e80863156e1b3c573" name="ab4ff697662bcae8e80863156e1b3c573"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~VariableAttributeLoader</b> ()=default</td></tr>
-<tr class="memdesc:ab4ff697662bcae8e80863156e1b3c573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:ab4ff697662bcae8e80863156e1b3c573" id="r_ab4ff697662bcae8e80863156e1b3c573"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#ab4ff697662bcae8e80863156e1b3c573">~VariableAttributeLoader</a> ()=default</td></tr>
+<tr class="memdesc:ab4ff697662bcae8e80863156e1b3c573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:ab4ff697662bcae8e80863156e1b3c573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a895311a46c378e8c48c7949f501482f7" id="r_a895311a46c378e8c48c7949f501482f7"><td class="memItemLeft" align="right" valign="top"><a id="a895311a46c378e8c48c7949f501482f7" name="a895311a46c378e8c48c7949f501482f7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>VariableAttributeLoader</b> (const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;variable_attribute_loader)=delete</td></tr>
-<tr class="memdesc:a895311a46c378e8c48c7949f501482f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="memitem:a895311a46c378e8c48c7949f501482f7" id="r_a895311a46c378e8c48c7949f501482f7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a895311a46c378e8c48c7949f501482f7">VariableAttributeLoader</a> (const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;variable_attribute_loader)=delete</td></tr>
+<tr class="memdesc:a895311a46c378e8c48c7949f501482f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
 <tr class="separator:a895311a46c378e8c48c7949f501482f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d2e826151dd66b0d4f9446b9937d94b" id="r_a1d2e826151dd66b0d4f9446b9937d94b"><td class="memItemLeft" align="right" valign="top"><a id="a1d2e826151dd66b0d4f9446b9937d94b" name="a1d2e826151dd66b0d4f9446b9937d94b"></a>
-<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;variable_attribute_loader)=delete</td></tr>
-<tr class="memdesc:a1d2e826151dd66b0d4f9446b9937d94b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment. <br /></td></tr>
+<tr class="memitem:a1d2e826151dd66b0d4f9446b9937d94b" id="r_a1d2e826151dd66b0d4f9446b9937d94b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a1d2e826151dd66b0d4f9446b9937d94b">operator=</a> (const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;variable_attribute_loader)=delete</td></tr>
+<tr class="memdesc:a1d2e826151dd66b0d4f9446b9937d94b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment.  <br /></td></tr>
 <tr class="separator:a1d2e826151dd66b0d4f9446b9937d94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af758622815fd5b413e2f5e91a6b3da00" id="r_af758622815fd5b413e2f5e91a6b3da00"><td class="memItemLeft" align="right" valign="top"><a id="af758622815fd5b413e2f5e91a6b3da00" name="af758622815fd5b413e2f5e91a6b3da00"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>VariableAttributeLoader</b> (<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;variable_attribute_loader) noexcept=delete</td></tr>
-<tr class="memdesc:af758622815fd5b413e2f5e91a6b3da00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. <br /></td></tr>
+<tr class="memitem:af758622815fd5b413e2f5e91a6b3da00" id="r_af758622815fd5b413e2f5e91a6b3da00"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#af758622815fd5b413e2f5e91a6b3da00">VariableAttributeLoader</a> (<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;variable_attribute_loader) noexcept=delete</td></tr>
+<tr class="memdesc:af758622815fd5b413e2f5e91a6b3da00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <br /></td></tr>
 <tr class="separator:af758622815fd5b413e2f5e91a6b3da00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f0bb6f29bbaeb2f5e14d3436949816c" id="r_a3f0bb6f29bbaeb2f5e14d3436949816c"><td class="memItemLeft" align="right" valign="top"><a id="a3f0bb6f29bbaeb2f5e14d3436949816c" name="a3f0bb6f29bbaeb2f5e14d3436949816c"></a>
-<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;variable_attribute_loader) noexcept=delete</td></tr>
-<tr class="memdesc:a3f0bb6f29bbaeb2f5e14d3436949816c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment. <br /></td></tr>
+<tr class="memitem:a3f0bb6f29bbaeb2f5e14d3436949816c" id="r_a3f0bb6f29bbaeb2f5e14d3436949816c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a3f0bb6f29bbaeb2f5e14d3436949816c">operator=</a> (<a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;variable_attribute_loader) noexcept=delete</td></tr>
+<tr class="memdesc:a3f0bb6f29bbaeb2f5e14d3436949816c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment.  <br /></td></tr>
 <tr class="separator:a3f0bb6f29bbaeb2f5e14d3436949816c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af080b9bdfee9ff74083a40653d6a94d4" id="r_af080b9bdfee9ff74083a40653d6a94d4"><td class="memItemLeft" align="right" valign="top"><a id="af080b9bdfee9ff74083a40653d6a94d4" name="af080b9bdfee9ff74083a40653d6a94d4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init_variable_attributes</b> ()</td></tr>
-<tr class="memdesc:af080b9bdfee9ff74083a40653d6a94d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the variable attributes from the two user-facing methods <code><a class="el" href="classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8" title="User-implemented method where the variable attributes are set for all fields.">load_variable_attributes()</a></code> and <code>loadPostProcessorVariableAttributes()</code>. This must be called after the default constructor for derived classes. <br /></td></tr>
+<tr class="memitem:af080b9bdfee9ff74083a40653d6a94d4" id="r_af080b9bdfee9ff74083a40653d6a94d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#af080b9bdfee9ff74083a40653d6a94d4">init_variable_attributes</a> ()</td></tr>
+<tr class="memdesc:af080b9bdfee9ff74083a40653d6a94d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the variable attributes from the two user-facing methods <code><a class="el" href="classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8" title="User-implemented method where the variable attributes are set for all fields.">load_variable_attributes()</a></code> and <code>loadPostProcessorVariableAttributes()</code>. This must be called after the default constructor for derived classes.  <br /></td></tr>
 <tr class="separator:af080b9bdfee9ff74083a40653d6a94d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a2b54ccc2b012fca367d4225e1eb720" id="r_a5a2b54ccc2b012fca367d4225e1eb720"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a5a2b54ccc2b012fca367d4225e1eb720">get_var_attributes</a> () const</td></tr>
 <tr class="memdesc:a5a2b54ccc2b012fca367d4225e1eb720"><td class="mdescLeft">&#160;</td><td class="mdescRight">getter function for variable attributes list (copy).  <br /></td></tr>
 <tr class="separator:a5a2b54ccc2b012fca367d4225e1eb720"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaec3896d284f17c75452f5306f1f06d8" id="r_aaec3896d284f17c75452f5306f1f06d8"><td class="memItemLeft" align="right" valign="top"><a id="aaec3896d284f17c75452f5306f1f06d8" name="aaec3896d284f17c75452f5306f1f06d8"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load_variable_attributes</b> ()=0</td></tr>
-<tr class="memdesc:aaec3896d284f17c75452f5306f1f06d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-implemented method where the variable attributes are set for all fields. <br /></td></tr>
+<tr class="memitem:aaec3896d284f17c75452f5306f1f06d8" id="r_aaec3896d284f17c75452f5306f1f06d8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8">load_variable_attributes</a> ()=0</td></tr>
+<tr class="memdesc:aaec3896d284f17c75452f5306f1f06d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-implemented method where the variable attributes are set for all fields.  <br /></td></tr>
 <tr class="separator:aaec3896d284f17c75452f5306f1f06d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05d4c65ca045bcdd1198897eb4e785d0" id="r_a05d4c65ca045bcdd1198897eb4e785d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a05d4c65ca045bcdd1198897eb4e785d0">set_variable_name</a> (const unsigned int &amp;index, const std::string &amp;name)</td></tr>
 <tr class="memdesc:a05d4c65ca045bcdd1198897eb4e785d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the name of the variable at <code>index</code> to <code>name</code>.  <br /></td></tr>
@@ -162,7 +163,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load_variable
 <tr class="memitem:aa23470aef9b522511fce8615f49f73d5" id="r_aa23470aef9b522511fce8615f49f73d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aa23470aef9b522511fce8615f49f73d5">set_variable_type</a> (const unsigned int &amp;index, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;field_type)</td></tr>
 <tr class="memdesc:aa23470aef9b522511fce8615f49f73d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the field type of the variable at <code>index</code> to <code>field_type</code> where <code>field_type</code> can be <code>Scalar</code> or <code>Vector</code>.  <br /></td></tr>
 <tr class="separator:aa23470aef9b522511fce8615f49f73d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc930b43e656b64830ba363d3e57a7e7" id="r_acc930b43e656b64830ba363d3e57a7e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7">set_variable_equation_type</a> (const unsigned int &amp;index, const PDEType &amp;pde_type)</td></tr>
+<tr class="memitem:acc930b43e656b64830ba363d3e57a7e7" id="r_acc930b43e656b64830ba363d3e57a7e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7">set_variable_equation_type</a> (const unsigned int &amp;index, const <a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> &amp;pde_type)</td></tr>
 <tr class="memdesc:acc930b43e656b64830ba363d3e57a7e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PDE type of the variable at <code>index</code> to <code>pde_type</code> where <code>pde_type</code>can be <code>ExplicitTimeDependent</code>, <code>ImplicitTimeDependent</code>, <code>TimeIndependent</code>, <code>Auxiliary</code>.  <br /></td></tr>
 <tr class="separator:acc930b43e656b64830ba363d3e57a7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c554f8b1925ad0653d2fdec00b07b7b" id="r_a5c554f8b1925ad0653d2fdec00b07b7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a5c554f8b1925ad0653d2fdec00b07b7b">set_is_postprocessed_field</a> (const unsigned int &amp;index, const bool &amp;is_postprocess)</td></tr>
@@ -172,7 +173,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load_variable
 <tr class="memitem:a1fc415d7a7b621ab95f8e2378c509c9b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a1fc415d7a7b621ab95f8e2378c509c9b">set_is_nucleation_rate</a> (const unsigned int &amp;index, const bool &amp;is_nucleation, const Iterable &amp;nucleating_fields)</td></tr>
 <tr class="memdesc:a1fc415d7a7b621ab95f8e2378c509c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether the field is a nucleation rate.  <br /></td></tr>
 <tr class="separator:a1fc415d7a7b621ab95f8e2378c509c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac25ceb35f589943b2d9cca5a756187d" id="r_aac25ceb35f589943b2d9cca5a756187d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aac25ceb35f589943b2d9cca5a756187d">set_solve_block</a> (const unsigned int &amp;index, const Types::Index &amp;solve_block)</td></tr>
+<tr class="memitem:aac25ceb35f589943b2d9cca5a756187d" id="r_aac25ceb35f589943b2d9cca5a756187d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aac25ceb35f589943b2d9cca5a756187d">set_solve_block</a> (const unsigned int &amp;index, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;solve_block)</td></tr>
 <tr class="memdesc:aac25ceb35f589943b2d9cca5a756187d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the solve block of the field.  <br /></td></tr>
 <tr class="separator:aac25ceb35f589943b2d9cca5a756187d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7dc863042010ad0d5b5f01a4baf0bf1" id="r_ad7dc863042010ad0d5b5f01a4baf0bf1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#ad7dc863042010ad0d5b5f01a4baf0bf1">set_dependencies_value_term_rhs</a> (const unsigned int &amp;index, const std::string &amp;dependencies)</td></tr>
@@ -203,10 +204,239 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load_variable
 <tr class="memitem:a8bca90c793be0882b03d0a7cae66666a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a8bca90c793be0882b03d0a7cae66666a">insert_dependencies_gradient_term_lhs</a> (const unsigned int &amp;index, const Iterable &amp;dependencies)</td></tr>
 <tr class="memdesc:a8bca90c793be0882b03d0a7cae66666a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert dependencies for the gradient term of the LHS equation of the variable at <code>index</code>.  <br /></td></tr>
 <tr class="separator:a8bca90c793be0882b03d0a7cae66666a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a5001e06fdcff765c4b08cd81f01c13ac" id="r_a5001e06fdcff765c4b08cd81f01c13ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a5001e06fdcff765c4b08cd81f01c13ac">validate_attributes</a> ()</td></tr>
+<tr class="memdesc:a5001e06fdcff765c4b08cd81f01c13ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a suite of assertions on the attributes to ensure that the user's inputs are well-formed.  <br /></td></tr>
+<tr class="separator:a5001e06fdcff765c4b08cd81f01c13ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e4cde131d056a496793b4a50d93ffe5" id="r_a4e4cde131d056a496793b4a50d93ffe5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a4e4cde131d056a496793b4a50d93ffe5">validate_variable_name</a> (const std::string &amp;name, const std::set&lt; std::string &gt; &amp;forbidden_names, const std::string &amp;context, unsigned int index)</td></tr>
+<tr class="memdesc:a4e4cde131d056a496793b4a50d93ffe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate that the variable name is not empty and does not contain any forbidden substrings (names).  <br /></td></tr>
+<tr class="separator:a4e4cde131d056a496793b4a50d93ffe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3fb08f9aeb8a6d54c6b37fbc08a75c7" id="r_ae3fb08f9aeb8a6d54c6b37fbc08a75c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#ae3fb08f9aeb8a6d54c6b37fbc08a75c7">populate_dependencies</a> (const std::set&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;reg_delimiters, const std::set&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;dep_type_delimiters, const std::string &amp;variable_name, unsigned int index, std::set&lt; std::string &gt; &amp;reg_possible_deps, std::map&lt; unsigned int, std::set&lt; std::string &gt; &gt; &amp;change_possible_deps)</td></tr>
+<tr class="memdesc:ae3fb08f9aeb8a6d54c6b37fbc08a75c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate dependencies that we should expect from the user.  <br /></td></tr>
+<tr class="separator:ae3fb08f9aeb8a6d54c6b37fbc08a75c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca2a0f753f134f2499776db44e89b4d0" id="r_aca2a0f753f134f2499776db44e89b4d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aca2a0f753f134f2499776db44e89b4d0">validate_dependencies</a> (const std::set&lt; std::string &gt; &amp;dependencies, const std::string &amp;context, unsigned int index, const std::string &amp;variable_name, const std::set&lt; std::string &gt; &amp;reg_possible_deps, const std::map&lt; unsigned int, std::set&lt; std::string &gt; &gt; &amp;change_possible_deps)</td></tr>
+<tr class="memdesc:aca2a0f753f134f2499776db44e89b4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the dependencies (RHS or LHS) that the user has provided.  <br /></td></tr>
+<tr class="separator:aca2a0f753f134f2499776db44e89b4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d11f49c625260ef3446a66df9248dc" id="r_aa4d11f49c625260ef3446a66df9248dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#aa4d11f49c625260ef3446a66df9248dc">validate_old_solution_dependencies</a> ()</td></tr>
+<tr class="memdesc:aa4d11f49c625260ef3446a66df9248dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the old solution dependencies that the user has provided.  <br /></td></tr>
+<tr class="separator:aa4d11f49c625260ef3446a66df9248dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955ba9807789cc0f7835bd558948db4a" id="r_a955ba9807789cc0f7835bd558948db4a"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a955ba9807789cc0f7835bd558948db4a">compute_subset_attributes</a> (std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;variable_attributes, <a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> field_solve_type, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> solve_priority) const</td></tr>
+<tr class="memdesc:a955ba9807789cc0f7835bd558948db4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belongs to a given FieldSolveType and solver order.  <br /></td></tr>
+<tr class="separator:a955ba9807789cc0f7835bd558948db4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350bc87ac499ae1168f373b57cdfe0a1" id="r_a350bc87ac499ae1168f373b57cdfe0a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#a350bc87ac499ae1168f373b57cdfe0a1">compute_shared_dependencies</a> (std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> * &gt; &amp;variable_attributes)</td></tr>
+<tr class="memdesc:a350bc87ac499ae1168f373b57cdfe0a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the shared dependencies for a subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belong to a given FieldSolveType and solve order.  <br /></td></tr>
+<tr class="separator:a350bc87ac499ae1168f373b57cdfe0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:affa75595fc50c71c1c0fb3b387062ae1" id="r_affa75595fc50c71c1c0fb3b387062ae1"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classVariableAttributeLoader.html#affa75595fc50c71c1c0fb3b387062ae1">var_attributes</a></td></tr>
+<tr class="memdesc:affa75595fc50c71c1c0fb3b387062ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The solutions variable &amp; postprocessing variable attributes.  <br /></td></tr>
+<tr class="separator:affa75595fc50c71c1c0fb3b387062ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to manage the variable attributes that the user specifies. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a66fcd8fb6d6535ec22f04f17971db332" name="a66fcd8fb6d6535ec22f04f17971db332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66fcd8fb6d6535ec22f04f17971db332">&#9670;&#160;</a></span>VariableAttributeLoader() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VariableAttributeLoader::VariableAttributeLoader </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="ab4ff697662bcae8e80863156e1b3c573" name="ab4ff697662bcae8e80863156e1b3c573"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4ff697662bcae8e80863156e1b3c573">&#9670;&#160;</a></span>~VariableAttributeLoader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual VariableAttributeLoader::~VariableAttributeLoader </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
+<a id="a895311a46c378e8c48c7949f501482f7" name="a895311a46c378e8c48c7949f501482f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a895311a46c378e8c48c7949f501482f7">&#9670;&#160;</a></span>VariableAttributeLoader() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VariableAttributeLoader::VariableAttributeLoader </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td>
+          <td class="paramname"><em>variable_attribute_loader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+
+</div>
+</div>
+<a id="af758622815fd5b413e2f5e91a6b3da00" name="af758622815fd5b413e2f5e91a6b3da00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af758622815fd5b413e2f5e91a6b3da00">&#9670;&#160;</a></span>VariableAttributeLoader() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VariableAttributeLoader::VariableAttributeLoader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>variable_attribute_loader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a350bc87ac499ae1168f373b57cdfe0a1" name="a350bc87ac499ae1168f373b57cdfe0a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a350bc87ac499ae1168f373b57cdfe0a1">&#9670;&#160;</a></span>compute_shared_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::compute_shared_dependencies </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the shared dependencies for a subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belong to a given FieldSolveType and solve order. </p>
+<p>This function computes the shared dependencies for the RHS. It updates the eval_flag_set_rhs and dependency_set_rhs to be the same between all the variables.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_attributes</td><td>The set of variable attributes that we are computing shared dependencies for </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a955ba9807789cc0f7835bd558948db4a" name="a955ba9807789cc0f7835bd558948db4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955ba9807789cc0f7835bd558948db4a">&#9670;&#160;</a></span>compute_subset_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> * &gt; VariableAttributeLoader::compute_subset_attributes </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>variable_attributes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a>&#160;</td>
+          <td class="paramname"><em>field_solve_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>solve_priority</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the subset of <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> that belongs to a given FieldSolveType and solver order. </p>
+<p>This function creates and returns a map of the VariablesAttributes that belong to a FieldSolveType and solve order.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_attributes</td><td>The set of variable attributes that we are taking the subset of </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">field_solve_type</td><td>The FieldSolveType for the subset </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">solve_priority</td><td>The solve priority for the subset </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a5a2b54ccc2b012fca367d4225e1eb720" name="a5a2b54ccc2b012fca367d4225e1eb720"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a2b54ccc2b012fca367d4225e1eb720">&#9670;&#160;</a></span>get_var_attributes()</h2>
 
@@ -224,6 +454,25 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>load_variable
 
 <p>getter function for variable attributes list (copy). </p>
 <p>This must be a copy because we don't need the class after the <a class="el" href="structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,...">VariableAttributes</a> are processed. </p>
+
+</div>
+</div>
+<a id="af080b9bdfee9ff74083a40653d6a94d4" name="af080b9bdfee9ff74083a40653d6a94d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af080b9bdfee9ff74083a40653d6a94d4">&#9670;&#160;</a></span>init_variable_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void VariableAttributeLoader::init_variable_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the variable attributes from the two user-facing methods <code><a class="el" href="classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8" title="User-implemented method where the variable attributes are set for all fields.">load_variable_attributes()</a></code> and <code>loadPostProcessorVariableAttributes()</code>. This must be called after the default constructor for derived classes. </p>
 
 </div>
 </div>
@@ -380,6 +629,151 @@ template&lt;typename Iterable &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aaec3896d284f17c75452f5306f1f06d8" name="aaec3896d284f17c75452f5306f1f06d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaec3896d284f17c75452f5306f1f06d8">&#9670;&#160;</a></span>load_variable_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void VariableAttributeLoader::load_variable_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-implemented method where the variable attributes are set for all fields. </p>
+
+</div>
+</div>
+<a id="a1d2e826151dd66b0d4f9446b9937d94b" name="a1d2e826151dd66b0d4f9446b9937d94b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d2e826151dd66b0d4f9446b9937d94b">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp; VariableAttributeLoader::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&#160;</td>
+          <td class="paramname"><em>variable_attribute_loader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy assignment. </p>
+
+</div>
+</div>
+<a id="a3f0bb6f29bbaeb2f5e14d3436949816c" name="a3f0bb6f29bbaeb2f5e14d3436949816c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f0bb6f29bbaeb2f5e14d3436949816c">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp; VariableAttributeLoader::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classVariableAttributeLoader.html">VariableAttributeLoader</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>variable_attribute_loader</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Move assignment. </p>
+
+</div>
+</div>
+<a id="ae3fb08f9aeb8a6d54c6b37fbc08a75c7" name="ae3fb08f9aeb8a6d54c6b37fbc08a75c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3fb08f9aeb8a6d54c6b37fbc08a75c7">&#9670;&#160;</a></span>populate_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::populate_dependencies </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reg_delimiters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; std::pair&lt; std::string, std::string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dep_type_delimiters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::set&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reg_possible_deps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::map&lt; unsigned int, std::set&lt; std::string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>change_possible_deps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Populate dependencies that we should expect from the user. </p>
 
 </div>
 </div>
@@ -628,7 +1022,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Types::Index &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
           <td class="paramname"><em>solve_block</em>&#160;</td>
         </tr>
         <tr>
@@ -665,7 +1059,7 @@ template&lt;typename Iterable &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const PDEType &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> &amp;&#160;</td>
           <td class="paramname"><em>pde_type</em>&#160;</td>
         </tr>
         <tr>
@@ -761,9 +1155,204 @@ template&lt;typename Iterable &gt; </div>
 
 </div>
 </div>
+<a id="a5001e06fdcff765c4b08cd81f01c13ac" name="a5001e06fdcff765c4b08cd81f01c13ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5001e06fdcff765c4b08cd81f01c13ac">&#9670;&#160;</a></span>validate_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::validate_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform a suite of assertions on the attributes to ensure that the user's inputs are well-formed. </p>
+
+</div>
+</div>
+<a id="aca2a0f753f134f2499776db44e89b4d0" name="aca2a0f753f134f2499776db44e89b4d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca2a0f753f134f2499776db44e89b4d0">&#9670;&#160;</a></span>validate_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::validate_dependencies </td>
+          <td>(</td>
+          <td class="paramtype">const std::set&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dependencies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reg_possible_deps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; unsigned int, std::set&lt; std::string &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>change_possible_deps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate the dependencies (RHS or LHS) that the user has provided. </p>
+
+</div>
+</div>
+<a id="aa4d11f49c625260ef3446a66df9248dc" name="aa4d11f49c625260ef3446a66df9248dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d11f49c625260ef3446a66df9248dc">&#9670;&#160;</a></span>validate_old_solution_dependencies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::validate_old_solution_dependencies </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate the old solution dependencies that the user has provided. </p>
+<p>There are two criteria:</p><ol type="1">
+<li>The storage of old fields must be sequential (old_1 must be included before old_2).</li>
+<li>Old fields cannot be stored for constant equations. </li>
+</ol>
+
+</div>
+</div>
+<a id="a4e4cde131d056a496793b4a50d93ffe5" name="a4e4cde131d056a496793b4a50d93ffe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4cde131d056a496793b4a50d93ffe5">&#9670;&#160;</a></span>validate_variable_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void VariableAttributeLoader::validate_variable_name </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::set&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>forbidden_names</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate that the variable name is not empty and does not contain any forbidden substrings (names). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="affa75595fc50c71c1c0fb3b387062ae1" name="affa75595fc50c71c1c0fb3b387062ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affa75595fc50c71c1c0fb3b387062ae1">&#9670;&#160;</a></span>var_attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a>&gt; VariableAttributeLoader::var_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The solutions variable &amp; postprocessing variable attributes. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="variable__attribute__loader_8h_source.html">variable_attribute_loader.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>variable_attribute_loader.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="variable__attribute__loader_8cc.html">variable_attribute_loader.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

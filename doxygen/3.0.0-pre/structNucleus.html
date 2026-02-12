@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -123,42 +130,234 @@ $(document).ready(function(){initNavTree('structNucleus.html',''); initResizable
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a82163cca7ad486f8580beab89a3089e0" id="r_a82163cca7ad486f8580beab89a3089e0"><td class="memItemLeft" align="right" valign="top"><a id="a82163cca7ad486f8580beab89a3089e0" name="a82163cca7ad486f8580beab89a3089e0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Nucleus</b> ()=default</td></tr>
-<tr class="memdesc:a82163cca7ad486f8580beab89a3089e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a82163cca7ad486f8580beab89a3089e0" id="r_a82163cca7ad486f8580beab89a3089e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#a82163cca7ad486f8580beab89a3089e0">Nucleus</a> ()=default</td></tr>
+<tr class="memdesc:a82163cca7ad486f8580beab89a3089e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a82163cca7ad486f8580beab89a3089e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dbc12c4cf9051bde83641865311cbf3" id="r_a6dbc12c4cf9051bde83641865311cbf3"><td class="memItemLeft" align="right" valign="top"><a id="a6dbc12c4cf9051bde83641865311cbf3" name="a6dbc12c4cf9051bde83641865311cbf3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Nucleus</b> (const unsigned int &amp;_field_index, const dealii::Point&lt; dim &gt; &amp;_location, const double &amp;_seed_time, const unsigned int &amp;_seed_increment)</td></tr>
+<tr class="memitem:a6dbc12c4cf9051bde83641865311cbf3" id="r_a6dbc12c4cf9051bde83641865311cbf3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#a6dbc12c4cf9051bde83641865311cbf3">Nucleus</a> (const unsigned int &amp;_field_index, const dealii::Point&lt; dim &gt; &amp;_location, const double &amp;_seed_time, const unsigned int &amp;_seed_increment)</td></tr>
 <tr class="separator:a6dbc12c4cf9051bde83641865311cbf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65645a28ec2c1d62dbae42e288c1cf6b" id="r_a65645a28ec2c1d62dbae42e288c1cf6b"><td class="memItemLeft" align="right" valign="top"><a id="a65645a28ec2c1d62dbae42e288c1cf6b" name="a65645a28ec2c1d62dbae42e288c1cf6b"></a>
-dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>location_vectorized</b> () const</td></tr>
+<tr class="memitem:a65645a28ec2c1d62dbae42e288c1cf6b" id="r_a65645a28ec2c1d62dbae42e288c1cf6b"><td class="memItemLeft" align="right" valign="top">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b">location_vectorized</a> () const</td></tr>
 <tr class="separator:a65645a28ec2c1d62dbae42e288c1cf6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a567edb715eee48cd250f9eece9a8008b" id="r_a567edb715eee48cd250f9eece9a8008b"><td class="memItemLeft" align="right" valign="top"><a id="a567edb715eee48cd250f9eece9a8008b" name="a567edb715eee48cd250f9eece9a8008b"></a>
-static MPI_Datatype&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_datatype</b> ()</td></tr>
+<tr class="memitem:a567edb715eee48cd250f9eece9a8008b" id="r_a567edb715eee48cd250f9eece9a8008b"><td class="memItemLeft" align="right" valign="top">static MPI_Datatype&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#a567edb715eee48cd250f9eece9a8008b">mpi_datatype</a> ()</td></tr>
 <tr class="separator:a567edb715eee48cd250f9eece9a8008b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a9896d837664d2ab8dc582fddb0a1bdc6" id="r_a9896d837664d2ab8dc582fddb0a1bdc6"><td class="memItemLeft" align="right" valign="top"><a id="a9896d837664d2ab8dc582fddb0a1bdc6" name="a9896d837664d2ab8dc582fddb0a1bdc6"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>field_index</b> = 0</td></tr>
+<tr class="memitem:a9896d837664d2ab8dc582fddb0a1bdc6" id="r_a9896d837664d2ab8dc582fddb0a1bdc6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#a9896d837664d2ab8dc582fddb0a1bdc6">field_index</a> = 0</td></tr>
 <tr class="separator:a9896d837664d2ab8dc582fddb0a1bdc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addb86426dbd7ded2fc1cb9f1e624788f" id="r_addb86426dbd7ded2fc1cb9f1e624788f"><td class="memItemLeft" align="right" valign="top"><a id="addb86426dbd7ded2fc1cb9f1e624788f" name="addb86426dbd7ded2fc1cb9f1e624788f"></a>
-dealii::Point&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>location</b></td></tr>
+<tr class="memitem:addb86426dbd7ded2fc1cb9f1e624788f" id="r_addb86426dbd7ded2fc1cb9f1e624788f"><td class="memItemLeft" align="right" valign="top">dealii::Point&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f">location</a></td></tr>
 <tr class="separator:addb86426dbd7ded2fc1cb9f1e624788f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7ccb0a79bfccf2642ca8ff10ab2f28e" id="r_aa7ccb0a79bfccf2642ca8ff10ab2f28e"><td class="memItemLeft" align="right" valign="top"><a id="aa7ccb0a79bfccf2642ca8ff10ab2f28e" name="aa7ccb0a79bfccf2642ca8ff10ab2f28e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>seed_time</b> = 0.0</td></tr>
+<tr class="memitem:aa7ccb0a79bfccf2642ca8ff10ab2f28e" id="r_aa7ccb0a79bfccf2642ca8ff10ab2f28e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#aa7ccb0a79bfccf2642ca8ff10ab2f28e">seed_time</a> = 0.0</td></tr>
 <tr class="separator:aa7ccb0a79bfccf2642ca8ff10ab2f28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adda8cd9d71c22c4495174740389b8e5a" id="r_adda8cd9d71c22c4495174740389b8e5a"><td class="memItemLeft" align="right" valign="top"><a id="adda8cd9d71c22c4495174740389b8e5a" name="adda8cd9d71c22c4495174740389b8e5a"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>seed_increment</b> = 0</td></tr>
+<tr class="memitem:adda8cd9d71c22c4495174740389b8e5a" id="r_adda8cd9d71c22c4495174740389b8e5a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNucleus.html#adda8cd9d71c22c4495174740389b8e5a">seed_increment</a> = 0</td></tr>
 <tr class="separator:adda8cd9d71c22c4495174740389b8e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct Nucleus&lt; dim &gt;</div><p>This class contains mutable utilities for phase field problems. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a82163cca7ad486f8580beab89a3089e0" name="a82163cca7ad486f8580beab89a3089e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82163cca7ad486f8580beab89a3089e0">&#9670;&#160;</a></span>Nucleus() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;<a class="el" href="structNucleus.html">::Nucleus</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a6dbc12c4cf9051bde83641865311cbf3" name="a6dbc12c4cf9051bde83641865311cbf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dbc12c4cf9051bde83641865311cbf3">&#9670;&#160;</a></span>Nucleus() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;<a class="el" href="structNucleus.html">::Nucleus</a> </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_field_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>_seed_time</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_seed_increment</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a65645a28ec2c1d62dbae42e288c1cf6b" name="a65645a28ec2c1d62dbae42e288c1cf6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65645a28ec2c1d62dbae42e288c1cf6b">&#9670;&#160;</a></span>location_vectorized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Point&lt; dim, dealii::VectorizedArray&lt; double &gt; &gt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::location_vectorized </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a567edb715eee48cd250f9eece9a8008b" name="a567edb715eee48cd250f9eece9a8008b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a567edb715eee48cd250f9eece9a8008b">&#9670;&#160;</a></span>mpi_datatype()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">MPI_Datatype <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::mpi_datatype </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9896d837664d2ab8dc582fddb0a1bdc6" name="a9896d837664d2ab8dc582fddb0a1bdc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9896d837664d2ab8dc582fddb0a1bdc6">&#9670;&#160;</a></span>field_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::field_index = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="addb86426dbd7ded2fc1cb9f1e624788f" name="addb86426dbd7ded2fc1cb9f1e624788f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addb86426dbd7ded2fc1cb9f1e624788f">&#9670;&#160;</a></span>location</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::Point&lt;dim&gt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::location</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adda8cd9d71c22c4495174740389b8e5a" name="adda8cd9d71c22c4495174740389b8e5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adda8cd9d71c22c4495174740389b8e5a">&#9670;&#160;</a></span>seed_increment</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::seed_increment = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7ccb0a79bfccf2642ca8ff10ab2f28e" name="aa7ccb0a79bfccf2642ca8ff10ab2f28e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ccb0a79bfccf2642ca8ff10ab2f28e">&#9670;&#160;</a></span>seed_time</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt;::seed_time = 0.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/nucleation/<a class="el" href="nucleus_8h_source.html">nucleus.h</a></li>
 </ul>
 </div><!-- contents -->

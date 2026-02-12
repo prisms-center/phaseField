@@ -4,8 +4,22 @@ var classGridRefiner =
     [ "~GridRefiner", "classGridRefiner.html#a419771c0b3e36afe8203a93e2da01860", null ],
     [ "GridRefiner", "classGridRefiner.html#a41e1ac3455930f0e404b1b8410f1b1c4", null ],
     [ "GridRefiner", "classGridRefiner.html#a50a723e7dc9450edcb4fee167d65a6cb", null ],
+    [ "add_refinement_marker", "classGridRefiner.html#ae1120852c61463caa5a36ee91d7d0a14", null ],
+    [ "clear_refinement_markers", "classGridRefiner.html#a8c6ad6ef8cda51de6d3b95cdfaef9da7", null ],
     [ "do_adaptive_refinement", "classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c", null ],
+    [ "get_refinement_markers", "classGridRefiner.html#a4c28c6ac2d94d10a5bfc53fa5de3ba46", null ],
     [ "init", "classGridRefiner.html#a42940ca3000f49fed0c54aecb7a297e3", null ],
+    [ "mark_cells_for_refinement", "classGridRefiner.html#a0b2a2f8a5cb3c646f63aca894eb5b01b", null ],
+    [ "mark_cells_for_refinement_and_coarsening", "classGridRefiner.html#af335971dc17df607da4e6b2c857f6674", null ],
     [ "operator=", "classGridRefiner.html#af7a045f51d8ddbf75cf3d79ec7f6439d", null ],
-    [ "operator=", "classGridRefiner.html#a49f073df9c221b9ec7d059d2518694eb", null ]
+    [ "operator=", "classGridRefiner.html#a49f073df9c221b9ec7d059d2518694eb", null ],
+    [ "refine_grid", "classGridRefiner.html#a038aa92063b12bd8dc8292886410b63b", null ],
+    [ "fe_systems", "classGridRefiner.html#a0a843bb07c46109c92e53b5fcd88c22b", null ],
+    [ "fe_values", "classGridRefiner.html#ad89f692c39fdfb42440fc378b66dedea", null ],
+    [ "fe_values_flags", "classGridRefiner.html#a6534250be7e05409fd02c0a2fcda811b", null ],
+    [ "grid_refinement_context", "classGridRefiner.html#ac59b2576c86a985a8f36d90436ed5505", null ],
+    [ "marker_functions", "classGridRefiner.html#a9bb6162f4a315b380300b4504d90b9b4", null ],
+    [ "max_refinement", "classGridRefiner.html#a86ea724159a58652ceb4f887991eca46", null ],
+    [ "min_refinement", "classGridRefiner.html#a67ba1105f2b9193b04d6d5dc5f54c12d", null ],
+    [ "num_quad_points", "classGridRefiner.html#a0b593961819a3eb8aadad4aa094a5385", null ]
 ];

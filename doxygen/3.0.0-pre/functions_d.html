@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,9 +114,11 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>data&#160;:&#160;<a class="el" href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">ElementVolume&lt; dim, degree, number &gt;</a>, <a class="el" href="classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeOperator.html#af0975d9895dc8ff7e84e5af27317b041">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">ReadBinary&lt; dim, number &gt;</a></li>
+<li>dataset_format&#160;:&#160;<a class="el" href="structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262">InitialConditionFile</a></li>
 <li>declare_bc_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a3db85f85fb8ab9ffa214aa00ceb4733e">InputFileReader</a></li>
 <li>declare_checkpoint_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#ae384c1fa8782783eaf1573a1cbcb1541">InputFileReader</a></li>
 <li>declare_grain_loading_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a0d41a7d042d433ee2517e642640413a8">InputFileReader</a></li>
@@ -124,15 +133,27 @@ $(document).ready(function(){initNavTree('functions_d.html',''); initResizable()
 <li>declare_pinning_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a6e19a40fc15e1b6a86243e4af54c06e6">InputFileReader</a></li>
 <li>declare_solver_parameters()&#160;:&#160;<a class="el" href="classInputFileReader.html#a19f9a717da4104fb30e7405d2414dd4e">InputFileReader</a></li>
 <li>declare_time_discretization()&#160;:&#160;<a class="el" href="classInputFileReader.html#a171bba6b1bf7077d07b8eb76d0f91909">InputFileReader</a></li>
+<li>degree&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>dependencies_gradient_lhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a4ce86927500144c8c1d81816ab2eacb8">RawDependencies</a></li>
 <li>dependencies_gradient_rhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a79a682fb51306f3706e55685e3671f12">RawDependencies</a></li>
 <li>dependencies_lhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a08e32bcc32822e5877069cdbb6355777">RawDependencies</a></li>
 <li>dependencies_rhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a88470811530b46460274a3117965bbbf">RawDependencies</a></li>
 <li>dependencies_value_lhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a05c5904cae0da573a2440ce70571d2fe">RawDependencies</a></li>
 <li>dependencies_value_rhs&#160;:&#160;<a class="el" href="structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b">RawDependencies</a></li>
+<li>dependency_set_lhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#afa0d0597db5b9abf8a53e2af4ef91e09">VariableAttributes</a></li>
+<li>dependency_set_rhs&#160;:&#160;<a class="el" href="structVariableAttributes.html#a14be1dbb38ca28f76bc6c692442eeed9">VariableAttributes</a></li>
+<li>dependency_type_flags&#160;:&#160;<a class="el" href="structFieldInfo.html#aa84782f47b95c146ae3fd356b5b73785">FieldInfo</a></li>
 <li>DependencyTypeFlags&#160;:&#160;<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">FieldInfo</a></li>
+<li>determine_field_solve_type()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a7ad053972c2c558d7bfaf1adb2ea7f5f">VariableAttributes</a></li>
+<li>diagonal&#160;:&#160;<a class="el" href="classVariableContainer.html#a254a09fd3e97869e7865b1d1ef785a65">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>diagonal_entries&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a573df491287fc3b35a7e8dfb41e9d8c2">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>Dirichlet&#160;:&#160;<a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a24e8c16f7de58c3b0897bda59907616f">BoundaryCondition</a></li>
+<li>dirichlet_value_map&#160;:&#160;<a class="el" href="structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58">BoundaryCondition</a></li>
 <li>do_adaptive_refinement()&#160;:&#160;<a class="el" href="classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c">GridRefiner&lt; dim, degree, number &gt;</a></li>
+<li>dof_handler&#160;:&#160;<a class="el" href="classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a1233b08ab0adba0e3b0502c460a8f20c">SolverContext&lt; dim, degree, number &gt;</a></li>
+<li>dof_handlers&#160;:&#160;<a class="el" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">DofHandler&lt; dim &gt;</a></li>
 <li>DofHandler()&#160;:&#160;<a class="el" href="classDofHandler.html#a155b8c37aaa1f22725a6f4c69e64e7fc">DofHandler&lt; dim &gt;</a></li>
+<li>dt&#160;:&#160;<a class="el" href="structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a">TemporalDiscretization</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

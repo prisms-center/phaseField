@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,8 @@ $(document).ready(function(){initNavTree('classParseCMDOptions.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classParseCMDOptions-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ParseCMDOptions Class Reference</div></div>
 </div><!--header-->
@@ -121,16 +130,188 @@ $(document).ready(function(){initNavTree('classParseCMDOptions.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a72272eecf6968274b337df70029798b4" id="r_a72272eecf6968274b337df70029798b4"><td class="memItemLeft" align="right" valign="top"><a id="a72272eecf6968274b337df70029798b4" name="a72272eecf6968274b337df70029798b4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ParseCMDOptions</b> (int &amp;_argc, char **argv)</td></tr>
+<tr class="memitem:a72272eecf6968274b337df70029798b4" id="r_a72272eecf6968274b337df70029798b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#a72272eecf6968274b337df70029798b4">ParseCMDOptions</a> (int &amp;_argc, char **argv)</td></tr>
 <tr class="separator:a72272eecf6968274b337df70029798b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0592fb24306a984c5a930be3de46e11" id="r_ae0592fb24306a984c5a930be3de46e11"><td class="memItemLeft" align="right" valign="top"><a id="ae0592fb24306a984c5a930be3de46e11" name="ae0592fb24306a984c5a930be3de46e11"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_parameters_filename</b> ()</td></tr>
+<tr class="memitem:ae0592fb24306a984c5a930be3de46e11" id="r_ae0592fb24306a984c5a930be3de46e11"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#ae0592fb24306a984c5a930be3de46e11">get_parameters_filename</a> ()</td></tr>
 <tr class="separator:ae0592fb24306a984c5a930be3de46e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a9d4bc9cdc4b80bf2a414da900649ff53" id="r_a9d4bc9cdc4b80bf2a414da900649ff53"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#a9d4bc9cdc4b80bf2a414da900649ff53">get_cmd_option</a> (const std::string &amp;option) const</td></tr>
+<tr class="separator:a9d4bc9cdc4b80bf2a414da900649ff53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad02ca16ca7747eb8e0c757047a48a414" id="r_ad02ca16ca7747eb8e0c757047a48a414"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#ad02ca16ca7747eb8e0c757047a48a414">cmd_option_exists</a> (const std::string &amp;option) const</td></tr>
+<tr class="separator:ad02ca16ca7747eb8e0c757047a48a414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:abf92da04daffe8af607348588d8d3a56" id="r_abf92da04daffe8af607348588d8d3a56"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#abf92da04daffe8af607348588d8d3a56">argc</a></td></tr>
+<tr class="separator:abf92da04daffe8af607348588d8d3a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d2f1008a3904204187e6154f82cd58e" id="r_a3d2f1008a3904204187e6154f82cd58e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParseCMDOptions.html#a3d2f1008a3904204187e6154f82cd58e">tokens</a></td></tr>
+<tr class="separator:a3d2f1008a3904204187e6154f82cd58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to parse command line options. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a72272eecf6968274b337df70029798b4" name="a72272eecf6968274b337df70029798b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72272eecf6968274b337df70029798b4">&#9670;&#160;</a></span>ParseCMDOptions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ParseCMDOptions::ParseCMDOptions </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>_argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>argv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad02ca16ca7747eb8e0c757047a48a414" name="ad02ca16ca7747eb8e0c757047a48a414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad02ca16ca7747eb8e0c757047a48a414">&#9670;&#160;</a></span>cmd_option_exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ParseCMDOptions::cmd_option_exists </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>option</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9d4bc9cdc4b80bf2a414da900649ff53" name="a9d4bc9cdc4b80bf2a414da900649ff53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d4bc9cdc4b80bf2a414da900649ff53">&#9670;&#160;</a></span>get_cmd_option()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; ParseCMDOptions::get_cmd_option </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>option</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae0592fb24306a984c5a930be3de46e11" name="ae0592fb24306a984c5a930be3de46e11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0592fb24306a984c5a930be3de46e11">&#9670;&#160;</a></span>get_parameters_filename()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ParseCMDOptions::get_parameters_filename </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="abf92da04daffe8af607348588d8d3a56" name="abf92da04daffe8af607348588d8d3a56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf92da04daffe8af607348588d8d3a56">&#9670;&#160;</a></span>argc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ParseCMDOptions::argc</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d2f1008a3904204187e6154f82cd58e" name="a3d2f1008a3904204187e6154f82cd58e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d2f1008a3904204187e6154f82cd58e">&#9670;&#160;</a></span>tokens</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; ParseCMDOptions::tokens</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="parse__cmd__options_8h_source.html">parse_cmd_options.h</a></li>
 </ul>
 </div><!-- contents -->

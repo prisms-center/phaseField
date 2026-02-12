@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,15 +122,15 @@ $(document).ready(function(){initNavTree('vector__mapping_8h_source.html',''); i
   <div class="headertitle"><div class="title">vector_mapping.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<a href="vector__mapping_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;deal.II/lac/block_vector.h&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;prismspf/core/variable_attributes.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="variable__attributes_8h.html">prismspf/core/variable_attributes.h</a>&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number&gt;</div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
@@ -133,22 +140,26 @@ $(document).ready(function(){initNavTree('vector__mapping_8h_source.html',''); i
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classVectorMappings.html#acdcd8d256989d9c177fde39c9264fb03">   28</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classVectorMappings.html#acdcd8d256989d9c177fde39c9264fb03">VectorMappings</a>(<span class="keyword">const</span> std::vector&lt;VariableAttributes&gt; &amp;variable_attributes);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_blocks = 0;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classVectorMappings.html#a576f2a5aa4ee739b470cdf612960762a">   37</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classVectorMappings.html#a576f2a5aa4ee739b470cdf612960762a">n_blocks</a> = 0;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  dealii::BlockVector&lt;Number&gt; block_vector;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classVectorMappings.html#a0efc8e795f742680dc16679cf01d6585">   42</a></span>  dealii::BlockVector&lt;Number&gt; <a class="code hl_variable" href="classVectorMappings.html#a0efc8e795f742680dc16679cf01d6585">block_vector</a>;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
 </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassVectorMappings_html"><div class="ttname"><a href="classVectorMappings.html">VectorMappings</a></div><div class="ttdef"><b>Definition</b> vector_mapping.h:23</div></div>
+<div class="ttc" id="aclassVectorMappings_html_a0efc8e795f742680dc16679cf01d6585"><div class="ttname"><a href="classVectorMappings.html#a0efc8e795f742680dc16679cf01d6585">VectorMappings::block_vector</a></div><div class="ttdeci">dealii::BlockVector&lt; Number &gt; block_vector</div><div class="ttdoc">Block vector of all necessary vectors for the PDE problem.</div><div class="ttdef"><b>Definition</b> vector_mapping.h:42</div></div>
+<div class="ttc" id="aclassVectorMappings_html_a576f2a5aa4ee739b470cdf612960762a"><div class="ttname"><a href="classVectorMappings.html#a576f2a5aa4ee739b470cdf612960762a">VectorMappings::n_blocks</a></div><div class="ttdeci">unsigned int n_blocks</div><div class="ttdoc">Number of blocks.</div><div class="ttdef"><b>Definition</b> vector_mapping.h:37</div></div>
 <div class="ttc" id="aclassVectorMappings_html_acdcd8d256989d9c177fde39c9264fb03"><div class="ttname"><a href="classVectorMappings.html#acdcd8d256989d9c177fde39c9264fb03">VectorMappings::VectorMappings</a></div><div class="ttdeci">VectorMappings(const std::vector&lt; VariableAttributes &gt; &amp;variable_attributes)</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="avariable__attributes_8h_html"><div class="ttname"><a href="variable__attributes_8h.html">variable_attributes.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>vector_mapping.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="vector__mapping_8h.html">vector_mapping.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

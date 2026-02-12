@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('read__field__base_8h_source.html','');
   <div class="headertitle"><div class="title">read_field_base.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="read__field__base_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,16 +131,16 @@ $(document).ready(function(){initNavTree('read__field__base_8h_source.html','');
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/lac/vector.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/user_inputs/load_initial_condition_parameters.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/user_inputs/spatial_discretization.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;<a class="code" href="load__initial__condition__parameters_8h.html">prismspf/user_inputs/load_initial_condition_parameters.h</a>&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="spatial__discretization_8h.html">prismspf/user_inputs/spatial_discretization.h</a>&gt;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/utilities/utilities.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;<a class="code" href="utilities_8h.html">prismspf/utilities/utilities.h</a>&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
@@ -181,10 +188,10 @@ $(document).ready(function(){initNavTree('read__field__base_8h_source.html','');
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  , ic_file(_ic_file)</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>{</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// Check that the filename exists</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">if</span> (!std::filesystem::exists(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.filename))</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">if</span> (!std::filesystem::exists(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a>))</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    {</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      AssertThrow(<span class="keyword">false</span>,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                  dealii::ExcMessage(<span class="stringliteral">&quot;File &quot;</span> + this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.filename +</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                  dealii::ExcMessage(<span class="stringliteral">&quot;File &quot;</span> + this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.<a class="code hl_variable" href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">filename</a> +</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                                     <span class="stringliteral">&quot; does not exist&quot;</span>));</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
@@ -203,14 +210,20 @@ $(document).ready(function(){initNavTree('read__field__base_8h_source.html','');
 <div class="ttc" id="aclassReadFieldBase_html_a9ef0af3047d379a60eab62d7bd6ec757"><div class="ttname"><a href="classReadFieldBase.html#a9ef0af3047d379a60eab62d7bd6ec757">ReadFieldBase::ReadFieldBase</a></div><div class="ttdeci">ReadFieldBase(ReadFieldBase &amp;&amp;read_base) noexcept=delete</div><div class="ttdoc">Move constructor.</div></div>
 <div class="ttc" id="aclassReadFieldBase_html_ab395ec2d93523d8079a0962c0b14db14"><div class="ttname"><a href="classReadFieldBase.html#ab395ec2d93523d8079a0962c0b14db14">ReadFieldBase::get_vector_value</a></div><div class="ttdeci">virtual dealii::Vector&lt; number &gt; get_vector_value(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;vector_name)=0</div><div class="ttdoc">Get vector value for a given point.</div></div>
 <div class="ttc" id="aclassReadFieldBase_html_add30dc7ee7cf59636793bfc7624860a1"><div class="ttname"><a href="classReadFieldBase.html#add30dc7ee7cf59636793bfc7624860a1">ReadFieldBase::print_file</a></div><div class="ttdeci">virtual void print_file()=0</div><div class="ttdoc">Print the input file for debugging.</div></div>
+<div class="ttc" id="aload__initial__condition__parameters_8h_html"><div class="ttname"><a href="load__initial__condition__parameters_8h.html">load_initial_condition_parameters.h</a></div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="aspatial__discretization_8h_html"><div class="ttname"><a href="spatial__discretization_8h.html">spatial_discretization.h</a></div></div>
 <div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
+<div class="ttc" id="astructInitialConditionFile_html_ac5f3a08a6606a305cc633cf150c891f5"><div class="ttname"><a href="structInitialConditionFile.html#ac5f3a08a6606a305cc633cf150c891f5">InitialConditionFile::filename</a></div><div class="ttdeci">std::string filename</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:27</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:411</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
+<div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><b>read_field_base.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_bc5d835c988615d2fc1ba7c872f30ae9.html">field_input</a></li><li class="navelem"><a class="el" href="read__field__base_8h.html">read_field_base.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

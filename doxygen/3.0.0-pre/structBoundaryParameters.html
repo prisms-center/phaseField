@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,8 @@ $(document).ready(function(){initNavTree('structBoundaryParameters.html',''); in
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structBoundaryParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">BoundaryParameters&lt; dim &gt; Struct Template Reference</div></div>
 </div><!--header-->
@@ -122,71 +131,721 @@ $(document).ready(function(){initNavTree('structBoundaryParameters.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a74ea4180d5733ab3f623d1284343f565" id="r_a74ea4180d5733ab3f623d1284343f565"><td class="memItemLeft" align="right" valign="top"><a id="a74ea4180d5733ab3f623d1284343f565" name="a74ea4180d5733ab3f623d1284343f565"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>BoundaryConditionMap</b> = std::map&lt; Types::Index, std::map&lt; unsigned int, <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &gt; &gt;</td></tr>
+<tr class="memitem:a74ea4180d5733ab3f623d1284343f565" id="r_a74ea4180d5733ab3f623d1284343f565"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryConditionMap</a> = std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::map&lt; unsigned int, <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &gt; &gt;</td></tr>
 <tr class="separator:a74ea4180d5733ab3f623d1284343f565"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a456c04ccc6348d264c49e8f639383293" id="r_a456c04ccc6348d264c49e8f639383293"><td class="memItemLeft" align="right" valign="top"><a id="a456c04ccc6348d264c49e8f639383293" name="a456c04ccc6348d264c49e8f639383293"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>BCList</b> = std::map&lt; Types::Index, std::map&lt; unsigned int, std::string &gt; &gt;</td></tr>
+<tr class="memitem:a456c04ccc6348d264c49e8f639383293" id="r_a456c04ccc6348d264c49e8f639383293"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a456c04ccc6348d264c49e8f639383293">BCList</a> = std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::map&lt; unsigned int, std::string &gt; &gt;</td></tr>
 <tr class="separator:a456c04ccc6348d264c49e8f639383293"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0fb4faba4e596770706a586c69d1f49" id="r_ac0fb4faba4e596770706a586c69d1f49"><td class="memItemLeft" align="right" valign="top"><a id="ac0fb4faba4e596770706a586c69d1f49" name="ac0fb4faba4e596770706a586c69d1f49"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>PinnedPointMap</b> = std::map&lt; Types::Index, std::pair&lt; std::variant&lt; double, std::vector&lt; double &gt; &gt;, dealii::Point&lt; dim &gt; &gt; &gt;</td></tr>
+<tr class="memitem:ac0fb4faba4e596770706a586c69d1f49" id="r_ac0fb4faba4e596770706a586c69d1f49"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#ac0fb4faba4e596770706a586c69d1f49">PinnedPointMap</a> = std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::pair&lt; std::variant&lt; double, std::vector&lt; double &gt; &gt;, dealii::Point&lt; dim &gt; &gt; &gt;</td></tr>
 <tr class="separator:ac0fb4faba4e596770706a586c69d1f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4486dc3eecb3a35c24bd4d01430748ec" id="r_a4486dc3eecb3a35c24bd4d01430748ec"><td class="memItemLeft" align="right" valign="top"><a id="a4486dc3eecb3a35c24bd4d01430748ec" name="a4486dc3eecb3a35c24bd4d01430748ec"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> (std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;var_attributes)</td></tr>
-<tr class="memdesc:a4486dc3eecb3a35c24bd4d01430748ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a4486dc3eecb3a35c24bd4d01430748ec" id="r_a4486dc3eecb3a35c24bd4d01430748ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a4486dc3eecb3a35c24bd4d01430748ec">postprocess_and_validate</a> (std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;var_attributes)</td></tr>
+<tr class="memdesc:a4486dc3eecb3a35c24bd4d01430748ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a4486dc3eecb3a35c24bd4d01430748ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6f38a14940309ff67f7d867b1b64f9" id="r_a8f6f38a14940309ff67f7d867b1b64f9"><td class="memItemLeft" align="right" valign="top"><a id="a8f6f38a14940309ff67f7d867b1b64f9" name="a8f6f38a14940309ff67f7d867b1b64f9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>check_degenerate_boundary_conditions</b> (const Types::Index &amp;index_1, const Types::Index &amp;index_2) const</td></tr>
-<tr class="memdesc:a8f6f38a14940309ff67f7d867b1b64f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the boundary conditions for two fields are the same. <br /></td></tr>
+<tr class="memitem:a8f6f38a14940309ff67f7d867b1b64f9" id="r_a8f6f38a14940309ff67f7d867b1b64f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a8f6f38a14940309ff67f7d867b1b64f9">check_degenerate_boundary_conditions</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index_1, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index_2) const</td></tr>
+<tr class="memdesc:a8f6f38a14940309ff67f7d867b1b64f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the boundary conditions for two fields are the same.  <br /></td></tr>
 <tr class="separator:a8f6f38a14940309ff67f7d867b1b64f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a406d3fa7f950767bf2d61916fbf757b0" id="r_a406d3fa7f950767bf2d61916fbf757b0"><td class="memItemLeft" align="right" valign="top"><a id="a406d3fa7f950767bf2d61916fbf757b0" name="a406d3fa7f950767bf2d61916fbf757b0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:a406d3fa7f950767bf2d61916fbf757b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:a406d3fa7f950767bf2d61916fbf757b0" id="r_a406d3fa7f950767bf2d61916fbf757b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a406d3fa7f950767bf2d61916fbf757b0">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:a406d3fa7f950767bf2d61916fbf757b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:a406d3fa7f950767bf2d61916fbf757b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afedbace8268072d8b4ceef58cb9f8a1a" id="r_afedbace8268072d8b4ceef58cb9f8a1a"><td class="memItemLeft" align="right" valign="top"><a id="afedbace8268072d8b4ceef58cb9f8a1a" name="afedbace8268072d8b4ceef58cb9f8a1a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_boundary_condition_string</b> (const std::string &amp;bc_string, const Types::Index &amp;index, const unsigned int &amp;component)</td></tr>
-<tr class="memdesc:afedbace8268072d8b4ceef58cb9f8a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the boundary condition string for a field index and component. <br /></td></tr>
+<tr class="memitem:afedbace8268072d8b4ceef58cb9f8a1a" id="r_afedbace8268072d8b4ceef58cb9f8a1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#afedbace8268072d8b4ceef58cb9f8a1a">set_boundary_condition_string</a> (const std::string &amp;bc_string, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index, const unsigned int &amp;component)</td></tr>
+<tr class="memdesc:afedbace8268072d8b4ceef58cb9f8a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the boundary condition string for a field index and component.  <br /></td></tr>
 <tr class="separator:afedbace8268072d8b4ceef58cb9f8a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab589cf6b8c580374fac7a40c9fbe3483" id="r_ab589cf6b8c580374fac7a40c9fbe3483"><td class="memItemLeft" align="right" valign="top"><a id="ab589cf6b8c580374fac7a40c9fbe3483" name="ab589cf6b8c580374fac7a40c9fbe3483"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_time_dependent_bcs</b> () const</td></tr>
-<tr class="memdesc:ab589cf6b8c580374fac7a40c9fbe3483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there are time-dependent boundary conditions. <br /></td></tr>
+<tr class="memitem:ab589cf6b8c580374fac7a40c9fbe3483" id="r_ab589cf6b8c580374fac7a40c9fbe3483"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#ab589cf6b8c580374fac7a40c9fbe3483">has_time_dependent_bcs</a> () const</td></tr>
+<tr class="memdesc:ab589cf6b8c580374fac7a40c9fbe3483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there are time-dependent boundary conditions.  <br /></td></tr>
 <tr class="separator:ab589cf6b8c580374fac7a40c9fbe3483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8970f0febe9a31d88f11a770935a1bd4" id="r_a8970f0febe9a31d88f11a770935a1bd4"><td class="memItemLeft" align="right" valign="top"><a id="a8970f0febe9a31d88f11a770935a1bd4" name="a8970f0febe9a31d88f11a770935a1bd4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_time_dependent</b> (const Types::Index &amp;index) const</td></tr>
-<tr class="memdesc:a8970f0febe9a31d88f11a770935a1bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the boundary condition is time-dependent. <br /></td></tr>
+<tr class="memitem:a8970f0febe9a31d88f11a770935a1bd4" id="r_a8970f0febe9a31d88f11a770935a1bd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a8970f0febe9a31d88f11a770935a1bd4">is_time_dependent</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index) const</td></tr>
+<tr class="memdesc:a8970f0febe9a31d88f11a770935a1bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the boundary condition is time-dependent.  <br /></td></tr>
 <tr class="separator:a8970f0febe9a31d88f11a770935a1bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab38d0a46aceae15e5733c37495853788" id="r_ab38d0a46aceae15e5733c37495853788"><td class="memItemLeft" align="right" valign="top"><a id="ab38d0a46aceae15e5733c37495853788" name="ab38d0a46aceae15e5733c37495853788"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_pinned_point</b> (const std::variant&lt; double, std::vector&lt; double &gt; &gt; &amp;value, const dealii::Point&lt; dim &gt; &amp;point, const Types::Index &amp;index)</td></tr>
-<tr class="memdesc:ab38d0a46aceae15e5733c37495853788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a pinned point. <br /></td></tr>
+<tr class="memitem:ab38d0a46aceae15e5733c37495853788" id="r_ab38d0a46aceae15e5733c37495853788"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#ab38d0a46aceae15e5733c37495853788">set_pinned_point</a> (const std::variant&lt; double, std::vector&lt; double &gt; &gt; &amp;value, const dealii::Point&lt; dim &gt; &amp;point, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index)</td></tr>
+<tr class="memdesc:ab38d0a46aceae15e5733c37495853788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a pinned point.  <br /></td></tr>
 <tr class="separator:ab38d0a46aceae15e5733c37495853788"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a072de1962cb0396070e75f0613fc9574" id="r_a072de1962cb0396070e75f0613fc9574"><td class="memItemLeft" align="right" valign="top"><a id="a072de1962cb0396070e75f0613fc9574" name="a072de1962cb0396070e75f0613fc9574"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_pinned_point</b> (const Types::Index &amp;index) const</td></tr>
-<tr class="memdesc:a072de1962cb0396070e75f0613fc9574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is a pinned point for a field index. <br /></td></tr>
+<tr class="memitem:a072de1962cb0396070e75f0613fc9574" id="r_a072de1962cb0396070e75f0613fc9574"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a072de1962cb0396070e75f0613fc9574">has_pinned_point</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index) const</td></tr>
+<tr class="memdesc:a072de1962cb0396070e75f0613fc9574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is a pinned point for a field index.  <br /></td></tr>
 <tr class="separator:a072de1962cb0396070e75f0613fc9574"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cc87d8496a7c6c754919bf08bd43ce4" id="r_a0cc87d8496a7c6c754919bf08bd43ce4"><td class="memItemLeft" align="right" valign="top"><a id="a0cc87d8496a7c6c754919bf08bd43ce4" name="a0cc87d8496a7c6c754919bf08bd43ce4"></a>
-const std::pair&lt; std::variant&lt; double, std::vector&lt; double &gt; &gt;, dealii::Point&lt; dim &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pinned_point</b> (const Types::Index &amp;index) const</td></tr>
-<tr class="memdesc:a0cc87d8496a7c6c754919bf08bd43ce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pinned point for a field index. <br /></td></tr>
+<tr class="memitem:a0cc87d8496a7c6c754919bf08bd43ce4" id="r_a0cc87d8496a7c6c754919bf08bd43ce4"><td class="memItemLeft" align="right" valign="top">const std::pair&lt; std::variant&lt; double, std::vector&lt; double &gt; &gt;, dealii::Point&lt; dim &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a0cc87d8496a7c6c754919bf08bd43ce4">get_pinned_point</a> (const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index) const</td></tr>
+<tr class="memdesc:a0cc87d8496a7c6c754919bf08bd43ce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pinned point for a field index.  <br /></td></tr>
 <tr class="separator:a0cc87d8496a7c6c754919bf08bd43ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82f53d76b2bcdcd41fa7413f8133b33e" id="r_a82f53d76b2bcdcd41fa7413f8133b33e"><td class="memItemLeft" align="right" valign="top"><a id="a82f53d76b2bcdcd41fa7413f8133b33e" name="a82f53d76b2bcdcd41fa7413f8133b33e"></a>
-const BoundaryConditionMap &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_boundary_condition_list</b> () const</td></tr>
-<tr class="memdesc:a82f53d76b2bcdcd41fa7413f8133b33e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the boundary conditions list. <br /></td></tr>
+<tr class="memitem:a82f53d76b2bcdcd41fa7413f8133b33e" id="r_a82f53d76b2bcdcd41fa7413f8133b33e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryConditionMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a82f53d76b2bcdcd41fa7413f8133b33e">get_boundary_condition_list</a> () const</td></tr>
+<tr class="memdesc:a82f53d76b2bcdcd41fa7413f8133b33e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the boundary conditions list.  <br /></td></tr>
 <tr class="separator:a82f53d76b2bcdcd41fa7413f8133b33e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56a6d12533fff2bad3efa1e8b4a8b103" id="r_a56a6d12533fff2bad3efa1e8b4a8b103"><td class="memItemLeft" align="right" valign="top"><a id="a56a6d12533fff2bad3efa1e8b4a8b103" name="a56a6d12533fff2bad3efa1e8b4a8b103"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_periodic_boundaries</b> () const</td></tr>
-<tr class="memdesc:a56a6d12533fff2bad3efa1e8b4a8b103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any boundaries are periodic. <br /></td></tr>
+<tr class="memitem:a56a6d12533fff2bad3efa1e8b4a8b103" id="r_a56a6d12533fff2bad3efa1e8b4a8b103"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a56a6d12533fff2bad3efa1e8b4a8b103">has_periodic_boundaries</a> () const</td></tr>
+<tr class="memdesc:a56a6d12533fff2bad3efa1e8b4a8b103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any boundaries are periodic.  <br /></td></tr>
 <tr class="separator:a56a6d12533fff2bad3efa1e8b4a8b103"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538e1c2ed71a6a5c36ea4252fff10f6d" id="r_a538e1c2ed71a6a5c36ea4252fff10f6d"><td class="memItemLeft" align="right" valign="top"><a id="a538e1c2ed71a6a5c36ea4252fff10f6d" name="a538e1c2ed71a6a5c36ea4252fff10f6d"></a>
-const std::array&lt; bool, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_periodicity</b> () const</td></tr>
-<tr class="memdesc:a538e1c2ed71a6a5c36ea4252fff10f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the periodicity array. <br /></td></tr>
+<tr class="memitem:a538e1c2ed71a6a5c36ea4252fff10f6d" id="r_a538e1c2ed71a6a5c36ea4252fff10f6d"><td class="memItemLeft" align="right" valign="top">const std::array&lt; bool, dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a538e1c2ed71a6a5c36ea4252fff10f6d">get_periodicity</a> () const</td></tr>
+<tr class="memdesc:a538e1c2ed71a6a5c36ea4252fff10f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the periodicity array.  <br /></td></tr>
 <tr class="separator:a538e1c2ed71a6a5c36ea4252fff10f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a4b3fae88512fda8e53626249ffd2b204" id="r_a4b3fae88512fda8e53626249ffd2b204"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a4b3fae88512fda8e53626249ffd2b204">set_boundary</a> (const std::string &amp;bc_string, const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;index, const unsigned int &amp;component)</td></tr>
+<tr class="memdesc:a4b3fae88512fda8e53626249ffd2b204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the boundary for a single component of a field index.  <br /></td></tr>
+<tr class="separator:a4b3fae88512fda8e53626249ffd2b204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6580c7b005e47f5efbda48958700d8" id="r_add6580c7b005e47f5efbda48958700d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#add6580c7b005e47f5efbda48958700d8">validate_boundary_conditions</a> () const</td></tr>
+<tr class="memdesc:add6580c7b005e47f5efbda48958700d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a check on the boundary conditions to ensure that they are valid.  <br /></td></tr>
+<tr class="separator:add6580c7b005e47f5efbda48958700d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a80b30a01830ec3dd7dff7069a9aabed5" id="r_a80b30a01830ec3dd7dff7069a9aabed5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBoundaryParameters.html#a456c04ccc6348d264c49e8f639383293">BCList</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a80b30a01830ec3dd7dff7069a9aabed5">bc_list</a></td></tr>
+<tr class="separator:a80b30a01830ec3dd7dff7069a9aabed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c447437e4cf7e9f27f34eaaea7ed477" id="r_a9c447437e4cf7e9f27f34eaaea7ed477"><td class="memItemLeft" align="right" valign="top">std::set&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a9c447437e4cf7e9f27f34eaaea7ed477">time_dependent_bc_list</a></td></tr>
+<tr class="separator:a9c447437e4cf7e9f27f34eaaea7ed477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a484a7327ad6a76dc552bbc10801d4eb8" id="r_a484a7327ad6a76dc552bbc10801d4eb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBoundaryParameters.html#ac0fb4faba4e596770706a586c69d1f49">PinnedPointMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a484a7327ad6a76dc552bbc10801d4eb8">pinned_point_list</a> = {}</td></tr>
+<tr class="separator:a484a7327ad6a76dc552bbc10801d4eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf740d7a1f40d96f96150680dd3cc2b" id="r_accf740d7a1f40d96f96150680dd3cc2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryConditionMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#accf740d7a1f40d96f96150680dd3cc2b">boundary_condition_list</a></td></tr>
+<tr class="separator:accf740d7a1f40d96f96150680dd3cc2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80e4c301a73156f6cc03b38561556028" id="r_a80e4c301a73156f6cc03b38561556028"><td class="memItemLeft" align="right" valign="top">std::array&lt; bool, dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBoundaryParameters.html#a80e4c301a73156f6cc03b38561556028">periodicity</a></td></tr>
+<tr class="separator:a80e4c301a73156f6cc03b38561556028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct BoundaryParameters&lt; dim &gt;</div><p>Struct that holds boundary parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a456c04ccc6348d264c49e8f639383293" name="a456c04ccc6348d264c49e8f639383293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a456c04ccc6348d264c49e8f639383293">&#9670;&#160;</a></span>BCList</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BCList =  std::map&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::map&lt;unsigned int, std::string&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a74ea4180d5733ab3f623d1284343f565" name="a74ea4180d5733ab3f623d1284343f565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74ea4180d5733ab3f623d1284343f565">&#9670;&#160;</a></span>BoundaryConditionMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::BoundaryConditionMap =  std::map&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::map&lt;unsigned int, <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac0fb4faba4e596770706a586c69d1f49" name="ac0fb4faba4e596770706a586c69d1f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0fb4faba4e596770706a586c69d1f49">&#9670;&#160;</a></span>PinnedPointMap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::PinnedPointMap =  std::map&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, std::pair&lt;std::variant&lt;double, std::vector&lt;double&gt; &gt;, dealii::Point&lt;dim&gt; &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8f6f38a14940309ff67f7d867b1b64f9" name="a8f6f38a14940309ff67f7d867b1b64f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f6f38a14940309ff67f7d867b1b64f9">&#9670;&#160;</a></span>check_degenerate_boundary_conditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::check_degenerate_boundary_conditions </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the boundary conditions for two fields are the same. </p>
+
+</div>
+</div>
+<a id="a82f53d76b2bcdcd41fa7413f8133b33e" name="a82f53d76b2bcdcd41fa7413f8133b33e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f53d76b2bcdcd41fa7413f8133b33e">&#9670;&#160;</a></span>get_boundary_condition_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryConditionMap</a> &amp; <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::get_boundary_condition_list </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the boundary conditions list. </p>
+
+</div>
+</div>
+<a id="a538e1c2ed71a6a5c36ea4252fff10f6d" name="a538e1c2ed71a6a5c36ea4252fff10f6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a538e1c2ed71a6a5c36ea4252fff10f6d">&#9670;&#160;</a></span>get_periodicity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::array&lt; bool, dim &gt; &amp; <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::get_periodicity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the periodicity array. </p>
+
+</div>
+</div>
+<a id="a0cc87d8496a7c6c754919bf08bd43ce4" name="a0cc87d8496a7c6c754919bf08bd43ce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cc87d8496a7c6c754919bf08bd43ce4">&#9670;&#160;</a></span>get_pinned_point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::pair&lt; std::variant&lt; double, std::vector&lt; double &gt; &gt;, dealii::Point&lt; dim &gt; &gt; &amp; <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::get_pinned_point </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the pinned point for a field index. </p>
+
+</div>
+</div>
+<a id="a56a6d12533fff2bad3efa1e8b4a8b103" name="a56a6d12533fff2bad3efa1e8b4a8b103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56a6d12533fff2bad3efa1e8b4a8b103">&#9670;&#160;</a></span>has_periodic_boundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::has_periodic_boundaries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if any boundaries are periodic. </p>
+
+</div>
+</div>
+<a id="a072de1962cb0396070e75f0613fc9574" name="a072de1962cb0396070e75f0613fc9574"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a072de1962cb0396070e75f0613fc9574">&#9670;&#160;</a></span>has_pinned_point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::has_pinned_point </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether there is a pinned point for a field index. </p>
+
+</div>
+</div>
+<a id="ab589cf6b8c580374fac7a40c9fbe3483" name="ab589cf6b8c580374fac7a40c9fbe3483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab589cf6b8c580374fac7a40c9fbe3483">&#9670;&#160;</a></span>has_time_dependent_bcs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::has_time_dependent_bcs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether there are time-dependent boundary conditions. </p>
+
+</div>
+</div>
+<a id="a8970f0febe9a31d88f11a770935a1bd4" name="a8970f0febe9a31d88f11a770935a1bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8970f0febe9a31d88f11a770935a1bd4">&#9670;&#160;</a></span>is_time_dependent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::is_time_dependent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether the boundary condition is time-dependent. </p>
+
+</div>
+</div>
+<a id="a4486dc3eecb3a35c24bd4d01430748ec" name="a4486dc3eecb3a35c24bd4d01430748ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4486dc3eecb3a35c24bd4d01430748ec">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="a406d3fa7f950767bf2d61916fbf757b0" name="a406d3fa7f950767bf2d61916fbf757b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a406d3fa7f950767bf2d61916fbf757b0">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="a4b3fae88512fda8e53626249ffd2b204" name="a4b3fae88512fda8e53626249ffd2b204"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b3fae88512fda8e53626249ffd2b204">&#9670;&#160;</a></span>set_boundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::set_boundary </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bc_string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>component</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the boundary for a single component of a field index. </p>
+
+</div>
+</div>
+<a id="afedbace8268072d8b4ceef58cb9f8a1a" name="afedbace8268072d8b4ceef58cb9f8a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afedbace8268072d8b4ceef58cb9f8a1a">&#9670;&#160;</a></span>set_boundary_condition_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::set_boundary_condition_string </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>bc_string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>component</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the boundary condition string for a field index and component. </p>
+
+</div>
+</div>
+<a id="ab38d0a46aceae15e5733c37495853788" name="ab38d0a46aceae15e5733c37495853788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab38d0a46aceae15e5733c37495853788">&#9670;&#160;</a></span>set_pinned_point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::set_pinned_point </td>
+          <td>(</td>
+          <td class="paramtype">const std::variant&lt; double, std::vector&lt; double &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set a pinned point. </p>
+
+</div>
+</div>
+<a id="add6580c7b005e47f5efbda48958700d8" name="add6580c7b005e47f5efbda48958700d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add6580c7b005e47f5efbda48958700d8">&#9670;&#160;</a></span>validate_boundary_conditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::validate_boundary_conditions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Perform a check on the boundary conditions to ensure that they are valid. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a80b30a01830ec3dd7dff7069a9aabed5" name="a80b30a01830ec3dd7dff7069a9aabed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80b30a01830ec3dd7dff7069a9aabed5">&#9670;&#160;</a></span>bc_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structBoundaryParameters.html#a456c04ccc6348d264c49e8f639383293">BCList</a> <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::bc_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accf740d7a1f40d96f96150680dd3cc2b" name="accf740d7a1f40d96f96150680dd3cc2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accf740d7a1f40d96f96150680dd3cc2b">&#9670;&#160;</a></span>boundary_condition_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structBoundaryParameters.html#a74ea4180d5733ab3f623d1284343f565">BoundaryConditionMap</a> <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::boundary_condition_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a80e4c301a73156f6cc03b38561556028" name="a80e4c301a73156f6cc03b38561556028"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80e4c301a73156f6cc03b38561556028">&#9670;&#160;</a></span>periodicity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;bool, dim&gt; <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::periodicity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a484a7327ad6a76dc552bbc10801d4eb8" name="a484a7327ad6a76dc552bbc10801d4eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a484a7327ad6a76dc552bbc10801d4eb8">&#9670;&#160;</a></span>pinned_point_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structBoundaryParameters.html#ac0fb4faba4e596770706a586c69d1f49">PinnedPointMap</a> <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::pinned_point_list = {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9c447437e4cf7e9f27f34eaaea7ed477" name="a9c447437e4cf7e9f27f34eaaea7ed477"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c447437e4cf7e9f27f34eaaea7ed477">&#9670;&#160;</a></span>time_dependent_bc_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&gt; <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::time_dependent_bc_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="boundary__parameters_8h_source.html">boundary_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -124,13 +131,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a13c3a0e5fb8d996c34e56e148955c32b" id="r_a13c3a0e5fb8d996c34e56e148955c32b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNucleationHandler.html#a13c3a0e5fb8d996c34e56e148955c32b">attempt_nucleation</a> (const <a class="el" href="classSolverContext.html">SolverContext</a>&lt; dim, degree, number &gt; &amp;solver_context, std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;nuclei)</td></tr>
 <tr class="memdesc:a13c3a0e5fb8d996c34e56e148955c32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main nucleation function. Iterates over the domain and stochastically adds nuclei to the list.  <br /></td></tr>
 <tr class="separator:a13c3a0e5fb8d996c34e56e148955c32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00ff83f239b572d506bb09d887561288" id="r_a00ff83f239b572d506bb09d887561288"><td class="memItemLeft" align="right" valign="top"><a id="a00ff83f239b572d506bb09d887561288" name="a00ff83f239b572d506bb09d887561288"></a>
-static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>calculate_number_of_events</b> (const double &amp;rate, const double &amp;delta_t, const double &amp;volume, RNGEngine &amp;rng)</td></tr>
-<tr class="memdesc:a00ff83f239b572d506bb09d887561288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples the poisson distribution to calculate a number of events in a time-volume given a rate. <br /></td></tr>
+<tr class="memitem:a00ff83f239b572d506bb09d887561288" id="r_a00ff83f239b572d506bb09d887561288"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNucleationHandler.html#a00ff83f239b572d506bb09d887561288">calculate_number_of_events</a> (const double &amp;rate, const double &amp;delta_t, const double &amp;volume, <a class="el" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a> &amp;rng)</td></tr>
+<tr class="memdesc:a00ff83f239b572d506bb09d887561288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples the poisson distribution to calculate a number of events in a time-volume given a rate.  <br /></td></tr>
 <tr class="separator:a00ff83f239b572d506bb09d887561288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a682c95317df5190d439ff081ce694489" id="r_a682c95317df5190d439ff081ce694489"><td class="memItemLeft" align="right" valign="top"><a id="a682c95317df5190d439ff081ce694489" name="a682c95317df5190d439ff081ce694489"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>gather_exclude_broadcast_nuclei</b> (std::list&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;new_nuclei_list, std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;global_nuclei, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:a682c95317df5190d439ff081ce694489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gathers the potential new nuclei from each processor onto the root process, eliminates any nuclei that need be excluded, then updates and redistributes the global list to each process. <br /></td></tr>
+<tr class="memitem:a682c95317df5190d439ff081ce694489" id="r_a682c95317df5190d439ff081ce694489"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNucleationHandler.html#a682c95317df5190d439ff081ce694489">gather_exclude_broadcast_nuclei</a> (std::list&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;new_nuclei_list, std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;global_nuclei, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a682c95317df5190d439ff081ce694489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gathers the potential new nuclei from each processor onto the root process, eliminates any nuclei that need be excluded, then updates and redistributes the global list to each process.  <br /></td></tr>
 <tr class="separator:a682c95317df5190d439ff081ce694489"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa779d90df13e4c7a718a2b3fc2463c6f" id="r_aa779d90df13e4c7a718a2b3fc2463c6f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f">mpi_gather_nuclei</a> (std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;local_nuclei)</td></tr>
 <tr class="memdesc:aa779d90df13e4c7a718a2b3fc2463c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gathers nuclei lists to root. Modifies.  <br /></td></tr>
@@ -186,6 +191,104 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a00ff83f239b572d506bb09d887561288" name="a00ff83f239b572d506bb09d887561288"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00ff83f239b572d506bb09d887561288">&#9670;&#160;</a></span>calculate_number_of_events()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static unsigned int <a class="el" href="classNucleationHandler.html">NucleationHandler</a>&lt; dim, degree, number &gt;::calculate_number_of_events </td>
+          <td>(</td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>rate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>delta_t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramname"><em>volume</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a> &amp;&#160;</td>
+          <td class="paramname"><em>rng</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Samples the poisson distribution to calculate a number of events in a time-volume given a rate. </p>
+
+</div>
+</div>
+<a id="a682c95317df5190d439ff081ce694489" name="a682c95317df5190d439ff081ce694489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a682c95317df5190d439ff081ce694489">&#9670;&#160;</a></span>gather_exclude_broadcast_nuclei()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classNucleationHandler.html">NucleationHandler</a>&lt; dim, degree, number &gt;::gather_exclude_broadcast_nuclei </td>
+          <td>(</td>
+          <td class="paramtype">std::list&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>new_nuclei_list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structNucleus.html">Nucleus</a>&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>global_nuclei</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>user_inputs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gathers the potential new nuclei from each processor onto the root process, eliminates any nuclei that need be excluded, then updates and redistributes the global list to each process. </p>
 
 </div>
 </div>

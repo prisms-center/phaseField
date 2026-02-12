@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,8 @@ $(document).ready(function(){initNavTree('classConstraintHandler.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classConstraintHandler-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ConstraintHandler&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,33 +130,26 @@ $(document).ready(function(){initNavTree('classConstraintHandler.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abe78ae7def477ab23031d24ae33f7564" id="r_abe78ae7def477ab23031d24ae33f7564"><td class="memItemLeft" align="right" valign="top"><a id="abe78ae7def477ab23031d24ae33f7564" name="abe78ae7def477ab23031d24ae33f7564"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ConstraintHandler</b> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;_mg_info, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;_pde_operator_float)</td></tr>
-<tr class="memdesc:abe78ae7def477ab23031d24ae33f7564"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:abe78ae7def477ab23031d24ae33f7564" id="r_abe78ae7def477ab23031d24ae33f7564"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#abe78ae7def477ab23031d24ae33f7564">ConstraintHandler</a> (const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;_user_inputs, const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;_mg_info, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;_pde_operator_float)</td></tr>
+<tr class="memdesc:abe78ae7def477ab23031d24ae33f7564"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:abe78ae7def477ab23031d24ae33f7564"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4cb661c9d7e57b97d3ea0d2f9cf0e34" id="r_ac4cb661c9d7e57b97d3ea0d2f9cf0e34"><td class="memItemLeft" align="right" valign="top"><a id="ac4cb661c9d7e57b97d3ea0d2f9cf0e34" name="ac4cb661c9d7e57b97d3ea0d2f9cf0e34"></a>
-std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraints</b> () const</td></tr>
-<tr class="memdesc:ac4cb661c9d7e57b97d3ea0d2f9cf0e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraints. <br /></td></tr>
+<tr class="memitem:ac4cb661c9d7e57b97d3ea0d2f9cf0e34" id="r_ac4cb661c9d7e57b97d3ea0d2f9cf0e34"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#ac4cb661c9d7e57b97d3ea0d2f9cf0e34">get_constraints</a> () const</td></tr>
+<tr class="memdesc:ac4cb661c9d7e57b97d3ea0d2f9cf0e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraints.  <br /></td></tr>
 <tr class="separator:ac4cb661c9d7e57b97d3ea0d2f9cf0e34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99acfc759ed49649beac3f65f65252f0" id="r_a99acfc759ed49649beac3f65f65252f0"><td class="memItemLeft" align="right" valign="top"><a id="a99acfc759ed49649beac3f65f65252f0" name="a99acfc759ed49649beac3f65f65252f0"></a>
-const dealii::AffineConstraints&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraint</b> (unsigned int index) const</td></tr>
-<tr class="memdesc:a99acfc759ed49649beac3f65f65252f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraint of an index (constant reference). <br /></td></tr>
+<tr class="memitem:a99acfc759ed49649beac3f65f65252f0" id="r_a99acfc759ed49649beac3f65f65252f0"><td class="memItemLeft" align="right" valign="top">const dealii::AffineConstraints&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a99acfc759ed49649beac3f65f65252f0">get_constraint</a> (unsigned int index) const</td></tr>
+<tr class="memdesc:a99acfc759ed49649beac3f65f65252f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the constraint of an index (constant reference).  <br /></td></tr>
 <tr class="separator:a99acfc759ed49649beac3f65f65252f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1022005acbfcca9eca74a1e5d0de192" id="r_af1022005acbfcca9eca74a1e5d0de192"><td class="memItemLeft" align="right" valign="top"><a id="af1022005acbfcca9eca74a1e5d0de192" name="af1022005acbfcca9eca74a1e5d0de192"></a>
-std::vector&lt; const dealii::AffineConstraints&lt; float &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_constraints</b> (unsigned int level) const</td></tr>
-<tr class="memdesc:af1022005acbfcca9eca74a1e5d0de192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of a certain level. <br /></td></tr>
+<tr class="memitem:af1022005acbfcca9eca74a1e5d0de192" id="r_af1022005acbfcca9eca74a1e5d0de192"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const dealii::AffineConstraints&lt; float &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#af1022005acbfcca9eca74a1e5d0de192">get_mg_constraints</a> (unsigned int level) const</td></tr>
+<tr class="memdesc:af1022005acbfcca9eca74a1e5d0de192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraints of a certain level.  <br /></td></tr>
 <tr class="separator:af1022005acbfcca9eca74a1e5d0de192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a259142657a5ae0e1c5442c8853808edd" id="r_a259142657a5ae0e1c5442c8853808edd"><td class="memItemLeft" align="right" valign="top"><a id="a259142657a5ae0e1c5442c8853808edd" name="a259142657a5ae0e1c5442c8853808edd"></a>
-const dealii::AffineConstraints&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_constraint</b> (unsigned int level, unsigned int index) const</td></tr>
-<tr class="memdesc:a259142657a5ae0e1c5442c8853808edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraint of a certain level and index (constant reference). <br /></td></tr>
+<tr class="memitem:a259142657a5ae0e1c5442c8853808edd" id="r_a259142657a5ae0e1c5442c8853808edd"><td class="memItemLeft" align="right" valign="top">const dealii::AffineConstraints&lt; float &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a259142657a5ae0e1c5442c8853808edd">get_mg_constraint</a> (unsigned int level, unsigned int index) const</td></tr>
+<tr class="memdesc:a259142657a5ae0e1c5442c8853808edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter function for the multigrid constraint of a certain level and index (constant reference).  <br /></td></tr>
 <tr class="separator:a259142657a5ae0e1c5442c8853808edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b55d37411c663f2132580787603506" id="r_a50b55d37411c663f2132580787603506"><td class="memItemLeft" align="right" valign="top"><a id="a50b55d37411c663f2132580787603506" name="a50b55d37411c663f2132580787603506"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>make_constraints</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers)</td></tr>
-<tr class="memdesc:a50b55d37411c663f2132580787603506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make constraints based on the inputs of the constructor. <br /></td></tr>
+<tr class="memitem:a50b55d37411c663f2132580787603506" id="r_a50b55d37411c663f2132580787603506"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a50b55d37411c663f2132580787603506">make_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers)</td></tr>
+<tr class="memdesc:a50b55d37411c663f2132580787603506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make constraints based on the inputs of the constructor.  <br /></td></tr>
 <tr class="separator:a50b55d37411c663f2132580787603506"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3d5682e43acaa9e42abdd46b714c702" id="r_ad3d5682e43acaa9e42abdd46b714c702"><td class="memItemLeft" align="right" valign="top"><a id="ad3d5682e43acaa9e42abdd46b714c702" name="ad3d5682e43acaa9e42abdd46b714c702"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>make_mg_constraints</b> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, unsigned int level)</td></tr>
-<tr class="memdesc:ad3d5682e43acaa9e42abdd46b714c702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make multigrid constraints for a given level based on the inputs of the constructor. <br /></td></tr>
+<tr class="memitem:ad3d5682e43acaa9e42abdd46b714c702" id="r_ad3d5682e43acaa9e42abdd46b714c702"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#ad3d5682e43acaa9e42abdd46b714c702">make_mg_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, unsigned int level)</td></tr>
+<tr class="memdesc:ad3d5682e43acaa9e42abdd46b714c702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make multigrid constraints for a given level based on the inputs of the constructor.  <br /></td></tr>
 <tr class="separator:ad3d5682e43acaa9e42abdd46b714c702"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ee81bcf9b3d04ca2e703c2e2f4ff1f4" id="r_a6ee81bcf9b3d04ca2e703c2e2f4ff1f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a6ee81bcf9b3d04ca2e703c2e2f4ff1f4">update_time_dependent_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers)</td></tr>
 <tr class="memdesc:a6ee81bcf9b3d04ca2e703c2e2f4ff1f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update time-dependent constraints.  <br /></td></tr>
@@ -155,11 +157,916 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>make_mg_constraints</
 <tr class="memitem:ab1bb22f2391f90c0fa40198607465232" id="r_ab1bb22f2391f90c0fa40198607465232"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#ab1bb22f2391f90c0fa40198607465232">update_time_dependent_mg_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, unsigned int level)</td></tr>
 <tr class="memdesc:ab1bb22f2391f90c0fa40198607465232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update time-dependent multigrid constraints for a given level.  <br /></td></tr>
 <tr class="separator:ab1bb22f2391f90c0fa40198607465232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a035fb54107291f9f26b6253c182e09a6" id="r_a035fb54107291f9f26b6253c182e09a6"><td class="memItemLeft" align="right" valign="top">dealii::ComponentMask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a035fb54107291f9f26b6253c182e09a6">create_component_mask</a> (unsigned int component, bool is_vector_field) const</td></tr>
+<tr class="memdesc:a035fb54107291f9f26b6253c182e09a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a component mask.  <br /></td></tr>
+<tr class="separator:a035fb54107291f9f26b6253c182e09a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a844556d2f42e51864daeb3651f27771c" id="r_a844556d2f42e51864daeb3651f27771c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a844556d2f42e51864daeb3651f27771c">apply_natural_constraints</a> () const</td></tr>
+<tr class="memdesc:a844556d2f42e51864daeb3651f27771c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply natural constraints.  <br /></td></tr>
+<tr class="separator:a844556d2f42e51864daeb3651f27771c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3dfaeffee7e92b987276c5b6ffef5b0" id="r_aa3dfaeffee7e92b987276c5b6ffef5b0"><td class="memTemplParams" colspan="2">template&lt;typename num &gt; </td></tr>
+<tr class="memitem:aa3dfaeffee7e92b987276c5b6ffef5b0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aa3dfaeffee7e92b987276c5b6ffef5b0">apply_dirichlet_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;boundary_id, const bool &amp;is_vector_field, const num &amp;value, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, const dealii::ComponentMask &amp;mask) const</td></tr>
+<tr class="memdesc:aa3dfaeffee7e92b987276c5b6ffef5b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply dirichlet constraints.  <br /></td></tr>
+<tr class="separator:aa3dfaeffee7e92b987276c5b6ffef5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95e559e21d7f7db554cb9c6070d329ae" id="r_a95e559e21d7f7db554cb9c6070d329ae"><td class="memTemplParams" colspan="2">template&lt;typename num &gt; </td></tr>
+<tr class="memitem:a95e559e21d7f7db554cb9c6070d329ae"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a95e559e21d7f7db554cb9c6070d329ae">apply_periodic_constraints</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;boundary_id, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, const dealii::ComponentMask &amp;mask) const</td></tr>
+<tr class="memdesc:a95e559e21d7f7db554cb9c6070d329ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply periodic constraints.  <br /></td></tr>
+<tr class="separator:a95e559e21d7f7db554cb9c6070d329ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdd2f80d8738588c71a999cc586c9425" id="r_acdd2f80d8738588c71a999cc586c9425"><td class="memTemplParams" colspan="2">template&lt;typename num &gt; </td></tr>
+<tr class="memitem:acdd2f80d8738588c71a999cc586c9425"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#acdd2f80d8738588c71a999cc586c9425">apply_nonuniform_dirichlet_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;boundary_id, const unsigned int &amp;index, const bool &amp;is_vector_field, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, const dealii::ComponentMask &amp;mask, bool is_change_term=false) const</td></tr>
+<tr class="memdesc:acdd2f80d8738588c71a999cc586c9425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply nonuniform dirichlet constraints.  <br /></td></tr>
+<tr class="separator:acdd2f80d8738588c71a999cc586c9425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe9e793c0014fdb6048da46e0aa6a8c" id="r_a7fe9e793c0014fdb6048da46e0aa6a8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a7fe9e793c0014fdb6048da46e0aa6a8c">make_constraint</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int index)</td></tr>
+<tr class="memdesc:a7fe9e793c0014fdb6048da46e0aa6a8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the constraint for a single index.  <br /></td></tr>
+<tr class="separator:a7fe9e793c0014fdb6048da46e0aa6a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd3eb8a10480a6b0b5a7d7fcc4dd495" id="r_aafd3eb8a10480a6b0b5a7d7fcc4dd495"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aafd3eb8a10480a6b0b5a7d7fcc4dd495">make_mg_constraint</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, unsigned int index, unsigned int level, <a class="el" href="type__enums_8h.html#a20c436f6bde8f907120a37fac56183c7">DependencyType</a> dependency_type)</td></tr>
+<tr class="memdesc:aafd3eb8a10480a6b0b5a7d7fcc4dd495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make the multigrid constraint for a single index at a single level.  <br /></td></tr>
+<tr class="separator:aafd3eb8a10480a6b0b5a7d7fcc4dd495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa23ead7c21d0edf77e853230b9fe8364" id="r_aa23ead7c21d0edf77e853230b9fe8364"><td class="memTemplParams" colspan="2">template&lt;typename num &gt; </td></tr>
+<tr class="memitem:aa23ead7c21d0edf77e853230b9fe8364"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aa23ead7c21d0edf77e853230b9fe8364">set_pinned_point</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, unsigned int index, bool is_change_term=false) const</td></tr>
+<tr class="memdesc:aa23ead7c21d0edf77e853230b9fe8364"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the dirichlet constraint for the pinned point.  <br /></td></tr>
+<tr class="separator:aa23ead7c21d0edf77e853230b9fe8364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b1cd6165693fb106b87e1406d3e820b" id="r_a8b1cd6165693fb106b87e1406d3e820b"><td class="memTemplParams" colspan="2">template&lt;typename num &gt; </td></tr>
+<tr class="memitem:a8b1cd6165693fb106b87e1406d3e820b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a8b1cd6165693fb106b87e1406d3e820b">apply_generic_constraints</a> (const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; num &gt; &amp;_constraints) const</td></tr>
+<tr class="memdesc:a8b1cd6165693fb106b87e1406d3e820b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear, reinitialize and make hanging node constraints.  <br /></td></tr>
+<tr class="separator:a8b1cd6165693fb106b87e1406d3e820b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4885def0de8aab2e8942feee7f6243d6" id="r_a4885def0de8aab2e8942feee7f6243d6"><td class="memTemplParams" colspan="2">template&lt;typename num , int spacedim&gt; </td></tr>
+<tr class="memitem:a4885def0de8aab2e8942feee7f6243d6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a4885def0de8aab2e8942feee7f6243d6">apply_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, const <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &amp;boundary_condition, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">BoundaryCondition::Type</a> boundary_type, unsigned int boundary_id, unsigned int component, unsigned int index, bool is_change_term=false) const</td></tr>
+<tr class="memdesc:a4885def0de8aab2e8942feee7f6243d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply constraints for common boundary conditions.  <br /></td></tr>
+<tr class="separator:a4885def0de8aab2e8942feee7f6243d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f0880b5bcae39aa059c78149ddc40f7" id="r_a1f0880b5bcae39aa059c78149ddc40f7"><td class="memTemplParams" colspan="2">template&lt;typename num , int spacedim&gt; </td></tr>
+<tr class="memitem:a1f0880b5bcae39aa059c78149ddc40f7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a1f0880b5bcae39aa059c78149ddc40f7">apply_mg_constraints</a> (const dealii::Mapping&lt; dim &gt; &amp;mapping, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, dealii::AffineConstraints&lt; num &gt; &amp;_constraints, <a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">BoundaryCondition::Type</a> boundary_type, unsigned int boundary_id, unsigned int component) const</td></tr>
+<tr class="memdesc:a1f0880b5bcae39aa059c78149ddc40f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply multigrid constraints for common boundary conditions. The only difference between this function and the previous one is that an dirichlet boundary conditions are constrained to 0.  <br /></td></tr>
+<tr class="separator:a1f0880b5bcae39aa059c78149ddc40f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5085c8937c7b2327ff793d488b02b686" id="r_a5085c8937c7b2327ff793d488b02b686"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a5085c8937c7b2327ff793d488b02b686">user_inputs</a></td></tr>
+<tr class="memdesc:a5085c8937c7b2327ff793d488b02b686"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-inputs.  <br /></td></tr>
+<tr class="separator:a5085c8937c7b2327ff793d488b02b686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa28e58278334dd300e58d7d5f8f9f7dd" id="r_aa28e58278334dd300e58d7d5f8f9f7dd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aa28e58278334dd300e58d7d5f8f9f7dd">mg_info</a></td></tr>
+<tr class="memdesc:aa28e58278334dd300e58d7d5f8f9f7dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid info.  <br /></td></tr>
+<tr class="separator:aa28e58278334dd300e58d7d5f8f9f7dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68004e1f911c29db5601f56fe75e55a7" id="r_a68004e1f911c29db5601f56fe75e55a7"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a68004e1f911c29db5601f56fe75e55a7">pde_operator</a></td></tr>
+<tr class="memdesc:a68004e1f911c29db5601f56fe75e55a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE operator number.  <br /></td></tr>
+<tr class="separator:a68004e1f911c29db5601f56fe75e55a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab2b7620f4491768cf133ed0ba77de4b" id="r_aab2b7620f4491768cf133ed0ba77de4b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aab2b7620f4491768cf133ed0ba77de4b">pde_operator_float</a></td></tr>
+<tr class="memdesc:aab2b7620f4491768cf133ed0ba77de4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE operator float.  <br /></td></tr>
+<tr class="separator:aab2b7620f4491768cf133ed0ba77de4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020c79b711f5ebb3fec9deedfbd30360" id="r_a020c79b711f5ebb3fec9deedfbd30360"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a020c79b711f5ebb3fec9deedfbd30360">has_multigrid</a> = false</td></tr>
+<tr class="memdesc:a020c79b711f5ebb3fec9deedfbd30360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether we have multigrid.  <br /></td></tr>
+<tr class="separator:a020c79b711f5ebb3fec9deedfbd30360"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f404c4025ec7d7defaede841dac509c" id="r_a0f404c4025ec7d7defaede841dac509c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a0f404c4025ec7d7defaede841dac509c">global_min_level</a> = 0</td></tr>
+<tr class="memdesc:a0f404c4025ec7d7defaede841dac509c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global minimum level for multigrid.  <br /></td></tr>
+<tr class="separator:a0f404c4025ec7d7defaede841dac509c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a568f5deb89a1bd02d8897d1b25d1e74b" id="r_a568f5deb89a1bd02d8897d1b25d1e74b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::AffineConstraints&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#a568f5deb89a1bd02d8897d1b25d1e74b">constraints</a></td></tr>
+<tr class="memdesc:a568f5deb89a1bd02d8897d1b25d1e74b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraints.  <br /></td></tr>
+<tr class="separator:a568f5deb89a1bd02d8897d1b25d1e74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4ce5d12e82d49ae4abbce28162788a2" id="r_aa4ce5d12e82d49ae4abbce28162788a2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; dealii::AffineConstraints&lt; float &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConstraintHandler.html#aa4ce5d12e82d49ae4abbce28162788a2">mg_constraints</a></td></tr>
+<tr class="memdesc:aa4ce5d12e82d49ae4abbce28162788a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multigrid constraints.  <br /></td></tr>
+<tr class="separator:aa4ce5d12e82d49ae4abbce28162788a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class ConstraintHandler&lt; dim, degree, number &gt;</div><p>The class handles the generation and application of boundary conditions based on the user-inputs. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="abe78ae7def477ab23031d24ae33f7564" name="abe78ae7def477ab23031d24ae33f7564"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe78ae7def477ab23031d24ae33f7564">&#9670;&#160;</a></span>ConstraintHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;<a class="el" href="classConstraintHandler.html">::ConstraintHandler</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_user_inputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_mg_info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator_float</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4885def0de8aab2e8942feee7f6243d6" name="a4885def0de8aab2e8942feee7f6243d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4885def0de8aab2e8942feee7f6243d6">&#9670;&#160;</a></span>apply_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num , int spacedim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structBoundaryCondition.html">BoundaryCondition</a> &amp;&#160;</td>
+          <td class="paramname"><em>boundary_condition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">BoundaryCondition::Type</a>&#160;</td>
+          <td class="paramname"><em>boundary_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>component</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_change_term</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply constraints for common boundary conditions. </p>
+
+</div>
+</div>
+<a id="aa3dfaeffee7e92b987276c5b6ffef5b0" name="aa3dfaeffee7e92b987276c5b6ffef5b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3dfaeffee7e92b987276c5b6ffef5b0">&#9670;&#160;</a></span>apply_dirichlet_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_dirichlet_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>is_vector_field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const num &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::ComponentMask &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply dirichlet constraints. </p>
+
+</div>
+</div>
+<a id="a8b1cd6165693fb106b87e1406d3e820b" name="a8b1cd6165693fb106b87e1406d3e820b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b1cd6165693fb106b87e1406d3e820b">&#9670;&#160;</a></span>apply_generic_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_generic_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear, reinitialize and make hanging node constraints. </p>
+
+</div>
+</div>
+<a id="a1f0880b5bcae39aa059c78149ddc40f7" name="a1f0880b5bcae39aa059c78149ddc40f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f0880b5bcae39aa059c78149ddc40f7">&#9670;&#160;</a></span>apply_mg_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num , int spacedim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_mg_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1">BoundaryCondition::Type</a>&#160;</td>
+          <td class="paramname"><em>boundary_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>component</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply multigrid constraints for common boundary conditions. The only difference between this function and the previous one is that an dirichlet boundary conditions are constrained to 0. </p>
+
+</div>
+</div>
+<a id="a844556d2f42e51864daeb3651f27771c" name="a844556d2f42e51864daeb3651f27771c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a844556d2f42e51864daeb3651f27771c">&#9670;&#160;</a></span>apply_natural_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_natural_constraints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply natural constraints. </p>
+
+</div>
+</div>
+<a id="acdd2f80d8738588c71a999cc586c9425" name="acdd2f80d8738588c71a999cc586c9425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdd2f80d8738588c71a999cc586c9425">&#9670;&#160;</a></span>apply_nonuniform_dirichlet_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_nonuniform_dirichlet_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const bool &amp;&#160;</td>
+          <td class="paramname"><em>is_vector_field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::ComponentMask &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_change_term</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply nonuniform dirichlet constraints. </p>
+
+</div>
+</div>
+<a id="a95e559e21d7f7db554cb9c6070d329ae" name="a95e559e21d7f7db554cb9c6070d329ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95e559e21d7f7db554cb9c6070d329ae">&#9670;&#160;</a></span>apply_periodic_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::apply_periodic_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::ComponentMask &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply periodic constraints. </p>
+
+</div>
+</div>
+<a id="a035fb54107291f9f26b6253c182e09a6" name="a035fb54107291f9f26b6253c182e09a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a035fb54107291f9f26b6253c182e09a6">&#9670;&#160;</a></span>create_component_mask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::ComponentMask <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::create_component_mask </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>component</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_vector_field</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a component mask. </p>
+
+</div>
+</div>
+<a id="a99acfc759ed49649beac3f65f65252f0" name="a99acfc759ed49649beac3f65f65252f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99acfc759ed49649beac3f65f65252f0">&#9670;&#160;</a></span>get_constraint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::AffineConstraints&lt; number &gt; &amp; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::get_constraint </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the constraint of an index (constant reference). </p>
+
+</div>
+</div>
+<a id="ac4cb661c9d7e57b97d3ea0d2f9cf0e34" name="ac4cb661c9d7e57b97d3ea0d2f9cf0e34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4cb661c9d7e57b97d3ea0d2f9cf0e34">&#9670;&#160;</a></span>get_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; const dealii::AffineConstraints&lt; number &gt; * &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::get_constraints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the constraints. </p>
+
+</div>
+</div>
+<a id="a259142657a5ae0e1c5442c8853808edd" name="a259142657a5ae0e1c5442c8853808edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a259142657a5ae0e1c5442c8853808edd">&#9670;&#160;</a></span>get_mg_constraint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const dealii::AffineConstraints&lt; float &gt; &amp; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::get_mg_constraint </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the multigrid constraint of a certain level and index (constant reference). </p>
+
+</div>
+</div>
+<a id="af1022005acbfcca9eca74a1e5d0de192" name="af1022005acbfcca9eca74a1e5d0de192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1022005acbfcca9eca74a1e5d0de192">&#9670;&#160;</a></span>get_mg_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; const dealii::AffineConstraints&lt; float &gt; * &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::get_mg_constraints </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>level</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Getter function for the multigrid constraints of a certain level. </p>
+
+</div>
+</div>
+<a id="a7fe9e793c0014fdb6048da46e0aa6a8c" name="a7fe9e793c0014fdb6048da46e0aa6a8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fe9e793c0014fdb6048da46e0aa6a8c">&#9670;&#160;</a></span>make_constraint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::make_constraint </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make the constraint for a single index. </p>
+
+</div>
+</div>
+<a id="a50b55d37411c663f2132580787603506" name="a50b55d37411c663f2132580787603506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b55d37411c663f2132580787603506">&#9670;&#160;</a></span>make_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::make_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handlers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make constraints based on the inputs of the constructor. </p>
+
+</div>
+</div>
+<a id="aafd3eb8a10480a6b0b5a7d7fcc4dd495" name="aafd3eb8a10480a6b0b5a7d7fcc4dd495"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd3eb8a10480a6b0b5a7d7fcc4dd495">&#9670;&#160;</a></span>make_mg_constraint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::make_mg_constraint </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="type__enums_8h.html#a20c436f6bde8f907120a37fac56183c7">DependencyType</a>&#160;</td>
+          <td class="paramname"><em>dependency_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Make the multigrid constraint for a single index at a single level. </p>
+
+</div>
+</div>
+<a id="ad3d5682e43acaa9e42abdd46b714c702" name="ad3d5682e43acaa9e42abdd46b714c702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3d5682e43acaa9e42abdd46b714c702">&#9670;&#160;</a></span>make_mg_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::make_mg_constraints </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Mapping&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>mapping</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handlers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>level</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Make multigrid constraints for a given level based on the inputs of the constructor. </p>
+
+</div>
+</div>
+<a id="aa23ead7c21d0edf77e853230b9fe8364" name="aa23ead7c21d0edf77e853230b9fe8364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa23ead7c21d0edf77e853230b9fe8364">&#9670;&#160;</a></span>set_pinned_point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<div class="memtemplate">
+template&lt;typename num &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::set_pinned_point </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::AffineConstraints&lt; num &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_constraints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_change_term</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the dirichlet constraint for the pinned point. </p>
+
+</div>
+</div>
 <a id="a6ee81bcf9b3d04ca2e703c2e2f4ff1f4" name="a6ee81bcf9b3d04ca2e703c2e2f4ff1f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ee81bcf9b3d04ca2e703c2e2f4ff1f4">&#9670;&#160;</a></span>update_time_dependent_constraints()</h2>
 
@@ -232,9 +1139,218 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a568f5deb89a1bd02d8897d1b25d1e74b" name="a568f5deb89a1bd02d8897d1b25d1e74b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a568f5deb89a1bd02d8897d1b25d1e74b">&#9670;&#160;</a></span>constraints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;dealii::AffineConstraints&lt;number&gt; &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::constraints</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constraints. </p>
+
+</div>
+</div>
+<a id="a0f404c4025ec7d7defaede841dac509c" name="a0f404c4025ec7d7defaede841dac509c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f404c4025ec7d7defaede841dac509c">&#9670;&#160;</a></span>global_min_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::global_min_level = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Global minimum level for multigrid. </p>
+
+</div>
+</div>
+<a id="a020c79b711f5ebb3fec9deedfbd30360" name="a020c79b711f5ebb3fec9deedfbd30360"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a020c79b711f5ebb3fec9deedfbd30360">&#9670;&#160;</a></span>has_multigrid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::has_multigrid = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether we have multigrid. </p>
+
+</div>
+</div>
+<a id="aa4ce5d12e82d49ae4abbce28162788a2" name="aa4ce5d12e82d49ae4abbce28162788a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4ce5d12e82d49ae4abbce28162788a2">&#9670;&#160;</a></span>mg_constraints</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;dealii::AffineConstraints&lt;float&gt; &gt; &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::mg_constraints</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid constraints. </p>
+
+</div>
+</div>
+<a id="aa28e58278334dd300e58d7d5f8f9f7dd" name="aa28e58278334dd300e58d7d5f8f9f7dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa28e58278334dd300e58d7d5f8f9f7dd">&#9670;&#160;</a></span>mg_info</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMGInfo.html">MGInfo</a>&lt;dim&gt;* <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::mg_info</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multigrid info. </p>
+
+</div>
+</div>
+<a id="a68004e1f911c29db5601f56fe75e55a7" name="a68004e1f911c29db5601f56fe75e55a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68004e1f911c29db5601f56fe75e55a7">&#9670;&#160;</a></span>pde_operator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt;dim, degree, number&gt; &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::pde_operator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>PDE operator number. </p>
+
+</div>
+</div>
+<a id="aab2b7620f4491768cf133ed0ba77de4b" name="aab2b7620f4491768cf133ed0ba77de4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab2b7620f4491768cf133ed0ba77de4b">&#9670;&#160;</a></span>pde_operator_float</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt;dim, degree, float&gt; &gt; <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::pde_operator_float</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>PDE operator float. </p>
+
+</div>
+</div>
+<a id="a5085c8937c7b2327ff793d488b02b686" name="a5085c8937c7b2327ff793d488b02b686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5085c8937c7b2327ff793d488b02b686">&#9670;&#160;</a></span>user_inputs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt;dim&gt;* <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; dim, degree, number &gt;::user_inputs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User-inputs. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="constraint__handler_8h_source.html">constraint_handler.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>constraint_handler.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="constraint__handler_8cc.html">constraint_handler.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

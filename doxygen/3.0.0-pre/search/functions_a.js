@@ -1,5 +1,20 @@
 var searchData=
 [
-  ['nonuniformdirichlet_0',['NonuniformDirichlet',['../classNonuniformDirichlet.html#a37a432d30845b8ffbadfbc2b8a5e2e5f',1,'NonuniformDirichlet']]],
-  ['nucleus_1',['Nucleus',['../structNucleus.html#a82163cca7ad486f8580beab89a3089e0',1,'Nucleus']]]
+  ['m_0',['m',['../classMatrixFreeOperator.html#aec9d07b697b534bad5e271c05d45dd69',1,'MatrixFreeOperator']]],
+  ['make_5fconstraint_1',['make_constraint',['../classConstraintHandler.html#a7fe9e793c0014fdb6048da46e0aa6a8c',1,'ConstraintHandler']]],
+  ['make_5fconstraints_2',['make_constraints',['../classConstraintHandler.html#a50b55d37411c663f2132580787603506',1,'ConstraintHandler']]],
+  ['make_5fmg_5fconstraint_3',['make_mg_constraint',['../classConstraintHandler.html#aafd3eb8a10480a6b0b5a7d7fcc4dd495',1,'ConstraintHandler']]],
+  ['make_5fmg_5fconstraints_4',['make_mg_constraints',['../classConstraintHandler.html#ad3d5682e43acaa9e42abdd46b714c702',1,'ConstraintHandler']]],
+  ['mark_5fboundaries_5',['mark_boundaries',['../classTriangulationHandler.html#a9ae158f5474e629fb0d60c2099d4bb89',1,'TriangulationHandler::mark_boundaries()'],['../classMesh.html#aa6de87afafb64cbde9c4d559fe292b19',1,'Mesh::mark_boundaries()'],['../classRectangularMesh.html#a81d1e0498a1397529a3a2e3cf09abf4e',1,'RectangularMesh::mark_boundaries()'],['../classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec',1,'SphericalMesh::mark_boundaries()']]],
+  ['mark_5fcells_5ffor_5frefinement_6',['mark_cells_for_refinement',['../classGridRefiner.html#a0b2a2f8a5cb3c646f63aca894eb5b01b',1,'GridRefiner']]],
+  ['mark_5fcells_5ffor_5frefinement_5fand_5fcoarsening_7',['mark_cells_for_refinement_and_coarsening',['../classGridRefiner.html#af335971dc17df607da4e6b2c857f6674',1,'GridRefiner']]],
+  ['mark_5fperiodic_8',['mark_periodic',['../classTriangulationHandler.html#a0a56423aeca2f69ffcb00c0800027eb9',1,'TriangulationHandler::mark_periodic()'],['../classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac',1,'SphericalMesh::mark_periodic()'],['../classRectangularMesh.html#a1ca4446863546c907f934e786f88f44a',1,'RectangularMesh::mark_periodic()'],['../classMesh.html#a705b9de25b5352102c28aebebf1537ba',1,'Mesh::mark_periodic()']]],
+  ['matrixfreecontainer_9',['MatrixFreeContainer',['../classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d',1,'MatrixFreeContainer']]],
+  ['matrixfreehandler_10',['MatrixFreeHandler',['../classMatrixFreeHandler.html#a950079ceb21f15a206e2eb0258ebf6a8',1,'MatrixFreeHandler']]],
+  ['matrixfreeoperator_11',['MatrixFreeOperator',['../classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca',1,'MatrixFreeOperator']]],
+  ['mesh_12',['Mesh',['../classMesh.html#ae25ebef6af2022a6a13fca216b75d18e',1,'Mesh']]],
+  ['mginfo_13',['MGInfo',['../classMGInfo.html#a382f3eea09471f80f3a5e9d34bb13e26',1,'MGInfo']]],
+  ['mpi_5fbroadcast_5fnuclei_14',['mpi_broadcast_nuclei',['../classNucleationHandler.html#af35183a2b6e3306f758933ed511f3d14',1,'NucleationHandler']]],
+  ['mpi_5fdatatype_15',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
+  ['mpi_5fgather_5fnuclei_16',['mpi_gather_nuclei',['../classNucleationHandler.html#aa779d90df13e4c7a718a2b3fc2463c6f',1,'NucleationHandler']]]
 ];

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -114,6 +121,8 @@ $(document).ready(function(){initNavTree('classElementVolume.html',''); initResi
 <p>This is the complete list of members for <a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classElementVolume.html#a24aa9c572073c12645862f9bcf0469e8">compute_element_volume</a>()</td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">data</a></td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">element_volume</a></td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classElementVolume.html#abd811dddfdfd404e0a963dad68ca57db">ElementVolume</a>()=default</td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classElementVolume.html#ad34e6d8328cd292df1628b6a3fda5b0c">get_element_volume</a>(unsigned cell) const</td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classElementVolume.html#a614b9b9d705ac5b3a5918f5e27f9c39b">initialize</a>(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; _data)</td><td class="entry"><a class="el" href="classElementVolume.html">ElementVolume&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>

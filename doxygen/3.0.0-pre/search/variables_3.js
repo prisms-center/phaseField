@@ -1,5 +1,21 @@
 var searchData=
 [
-  ['nucleating_5ffields_0',['nucleating_fields',['../structRawDependencies.html#a6361f661953c35decc0b578490b91681',1,'RawDependencies']]],
-  ['nuclei_5flist_1',['nuclei_list',['../structPhaseFieldTools.html#ac1539b32070dd5207aada2b83009fca4',1,'PhaseFieldTools']]]
+  ['data_0',['data',['../classMatrixFreeOperator.html#af0975d9895dc8ff7e84e5af27317b041',1,'MatrixFreeOperator::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classElementVolume.html#abcdd0b06887844914fc34af65f34407a',1,'ElementVolume::data'],['../classInvmHandler.html#a9f7dec5f590681f988eabae9f086e7bf',1,'InvmHandler::data']]],
+  ['dataset_5fformat_1',['dataset_format',['../structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262',1,'InitialConditionFile']]],
+  ['degree_2',['degree',['../structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43',1,'SpatialDiscretization']]],
+  ['dependencies_5fgradient_5flhs_3',['dependencies_gradient_lhs',['../structRawDependencies.html#a4ce86927500144c8c1d81816ab2eacb8',1,'RawDependencies']]],
+  ['dependencies_5fgradient_5frhs_4',['dependencies_gradient_rhs',['../structRawDependencies.html#a79a682fb51306f3706e55685e3671f12',1,'RawDependencies']]],
+  ['dependencies_5flhs_5',['dependencies_lhs',['../structRawDependencies.html#a08e32bcc32822e5877069cdbb6355777',1,'RawDependencies']]],
+  ['dependencies_5frhs_6',['dependencies_rhs',['../structRawDependencies.html#a88470811530b46460274a3117965bbbf',1,'RawDependencies']]],
+  ['dependencies_5fvalue_5flhs_7',['dependencies_value_lhs',['../structRawDependencies.html#a05c5904cae0da573a2440ce70571d2fe',1,'RawDependencies']]],
+  ['dependencies_5fvalue_5frhs_8',['dependencies_value_rhs',['../structRawDependencies.html#a8e5cb6501fc6b19d21387f32b69e1d0b',1,'RawDependencies']]],
+  ['dependency_5fset_5flhs_9',['dependency_set_lhs',['../structVariableAttributes.html#afa0d0597db5b9abf8a53e2af4ef91e09',1,'VariableAttributes']]],
+  ['dependency_5fset_5frhs_10',['dependency_set_rhs',['../structVariableAttributes.html#a14be1dbb38ca28f76bc6c692442eeed9',1,'VariableAttributes']]],
+  ['dependency_5ftype_5fflags_11',['dependency_type_flags',['../structFieldInfo.html#aa84782f47b95c146ae3fd356b5b73785',1,'FieldInfo']]],
+  ['diagonal_12',['diagonal',['../classVariableContainer.html#a254a09fd3e97869e7865b1d1ef785a65',1,'VariableContainer']]],
+  ['diagonal_5fentries_13',['diagonal_entries',['../classMatrixFreeOperator.html#a573df491287fc3b35a7e8dfb41e9d8c2',1,'MatrixFreeOperator']]],
+  ['dirichlet_5fvalue_5fmap_14',['dirichlet_value_map',['../structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58',1,'BoundaryCondition']]],
+  ['dof_5fhandler_15',['dof_handler',['../classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615',1,'GridRefinementContext::dof_handler'],['../classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d',1,'PDEProblem::dof_handler'],['../classSolverContext.html#a1233b08ab0adba0e3b0502c460a8f20c',1,'SolverContext::dof_handler']]],
+  ['dof_5fhandlers_16',['dof_handlers',['../classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb',1,'DofHandler']]],
+  ['dt_17',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];

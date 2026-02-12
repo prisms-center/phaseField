@@ -13,5 +13,17 @@ var classSolverContext =
     [ "get_pde_operator_float", "classSolverContext.html#aed0d934cc993453dd364151ac345769c", null ],
     [ "get_solution_handler", "classSolverContext.html#a09b6295d682287bb5f1b2843bd532535", null ],
     [ "get_triangulation_handler", "classSolverContext.html#a947b634d9f0068b325f80e6d799be2e4", null ],
-    [ "get_user_inputs", "classSolverContext.html#a09ed12fc430331b593a0d6e2f67cc047", null ]
+    [ "get_user_inputs", "classSolverContext.html#a09ed12fc430331b593a0d6e2f67cc047", null ],
+    [ "constraint_handler", "classSolverContext.html#a9ea45bdedda350da3d548679114f5084", null ],
+    [ "dof_handler", "classSolverContext.html#a1233b08ab0adba0e3b0502c460a8f20c", null ],
+    [ "element_volume_container", "classSolverContext.html#a1847e2cb387bf6118b629ec021e50081", null ],
+    [ "invm_handler", "classSolverContext.html#ab88b1addb5ab4263642a2bbd4b643a1a", null ],
+    [ "mapping", "classSolverContext.html#a442bb4fbaef723278a0bcf13143a1141", null ],
+    [ "matrix_free_container", "classSolverContext.html#ac99548d686bf7aa38fd080ea33091247", null ],
+    [ "mg_info", "classSolverContext.html#ae43d04b7c4beb505da418929b2d74bf9", null ],
+    [ "pde_operator", "classSolverContext.html#a5dba41259a9a9548a17d37a9a01eb04c", null ],
+    [ "pde_operator_float", "classSolverContext.html#afada26138f11eb03a5ff30e5d7388c1d", null ],
+    [ "solution_handler", "classSolverContext.html#a54942d75714d3391470e8f07deffa585", null ],
+    [ "triangulation_handler", "classSolverContext.html#adf30cfc51e22c36432ad7b7a83cffc82", null ],
+    [ "user_inputs", "classSolverContext.html#a5bc7b98fe346d8570ee36c06a229335d", null ]
 ];

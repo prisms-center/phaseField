@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,20 +116,21 @@ $(document).ready(function(){initNavTree('classSolveBlock.html',''); initResizab
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classSolveBlock-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SolveBlock&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="solver__handler_8h_source.html">solver_handler.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aab2dba52fef5adf08f8df461ed25dc1c" id="r_aab2dba52fef5adf08f8df461ed25dc1c"><td class="memItemLeft" align="right" valign="top"><a id="aab2dba52fef5adf08f8df461ed25dc1c" name="aab2dba52fef5adf08f8df461ed25dc1c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolveBlock</b> (<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; &amp;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">_solver_context</a>, Types::Index <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">block_index</a>)</td></tr>
-<tr class="memdesc:aab2dba52fef5adf08f8df461ed25dc1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:aab2dba52fef5adf08f8df461ed25dc1c" id="r_aab2dba52fef5adf08f8df461ed25dc1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#aab2dba52fef5adf08f8df461ed25dc1c">SolveBlock</a> (<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; &amp;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">_solver_context</a>, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">block_index</a>)</td></tr>
+<tr class="memdesc:aab2dba52fef5adf08f8df461ed25dc1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:aab2dba52fef5adf08f8df461ed25dc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fad9f255e7a3025277e10968890de5b" id="r_a5fad9f255e7a3025277e10968890de5b"><td class="memItemLeft" align="right" valign="top"><a id="a5fad9f255e7a3025277e10968890de5b" name="a5fad9f255e7a3025277e10968890de5b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~SolveBlock</b> ()=<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">default</a></td></tr>
-<tr class="memdesc:a5fad9f255e7a3025277e10968890de5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:a5fad9f255e7a3025277e10968890de5b" id="r_a5fad9f255e7a3025277e10968890de5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a5fad9f255e7a3025277e10968890de5b">~SolveBlock</a> ()=<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">default</a></td></tr>
+<tr class="memdesc:a5fad9f255e7a3025277e10968890de5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a5fad9f255e7a3025277e10968890de5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7201d385d49ee900bbc324a3535aa7eb" id="r_a7201d385d49ee900bbc324a3535aa7eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a7201d385d49ee900bbc324a3535aa7eb">SolveBlock</a> (<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">const</a> <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">solver_base</a>)=<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">delete</a></td></tr>
 <tr class="memdesc:a7201d385d49ee900bbc324a3535aa7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
@@ -136,21 +144,112 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aea794fdc46ab1d67dcb7aab84af594b5" id="r_aea794fdc46ab1d67dcb7aab84af594b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#aea794fdc46ab1d67dcb7aab84af594b5">operator=</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&amp;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">solver_base</a>) <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">noexcept</a>=<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">delete</a></td></tr>
 <tr class="memdesc:aea794fdc46ab1d67dcb7aab84af594b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment.  <br /></td></tr>
 <tr class="separator:aea794fdc46ab1d67dcb7aab84af594b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ada4db4473c705f67b835990dd86d6e" id="r_a3ada4db4473c705f67b835990dd86d6e"><td class="memItemLeft" align="right" valign="top"><a id="a3ada4db4473c705f67b835990dd86d6e" name="a3ada4db4473c705f67b835990dd86d6e"></a>
-<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
-<tr class="memdesc:a3ada4db4473c705f67b835990dd86d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all of the solvers. <br /></td></tr>
+<tr class="memitem:a3ada4db4473c705f67b835990dd86d6e" id="r_a3ada4db4473c705f67b835990dd86d6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a3ada4db4473c705f67b835990dd86d6e">init</a> ()</td></tr>
+<tr class="memdesc:a3ada4db4473c705f67b835990dd86d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all of the solvers.  <br /></td></tr>
 <tr class="separator:a3ada4db4473c705f67b835990dd86d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54b05fb03d01eed60455d1f31582a43f" id="r_a54b05fb03d01eed60455d1f31582a43f"><td class="memItemLeft" align="right" valign="top"><a id="a54b05fb03d01eed60455d1f31582a43f" name="a54b05fb03d01eed60455d1f31582a43f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reinit</b> ()</td></tr>
-<tr class="memdesc:a54b05fb03d01eed60455d1f31582a43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize all of the solvers. <br /></td></tr>
+<tr class="memitem:a54b05fb03d01eed60455d1f31582a43f" id="r_a54b05fb03d01eed60455d1f31582a43f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">reinit</a> ()</td></tr>
+<tr class="memdesc:a54b05fb03d01eed60455d1f31582a43f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize all of the solvers.  <br /></td></tr>
 <tr class="separator:a54b05fb03d01eed60455d1f31582a43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2e6e9b763877a04b09ce69263d6707f" id="r_aa2e6e9b763877a04b09ce69263d6707f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#aa2e6e9b763877a04b09ce69263d6707f">solve</a> (<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> increment, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">bool</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">update_postprocessed</a>)</td></tr>
 <tr class="memdesc:aa2e6e9b763877a04b09ce69263d6707f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a single increment for all of the solvers.  <br /></td></tr>
 <tr class="separator:aa2e6e9b763877a04b09ce69263d6707f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:aed72f8c2c53911d57d9936cbf7f11759" id="r_aed72f8c2c53911d57d9936cbf7f11759"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConcurrentConstantSolver.html">ConcurrentConstantSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#aed72f8c2c53911d57d9936cbf7f11759">concurrent_constant_solver</a></td></tr>
+<tr class="memdesc:aed72f8c2c53911d57d9936cbf7f11759"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit constant field solver class.  <br /></td></tr>
+<tr class="separator:aed72f8c2c53911d57d9936cbf7f11759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a97e70bae5b0b4574b0ae0123ff3c06" id="r_a6a97e70bae5b0b4574b0ae0123ff3c06"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConcurrentExplicitSolver.html">ConcurrentExplicitSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a6a97e70bae5b0b4574b0ae0123ff3c06">concurrent_explicit_solver</a></td></tr>
+<tr class="memdesc:a6a97e70bae5b0b4574b0ae0123ff3c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Explicit field solver class.  <br /></td></tr>
+<tr class="separator:a6a97e70bae5b0b4574b0ae0123ff3c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aaf921ec545b5fc13cf0475cd69d603" id="r_a7aaf921ec545b5fc13cf0475cd69d603"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConcurrentExplicitPostprocessSolver.html">ConcurrentExplicitPostprocessSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a7aaf921ec545b5fc13cf0475cd69d603">concurrent_explicit_postprocess_solver</a></td></tr>
+<tr class="memdesc:a7aaf921ec545b5fc13cf0475cd69d603"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocessed explicit field solver class.  <br /></td></tr>
+<tr class="separator:a7aaf921ec545b5fc13cf0475cd69d603"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a774ca8bf1dd718f13e7d5dc00c9932fd" id="r_a774ca8bf1dd718f13e7d5dc00c9932fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSequentialAuxiliarySolver.html">SequentialAuxiliarySolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a774ca8bf1dd718f13e7d5dc00c9932fd">sequential_auxiliary_solver</a></td></tr>
+<tr class="memdesc:a774ca8bf1dd718f13e7d5dc00c9932fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nonexplicit auxiliary field solver class.  <br /></td></tr>
+<tr class="separator:a774ca8bf1dd718f13e7d5dc00c9932fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22386a6619e27fceab4cf52af9744ebe" id="r_a22386a6619e27fceab4cf52af9744ebe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSequentialLinearSolver.html">SequentialLinearSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a22386a6619e27fceab4cf52af9744ebe">sequential_linear_solver</a></td></tr>
+<tr class="memdesc:a22386a6619e27fceab4cf52af9744ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nonexplicit linear field solver class.  <br /></td></tr>
+<tr class="separator:a22386a6619e27fceab4cf52af9744ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a508ce7a82bb473112d9d124be8a87185" id="r_a508ce7a82bb473112d9d124be8a87185"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSequentialSelfNonlinearSolver.html">SequentialSelfNonlinearSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#a508ce7a82bb473112d9d124be8a87185">sequential_self_nonlinear_solver</a></td></tr>
+<tr class="memdesc:a508ce7a82bb473112d9d124be8a87185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nonexplicit self-nonlinear field solver class.  <br /></td></tr>
+<tr class="separator:a508ce7a82bb473112d9d124be8a87185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada734338a6590f7d7bc45ac43a53f504" id="r_ada734338a6590f7d7bc45ac43a53f504"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSequentialCoNonlinearSolver.html">SequentialCoNonlinearSolver</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolveBlock.html#ada734338a6590f7d7bc45ac43a53f504">sequential_co_nonlinear_solver</a></td></tr>
+<tr class="memdesc:ada734338a6590f7d7bc45ac43a53f504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nonexplicit co-nonlinear field solver class.  <br /></td></tr>
+<tr class="separator:ada734338a6590f7d7bc45ac43a53f504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aab2dba52fef5adf08f8df461ed25dc1c" name="aab2dba52fef5adf08f8df461ed25dc1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab2dba52fef5adf08f8df461ed25dc1c">&#9670;&#160;</a></span>SolveBlock() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;<a class="el" href="classSolveBlock.html">::SolveBlock</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_solver_context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>block_index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a5fad9f255e7a3025277e10968890de5b" name="a5fad9f255e7a3025277e10968890de5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fad9f255e7a3025277e10968890de5b">&#9670;&#160;</a></span>~SolveBlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::~<a class="el" href="classSolveBlock.html">SolveBlock</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
 <a id="a7201d385d49ee900bbc324a3535aa7eb" name="a7201d385d49ee900bbc324a3535aa7eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7201d385d49ee900bbc324a3535aa7eb">&#9670;&#160;</a></span>SolveBlock() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7201d385d49ee900bbc324a3535aa7eb">&#9670;&#160;</a></span>SolveBlock() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,7 +280,7 @@ template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f315
 </div>
 </div>
 <a id="a693df5ba09a489dffecba186be911c8b" name="a693df5ba09a489dffecba186be911c8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a693df5ba09a489dffecba186be911c8b">&#9670;&#160;</a></span>SolveBlock() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a693df5ba09a489dffecba186be911c8b">&#9670;&#160;</a></span>SolveBlock() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,6 +311,27 @@ template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f315
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3ada4db4473c705f67b835990dd86d6e" name="a3ada4db4473c705f67b835990dd86d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ada4db4473c705f67b835990dd86d6e">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">void</a> <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::init </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize all of the solvers. </p>
+
+</div>
+</div>
 <a id="ad1d2a23ae64782c51c3f437ad0daa1f4" name="ad1d2a23ae64782c51c3f437ad0daa1f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1d2a23ae64782c51c3f437ad0daa1f4">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -274,6 +394,27 @@ template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f315
 
 </div>
 </div>
+<a id="a54b05fb03d01eed60455d1f31582a43f" name="a54b05fb03d01eed60455d1f31582a43f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54b05fb03d01eed60455d1f31582a43f">&#9670;&#160;</a></span>reinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; dim, degree, number &gt;::reinit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reinitialize all of the solvers. </p>
+
+</div>
+</div>
 <a id="aa2e6e9b763877a04b09ce69263d6707f" name="aa2e6e9b763877a04b09ce69263d6707f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa2e6e9b763877a04b09ce69263d6707f">&#9670;&#160;</a></span>solve()</h2>
 
@@ -307,9 +448,192 @@ template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f315
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aed72f8c2c53911d57d9936cbf7f11759" name="aed72f8c2c53911d57d9936cbf7f11759"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed72f8c2c53911d57d9936cbf7f11759">&#9670;&#160;</a></span>concurrent_constant_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConcurrentConstantSolver.html">ConcurrentConstantSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::concurrent_constant_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit constant field solver class. </p>
+
+</div>
+</div>
+<a id="a7aaf921ec545b5fc13cf0475cd69d603" name="a7aaf921ec545b5fc13cf0475cd69d603"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aaf921ec545b5fc13cf0475cd69d603">&#9670;&#160;</a></span>concurrent_explicit_postprocess_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConcurrentExplicitPostprocessSolver.html">ConcurrentExplicitPostprocessSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::concurrent_explicit_postprocess_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocessed explicit field solver class. </p>
+
+</div>
+</div>
+<a id="a6a97e70bae5b0b4574b0ae0123ff3c06" name="a6a97e70bae5b0b4574b0ae0123ff3c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a97e70bae5b0b4574b0ae0123ff3c06">&#9670;&#160;</a></span>concurrent_explicit_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classConcurrentExplicitSolver.html">ConcurrentExplicitSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::concurrent_explicit_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Explicit field solver class. </p>
+
+</div>
+</div>
+<a id="a774ca8bf1dd718f13e7d5dc00c9932fd" name="a774ca8bf1dd718f13e7d5dc00c9932fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a774ca8bf1dd718f13e7d5dc00c9932fd">&#9670;&#160;</a></span>sequential_auxiliary_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSequentialAuxiliarySolver.html">SequentialAuxiliarySolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::sequential_auxiliary_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Nonexplicit auxiliary field solver class. </p>
+
+</div>
+</div>
+<a id="ada734338a6590f7d7bc45ac43a53f504" name="ada734338a6590f7d7bc45ac43a53f504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada734338a6590f7d7bc45ac43a53f504">&#9670;&#160;</a></span>sequential_co_nonlinear_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSequentialCoNonlinearSolver.html">SequentialCoNonlinearSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::sequential_co_nonlinear_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Nonexplicit co-nonlinear field solver class. </p>
+
+</div>
+</div>
+<a id="a22386a6619e27fceab4cf52af9744ebe" name="a22386a6619e27fceab4cf52af9744ebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22386a6619e27fceab4cf52af9744ebe">&#9670;&#160;</a></span>sequential_linear_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSequentialLinearSolver.html">SequentialLinearSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::sequential_linear_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Nonexplicit linear field solver class. </p>
+
+</div>
+</div>
+<a id="a508ce7a82bb473112d9d124be8a87185" name="a508ce7a82bb473112d9d124be8a87185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a508ce7a82bb473112d9d124be8a87185">&#9670;&#160;</a></span>sequential_self_nonlinear_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> dim, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">unsigned</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">int</a> degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">typename</a> <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSequentialSelfNonlinearSolver.html">SequentialSelfNonlinearSolver</a>&lt;<a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a>&gt; <a class="el" href="classSolveBlock.html">SolveBlock</a>&lt; <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">dim</a>, degree, <a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">number</a> &gt;::sequential_self_nonlinear_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Nonexplicit self-nonlinear field solver class. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="solver__handler_8h_source.html">solver_handler.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>solver_handler.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="solver__handler_8cc.html">solver_handler.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

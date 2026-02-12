@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('nonuniform__dirichlet_8h_source.html',
   <div class="headertitle"><div class="title">nonuniform_dirichlet.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="nonuniform__dirichlet_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,11 +131,11 @@ $(document).ready(function(){initNavTree('nonuniform__dirichlet_8h_source.html',
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/base/point.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/lac/vector.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
@@ -158,26 +165,31 @@ $(document).ready(function(){initNavTree('nonuniform__dirichlet_8h_source.html',
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// NOLINTEND(readability-identifier-length, readability-avoid-const-params-in-decls)</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classNonuniformDirichlet.html#ab07f9bfc5d3ebd6582602356574581ea">   55</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classNonuniformDirichlet.html#ab07f9bfc5d3ebd6582602356574581ea">index</a>;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> boundary_id;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classNonuniformDirichlet.html#aea9438d8e5c81f1accdcd20c7d79e8f6">   57</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classNonuniformDirichlet.html#aea9438d8e5c81f1accdcd20c7d79e8f6">boundary_id</a>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  std::shared_ptr&lt;const PDEOperator&lt;dim, degree, number&gt;&gt; pde_operator;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classNonuniformDirichlet.html#a8d6a853e60a18040c54116a868eba8dc">   59</a></span>  std::shared_ptr&lt;const PDEOperator&lt;dim, degree, number&gt;&gt; <a class="code hl_variable" href="classNonuniformDirichlet.html#a8d6a853e60a18040c54116a868eba8dc">pde_operator</a>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
 </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassNonuniformDirichlet_html"><div class="ttname"><a href="classNonuniformDirichlet.html">NonuniformDirichlet</a></div><div class="ttdoc">Function for user-implemented nonuniform dirichlet boundary condition.</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.h:27</div></div>
 <div class="ttc" id="aclassNonuniformDirichlet_html_a319aac609697540a65f283357b1ca111"><div class="ttname"><a href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">NonuniformDirichlet::value</a></div><div class="ttdeci">number value(const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</div><div class="ttdoc">Scalar value.</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.cc:33</div></div>
+<div class="ttc" id="aclassNonuniformDirichlet_html_a8d6a853e60a18040c54116a868eba8dc"><div class="ttname"><a href="classNonuniformDirichlet.html#a8d6a853e60a18040c54116a868eba8dc">NonuniformDirichlet::pde_operator</a></div><div class="ttdeci">std::shared_ptr&lt; const PDEOperator&lt; dim, degree, number &gt; &gt; pde_operator</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.h:59</div></div>
 <div class="ttc" id="aclassNonuniformDirichlet_html_aaa79e399c8e7aa27768557d1c2faa75a"><div class="ttname"><a href="classNonuniformDirichlet.html#aaa79e399c8e7aa27768557d1c2faa75a">NonuniformDirichlet::vector_value</a></div><div class="ttdeci">void vector_value(const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</div><div class="ttdoc">Vector value.</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.cc:54</div></div>
+<div class="ttc" id="aclassNonuniformDirichlet_html_ab07f9bfc5d3ebd6582602356574581ea"><div class="ttname"><a href="classNonuniformDirichlet.html#ab07f9bfc5d3ebd6582602356574581ea">NonuniformDirichlet::index</a></div><div class="ttdeci">unsigned int index</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.h:55</div></div>
+<div class="ttc" id="aclassNonuniformDirichlet_html_aea9438d8e5c81f1accdcd20c7d79e8f6"><div class="ttname"><a href="classNonuniformDirichlet.html#aea9438d8e5c81f1accdcd20c7d79e8f6">NonuniformDirichlet::boundary_id</a></div><div class="ttdeci">unsigned int boundary_id</div><div class="ttdef"><b>Definition</b> nonuniform_dirichlet.h:57</div></div>
 <div class="ttc" id="aclassPDEOperator_html"><div class="ttname"><a href="classPDEOperator.html">PDEOperator</a></div><div class="ttdoc">This class contains the user implementation of each PDE operator.</div><div class="ttdef"><b>Definition</b> pde_operator.h:28</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>nonuniform_dirichlet.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="nonuniform__dirichlet_8h.html">nonuniform_dirichlet.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

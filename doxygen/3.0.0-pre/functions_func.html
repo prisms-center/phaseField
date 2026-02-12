@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,17 +114,36 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented functions with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all functions with links to the classes they belong to:</div>
 
 <h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
+<li>access_valid()&#160;:&#160;<a class="el" href="classVariableContainer.html#a84859ddd264ff20cad16a368fd60ac57">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>add_boundary_condition()&#160;:&#160;<a class="el" href="structBoundaryCondition.html#a478baa97f133edb43d8a5e17501e4e27">BoundaryCondition</a></li>
 <li>add_global_to_local_mapping()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a6dfd1f5686f039a1d753a13af7c88e1f">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>add_initial_condition_file()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">LoadInitialConditionParameters</a></li>
 <li>add_refinement_criteria()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#aeed8092eed6dc8412e7ffb547b02a036">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>add_refinement_marker()&#160;:&#160;<a class="el" href="classGridRefiner.html#ae1120852c61463caa5a36ee91d7d0a14">GridRefiner&lt; dim, degree, number &gt;</a></li>
 <li>add_src_solution_subset()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a9cc543059f6707733647527b46508159">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>add_user_constant()&#160;:&#160;<a class="el" href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">UserConstants&lt; dim &gt;</a></li>
-<li>apply_constraints()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a0871909bfb8fa75633142c19793c189f">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#af9e62b69963f1ec8c65b60afbfcad14c">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>apply_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a4885def0de8aab2e8942feee7f6243d6">ConstraintHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#a0871909bfb8fa75633142c19793c189f">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionHandler.html#af9e62b69963f1ec8c65b60afbfcad14c">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>apply_dirichlet_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#aa3dfaeffee7e92b987276c5b6ffef5b0">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>apply_generic_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a8b1cd6165693fb106b87e1406d3e820b">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
 <li>apply_initial_condition_for_old_fields()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a60a099dfa3a4789ea6968d0c46f1b32b">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>apply_mg_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a1f0880b5bcae39aa059c78149ddc40f7">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>apply_natural_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a844556d2f42e51864daeb3651f27771c">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>apply_nonuniform_dirichlet_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#acdd2f80d8738588c71a999cc586c9425">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>apply_periodic_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a95e559e21d7f7db554cb9c6070d329ae">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>assign_boundary_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a7909becd32d37c394dde69710010bde6">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_checkpoint_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#af12d1068105bfcddd9b6e49cd3d80400">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_grain_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a1d2673b835a4c8f59b073ecbe29513af">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_linear_solve_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a1050c51b634b9c33d9647af7f922a3a5">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_load_initial_condition_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6b616c195352863b5b69aa6bd4055fb1">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_miscellaneous_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a8f3e2fa561880287afc797e8375abe97">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_nonlinear_solve_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a7ef02e115ea13695b185cbc78989820c">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_nucleation_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a584575f6f8c2cfa44c9b420f35e1a83e">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_output_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_spatial_discretization_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_temporal_discretization_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f">UserInputParameters&lt; dim &gt;</a></li>
 <li>attempt_nucleation()&#160;:&#160;<a class="el" href="classNucleationHandler.html#a13c3a0e5fb8d996c34e56e148955c32b">NucleationHandler&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->

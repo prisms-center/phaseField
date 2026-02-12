@@ -1,5 +1,11 @@
 <map id="IdentitySolver&lt; dim, degree, number &gt;" name="IdentitySolver&lt; dim, degree, number &gt;">
-<area shape="rect" id="Node000001" title="Class that handles the assembly and solving of a field with the identity preconditioner (no precondit..." alt="" coords="16,93,173,133"/>
-<area shape="rect" id="Node000002" href="$classLinearSolverBase.html" title="Base class that handles the assembly and linear solving of a field." alt="" coords="5,5,184,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,59,97,93,92,93,92,59"/>
+<area shape="rect" id="Node000001" title="Class that handles the assembly and solving of a field with the identity preconditioner (no precondit..." alt="" coords="33,271,190,311"/>
+<area shape="rect" id="Node000002" href="$classLinearSolverBase.html" title="Base class that handles the assembly and linear solving of a field." alt="" coords="22,181,201,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,235,114,271,109,271,109,235"/>
+<area shape="rect" id="Node000003" href="$structVariableAttributes.html" title="Structure to hold the variable attributes of a field. This includes things like the name,..." alt="" coords="42,93,181,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,132,114,181,109,181,109,132"/>
+<area shape="rect" id="Node000004" href="$structFieldInfo.html" title="Information about the field." alt="" coords="5,5,84,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="64,40,104,91,100,94,60,43"/>
+<area shape="rect" id="Node000005" href="$structRawDependencies.html" title="Structure to hold the raw string dependencies of a field." alt="" coords="108,5,251,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="170,44,152,71,128,95,124,91,148,68,165,41"/>
 </map>

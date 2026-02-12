@@ -1,0 +1,11 @@
+<map id="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/sequential_co_nonlinear_solver.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/sequential_co_nonlinear_solver.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="245,5,480,75"/>
+<area shape="rect" id="Node000002" href="$solver__handler_8h.html" title=" " alt="" coords="127,123,345,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="315,86,269,125,265,120,311,82"/>
+<area shape="rect" id="Node000005" href="$sequential__co__nonlinear__solver_8cc.html" title=" " alt="" coords="369,123,612,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="415,82,461,120,458,125,411,86"/>
+<area shape="rect" id="Node000003" href="$pde__problem_8cc.html" title=" " alt="" coords="5,225,224,280"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="195,188,148,227,145,223,192,184"/>
+<area shape="rect" id="Node000004" href="$solver__handler_8cc.html" title=" " alt="" coords="248,225,467,280"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="280,184,327,223,324,227,277,188"/>
+</map>

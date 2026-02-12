@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classReadInitialCondition.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classReadInitialCondition-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ReadInitialCondition&lt; dim, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -131,21 +139,187 @@ Collaboration diagram for ReadInitialCondition&lt; dim, number &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6dcac943a8a1c89ffc6ea71d2dc195c3" id="r_a6dcac943a8a1c89ffc6ea71d2dc195c3"><td class="memItemLeft" align="right" valign="top"><a id="a6dcac943a8a1c89ffc6ea71d2dc195c3" name="a6dcac943a8a1c89ffc6ea71d2dc195c3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ReadInitialCondition</b> (std::string _field_name, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;_field_type, const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;ic_file, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;spatial_discretization)</td></tr>
-<tr class="memdesc:a6dcac943a8a1c89ffc6ea71d2dc195c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a6dcac943a8a1c89ffc6ea71d2dc195c3" id="r_a6dcac943a8a1c89ffc6ea71d2dc195c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadInitialCondition.html#a6dcac943a8a1c89ffc6ea71d2dc195c3">ReadInitialCondition</a> (std::string _field_name, const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;_field_type, const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;ic_file, const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;spatial_discretization)</td></tr>
+<tr class="memdesc:a6dcac943a8a1c89ffc6ea71d2dc195c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a6dcac943a8a1c89ffc6ea71d2dc195c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f4b02ecee8d1822620fe2fac717effe" id="r_a2f4b02ecee8d1822620fe2fac717effe"><td class="memItemLeft" align="right" valign="top"><a id="a2f4b02ecee8d1822620fe2fac717effe" name="a2f4b02ecee8d1822620fe2fac717effe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>vector_value</b> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td></tr>
-<tr class="memdesc:a2f4b02ecee8d1822620fe2fac717effe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar/Vector value. <br /></td></tr>
+<tr class="memitem:a2f4b02ecee8d1822620fe2fac717effe" id="r_a2f4b02ecee8d1822620fe2fac717effe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadInitialCondition.html#a2f4b02ecee8d1822620fe2fac717effe">vector_value</a> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;value) const override</td></tr>
+<tr class="memdesc:a2f4b02ecee8d1822620fe2fac717effe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar/Vector value.  <br /></td></tr>
 <tr class="separator:a2f4b02ecee8d1822620fe2fac717effe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a8352d51254e7ae6ab607caf1f8465ff6" id="r_a8352d51254e7ae6ab607caf1f8465ff6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadInitialCondition.html#a8352d51254e7ae6ab607caf1f8465ff6">field_name</a></td></tr>
+<tr class="separator:a8352d51254e7ae6ab607caf1f8465ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39ffbc667cd4f17b0d2328145f2e8641" id="r_a39ffbc667cd4f17b0d2328145f2e8641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadInitialCondition.html#a39ffbc667cd4f17b0d2328145f2e8641">field_type</a></td></tr>
+<tr class="separator:a39ffbc667cd4f17b0d2328145f2e8641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ed06e47530cbf6aa395c3e19358800" id="r_a13ed06e47530cbf6aa395c3e19358800"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classReadFieldBase.html">ReadFieldBase</a>&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classReadInitialCondition.html#a13ed06e47530cbf6aa395c3e19358800">reader</a></td></tr>
+<tr class="separator:a13ed06e47530cbf6aa395c3e19358800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
 class ReadInitialCondition&lt; dim, number &gt;</div><p>Function for read-in of initial conditions. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6dcac943a8a1c89ffc6ea71d2dc195c3" name="a6dcac943a8a1c89ffc6ea71d2dc195c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dcac943a8a1c89ffc6ea71d2dc195c3">&#9670;&#160;</a></span>ReadInitialCondition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classReadInitialCondition.html">ReadInitialCondition</a>&lt; dim, number &gt;<a class="el" href="classReadInitialCondition.html">::ReadInitialCondition</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>_field_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> &amp;&#160;</td>
+          <td class="paramname"><em>_field_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &amp;&#160;</td>
+          <td class="paramname"><em>ic_file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>spatial_discretization</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2f4b02ecee8d1822620fe2fac717effe" name="a2f4b02ecee8d1822620fe2fac717effe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f4b02ecee8d1822620fe2fac717effe">&#9670;&#160;</a></span>vector_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classReadInitialCondition.html">ReadInitialCondition</a>&lt; dim, number &gt;::vector_value </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Vector&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scalar/Vector value. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8352d51254e7ae6ab607caf1f8465ff6" name="a8352d51254e7ae6ab607caf1f8465ff6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8352d51254e7ae6ab607caf1f8465ff6">&#9670;&#160;</a></span>field_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="classReadInitialCondition.html">ReadInitialCondition</a>&lt; dim, number &gt;::field_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a39ffbc667cd4f17b0d2328145f2e8641" name="a39ffbc667cd4f17b0d2328145f2e8641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39ffbc667cd4f17b0d2328145f2e8641">&#9670;&#160;</a></span>field_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a> <a class="el" href="classReadInitialCondition.html">ReadInitialCondition</a>&lt; dim, number &gt;::field_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13ed06e47530cbf6aa395c3e19358800" name="a13ed06e47530cbf6aa395c3e19358800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ed06e47530cbf6aa395c3e19358800">&#9670;&#160;</a></span>reader</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classReadFieldBase.html">ReadFieldBase</a>&lt;dim, number&gt; &gt; <a class="el" href="classReadInitialCondition.html">ReadInitialCondition</a>&lt; dim, number &gt;::reader</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="initial__conditions_8h_source.html">initial_conditions.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>initial_conditions.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="initial__conditions_8cc.html">initial_conditions.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

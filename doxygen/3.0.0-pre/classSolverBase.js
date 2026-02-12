@@ -1,5 +1,7 @@
 var classSolverBase =
 [
+    [ "SystemMatrixType", "classSolverBase.html#a194cf6d5ad47868ee4bf15af748bb234", null ],
+    [ "VectorType", "classSolverBase.html#a4fc2bddc51a7ba2bf6943cf1c27765de", null ],
     [ "SolverBase", "classSolverBase.html#a48080f572ee148e5c3d89e52b99a9455", null ],
     [ "~SolverBase", "classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b", null ],
     [ "SolverBase", "classSolverBase.html#a5bce98970b784ac227ef51fbb9b8e1af", null ],
@@ -29,5 +31,9 @@ var classSolverBase =
     [ "set_initial_condition", "classSolverBase.html#a1ea3231db13cc32b113e487f859a41ef", null ],
     [ "solve", "classSolverBase.html#a8fad631727023412d605a6d861699435", null ],
     [ "solver_is_empty", "classSolverBase.html#a5356fdef1e92c6b4ad239052bbb14bc2", null ],
-    [ "update_subset_attributes", "classSolverBase.html#a79acd8aa61d877f6ab023cf2471f8d26", null ]
+    [ "update_subset_attributes", "classSolverBase.html#a79acd8aa61d877f6ab023cf2471f8d26", null ],
+    [ "field_solve_type", "classSolverBase.html#a40230ed29ef1f5254a6e369f0aecba7d", null ],
+    [ "solve_priority", "classSolverBase.html#ac1db7d9d1441c90a4c13140e907b95b3", null ],
+    [ "solver_context", "classSolverBase.html#a4782c896fa9e0f4deeeae1bc88470fbc", null ],
+    [ "subset_attributes", "classSolverBase.html#a3232d9e275d2164a98141a37ff8cd0f0", null ]
 ];

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,11 @@ $(document).ready(function(){initNavTree('classMatrixFreeContainer.html',''); in
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a7f732bb07e399b04aaba486c60bb57c0">get_matrix_free</a>() const</td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#afaa68c771ffa495bb3f489ebccd7b21d">get_mg_matrix_free</a>(unsigned int level) const</td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d">MatrixFreeContainer</a>(MGInfo&lt; dim &gt; &amp;mg_info)</td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#af73fd3278d4fd730334a1091120f5ecf">matrix_free</a></td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a18c48e07782d9b1a880a7182c3005b1d">MatrixFreeContainer</a>(MGInfo&lt; dim &gt; &amp;mg_info)</td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a0e539cfc43f917dff0bf1eff9f67e7f8">max_level</a></td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a337b44e0c6c52cede441650910bb1fb5">min_level</a></td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a871f97f2434a9f5a1253cbd1548248ab">multigrid_matrix_free</a></td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classMatrixFreeContainer.html#a5ba0a0cdb017fb1c1099288fe0e97326">reinit</a>(const dealii::Mapping&lt; dim &gt; &amp;mapping, const DofHandler&lt; dim &gt; &amp;dof_container, const ConstraintHandler&lt; dim, degree, number &gt; &amp;constraint_container, const dealii::Quadrature&lt; quad_dim &gt; &amp;quad)</td><td class="entry"><a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

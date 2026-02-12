@@ -1,5 +1,6 @@
 var classPDEOperator =
 [
+    [ "SizeType", "classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a", null ],
     [ "PDEOperator", "classPDEOperator.html#a6584115460a8510bfbaee06a44a2925c", null ],
     [ "~PDEOperator", "classPDEOperator.html#afcd5093a7ca3f742287e3f15450ebe8d", null ],
     [ "compute_explicit_rhs", "classPDEOperator.html#ac9c2f6fc833016ed26eebfebe0b3904f", null ],
@@ -10,5 +11,7 @@ var classPDEOperator =
     [ "get_timestep", "classPDEOperator.html#ab4e64aa11ac3a17fffaccf91e3ecbeb4", null ],
     [ "get_user_inputs", "classPDEOperator.html#ab6b0d9458704bfa92c9dd9fe040d4aeb", null ],
     [ "set_initial_condition", "classPDEOperator.html#af8a9cf7e755d735cb541dffb6156e143", null ],
-    [ "set_nonuniform_dirichlet", "classPDEOperator.html#ae8c3c529219f40298311a53d245160da", null ]
+    [ "set_nonuniform_dirichlet", "classPDEOperator.html#ae8c3c529219f40298311a53d245160da", null ],
+    [ "pf_tools", "classPDEOperator.html#a302ecfc8312de87f27caad4d83051f52", null ],
+    [ "user_inputs", "classPDEOperator.html#a71dcf4d304d34d7672edf0d0a318c435", null ]
 ];

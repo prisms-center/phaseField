@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -123,98 +130,152 @@ $(document).ready(function(){initNavTree('structFieldInfo.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a295c8d1544c52eebed4af0778ad98467" id="r_a295c8d1544c52eebed4af0778ad98467"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">TensorRank</a> : std::uint8_t { <b>Undefined</b>
-, <b>Scalar</b>
-, <b>Vector</b>
+<tr class="memitem:a295c8d1544c52eebed4af0778ad98467" id="r_a295c8d1544c52eebed4af0778ad98467"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">TensorRank</a> : std::uint8_t { <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360">Undefined</a>
+, <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467af60357a8d17e45793298323f1b372a74">Scalar</a>
+, <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467a57dea6f5039281b7fee517fc43bf3110">Vector</a>
  }</td></tr>
 <tr class="memdesc:a295c8d1544c52eebed4af0778ad98467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensor rank of the field.  <a href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">More...</a><br /></td></tr>
 <tr class="separator:a295c8d1544c52eebed4af0778ad98467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af70282d318c895d485eb64ad5f86815e" id="r_af70282d318c895d485eb64ad5f86815e"><td class="memItemLeft" align="right" valign="top"><a id="af70282d318c895d485eb64ad5f86815e" name="af70282d318c895d485eb64ad5f86815e"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">PDEType</a> : std::uint8_t { <br />
-&#160;&#160;<b>Undefined</b>
-, <b>Constant</b>
-, <b>ExplicitTimeDependent</b>
-, <b>ImplicitTimeDependent</b>
+<tr class="memitem:af70282d318c895d485eb64ad5f86815e" id="r_af70282d318c895d485eb64ad5f86815e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">PDEType</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eaec0fc0100c4fc1ce4eea230c3dc10360">Undefined</a>
+, <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eacb17869fe51048b5a5c4c6106551a255">Constant</a>
+, <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815ea8236f98aa81a8406682cd3aac037b2aa">ExplicitTimeDependent</a>
+, <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815ea4b9904eac793ab25fbc5285ee15e2105">ImplicitTimeDependent</a>
 , <br />
-&#160;&#160;<b>TimeIndependent</b>
-, <b>Auxiliary</b>
+&#160;&#160;<a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eaef53d1e03efcfae8eecc5c9bbb33f730">TimeIndependent</a>
+, <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815ea81cbcdf2b235a9fac1b797ce93322276">Auxiliary</a>
 <br />
  }</td></tr>
-<tr class="memdesc:af70282d318c895d485eb64ad5f86815e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of PDE that is being solved. <br /></td></tr>
+<tr class="memdesc:af70282d318c895d485eb64ad5f86815e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of PDE that is being solved.  <a href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">More...</a><br /></td></tr>
 <tr class="separator:af70282d318c895d485eb64ad5f86815e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf1351e3950046086aec9cf5a99a670e" id="r_abf1351e3950046086aec9cf5a99a670e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e">SolveType</a> : std::uint8_t { <br />
-&#160;&#160;<b>Undefined</b>
-, <b>ConcurrentConstant</b>
-, <b>ConcurrentExplicit</b>
-, <b>ConcurrentAuxiliary</b>
+&#160;&#160;<a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670eaec0fc0100c4fc1ce4eea230c3dc10360">Undefined</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670ea39f3f494a216277faf7f28f46436797a">ConcurrentConstant</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670eaf043e6954c9dc0b0740d7ff0bef01605">ConcurrentExplicit</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670ea7dabf1c17671e27182f86efb68c910b1">ConcurrentAuxiliary</a>
 , <br />
-&#160;&#160;<b>SequentialAuxiliary</b>
-, <b>SequentialLinear</b>
-, <b>SequentialSelfNonlinear</b>
-, <b>SequentialCoNonlinear</b>
+&#160;&#160;<a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670ea47d1ddaf97ee1de2a3e69f4331a678c7">SequentialAuxiliary</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670eadf4147a890b0f3e350c64f52321e9474">SequentialLinear</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670ea4545c098f57ec5167fdaf242080617d2">SequentialSelfNonlinear</a>
+, <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670ea089b2f5c3c2d4b4aa1ef9c77b0aa2711">SequentialCoNonlinear</a>
 <br />
  }</td></tr>
 <tr class="memdesc:abf1351e3950046086aec9cf5a99a670e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal classification of PDE types.  <a href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e">More...</a><br /></td></tr>
 <tr class="separator:abf1351e3950046086aec9cf5a99a670e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba207d6d68037aae3c2696d13ef03dca" id="r_aba207d6d68037aae3c2696d13ef03dca"><td class="memItemLeft" align="right" valign="top"><a id="aba207d6d68037aae3c2696d13ef03dca" name="aba207d6d68037aae3c2696d13ef03dca"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> : std::uint8_t { <br />
-&#160;&#160;<b>None</b> = 0x00
-, <b>New</b> = 0x01
-, <b>Current</b> = 0x02
-, <b>Change</b> = 0x04
+<tr class="memitem:aba207d6d68037aae3c2696d13ef03dca" id="r_aba207d6d68037aae3c2696d13ef03dca"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> : std::uint8_t { <br />
+&#160;&#160;<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0x00
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa03c2e7e41ffc181a4e84080b4710e81e">New</a> = 0x01
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa222a267cc5778206b253be35ee3ddab5">Current</a> = 0x02
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaaf4ec5f57bd4d31b803312d873be40da9">Change</a> = 0x04
 , <br />
-&#160;&#160;<b>OldOne</b> = 0x08
-, <b>OldTwo</b> = 0x10
-, <b>OldThree</b> = 0x20
-, <b>OldFour</b> = 0x40
+&#160;&#160;<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaaa630772f2ae7a8b63ce41f92935641a7">OldOne</a> = 0x08
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa38d0f9ea8b8e72a1f83d900f5e1cd2fa">OldTwo</a> = 0x10
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa48c8f415b5fb8c0f11c2a10df06214bc">OldThree</a> = 0x20
+, <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaaa4f25b45732eb79f77b69fbcee76892a">OldFour</a> = 0x40
 <br />
  }</td></tr>
-<tr class="memdesc:aba207d6d68037aae3c2696d13ef03dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal classification of dependency type flags. <br /></td></tr>
+<tr class="memdesc:aba207d6d68037aae3c2696d13ef03dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal classification of dependency type flags.  <a href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">More...</a><br /></td></tr>
 <tr class="separator:aba207d6d68037aae3c2696d13ef03dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a98ee8d499b631d2793a22e315c7a6ff9" id="r_a98ee8d499b631d2793a22e315c7a6ff9"><td class="memItemLeft" align="right" valign="top"><a id="a98ee8d499b631d2793a22e315c7a6ff9" name="a98ee8d499b631d2793a22e315c7a6ff9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_postprocess</b> = false</td></tr>
+<tr class="memitem:a98ee8d499b631d2793a22e315c7a6ff9" id="r_a98ee8d499b631d2793a22e315c7a6ff9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a98ee8d499b631d2793a22e315c7a6ff9">is_postprocess</a> = false</td></tr>
 <tr class="separator:a98ee8d499b631d2793a22e315c7a6ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5763bc27bf261d50bd165ba54c87ba2a" id="r_a5763bc27bf261d50bd165ba54c87ba2a"><td class="memItemLeft" align="right" valign="top"><a id="a5763bc27bf261d50bd165ba54c87ba2a" name="a5763bc27bf261d50bd165ba54c87ba2a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_nucleation_rate</b> = false</td></tr>
+<tr class="memitem:a5763bc27bf261d50bd165ba54c87ba2a" id="r_a5763bc27bf261d50bd165ba54c87ba2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a5763bc27bf261d50bd165ba54c87ba2a">is_nucleation_rate</a> = false</td></tr>
 <tr class="separator:a5763bc27bf261d50bd165ba54c87ba2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39fd4f2bc1596035e0173c8fe0489ca6" id="r_a39fd4f2bc1596035e0173c8fe0489ca6"><td class="memItemLeft" align="right" valign="top"><a id="a39fd4f2bc1596035e0173c8fe0489ca6" name="a39fd4f2bc1596035e0173c8fe0489ca6"></a>
-<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">TensorRank</a>&#160;</td><td class="memItemRight" valign="bottom"><b>tensor_rank</b> = TensorRank::Undefined</td></tr>
+<tr class="memitem:a39fd4f2bc1596035e0173c8fe0489ca6" id="r_a39fd4f2bc1596035e0173c8fe0489ca6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">TensorRank</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a39fd4f2bc1596035e0173c8fe0489ca6">tensor_rank</a> = <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360">TensorRank::Undefined</a></td></tr>
 <tr class="separator:a39fd4f2bc1596035e0173c8fe0489ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a779fc74f7948a567292218bb96aea698" id="r_a779fc74f7948a567292218bb96aea698"><td class="memItemLeft" align="right" valign="top"><a id="a779fc74f7948a567292218bb96aea698" name="a779fc74f7948a567292218bb96aea698"></a>
-<a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">PDEType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pde_type</b> = PDEType::Undefined</td></tr>
+<tr class="memitem:a779fc74f7948a567292218bb96aea698" id="r_a779fc74f7948a567292218bb96aea698"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">PDEType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a779fc74f7948a567292218bb96aea698">pde_type</a> = <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eaec0fc0100c4fc1ce4eea230c3dc10360">PDEType::Undefined</a></td></tr>
 <tr class="separator:a779fc74f7948a567292218bb96aea698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade0177957006c5f42fe1498edd419cfa" id="r_ade0177957006c5f42fe1498edd419cfa"><td class="memItemLeft" align="right" valign="top"><a id="ade0177957006c5f42fe1498edd419cfa" name="ade0177957006c5f42fe1498edd419cfa"></a>
-<a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e">SolveType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solve_type</b> = SolveType::Undefined</td></tr>
+<tr class="memitem:ade0177957006c5f42fe1498edd419cfa" id="r_ade0177957006c5f42fe1498edd419cfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e">SolveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#ade0177957006c5f42fe1498edd419cfa">solve_type</a> = <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670eaec0fc0100c4fc1ce4eea230c3dc10360">SolveType::Undefined</a></td></tr>
 <tr class="separator:ade0177957006c5f42fe1498edd419cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa84782f47b95c146ae3fd356b5b73785" id="r_aa84782f47b95c146ae3fd356b5b73785"><td class="memItemLeft" align="right" valign="top"><a id="aa84782f47b95c146ae3fd356b5b73785" name="aa84782f47b95c146ae3fd356b5b73785"></a>
-<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dependency_type_flags</b> = DependencyTypeFlags::None</td></tr>
+<tr class="memitem:aa84782f47b95c146ae3fd356b5b73785" id="r_aa84782f47b95c146ae3fd356b5b73785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#aa84782f47b95c146ae3fd356b5b73785">dependency_type_flags</a> = <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa6adf97f83acf6453d4a6a4b1070f3754">DependencyTypeFlags::None</a></td></tr>
 <tr class="separator:aa84782f47b95c146ae3fd356b5b73785"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a484a52ac5f0122ae6bc7ce118ee4c253" id="r_a484a52ac5f0122ae6bc7ce118ee4c253"><td class="memItemLeft" align="right" valign="top"><a id="a484a52ac5f0122ae6bc7ce118ee4c253" name="a484a52ac5f0122ae6bc7ce118ee4c253"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>global_index</b> = Numbers::invalid_index</td></tr>
+<tr class="memitem:a484a52ac5f0122ae6bc7ce118ee4c253" id="r_a484a52ac5f0122ae6bc7ce118ee4c253"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a484a52ac5f0122ae6bc7ce118ee4c253">global_index</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
 <tr class="separator:a484a52ac5f0122ae6bc7ce118ee4c253"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d01d9e822b543d2582780cbd895cf6" id="r_a89d01d9e822b543d2582780cbd895cf6"><td class="memItemLeft" align="right" valign="top"><a id="a89d01d9e822b543d2582780cbd895cf6" name="a89d01d9e822b543d2582780cbd895cf6"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>solve_block_index</b> = Numbers::invalid_index</td></tr>
+<tr class="memitem:a89d01d9e822b543d2582780cbd895cf6" id="r_a89d01d9e822b543d2582780cbd895cf6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a89d01d9e822b543d2582780cbd895cf6">solve_block_index</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
 <tr class="separator:a89d01d9e822b543d2582780cbd895cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a0a001fb9205193984c482b653d032d8f" id="r_a0a001fb9205193984c482b653d032d8f"><td class="memItemLeft" align="right" valign="top"><a id="a0a001fb9205193984c482b653d032d8f" name="a0a001fb9205193984c482b653d032d8f"></a>
-<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator|</b> (const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
+<tr class="memitem:a0a001fb9205193984c482b653d032d8f" id="r_a0a001fb9205193984c482b653d032d8f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a0a001fb9205193984c482b653d032d8f">operator|</a> (const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
 <tr class="separator:a0a001fb9205193984c482b653d032d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a104705cde7c89f3eef2a842823333e18" id="r_a104705cde7c89f3eef2a842823333e18"><td class="memItemLeft" align="right" valign="top"><a id="a104705cde7c89f3eef2a842823333e18" name="a104705cde7c89f3eef2a842823333e18"></a>
-<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator|=</b> (<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
+<tr class="memitem:a104705cde7c89f3eef2a842823333e18" id="r_a104705cde7c89f3eef2a842823333e18"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a104705cde7c89f3eef2a842823333e18">operator|=</a> (<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
 <tr class="separator:a104705cde7c89f3eef2a842823333e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d67668efeb0986f375e7411f12e8c2e" id="r_a9d67668efeb0986f375e7411f12e8c2e"><td class="memItemLeft" align="right" valign="top"><a id="a9d67668efeb0986f375e7411f12e8c2e" name="a9d67668efeb0986f375e7411f12e8c2e"></a>
-<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator&amp;</b> (const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
+<tr class="memitem:a9d67668efeb0986f375e7411f12e8c2e" id="r_a9d67668efeb0986f375e7411f12e8c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#a9d67668efeb0986f375e7411f12e8c2e">operator&amp;</a> (const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
 <tr class="separator:a9d67668efeb0986f375e7411f12e8c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada63969800c46d51e8ecd7225e8fbbd6" id="r_ada63969800c46d51e8ecd7225e8fbbd6"><td class="memItemLeft" align="right" valign="top"><a id="ada63969800c46d51e8ecd7225e8fbbd6" name="ada63969800c46d51e8ecd7225e8fbbd6"></a>
-<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&amp;=</b> (<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
+<tr class="memitem:ada63969800c46d51e8ecd7225e8fbbd6" id="r_ada63969800c46d51e8ecd7225e8fbbd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldInfo.html#ada63969800c46d51e8ecd7225e8fbbd6">operator&amp;=</a> (<a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;flag_1, const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> flag_2)</td></tr>
 <tr class="separator:ada63969800c46d51e8ecd7225e8fbbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Information about the field. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aba207d6d68037aae3c2696d13ef03dca" name="aba207d6d68037aae3c2696d13ef03dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba207d6d68037aae3c2696d13ef03dca">&#9670;&#160;</a></span>DependencyTypeFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">FieldInfo::DependencyTypeFlags</a> : std::uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal classification of dependency type flags. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaa6adf97f83acf6453d4a6a4b1070f3754" name="aba207d6d68037aae3c2696d13ef03dcaa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaa03c2e7e41ffc181a4e84080b4710e81e" name="aba207d6d68037aae3c2696d13ef03dcaa03c2e7e41ffc181a4e84080b4710e81e"></a>New&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaa222a267cc5778206b253be35ee3ddab5" name="aba207d6d68037aae3c2696d13ef03dcaa222a267cc5778206b253be35ee3ddab5"></a>Current&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaaf4ec5f57bd4d31b803312d873be40da9" name="aba207d6d68037aae3c2696d13ef03dcaaf4ec5f57bd4d31b803312d873be40da9"></a>Change&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaaa630772f2ae7a8b63ce41f92935641a7" name="aba207d6d68037aae3c2696d13ef03dcaaa630772f2ae7a8b63ce41f92935641a7"></a>OldOne&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaa38d0f9ea8b8e72a1f83d900f5e1cd2fa" name="aba207d6d68037aae3c2696d13ef03dcaa38d0f9ea8b8e72a1f83d900f5e1cd2fa"></a>OldTwo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaa48c8f415b5fb8c0f11c2a10df06214bc" name="aba207d6d68037aae3c2696d13ef03dcaa48c8f415b5fb8c0f11c2a10df06214bc"></a>OldThree&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aba207d6d68037aae3c2696d13ef03dcaaa4f25b45732eb79f77b69fbcee76892a" name="aba207d6d68037aae3c2696d13ef03dcaaa4f25b45732eb79f77b69fbcee76892a"></a>OldFour&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="af70282d318c895d485eb64ad5f86815e" name="af70282d318c895d485eb64ad5f86815e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af70282d318c895d485eb64ad5f86815e">&#9670;&#160;</a></span>PDEType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">FieldInfo::PDEType</a> : std::uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Type of PDE that is being solved. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815eaec0fc0100c4fc1ce4eea230c3dc10360" name="af70282d318c895d485eb64ad5f86815eaec0fc0100c4fc1ce4eea230c3dc10360"></a>Undefined&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815eacb17869fe51048b5a5c4c6106551a255" name="af70282d318c895d485eb64ad5f86815eacb17869fe51048b5a5c4c6106551a255"></a>Constant&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815ea8236f98aa81a8406682cd3aac037b2aa" name="af70282d318c895d485eb64ad5f86815ea8236f98aa81a8406682cd3aac037b2aa"></a>ExplicitTimeDependent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815ea4b9904eac793ab25fbc5285ee15e2105" name="af70282d318c895d485eb64ad5f86815ea4b9904eac793ab25fbc5285ee15e2105"></a>ImplicitTimeDependent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815eaef53d1e03efcfae8eecc5c9bbb33f730" name="af70282d318c895d485eb64ad5f86815eaef53d1e03efcfae8eecc5c9bbb33f730"></a>TimeIndependent&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af70282d318c895d485eb64ad5f86815ea81cbcdf2b235a9fac1b797ce93322276" name="af70282d318c895d485eb64ad5f86815ea81cbcdf2b235a9fac1b797ce93322276"></a>Auxiliary&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="abf1351e3950046086aec9cf5a99a670e" name="abf1351e3950046086aec9cf5a99a670e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf1351e3950046086aec9cf5a99a670e">&#9670;&#160;</a></span>SolveType</h2>
 
@@ -237,9 +298,19 @@ Friends</h2></td></tr>
 
 <p>Internal classification of PDE types. </p>
 <p>There are several different types of solves that are possible.</p>
-<p>For PDEType::ExplicitTimeDependent, all fields of that type can be solved concurrently. This also applies for postprocessed fields of that type.</p>
-<p>For PDEType::Constant, those fields are never updated.</p>
+<p>For <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815ea8236f98aa81a8406682cd3aac037b2aa">PDEType::ExplicitTimeDependent</a>, all fields of that type can be solved concurrently. This also applies for postprocessed fields of that type.</p>
+<p>For <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eacb17869fe51048b5a5c4c6106551a255">PDEType::Constant</a>, those fields are never updated.</p>
 <p>For the rest, we have several classifications that can either be solved sequentially of concurrently. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670eaec0fc0100c4fc1ce4eea230c3dc10360" name="abf1351e3950046086aec9cf5a99a670eaec0fc0100c4fc1ce4eea230c3dc10360"></a>Undefined&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670ea39f3f494a216277faf7f28f46436797a" name="abf1351e3950046086aec9cf5a99a670ea39f3f494a216277faf7f28f46436797a"></a>ConcurrentConstant&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670eaf043e6954c9dc0b0740d7ff0bef01605" name="abf1351e3950046086aec9cf5a99a670eaf043e6954c9dc0b0740d7ff0bef01605"></a>ConcurrentExplicit&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670ea7dabf1c17671e27182f86efb68c910b1" name="abf1351e3950046086aec9cf5a99a670ea7dabf1c17671e27182f86efb68c910b1"></a>ConcurrentAuxiliary&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670ea47d1ddaf97ee1de2a3e69f4331a678c7" name="abf1351e3950046086aec9cf5a99a670ea47d1ddaf97ee1de2a3e69f4331a678c7"></a>SequentialAuxiliary&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670eadf4147a890b0f3e350c64f52321e9474" name="abf1351e3950046086aec9cf5a99a670eadf4147a890b0f3e350c64f52321e9474"></a>SequentialLinear&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670ea4545c098f57ec5167fdaf242080617d2" name="abf1351e3950046086aec9cf5a99a670ea4545c098f57ec5167fdaf242080617d2"></a>SequentialSelfNonlinear&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="abf1351e3950046086aec9cf5a99a670ea089b2f5c3c2d4b4aa1ef9c77b0aa2711" name="abf1351e3950046086aec9cf5a99a670ea089b2f5c3c2d4b4aa1ef9c77b0aa2711"></a>SequentialCoNonlinear&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
 </div>
 </div>
@@ -265,6 +336,269 @@ Friends</h2></td></tr>
 
 <p>Tensor rank of the field. </p>
 <p>Currently, only scalar and vectors are supported. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360" name="a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360"></a>Undefined&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a295c8d1544c52eebed4af0778ad98467af60357a8d17e45793298323f1b372a74" name="a295c8d1544c52eebed4af0778ad98467af60357a8d17e45793298323f1b372a74"></a>Scalar&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a295c8d1544c52eebed4af0778ad98467a57dea6f5039281b7fee517fc43bf3110" name="a295c8d1544c52eebed4af0778ad98467a57dea6f5039281b7fee517fc43bf3110"></a>Vector&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a9d67668efeb0986f375e7411f12e8c2e" name="a9d67668efeb0986f375e7411f12e8c2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d67668efeb0986f375e7411f12e8c2e">&#9670;&#160;</a></span>operator&amp;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ada63969800c46d51e8ecd7225e8fbbd6" name="ada63969800c46d51e8ecd7225e8fbbd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada63969800c46d51e8ecd7225e8fbbd6">&#9670;&#160;</a></span>operator&amp;=</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp; operator&amp;= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td>
+          <td class="paramname"><em>flag_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a001fb9205193984c482b653d032d8f" name="a0a001fb9205193984c482b653d032d8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a001fb9205193984c482b653d032d8f">&#9670;&#160;</a></span>operator|</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> operator| </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a104705cde7c89f3eef2a842823333e18" name="a104705cde7c89f3eef2a842823333e18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a104705cde7c89f3eef2a842823333e18">&#9670;&#160;</a></span>operator|=</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp; operator|= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> &amp;&#160;</td>
+          <td class="paramname"><em>flag_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a>&#160;</td>
+          <td class="paramname"><em>flag_2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa84782f47b95c146ae3fd356b5b73785" name="aa84782f47b95c146ae3fd356b5b73785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa84782f47b95c146ae3fd356b5b73785">&#9670;&#160;</a></span>dependency_type_flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca">DependencyTypeFlags</a> FieldInfo::dependency_type_flags = <a class="el" href="structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa6adf97f83acf6453d4a6a4b1070f3754">DependencyTypeFlags::None</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a484a52ac5f0122ae6bc7ce118ee4c253" name="a484a52ac5f0122ae6bc7ce118ee4c253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a484a52ac5f0122ae6bc7ce118ee4c253">&#9670;&#160;</a></span>global_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int FieldInfo::global_index = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5763bc27bf261d50bd165ba54c87ba2a" name="a5763bc27bf261d50bd165ba54c87ba2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5763bc27bf261d50bd165ba54c87ba2a">&#9670;&#160;</a></span>is_nucleation_rate</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FieldInfo::is_nucleation_rate = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a98ee8d499b631d2793a22e315c7a6ff9" name="a98ee8d499b631d2793a22e315c7a6ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ee8d499b631d2793a22e315c7a6ff9">&#9670;&#160;</a></span>is_postprocess</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool FieldInfo::is_postprocess = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a779fc74f7948a567292218bb96aea698" name="a779fc74f7948a567292218bb96aea698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a779fc74f7948a567292218bb96aea698">&#9670;&#160;</a></span>pde_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815e">PDEType</a> FieldInfo::pde_type = <a class="el" href="structFieldInfo.html#af70282d318c895d485eb64ad5f86815eaec0fc0100c4fc1ce4eea230c3dc10360">PDEType::Undefined</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89d01d9e822b543d2582780cbd895cf6" name="a89d01d9e822b543d2582780cbd895cf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89d01d9e822b543d2582780cbd895cf6">&#9670;&#160;</a></span>solve_block_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int FieldInfo::solve_block_index = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ade0177957006c5f42fe1498edd419cfa" name="ade0177957006c5f42fe1498edd419cfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0177957006c5f42fe1498edd419cfa">&#9670;&#160;</a></span>solve_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670e">SolveType</a> FieldInfo::solve_type = <a class="el" href="structFieldInfo.html#abf1351e3950046086aec9cf5a99a670eaec0fc0100c4fc1ce4eea230c3dc10360">SolveType::Undefined</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a39fd4f2bc1596035e0173c8fe0489ca6" name="a39fd4f2bc1596035e0173c8fe0489ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39fd4f2bc1596035e0173c8fe0489ca6">&#9670;&#160;</a></span>tensor_rank</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">TensorRank</a> FieldInfo::tensor_rank = <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467aec0fc0100c4fc1ce4eea230c3dc10360">TensorRank::Undefined</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

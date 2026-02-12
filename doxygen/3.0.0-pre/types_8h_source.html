@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,64 +122,93 @@ $(document).ready(function(){initNavTree('types_8h_source.html',''); initResizab
   <div class="headertitle"><div class="title">types.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="types_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;utility&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span>Types</div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceTypes.html">   14</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceTypes.html">Types</a></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">using </span>Index = <span class="keywordtype">unsigned</span> int;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">   19</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Index</a> = <span class="keywordtype">unsigned</span> int;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>} <span class="comment">// namespace Types</span></div>
+</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span>Numbers</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespaceNumbers.html">   23</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceNumbers.html">Numbers</a></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">static</span> <span class="keyword">const</span> Types::Index invalid_index = <span class="keyword">static_cast&lt;</span>Types::Index<span class="keyword">&gt;</span>(-1);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">   28</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="code hl_variable" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">invalid_index</a> = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a><span class="keyword">&gt;</span>(-1);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_element_degree = 6;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#a6a7faa0b7b612042eaa4ce8eacaeb5a4">   33</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceNumbers.html#a6a7faa0b7b612042eaa4ce8eacaeb5a4">max_element_degree</a> = 6;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_subsections = 16;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#a7fd0f4fb864f0d5d700ac403660f3054">   38</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceNumbers.html#a7fd0f4fb864f0d5d700ac403660f3054">max_subsections</a> = 16;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">static</span> <span class="keyword">const</span> PDEType invalid_pde_type = <span class="keyword">static_cast&lt;</span>PDEType<span class="keyword">&gt;</span>(-1);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#aad9796e3a0ba79044c53b630e38cf907">   43</a></span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceNumbers.html#aad9796e3a0ba79044c53b630e38cf907">max_saved_solutions</a> = 4;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">static</span> <span class="keyword">const</span> FieldSolveType invalid_field_solve_type = <span class="keyword">static_cast&lt;</span>FieldSolveType<span class="keyword">&gt;</span>(-1);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#aa1701d0370e33ddd3577b7906bc40c42">   48</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_enumeration" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a> <a class="code hl_variable" href="namespaceNumbers.html#aa1701d0370e33ddd3577b7906bc40c42">invalid_pde_type</a> = <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a><span class="keyword">&gt;</span>(-1);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace Numbers</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">namespace </span>Defaults</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> <span class="keyword">const</span> Types::Index index = 0;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> tolerance = 1.0e-6;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">   53</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_enumeration" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a> <a class="code hl_variable" href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">invalid_field_solve_type</a> = <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a><span class="keyword">&gt;</span>(-1);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace Numbers</span></div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespaceDefaults.html">   57</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceDefaults.html">Defaults</a></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#aa7f304d826342a4ae216e6de69f44bc4">   62</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="code hl_variable" href="namespaceDefaults.html#aa7f304d826342a4ae216e6de69f44bc4">index</a> = 0;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> mesh_tolerance = 1.0e-15;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081">   67</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081">tolerance</a> = 1.0e-6;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iterations = 100;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">   72</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">mesh_tolerance</a> = 1.0e-15;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> smoothing_range = 15.0;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">   77</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">iterations</a> = 100;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> smoother_degree = 5;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#a4731bf4284c6b59d29decca367071d44">   82</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> <a class="code hl_variable" href="namespaceDefaults.html#a4731bf4284c6b59d29decca367071d44">smoothing_range</a> = 15.0;</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> eig_cg_n_iterations = 10;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#aff5f010e8045ee4f89afb6fc3170427e">   87</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceDefaults.html#aff5f010e8045ee4f89afb6fc3170427e">smoother_degree</a> = 5;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>} <span class="comment">// namespace Defaults</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="namespaceDefaults.html#ad7531b8494683016a6acb0dd20264ec8">   92</a></span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceDefaults.html#ad7531b8494683016a6acb0dd20264ec8">eig_cg_n_iterations</a> = 10;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>} <span class="comment">// namespace Defaults</span></div>
+</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="anamespaceDefaults_html"><div class="ttname"><a href="namespaceDefaults.html">Defaults</a></div><div class="ttdef"><b>Definition</b> types.h:58</div></div>
+<div class="ttc" id="anamespaceDefaults_html_a4731bf4284c6b59d29decca367071d44"><div class="ttname"><a href="namespaceDefaults.html#a4731bf4284c6b59d29decca367071d44">Defaults::smoothing_range</a></div><div class="ttdeci">static const double smoothing_range</div><div class="ttdoc">Default eigenvalue smoothing range for multigrid.</div><div class="ttdef"><b>Definition</b> types.h:82</div></div>
+<div class="ttc" id="anamespaceDefaults_html_a4cf6f3f53f9733c155e9c2f5e083d83b"><div class="ttname"><a href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></div><div class="ttdeci">static const unsigned int iterations</div><div class="ttdoc">Default iterations.</div><div class="ttdef"><b>Definition</b> types.h:77</div></div>
+<div class="ttc" id="anamespaceDefaults_html_aa7f304d826342a4ae216e6de69f44bc4"><div class="ttname"><a href="namespaceDefaults.html#aa7f304d826342a4ae216e6de69f44bc4">Defaults::index</a></div><div class="ttdeci">static const Types::Index index</div><div class="ttdoc">Default field index.</div><div class="ttdef"><b>Definition</b> types.h:62</div></div>
+<div class="ttc" id="anamespaceDefaults_html_abb74becde7e9e8a9bd770d7b89d2f902"><div class="ttname"><a href="namespaceDefaults.html#abb74becde7e9e8a9bd770d7b89d2f902">Defaults::mesh_tolerance</a></div><div class="ttdeci">static const double mesh_tolerance</div><div class="ttdoc">Default mesh tolerance.</div><div class="ttdef"><b>Definition</b> types.h:72</div></div>
+<div class="ttc" id="anamespaceDefaults_html_ac62f490f33a78f3a170b3f8eae6f5081"><div class="ttname"><a href="namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081">Defaults::tolerance</a></div><div class="ttdeci">static const double tolerance</div><div class="ttdoc">Default tolerance.</div><div class="ttdef"><b>Definition</b> types.h:67</div></div>
+<div class="ttc" id="anamespaceDefaults_html_ad7531b8494683016a6acb0dd20264ec8"><div class="ttname"><a href="namespaceDefaults.html#ad7531b8494683016a6acb0dd20264ec8">Defaults::eig_cg_n_iterations</a></div><div class="ttdeci">static const unsigned int eig_cg_n_iterations</div><div class="ttdoc">Default CG iterations to find the maximum eigenvalue for multigrid.</div><div class="ttdef"><b>Definition</b> types.h:92</div></div>
+<div class="ttc" id="anamespaceDefaults_html_aff5f010e8045ee4f89afb6fc3170427e"><div class="ttname"><a href="namespaceDefaults.html#aff5f010e8045ee4f89afb6fc3170427e">Defaults::smoother_degree</a></div><div class="ttdeci">static const unsigned int smoother_degree</div><div class="ttdoc">Default smoother degree for multigrid.</div><div class="ttdef"><b>Definition</b> types.h:87</div></div>
+<div class="ttc" id="anamespaceNumbers_html"><div class="ttname"><a href="namespaceNumbers.html">Numbers</a></div><div class="ttdef"><b>Definition</b> types.h:24</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a19437ca6a5e3899cddc13da7aa1372ef"><div class="ttname"><a href="namespaceNumbers.html#a19437ca6a5e3899cddc13da7aa1372ef">Numbers::invalid_field_solve_type</a></div><div class="ttdeci">static const FieldSolveType invalid_field_solve_type</div><div class="ttdoc">Invalid field solve type.</div><div class="ttdef"><b>Definition</b> types.h:53</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a6a7faa0b7b612042eaa4ce8eacaeb5a4"><div class="ttname"><a href="namespaceNumbers.html#a6a7faa0b7b612042eaa4ce8eacaeb5a4">Numbers::max_element_degree</a></div><div class="ttdeci">static const unsigned int max_element_degree</div><div class="ttdoc">Max element degree.</div><div class="ttdef"><b>Definition</b> types.h:33</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a6c9b90814b4eb8306f621bb5e8f1a343"><div class="ttname"><a href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></div><div class="ttdeci">static const Types::Index invalid_index</div><div class="ttdoc">Invalid field index.</div><div class="ttdef"><b>Definition</b> types.h:28</div></div>
+<div class="ttc" id="anamespaceNumbers_html_a7fd0f4fb864f0d5d700ac403660f3054"><div class="ttname"><a href="namespaceNumbers.html#a7fd0f4fb864f0d5d700ac403660f3054">Numbers::max_subsections</a></div><div class="ttdeci">static const unsigned int max_subsections</div><div class="ttdoc">Max number of subsections.</div><div class="ttdef"><b>Definition</b> types.h:38</div></div>
+<div class="ttc" id="anamespaceNumbers_html_aa1701d0370e33ddd3577b7906bc40c42"><div class="ttname"><a href="namespaceNumbers.html#aa1701d0370e33ddd3577b7906bc40c42">Numbers::invalid_pde_type</a></div><div class="ttdeci">static const PDEType invalid_pde_type</div><div class="ttdoc">Invalid PDE type.</div><div class="ttdef"><b>Definition</b> types.h:48</div></div>
+<div class="ttc" id="anamespaceNumbers_html_aad9796e3a0ba79044c53b630e38cf907"><div class="ttname"><a href="namespaceNumbers.html#aad9796e3a0ba79044c53b630e38cf907">Numbers::max_saved_solutions</a></div><div class="ttdeci">static constexpr unsigned int max_saved_solutions</div><div class="ttdoc">Max number of saved solutions.</div><div class="ttdef"><b>Definition</b> types.h:43</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html"><div class="ttname"><a href="namespaceTypes.html">Types</a></div><div class="ttdef"><b>Definition</b> types.h:15</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
+<div class="ttc" id="atype__enums_8h_html_a1d8783cfe9ab22f9b57d5c622d7d43ea"><div class="ttname"><a href="type__enums_8h.html#a1d8783cfe9ab22f9b57d5c622d7d43ea">PDEType</a></div><div class="ttdeci">PDEType</div><div class="ttdoc">Type of PDE that is being solved.</div><div class="ttdef"><b>Definition</b> type_enums.h:17</div></div>
+<div class="ttc" id="atype__enums_8h_html_acc04211570c93ba4ba084a8f71a3491f"><div class="ttname"><a href="type__enums_8h.html#acc04211570c93ba4ba084a8f71a3491f">FieldSolveType</a></div><div class="ttdeci">FieldSolveType</div><div class="ttdoc">Internal classification of combined field and solve types. There are six different types of solve tha...</div><div class="ttdef"><b>Definition</b> type_enums.h:59</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>types.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="types_8h.html">types.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

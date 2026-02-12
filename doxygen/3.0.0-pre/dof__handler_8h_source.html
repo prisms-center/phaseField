@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
   <div class="headertitle"><div class="title">dof_handler.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="dof__handler_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -124,13 +131,13 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;deal.II/dofs/dof_handler.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;deal.II/fe/fe_system.h&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/core/variable_attributes.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;<a class="code" href="variable__attributes_8h.html">prismspf/core/variable_attributes.h</a>&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">class </span><a class="code hl_class" href="classUserInputParameters.html">UserInputParameters</a>;</div>
@@ -166,13 +173,13 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  [[nodiscard]] <span class="keyword">const</span> dealii::DoFHandler&lt;dim&gt; &amp;</div>
 <div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">   72</a></span>  <a class="code hl_function" href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">get_dof_handler</a>(Types::Index index)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">   72</a></span>  <a class="code hl_function" href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">get_dof_handler</a>(<a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    Assert(dof_handlers.contains(index),</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    Assert(<a class="code hl_variable" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a>.contains(index),</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>           dealii::ExcMessage(</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>             <span class="stringliteral">&quot;Invalid index when trying to access a specific DoFHandler&quot;</span>));</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    Assert(dof_handlers.at(index) != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> *dof_handlers.at(index);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    Assert(<a class="code hl_variable" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a>.at(index) != <span class="keyword">nullptr</span>, dealii::ExcNotInitialized());</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> *<a class="code hl_variable" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a>.at(index);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  };</div>
 </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
@@ -181,7 +188,7 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classDofHandler.html#a639089ec5f2c4ce72fe3c64c578ee6ee">   85</a></span>  <a class="code hl_function" href="classDofHandler.html#a639089ec5f2c4ce72fe3c64c578ee6ee">get_total_dofs</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    dealii::types::global_dof_index n_dofs = 0;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, dof_handler] : dof_handlers)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, dof_handler] : <a class="code hl_variable" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a>)</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      {</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        n_dofs += dof_handler-&gt;n_dofs();</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      }</div>
@@ -190,45 +197,57 @@ $(document).ready(function(){initNavTree('dof__handler_8h_source.html',''); init
 </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *user_inputs;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classDofHandler.html#a8f871fdf38ddfe71e052406d66518ec4">   99</a></span>  <span class="keyword">const</span> <a class="code hl_class" href="classUserInputParameters.html">UserInputParameters&lt;dim&gt;</a> *<a class="code hl_variable" href="classDofHandler.html#a8f871fdf38ddfe71e052406d66518ec4">user_inputs</a>;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  std::map&lt;unsigned int, std::unique_ptr&lt;dealii::DoFHandler&lt;dim&gt;&gt;&gt; dof_handlers;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">  108</a></span>  std::map&lt;unsigned int, std::unique_ptr&lt;dealii::DoFHandler&lt;dim&gt;&gt;&gt; <a class="code hl_variable" href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">dof_handlers</a>;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt; const_dof_handlers;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classDofHandler.html#afe86e70891218789d0b6a9f4de8fbce4">  113</a></span>  std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt; <a class="code hl_variable" href="classDofHandler.html#afe86e70891218789d0b6a9f4de8fbce4">const_dof_handlers</a>;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keywordtype">bool</span> has_multigrid = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classDofHandler.html#a52f24233864ce29ca747170c1cb88ae9">  118</a></span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="classDofHandler.html#a52f24233864ce29ca747170c1cb88ae9">has_multigrid</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> global_min_level = 0;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classDofHandler.html#a0b3d45c1b5e3bac2e9d9c615b5b981ca">  123</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classDofHandler.html#a0b3d45c1b5e3bac2e9d9c615b5b981ca">global_min_level</a> = 0;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#ifdef ADDITIONAL_OPTIMIZATIONS</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  std::set&lt;Types::Index&gt; degenerate_field_indices_outside_mg;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  std::map&lt;unsigned int, dealii::MGLevelObject&lt;std::unique_ptr&lt;dealii::DoFHandler&lt;dim&gt;&gt;&gt;&gt;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    mg_dof_handlers;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classDofHandler.html#a5b7f238a7bd2696ce450076064f32877">  145</a></span>    <a class="code hl_variable" href="classDofHandler.html#a5b7f238a7bd2696ce450076064f32877">mg_dof_handlers</a>;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  std::vector&lt;std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt;&gt; const_mg_dof_handlers;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="classDofHandler.html#aeda6ff816e8fdade89941c5dfd0c01ba">  150</a></span>  std::vector&lt;std::vector&lt;const dealii::DoFHandler&lt;dim&gt; *&gt;&gt; <a class="code hl_variable" href="classDofHandler.html#aeda6ff816e8fdade89941c5dfd0c01ba">const_mg_dof_handlers</a>;</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>};</div>
 </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassDofHandler_html"><div class="ttname"><a href="classDofHandler.html">DofHandler</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:32</div></div>
+<div class="ttc" id="aclassDofHandler_html_a04d910518b6e382f66d0f8271f5ac7cb"><div class="ttname"><a href="classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb">DofHandler::dof_handlers</a></div><div class="ttdeci">std::map&lt; unsigned int, std::unique_ptr&lt; dealii::DoFHandler&lt; dim &gt; &gt; &gt; dof_handlers</div><div class="ttdoc">Collection of the triangulation DoFs. The number of DoFHandlers should be equal to or less than the n...</div><div class="ttdef"><b>Definition</b> dof_handler.h:108</div></div>
+<div class="ttc" id="aclassDofHandler_html_a0b3d45c1b5e3bac2e9d9c615b5b981ca"><div class="ttname"><a href="classDofHandler.html#a0b3d45c1b5e3bac2e9d9c615b5b981ca">DofHandler::global_min_level</a></div><div class="ttdeci">unsigned int global_min_level</div><div class="ttdoc">Global minimum level for multigrid.</div><div class="ttdef"><b>Definition</b> dof_handler.h:123</div></div>
 <div class="ttc" id="aclassDofHandler_html_a42537bb8c354a2e1b72bd4d8722797c2"><div class="ttname"><a href="classDofHandler.html#a42537bb8c354a2e1b72bd4d8722797c2">DofHandler::get_mg_dof_handlers</a></div><div class="ttdeci">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp; get_mg_dof_handlers(unsigned int level) const</div><div class="ttdoc">Getter function for the DoFHandlers at a given multigrid level (constant reference).</div><div class="ttdef"><b>Definition</b> dof_handler.cc:242</div></div>
+<div class="ttc" id="aclassDofHandler_html_a52f24233864ce29ca747170c1cb88ae9"><div class="ttname"><a href="classDofHandler.html#a52f24233864ce29ca747170c1cb88ae9">DofHandler::has_multigrid</a></div><div class="ttdeci">bool has_multigrid</div><div class="ttdoc">Whether we have multigrid.</div><div class="ttdef"><b>Definition</b> dof_handler.h:118</div></div>
+<div class="ttc" id="aclassDofHandler_html_a5b7f238a7bd2696ce450076064f32877"><div class="ttname"><a href="classDofHandler.html#a5b7f238a7bd2696ce450076064f32877">DofHandler::mg_dof_handlers</a></div><div class="ttdeci">std::map&lt; unsigned int, dealii::MGLevelObject&lt; std::unique_ptr&lt; dealii::DoFHandler&lt; dim &gt; &gt; &gt; &gt; mg_dof_handlers</div><div class="ttdoc">Collection of the triangulation DoFs for each multigrid level for all fields that require it....</div><div class="ttdef"><b>Definition</b> dof_handler.h:145</div></div>
 <div class="ttc" id="aclassDofHandler_html_a639089ec5f2c4ce72fe3c64c578ee6ee"><div class="ttname"><a href="classDofHandler.html#a639089ec5f2c4ce72fe3c64c578ee6ee">DofHandler::get_total_dofs</a></div><div class="ttdeci">dealii::types::global_dof_index get_total_dofs() const</div><div class="ttdoc">Get the total DoFs excluding multigrid DoFs.</div><div class="ttdef"><b>Definition</b> dof_handler.h:85</div></div>
+<div class="ttc" id="aclassDofHandler_html_a8f871fdf38ddfe71e052406d66518ec4"><div class="ttname"><a href="classDofHandler.html#a8f871fdf38ddfe71e052406d66518ec4">DofHandler::user_inputs</a></div><div class="ttdeci">const UserInputParameters&lt; dim &gt; * user_inputs</div><div class="ttdoc">User-inputs.</div><div class="ttdef"><b>Definition</b> dof_handler.h:99</div></div>
 <div class="ttc" id="aclassDofHandler_html_a9ba0feccc08c97b438c304be5fab69ff"><div class="ttname"><a href="classDofHandler.html#a9ba0feccc08c97b438c304be5fab69ff">DofHandler::init</a></div><div class="ttdeci">void init(const TriangulationHandler&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; FieldInfo::TensorRank, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system, const MGInfo&lt; dim &gt; &amp;mg_info)</div><div class="ttdoc">Initialize the DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.cc:129</div></div>
 <div class="ttc" id="aclassDofHandler_html_abbf223cfa11ed59eb4c0fbd4d15995ce"><div class="ttname"><a href="classDofHandler.html#abbf223cfa11ed59eb4c0fbd4d15995ce">DofHandler::reinit</a></div><div class="ttdeci">void reinit(const TriangulationHandler&lt; dim &gt; &amp;triangulation_handler, const std::map&lt; FieldInfo::TensorRank, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system, const MGInfo&lt; dim &gt; &amp;mg_info)</div><div class="ttdoc">Reinitialize the DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_handler.cc:223</div></div>
 <div class="ttc" id="aclassDofHandler_html_ad8948ad7df187ddd2736da6ec2e068b5"><div class="ttname"><a href="classDofHandler.html#ad8948ad7df187ddd2736da6ec2e068b5">DofHandler::get_dof_handler</a></div><div class="ttdeci">const dealii::DoFHandler&lt; dim &gt; &amp; get_dof_handler(Types::Index index) const</div><div class="ttdoc">Getter function for the DoFHandler (reference).</div><div class="ttdef"><b>Definition</b> dof_handler.h:72</div></div>
 <div class="ttc" id="aclassDofHandler_html_ad898d174791b06a42677bc444eae14da"><div class="ttname"><a href="classDofHandler.html#ad898d174791b06a42677bc444eae14da">DofHandler::get_dof_handlers</a></div><div class="ttdeci">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp; get_dof_handlers() const</div><div class="ttdoc">Getter function for the DoFHandlers (constant reference).</div><div class="ttdef"><b>Definition</b> dof_handler.cc:233</div></div>
+<div class="ttc" id="aclassDofHandler_html_aeda6ff816e8fdade89941c5dfd0c01ba"><div class="ttname"><a href="classDofHandler.html#aeda6ff816e8fdade89941c5dfd0c01ba">DofHandler::const_mg_dof_handlers</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &gt; const_mg_dof_handlers</div><div class="ttdoc">Const copy of the mg_dof_handlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:150</div></div>
+<div class="ttc" id="aclassDofHandler_html_afe86e70891218789d0b6a9f4de8fbce4"><div class="ttname"><a href="classDofHandler.html#afe86e70891218789d0b6a9f4de8fbce4">DofHandler::const_dof_handlers</a></div><div class="ttdeci">std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; const_dof_handlers</div><div class="ttdoc">Const copy of the dof_handlers.</div><div class="ttdef"><b>Definition</b> dof_handler.h:113</div></div>
 <div class="ttc" id="aclassMGInfo_html"><div class="ttname"><a href="classMGInfo.html">MGInfo</a></div><div class="ttdoc">This class centralized the collection of multigrid data, which is of particular important when dealin...</div><div class="ttdef"><b>Definition</b> multigrid_info.h:31</div></div>
 <div class="ttc" id="aclassTriangulationHandler_html"><div class="ttname"><a href="classTriangulationHandler.html">TriangulationHandler</a></div><div class="ttdoc">This class handlers the generation and manipulation of triangulations.</div><div class="ttdef"><b>Definition</b> triangulation_handler.h:30</div></div>
 <div class="ttc" id="aclassUserInputParameters_html"><div class="ttname"><a href="classUserInputParameters.html">UserInputParameters</a></div><div class="ttdef"><b>Definition</b> user_input_parameters.h:30</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
 <div class="ttc" id="astructFieldInfo_html_a295c8d1544c52eebed4af0778ad98467"><div class="ttname"><a href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a></div><div class="ttdeci">TensorRank</div><div class="ttdoc">Tensor rank of the field.</div><div class="ttdef"><b>Definition</b> variable_attributes.h:85</div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
+<div class="ttc" id="avariable__attributes_8h_html"><div class="ttname"><a href="variable__attributes_8h.html">variable_attributes.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>dof_handler.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="dof__handler_8h.html">dof_handler.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -122,27 +129,142 @@ $(document).ready(function(){initNavTree('classSolutionOutput.html',''); initRes
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a289e7335ed8e8f2e4cdfe7113bfedea3" id="r_a289e7335ed8e8f2e4cdfe7113bfedea3"><td class="memItemLeft" align="right" valign="top"><a id="a289e7335ed8e8f2e4cdfe7113bfedea3" name="a289e7335ed8e8f2e4cdfe7113bfedea3"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
+<tr class="memitem:a289e7335ed8e8f2e4cdfe7113bfedea3" id="r_a289e7335ed8e8f2e4cdfe7113bfedea3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
 <tr class="separator:a289e7335ed8e8f2e4cdfe7113bfedea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7d4e53d333cfc012cbbf3fcd54c6e2f0" id="r_a7d4e53d333cfc012cbbf3fcd54c6e2f0"><td class="memItemLeft" align="right" valign="top"><a id="a7d4e53d333cfc012cbbf3fcd54c6e2f0" name="a7d4e53d333cfc012cbbf3fcd54c6e2f0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolutionOutput</b> (const VectorType &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:a7d4e53d333cfc012cbbf3fcd54c6e2f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output. <br /></td></tr>
+<tr class="memitem:a7d4e53d333cfc012cbbf3fcd54c6e2f0" id="r_a7d4e53d333cfc012cbbf3fcd54c6e2f0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolutionOutput.html#a7d4e53d333cfc012cbbf3fcd54c6e2f0">SolutionOutput</a> (const <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">VectorType</a> &amp;solution, const dealii::DoFHandler&lt; dim &gt; &amp;dof_handler, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a7d4e53d333cfc012cbbf3fcd54c6e2f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a single field that must be output.  <br /></td></tr>
 <tr class="separator:a7d4e53d333cfc012cbbf3fcd54c6e2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a371263a0b0093fc842172465ab6ac9cf" id="r_a371263a0b0093fc842172465ab6ac9cf"><td class="memItemLeft" align="right" valign="top"><a id="a371263a0b0093fc842172465ab6ac9cf" name="a371263a0b0093fc842172465ab6ac9cf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolutionOutput</b> (const std::map&lt; unsigned int, VectorType * &gt; &amp;solution_set, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
-<tr class="memdesc:a371263a0b0093fc842172465ab6ac9cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a multiple fields that must be output. <br /></td></tr>
+<tr class="memitem:a371263a0b0093fc842172465ab6ac9cf" id="r_a371263a0b0093fc842172465ab6ac9cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolutionOutput.html#a371263a0b0093fc842172465ab6ac9cf">SolutionOutput</a> (const std::map&lt; unsigned int, <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">VectorType</a> * &gt; &amp;solution_set, const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;dof_handlers, const unsigned int &amp;degree, const std::string &amp;name, const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;user_inputs)</td></tr>
+<tr class="memdesc:a371263a0b0093fc842172465ab6ac9cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a multiple fields that must be output.  <br /></td></tr>
 <tr class="separator:a371263a0b0093fc842172465ab6ac9cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
 class SolutionOutput&lt; dim, number &gt;</div><p>Class that outputs a passed solution to vtu, vtk, or pvtu. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a289e7335ed8e8f2e4cdfe7113bfedea3" name="a289e7335ed8e8f2e4cdfe7113bfedea3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a289e7335ed8e8f2e4cdfe7113bfedea3">&#9670;&#160;</a></span>VectorType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classSolutionOutput.html">SolutionOutput</a>&lt; dim, number &gt;::VectorType =  dealii::LinearAlgebra::distributed::Vector&lt;number&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7d4e53d333cfc012cbbf3fcd54c6e2f0" name="a7d4e53d333cfc012cbbf3fcd54c6e2f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d4e53d333cfc012cbbf3fcd54c6e2f0">&#9670;&#160;</a></span>SolutionOutput() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classSolutionOutput.html">SolutionOutput</a>&lt; dim, number &gt;<a class="el" href="classSolutionOutput.html">::SolutionOutput</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>solution</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::DoFHandler&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>degree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>user_inputs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for a single field that must be output. </p>
+
+</div>
+</div>
+<a id="a371263a0b0093fc842172465ab6ac9cf" name="a371263a0b0093fc842172465ab6ac9cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a371263a0b0093fc842172465ab6ac9cf">&#9670;&#160;</a></span>SolutionOutput() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionOutput.html">SolutionOutput</a>&lt; dim, number &gt;<a class="el" href="classSolutionOutput.html">::SolutionOutput</a> </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="classSolutionOutput.html#a289e7335ed8e8f2e4cdfe7113bfedea3">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>solution_set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; const dealii::DoFHandler&lt; dim &gt; * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dof_handlers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>degree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>user_inputs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor for a multiple fields that must be output. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="solution__output_8h_source.html">solution_output.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>solution_output.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="solution__output_8cc.html">solution_output.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

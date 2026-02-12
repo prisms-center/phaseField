@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['zero_5fout_5fghosts_0',['zero_out_ghosts',['../classSolutionHandler.html#a7fed149a73b63eb3f179e85c767d3dc6',1,'SolutionHandler']]]
+  ['welcome_0',['Welcome',['../index.html#welcome',1,'']]],
+  ['with_20docker_1',['with docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker']]],
+  ['write_5ffile_2',['write_file',['../classReadBinary.html#ad616b95c00b6066948367a441cda490c',1,'ReadBinary']]]
 ];

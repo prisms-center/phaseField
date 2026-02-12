@@ -1,0 +1,30 @@
+<map id="/home/runner/work/phaseField/phaseField/include/prismspf/core/variable_attributes.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/core/variable_attributes.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="532,5,751,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,115,189,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="532,55,202,111,174,116,173,110,201,105,531,49"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="214,108,359,148"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="542,63,372,107,371,102,541,57"/>
+<area shape="rect" id="Node000004" href="$type__enums_8h.html" title=" " alt="" coords="435,196,579,236"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="549,62,517,82,492,109,485,127,484,146,494,183,488,184,479,146,480,126,487,107,513,78,546,58"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="557,284,691,309"/>
+<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="670,59,699,95,726,140,735,164,740,189,738,214,729,237,706,263,677,281,674,276,703,259,724,235,733,212,734,189,730,165,721,142,695,98,666,62"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="380,284,439,309"/>
+<area shape="poly" id="edge14_Node000001_Node000007" title=" " alt="" coords="559,63,516,83,478,110,457,130,445,148,425,197,416,235,413,271,407,270,411,234,420,195,440,146,453,127,474,106,514,78,556,58"/>
+<area shape="rect" id="Node000008" href="$types_8h.html" title=" " alt="" coords="501,115,664,141"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="627,62,600,105,595,102,622,59"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="654,203,714,229"/>
+<area shape="poly" id="edge15_Node000001_Node000009" title=" " alt="" coords="659,59,679,107,686,150,687,189,682,189,680,151,673,109,654,61"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="789,115,840,141"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="691,58,783,107,780,111,689,62"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="864,115,907,141"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="727,58,789,80,853,106,855,107,853,111,851,110,788,85,725,63"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="931,115,994,141"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="751,57,834,79,920,105,925,108,924,113,918,111,833,84,750,62"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="537,234,597,274,594,279,534,238"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="465,284,532,309"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="507,236,504,270,499,270,502,236"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="485,238,436,277,433,273,481,234"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="574,143,535,187,531,184,570,139"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="588,140,620,270,615,271,583,141"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="598,139,661,192,657,196,595,143"/>
+</map>

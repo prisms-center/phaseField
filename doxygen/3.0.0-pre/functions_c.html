@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,37 +114,69 @@ $(document).ready(function(){initNavTree('functions_c.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>calculate_number_of_events()&#160;:&#160;<a class="el" href="classNucleationHandler.html#a00ff83f239b572d506bb09d887561288">NucleationHandler&lt; dim, degree, number &gt;</a></li>
+<li>CellIterator&#160;:&#160;<a class="el" href="classCellMarkerBase.html#a96b80a4d22fc29af2acdd3fe061ad528">CellMarkerBase&lt; dim &gt;</a>, <a class="el" href="classNucleusRefinementFunction.html#ad30139a1c1fbcb5b1a107d8ca97e9bde">NucleusRefinementFunction&lt; dim &gt;</a></li>
+<li>change_local_index&#160;:&#160;<a class="el" href="classGMGSolver.html#a912a7f5007e1e0833bd593c04f1ab73d">GMGSolver&lt; dim, degree, number &gt;</a></li>
+<li>change_solutions&#160;:&#160;<a class="el" href="structSolutionBlock.html#a475c37ec8c09119fa300dac8912096e0">SolutionBlock&lt; dim, number &gt;</a></li>
 <li>check_active()&#160;:&#160;<a class="el" href="structNucleationParameters.html#ad716f56b7f1b77bb69160b3190da4017">NucleationParameters</a></li>
 <li>check_degenerate_boundary_conditions()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a8f6f38a14940309ff67f7d867b1b64f9">BoundaryParameters&lt; dim &gt;</a></li>
+<li>check_file_size()&#160;:&#160;<a class="el" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">ReadBinary&lt; dim, number &gt;</a></li>
 <li>check_keyword_match()&#160;:&#160;<a class="el" href="classInputFileReader.html#ad5ce03dd27de671823a6e03d8043f725">InputFileReader</a></li>
+<li>checkpoint_list&#160;:&#160;<a class="el" href="structCheckpointParameters.html#a078b90a817bbc50ddfa40d0718f4af4c">CheckpointParameters</a></li>
+<li>checkpoint_parameters&#160;:&#160;<a class="el" href="classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef">UserInputParameters&lt; dim &gt;</a></li>
 <li>clear()&#160;:&#160;<a class="el" href="classInvmHandler.html#ab1d14f618dbd35ad83c7b24992b11fd8">InvmHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="structLoadInitialConditionParameters.html#af152262d872c80c51c1bba8e057f2b0a">LoadInitialConditionParameters</a>, <a class="el" href="classMatrixFreeOperator.html#aaae41e386e106c068bf9482448be97ae">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="structNonlinearSolveParameterSet.html#a80beabcbf476581eae2809ad61cf999f">NonlinearSolveParameterSet</a></li>
+<li>clear_refinement_markers()&#160;:&#160;<a class="el" href="classGridRefiner.html#a8c6ad6ef8cda51de6d3b95cdfaef9da7">GridRefiner&lt; dim, degree, number &gt;</a></li>
 <li>clear_system_matrices()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#abfe2da6556eff393d4bf5b4849f7843e">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>clear_user_flags()&#160;:&#160;<a class="el" href="classTriangulationHandler.html#aea0c4fe598da46d53de7a64a2046b312">TriangulationHandler&lt; dim &gt;</a></li>
+<li>cmd_option_exists()&#160;:&#160;<a class="el" href="classParseCMDOptions.html#ad02ca16ca7747eb8e0c757047a48a414">ParseCMDOptions</a></li>
+<li>coarsened_triangulations&#160;:&#160;<a class="el" href="classTriangulationHandler.html#a2ecdfa989eb0633a1ef2e8613e19a5a3">TriangulationHandler&lt; dim &gt;</a></li>
+<li>compute_dependency_set()&#160;:&#160;<a class="el" href="structVariableAttributes.html#ac0f645a2707c5845d5ef69e031e39c20">VariableAttributes</a></li>
 <li>compute_diagonal()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#af39600474c4b6c5e5fa13ff73d7e81cd">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_element_volume()&#160;:&#160;<a class="el" href="classElementVolume.html#a24aa9c572073c12645862f9bcf0469e8">ElementVolume&lt; dim, degree, number &gt;</a>, <a class="el" href="classElementVolumeContainer.html#a939413bbca65af8c448547227b45fccd">ElementVolumeContainer&lt; dim, degree, number &gt;</a></li>
 <li>compute_explicit_rhs()&#160;:&#160;<a class="el" href="classPDEOperator.html#ac9c2f6fc833016ed26eebfebe0b3904f">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_explicit_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a98112e7d23ffe287c4c946e4491a0e7a">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_integral()&#160;:&#160;<a class="el" href="classIntegrator.html#af213516700f67f3fcb9d30c48fe90a8b">Integrator&lt; dim, degree, number &gt;</a></li>
 <li>compute_invm()&#160;:&#160;<a class="el" href="classInvmHandler.html#a130fda8ab7178181e5d57d99deeeec22">InvmHandler&lt; dim, degree, number &gt;</a></li>
+<li>compute_local_explicit_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a3483344f8caff9508691e8f1040ca025">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_local_newton_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aa6c31502c2a3c9ddecf590bd3b156a32">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_local_nonexplicit_auxiliary_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a8685c4770fde9ba73e81feeaaeabe4d7">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_local_postprocess_explicit_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aa50cc68d622f800b3eeb26e41c77a925">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_local_residual()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a3f5ad33e9fc4093f7c3c6e3cacec8d1e">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_nonexplicit_auxiliary_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a66ea902605dd0b5f388e1c1b11e884fc">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_nonexplicit_lhs()&#160;:&#160;<a class="el" href="classPDEOperator.html#a9349b9a104cb15ed159858735c177941">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_nonexplicit_rhs()&#160;:&#160;<a class="el" href="classPDEOperator.html#a14e010a28fdb96d9ef0cfd3d0ff3c14c">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_postprocess_explicit_rhs()&#160;:&#160;<a class="el" href="classPDEOperator.html#abaa74fc6b1c92d4f62d00f36ea3166cc">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>compute_postprocess_explicit_update()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#af7a118b09e0310acc61f1f3b41d866e1">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_rank_1_tensor_constant()&#160;:&#160;<a class="el" href="classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0">UserConstants&lt; dim &gt;</a></li>
+<li>compute_rank_2_tensor_constant()&#160;:&#160;<a class="el" href="classUserConstants.html#ab60436298be45c100e71d92ad717961b">UserConstants&lt; dim &gt;</a></li>
 <li>compute_residual()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#aa03bba512248af30039c67f66e21face">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
+<li>compute_scalar_invm()&#160;:&#160;<a class="el" href="classInvmHandler.html#a680ff6e80446139abacef50ac0577d64">InvmHandler&lt; dim, degree, number &gt;</a></li>
+<li>compute_shared_dependencies()&#160;:&#160;<a class="el" href="classVariableAttributeLoader.html#a350bc87ac499ae1168f373b57cdfe0a1">VariableAttributeLoader</a></li>
+<li>compute_simplified_dependency_set()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a81c8f3eaa8d67a7c61b5780b3bf10355">VariableAttributes</a></li>
 <li>compute_solver_tolerance()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#aaec15d49964bafdcfbafbac395cc9da8">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
-<li>compute_subset_attributes()&#160;:&#160;<a class="el" href="classSolverBase.html#a9a38d96617c5e3adc8c88dfd9427db05">SolverBase&lt; dim, degree, number &gt;</a></li>
+<li>compute_subset_attributes()&#160;:&#160;<a class="el" href="classSolverBase.html#a9a38d96617c5e3adc8c88dfd9427db05">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableAttributeLoader.html#a955ba9807789cc0f7835bd558948db4a">VariableAttributeLoader</a></li>
+<li>compute_tensor_parentheses()&#160;:&#160;<a class="el" href="classUserConstants.html#acf6feea286a9b613fac4fac9f3e40e55">UserConstants&lt; dim &gt;</a></li>
+<li>compute_vector_invm()&#160;:&#160;<a class="el" href="classInvmHandler.html#a44961786582308d9a8ff4876f7eb662f">InvmHandler&lt; dim, degree, number &gt;</a></li>
+<li>concurrent_constant_solver&#160;:&#160;<a class="el" href="classSolveBlock.html#aed72f8c2c53911d57d9936cbf7f11759">SolveBlock&lt; dim, degree, number &gt;</a></li>
+<li>concurrent_explicit_postprocess_solver&#160;:&#160;<a class="el" href="classSolveBlock.html#a7aaf921ec545b5fc13cf0475cd69d603">SolveBlock&lt; dim, degree, number &gt;</a></li>
+<li>concurrent_explicit_solver&#160;:&#160;<a class="el" href="classSolveBlock.html#a6a97e70bae5b0b4574b0ae0123ff3c06">SolveBlock&lt; dim, degree, number &gt;</a></li>
 <li>ConcurrentConstantSolver()&#160;:&#160;<a class="el" href="classConcurrentConstantSolver.html#a67ba1f10c92b4cad8dafeb2c4934abfb">ConcurrentConstantSolver&lt; dim, degree, number &gt;</a></li>
 <li>ConcurrentExplicitPostprocessSolver()&#160;:&#160;<a class="el" href="classConcurrentExplicitPostprocessSolver.html#ab3943820750305371f0eb466326c29f6">ConcurrentExplicitPostprocessSolver&lt; dim, degree, number &gt;</a></li>
-<li>ConcurrentExplicitSolver()&#160;:&#160;<a class="el" href="classConcurrentExplicitSolver.html#aada4c02cf5dac06f5d73d9e2d87bbe8c">ConcurrentExplicitSolver&lt; dim, degree, number &gt;</a></li>
+<li>ConcurrentExplicitSolver()&#160;:&#160;<a class="el" href="classConcurrentExplicitSolver.html#a9f0dc3abf47bd5fc242662159e4c3096">ConcurrentExplicitSolver&lt; dim, degree, number &gt;</a></li>
 <li>ConcurrentSolver()&#160;:&#160;<a class="el" href="classConcurrentSolver.html#a2bbd442f7cd427c9783e144f8c4f076e">ConcurrentSolver&lt; dim, degree, number &gt;</a></li>
+<li>condition&#160;:&#160;<a class="el" href="structCheckpointParameters.html#a10c03046ef76e38bb4cadaf43222fdbe">CheckpointParameters</a>, <a class="el" href="structOutputParameters.html#aef1e7d14588566bb3ce51ac49c99c9f6">OutputParameters</a></li>
 <li>ConditionalOStreams()&#160;:&#160;<a class="el" href="classConditionalOStreams.html#a78490dd8f5e481e36e1a91ea40a547e5">ConditionalOStreams</a></li>
+<li>const_dof_handlers&#160;:&#160;<a class="el" href="classDofHandler.html#afe86e70891218789d0b6a9f4de8fbce4">DofHandler&lt; dim &gt;</a></li>
+<li>const_mg_dof_handlers&#160;:&#160;<a class="el" href="classDofHandler.html#aeda6ff816e8fdade89941c5dfd0c01ba">DofHandler&lt; dim &gt;</a></li>
+<li>constraint_handler&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a38ca62542c7a22f9a1a4a0d57d9b32eb">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEProblem.html#a0b65014240c1e2c8c492fbdc33d55a16">PDEProblem&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a9ea45bdedda350da3d548679114f5084">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>ConstraintHandler()&#160;:&#160;<a class="el" href="classConstraintHandler.html#abe78ae7def477ab23031d24ae33f7564">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>constraints&#160;:&#160;<a class="el" href="classConstraintHandler.html#a568f5deb89a1bd02d8897d1b25d1e74b">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
 <li>construct_user_constant()&#160;:&#160;<a class="el" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">UserConstants&lt; dim &gt;</a></li>
+<li>create_component_mask()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a035fb54107291f9f26b6253c182e09a6">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
+<li>criterion&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a47247524d2025a9d114134935b00b57a">GridRefinement::RefinementCriterion</a></li>
 <li>criterion_to_string()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a3912745231f2fd878cafdd148874178f">GridRefinement::RefinementCriterion</a></li>
 </ul>
 </div><!-- contents -->

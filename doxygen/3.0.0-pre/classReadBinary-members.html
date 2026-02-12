@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,9 +120,15 @@ $(document).ready(function(){initNavTree('classReadBinary.html',''); initResizab
 
 <p>This is the complete list of members for <a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116">check_file_size</a>()</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadBinary.html#a0dbc42c34fa79933645a46ef85149064">data</a></td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classReadBinary.html#a399fb95e0fc120d7b3b76dcf4f7d915b">get_scalar_value</a>(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;scalar_name) override</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classReadBinary.html#ae9af07a8712437645674e88279f1bbdd">get_vector_value</a>(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;vector_name) override</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a></td><td class="entry"><a class="el" href="classReadFieldBase.html">ReadFieldBase&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">get_value</a>(const dealii::types::global_dof_index index, const unsigned int n_components)</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadBinary.html#ae9af07a8712437645674e88279f1bbdd">get_vector_value</a>(const dealii::Point&lt; dim &gt; &amp;point, const std::string &amp;vector_name) override</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a></td><td class="entry"><a class="el" href="classReadFieldBase.html">ReadFieldBase&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123">interpolate</a>(const dealii::Point&lt; dim &gt; &amp;point, const unsigned int n_components)</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classReadBinary.html#acc24e749113a7f6e8655688f17021657">n_points</a></td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8">n_values</a></td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classReadFieldBase.html#a2147519c05329c3e30a5ba3c103ac972">operator=</a>(const ReadFieldBase &amp;read_base)=delete</td><td class="entry"><a class="el" href="classReadFieldBase.html">ReadFieldBase&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classReadFieldBase.html#a6b2cefb8fbc07ce7a1869ccd0284809c">operator=</a>(ReadFieldBase &amp;&amp;read_base) noexcept=delete</td><td class="entry"><a class="el" href="classReadFieldBase.html">ReadFieldBase&lt; dim, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classReadBinary.html#ade03e461dc530beb288be54573216de2">print_file</a>() override</td><td class="entry"><a class="el" href="classReadBinary.html">ReadBinary&lt; dim, number &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>

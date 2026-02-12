@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classNonuniformDirichlet.html',''); in
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classNonuniformDirichlet-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NonuniformDirichlet&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -131,25 +139,230 @@ Collaboration diagram for NonuniformDirichlet&lt; dim, degree, number &gt;:</div
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a37a432d30845b8ffbadfbc2b8a5e2e5f" id="r_a37a432d30845b8ffbadfbc2b8a5e2e5f"><td class="memItemLeft" align="right" valign="top"><a id="a37a432d30845b8ffbadfbc2b8a5e2e5f" name="a37a432d30845b8ffbadfbc2b8a5e2e5f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>NonuniformDirichlet</b> (unsigned int _index, unsigned int _boundary_id, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, unsigned int spacedim)</td></tr>
-<tr class="memdesc:a37a432d30845b8ffbadfbc2b8a5e2e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a37a432d30845b8ffbadfbc2b8a5e2e5f" id="r_a37a432d30845b8ffbadfbc2b8a5e2e5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#a37a432d30845b8ffbadfbc2b8a5e2e5f">NonuniformDirichlet</a> (unsigned int _index, unsigned int _boundary_id, const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;_pde_operator, unsigned int spacedim)</td></tr>
+<tr class="memdesc:a37a432d30845b8ffbadfbc2b8a5e2e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a37a432d30845b8ffbadfbc2b8a5e2e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a319aac609697540a65f283357b1ca111" id="r_a319aac609697540a65f283357b1ca111"><td class="memItemLeft" align="right" valign="top"><a id="a319aac609697540a65f283357b1ca111" name="a319aac609697540a65f283357b1ca111"></a>
-number&#160;</td><td class="memItemRight" valign="bottom"><b>value</b> (const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</td></tr>
-<tr class="memdesc:a319aac609697540a65f283357b1ca111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar value. <br /></td></tr>
+<tr class="memitem:a319aac609697540a65f283357b1ca111" id="r_a319aac609697540a65f283357b1ca111"><td class="memItemLeft" align="right" valign="top">number&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">value</a> (const dealii::Point&lt; dim &gt; &amp;p, const unsigned int component=0) const override</td></tr>
+<tr class="memdesc:a319aac609697540a65f283357b1ca111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scalar value.  <br /></td></tr>
 <tr class="separator:a319aac609697540a65f283357b1ca111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa79e399c8e7aa27768557d1c2faa75a" id="r_aaa79e399c8e7aa27768557d1c2faa75a"><td class="memItemLeft" align="right" valign="top"><a id="aaa79e399c8e7aa27768557d1c2faa75a" name="aaa79e399c8e7aa27768557d1c2faa75a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>vector_value</b> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;<a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">value</a>) const override</td></tr>
-<tr class="memdesc:aaa79e399c8e7aa27768557d1c2faa75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector value. <br /></td></tr>
+<tr class="memitem:aaa79e399c8e7aa27768557d1c2faa75a" id="r_aaa79e399c8e7aa27768557d1c2faa75a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#aaa79e399c8e7aa27768557d1c2faa75a">vector_value</a> (const dealii::Point&lt; dim &gt; &amp;p, dealii::Vector&lt; number &gt; &amp;<a class="el" href="classNonuniformDirichlet.html#a319aac609697540a65f283357b1ca111">value</a>) const override</td></tr>
+<tr class="memdesc:aaa79e399c8e7aa27768557d1c2faa75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector value.  <br /></td></tr>
 <tr class="separator:aaa79e399c8e7aa27768557d1c2faa75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab07f9bfc5d3ebd6582602356574581ea" id="r_ab07f9bfc5d3ebd6582602356574581ea"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#ab07f9bfc5d3ebd6582602356574581ea">index</a></td></tr>
+<tr class="separator:ab07f9bfc5d3ebd6582602356574581ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea9438d8e5c81f1accdcd20c7d79e8f6" id="r_aea9438d8e5c81f1accdcd20c7d79e8f6"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#aea9438d8e5c81f1accdcd20c7d79e8f6">boundary_id</a></td></tr>
+<tr class="separator:aea9438d8e5c81f1accdcd20c7d79e8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d6a853e60a18040c54116a868eba8dc" id="r_a8d6a853e60a18040c54116a868eba8dc"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNonuniformDirichlet.html#a8d6a853e60a18040c54116a868eba8dc">pde_operator</a></td></tr>
+<tr class="separator:a8d6a853e60a18040c54116a868eba8dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class NonuniformDirichlet&lt; dim, degree, number &gt;</div><p>Function for user-implemented nonuniform dirichlet boundary condition. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a37a432d30845b8ffbadfbc2b8a5e2e5f" name="a37a432d30845b8ffbadfbc2b8a5e2e5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37a432d30845b8ffbadfbc2b8a5e2e5f">&#9670;&#160;</a></span>NonuniformDirichlet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;<a class="el" href="classNonuniformDirichlet.html">::NonuniformDirichlet</a> </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>_boundary_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_pde_operator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>spacedim</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a319aac609697540a65f283357b1ca111" name="a319aac609697540a65f283357b1ca111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a319aac609697540a65f283357b1ca111">&#9670;&#160;</a></span>value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">number <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;::value </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>component</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Scalar value. </p>
+
+</div>
+</div>
+<a id="aaa79e399c8e7aa27768557d1c2faa75a" name="aaa79e399c8e7aa27768557d1c2faa75a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa79e399c8e7aa27768557d1c2faa75a">&#9670;&#160;</a></span>vector_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;::vector_value </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::Point&lt; dim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">dealii::Vector&lt; number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Vector value. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aea9438d8e5c81f1accdcd20c7d79e8f6" name="aea9438d8e5c81f1accdcd20c7d79e8f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea9438d8e5c81f1accdcd20c7d79e8f6">&#9670;&#160;</a></span>boundary_id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;::boundary_id</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab07f9bfc5d3ebd6582602356574581ea" name="ab07f9bfc5d3ebd6582602356574581ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab07f9bfc5d3ebd6582602356574581ea">&#9670;&#160;</a></span>index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;::index</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8d6a853e60a18040c54116a868eba8dc" name="a8d6a853e60a18040c54116a868eba8dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d6a853e60a18040c54116a868eba8dc">&#9670;&#160;</a></span>pde_operator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt;dim, degree, number&gt; &gt; <a class="el" href="classNonuniformDirichlet.html">NonuniformDirichlet</a>&lt; dim, degree, number &gt;::pde_operator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="nonuniform__dirichlet_8h_source.html">nonuniform_dirichlet.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>nonuniform_dirichlet.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="nonuniform__dirichlet_8cc.html">nonuniform_dirichlet.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

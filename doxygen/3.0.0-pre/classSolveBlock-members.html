@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,15 +120,22 @@ $(document).ready(function(){initNavTree('classSolveBlock.html',''); initResizab
 
 <p>This is the complete list of members for <a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a3ada4db4473c705f67b835990dd86d6e">init</a>()</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#ad1d2a23ae64782c51c3f437ad0daa1f4">operator=</a>(const SolveBlock &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#aea794fdc46ab1d67dcb7aab84af594b5">operator=</a>(SolveBlock &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">reinit</a>()</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#aa2e6e9b763877a04b09ce69263d6707f">solve</a>(unsigned int increment, bool update_postprocessed)</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#aab2dba52fef5adf08f8df461ed25dc1c">SolveBlock</a>(const SolverContext&lt; dim, degree, number &gt; &amp;_solver_context, Types::Index block_index)</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a7201d385d49ee900bbc324a3535aa7eb">SolveBlock</a>(const SolveBlock &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a693df5ba09a489dffecba186be911c8b">SolveBlock</a>(SolveBlock &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a5fad9f255e7a3025277e10968890de5b">~SolveBlock</a>()=default</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#aed72f8c2c53911d57d9936cbf7f11759">concurrent_constant_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a7aaf921ec545b5fc13cf0475cd69d603">concurrent_explicit_postprocess_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a6a97e70bae5b0b4574b0ae0123ff3c06">concurrent_explicit_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a3ada4db4473c705f67b835990dd86d6e">init</a>()</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#ad1d2a23ae64782c51c3f437ad0daa1f4">operator=</a>(const SolveBlock &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#aea794fdc46ab1d67dcb7aab84af594b5">operator=</a>(SolveBlock &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a54b05fb03d01eed60455d1f31582a43f">reinit</a>()</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a774ca8bf1dd718f13e7d5dc00c9932fd">sequential_auxiliary_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#ada734338a6590f7d7bc45ac43a53f504">sequential_co_nonlinear_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a22386a6619e27fceab4cf52af9744ebe">sequential_linear_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a508ce7a82bb473112d9d124be8a87185">sequential_self_nonlinear_solver</a></td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#aa2e6e9b763877a04b09ce69263d6707f">solve</a>(unsigned int increment, bool update_postprocessed)</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#aab2dba52fef5adf08f8df461ed25dc1c">SolveBlock</a>(const SolverContext&lt; dim, degree, number &gt; &amp;_solver_context, Types::Index block_index)</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a7201d385d49ee900bbc324a3535aa7eb">SolveBlock</a>(const SolveBlock &amp;solver_base)=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSolveBlock.html#a693df5ba09a489dffecba186be911c8b">SolveBlock</a>(SolveBlock &amp;&amp;solver_base) noexcept=delete</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSolveBlock.html#a5fad9f255e7a3025277e10968890de5b">~SolveBlock</a>()=default</td><td class="entry"><a class="el" href="classSolveBlock.html">SolveBlock&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

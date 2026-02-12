@@ -31,5 +31,18 @@ var structSpatialDiscretization =
     [ "set_remeshing_period", "structSpatialDiscretization.html#a420f7174b0846df371151201c49b331f", null ],
     [ "set_size", "structSpatialDiscretization.html#a88c0a2b03c6197a99ab4761bfb7fee91", null ],
     [ "set_subdivisions", "structSpatialDiscretization.html#ada3b9338ac8e4d161c800dbb8f004492", null ],
-    [ "should_refine_mesh", "structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a", null ]
+    [ "should_refine_mesh", "structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a", null ],
+    [ "degree", "structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43", null ],
+    [ "global_refinement", "structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2", null ],
+    [ "has_adaptivity", "structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6", null ],
+    [ "lower_bound", "structSpatialDiscretization.html#a72206c43eb9d9215d6f819cca52ab79f", null ],
+    [ "max_refinement", "structSpatialDiscretization.html#ac94c81900825941c185e9bbb91783699", null ],
+    [ "min_refinement", "structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd", null ],
+    [ "radius", "structSpatialDiscretization.html#a0bf2dedefadb73930f75d145ea8e2244", null ],
+    [ "refinement_criteria", "structSpatialDiscretization.html#a40149bfd525bccbc27e9154fa790c312", null ],
+    [ "remeshing_period", "structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320", null ],
+    [ "size", "structSpatialDiscretization.html#a5c182ac9db199903aaec78b5c61295e4", null ],
+    [ "subdivisions", "structSpatialDiscretization.html#abf72c6d2375fce0910ad157338f689bd", null ],
+    [ "type", "structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb", null ],
+    [ "upper_bound", "structSpatialDiscretization.html#a8e6c8693f7b441ea32188f332d22366b", null ]
 ];

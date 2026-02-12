@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('classInputFileReader.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classInputFileReader-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">InputFileReader Class Reference</div></div>
 </div><!--header-->
@@ -121,104 +129,728 @@ $(document).ready(function(){initNavTree('classInputFileReader.html',''); initRe
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a42fb3f0b7681758be60243f7c0183e8f" id="r_a42fb3f0b7681758be60243f7c0183e8f"><td class="memItemLeft" align="right" valign="top"><a id="a42fb3f0b7681758be60243f7c0183e8f" name="a42fb3f0b7681758be60243f7c0183e8f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>InputFileReader</b> (std::string input_file_name, const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;_var_attributes)</td></tr>
-<tr class="memdesc:a42fb3f0b7681758be60243f7c0183e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a42fb3f0b7681758be60243f7c0183e8f" id="r_a42fb3f0b7681758be60243f7c0183e8f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a42fb3f0b7681758be60243f7c0183e8f">InputFileReader</a> (std::string input_file_name, const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;_var_attributes)</td></tr>
+<tr class="memdesc:a42fb3f0b7681758be60243f7c0183e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a42fb3f0b7681758be60243f7c0183e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad10d22bd70b09bdc13803ce1261f9fce" id="r_ad10d22bd70b09bdc13803ce1261f9fce"><td class="memItemLeft" align="right" valign="top"><a id="ad10d22bd70b09bdc13803ce1261f9fce" name="ad10d22bd70b09bdc13803ce1261f9fce"></a>
-std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_model_constant_names</b> ()</td></tr>
-<tr class="memdesc:ad10d22bd70b09bdc13803ce1261f9fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the trailing part of the entry name after a specified string (used to extract the model constant names). <br /></td></tr>
+<tr class="memitem:ad10d22bd70b09bdc13803ce1261f9fce" id="r_ad10d22bd70b09bdc13803ce1261f9fce"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#ad10d22bd70b09bdc13803ce1261f9fce">get_model_constant_names</a> ()</td></tr>
+<tr class="memdesc:ad10d22bd70b09bdc13803ce1261f9fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the trailing part of the entry name after a specified string (used to extract the model constant names).  <br /></td></tr>
 <tr class="separator:ad10d22bd70b09bdc13803ce1261f9fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62c3ef7cb2b39de9b1154bedd1e8060b" id="r_a62c3ef7cb2b39de9b1154bedd1e8060b"><td class="memItemLeft" align="right" valign="top"><a id="a62c3ef7cb2b39de9b1154bedd1e8060b" name="a62c3ef7cb2b39de9b1154bedd1e8060b"></a>
-const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_var_attributes</b> () const</td></tr>
-<tr class="memdesc:a62c3ef7cb2b39de9b1154bedd1e8060b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable attributes. <br /></td></tr>
+<tr class="memitem:a62c3ef7cb2b39de9b1154bedd1e8060b" id="r_a62c3ef7cb2b39de9b1154bedd1e8060b"><td class="memItemLeft" align="right" valign="top">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a62c3ef7cb2b39de9b1154bedd1e8060b">get_var_attributes</a> () const</td></tr>
+<tr class="memdesc:a62c3ef7cb2b39de9b1154bedd1e8060b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable attributes.  <br /></td></tr>
 <tr class="separator:a62c3ef7cb2b39de9b1154bedd1e8060b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43516d8890cdc244ac27cdc8ca65b932" id="r_a43516d8890cdc244ac27cdc8ca65b932"><td class="memItemLeft" align="right" valign="top"><a id="a43516d8890cdc244ac27cdc8ca65b932" name="a43516d8890cdc244ac27cdc8ca65b932"></a>
-dealii::ParameterHandler &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_parameter_handler</b> ()</td></tr>
-<tr class="memdesc:a43516d8890cdc244ac27cdc8ca65b932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the parameter handler. <br /></td></tr>
+<tr class="memitem:a43516d8890cdc244ac27cdc8ca65b932" id="r_a43516d8890cdc244ac27cdc8ca65b932"><td class="memItemLeft" align="right" valign="top">dealii::ParameterHandler &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a43516d8890cdc244ac27cdc8ca65b932">get_parameter_handler</a> ()</td></tr>
+<tr class="memdesc:a43516d8890cdc244ac27cdc8ca65b932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the parameter handler.  <br /></td></tr>
 <tr class="separator:a43516d8890cdc244ac27cdc8ca65b932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4dc47d61d0a3d752dfb3a4cddd9aac3" id="r_aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="memItemLeft" align="right" valign="top"><a id="aa4dc47d61d0a3d752dfb3a4cddd9aac3" name="aa4dc47d61d0a3d752dfb3a4cddd9aac3"></a>
-const std::set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_model_constant_names</b> () const</td></tr>
-<tr class="memdesc:aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model constant names. <br /></td></tr>
+<tr class="memitem:aa4dc47d61d0a3d752dfb3a4cddd9aac3" id="r_aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="memItemLeft" align="right" valign="top">const std::set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#aa4dc47d61d0a3d752dfb3a4cddd9aac3">get_model_constant_names</a> () const</td></tr>
+<tr class="memdesc:aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model constant names.  <br /></td></tr>
 <tr class="separator:aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a010afd2a1c8ceb4e88b54a3c8144bb62" id="r_a010afd2a1c8ceb4e88b54a3c8144bb62"><td class="memItemLeft" align="right" valign="top"><a id="a010afd2a1c8ceb4e88b54a3c8144bb62" name="a010afd2a1c8ceb4e88b54a3c8144bb62"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_dim</b> () const</td></tr>
-<tr class="memdesc:a010afd2a1c8ceb4e88b54a3c8144bb62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of dimensions. <br /></td></tr>
+<tr class="memitem:a010afd2a1c8ceb4e88b54a3c8144bb62" id="r_a010afd2a1c8ceb4e88b54a3c8144bb62"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a010afd2a1c8ceb4e88b54a3c8144bb62">get_dim</a> () const</td></tr>
+<tr class="memdesc:a010afd2a1c8ceb4e88b54a3c8144bb62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of dimensions.  <br /></td></tr>
 <tr class="separator:a010afd2a1c8ceb4e88b54a3c8144bb62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97aab5765b031532f58cb7b15f0de6c3" id="r_a97aab5765b031532f58cb7b15f0de6c3"><td class="memItemLeft" align="right" valign="top"><a id="a97aab5765b031532f58cb7b15f0de6c3" name="a97aab5765b031532f58cb7b15f0de6c3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_parameters</b> ()</td></tr>
-<tr class="memdesc:a97aab5765b031532f58cb7b15f0de6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to declare the parameters to be read from an input file. <br /></td></tr>
+<tr class="memitem:a97aab5765b031532f58cb7b15f0de6c3" id="r_a97aab5765b031532f58cb7b15f0de6c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a97aab5765b031532f58cb7b15f0de6c3">declare_parameters</a> ()</td></tr>
+<tr class="memdesc:a97aab5765b031532f58cb7b15f0de6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to declare the parameters to be read from an input file.  <br /></td></tr>
 <tr class="separator:a97aab5765b031532f58cb7b15f0de6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49718a48a25ed056dca1a0e5f572f4bd" id="r_a49718a48a25ed056dca1a0e5f572f4bd"><td class="memItemLeft" align="right" valign="top"><a id="a49718a48a25ed056dca1a0e5f572f4bd" name="a49718a48a25ed056dca1a0e5f572f4bd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>parse_line</b> (std::string line, const std::string &amp;keyword, const std::string &amp;entry_name, std::string &amp;out_string, bool expect_equals_sign)</td></tr>
-<tr class="memdesc:a49718a48a25ed056dca1a0e5f572f4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to check if a line has the desired contents and if so, extract it. <br /></td></tr>
+<tr class="memitem:a49718a48a25ed056dca1a0e5f572f4bd" id="r_a49718a48a25ed056dca1a0e5f572f4bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a49718a48a25ed056dca1a0e5f572f4bd">parse_line</a> (std::string line, const std::string &amp;keyword, const std::string &amp;entry_name, std::string &amp;out_string, bool expect_equals_sign)</td></tr>
+<tr class="memdesc:a49718a48a25ed056dca1a0e5f572f4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to check if a line has the desired contents and if so, extract it.  <br /></td></tr>
 <tr class="separator:a49718a48a25ed056dca1a0e5f572f4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9db18a08815e49696bd0bdc7f028b55" id="r_ae9db18a08815e49696bd0bdc7f028b55"><td class="memItemLeft" align="right" valign="top"><a id="ae9db18a08815e49696bd0bdc7f028b55" name="ae9db18a08815e49696bd0bdc7f028b55"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>strip_spaces</b> (std::string &amp;line)</td></tr>
-<tr class="memdesc:ae9db18a08815e49696bd0bdc7f028b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strip spaces from the front and back of a string. <br /></td></tr>
+<tr class="memitem:ae9db18a08815e49696bd0bdc7f028b55" id="r_ae9db18a08815e49696bd0bdc7f028b55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55">strip_spaces</a> (std::string &amp;line)</td></tr>
+<tr class="memdesc:ae9db18a08815e49696bd0bdc7f028b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strip spaces from the front and back of a string.  <br /></td></tr>
 <tr class="separator:ae9db18a08815e49696bd0bdc7f028b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5ce03dd27de671823a6e03d8043f725" id="r_ad5ce03dd27de671823a6e03d8043f725"><td class="memItemLeft" align="right" valign="top"><a id="ad5ce03dd27de671823a6e03d8043f725" name="ad5ce03dd27de671823a6e03d8043f725"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>check_keyword_match</b> (const std::string &amp;line, const std::string &amp;keyword)</td></tr>
-<tr class="memdesc:ad5ce03dd27de671823a6e03d8043f725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a string starts with a keyword. <br /></td></tr>
+<tr class="memitem:ad5ce03dd27de671823a6e03d8043f725" id="r_ad5ce03dd27de671823a6e03d8043f725"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#ad5ce03dd27de671823a6e03d8043f725">check_keyword_match</a> (const std::string &amp;line, const std::string &amp;keyword)</td></tr>
+<tr class="memdesc:ad5ce03dd27de671823a6e03d8043f725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a string starts with a keyword.  <br /></td></tr>
 <tr class="separator:ad5ce03dd27de671823a6e03d8043f725"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56e77d6e58c5f98b539395c9a001b005" id="r_a56e77d6e58c5f98b539395c9a001b005"><td class="memItemLeft" align="right" valign="top"><a id="a56e77d6e58c5f98b539395c9a001b005" name="a56e77d6e58c5f98b539395c9a001b005"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_mesh</b> ()</td></tr>
-<tr class="memdesc:a56e77d6e58c5f98b539395c9a001b005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for the mesh. <br /></td></tr>
+<tr class="memitem:a56e77d6e58c5f98b539395c9a001b005" id="r_a56e77d6e58c5f98b539395c9a001b005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a56e77d6e58c5f98b539395c9a001b005">declare_mesh</a> ()</td></tr>
+<tr class="memdesc:a56e77d6e58c5f98b539395c9a001b005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for the mesh.  <br /></td></tr>
 <tr class="separator:a56e77d6e58c5f98b539395c9a001b005"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a171bba6b1bf7077d07b8eb76d0f91909" id="r_a171bba6b1bf7077d07b8eb76d0f91909"><td class="memItemLeft" align="right" valign="top"><a id="a171bba6b1bf7077d07b8eb76d0f91909" name="a171bba6b1bf7077d07b8eb76d0f91909"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_time_discretization</b> ()</td></tr>
-<tr class="memdesc:a171bba6b1bf7077d07b8eb76d0f91909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for timestepping. <br /></td></tr>
+<tr class="memitem:a171bba6b1bf7077d07b8eb76d0f91909" id="r_a171bba6b1bf7077d07b8eb76d0f91909"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a171bba6b1bf7077d07b8eb76d0f91909">declare_time_discretization</a> ()</td></tr>
+<tr class="memdesc:a171bba6b1bf7077d07b8eb76d0f91909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for timestepping.  <br /></td></tr>
 <tr class="separator:a171bba6b1bf7077d07b8eb76d0f91909"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19f9a717da4104fb30e7405d2414dd4e" id="r_a19f9a717da4104fb30e7405d2414dd4e"><td class="memItemLeft" align="right" valign="top"><a id="a19f9a717da4104fb30e7405d2414dd4e" name="a19f9a717da4104fb30e7405d2414dd4e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_solver_parameters</b> ()</td></tr>
-<tr class="memdesc:a19f9a717da4104fb30e7405d2414dd4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for linear and nonlinear solvers. <br /></td></tr>
+<tr class="memitem:a19f9a717da4104fb30e7405d2414dd4e" id="r_a19f9a717da4104fb30e7405d2414dd4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a19f9a717da4104fb30e7405d2414dd4e">declare_solver_parameters</a> ()</td></tr>
+<tr class="memdesc:a19f9a717da4104fb30e7405d2414dd4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for linear and nonlinear solvers.  <br /></td></tr>
 <tr class="separator:a19f9a717da4104fb30e7405d2414dd4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a838a860ef7de6d875927b7aaacc10836" id="r_a838a860ef7de6d875927b7aaacc10836"><td class="memItemLeft" align="right" valign="top"><a id="a838a860ef7de6d875927b7aaacc10836" name="a838a860ef7de6d875927b7aaacc10836"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_output_parameters</b> ()</td></tr>
-<tr class="memdesc:a838a860ef7de6d875927b7aaacc10836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for outputs. <br /></td></tr>
+<tr class="memitem:a838a860ef7de6d875927b7aaacc10836" id="r_a838a860ef7de6d875927b7aaacc10836"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a838a860ef7de6d875927b7aaacc10836">declare_output_parameters</a> ()</td></tr>
+<tr class="memdesc:a838a860ef7de6d875927b7aaacc10836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for outputs.  <br /></td></tr>
 <tr class="separator:a838a860ef7de6d875927b7aaacc10836"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9806f9292d32744bc5524bbeb1d2006" id="r_ab9806f9292d32744bc5524bbeb1d2006"><td class="memItemLeft" align="right" valign="top"><a id="ab9806f9292d32744bc5524bbeb1d2006" name="ab9806f9292d32744bc5524bbeb1d2006"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_load_ic_parameters</b> ()</td></tr>
-<tr class="memdesc:ab9806f9292d32744bc5524bbeb1d2006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for loading ICs from files. <br /></td></tr>
+<tr class="memitem:ab9806f9292d32744bc5524bbeb1d2006" id="r_ab9806f9292d32744bc5524bbeb1d2006"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#ab9806f9292d32744bc5524bbeb1d2006">declare_load_ic_parameters</a> ()</td></tr>
+<tr class="memdesc:ab9806f9292d32744bc5524bbeb1d2006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for loading ICs from files.  <br /></td></tr>
 <tr class="separator:ab9806f9292d32744bc5524bbeb1d2006"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae384c1fa8782783eaf1573a1cbcb1541" id="r_ae384c1fa8782783eaf1573a1cbcb1541"><td class="memItemLeft" align="right" valign="top"><a id="ae384c1fa8782783eaf1573a1cbcb1541" name="ae384c1fa8782783eaf1573a1cbcb1541"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_checkpoint_parameters</b> ()</td></tr>
-<tr class="memdesc:ae384c1fa8782783eaf1573a1cbcb1541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for checkpoints. <br /></td></tr>
+<tr class="memitem:ae384c1fa8782783eaf1573a1cbcb1541" id="r_ae384c1fa8782783eaf1573a1cbcb1541"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#ae384c1fa8782783eaf1573a1cbcb1541">declare_checkpoint_parameters</a> ()</td></tr>
+<tr class="memdesc:ae384c1fa8782783eaf1573a1cbcb1541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for checkpoints.  <br /></td></tr>
 <tr class="separator:ae384c1fa8782783eaf1573a1cbcb1541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3db85f85fb8ab9ffa214aa00ceb4733e" id="r_a3db85f85fb8ab9ffa214aa00ceb4733e"><td class="memItemLeft" align="right" valign="top"><a id="a3db85f85fb8ab9ffa214aa00ceb4733e" name="a3db85f85fb8ab9ffa214aa00ceb4733e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_bc_parameters</b> ()</td></tr>
-<tr class="memdesc:a3db85f85fb8ab9ffa214aa00ceb4733e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for boundary conditions. <br /></td></tr>
+<tr class="memitem:a3db85f85fb8ab9ffa214aa00ceb4733e" id="r_a3db85f85fb8ab9ffa214aa00ceb4733e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a3db85f85fb8ab9ffa214aa00ceb4733e">declare_bc_parameters</a> ()</td></tr>
+<tr class="memdesc:a3db85f85fb8ab9ffa214aa00ceb4733e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for boundary conditions.  <br /></td></tr>
 <tr class="separator:a3db85f85fb8ab9ffa214aa00ceb4733e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e19a40fc15e1b6a86243e4af54c06e6" id="r_a6e19a40fc15e1b6a86243e4af54c06e6"><td class="memItemLeft" align="right" valign="top"><a id="a6e19a40fc15e1b6a86243e4af54c06e6" name="a6e19a40fc15e1b6a86243e4af54c06e6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_pinning_parameters</b> ()</td></tr>
-<tr class="memdesc:a6e19a40fc15e1b6a86243e4af54c06e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for pinned points. <br /></td></tr>
+<tr class="memitem:a6e19a40fc15e1b6a86243e4af54c06e6" id="r_a6e19a40fc15e1b6a86243e4af54c06e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a6e19a40fc15e1b6a86243e4af54c06e6">declare_pinning_parameters</a> ()</td></tr>
+<tr class="memdesc:a6e19a40fc15e1b6a86243e4af54c06e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for pinned points.  <br /></td></tr>
 <tr class="separator:a6e19a40fc15e1b6a86243e4af54c06e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f264887675800c07cd01ff7aedd689d" id="r_a7f264887675800c07cd01ff7aedd689d"><td class="memItemLeft" align="right" valign="top"><a id="a7f264887675800c07cd01ff7aedd689d" name="a7f264887675800c07cd01ff7aedd689d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_nucleation_parameters</b> ()</td></tr>
-<tr class="memdesc:a7f264887675800c07cd01ff7aedd689d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for nucleation. <br /></td></tr>
+<tr class="memitem:a7f264887675800c07cd01ff7aedd689d" id="r_a7f264887675800c07cd01ff7aedd689d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a7f264887675800c07cd01ff7aedd689d">declare_nucleation_parameters</a> ()</td></tr>
+<tr class="memdesc:a7f264887675800c07cd01ff7aedd689d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for nucleation.  <br /></td></tr>
 <tr class="separator:a7f264887675800c07cd01ff7aedd689d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106506e9ea9c7c061be652b44e08a8b6" id="r_a106506e9ea9c7c061be652b44e08a8b6"><td class="memItemLeft" align="right" valign="top"><a id="a106506e9ea9c7c061be652b44e08a8b6" name="a106506e9ea9c7c061be652b44e08a8b6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_grain_remapping_parameters</b> ()</td></tr>
-<tr class="memdesc:a106506e9ea9c7c061be652b44e08a8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for grain remapping. <br /></td></tr>
+<tr class="memitem:a106506e9ea9c7c061be652b44e08a8b6" id="r_a106506e9ea9c7c061be652b44e08a8b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a106506e9ea9c7c061be652b44e08a8b6">declare_grain_remapping_parameters</a> ()</td></tr>
+<tr class="memdesc:a106506e9ea9c7c061be652b44e08a8b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for grain remapping.  <br /></td></tr>
 <tr class="separator:a106506e9ea9c7c061be652b44e08a8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d41a7d042d433ee2517e642640413a8" id="r_a0d41a7d042d433ee2517e642640413a8"><td class="memItemLeft" align="right" valign="top"><a id="a0d41a7d042d433ee2517e642640413a8" name="a0d41a7d042d433ee2517e642640413a8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_grain_loading_parameters</b> ()</td></tr>
-<tr class="memdesc:a0d41a7d042d433ee2517e642640413a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for grain structure loading. <br /></td></tr>
+<tr class="memitem:a0d41a7d042d433ee2517e642640413a8" id="r_a0d41a7d042d433ee2517e642640413a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a0d41a7d042d433ee2517e642640413a8">declare_grain_loading_parameters</a> ()</td></tr>
+<tr class="memdesc:a0d41a7d042d433ee2517e642640413a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for grain structure loading.  <br /></td></tr>
 <tr class="separator:a0d41a7d042d433ee2517e642640413a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37e5d33aa3a85c059cf262d6583180c1" id="r_a37e5d33aa3a85c059cf262d6583180c1"><td class="memItemLeft" align="right" valign="top"><a id="a37e5d33aa3a85c059cf262d6583180c1" name="a37e5d33aa3a85c059cf262d6583180c1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_miscellaneous_parameters</b> ()</td></tr>
-<tr class="memdesc:a37e5d33aa3a85c059cf262d6583180c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for rng. <br /></td></tr>
+<tr class="memitem:a37e5d33aa3a85c059cf262d6583180c1" id="r_a37e5d33aa3a85c059cf262d6583180c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a37e5d33aa3a85c059cf262d6583180c1">declare_miscellaneous_parameters</a> ()</td></tr>
+<tr class="memdesc:a37e5d33aa3a85c059cf262d6583180c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for rng.  <br /></td></tr>
 <tr class="separator:a37e5d33aa3a85c059cf262d6583180c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb10db154c9b7621b66d8e6c76550238" id="r_acb10db154c9b7621b66d8e6c76550238"><td class="memItemLeft" align="right" valign="top"><a id="acb10db154c9b7621b66d8e6c76550238" name="acb10db154c9b7621b66d8e6c76550238"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>declare_model_constants</b> ()</td></tr>
-<tr class="memdesc:acb10db154c9b7621b66d8e6c76550238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for user-defined model constants. <br /></td></tr>
+<tr class="memitem:acb10db154c9b7621b66d8e6c76550238" id="r_acb10db154c9b7621b66d8e6c76550238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#acb10db154c9b7621b66d8e6c76550238">declare_model_constants</a> ()</td></tr>
+<tr class="memdesc:acb10db154c9b7621b66d8e6c76550238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare parameters for user-defined model constants.  <br /></td></tr>
 <tr class="separator:acb10db154c9b7621b66d8e6c76550238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a1a51f646c4f23ee863a44e6ac9d52363" id="r_a1a51f646c4f23ee863a44e6ac9d52363"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a1a51f646c4f23ee863a44e6ac9d52363">parameters_file_name</a></td></tr>
+<tr class="separator:a1a51f646c4f23ee863a44e6ac9d52363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac7d4ca7ce62c669f924c34d0c1f18b6" id="r_aac7d4ca7ce62c669f924c34d0c1f18b6"><td class="memItemLeft" align="right" valign="top">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#aac7d4ca7ce62c669f924c34d0c1f18b6">var_attributes</a></td></tr>
+<tr class="separator:aac7d4ca7ce62c669f924c34d0c1f18b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a177ab8b953d26f43125c89ac6f8fdfad" id="r_a177ab8b953d26f43125c89ac6f8fdfad"><td class="memItemLeft" align="right" valign="top">dealii::ParameterHandler&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a177ab8b953d26f43125c89ac6f8fdfad">parameter_handler</a></td></tr>
+<tr class="separator:a177ab8b953d26f43125c89ac6f8fdfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93ad706e1d3a07193cf65e0a8ebc114a" id="r_a93ad706e1d3a07193cf65e0a8ebc114a"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#a93ad706e1d3a07193cf65e0a8ebc114a">model_constant_names</a></td></tr>
+<tr class="separator:a93ad706e1d3a07193cf65e0a8ebc114a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7efcb7b7f35c10235d3457d83108a0d" id="r_aa7efcb7b7f35c10235d3457d83108a0d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classInputFileReader.html#aa7efcb7b7f35c10235d3457d83108a0d">number_of_dimensions</a> = 0</td></tr>
+<tr class="separator:aa7efcb7b7f35c10235d3457d83108a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Parameters file reader. Declares parameter names in a dealii parameter_handler and parses the file for the values. Variable assignment occurs in <a class="el" href="classUserInputParameters.html">UserInputParameters</a>. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a42fb3f0b7681758be60243f7c0183e8f" name="a42fb3f0b7681758be60243f7c0183e8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42fb3f0b7681758be60243f7c0183e8f">&#9670;&#160;</a></span>InputFileReader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE InputFileReader::InputFileReader </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>input_file_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_var_attributes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad5ce03dd27de671823a6e03d8043f725" name="ad5ce03dd27de671823a6e03d8043f725"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5ce03dd27de671823a6e03d8043f725">&#9670;&#160;</a></span>check_keyword_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InputFileReader::check_keyword_match </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>keyword</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check whether a string starts with a keyword. </p>
+
+</div>
+</div>
+<a id="a3db85f85fb8ab9ffa214aa00ceb4733e" name="a3db85f85fb8ab9ffa214aa00ceb4733e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db85f85fb8ab9ffa214aa00ceb4733e">&#9670;&#160;</a></span>declare_bc_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_bc_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for boundary conditions. </p>
+
+</div>
+</div>
+<a id="ae384c1fa8782783eaf1573a1cbcb1541" name="ae384c1fa8782783eaf1573a1cbcb1541"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae384c1fa8782783eaf1573a1cbcb1541">&#9670;&#160;</a></span>declare_checkpoint_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_checkpoint_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for checkpoints. </p>
+
+</div>
+</div>
+<a id="a0d41a7d042d433ee2517e642640413a8" name="a0d41a7d042d433ee2517e642640413a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d41a7d042d433ee2517e642640413a8">&#9670;&#160;</a></span>declare_grain_loading_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_grain_loading_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for grain structure loading. </p>
+
+</div>
+</div>
+<a id="a106506e9ea9c7c061be652b44e08a8b6" name="a106506e9ea9c7c061be652b44e08a8b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a106506e9ea9c7c061be652b44e08a8b6">&#9670;&#160;</a></span>declare_grain_remapping_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_grain_remapping_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for grain remapping. </p>
+
+</div>
+</div>
+<a id="ab9806f9292d32744bc5524bbeb1d2006" name="ab9806f9292d32744bc5524bbeb1d2006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9806f9292d32744bc5524bbeb1d2006">&#9670;&#160;</a></span>declare_load_ic_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_load_ic_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for loading ICs from files. </p>
+
+</div>
+</div>
+<a id="a56e77d6e58c5f98b539395c9a001b005" name="a56e77d6e58c5f98b539395c9a001b005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56e77d6e58c5f98b539395c9a001b005">&#9670;&#160;</a></span>declare_mesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_mesh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for the mesh. </p>
+
+</div>
+</div>
+<a id="a37e5d33aa3a85c059cf262d6583180c1" name="a37e5d33aa3a85c059cf262d6583180c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37e5d33aa3a85c059cf262d6583180c1">&#9670;&#160;</a></span>declare_miscellaneous_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_miscellaneous_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for rng. </p>
+
+</div>
+</div>
+<a id="acb10db154c9b7621b66d8e6c76550238" name="acb10db154c9b7621b66d8e6c76550238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb10db154c9b7621b66d8e6c76550238">&#9670;&#160;</a></span>declare_model_constants()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_model_constants </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for user-defined model constants. </p>
+
+</div>
+</div>
+<a id="a7f264887675800c07cd01ff7aedd689d" name="a7f264887675800c07cd01ff7aedd689d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f264887675800c07cd01ff7aedd689d">&#9670;&#160;</a></span>declare_nucleation_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_nucleation_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for nucleation. </p>
+
+</div>
+</div>
+<a id="a838a860ef7de6d875927b7aaacc10836" name="a838a860ef7de6d875927b7aaacc10836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a838a860ef7de6d875927b7aaacc10836">&#9670;&#160;</a></span>declare_output_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_output_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for outputs. </p>
+
+</div>
+</div>
+<a id="a97aab5765b031532f58cb7b15f0de6c3" name="a97aab5765b031532f58cb7b15f0de6c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97aab5765b031532f58cb7b15f0de6c3">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method to declare the parameters to be read from an input file. </p>
+
+</div>
+</div>
+<a id="a6e19a40fc15e1b6a86243e4af54c06e6" name="a6e19a40fc15e1b6a86243e4af54c06e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e19a40fc15e1b6a86243e4af54c06e6">&#9670;&#160;</a></span>declare_pinning_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_pinning_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for pinned points. </p>
+
+</div>
+</div>
+<a id="a19f9a717da4104fb30e7405d2414dd4e" name="a19f9a717da4104fb30e7405d2414dd4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19f9a717da4104fb30e7405d2414dd4e">&#9670;&#160;</a></span>declare_solver_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_solver_parameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for linear and nonlinear solvers. </p>
+
+</div>
+</div>
+<a id="a171bba6b1bf7077d07b8eb76d0f91909" name="a171bba6b1bf7077d07b8eb76d0f91909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a171bba6b1bf7077d07b8eb76d0f91909">&#9670;&#160;</a></span>declare_time_discretization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::declare_time_discretization </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare parameters for timestepping. </p>
+
+</div>
+</div>
+<a id="a010afd2a1c8ceb4e88b54a3c8144bb62" name="a010afd2a1c8ceb4e88b54a3c8144bb62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a010afd2a1c8ceb4e88b54a3c8144bb62">&#9670;&#160;</a></span>get_dim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int InputFileReader::get_dim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of dimensions. </p>
+
+</div>
+</div>
+<a id="ad10d22bd70b09bdc13803ce1261f9fce" name="ad10d22bd70b09bdc13803ce1261f9fce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad10d22bd70b09bdc13803ce1261f9fce">&#9670;&#160;</a></span>get_model_constant_names() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt; std::string &gt; InputFileReader::get_model_constant_names </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the trailing part of the entry name after a specified string (used to extract the model constant names). </p>
+
+</div>
+</div>
+<a id="aa4dc47d61d0a3d752dfb3a4cddd9aac3" name="aa4dc47d61d0a3d752dfb3a4cddd9aac3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4dc47d61d0a3d752dfb3a4cddd9aac3">&#9670;&#160;</a></span>get_model_constant_names() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::set&lt; std::string &gt; &amp; InputFileReader::get_model_constant_names </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the model constant names. </p>
+
+</div>
+</div>
+<a id="a43516d8890cdc244ac27cdc8ca65b932" name="a43516d8890cdc244ac27cdc8ca65b932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43516d8890cdc244ac27cdc8ca65b932">&#9670;&#160;</a></span>get_parameter_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::ParameterHandler &amp; InputFileReader::get_parameter_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the parameter handler. </p>
+
+</div>
+</div>
+<a id="a62c3ef7cb2b39de9b1154bedd1e8060b" name="a62c3ef7cb2b39de9b1154bedd1e8060b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62c3ef7cb2b39de9b1154bedd1e8060b">&#9670;&#160;</a></span>get_var_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp; InputFileReader::get_var_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the variable attributes. </p>
+
+</div>
+</div>
+<a id="a49718a48a25ed056dca1a0e5f572f4bd" name="a49718a48a25ed056dca1a0e5f572f4bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49718a48a25ed056dca1a0e5f572f4bd">&#9670;&#160;</a></span>parse_line()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InputFileReader::parse_line </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>line</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>keyword</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>entry_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>out_string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>expect_equals_sign</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method to check if a line has the desired contents and if so, extract it. </p>
+
+</div>
+</div>
+<a id="ae9db18a08815e49696bd0bdc7f028b55" name="ae9db18a08815e49696bd0bdc7f028b55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9db18a08815e49696bd0bdc7f028b55">&#9670;&#160;</a></span>strip_spaces()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InputFileReader::strip_spaces </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Strip spaces from the front and back of a string. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a93ad706e1d3a07193cf65e0a8ebc114a" name="a93ad706e1d3a07193cf65e0a8ebc114a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93ad706e1d3a07193cf65e0a8ebc114a">&#9670;&#160;</a></span>model_constant_names</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt;std::string&gt; InputFileReader::model_constant_names</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7efcb7b7f35c10235d3457d83108a0d" name="aa7efcb7b7f35c10235d3457d83108a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7efcb7b7f35c10235d3457d83108a0d">&#9670;&#160;</a></span>number_of_dimensions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int InputFileReader::number_of_dimensions = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a177ab8b953d26f43125c89ac6f8fdfad" name="a177ab8b953d26f43125c89ac6f8fdfad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a177ab8b953d26f43125c89ac6f8fdfad">&#9670;&#160;</a></span>parameter_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::ParameterHandler InputFileReader::parameter_handler</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a51f646c4f23ee863a44e6ac9d52363" name="a1a51f646c4f23ee863a44e6ac9d52363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a51f646c4f23ee863a44e6ac9d52363">&#9670;&#160;</a></span>parameters_file_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string InputFileReader::parameters_file_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac7d4ca7ce62c669f924c34d0c1f18b6" name="aac7d4ca7ce62c669f924c34d0c1f18b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac7d4ca7ce62c669f924c34d0c1f18b6">&#9670;&#160;</a></span>var_attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt;unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a>&gt;* InputFileReader::var_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="input__file__reader_8h_source.html">input_file_reader.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/user_inputs/<b>input_file_reader.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/user_inputs/<a class="el" href="input__file__reader_8cc.html">input_file_reader.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

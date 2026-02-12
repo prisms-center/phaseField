@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,7 @@ $(document).ready(function(){initNavTree('structLoadInitialConditionParameters.h
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structLoadInitialConditionParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LoadInitialConditionParameters Struct Reference</div></div>
 </div><!--header-->
@@ -122,49 +130,335 @@ $(document).ready(function(){initNavTree('structLoadInitialConditionParameters.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a04b303c7cba699aafa61739906edf095" id="r_a04b303c7cba699aafa61739906edf095"><td class="memItemLeft" align="right" valign="top"><a id="a04b303c7cba699aafa61739906edf095" name="a04b303c7cba699aafa61739906edf095"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> ()</td></tr>
-<tr class="memdesc:a04b303c7cba699aafa61739906edf095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a04b303c7cba699aafa61739906edf095" id="r_a04b303c7cba699aafa61739906edf095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a04b303c7cba699aafa61739906edf095">postprocess_and_validate</a> ()</td></tr>
+<tr class="memdesc:a04b303c7cba699aafa61739906edf095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a04b303c7cba699aafa61739906edf095"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb600f44cd107bf230da57f6aa034ff" id="r_a2cb600f44cd107bf230da57f6aa034ff"><td class="memItemLeft" align="right" valign="top"><a id="a2cb600f44cd107bf230da57f6aa034ff" name="a2cb600f44cd107bf230da57f6aa034ff"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:a2cb600f44cd107bf230da57f6aa034ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:a2cb600f44cd107bf230da57f6aa034ff" id="r_a2cb600f44cd107bf230da57f6aa034ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a2cb600f44cd107bf230da57f6aa034ff">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:a2cb600f44cd107bf230da57f6aa034ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:a2cb600f44cd107bf230da57f6aa034ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af152262d872c80c51c1bba8e057f2b0a" id="r_af152262d872c80c51c1bba8e057f2b0a"><td class="memItemLeft" align="right" valign="top"><a id="af152262d872c80c51c1bba8e057f2b0a" name="af152262d872c80c51c1bba8e057f2b0a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
-<tr class="memdesc:af152262d872c80c51c1bba8e057f2b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the initial condition parameters. <br /></td></tr>
+<tr class="memitem:af152262d872c80c51c1bba8e057f2b0a" id="r_af152262d872c80c51c1bba8e057f2b0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#af152262d872c80c51c1bba8e057f2b0a">clear</a> ()</td></tr>
+<tr class="memdesc:af152262d872c80c51c1bba8e057f2b0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the initial condition parameters.  <br /></td></tr>
 <tr class="separator:af152262d872c80c51c1bba8e057f2b0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1ef1a4858f69371d5eaecf4d1e1dadd" id="r_ad1ef1a4858f69371d5eaecf4d1e1dadd"><td class="memItemLeft" align="right" valign="top"><a id="ad1ef1a4858f69371d5eaecf4d1e1dadd" name="ad1ef1a4858f69371d5eaecf4d1e1dadd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_read_initial_conditions_from_file</b> (bool _read_initial_conditions_from_file)</td></tr>
-<tr class="memdesc:ad1ef1a4858f69371d5eaecf4d1e1dadd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the read initial conditions from file flag. <br /></td></tr>
+<tr class="memitem:ad1ef1a4858f69371d5eaecf4d1e1dadd" id="r_ad1ef1a4858f69371d5eaecf4d1e1dadd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#ad1ef1a4858f69371d5eaecf4d1e1dadd">set_read_initial_conditions_from_file</a> (bool _read_initial_conditions_from_file)</td></tr>
+<tr class="memdesc:ad1ef1a4858f69371d5eaecf4d1e1dadd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the read initial conditions from file flag.  <br /></td></tr>
 <tr class="separator:ad1ef1a4858f69371d5eaecf4d1e1dadd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba56dc8491df4d2fa9f3bfa81401d3c5" id="r_aba56dc8491df4d2fa9f3bfa81401d3c5"><td class="memItemLeft" align="right" valign="top"><a id="aba56dc8491df4d2fa9f3bfa81401d3c5" name="aba56dc8491df4d2fa9f3bfa81401d3c5"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>get_read_initial_conditions_from_file</b> () const</td></tr>
-<tr class="memdesc:aba56dc8491df4d2fa9f3bfa81401d3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the read initial conditions from file flag. <br /></td></tr>
+<tr class="memitem:aba56dc8491df4d2fa9f3bfa81401d3c5" id="r_aba56dc8491df4d2fa9f3bfa81401d3c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">get_read_initial_conditions_from_file</a> () const</td></tr>
+<tr class="memdesc:aba56dc8491df4d2fa9f3bfa81401d3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the read initial conditions from file flag.  <br /></td></tr>
 <tr class="separator:aba56dc8491df4d2fa9f3bfa81401d3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81b8731dbc20dedc8938493476169b28" id="r_a81b8731dbc20dedc8938493476169b28"><td class="memItemLeft" align="right" valign="top"><a id="a81b8731dbc20dedc8938493476169b28" name="a81b8731dbc20dedc8938493476169b28"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_initial_condition_file</b> (<a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> _ic_file)</td></tr>
-<tr class="memdesc:a81b8731dbc20dedc8938493476169b28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a initial condition file. <br /></td></tr>
+<tr class="memitem:a81b8731dbc20dedc8938493476169b28" id="r_a81b8731dbc20dedc8938493476169b28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">add_initial_condition_file</a> (<a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> _ic_file)</td></tr>
+<tr class="memdesc:a81b8731dbc20dedc8938493476169b28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a initial condition file.  <br /></td></tr>
 <tr class="separator:a81b8731dbc20dedc8938493476169b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a122cb6ba3a2b97a026bf02ec114f4f42" id="r_a122cb6ba3a2b97a026bf02ec114f4f42"><td class="memItemLeft" align="right" valign="top"><a id="a122cb6ba3a2b97a026bf02ec114f4f42" name="a122cb6ba3a2b97a026bf02ec114f4f42"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>get_n_initial_condition_files</b> () const</td></tr>
-<tr class="memdesc:a122cb6ba3a2b97a026bf02ec114f4f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of initial condition files. <br /></td></tr>
+<tr class="memitem:a122cb6ba3a2b97a026bf02ec114f4f42" id="r_a122cb6ba3a2b97a026bf02ec114f4f42"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">get_n_initial_condition_files</a> () const</td></tr>
+<tr class="memdesc:a122cb6ba3a2b97a026bf02ec114f4f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of initial condition files.  <br /></td></tr>
 <tr class="separator:a122cb6ba3a2b97a026bf02ec114f4f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b4f44cab20ec79dc2e475a3ca034749" id="r_a9b4f44cab20ec79dc2e475a3ca034749"><td class="memItemLeft" align="right" valign="top"><a id="a9b4f44cab20ec79dc2e475a3ca034749" name="a9b4f44cab20ec79dc2e475a3ca034749"></a>
-const std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_initial_condition_files</b> () const</td></tr>
-<tr class="memdesc:a9b4f44cab20ec79dc2e475a3ca034749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the initial condition files. <br /></td></tr>
+<tr class="memitem:a9b4f44cab20ec79dc2e475a3ca034749" id="r_a9b4f44cab20ec79dc2e475a3ca034749"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a9b4f44cab20ec79dc2e475a3ca034749">get_initial_condition_files</a> () const</td></tr>
+<tr class="memdesc:a9b4f44cab20ec79dc2e475a3ca034749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the initial condition files.  <br /></td></tr>
 <tr class="separator:a9b4f44cab20ec79dc2e475a3ca034749"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a62397adf9f751e01d411a983d9201e29" id="r_a62397adf9f751e01d411a983d9201e29"><td class="memItemLeft" align="right" valign="top"><a id="a62397adf9f751e01d411a983d9201e29" name="a62397adf9f751e01d411a983d9201e29"></a>
-static constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>max_files</b> = 8</td></tr>
-<tr class="memdesc:a62397adf9f751e01d411a983d9201e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of initial condition files. <br /></td></tr>
+<tr class="memitem:a62397adf9f751e01d411a983d9201e29" id="r_a62397adf9f751e01d411a983d9201e29"><td class="memItemLeft" align="right" valign="top">static constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a62397adf9f751e01d411a983d9201e29">max_files</a> = 8</td></tr>
+<tr class="memdesc:a62397adf9f751e01d411a983d9201e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of initial condition files.  <br /></td></tr>
 <tr class="separator:a62397adf9f751e01d411a983d9201e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a11dfb63880c51d147d272a7f815d535d" id="r_a11dfb63880c51d147d272a7f815d535d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d">read_initial_conditions_from_file</a> = false</td></tr>
+<tr class="separator:a11dfb63880c51d147d272a7f815d535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7de456080b628c9351bde1e393e1c7be" id="r_a7de456080b628c9351bde1e393e1c7be"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structLoadInitialConditionParameters.html#a7de456080b628c9351bde1e393e1c7be">ic_files</a></td></tr>
+<tr class="separator:a7de456080b628c9351bde1e393e1c7be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that stores relevant load initial condition information. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a81b8731dbc20dedc8938493476169b28" name="a81b8731dbc20dedc8938493476169b28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81b8731dbc20dedc8938493476169b28">&#9670;&#160;</a></span>add_initial_condition_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::add_initial_condition_file </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structInitialConditionFile.html">InitialConditionFile</a>&#160;</td>
+          <td class="paramname"><em>_ic_file</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a initial condition file. </p>
+
+</div>
+</div>
+<a id="af152262d872c80c51c1bba8e057f2b0a" name="af152262d872c80c51c1bba8e057f2b0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af152262d872c80c51c1bba8e057f2b0a">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear the initial condition parameters. </p>
+
+</div>
+</div>
+<a id="a9b4f44cab20ec79dc2e475a3ca034749" name="a9b4f44cab20ec79dc2e475a3ca034749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b4f44cab20ec79dc2e475a3ca034749">&#9670;&#160;</a></span>get_initial_condition_files()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt; &amp; LoadInitialConditionParameters::get_initial_condition_files </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the initial condition files. </p>
+
+</div>
+</div>
+<a id="a122cb6ba3a2b97a026bf02ec114f4f42" name="a122cb6ba3a2b97a026bf02ec114f4f42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122cb6ba3a2b97a026bf02ec114f4f42">&#9670;&#160;</a></span>get_n_initial_condition_files()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int LoadInitialConditionParameters::get_n_initial_condition_files </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of initial condition files. </p>
+
+</div>
+</div>
+<a id="aba56dc8491df4d2fa9f3bfa81401d3c5" name="aba56dc8491df4d2fa9f3bfa81401d3c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba56dc8491df4d2fa9f3bfa81401d3c5">&#9670;&#160;</a></span>get_read_initial_conditions_from_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LoadInitialConditionParameters::get_read_initial_conditions_from_file </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the read initial conditions from file flag. </p>
+
+</div>
+</div>
+<a id="a04b303c7cba699aafa61739906edf095" name="a04b303c7cba699aafa61739906edf095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04b303c7cba699aafa61739906edf095">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="a2cb600f44cd107bf230da57f6aa034ff" name="a2cb600f44cd107bf230da57f6aa034ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cb600f44cd107bf230da57f6aa034ff">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="ad1ef1a4858f69371d5eaecf4d1e1dadd" name="ad1ef1a4858f69371d5eaecf4d1e1dadd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1ef1a4858f69371d5eaecf4d1e1dadd">&#9670;&#160;</a></span>set_read_initial_conditions_from_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::set_read_initial_conditions_from_file </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>_read_initial_conditions_from_file</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the read initial conditions from file flag. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a7de456080b628c9351bde1e393e1c7be" name="a7de456080b628c9351bde1e393e1c7be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7de456080b628c9351bde1e393e1c7be">&#9670;&#160;</a></span>ic_files</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structInitialConditionFile.html">InitialConditionFile</a>&gt; LoadInitialConditionParameters::ic_files</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62397adf9f751e01d411a983d9201e29" name="a62397adf9f751e01d411a983d9201e29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62397adf9f751e01d411a983d9201e29">&#9670;&#160;</a></span>max_files</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr unsigned int LoadInitialConditionParameters::max_files = 8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum number of initial condition files. </p>
+
+</div>
+</div>
+<a id="a11dfb63880c51d147d272a7f815d535d" name="a11dfb63880c51d147d272a7f815d535d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11dfb63880c51d147d272a7f815d535d">&#9670;&#160;</a></span>read_initial_conditions_from_file</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LoadInitialConditionParameters::read_initial_conditions_from_file = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="load__initial__condition__parameters_8h_source.html">load_initial_condition_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

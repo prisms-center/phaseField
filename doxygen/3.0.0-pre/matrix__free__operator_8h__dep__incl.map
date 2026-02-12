@@ -1,0 +1,33 @@
+<map id="/home/runner/work/phaseField/phaseField/include/prismspf/core/matrix_free_operator.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/core/matrix_free_operator.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1800,5,2019,60"/>
+<area shape="rect" id="Node000002" href="$matrix__free__operator_8cc.html" title=" " alt="" coords="5,108,224,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1786,39,998,64,558,84,375,97,236,111,225,112,224,107,236,105,375,92,558,79,998,58,1786,34"/>
+<area shape="rect" id="Node000003" href="$pde__problem_8cc.html" title=" " alt="" coords="248,108,467,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1786,36,1545,40,1220,50,851,72,663,89,479,111,467,112,467,107,478,105,662,84,851,67,1220,45,1545,34,1786,31"/>
+<area shape="rect" id="Node000004" href="$solver__handler_8cc.html" title=" " alt="" coords="491,108,709,163"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1786,38,1583,44,1317,56,1020,78,722,111,710,112,709,107,721,105,1020,72,1317,51,1582,39,1786,33"/>
+<area shape="rect" id="Node000005" href="$concurrent__constant__solver_8cc.html" title=" " alt="" coords="733,108,976,163"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1786,42,1427,65,1208,85,988,111,977,112,976,107,988,105,1207,79,1427,60,1786,37"/>
+<area shape="rect" id="Node000006" href="$concurrent__explicit__postprocess__solver_8cc.html" title=" " alt="" coords="1000,108,1243,163"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1787,48,1540,73,1255,111,1243,112,1243,107,1254,105,1540,68,1786,42"/>
+<area shape="rect" id="Node000007" href="$concurrent__explicit__solver_8cc.html" title=" " alt="" coords="1267,108,1509,163"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1787,60,1522,111,1510,113,1509,108,1521,105,1786,55"/>
+<area shape="rect" id="Node000008" href="$concurrent__solver_8cc.html" title=" " alt="" coords="1533,108,1776,163"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1831,67,1722,110,1720,105,1829,62"/>
+<area shape="rect" id="Node000009" href="$linear__solver__base_8cc.html" title=" " alt="" coords="1800,108,2019,163"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1912,74,1912,108,1907,108,1907,74"/>
+<area shape="rect" id="Node000010" href="$linear__solver__gmg_8cc.html" title=" " alt="" coords="2043,108,2261,163"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1986,63,2090,105,2088,110,1984,68"/>
+<area shape="rect" id="Node000011" href="$linear__solver__identity_8cc.html" title=" " alt="" coords="2285,108,2504,163"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="2033,56,2274,105,2285,108,2284,113,2273,111,2032,61"/>
+<area shape="rect" id="Node000012" href="$sequential__auxiliary__solver_8cc.html" title=" " alt="" coords="2528,108,2771,163"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="2033,44,2258,70,2516,105,2528,107,2527,113,2516,111,2257,75,2032,49"/>
+<area shape="rect" id="Node000013" href="$sequential__co__nonlinear__solver_8cc.html" title=" " alt="" coords="2795,108,3037,163"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="2032,38,2371,61,2577,80,2783,105,2795,107,2794,112,2782,111,2577,86,2371,66,2032,43"/>
+<area shape="rect" id="Node000014" href="$sequential__linear__solver_8cc.html" title=" " alt="" coords="3061,108,3304,163"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="2033,34,2228,41,2482,54,2765,75,3050,105,3061,107,3061,112,3049,111,2764,80,2481,59,2228,46,2032,40"/>
+<area shape="rect" id="Node000015" href="$sequential__self__nonlinear__solver_8cc.html" title=" " alt="" coords="3328,108,3571,163"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="2032,32,2270,36,2589,48,2951,70,3136,86,3316,105,3328,107,3327,112,3316,111,3135,91,2951,75,2589,53,2270,42,2032,37"/>
+<area shape="rect" id="Node000016" href="$sequential__solver_8cc.html" title=" " alt="" coords="3595,108,3837,163"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="2033,31,2311,32,2696,42,3136,65,3362,82,3583,105,3595,107,3594,112,3582,111,3362,88,3136,70,2695,47,2311,38,2033,36"/>
+</map>

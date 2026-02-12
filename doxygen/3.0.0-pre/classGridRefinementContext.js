@@ -10,7 +10,20 @@ var classGridRefinementContext =
     [ "get_mapping", "classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199", null ],
     [ "get_matrix_free_container", "classGridRefinementContext.html#a40164a7d157f2fbc7343877084100ab3", null ],
     [ "get_multigrid_info", "classGridRefinementContext.html#a4b33fc07cf26173f3552951971502fa9", null ],
+    [ "get_pf_tools", "classGridRefinementContext.html#a7a1168aa44a44f2cc2add15507911141", null ],
     [ "get_solution_handler", "classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127", null ],
     [ "get_triangulation_handler", "classGridRefinementContext.html#a0cbfbe5811c4f114ab69685acfac38cb", null ],
-    [ "get_user_inputs", "classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae", null ]
+    [ "get_user_inputs", "classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae", null ],
+    [ "constraint_handler", "classGridRefinementContext.html#a38ca62542c7a22f9a1a4a0d57d9b32eb", null ],
+    [ "dof_handler", "classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615", null ],
+    [ "element_volume_container", "classGridRefinementContext.html#abc3df0c2e4a72bad65b750c20ce06b94", null ],
+    [ "fe_system", "classGridRefinementContext.html#aa7952b46455158b43846e66dc6be3bf6", null ],
+    [ "invm_handler", "classGridRefinementContext.html#a1280b90d3ba5f507d5cb77dc894c97de", null ],
+    [ "mapping", "classGridRefinementContext.html#af1c0a81ad56afae07c33bf68a0508253", null ],
+    [ "matrix_free_container", "classGridRefinementContext.html#a019fad8cb34543698a0cd70bee8e8612", null ],
+    [ "mg_info", "classGridRefinementContext.html#a8debea3003daf0bd33d4570aa27ee66f", null ],
+    [ "pf_tools", "classGridRefinementContext.html#aa09e3e0fec7e4f140849daede3a5449a", null ],
+    [ "solution_handler", "classGridRefinementContext.html#af9643c73a9fd8a1a160936130e8a927f", null ],
+    [ "triangulation_handler", "classGridRefinementContext.html#aa4f7d8de357f5a5c30cab3d5916ace12", null ],
+    [ "user_inputs", "classGridRefinementContext.html#a8608e3cd9a9b72c034fc1c77c7a4ac82", null ]
 ];

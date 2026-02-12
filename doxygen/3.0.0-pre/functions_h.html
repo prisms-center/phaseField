@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,11 +114,12 @@ $(document).ready(function(){initNavTree('functions_h.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_h" name="index_h"></a>- h -</h3><ul>
+<li>has_adaptivity&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ad4c43c35aa366aec39c2a2d2ac80c2d6">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>has_linear_solve_parameters()&#160;:&#160;<a class="el" href="structLinearSolveParameters.html#aa5c131bfabc56be9b91897fb9714e824">LinearSolveParameters</a></li>
-<li>has_multigrid()&#160;:&#160;<a class="el" href="classMGInfo.html#a67fc98f7e97e2b11f5473bfae03162d8">MGInfo&lt; dim &gt;</a></li>
+<li>has_multigrid&#160;:&#160;<a class="el" href="classConstraintHandler.html#a020c79b711f5ebb3fec9deedfbd30360">ConstraintHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classDofHandler.html#a52f24233864ce29ca747170c1cb88ae9">DofHandler&lt; dim &gt;</a>, <a class="el" href="classMGInfo.html#a67fc98f7e97e2b11f5473bfae03162d8">MGInfo&lt; dim &gt;</a>, <a class="el" href="classSolutionHandler.html#a281fb3d7f688c06102557735b0b8522e">SolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classTriangulationHandler.html#a147c84e87c52e63157c356ec48369ff0">TriangulationHandler&lt; dim &gt;</a></li>
 <li>has_periodic_boundaries()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a56a6d12533fff2bad3efa1e8b4a8b103">BoundaryParameters&lt; dim &gt;</a></li>
 <li>has_pinned_point()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a072de1962cb0396070e75f0613fc9574">BoundaryParameters&lt; dim &gt;</a></li>
 <li>has_time_dependent_bcs()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#ab589cf6b8c580374fac7a40c9fbe3483">BoundaryParameters&lt; dim &gt;</a></li>

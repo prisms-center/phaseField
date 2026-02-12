@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -122,39 +129,191 @@ $(document).ready(function(){initNavTree('classTimer.html',''); initResizable();
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5f16e8da27d2a5a5242dead46de05d97" id="r_a5f16e8da27d2a5a5242dead46de05d97"><td class="memItemLeft" align="right" valign="top"><a id="a5f16e8da27d2a5a5242dead46de05d97" name="a5f16e8da27d2a5a5242dead46de05d97"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Timer</b> ()</td></tr>
-<tr class="memdesc:a5f16e8da27d2a5a5242dead46de05d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a5f16e8da27d2a5a5242dead46de05d97" id="r_a5f16e8da27d2a5a5242dead46de05d97"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#a5f16e8da27d2a5a5242dead46de05d97">Timer</a> ()</td></tr>
+<tr class="memdesc:a5f16e8da27d2a5a5242dead46de05d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a5f16e8da27d2a5a5242dead46de05d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aaa688642aa4eb211b67d6bcb13452afa" id="r_aaa688642aa4eb211b67d6bcb13452afa"><td class="memItemLeft" align="right" valign="top"><a id="aaa688642aa4eb211b67d6bcb13452afa" name="aaa688642aa4eb211b67d6bcb13452afa"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>start_section</b> (const char *name)</td></tr>
-<tr class="memdesc:aaa688642aa4eb211b67d6bcb13452afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a new timer section. <br /></td></tr>
+<tr class="memitem:aaa688642aa4eb211b67d6bcb13452afa" id="r_aaa688642aa4eb211b67d6bcb13452afa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#aaa688642aa4eb211b67d6bcb13452afa">start_section</a> (const char *name)</td></tr>
+<tr class="memdesc:aaa688642aa4eb211b67d6bcb13452afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start a new timer section.  <br /></td></tr>
 <tr class="separator:aaa688642aa4eb211b67d6bcb13452afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1dc504d4bd75188b95693a4951149fd" id="r_ae1dc504d4bd75188b95693a4951149fd"><td class="memItemLeft" align="right" valign="top"><a id="ae1dc504d4bd75188b95693a4951149fd" name="ae1dc504d4bd75188b95693a4951149fd"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>end_section</b> (const char *name)</td></tr>
-<tr class="memdesc:ae1dc504d4bd75188b95693a4951149fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">End the timer section. <br /></td></tr>
+<tr class="memitem:ae1dc504d4bd75188b95693a4951149fd" id="r_ae1dc504d4bd75188b95693a4951149fd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#ae1dc504d4bd75188b95693a4951149fd">end_section</a> (const char *name)</td></tr>
+<tr class="memdesc:ae1dc504d4bd75188b95693a4951149fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">End the timer section.  <br /></td></tr>
 <tr class="separator:ae1dc504d4bd75188b95693a4951149fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab11b7f11ebabd0ec136f93c3a7f556" id="r_abab11b7f11ebabd0ec136f93c3a7f556"><td class="memItemLeft" align="right" valign="top"><a id="abab11b7f11ebabd0ec136f93c3a7f556" name="abab11b7f11ebabd0ec136f93c3a7f556"></a>
-static dealii::TimerOutput &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>serial_timer</b> ()</td></tr>
-<tr class="memdesc:abab11b7f11ebabd0ec136f93c3a7f556"><td class="mdescLeft">&#160;</td><td class="mdescRight">deal.II timer for the 0th MPI process <br /></td></tr>
+<tr class="memitem:abab11b7f11ebabd0ec136f93c3a7f556" id="r_abab11b7f11ebabd0ec136f93c3a7f556"><td class="memItemLeft" align="right" valign="top">static dealii::TimerOutput &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#abab11b7f11ebabd0ec136f93c3a7f556">serial_timer</a> ()</td></tr>
+<tr class="memdesc:abab11b7f11ebabd0ec136f93c3a7f556"><td class="mdescLeft">&#160;</td><td class="mdescRight">deal.II timer for the 0th MPI process  <br /></td></tr>
 <tr class="separator:abab11b7f11ebabd0ec136f93c3a7f556"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a606d23f90b1dd0109d40bb6b8f9ef3e8" id="r_a606d23f90b1dd0109d40bb6b8f9ef3e8"><td class="memItemLeft" align="right" valign="top"><a id="a606d23f90b1dd0109d40bb6b8f9ef3e8" name="a606d23f90b1dd0109d40bb6b8f9ef3e8"></a>
-static dealii::TimerOutput &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>parallel_timer</b> ()</td></tr>
-<tr class="memdesc:a606d23f90b1dd0109d40bb6b8f9ef3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">deal.II timer for parallel MPI process <br /></td></tr>
+<tr class="memitem:a606d23f90b1dd0109d40bb6b8f9ef3e8" id="r_a606d23f90b1dd0109d40bb6b8f9ef3e8"><td class="memItemLeft" align="right" valign="top">static dealii::TimerOutput &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#a606d23f90b1dd0109d40bb6b8f9ef3e8">parallel_timer</a> ()</td></tr>
+<tr class="memdesc:a606d23f90b1dd0109d40bb6b8f9ef3e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">deal.II timer for parallel MPI process  <br /></td></tr>
 <tr class="separator:a606d23f90b1dd0109d40bb6b8f9ef3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2a3f33c55dca79a3f9ae61c90a42ed" id="r_abc2a3f33c55dca79a3f9ae61c90a42ed"><td class="memItemLeft" align="right" valign="top"><a id="abc2a3f33c55dca79a3f9ae61c90a42ed" name="abc2a3f33c55dca79a3f9ae61c90a42ed"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>print_summary</b> ()</td></tr>
-<tr class="memdesc:abc2a3f33c55dca79a3f9ae61c90a42ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a sorted summary of the timed sections. <br /></td></tr>
+<tr class="memitem:abc2a3f33c55dca79a3f9ae61c90a42ed" id="r_abc2a3f33c55dca79a3f9ae61c90a42ed"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTimer.html#abc2a3f33c55dca79a3f9ae61c90a42ed">print_summary</a> ()</td></tr>
+<tr class="memdesc:abc2a3f33c55dca79a3f9ae61c90a42ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a sorted summary of the timed sections.  <br /></td></tr>
 <tr class="separator:abc2a3f33c55dca79a3f9ae61c90a42ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classTimer.html" title="Timer class for PRISMS-PF.">Timer</a> class for PRISMS-PF. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a5f16e8da27d2a5a5242dead46de05d97" name="a5f16e8da27d2a5a5242dead46de05d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f16e8da27d2a5a5242dead46de05d97">&#9670;&#160;</a></span>Timer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Timer::Timer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae1dc504d4bd75188b95693a4951149fd" name="ae1dc504d4bd75188b95693a4951149fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1dc504d4bd75188b95693a4951149fd">&#9670;&#160;</a></span>end_section()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Timer::end_section </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>End the timer section. </p>
+
+</div>
+</div>
+<a id="a606d23f90b1dd0109d40bb6b8f9ef3e8" name="a606d23f90b1dd0109d40bb6b8f9ef3e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a606d23f90b1dd0109d40bb6b8f9ef3e8">&#9670;&#160;</a></span>parallel_timer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::TimerOutput &amp; Timer::parallel_timer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>deal.II timer for parallel MPI process </p>
+
+</div>
+</div>
+<a id="abc2a3f33c55dca79a3f9ae61c90a42ed" name="abc2a3f33c55dca79a3f9ae61c90a42ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc2a3f33c55dca79a3f9ae61c90a42ed">&#9670;&#160;</a></span>print_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Timer::print_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print a sorted summary of the timed sections. </p>
+
+</div>
+</div>
+<a id="abab11b7f11ebabd0ec136f93c3a7f556" name="abab11b7f11ebabd0ec136f93c3a7f556"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abab11b7f11ebabd0ec136f93c3a7f556">&#9670;&#160;</a></span>serial_timer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::TimerOutput &amp; Timer::serial_timer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>deal.II timer for the 0th MPI process </p>
+
+</div>
+</div>
+<a id="aaa688642aa4eb211b67d6bcb13452afa" name="aaa688642aa4eb211b67d6bcb13452afa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa688642aa4eb211b67d6bcb13452afa">&#9670;&#160;</a></span>start_section()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void Timer::start_section </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start a new timer section. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="timer_8h_source.html">timer.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>timer.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="timer_8cc.html">timer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('element__volume_8h_source.html',''); i
   <div class="headertitle"><div class="title">element_volume.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="element__volume_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -128,7 +135,7 @@ $(document).ready(function(){initNavTree('element__volume_8h_source.html',''); i
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim, <span class="keyword">typename</span> number&gt;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">class </span><a class="code hl_class" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>;</div>
@@ -155,9 +162,9 @@ $(document).ready(function(){initNavTree('element__volume_8h_source.html',''); i
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_function" href="classElementVolume.html#ad34e6d8328cd292df1628b6a3fda5b0c">get_element_volume</a>(<span class="keywordtype">unsigned</span> cell) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number, dealii::VectorizedArray&lt;number&gt;&gt;&gt; data;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">   58</a></span>  std::shared_ptr&lt;dealii::MatrixFree&lt;dim, number, dealii::VectorizedArray&lt;number&gt;&gt;&gt; <a class="code hl_variable" href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">data</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  dealii::AlignedVector&lt;dealii::VectorizedArray&lt;number&gt;&gt; element_volume;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">   63</a></span>  dealii::AlignedVector&lt;dealii::VectorizedArray&lt;number&gt;&gt; <a class="code hl_variable" href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">element_volume</a>;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
@@ -184,36 +191,43 @@ $(document).ready(function(){initNavTree('element__volume_8h_source.html',''); i
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <a class="code hl_function" href="classElementVolumeContainer.html#ab1ae966573d121d1331018383ac305f0">get_mg_element_volume</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_class" href="classElementVolume.html">ElementVolume&lt;dim, degree, number&gt;</a> element_volume;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classElementVolumeContainer.html#af19295ffc58e882585d410efa195a1e8">  113</a></span>  <a class="code hl_class" href="classElementVolume.html">ElementVolume&lt;dim, degree, number&gt;</a> <a class="code hl_variable" href="classElementVolumeContainer.html#af19295ffc58e882585d410efa195a1e8">element_volume</a>;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  dealii::MGLevelObject&lt;ElementVolume&lt;dim, degree, float&gt;&gt; multigrid_element_volume;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classElementVolumeContainer.html#a029ce4675fc9a92bcbc262e63fd9fe6b">  118</a></span>  dealii::MGLevelObject&lt;ElementVolume&lt;dim, degree, float&gt;&gt; <a class="code hl_variable" href="classElementVolumeContainer.html#a029ce4675fc9a92bcbc262e63fd9fe6b">multigrid_element_volume</a>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> min_level = 0;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classElementVolumeContainer.html#aadc7755636133337a1aa68a65205182d">  123</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classElementVolumeContainer.html#aadc7755636133337a1aa68a65205182d">min_level</a> = 0;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_level = 0;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classElementVolumeContainer.html#ad4f926e6221e9afe66aa2290a3543383">  128</a></span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="classElementVolumeContainer.html#ad4f926e6221e9afe66aa2290a3543383">max_level</a> = 0;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>};</div>
 </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassElementVolumeContainer_html"><div class="ttname"><a href="classElementVolumeContainer.html">ElementVolumeContainer</a></div><div class="ttdoc">A container that holds the element volumes for multigrid and normal triangulations.</div><div class="ttdef"><b>Definition</b> element_volume.h:72</div></div>
+<div class="ttc" id="aclassElementVolumeContainer_html_a029ce4675fc9a92bcbc262e63fd9fe6b"><div class="ttname"><a href="classElementVolumeContainer.html#a029ce4675fc9a92bcbc262e63fd9fe6b">ElementVolumeContainer::multigrid_element_volume</a></div><div class="ttdeci">dealii::MGLevelObject&lt; ElementVolume&lt; dim, degree, float &gt; &gt; multigrid_element_volume</div><div class="ttdoc">Matrix-free object handler for multigrid data.</div><div class="ttdef"><b>Definition</b> element_volume.h:118</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html_a939413bbca65af8c448547227b45fccd"><div class="ttname"><a href="classElementVolumeContainer.html#a939413bbca65af8c448547227b45fccd">ElementVolumeContainer::compute_element_volume</a></div><div class="ttdeci">void compute_element_volume()</div><div class="ttdoc">Compute element volumes for the triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.cc:137</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html_aa1db1ebe4509c2924373c86ebe0a278a"><div class="ttname"><a href="classElementVolumeContainer.html#aa1db1ebe4509c2924373c86ebe0a278a">ElementVolumeContainer::recompute_element_volume</a></div><div class="ttdeci">void recompute_element_volume()</div><div class="ttdoc">Recompute element volumes for the triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.cc:155</div></div>
+<div class="ttc" id="aclassElementVolumeContainer_html_aadc7755636133337a1aa68a65205182d"><div class="ttname"><a href="classElementVolumeContainer.html#aadc7755636133337a1aa68a65205182d">ElementVolumeContainer::min_level</a></div><div class="ttdeci">unsigned int min_level</div><div class="ttdoc">Min multigrid level.</div><div class="ttdef"><b>Definition</b> element_volume.h:123</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html_ab1ae966573d121d1331018383ac305f0"><div class="ttname"><a href="classElementVolumeContainer.html#ab1ae966573d121d1331018383ac305f0">ElementVolumeContainer::get_mg_element_volume</a></div><div class="ttdeci">const ElementVolume&lt; dim, degree, float &gt; &amp; get_mg_element_volume(unsigned int level) const</div><div class="ttdoc">Get the element volume at a multigrid level.</div><div class="ttdef"><b>Definition</b> element_volume.cc:169</div></div>
+<div class="ttc" id="aclassElementVolumeContainer_html_ad4f926e6221e9afe66aa2290a3543383"><div class="ttname"><a href="classElementVolumeContainer.html#ad4f926e6221e9afe66aa2290a3543383">ElementVolumeContainer::max_level</a></div><div class="ttdeci">unsigned int max_level</div><div class="ttdoc">Max multigrid level.</div><div class="ttdef"><b>Definition</b> element_volume.h:128</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html_aec7c242ff8e2ea7e7aa87b75d8ec9c3d"><div class="ttname"><a href="classElementVolumeContainer.html#aec7c242ff8e2ea7e7aa87b75d8ec9c3d">ElementVolumeContainer::get_element_volume</a></div><div class="ttdeci">const ElementVolume&lt; dim, degree, number &gt; &amp; get_element_volume() const</div><div class="ttdoc">Get the element volume.</div><div class="ttdef"><b>Definition</b> element_volume.cc:162</div></div>
+<div class="ttc" id="aclassElementVolumeContainer_html_af19295ffc58e882585d410efa195a1e8"><div class="ttname"><a href="classElementVolumeContainer.html#af19295ffc58e882585d410efa195a1e8">ElementVolumeContainer::element_volume</a></div><div class="ttdeci">ElementVolume&lt; dim, degree, number &gt; element_volume</div><div class="ttdoc">Matrix-free object handler for non-multigrid data.</div><div class="ttdef"><b>Definition</b> element_volume.h:113</div></div>
 <div class="ttc" id="aclassElementVolumeContainer_html_af5a32b88b66b70e69d2e0a6a3e17415c"><div class="ttname"><a href="classElementVolumeContainer.html#af5a32b88b66b70e69d2e0a6a3e17415c">ElementVolumeContainer::initialize</a></div><div class="ttdeci">void initialize(const MatrixFreeContainer&lt; dim, number &gt; &amp;matrix_free_container)</div><div class="ttdoc">Initialize the element volume container.</div><div class="ttdef"><b>Definition</b> element_volume.cc:113</div></div>
 <div class="ttc" id="aclassElementVolume_html"><div class="ttname"><a href="classElementVolume.html">ElementVolume</a></div><div class="ttdoc">A little class that computes the element volume for our triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.h:27</div></div>
 <div class="ttc" id="aclassElementVolume_html_a24aa9c572073c12645862f9bcf0469e8"><div class="ttname"><a href="classElementVolume.html#a24aa9c572073c12645862f9bcf0469e8">ElementVolume::compute_element_volume</a></div><div class="ttdeci">void compute_element_volume()</div><div class="ttdoc">Compute element volume for the triangulation.</div><div class="ttdef"><b>Definition</b> element_volume.cc:35</div></div>
+<div class="ttc" id="aclassElementVolume_html_a3fc703c0fe07464a91aecb5236199cf3"><div class="ttname"><a href="classElementVolume.html#a3fc703c0fe07464a91aecb5236199cf3">ElementVolume::element_volume</a></div><div class="ttdeci">dealii::AlignedVector&lt; dealii::VectorizedArray&lt; number &gt; &gt; element_volume</div><div class="ttdoc">Vector that stores element volumes.</div><div class="ttdef"><b>Definition</b> element_volume.h:63</div></div>
 <div class="ttc" id="aclassElementVolume_html_a614b9b9d705ac5b3a5918f5e27f9c39b"><div class="ttname"><a href="classElementVolume.html#a614b9b9d705ac5b3a5918f5e27f9c39b">ElementVolume::initialize</a></div><div class="ttdeci">void initialize(std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; _data)</div><div class="ttdoc">Initialize.</div><div class="ttdef"><b>Definition</b> element_volume.cc:27</div></div>
+<div class="ttc" id="aclassElementVolume_html_abcdd0b06887844914fc34af65f34407a"><div class="ttname"><a href="classElementVolume.html#abcdd0b06887844914fc34af65f34407a">ElementVolume::data</a></div><div class="ttdeci">std::shared_ptr&lt; dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; data</div><div class="ttdoc">Matrix-free object.</div><div class="ttdef"><b>Definition</b> element_volume.h:58</div></div>
 <div class="ttc" id="aclassElementVolume_html_abd811dddfdfd404e0a963dad68ca57db"><div class="ttname"><a href="classElementVolume.html#abd811dddfdfd404e0a963dad68ca57db">ElementVolume::ElementVolume</a></div><div class="ttdeci">ElementVolume()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclassElementVolume_html_ad34e6d8328cd292df1628b6a3fda5b0c"><div class="ttname"><a href="classElementVolume.html#ad34e6d8328cd292df1628b6a3fda5b0c">ElementVolume::get_element_volume</a></div><div class="ttdeci">const dealii::VectorizedArray&lt; number &gt; &amp; get_element_volume(unsigned cell) const</div><div class="ttdoc">Get the element volume of a certain cell (const reference).</div><div class="ttdef"><b>Definition</b> element_volume.cc:84</div></div>
 <div class="ttc" id="aclassMGInfo_html"><div class="ttname"><a href="classMGInfo.html">MGInfo</a></div><div class="ttdoc">This class centralized the collection of multigrid data, which is of particular important when dealin...</div><div class="ttdef"><b>Definition</b> multigrid_info.h:31</div></div>
 <div class="ttc" id="aclassMatrixFreeContainer_html"><div class="ttname"><a href="classMatrixFreeContainer.html">MatrixFreeContainer</a></div><div class="ttdoc">This class is a simple container for the matrix-free objects used in PRISMS-PF.</div><div class="ttdef"><b>Definition</b> matrix_free_handler.h:100</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><b>element_volume.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><a class="el" href="element__volume_8h.html">element_volume.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

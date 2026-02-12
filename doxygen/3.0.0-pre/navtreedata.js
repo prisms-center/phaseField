@@ -34,7 +34,15 @@ var NAVTREE =
     [ "Applications", "applications.html", null ],
     [ "Contact", "contact.html", null ],
     [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
+      ] ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -43,14 +51,24 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
     ] ]
   ] ]
 ];
@@ -58,9 +76,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classMatrixFreeHandler.html#afc3e36bb3c6d842e27c093eb729f6f79",
-"classTriangulationHandler.html#a4330f5d1bee43ac2d69af62739fdb067",
-"structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dca"
+"classGridRefiner.html#af335971dc17df607da4e6b2c857f6674",
+"classPDEProblem.html",
+"classSolverBase.html#aec39ee189618d0d21f362dcea55727d8",
+"concurrent__solver_8h.html",
+"periodic__distance_8h.html#a1f33d121e1aedb6615cd5a2f0de10f04",
+"structOutputParameters.html#a9771dee0609ee12001963d53b58f3373"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

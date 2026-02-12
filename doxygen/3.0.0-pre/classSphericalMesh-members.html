@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -117,7 +124,8 @@ $(document).ready(function(){initNavTree('classSphericalMesh.html',''); initResi
   <tr class="odd"><td class="entry"><a class="el" href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">get_radius</a>() const</td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classSphericalMesh.html#a581ae3baf41987c8b50ce41952b036ec">mark_boundaries</a>(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classSphericalMesh.html#a27aa49a738115ee172ce459d5a8beeac">mark_periodic</a>(std::shared_ptr&lt; typename Mesh&lt; dim &gt;::Triangulation &gt; triangulation, const typename BoundaryParameters&lt; dim &gt;::BoundaryConditionMap &amp;boundary_condition_list) override</td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1">SphericalMesh</a>(double _radius)</td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classSphericalMesh.html#a5206977ddf19a999af06c42e1ec89994">radius</a></td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1">SphericalMesh</a>(double _radius)</td><td class="entry"><a class="el" href="classSphericalMesh.html">SphericalMesh&lt; dim &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">explicit</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

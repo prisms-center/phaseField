@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,9 +128,11 @@ $(document).ready(function(){initNavTree('classPDEOperator.html',''); initResiza
   <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#ab4e64aa11ac3a17fffaccf91e3ecbeb4">get_timestep</a>() const</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classPDEOperator.html#ab6b0d9458704bfa92c9dd9fe040d4aeb">get_user_inputs</a>() const</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#a6584115460a8510bfbaee06a44a2925c">PDEOperator</a>(const UserInputParameters&lt; dim &gt; &amp;_user_inputs, const PhaseFieldTools&lt; dim &gt; &amp;_pf_tools)</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classPDEOperator.html#af8a9cf7e755d735cb541dffb6156e143">set_initial_condition</a>(const unsigned int &amp;index, const unsigned int &amp;component, const dealii::Point&lt; dim &gt; &amp;point, number &amp;scalar_value, number &amp;vector_component_value) const =0</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#ae8c3c529219f40298311a53d245160da">set_nonuniform_dirichlet</a>(const unsigned int &amp;index, const unsigned int &amp;boundary_id, const unsigned int &amp;component, const dealii::Point&lt; dim &gt; &amp;point, number &amp;scalar_value, number &amp;vector_component_value) const =0</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SizeType</b> typedef (defined in <a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a>)</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPDEOperator.html#a302ecfc8312de87f27caad4d83051f52">pf_tools</a></td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#af8a9cf7e755d735cb541dffb6156e143">set_initial_condition</a>(const unsigned int &amp;index, const unsigned int &amp;component, const dealii::Point&lt; dim &gt; &amp;point, number &amp;scalar_value, number &amp;vector_component_value) const =0</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPDEOperator.html#ae8c3c529219f40298311a53d245160da">set_nonuniform_dirichlet</a>(const unsigned int &amp;index, const unsigned int &amp;boundary_id, const unsigned int &amp;component, const dealii::Point&lt; dim &gt; &amp;point, number &amp;scalar_value, number &amp;vector_component_value) const =0</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#a50e13cfa3d0f197b9d1e94e60cb7581a">SizeType</a> typedef</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classPDEOperator.html#a71dcf4d304d34d7672edf0d0a318c435">user_inputs</a></td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classPDEOperator.html#afcd5093a7ca3f742287e3f15450ebe8d">~PDEOperator</a>()=default</td><td class="entry"><a class="el" href="classPDEOperator.html">PDEOperator&lt; dim, degree, number &gt;</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->

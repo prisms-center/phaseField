@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,7 +122,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
   <div class="headertitle"><div class="title">user_constants.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="user__constants_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
@@ -127,29 +134,29 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;boost/range/algorithm_ext/erase.hpp&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;boost/variant.hpp&gt;</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;prismspf/core/conditional_ostreams.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;prismspf/core/exceptions.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;prismspf/core/type_enums.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;<a class="code" href="conditional__ostreams_8h.html">prismspf/core/conditional_ostreams.h</a>&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;<a class="code" href="exceptions_8h.html">prismspf/core/exceptions.h</a>&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;<a class="code" href="type__enums_8h.html">prismspf/core/type_enums.h</a>&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classUserConstants.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classUserConstants.html">UserConstants</a></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">using </span>InputVariant = boost::variant&lt;double,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">   30</a></span>  <span class="keyword">using </span><a class="code hl_typedef" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">InputVariant</a> = boost::variant&lt;double,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                      int,</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                      bool,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                      dealii::Tensor&lt;1, dim&gt;,</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                      dealii::Tensor&lt;2, dim&gt;,</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                      dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt;&gt;;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  InputVariant</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_typedef" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">InputVariant</a></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">construct_user_constant</a>(std::vector&lt;std::string&gt; &amp;model_constants_strings);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  [[nodiscard]] <span class="keywordtype">double</span></div>
@@ -175,7 +182,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">  101</a></span>  <a class="code hl_function" href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">add_user_constant</a>(<span class="keyword">const</span> std::string        &amp;constant_name,</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    std::vector&lt;std::string&gt; &amp;model_constants_strings)</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    model_constants[constant_name] = <a class="code hl_function" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">construct_user_constant</a>(model_constants_strings);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <a class="code hl_variable" href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">model_constants</a>[constant_name] = <a class="code hl_function" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">construct_user_constant</a>(model_constants_strings);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  };</div>
 </div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
@@ -184,56 +191,64 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  compute_tensor_parentheses(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <a class="code hl_function" href="classUserConstants.html#acf6feea286a9b613fac4fac9f3e40e55">compute_tensor_parentheses</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                             <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements);</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  remove_parentheses(std::vector&lt;std::string&gt; &amp;tensor_elements);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_function" href="classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6">remove_parentheses</a>(std::vector&lt;std::string&gt; &amp;tensor_elements);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  dealii::Tensor&lt;1, dim&gt;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  compute_rank_1_tensor_constant(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <a class="code hl_function" href="classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0">compute_rank_1_tensor_constant</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                                 <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements);</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  dealii::Tensor&lt;2, dim&gt;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  compute_rank_2_tensor_constant(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <a class="code hl_function" href="classUserConstants.html#ab60436298be45c100e71d92ad717961b">compute_rank_2_tensor_constant</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                                 <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements);</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  InputVariant</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  primitive_model_constant(std::vector&lt;std::string&gt; &amp;model_constants_strings);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <a class="code hl_typedef" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">InputVariant</a></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <a class="code hl_function" href="classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214">primitive_model_constant</a>(std::vector&lt;std::string&gt; &amp;model_constants_strings);</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  [[nodiscard]] dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  get_cij_tensor(std::vector&lt;double&gt; elastic_constants,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <a class="code hl_function" href="classUserConstants.html#a91accacbe3b53404bbb45cfdc12ff737">get_cij_tensor</a>(std::vector&lt;double&gt; elastic_constants,</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                 <span class="keyword">const</span> std::string  &amp;elastic_const_symmetry) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  [[nodiscard]] dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  get_cij_matrix(<span class="keyword">const</span> ElasticityModel     &amp;model,</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <a class="code hl_function" href="classUserConstants.html#a2b19e5b49fbced44f89ba5ab1c884b0d">get_cij_matrix</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590a">ElasticityModel</a>     &amp;model,</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                 <span class="keyword">const</span> std::vector&lt;double&gt; &amp;constants) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  std::map&lt;std::string, InputVariant&gt; model_constants;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">  158</a></span>  std::map&lt;std::string, InputVariant&gt; <a class="code hl_variable" href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">model_constants</a>;</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keyword">class </span>VariantPrinter : <span class="keyword">public</span> boost::static_visitor&lt;&gt;</div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="};">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html">  163</a></span>  <span class="keyword">class </span><a class="code hl_class" href="classUserConstants_1_1VariantPrinter.html">VariantPrinter</a> : <span class="keyword">public</span> boost::static_visitor&lt;&gt;</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  {</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    operator()(<span class="keywordtype">double</span> value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#a6220c3af82c523929fd461232312e7c1">  167</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#a6220c3af82c523929fd461232312e7c1">operator()</a>(<span class="keywordtype">double</span> value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; value;</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    }</div>
+</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    operator()(<span class="keywordtype">int</span> value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#a57b2052df94042e77f18c6edd0665b68">  173</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#a57b2052df94042e77f18c6edd0665b68">operator()</a>(<span class="keywordtype">int</span> value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; value;</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
+</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    operator()(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#a2048034a947c5d41e494a6ae4e5bfde6">  179</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#a2048034a947c5d41e494a6ae4e5bfde6">operator()</a>(<span class="keywordtype">bool</span> value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; std::boolalpha &lt;&lt; value;</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    }</div>
+</div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    operator()(<span class="keyword">const</span> dealii::Tensor&lt;1, dim&gt; &amp;value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">  185</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">operator()</a>(<span class="keyword">const</span> dealii::Tensor&lt;1, dim&gt; &amp;value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;Tensor&lt;1, &quot;</span> &lt;&lt; dim &lt;&lt; <span class="stringliteral">&quot;&gt;: &quot;</span>;</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; ++i)</div>
@@ -241,9 +256,11 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; value[i] &lt;&lt; <span class="charliteral">&#39; &#39;</span>;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        }</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    }</div>
+</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    operator()(<span class="keyword">const</span> dealii::Tensor&lt;2, dim&gt; &amp;value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#a838f0984778187be3bd59a0d2864e664">  195</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#a838f0984778187be3bd59a0d2864e664">operator()</a>(<span class="keyword">const</span> dealii::Tensor&lt;2, dim&gt; &amp;value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;Tensor&lt;2, &quot;</span> &lt;&lt; dim &lt;&lt; <span class="stringliteral">&quot;&gt;: &quot;</span>;</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dim; ++i)</div>
@@ -254,10 +271,12 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            }</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        }</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    }</div>
+</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> D = dim&gt;</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    operator()(<span class="keyword">const</span> dealii::Tensor&lt;2, (2 * D) - 1 + (D / 3)&gt; &amp;value) <span class="keyword">const</span></div>
+<div class="foldopen" id="foldopen00209" data-start="{" data-end="}">
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classUserConstants_1_1VariantPrinter.html#a8ac21cbcff01da656bffcc6cdd9f8d97">  209</a></span>    <a class="code hl_function" href="classUserConstants_1_1VariantPrinter.html#a8ac21cbcff01da656bffcc6cdd9f8d97">operator()</a>(<span class="keyword">const</span> dealii::Tensor&lt;2, (2 * D) - 1 + (D / 3)&gt; &amp;value) <span class="keyword">const</span></div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keyword">requires</span>((D != ((2 * D) - 1 + (D / 3))))</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    {</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      <span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dimension = (2 * D) - 1 + (D / 3);</div>
@@ -270,7 +289,9 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            }</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        }</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    }</div>
+</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  };</div>
+</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>};</div>
 </div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
@@ -370,7 +391,8 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::compute_tensor_parentheses</a>(</div>
+<div class="foldopen" id="foldopen00309" data-start="{" data-end="}">
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno"><a class="line" href="classUserConstants.html#acf6feea286a9b613fac4fac9f3e40e55">  309</a></span><a class="code hl_function" href="classUserConstants.html#acf6feea286a9b613fac4fac9f3e40e55">UserConstants&lt;dim&gt;::compute_tensor_parentheses</a>(</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements)</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>{</div>
@@ -401,10 +423,12 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
 <div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  <span class="keywordflow">return</span> open_parentheses;</div>
 <div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>}</div>
+</div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::remove_parentheses</a>(std::vector&lt;std::string&gt; &amp;tensor_elements)</div>
+<div class="foldopen" id="foldopen00343" data-start="{" data-end="}">
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno"><a class="line" href="classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6">  343</a></span><a class="code hl_function" href="classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6">UserConstants&lt;dim&gt;::remove_parentheses</a>(std::vector&lt;std::string&gt; &amp;tensor_elements)</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>{</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  <span class="keywordflow">for</span> (std::string &amp;element : tensor_elements)</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    {</div>
@@ -412,10 +436,12 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>      boost::range::remove_erase(element, <span class="charliteral">&#39;)&#39;</span>);</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>    }</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>}</div>
+</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="keyword">inline</span> dealii::Tensor&lt;1, dim&gt;</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::compute_rank_1_tensor_constant</a>(</div>
+<div class="foldopen" id="foldopen00354" data-start="{" data-end="}">
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno"><a class="line" href="classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0">  354</a></span><a class="code hl_function" href="classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0">UserConstants&lt;dim&gt;::compute_rank_1_tensor_constant</a>(</div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements)</div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>{</div>
@@ -431,10 +457,12 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="keywordflow">return</span> temp;</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>}</div>
+</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span><span class="keyword">inline</span> dealii::Tensor&lt;2, dim&gt;</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::compute_rank_2_tensor_constant</a>(</div>
+<div class="foldopen" id="foldopen00373" data-start="{" data-end="}">
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno"><a class="line" href="classUserConstants.html#ab60436298be45c100e71d92ad717961b">  373</a></span><a class="code hl_function" href="classUserConstants.html#ab60436298be45c100e71d92ad717961b">UserConstants&lt;dim&gt;::compute_rank_2_tensor_constant</a>(</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>             &amp;n_elements,</div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;tensor_elements)</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>{</div>
@@ -456,9 +484,10 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span> </div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  <span class="keywordflow">return</span> temp;</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>}</div>
+</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="keyword">inline</span> <span class="keyword">typename</span> UserConstants&lt;dim&gt;::InputVariant</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span><span class="keyword">inline</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">UserConstants&lt;dim&gt;::InputVariant</a></div>
 <div class="foldopen" id="foldopen00398" data-start="{" data-end="}">
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno"><a class="line" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">  398</a></span><a class="code hl_function" href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">UserConstants&lt;dim&gt;::construct_user_constant</a>(</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  std::vector&lt;std::string&gt; &amp;model_constants_strings)</div>
@@ -527,8 +556,9 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 </div>
 <div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span> </div>
 <div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="keyword">inline</span> <span class="keyword">typename</span> UserConstants&lt;dim&gt;::InputVariant</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::primitive_model_constant</a>(</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="keyword">inline</span> <span class="keyword">typename</span> <a class="code hl_typedef" href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">UserConstants&lt;dim&gt;::InputVariant</a></div>
+<div class="foldopen" id="foldopen00465" data-start="{" data-end="}">
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno"><a class="line" href="classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214">  465</a></span><a class="code hl_function" href="classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214">UserConstants&lt;dim&gt;::primitive_model_constant</a>(</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  std::vector&lt;std::string&gt; &amp;model_constants_strings)</div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>{</div>
 <div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>  std::vector&lt;std::string&gt; model_constants_type_strings =</div>
@@ -555,29 +585,31 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>                <span class="stringliteral">&quot;`bool`, `tensor`, or `elastic constants`.&quot;</span>));</div>
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>}</div>
+</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span> </div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span><span class="keyword">inline</span> dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt;</div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::get_cij_tensor</a>(std::vector&lt;double&gt; elastic_constants,</div>
+<div class="foldopen" id="foldopen00495" data-start="{" data-end="}">
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno"><a class="line" href="classUserConstants.html#a91accacbe3b53404bbb45cfdc12ff737">  495</a></span><a class="code hl_function" href="classUserConstants.html#a91accacbe3b53404bbb45cfdc12ff737">UserConstants&lt;dim&gt;::get_cij_tensor</a>(std::vector&lt;double&gt; elastic_constants,</div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>                                   <span class="keyword">const</span> std::string  &amp;elastic_const_symmetry)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>  <span class="comment">// First set the material model</span></div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>  ElasticityModel mat_model = Isotropic;</div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>  <a class="code hl_enumeration" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590a">ElasticityModel</a> mat_model = <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">Isotropic</a>;</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>  <span class="keywordflow">if</span> (elastic_const_symmetry == <span class="stringliteral">&quot;isotropic&quot;</span>)</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    {</div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>      mat_model = ElasticityModel::Isotropic;</div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>      mat_model = <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">ElasticityModel::Isotropic</a>;</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>    }</div>
 <div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elastic_const_symmetry == <span class="stringliteral">&quot;transverse&quot;</span>)</div>
 <div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>    {</div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>      mat_model = ElasticityModel::Transverse;</div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>      mat_model = <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29">ElasticityModel::Transverse</a>;</div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>    }</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elastic_const_symmetry == <span class="stringliteral">&quot;orthotropic&quot;</span>)</div>
 <div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>    {</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>      mat_model = ElasticityModel::Orthotropic;</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>      mat_model = <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa5bade1cb5991146bdb67bdd73aae04d0">ElasticityModel::Orthotropic</a>;</div>
 <div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    }</div>
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (elastic_const_symmetry == <span class="stringliteral">&quot;anisotropic&quot;</span>)</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>    {</div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>      mat_model = ElasticityModel::Anisotropic;</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>      mat_model = <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c">ElasticityModel::Anisotropic</a>;</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>    }</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>    {</div>
@@ -588,7 +620,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>  <span class="comment">// constants are given for a 3D calculation, change the elastic constant</span></div>
 <div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>  <span class="comment">// vector to the 2D form</span></div>
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>  <span class="keyword">constexpr</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> max_number = 21;</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>  <span class="keywordflow">if</span> ((mat_model == Anisotropic) &amp;&amp; (dim == 2) &amp;&amp; elastic_constants.size() == max_number)</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>  <span class="keywordflow">if</span> ((mat_model == <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c">Anisotropic</a>) &amp;&amp; (dim == 2) &amp;&amp; elastic_constants.size() == max_number)</div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>    {</div>
 <div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>      std::vector&lt;double&gt; elastic_constants_temp = elastic_constants;</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>      elastic_constants.clear();</div>
@@ -604,10 +636,12 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>  <span class="keywordflow">return</span> get_cij_matrix(mat_model, elastic_constants);</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>}</div>
+</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span> </div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span><span class="keyword">inline</span> dealii::Tensor&lt;2, (2 * dim) - 1 + (dim / 3)&gt;</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span><a class="code hl_class" href="classUserConstants.html">UserConstants&lt;dim&gt;::get_cij_matrix</a>(<span class="keyword">const</span> ElasticityModel     &amp;model,</div>
+<div class="foldopen" id="foldopen00544" data-start="{" data-end="}">
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno"><a class="line" href="classUserConstants.html#a2b19e5b49fbced44f89ba5ab1c884b0d">  544</a></span><a class="code hl_function" href="classUserConstants.html#a2b19e5b49fbced44f89ba5ab1c884b0d">UserConstants&lt;dim&gt;::get_cij_matrix</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590a">ElasticityModel</a>     &amp;model,</div>
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>                                   <span class="keyword">const</span> std::vector&lt;double&gt; &amp;constants)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>  <span class="comment">// Initialize compliance tensor</span></div>
@@ -626,7 +660,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>                <span class="comment">// an application and switches to 1D, they will have to modify the</span></div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>                <span class="comment">// elasticity constants to align with that. While more burdensome, there&#39;s</span></div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>                <span class="comment">// less of a chance of producing spurious behavior.</span></div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>              <span class="keywordflow">case</span> Isotropic:</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">Isotropic</a>:</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                {</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>                  <span class="keyword">const</span> <span class="keywordtype">double</span> modulus = constants.at(0);</div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span> </div>
@@ -652,7 +686,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>            {</div>
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>              <span class="comment">// Like the 1D case, it is nonsensical to have transverse or orthotropic</span></div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>              <span class="comment">// compliance tensors, so we throw an error.</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>              <span class="keywordflow">case</span> Isotropic:</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">Isotropic</a>:</div>
 <div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>                {</div>
 <div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                  <span class="comment">// For isotropic compliance tensors, we can simplify the computation to</span></div>
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>                  <span class="comment">// two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear</span></div>
@@ -674,7 +708,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;</div>
 <div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>                  <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>                }</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>              <span class="keywordflow">case</span> Anisotropic:</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c">Anisotropic</a>:</div>
 <div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>                {</div>
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>                  <span class="comment">// In the anisotropic case, every entry is specified (given the symmetry</span></div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>                  <span class="comment">// constraints). Also, ignore magic numbers because it is simpler to</span></div>
@@ -711,7 +745,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
 <div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>          <span class="keywordflow">switch</span> (model)</div>
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>            {</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>              <span class="keywordflow">case</span> Isotropic:</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">Isotropic</a>:</div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>                {</div>
 <div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>                  <span class="comment">// For isotropic compliance tensors, we can simplify the computation to</span></div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>                  <span class="comment">// two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear</span></div>
@@ -736,7 +770,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;</div>
 <div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>                  <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>                }</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>              <span class="keywordflow">case</span> Anisotropic:</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c">Anisotropic</a>:</div>
 <div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>                {</div>
 <div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>                  <span class="comment">// In the anisotropic case, every entry is specified (given the symmetry</span></div>
 <div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                  <span class="comment">// constraints). Also, ignore magic numbers because it is simpler to</span></div>
@@ -769,9 +803,9 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>                  <span class="comment">// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
 <div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>                  <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>                }</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>              <span class="keywordflow">case</span> Transverse:</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29">Transverse</a>:</div>
 <div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>              <span class="comment">// TODO (landinjm): implement</span></div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>              <span class="keywordflow">case</span> Orthotropic:</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>              <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa5bade1cb5991146bdb67bdd73aae04d0">Orthotropic</a>:</div>
 <div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>              <span class="comment">// TODO (landinjm): implement</span></div>
 <div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>              <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>                AssertThrow(<span class="keyword">false</span>, dealii::ExcMessage(<span class="stringliteral">&quot;Invalid elasticity model type&quot;</span>));</div>
@@ -786,6 +820,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span> </div>
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>  <span class="keywordflow">return</span> compliance;</div>
 <div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>}</div>
+</div>
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span> </div>
 <div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span><span class="keyword">template</span> &lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dim&gt;</div>
 <div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span><span class="keywordtype">void</span></div>
@@ -802,7 +837,7 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[constant_name, variant] : model_constants)</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        {</div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; constant_name &lt;&lt; <span class="stringliteral">&quot;: &quot;</span>;</div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>          boost::apply_visitor(VariantPrinter(), variant);</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>          boost::apply_visitor(<a class="code hl_class" href="classUserConstants_1_1VariantPrinter.html">VariantPrinter</a>(), variant);</div>
 <div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>          <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        }</div>
 <div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>      <a class="code hl_function" href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a>() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span> &lt;&lt; std::flush;</div>
@@ -812,22 +847,47 @@ $(document).ready(function(){initNavTree('user__constants_8h_source.html',''); i
 <div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
 <div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassConditionalOStreams_html_a87641f73b77523eb7814a0a0397cfa94"><div class="ttname"><a href="classConditionalOStreams.html#a87641f73b77523eb7814a0a0397cfa94">ConditionalOStreams::pout_summary</a></div><div class="ttdeci">static dealii::ConditionalOStream &amp; pout_summary()</div><div class="ttdoc">Log output stream for writing a summary.log file.</div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:34</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html">UserConstants::VariantPrinter</a></div><div class="ttdoc">Class for printing of variant types. This is bad practice and should be fixed.</div><div class="ttdef"><b>Definition</b> user_constants.h:164</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_a2048034a947c5d41e494a6ae4e5bfde6"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#a2048034a947c5d41e494a6ae4e5bfde6">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(bool value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:179</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_a57b2052df94042e77f18c6edd0665b68"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#a57b2052df94042e77f18c6edd0665b68">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(int value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:173</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_a6220c3af82c523929fd461232312e7c1"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#a6220c3af82c523929fd461232312e7c1">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(double value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:167</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_a838f0984778187be3bd59a0d2864e664"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#a838f0984778187be3bd59a0d2864e664">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(const dealii::Tensor&lt; 2, dim &gt; &amp;value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:195</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_a8ac21cbcff01da656bffcc6cdd9f8d97"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#a8ac21cbcff01da656bffcc6cdd9f8d97">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(const dealii::Tensor&lt; 2,(2 *D) - 1+(D/3)&gt; &amp;value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:209</div></div>
+<div class="ttc" id="aclassUserConstants_1_1VariantPrinter_html_afe7e4f1cdb3cfc2c02c17d95d6cb86e3"><div class="ttname"><a href="classUserConstants_1_1VariantPrinter.html#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">UserConstants::VariantPrinter::operator()</a></div><div class="ttdeci">void operator()(const dealii::Tensor&lt; 1, dim &gt; &amp;value) const</div><div class="ttdef"><b>Definition</b> user_constants.h:185</div></div>
 <div class="ttc" id="aclassUserConstants_html"><div class="ttname"><a href="classUserConstants.html">UserConstants</a></div><div class="ttdoc">Class the stores and manages user-defined constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:28</div></div>
 <div class="ttc" id="aclassUserConstants_html_a00d9c5f996c650688da96ce81c5c4be8"><div class="ttname"><a href="classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8">UserConstants::construct_user_constant</a></div><div class="ttdeci">InputVariant construct_user_constant(std::vector&lt; std::string &gt; &amp;model_constants_strings)</div><div class="ttdoc">Assign the specified user constant to whatever type.</div><div class="ttdef"><b>Definition</b> user_constants.h:398</div></div>
 <div class="ttc" id="aclassUserConstants_html_a16b8588236f276e259649d58aff6d6b5"><div class="ttname"><a href="classUserConstants.html#a16b8588236f276e259649d58aff6d6b5">UserConstants::get_model_constant_double</a></div><div class="ttdeci">double get_model_constant_double(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the double from the model_constants that are defined from the parameters....</div><div class="ttdef"><b>Definition</b> user_constants.h:227</div></div>
 <div class="ttc" id="aclassUserConstants_html_a2599a9f8a50cf3a5de28fa5cd6fef596"><div class="ttname"><a href="classUserConstants.html#a2599a9f8a50cf3a5de28fa5cd6fef596">UserConstants::get_model_constant_elasticity_tensor</a></div><div class="ttdeci">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; get_model_constant_elasticity_tensor(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the elasticity tensor from the model_constants that are defined from the parameters....</div><div class="ttdef"><b>Definition</b> user_constants.h:294</div></div>
+<div class="ttc" id="aclassUserConstants_html_a2b19e5b49fbced44f89ba5ab1c884b0d"><div class="ttname"><a href="classUserConstants.html#a2b19e5b49fbced44f89ba5ab1c884b0d">UserConstants::get_cij_matrix</a></div><div class="ttdeci">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; get_cij_matrix(const ElasticityModel &amp;model, const std::vector&lt; double &gt; &amp;constants) const</div><div class="ttdef"><b>Definition</b> user_constants.h:544</div></div>
 <div class="ttc" id="aclassUserConstants_html_a41b3f71c6a81aead2b93649d47cf80d2"><div class="ttname"><a href="classUserConstants.html#a41b3f71c6a81aead2b93649d47cf80d2">UserConstants::get_model_constant_rank_2_tensor</a></div><div class="ttdeci">dealii::Tensor&lt; 2, dim &gt; get_model_constant_rank_2_tensor(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the rank 2 tensor from the model_constants that are defined from the parameters....</div><div class="ttdef"><b>Definition</b> user_constants.h:280</div></div>
 <div class="ttc" id="aclassUserConstants_html_a480929f141c03b87b31e2e459576b7f5"><div class="ttname"><a href="classUserConstants.html#a480929f141c03b87b31e2e459576b7f5">UserConstants::get_model_constant_bool</a></div><div class="ttdeci">bool get_model_constant_bool(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the bool from the model_constants that are defined from the parameters.prm parser....</div><div class="ttdef"><b>Definition</b> user_constants.h:253</div></div>
 <div class="ttc" id="aclassUserConstants_html_a5579bbb1335c38ae05a523b9572af082"><div class="ttname"><a href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">UserConstants::add_user_constant</a></div><div class="ttdeci">void add_user_constant(const std::string &amp;constant_name, std::vector&lt; std::string &gt; &amp;model_constants_strings)</div><div class="ttdoc">Print all user-specified constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:101</div></div>
+<div class="ttc" id="aclassUserConstants_html_a57cdd0e2ae29f6f27bc1f4cb3e370d21"><div class="ttname"><a href="classUserConstants.html#a57cdd0e2ae29f6f27bc1f4cb3e370d21">UserConstants::model_constants</a></div><div class="ttdeci">std::map&lt; std::string, InputVariant &gt; model_constants</div><div class="ttdoc">List of user-defined constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:158</div></div>
+<div class="ttc" id="aclassUserConstants_html_a69d613be0a7bf23d387729f3af6e1214"><div class="ttname"><a href="classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214">UserConstants::primitive_model_constant</a></div><div class="ttdeci">InputVariant primitive_model_constant(std::vector&lt; std::string &gt; &amp;model_constants_strings)</div><div class="ttdoc">Assign the primitive user constants (e.g., int, double, bool).</div><div class="ttdef"><b>Definition</b> user_constants.h:465</div></div>
+<div class="ttc" id="aclassUserConstants_html_a8144f3b57de74fc37095d6286be588e8"><div class="ttname"><a href="classUserConstants.html#a8144f3b57de74fc37095d6286be588e8">UserConstants::InputVariant</a></div><div class="ttdeci">boost::variant&lt; double, int, bool, dealii::Tensor&lt; 1, dim &gt;, dealii::Tensor&lt; 2, dim &gt;, dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; &gt; InputVariant</div><div class="ttdef"><b>Definition</b> user_constants.h:35</div></div>
+<div class="ttc" id="aclassUserConstants_html_a91accacbe3b53404bbb45cfdc12ff737"><div class="ttname"><a href="classUserConstants.html#a91accacbe3b53404bbb45cfdc12ff737">UserConstants::get_cij_tensor</a></div><div class="ttdeci">dealii::Tensor&lt; 2,(2 *dim) - 1+(dim/3)&gt; get_cij_tensor(std::vector&lt; double &gt; elastic_constants, const std::string &amp;elastic_const_symmetry) const</div><div class="ttdef"><b>Definition</b> user_constants.h:495</div></div>
+<div class="ttc" id="aclassUserConstants_html_aa90a2d25cb3694103b2503563e99bac0"><div class="ttname"><a href="classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0">UserConstants::compute_rank_1_tensor_constant</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim &gt; compute_rank_1_tensor_constant(const unsigned int &amp;n_elements, const std::vector&lt; std::string &gt; &amp;tensor_elements)</div><div class="ttdoc">Compute a 1st rank tensor from user inputs .</div><div class="ttdef"><b>Definition</b> user_constants.h:354</div></div>
 <div class="ttc" id="aclassUserConstants_html_ab1bdd73fc414082d06ff0c955a16a0f3"><div class="ttname"><a href="classUserConstants.html#ab1bdd73fc414082d06ff0c955a16a0f3">UserConstants::get_model_constant_int</a></div><div class="ttdeci">int get_model_constant_int(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the int from the model_constants that are defined from the parameters.prm parser....</div><div class="ttdef"><b>Definition</b> user_constants.h:240</div></div>
+<div class="ttc" id="aclassUserConstants_html_ab60436298be45c100e71d92ad717961b"><div class="ttname"><a href="classUserConstants.html#ab60436298be45c100e71d92ad717961b">UserConstants::compute_rank_2_tensor_constant</a></div><div class="ttdeci">dealii::Tensor&lt; 2, dim &gt; compute_rank_2_tensor_constant(const unsigned int &amp;n_elements, const std::vector&lt; std::string &gt; &amp;tensor_elements)</div><div class="ttdoc">Compute a 2nd rank tensor from user inputs .</div><div class="ttdef"><b>Definition</b> user_constants.h:373</div></div>
+<div class="ttc" id="aclassUserConstants_html_acf6feea286a9b613fac4fac9f3e40e55"><div class="ttname"><a href="classUserConstants.html#acf6feea286a9b613fac4fac9f3e40e55">UserConstants::compute_tensor_parentheses</a></div><div class="ttdeci">unsigned int compute_tensor_parentheses(const unsigned int &amp;n_elements, const std::vector&lt; std::string &gt; &amp;tensor_elements)</div><div class="ttdoc">Compute the number of tensor rows.</div><div class="ttdef"><b>Definition</b> user_constants.h:309</div></div>
 <div class="ttc" id="aclassUserConstants_html_adc1db15a0df4d6603bbafe3e6c426aad"><div class="ttname"><a href="classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad">UserConstants::print</a></div><div class="ttdeci">void print() const</div><div class="ttdoc">Print all user-specified constants.</div><div class="ttdef"><b>Definition</b> user_constants.h:726</div></div>
 <div class="ttc" id="aclassUserConstants_html_ae16c95957918cb80baa6769b4743c072"><div class="ttname"><a href="classUserConstants.html#ae16c95957918cb80baa6769b4743c072">UserConstants::get_model_constant_rank_1_tensor</a></div><div class="ttdeci">dealii::Tensor&lt; 1, dim &gt; get_model_constant_rank_1_tensor(const std::string &amp;constant_name) const</div><div class="ttdoc">Retrieve the rank 1 tensor from the model_constants that are defined from the parameters....</div><div class="ttdef"><b>Definition</b> user_constants.h:266</div></div>
+<div class="ttc" id="aclassUserConstants_html_afb4d4b8a027a3611d044b85a7567ecb6"><div class="ttname"><a href="classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6">UserConstants::remove_parentheses</a></div><div class="ttdeci">void remove_parentheses(std::vector&lt; std::string &gt; &amp;tensor_elements)</div><div class="ttdoc">Remove and leading and trailing parentheses.</div><div class="ttdef"><b>Definition</b> user_constants.h:343</div></div>
+<div class="ttc" id="aconditional__ostreams_8h_html"><div class="ttname"><a href="conditional__ostreams_8h.html">conditional_ostreams.h</a></div></div>
+<div class="ttc" id="aexceptions_8h_html"><div class="ttname"><a href="exceptions_8h.html">exceptions.h</a></div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="atype__enums_8h_html"><div class="ttname"><a href="type__enums_8h.html">type_enums.h</a></div></div>
+<div class="ttc" id="atype__enums_8h_html_a1a86717d44634f6efc9531d43737590a"><div class="ttname"><a href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590a">ElasticityModel</a></div><div class="ttdeci">ElasticityModel</div><div class="ttdoc">Symmetry of elastic tensor.</div><div class="ttdef"><b>Definition</b> type_enums.h:40</div></div>
+<div class="ttc" id="atype__enums_8h_html_a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29"><div class="ttname"><a href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29">Transverse</a></div><div class="ttdeci">@ Transverse</div><div class="ttdef"><b>Definition</b> type_enums.h:42</div></div>
+<div class="ttc" id="atype__enums_8h_html_a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c"><div class="ttname"><a href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa22690afbc2ee3a3ba2a141ab906f273c">Anisotropic</a></div><div class="ttdeci">@ Anisotropic</div><div class="ttdef"><b>Definition</b> type_enums.h:44</div></div>
+<div class="ttc" id="atype__enums_8h_html_a1a86717d44634f6efc9531d43737590aa5bade1cb5991146bdb67bdd73aae04d0"><div class="ttname"><a href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa5bade1cb5991146bdb67bdd73aae04d0">Orthotropic</a></div><div class="ttdeci">@ Orthotropic</div><div class="ttdef"><b>Definition</b> type_enums.h:43</div></div>
+<div class="ttc" id="atype__enums_8h_html_a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13"><div class="ttname"><a href="type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13">Isotropic</a></div><div class="ttdeci">@ Isotropic</div><div class="ttdef"><b>Definition</b> type_enums.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><b>user_constants.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_8e29679e8d9320f4689771ebd9c97198.html">user_inputs</a></li><li class="navelem"><a class="el" href="user__constants_8h.html">user_constants.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

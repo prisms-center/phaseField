@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,6 +116,7 @@ $(document).ready(function(){initNavTree('structNonlinearSolveParameterSet.html'
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="structNonlinearSolveParameterSet-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NonlinearSolveParameterSet Struct Reference</div></div>
 </div><!--header-->
@@ -121,30 +129,201 @@ $(document).ready(function(){initNavTree('structNonlinearSolveParameterSet.html'
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a59a95490cf747a15910479fe7791c91f" id="r_a59a95490cf747a15910479fe7791c91f"><td class="memItemLeft" align="right" valign="top"><a id="a59a95490cf747a15910479fe7791c91f" name="a59a95490cf747a15910479fe7791c91f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> ()</td></tr>
-<tr class="memdesc:a59a95490cf747a15910479fe7791c91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a59a95490cf747a15910479fe7791c91f" id="r_a59a95490cf747a15910479fe7791c91f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#a59a95490cf747a15910479fe7791c91f">postprocess_and_validate</a> ()</td></tr>
+<tr class="memdesc:a59a95490cf747a15910479fe7791c91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a59a95490cf747a15910479fe7791c91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9c29348553ca6d49d74df3277fce62e" id="r_ab9c29348553ca6d49d74df3277fce62e"><td class="memItemLeft" align="right" valign="top"><a id="ab9c29348553ca6d49d74df3277fce62e" name="ab9c29348553ca6d49d74df3277fce62e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:ab9c29348553ca6d49d74df3277fce62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:ab9c29348553ca6d49d74df3277fce62e" id="r_ab9c29348553ca6d49d74df3277fce62e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#ab9c29348553ca6d49d74df3277fce62e">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:ab9c29348553ca6d49d74df3277fce62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:ab9c29348553ca6d49d74df3277fce62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80beabcbf476581eae2809ad61cf999f" id="r_a80beabcbf476581eae2809ad61cf999f"><td class="memItemLeft" align="right" valign="top"><a id="a80beabcbf476581eae2809ad61cf999f" name="a80beabcbf476581eae2809ad61cf999f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
-<tr class="memdesc:a80beabcbf476581eae2809ad61cf999f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the nonlinear solve parameters. <br /></td></tr>
+<tr class="memitem:a80beabcbf476581eae2809ad61cf999f" id="r_a80beabcbf476581eae2809ad61cf999f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#a80beabcbf476581eae2809ad61cf999f">clear</a> ()</td></tr>
+<tr class="memdesc:a80beabcbf476581eae2809ad61cf999f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the nonlinear solve parameters.  <br /></td></tr>
 <tr class="separator:a80beabcbf476581eae2809ad61cf999f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a924d12cfc01999d40fbf10cef28bde0d" id="r_a924d12cfc01999d40fbf10cef28bde0d"><td class="memItemLeft" align="right" valign="top"><a id="a924d12cfc01999d40fbf10cef28bde0d" name="a924d12cfc01999d40fbf10cef28bde0d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_nonlinear_solve_parameters</b> (Types::Index index, const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;parameters)</td></tr>
-<tr class="memdesc:a924d12cfc01999d40fbf10cef28bde0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the nonlinear solve parameters for a field index. <br /></td></tr>
+<tr class="memitem:a924d12cfc01999d40fbf10cef28bde0d" id="r_a924d12cfc01999d40fbf10cef28bde0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#a924d12cfc01999d40fbf10cef28bde0d">set_nonlinear_solve_parameters</a> (<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index, const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;parameters)</td></tr>
+<tr class="memdesc:a924d12cfc01999d40fbf10cef28bde0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the nonlinear solve parameters for a field index.  <br /></td></tr>
 <tr class="separator:a924d12cfc01999d40fbf10cef28bde0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad566deaef73bc70f84358b84a09207ed" id="r_ad566deaef73bc70f84358b84a09207ed"><td class="memItemLeft" align="right" valign="top"><a id="ad566deaef73bc70f84358b84a09207ed" name="ad566deaef73bc70f84358b84a09207ed"></a>
-const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_nonlinear_solve_parameters</b> (Types::Index index) const</td></tr>
-<tr class="memdesc:ad566deaef73bc70f84358b84a09207ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nonlinear solve parameters for a field index. <br /></td></tr>
+<tr class="memitem:ad566deaef73bc70f84358b84a09207ed" id="r_ad566deaef73bc70f84358b84a09207ed"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#ad566deaef73bc70f84358b84a09207ed">get_nonlinear_solve_parameters</a> (<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> index) const</td></tr>
+<tr class="memdesc:ad566deaef73bc70f84358b84a09207ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the nonlinear solve parameters for a field index.  <br /></td></tr>
 <tr class="separator:ad566deaef73bc70f84358b84a09207ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:acc52f354665603e1f4e74c3b068a79a2" id="r_acc52f354665603e1f4e74c3b068a79a2"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolveParameterSet.html#acc52f354665603e1f4e74c3b068a79a2">nonlinear_solve</a></td></tr>
+<tr class="separator:acc52f354665603e1f4e74c3b068a79a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds nonlinear solver parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a80beabcbf476581eae2809ad61cf999f" name="a80beabcbf476581eae2809ad61cf999f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80beabcbf476581eae2809ad61cf999f">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NonlinearSolveParameterSet::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear the nonlinear solve parameters. </p>
+
+</div>
+</div>
+<a id="ad566deaef73bc70f84358b84a09207ed" name="ad566deaef73bc70f84358b84a09207ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad566deaef73bc70f84358b84a09207ed">&#9670;&#160;</a></span>get_nonlinear_solve_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp; NonlinearSolveParameterSet::get_nonlinear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the nonlinear solve parameters for a field index. </p>
+
+</div>
+</div>
+<a id="a59a95490cf747a15910479fe7791c91f" name="a59a95490cf747a15910479fe7791c91f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59a95490cf747a15910479fe7791c91f">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NonlinearSolveParameterSet::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="ab9c29348553ca6d49d74df3277fce62e" name="ab9c29348553ca6d49d74df3277fce62e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9c29348553ca6d49d74df3277fce62e">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NonlinearSolveParameterSet::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="a924d12cfc01999d40fbf10cef28bde0d" name="a924d12cfc01999d40fbf10cef28bde0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a924d12cfc01999d40fbf10cef28bde0d">&#9670;&#160;</a></span>set_nonlinear_solve_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NonlinearSolveParameterSet::set_nonlinear_solve_parameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;&#160;</td>
+          <td class="paramname"><em>parameters</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the nonlinear solve parameters for a field index. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="acc52f354665603e1f4e74c3b068a79a2" name="acc52f354665603e1f4e74c3b068a79a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc52f354665603e1f4e74c3b068a79a2">&#9670;&#160;</a></span>nonlinear_solve</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>, <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a>&gt; NonlinearSolveParameterSet::nonlinear_solve</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="nonlinear__solve__parameters_8h_source.html">nonlinear_solve_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

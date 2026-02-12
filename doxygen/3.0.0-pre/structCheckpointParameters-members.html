@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -113,6 +120,10 @@ $(document).ready(function(){initNavTree('structCheckpointParameters.html',''); 
 
 <p>This is the complete list of members for <a class="el" href="structCheckpointParameters.html">CheckpointParameters</a>, including all inherited members.</p>
 <table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#a078b90a817bbc50ddfa40d0718f4af4c">checkpoint_list</a></td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structCheckpointParameters.html#a10c03046ef76e38bb4cadaf43222fdbe">condition</a></td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#adfb01bc786210ab007dd4fb689d492de">load_from_checkpoint</a></td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structCheckpointParameters.html#a3e004e544a5dc86e501ecbe6e904c7e6">n_checkpoints</a></td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#af9d6b311c42f34af2af1e53ec3f5080c">postprocess_and_validate</a>(const TemporalDiscretization &amp;temporal_discretization)</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structCheckpointParameters.html#a35db0292d2d6f64d162991006b6abdb4">print_parameter_summary</a>() const</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#a10aed4085f4b3cd5ab61c6937743ca45">set_condition</a>(const std::string &amp;_condition)</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -120,6 +131,7 @@ $(document).ready(function(){initNavTree('structCheckpointParameters.html',''); 
   <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#a1b3720d0e0f92d49dd15f5942201f23a">set_n_checkpoints</a>(unsigned int _n_checkpoints)</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="structCheckpointParameters.html#a889529aa8259fde37c1e4c810746a3ec">set_user_checkpoint_list</a>(const std::vector&lt; int &gt; &amp;_user_checkpoint_list)</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="structCheckpointParameters.html#ad8f3a01402a29419eaa4fa5e13d56611">should_checkpoint</a>(unsigned int increment) const</td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structCheckpointParameters.html#a27904f434b5e32f6006fc4f98e1ad81e">user_checkpoint_list</a></td><td class="entry"><a class="el" href="structCheckpointParameters.html">CheckpointParameters</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

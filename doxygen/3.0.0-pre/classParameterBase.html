@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,27 +128,142 @@ $(document).ready(function(){initNavTree('classParameterBase.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3876b287d4d05ecbb487435390457763" id="r_a3876b287d4d05ecbb487435390457763"><td class="memItemLeft" align="right" valign="top"><a id="a3876b287d4d05ecbb487435390457763" name="a3876b287d4d05ecbb487435390457763"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ParameterBase</b> ()=default</td></tr>
-<tr class="memdesc:a3876b287d4d05ecbb487435390457763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a3876b287d4d05ecbb487435390457763" id="r_a3876b287d4d05ecbb487435390457763"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParameterBase.html#a3876b287d4d05ecbb487435390457763">ParameterBase</a> ()=default</td></tr>
+<tr class="memdesc:a3876b287d4d05ecbb487435390457763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a3876b287d4d05ecbb487435390457763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ce56ee8fa3ce66198f4de657a279454" id="r_a1ce56ee8fa3ce66198f4de657a279454"><td class="memItemLeft" align="right" valign="top"><a id="a1ce56ee8fa3ce66198f4de657a279454" name="a1ce56ee8fa3ce66198f4de657a279454"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~ParameterBase</b> ()=default</td></tr>
-<tr class="memdesc:a1ce56ee8fa3ce66198f4de657a279454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br /></td></tr>
+<tr class="memitem:a1ce56ee8fa3ce66198f4de657a279454" id="r_a1ce56ee8fa3ce66198f4de657a279454"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParameterBase.html#a1ce56ee8fa3ce66198f4de657a279454">~ParameterBase</a> ()=default</td></tr>
+<tr class="memdesc:a1ce56ee8fa3ce66198f4de657a279454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
 <tr class="separator:a1ce56ee8fa3ce66198f4de657a279454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a305286492e0241b6be66fddb2c06be5c" id="r_a305286492e0241b6be66fddb2c06be5c"><td class="memItemLeft" align="right" valign="top"><a id="a305286492e0241b6be66fddb2c06be5c" name="a305286492e0241b6be66fddb2c06be5c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;var_attributes)=0</td></tr>
-<tr class="memdesc:a305286492e0241b6be66fddb2c06be5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:a305286492e0241b6be66fddb2c06be5c" id="r_a305286492e0241b6be66fddb2c06be5c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParameterBase.html#a305286492e0241b6be66fddb2c06be5c">postprocess_and_validate</a> (const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;var_attributes)=0</td></tr>
+<tr class="memdesc:a305286492e0241b6be66fddb2c06be5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:a305286492e0241b6be66fddb2c06be5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeced63373ab4e1a795bd2a15532f945" id="r_aeeced63373ab4e1a795bd2a15532f945"><td class="memItemLeft" align="right" valign="top"><a id="aeeced63373ab4e1a795bd2a15532f945" name="aeeced63373ab4e1a795bd2a15532f945"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:aeeced63373ab4e1a795bd2a15532f945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:aeeced63373ab4e1a795bd2a15532f945" id="r_aeeced63373ab4e1a795bd2a15532f945"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParameterBase.html#aeeced63373ab4e1a795bd2a15532f945">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:aeeced63373ab4e1a795bd2a15532f945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:aeeced63373ab4e1a795bd2a15532f945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 class ParameterBase&lt; dim &gt;</div><p>A base class for the various subcontainers of the user inputs. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3876b287d4d05ecbb487435390457763" name="a3876b287d4d05ecbb487435390457763"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3876b287d4d05ecbb487435390457763">&#9670;&#160;</a></span>ParameterBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classParameterBase.html">ParameterBase</a>&lt; dim &gt;<a class="el" href="classParameterBase.html">::ParameterBase</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a1ce56ee8fa3ce66198f4de657a279454" name="a1ce56ee8fa3ce66198f4de657a279454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce56ee8fa3ce66198f4de657a279454">&#9670;&#160;</a></span>~ParameterBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classParameterBase.html">ParameterBase</a>&lt; dim &gt;::~<a class="el" href="classParameterBase.html">ParameterBase</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Virtual destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a305286492e0241b6be66fddb2c06be5c" name="a305286492e0241b6be66fddb2c06be5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a305286492e0241b6be66fddb2c06be5c">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classParameterBase.html">ParameterBase</a>&lt; dim &gt;::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>var_attributes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="aeeced63373ab4e1a795bd2a15532f945" name="aeeced63373ab4e1a795bd2a15532f945"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeced63373ab4e1a795bd2a15532f945">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classParameterBase.html">ParameterBase</a>&lt; dim &gt;::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="parameter__base_8h_source.html">parameter_base.h</a></li>
 </ul>
 </div><!-- contents -->

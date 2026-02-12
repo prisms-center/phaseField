@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -122,31 +129,146 @@ $(document).ready(function(){initNavTree('structMiscellaneousParameters.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aba161e4fdfd5843a6295f41eccaa3a7a" id="r_aba161e4fdfd5843a6295f41eccaa3a7a"><td class="memItemLeft" align="right" valign="top"><a id="aba161e4fdfd5843a6295f41eccaa3a7a" name="aba161e4fdfd5843a6295f41eccaa3a7a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>postprocess_and_validate</b> ()</td></tr>
-<tr class="memdesc:aba161e4fdfd5843a6295f41eccaa3a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters. <br /></td></tr>
+<tr class="memitem:aba161e4fdfd5843a6295f41eccaa3a7a" id="r_aba161e4fdfd5843a6295f41eccaa3a7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMiscellaneousParameters.html#aba161e4fdfd5843a6295f41eccaa3a7a">postprocess_and_validate</a> ()</td></tr>
+<tr class="memdesc:aba161e4fdfd5843a6295f41eccaa3a7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postprocess and validate parameters.  <br /></td></tr>
 <tr class="separator:aba161e4fdfd5843a6295f41eccaa3a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a119513c00e64536b5fd58beb8af9512a" id="r_a119513c00e64536b5fd58beb8af9512a"><td class="memItemLeft" align="right" valign="top"><a id="a119513c00e64536b5fd58beb8af9512a" name="a119513c00e64536b5fd58beb8af9512a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>print_parameter_summary</b> () const</td></tr>
-<tr class="memdesc:a119513c00e64536b5fd58beb8af9512a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log. <br /></td></tr>
+<tr class="memitem:a119513c00e64536b5fd58beb8af9512a" id="r_a119513c00e64536b5fd58beb8af9512a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMiscellaneousParameters.html#a119513c00e64536b5fd58beb8af9512a">print_parameter_summary</a> () const</td></tr>
+<tr class="memdesc:a119513c00e64536b5fd58beb8af9512a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:a119513c00e64536b5fd58beb8af9512a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7eeedf3e3c99408c14d6ad70bd856db4" id="r_a7eeedf3e3c99408c14d6ad70bd856db4"><td class="memItemLeft" align="right" valign="top"><a id="a7eeedf3e3c99408c14d6ad70bd856db4" name="a7eeedf3e3c99408c14d6ad70bd856db4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_random_seed</b> (const unsigned int &amp;_random_seed)</td></tr>
-<tr class="memdesc:a7eeedf3e3c99408c14d6ad70bd856db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the random seed and initialize the RNG. <br /></td></tr>
+<tr class="memitem:a7eeedf3e3c99408c14d6ad70bd856db4" id="r_a7eeedf3e3c99408c14d6ad70bd856db4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMiscellaneousParameters.html#a7eeedf3e3c99408c14d6ad70bd856db4">set_random_seed</a> (const unsigned int &amp;_random_seed)</td></tr>
+<tr class="memdesc:a7eeedf3e3c99408c14d6ad70bd856db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the random seed and initialize the RNG.  <br /></td></tr>
 <tr class="separator:a7eeedf3e3c99408c14d6ad70bd856db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae99d7228c0ad13341567a084360c6aa7" id="r_ae99d7228c0ad13341567a084360c6aa7"><td class="memItemLeft" align="right" valign="top"><a id="ae99d7228c0ad13341567a084360c6aa7" name="ae99d7228c0ad13341567a084360c6aa7"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>random_seed</b> = 2025</td></tr>
+<tr class="memitem:ae99d7228c0ad13341567a084360c6aa7" id="r_ae99d7228c0ad13341567a084360c6aa7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a> = 2025</td></tr>
 <tr class="separator:ae99d7228c0ad13341567a084360c6aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8c58d9a535b72b35342ce324257ae93" id="r_ad8c58d9a535b72b35342ce324257ae93"><td class="memItemLeft" align="right" valign="top"><a id="ad8c58d9a535b72b35342ce324257ae93" name="ad8c58d9a535b72b35342ce324257ae93"></a>
-RNGEngine&#160;</td><td class="memItemRight" valign="bottom"><b>rng</b> {random_seed}</td></tr>
+<tr class="memitem:ad8c58d9a535b72b35342ce324257ae93" id="r_ad8c58d9a535b72b35342ce324257ae93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93">rng</a> {<a class="el" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a>}</td></tr>
 <tr class="separator:ad8c58d9a535b72b35342ce324257ae93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds miscellaneous parameters. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aba161e4fdfd5843a6295f41eccaa3a7a" name="aba161e4fdfd5843a6295f41eccaa3a7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba161e4fdfd5843a6295f41eccaa3a7a">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MiscellaneousParameters::postprocess_and_validate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Postprocess and validate parameters. </p>
+
+</div>
+</div>
+<a id="a119513c00e64536b5fd58beb8af9512a" name="a119513c00e64536b5fd58beb8af9512a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a119513c00e64536b5fd58beb8af9512a">&#9670;&#160;</a></span>print_parameter_summary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MiscellaneousParameters::print_parameter_summary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Print parameters to summary.log. </p>
+
+</div>
+</div>
+<a id="a7eeedf3e3c99408c14d6ad70bd856db4" name="a7eeedf3e3c99408c14d6ad70bd856db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eeedf3e3c99408c14d6ad70bd856db4">&#9670;&#160;</a></span>set_random_seed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MiscellaneousParameters::set_random_seed </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>_random_seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the random seed and initialize the RNG. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae99d7228c0ad13341567a084360c6aa7" name="ae99d7228c0ad13341567a084360c6aa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99d7228c0ad13341567a084360c6aa7">&#9670;&#160;</a></span>random_seed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int MiscellaneousParameters::random_seed = 2025</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad8c58d9a535b72b35342ce324257ae93" name="ad8c58d9a535b72b35342ce324257ae93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8c58d9a535b72b35342ce324257ae93">&#9670;&#160;</a></span>rng</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93">RNGEngine</a> MiscellaneousParameters::rng {<a class="el" href="structMiscellaneousParameters.html#ae99d7228c0ad13341567a084360c6aa7">random_seed</a>}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="miscellaneous__parameters_8h_source.html">miscellaneous_parameters.h</a></li>
 </ul>
 </div><!-- contents -->

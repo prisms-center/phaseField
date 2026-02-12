@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -110,6 +117,8 @@ $(document).ready(function(){initNavTree('classMatrixFreeOperator.html',''); ini
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classMatrixFreeOperator-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">MatrixFreeOperator&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -132,86 +141,130 @@ Collaboration diagram for MatrixFreeOperator&lt; dim, degree, number &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a95c7a427224aacec14104e144ec54fdf" id="r_a95c7a427224aacec14104e144ec54fdf"><td class="memItemLeft" align="right" valign="top"><a id="a95c7a427224aacec14104e144ec54fdf" name="a95c7a427224aacec14104e144ec54fdf"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
+<tr class="memitem:a95c7a427224aacec14104e144ec54fdf" id="r_a95c7a427224aacec14104e144ec54fdf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt; number &gt;</td></tr>
 <tr class="separator:a95c7a427224aacec14104e144ec54fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd64648e8309519b94d538f150aca1e6" id="r_afd64648e8309519b94d538f150aca1e6"><td class="memItemLeft" align="right" valign="top"><a id="afd64648e8309519b94d538f150aca1e6" name="afd64648e8309519b94d538f150aca1e6"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>SizeType</b> = dealii::VectorizedArray&lt; number &gt;</td></tr>
+<tr class="memitem:afd64648e8309519b94d538f150aca1e6" id="r_afd64648e8309519b94d538f150aca1e6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> = dealii::VectorizedArray&lt; number &gt;</td></tr>
 <tr class="separator:afd64648e8309519b94d538f150aca1e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aeac0b7ca5239be2b403b86a3b93174ca" id="r_aeac0b7ca5239be2b403b86a3b93174ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca">MatrixFreeOperator</a> (std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; _attributes_list, std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; _pde_operator, Types::Index _solve_block, Types::Index _index=Numbers::invalid_index, bool _use_local_mapping=false)</td></tr>
+<tr class="memitem:aeac0b7ca5239be2b403b86a3b93174ca" id="r_aeac0b7ca5239be2b403b86a3b93174ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aeac0b7ca5239be2b403b86a3b93174ca">MatrixFreeOperator</a> (std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; _attributes_list, std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt; _pde_operator, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> _solve_block, <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> _index=<a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a>, bool _use_local_mapping=false)</td></tr>
 <tr class="memdesc:aeac0b7ca5239be2b403b86a3b93174ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:aeac0b7ca5239be2b403b86a3b93174ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98bc42ecd1763bc2bbd5633e626885c5" id="r_a98bc42ecd1763bc2bbd5633e626885c5"><td class="memItemLeft" align="right" valign="top"><a id="a98bc42ecd1763bc2bbd5633e626885c5" name="a98bc42ecd1763bc2bbd5633e626885c5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt; _data, const <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt; &amp;_element_volume_handler, const std::vector&lt; unsigned int &gt; &amp;selected_field_indexes=std::vector&lt; unsigned int &gt;())</td></tr>
-<tr class="memdesc:a98bc42ecd1763bc2bbd5633e626885c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator. <br /></td></tr>
+<tr class="memitem:a98bc42ecd1763bc2bbd5633e626885c5" id="r_a98bc42ecd1763bc2bbd5633e626885c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a98bc42ecd1763bc2bbd5633e626885c5">initialize</a> (std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &gt; _data, const <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt; &amp;_element_volume_handler, const std::vector&lt; unsigned int &gt; &amp;selected_field_indexes=std::vector&lt; unsigned int &gt;())</td></tr>
+<tr class="memdesc:a98bc42ecd1763bc2bbd5633e626885c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize operator.  <br /></td></tr>
 <tr class="separator:a98bc42ecd1763bc2bbd5633e626885c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9d07b697b534bad5e271c05d45dd69" id="r_aec9d07b697b534bad5e271c05d45dd69"><td class="memItemLeft" align="right" valign="top"><a id="aec9d07b697b534bad5e271c05d45dd69" name="aec9d07b697b534bad5e271c05d45dd69"></a>
-dealii::types::global_dof_index&#160;</td><td class="memItemRight" valign="bottom"><b>m</b> () const</td></tr>
-<tr class="memdesc:aec9d07b697b534bad5e271c05d45dd69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of DoFs. <br /></td></tr>
+<tr class="memitem:aec9d07b697b534bad5e271c05d45dd69" id="r_aec9d07b697b534bad5e271c05d45dd69"><td class="memItemLeft" align="right" valign="top">dealii::types::global_dof_index&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aec9d07b697b534bad5e271c05d45dd69">m</a> () const</td></tr>
+<tr class="memdesc:aec9d07b697b534bad5e271c05d45dd69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of DoFs.  <br /></td></tr>
 <tr class="separator:aec9d07b697b534bad5e271c05d45dd69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0c13ef0ab61145e52c3dd37661a51fb" id="r_aa0c13ef0ab61145e52c3dd37661a51fb"><td class="memItemLeft" align="right" valign="top"><a id="aa0c13ef0ab61145e52c3dd37661a51fb" name="aa0c13ef0ab61145e52c3dd37661a51fb"></a>
-number&#160;</td><td class="memItemRight" valign="bottom"><b>el</b> (const unsigned int &amp;row, const unsigned int &amp;col) const</td></tr>
-<tr class="memdesc:aa0c13ef0ab61145e52c3dd37661a51fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the matrix entry. This function is only valid when row == col and when the diagonal is initialized. Additionally, this is only used so that we may compile. Trying to use this function will throw an error. <br /></td></tr>
+<tr class="memitem:aa0c13ef0ab61145e52c3dd37661a51fb" id="r_aa0c13ef0ab61145e52c3dd37661a51fb"><td class="memItemLeft" align="right" valign="top">number&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aa0c13ef0ab61145e52c3dd37661a51fb">el</a> (const unsigned int &amp;row, const unsigned int &amp;col) const</td></tr>
+<tr class="memdesc:aa0c13ef0ab61145e52c3dd37661a51fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the matrix entry. This function is only valid when row == col and when the diagonal is initialized. Additionally, this is only used so that we may compile. Trying to use this function will throw an error.  <br /></td></tr>
 <tr class="separator:aa0c13ef0ab61145e52c3dd37661a51fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaae41e386e106c068bf9482448be97ae" id="r_aaae41e386e106c068bf9482448be97ae"><td class="memItemLeft" align="right" valign="top"><a id="aaae41e386e106c068bf9482448be97ae" name="aaae41e386e106c068bf9482448be97ae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
-<tr class="memdesc:aaae41e386e106c068bf9482448be97ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release all memory and return to state like having called the default constructor. <br /></td></tr>
+<tr class="memitem:aaae41e386e106c068bf9482448be97ae" id="r_aaae41e386e106c068bf9482448be97ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aaae41e386e106c068bf9482448be97ae">clear</a> ()</td></tr>
+<tr class="memdesc:aaae41e386e106c068bf9482448be97ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release all memory and return to state like having called the default constructor.  <br /></td></tr>
 <tr class="separator:aaae41e386e106c068bf9482448be97ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a9f957e74d748895a926e3b36daf7f" id="r_a82a9f957e74d748895a926e3b36daf7f"><td class="memItemLeft" align="right" valign="top"><a id="a82a9f957e74d748895a926e3b36daf7f" name="a82a9f957e74d748895a926e3b36daf7f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize_dof_vector</b> (VectorType &amp;dst, unsigned int dof_handler_index=0) const</td></tr>
-<tr class="memdesc:a82a9f957e74d748895a926e3b36daf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a given vector with the MatrixFree object that this object contains. <br /></td></tr>
+<tr class="memitem:a82a9f957e74d748895a926e3b36daf7f" id="r_a82a9f957e74d748895a926e3b36daf7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a82a9f957e74d748895a926e3b36daf7f">initialize_dof_vector</a> (<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, unsigned int dof_handler_index=0) const</td></tr>
+<tr class="memdesc:a82a9f957e74d748895a926e3b36daf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a given vector with the MatrixFree object that this object contains.  <br /></td></tr>
 <tr class="separator:a82a9f957e74d748895a926e3b36daf7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae87e001642f616bf37f1c483577f1045" id="r_ae87e001642f616bf37f1c483577f1045"><td class="memItemLeft" align="right" valign="top"><a id="ae87e001642f616bf37f1c483577f1045" name="ae87e001642f616bf37f1c483577f1045"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_constrained_entries_to_one</b> (VectorType &amp;dst) const</td></tr>
-<tr class="memdesc:ae87e001642f616bf37f1c483577f1045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set constrained entries to one. <br /></td></tr>
+<tr class="memitem:ae87e001642f616bf37f1c483577f1045" id="r_ae87e001642f616bf37f1c483577f1045"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#ae87e001642f616bf37f1c483577f1045">set_constrained_entries_to_one</a> (<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst) const</td></tr>
+<tr class="memdesc:ae87e001642f616bf37f1c483577f1045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set constrained entries to one.  <br /></td></tr>
 <tr class="separator:ae87e001642f616bf37f1c483577f1045"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae805e21c2295c0fe2a4539504c53d308" id="r_ae805e21c2295c0fe2a4539504c53d308"><td class="memItemLeft" align="right" valign="top"><a id="ae805e21c2295c0fe2a4539504c53d308" name="ae805e21c2295c0fe2a4539504c53d308"></a>
-std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, SizeType &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_free</b> () const</td></tr>
-<tr class="memdesc:ae805e21c2295c0fe2a4539504c53d308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get read access to the MatrixFree object stored with this operator. <br /></td></tr>
+<tr class="memitem:ae805e21c2295c0fe2a4539504c53d308" id="r_ae805e21c2295c0fe2a4539504c53d308"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#ae805e21c2295c0fe2a4539504c53d308">get_matrix_free</a> () const</td></tr>
+<tr class="memdesc:ae805e21c2295c0fe2a4539504c53d308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get read access to the MatrixFree object stored with this operator.  <br /></td></tr>
 <tr class="separator:ae805e21c2295c0fe2a4539504c53d308"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a460f16c20eb365b574a5c560881db06a" id="r_a460f16c20eb365b574a5c560881db06a"><td class="memItemLeft" align="right" valign="top"><a id="a460f16c20eb365b574a5c560881db06a" name="a460f16c20eb365b574a5c560881db06a"></a>
-const std::shared_ptr&lt; dealii::DiagonalMatrix&lt; VectorType &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_diagonal_inverse</b> () const</td></tr>
-<tr class="memdesc:a460f16c20eb365b574a5c560881db06a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get read access to the inverse diagonal of this operator. <br /></td></tr>
+<tr class="memitem:a460f16c20eb365b574a5c560881db06a" id="r_a460f16c20eb365b574a5c560881db06a"><td class="memItemLeft" align="right" valign="top">const std::shared_ptr&lt; dealii::DiagonalMatrix&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a460f16c20eb365b574a5c560881db06a">get_matrix_diagonal_inverse</a> () const</td></tr>
+<tr class="memdesc:a460f16c20eb365b574a5c560881db06a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get read access to the inverse diagonal of this operator.  <br /></td></tr>
 <tr class="separator:a460f16c20eb365b574a5c560881db06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dfd1f5686f039a1d753a13af7c88e1f" id="r_a6dfd1f5686f039a1d753a13af7c88e1f"><td class="memItemLeft" align="right" valign="top"><a id="a6dfd1f5686f039a1d753a13af7c88e1f" name="a6dfd1f5686f039a1d753a13af7c88e1f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_global_to_local_mapping</b> (std::vector&lt; Types::Index &gt; _global_to_local_solution)</td></tr>
-<tr class="memdesc:a6dfd1f5686f039a1d753a13af7c88e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the mappings from global to local solution vectors. <br /></td></tr>
+<tr class="memitem:a6dfd1f5686f039a1d753a13af7c88e1f" id="r_a6dfd1f5686f039a1d753a13af7c88e1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a6dfd1f5686f039a1d753a13af7c88e1f">add_global_to_local_mapping</a> (std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; _global_to_local_solution)</td></tr>
+<tr class="memdesc:a6dfd1f5686f039a1d753a13af7c88e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the mappings from global to local solution vectors.  <br /></td></tr>
 <tr class="separator:a6dfd1f5686f039a1d753a13af7c88e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cc543059f6707733647527b46508159" id="r_a9cc543059f6707733647527b46508159"><td class="memItemLeft" align="right" valign="top"><a id="a9cc543059f6707733647527b46508159" name="a9cc543059f6707733647527b46508159"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_src_solution_subset</b> (std::vector&lt; VectorType * &gt; _src_solution_subset=std::vector&lt; VectorType * &gt;())</td></tr>
-<tr class="memdesc:a9cc543059f6707733647527b46508159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the solution subset for src vector. <br /></td></tr>
+<tr class="memitem:a9cc543059f6707733647527b46508159" id="r_a9cc543059f6707733647527b46508159"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a9cc543059f6707733647527b46508159">add_src_solution_subset</a> (std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; _src_solution_subset=std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt;())</td></tr>
+<tr class="memdesc:a9cc543059f6707733647527b46508159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the solution subset for src vector.  <br /></td></tr>
 <tr class="separator:a9cc543059f6707733647527b46508159"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affdc94ba174a4d206e282cc82b7d128d" id="r_affdc94ba174a4d206e282cc82b7d128d"><td class="memItemLeft" align="right" valign="top"><a id="affdc94ba174a4d206e282cc82b7d128d" name="affdc94ba174a4d206e282cc82b7d128d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>vmult</b> (VectorType &amp;dst, const VectorType &amp;src) const</td></tr>
-<tr class="memdesc:affdc94ba174a4d206e282cc82b7d128d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-vector multiplication. <br /></td></tr>
+<tr class="memitem:affdc94ba174a4d206e282cc82b7d128d" id="r_affdc94ba174a4d206e282cc82b7d128d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#affdc94ba174a4d206e282cc82b7d128d">vmult</a> (<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;src) const</td></tr>
+<tr class="memdesc:affdc94ba174a4d206e282cc82b7d128d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-vector multiplication.  <br /></td></tr>
 <tr class="separator:affdc94ba174a4d206e282cc82b7d128d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6439cafb5fe56b683318596fd7f282ab" id="r_a6439cafb5fe56b683318596fd7f282ab"><td class="memItemLeft" align="right" valign="top"><a id="a6439cafb5fe56b683318596fd7f282ab" name="a6439cafb5fe56b683318596fd7f282ab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Tvmult</b> (VectorType &amp;dst, const VectorType &amp;src) const</td></tr>
-<tr class="memdesc:a6439cafb5fe56b683318596fd7f282ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transpose matrix-vector multiplication. <br /></td></tr>
+<tr class="memitem:a6439cafb5fe56b683318596fd7f282ab" id="r_a6439cafb5fe56b683318596fd7f282ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a6439cafb5fe56b683318596fd7f282ab">Tvmult</a> (<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;src) const</td></tr>
+<tr class="memdesc:a6439cafb5fe56b683318596fd7f282ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transpose matrix-vector multiplication.  <br /></td></tr>
 <tr class="separator:a6439cafb5fe56b683318596fd7f282ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98112e7d23ffe287c4c946e4491a0e7a" id="r_a98112e7d23ffe287c4c946e4491a0e7a"><td class="memItemLeft" align="right" valign="top"><a id="a98112e7d23ffe287c4c946e4491a0e7a" name="a98112e7d23ffe287c4c946e4491a0e7a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_explicit_update</b> (std::vector&lt; VectorType * &gt; &amp;dst, const std::vector&lt; VectorType * &gt; &amp;src) const</td></tr>
-<tr class="memdesc:a98112e7d23ffe287c4c946e4491a0e7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the explicit update. <br /></td></tr>
+<tr class="memitem:a98112e7d23ffe287c4c946e4491a0e7a" id="r_a98112e7d23ffe287c4c946e4491a0e7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a98112e7d23ffe287c4c946e4491a0e7a">compute_explicit_update</a> (std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src) const</td></tr>
+<tr class="memdesc:a98112e7d23ffe287c4c946e4491a0e7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the explicit update.  <br /></td></tr>
 <tr class="separator:a98112e7d23ffe287c4c946e4491a0e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a118b09e0310acc61f1f3b41d866e1" id="r_af7a118b09e0310acc61f1f3b41d866e1"><td class="memItemLeft" align="right" valign="top"><a id="af7a118b09e0310acc61f1f3b41d866e1" name="af7a118b09e0310acc61f1f3b41d866e1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_postprocess_explicit_update</b> (std::vector&lt; VectorType * &gt; &amp;dst, const std::vector&lt; VectorType * &gt; &amp;src) const</td></tr>
-<tr class="memdesc:af7a118b09e0310acc61f1f3b41d866e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the explicit update for postprocessed fields. <br /></td></tr>
+<tr class="memitem:af7a118b09e0310acc61f1f3b41d866e1" id="r_af7a118b09e0310acc61f1f3b41d866e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#af7a118b09e0310acc61f1f3b41d866e1">compute_postprocess_explicit_update</a> (std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src) const</td></tr>
+<tr class="memdesc:af7a118b09e0310acc61f1f3b41d866e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the explicit update for postprocessed fields.  <br /></td></tr>
 <tr class="separator:af7a118b09e0310acc61f1f3b41d866e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ea902605dd0b5f388e1c1b11e884fc" id="r_a66ea902605dd0b5f388e1c1b11e884fc"><td class="memItemLeft" align="right" valign="top"><a id="a66ea902605dd0b5f388e1c1b11e884fc" name="a66ea902605dd0b5f388e1c1b11e884fc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_nonexplicit_auxiliary_update</b> (std::vector&lt; VectorType * &gt; &amp;dst, const std::vector&lt; VectorType * &gt; &amp;src) const</td></tr>
-<tr class="memdesc:a66ea902605dd0b5f388e1c1b11e884fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a nonexplicit auxiliary update. <br /></td></tr>
+<tr class="memitem:a66ea902605dd0b5f388e1c1b11e884fc" id="r_a66ea902605dd0b5f388e1c1b11e884fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a66ea902605dd0b5f388e1c1b11e884fc">compute_nonexplicit_auxiliary_update</a> (std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src) const</td></tr>
+<tr class="memdesc:a66ea902605dd0b5f388e1c1b11e884fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a nonexplicit auxiliary update.  <br /></td></tr>
 <tr class="separator:a66ea902605dd0b5f388e1c1b11e884fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa03bba512248af30039c67f66e21face" id="r_aa03bba512248af30039c67f66e21face"><td class="memItemLeft" align="right" valign="top"><a id="aa03bba512248af30039c67f66e21face" name="aa03bba512248af30039c67f66e21face"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_residual</b> (VectorType &amp;dst, const VectorType &amp;src) const</td></tr>
-<tr class="memdesc:aa03bba512248af30039c67f66e21face"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the residual of this operator. This is the b in Ax=b. <br /></td></tr>
+<tr class="memitem:aa03bba512248af30039c67f66e21face" id="r_aa03bba512248af30039c67f66e21face"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aa03bba512248af30039c67f66e21face">compute_residual</a> (<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;src) const</td></tr>
+<tr class="memdesc:aa03bba512248af30039c67f66e21face"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the residual of this operator. This is the b in Ax=b.  <br /></td></tr>
 <tr class="separator:aa03bba512248af30039c67f66e21face"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af39600474c4b6c5e5fa13ff73d7e81cd" id="r_af39600474c4b6c5e5fa13ff73d7e81cd"><td class="memItemLeft" align="right" valign="top"><a id="af39600474c4b6c5e5fa13ff73d7e81cd" name="af39600474c4b6c5e5fa13ff73d7e81cd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compute_diagonal</b> (unsigned int field_index)</td></tr>
-<tr class="memdesc:af39600474c4b6c5e5fa13ff73d7e81cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the diagonal of this operator. <br /></td></tr>
+<tr class="memitem:af39600474c4b6c5e5fa13ff73d7e81cd" id="r_af39600474c4b6c5e5fa13ff73d7e81cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#af39600474c4b6c5e5fa13ff73d7e81cd">compute_diagonal</a> (unsigned int field_index)</td></tr>
+<tr class="memdesc:af39600474c4b6c5e5fa13ff73d7e81cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the diagonal of this operator.  <br /></td></tr>
 <tr class="separator:af39600474c4b6c5e5fa13ff73d7e81cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a3483344f8caff9508691e8f1040ca025" id="r_a3483344f8caff9508691e8f1040ca025"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a3483344f8caff9508691e8f1040ca025">compute_local_explicit_update</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:a3483344f8caff9508691e8f1040ca025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the explicit update.  <br /></td></tr>
+<tr class="separator:a3483344f8caff9508691e8f1040ca025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa50cc68d622f800b3eeb26e41c77a925" id="r_aa50cc68d622f800b3eeb26e41c77a925"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aa50cc68d622f800b3eeb26e41c77a925">compute_local_postprocess_explicit_update</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:aa50cc68d622f800b3eeb26e41c77a925"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the explicit update of postprocessed fields.  <br /></td></tr>
+<tr class="separator:aa50cc68d622f800b3eeb26e41c77a925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8685c4770fde9ba73e81feeaaeabe4d7" id="r_a8685c4770fde9ba73e81feeaaeabe4d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a8685c4770fde9ba73e81feeaaeabe4d7">compute_local_nonexplicit_auxiliary_update</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;dst, const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:a8685c4770fde9ba73e81feeaaeabe4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the nonexplicit auxiliary update.  <br /></td></tr>
+<tr class="separator:a8685c4770fde9ba73e81feeaaeabe4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5ad33e9fc4093f7c3c6e3cacec8d1e" id="r_a3f5ad33e9fc4093f7c3c6e3cacec8d1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a3f5ad33e9fc4093f7c3c6e3cacec8d1e">compute_local_residual</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:a3f5ad33e9fc4093f7c3c6e3cacec8d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the residual of the operator.  <br /></td></tr>
+<tr class="separator:a3f5ad33e9fc4093f7c3c6e3cacec8d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c31502c2a3c9ddecf590bd3b156a32" id="r_aa6c31502c2a3c9ddecf590bd3b156a32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aa6c31502c2a3c9ddecf590bd3b156a32">compute_local_newton_update</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;src, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:aa6c31502c2a3c9ddecf590bd3b156a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the newton update of the operator.  <br /></td></tr>
+<tr class="separator:aa6c31502c2a3c9ddecf590bd3b156a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54fc08655bfcdbbd485bc87fbf81bdca" id="r_a54fc08655bfcdbbd485bc87fbf81bdca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a54fc08655bfcdbbd485bc87fbf81bdca">local_compute_diagonal</a> (const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;_data, <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;dst, const unsigned int &amp;dummy, const std::pair&lt; unsigned int, unsigned int &gt; &amp;cell_range) const</td></tr>
+<tr class="memdesc:a54fc08655bfcdbbd485bc87fbf81bdca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Local computation of the diagonal of the operator.  <br /></td></tr>
+<tr class="separator:a54fc08655bfcdbbd485bc87fbf81bdca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a0f48aa08433ad4de6796af6a6e7e45ad" id="r_a0f48aa08433ad4de6796af6a6e7e45ad"><td class="memItemLeft" align="right" valign="top">std::map&lt; unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a0f48aa08433ad4de6796af6a6e7e45ad">attributes_list</a></td></tr>
+<tr class="memdesc:a0f48aa08433ad4de6796af6a6e7e45ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The attribute list of the relevant variables.  <br /></td></tr>
+<tr class="separator:a0f48aa08433ad4de6796af6a6e7e45ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a236e4b7d3315ba12418dd4000f84c1a6" id="r_a236e4b7d3315ba12418dd4000f84c1a6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a236e4b7d3315ba12418dd4000f84c1a6">element_volume_handler</a> = nullptr</td></tr>
+<tr class="memdesc:a236e4b7d3315ba12418dd4000f84c1a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The element volume container.  <br /></td></tr>
+<tr class="separator:a236e4b7d3315ba12418dd4000f84c1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5c81d349b15ee53de99d93531e6861" id="r_aac5c81d349b15ee53de99d93531e6861"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aac5c81d349b15ee53de99d93531e6861">pde_operator</a></td></tr>
+<tr class="memdesc:aac5c81d349b15ee53de99d93531e6861"><td class="mdescLeft">&#160;</td><td class="mdescRight">PDE operator object for user defined PDEs.  <br /></td></tr>
+<tr class="separator:aac5c81d349b15ee53de99d93531e6861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945566d9a8f13f3698998657e7e1759b" id="r_a945566d9a8f13f3698998657e7e1759b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a945566d9a8f13f3698998657e7e1759b">solve_block</a> = 0</td></tr>
+<tr class="memdesc:a945566d9a8f13f3698998657e7e1759b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The solve block that is being evaluated.  <br /></td></tr>
+<tr class="separator:a945566d9a8f13f3698998657e7e1759b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d2ddf007d498b90335a60c35032effd" id="r_a7d2ddf007d498b90335a60c35032effd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a7d2ddf007d498b90335a60c35032effd">index</a> = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td></tr>
+<tr class="memdesc:a7d2ddf007d498b90335a60c35032effd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Field index that is being evaluated.  <br /></td></tr>
+<tr class="separator:a7d2ddf007d498b90335a60c35032effd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a783162eaab207977f2c67071d23ad171" id="r_a783162eaab207977f2c67071d23ad171"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a783162eaab207977f2c67071d23ad171">use_local_mapping</a> = false</td></tr>
+<tr class="memdesc:a783162eaab207977f2c67071d23ad171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to use local mapping for the <a class="el" href="classVariableContainer.html" title="This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...">VariableContainer</a> object.  <br /></td></tr>
+<tr class="separator:a783162eaab207977f2c67071d23ad171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0975d9895dc8ff7e84e5af27317b041" id="r_af0975d9895dc8ff7e84e5af27317b041"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#af0975d9895dc8ff7e84e5af27317b041">data</a></td></tr>
+<tr class="memdesc:af0975d9895dc8ff7e84e5af27317b041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object.  <br /></td></tr>
+<tr class="separator:af0975d9895dc8ff7e84e5af27317b041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1831ee404b273fb99b42774f43ceaa92" id="r_a1831ee404b273fb99b42774f43ceaa92"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a1831ee404b273fb99b42774f43ceaa92">selected_fields</a></td></tr>
+<tr class="memdesc:a1831ee404b273fb99b42774f43ceaa92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selected fields for which we'll evaluate.  <br /></td></tr>
+<tr class="separator:a1831ee404b273fb99b42774f43ceaa92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad23622bf3c534e3be9dce104e2871907" id="r_ad23622bf3c534e3be9dce104e2871907"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#ad23622bf3c534e3be9dce104e2871907">edge_constrained_indices</a></td></tr>
+<tr class="memdesc:ad23622bf3c534e3be9dce104e2871907"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indices of DoFs on edge in case the operator is used in GMG context.  <br /></td></tr>
+<tr class="separator:ad23622bf3c534e3be9dce104e2871907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac083253bb8e927cb6628d4072a1ae818" id="r_ac083253bb8e927cb6628d4072a1ae818"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#ac083253bb8e927cb6628d4072a1ae818">global_to_local_solution</a></td></tr>
+<tr class="memdesc:ac083253bb8e927cb6628d4072a1ae818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from global solution vectors to the local ones.  <br /></td></tr>
+<tr class="separator:ac083253bb8e927cb6628d4072a1ae818"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfae8c49870387afc3d7d098ff90ca3f" id="r_abfae8c49870387afc3d7d098ff90ca3f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#abfae8c49870387afc3d7d098ff90ca3f">src_solution_subset</a></td></tr>
+<tr class="memdesc:abfae8c49870387afc3d7d098ff90ca3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subset of fields that are necessary for the source.  <br /></td></tr>
+<tr class="separator:abfae8c49870387afc3d7d098ff90ca3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573df491287fc3b35a7e8dfb41e9d8c2" id="r_a573df491287fc3b35a7e8dfb41e9d8c2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; dealii::DiagonalMatrix&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#a573df491287fc3b35a7e8dfb41e9d8c2">diagonal_entries</a></td></tr>
+<tr class="memdesc:a573df491287fc3b35a7e8dfb41e9d8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The diagonal matrix.  <br /></td></tr>
+<tr class="separator:a573df491287fc3b35a7e8dfb41e9d8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56892bade10951b7770930d8be8a0da" id="r_aa56892bade10951b7770930d8be8a0da"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; dealii::DiagonalMatrix&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMatrixFreeOperator.html#aa56892bade10951b7770930d8be8a0da">inverse_diagonal_entries</a></td></tr>
+<tr class="memdesc:aa56892bade10951b7770930d8be8a0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse diagonal matrix.  <br /></td></tr>
+<tr class="separator:aa56892bade10951b7770930d8be8a0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
@@ -224,7 +277,40 @@ class MatrixFreeOperator&lt; dim, degree, number &gt;</div><p>This is the abstra
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="afd64648e8309519b94d538f150aca1e6" name="afd64648e8309519b94d538f150aca1e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd64648e8309519b94d538f150aca1e6">&#9670;&#160;</a></span>SizeType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::SizeType =  dealii::VectorizedArray&lt;number&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95c7a427224aacec14104e144ec54fdf" name="a95c7a427224aacec14104e144ec54fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95c7a427224aacec14104e144ec54fdf">&#9670;&#160;</a></span>VectorType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::VectorType =  dealii::LinearAlgebra::distributed::Vector&lt;number&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aeac0b7ca5239be2b403b86a3b93174ca" name="aeac0b7ca5239be2b403b86a3b93174ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeac0b7ca5239be2b403b86a3b93174ca">&#9670;&#160;</a></span>MatrixFreeOperator()</h2>
 
@@ -248,14 +334,14 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Types::Index&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
           <td class="paramname"><em>_solve_block</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Types::Index&#160;</td>
-          <td class="paramname"><em>_index</em> = <code>Numbers::invalid_index</code>, </td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&#160;</td>
+          <td class="paramname"><em>_index</em> = <code><a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -276,9 +362,1127 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6dfd1f5686f039a1d753a13af7c88e1f" name="a6dfd1f5686f039a1d753a13af7c88e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dfd1f5686f039a1d753a13af7c88e1f">&#9670;&#160;</a></span>add_global_to_local_mapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::add_global_to_local_mapping </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td>
+          <td class="paramname"><em>_global_to_local_solution</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add the mappings from global to local solution vectors. </p>
+
+</div>
+</div>
+<a id="a9cc543059f6707733647527b46508159" name="a9cc543059f6707733647527b46508159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cc543059f6707733647527b46508159">&#9670;&#160;</a></span>add_src_solution_subset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::add_src_solution_subset </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt;&#160;</td>
+          <td class="paramname"><em>_src_solution_subset</em> = <code>std::vector&lt;<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a>&#160;*&gt;()</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add the solution subset for src vector. </p>
+
+</div>
+</div>
+<a id="aaae41e386e106c068bf9482448be97ae" name="aaae41e386e106c068bf9482448be97ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaae41e386e106c068bf9482448be97ae">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Release all memory and return to state like having called the default constructor. </p>
+
+</div>
+</div>
+<a id="af39600474c4b6c5e5fa13ff73d7e81cd" name="af39600474c4b6c5e5fa13ff73d7e81cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af39600474c4b6c5e5fa13ff73d7e81cd">&#9670;&#160;</a></span>compute_diagonal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_diagonal </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>field_index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the diagonal of this operator. </p>
+
+</div>
+</div>
+<a id="a98112e7d23ffe287c4c946e4491a0e7a" name="a98112e7d23ffe287c4c946e4491a0e7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98112e7d23ffe287c4c946e4491a0e7a">&#9670;&#160;</a></span>compute_explicit_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_explicit_update </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the explicit update. </p>
+
+</div>
+</div>
+<a id="a3483344f8caff9508691e8f1040ca025" name="a3483344f8caff9508691e8f1040ca025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3483344f8caff9508691e8f1040ca025">&#9670;&#160;</a></span>compute_local_explicit_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_local_explicit_update </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the explicit update. </p>
+
+</div>
+</div>
+<a id="aa6c31502c2a3c9ddecf590bd3b156a32" name="aa6c31502c2a3c9ddecf590bd3b156a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6c31502c2a3c9ddecf590bd3b156a32">&#9670;&#160;</a></span>compute_local_newton_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_local_newton_update </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the newton update of the operator. </p>
+
+</div>
+</div>
+<a id="a8685c4770fde9ba73e81feeaaeabe4d7" name="a8685c4770fde9ba73e81feeaaeabe4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8685c4770fde9ba73e81feeaaeabe4d7">&#9670;&#160;</a></span>compute_local_nonexplicit_auxiliary_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_local_nonexplicit_auxiliary_update </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the nonexplicit auxiliary update. </p>
+
+</div>
+</div>
+<a id="aa50cc68d622f800b3eeb26e41c77a925" name="aa50cc68d622f800b3eeb26e41c77a925"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa50cc68d622f800b3eeb26e41c77a925">&#9670;&#160;</a></span>compute_local_postprocess_explicit_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_local_postprocess_explicit_update </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the explicit update of postprocessed fields. </p>
+
+</div>
+</div>
+<a id="a3f5ad33e9fc4093f7c3c6e3cacec8d1e" name="a3f5ad33e9fc4093f7c3c6e3cacec8d1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f5ad33e9fc4093f7c3c6e3cacec8d1e">&#9670;&#160;</a></span>compute_local_residual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_local_residual </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the residual of the operator. </p>
+
+</div>
+</div>
+<a id="a66ea902605dd0b5f388e1c1b11e884fc" name="a66ea902605dd0b5f388e1c1b11e884fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66ea902605dd0b5f388e1c1b11e884fc">&#9670;&#160;</a></span>compute_nonexplicit_auxiliary_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_nonexplicit_auxiliary_update </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute a nonexplicit auxiliary update. </p>
+
+</div>
+</div>
+<a id="af7a118b09e0310acc61f1f3b41d866e1" name="af7a118b09e0310acc61f1f3b41d866e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7a118b09e0310acc61f1f3b41d866e1">&#9670;&#160;</a></span>compute_postprocess_explicit_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_postprocess_explicit_update </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the explicit update for postprocessed fields. </p>
+
+</div>
+</div>
+<a id="aa03bba512248af30039c67f66e21face" name="aa03bba512248af30039c67f66e21face"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa03bba512248af30039c67f66e21face">&#9670;&#160;</a></span>compute_residual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::compute_residual </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the residual of this operator. This is the b in Ax=b. </p>
+
+</div>
+</div>
+<a id="aa0c13ef0ab61145e52c3dd37661a51fb" name="aa0c13ef0ab61145e52c3dd37661a51fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c13ef0ab61145e52c3dd37661a51fb">&#9670;&#160;</a></span>el()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">number <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::el </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the value of the matrix entry. This function is only valid when row == col and when the diagonal is initialized. Additionally, this is only used so that we may compile. Trying to use this function will throw an error. </p>
+
+</div>
+</div>
+<a id="a460f16c20eb365b574a5c560881db06a" name="a460f16c20eb365b574a5c560881db06a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a460f16c20eb365b574a5c560881db06a">&#9670;&#160;</a></span>get_matrix_diagonal_inverse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::shared_ptr&lt; dealii::DiagonalMatrix&lt; typename <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">::VectorType</a> &gt; &gt; &amp; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::get_matrix_diagonal_inverse </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get read access to the inverse diagonal of this operator. </p>
+
+</div>
+</div>
+<a id="ae805e21c2295c0fe2a4539504c53d308" name="ae805e21c2295c0fe2a4539504c53d308"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae805e21c2295c0fe2a4539504c53d308">&#9670;&#160;</a></span>get_matrix_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, dealii::VectorizedArray&lt; number &gt; &gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::get_matrix_free </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get read access to the MatrixFree object stored with this operator. </p>
+
+</div>
+</div>
+<a id="a98bc42ecd1763bc2bbd5633e626885c5" name="a98bc42ecd1763bc2bbd5633e626885c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98bc42ecd1763bc2bbd5633e626885c5">&#9670;&#160;</a></span>initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::initialize </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &gt;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classElementVolume.html">ElementVolume</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_element_volume_handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>selected_field_indexes</em> = <code>std::vector&lt;unsigned&#160;int&gt;()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize operator. </p>
+
+</div>
+</div>
+<a id="a82a9f957e74d748895a926e3b36daf7f" name="a82a9f957e74d748895a926e3b36daf7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82a9f957e74d748895a926e3b36daf7f">&#9670;&#160;</a></span>initialize_dof_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::initialize_dof_vector </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>dof_handler_index</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize a given vector with the MatrixFree object that this object contains. </p>
+
+</div>
+</div>
+<a id="a54fc08655bfcdbbd485bc87fbf81bdca" name="a54fc08655bfcdbbd485bc87fbf81bdca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54fc08655bfcdbbd485bc87fbf81bdca">&#9670;&#160;</a></span>local_compute_diagonal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::local_compute_diagonal </td>
+          <td>(</td>
+          <td class="paramtype">const dealii::MatrixFree&lt; dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>dummy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; unsigned int, unsigned int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cell_range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Local computation of the diagonal of the operator. </p>
+
+</div>
+</div>
+<a id="aec9d07b697b534bad5e271c05d45dd69" name="aec9d07b697b534bad5e271c05d45dd69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec9d07b697b534bad5e271c05d45dd69">&#9670;&#160;</a></span>m()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::types::global_dof_index <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::m </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return the number of DoFs. </p>
+
+</div>
+</div>
+<a id="ae87e001642f616bf37f1c483577f1045" name="ae87e001642f616bf37f1c483577f1045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae87e001642f616bf37f1c483577f1045">&#9670;&#160;</a></span>set_constrained_entries_to_one()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::set_constrained_entries_to_one </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set constrained entries to one. </p>
+
+</div>
+</div>
+<a id="a6439cafb5fe56b683318596fd7f282ab" name="a6439cafb5fe56b683318596fd7f282ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6439cafb5fe56b683318596fd7f282ab">&#9670;&#160;</a></span>Tvmult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::Tvmult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transpose matrix-vector multiplication. </p>
+
+</div>
+</div>
+<a id="affdc94ba174a4d206e282cc82b7d128d" name="affdc94ba174a4d206e282cc82b7d128d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affdc94ba174a4d206e282cc82b7d128d">&#9670;&#160;</a></span>vmult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::vmult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Matrix-vector multiplication. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0f48aa08433ad4de6796af6a6e7e45ad" name="a0f48aa08433ad4de6796af6a6e7e45ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f48aa08433ad4de6796af6a6e7e45ad">&#9670;&#160;</a></span>attributes_list</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;unsigned int, <a class="el" href="structVariableAttributes.html">VariableAttributes</a>&gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::attributes_list</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The attribute list of the relevant variables. </p>
+
+</div>
+</div>
+<a id="af0975d9895dc8ff7e84e5af27317b041" name="af0975d9895dc8ff7e84e5af27317b041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0975d9895dc8ff7e84e5af27317b041">&#9670;&#160;</a></span>data</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const dealii::MatrixFree&lt;dim, number, <a class="el" href="classMatrixFreeOperator.html#afd64648e8309519b94d538f150aca1e6">SizeType</a>&gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::data</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free object. </p>
+
+</div>
+</div>
+<a id="a573df491287fc3b35a7e8dfb41e9d8c2" name="a573df491287fc3b35a7e8dfb41e9d8c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a573df491287fc3b35a7e8dfb41e9d8c2">&#9670;&#160;</a></span>diagonal_entries</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;dealii::DiagonalMatrix&lt;<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a>&gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::diagonal_entries</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The diagonal matrix. </p>
+
+</div>
+</div>
+<a id="ad23622bf3c534e3be9dce104e2871907" name="ad23622bf3c534e3be9dce104e2871907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad23622bf3c534e3be9dce104e2871907">&#9670;&#160;</a></span>edge_constrained_indices</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;unsigned int&gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::edge_constrained_indices</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Indices of DoFs on edge in case the operator is used in GMG context. </p>
+
+</div>
+</div>
+<a id="a236e4b7d3315ba12418dd4000f84c1a6" name="a236e4b7d3315ba12418dd4000f84c1a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a236e4b7d3315ba12418dd4000f84c1a6">&#9670;&#160;</a></span>element_volume_handler</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classElementVolume.html">ElementVolume</a>&lt;dim, degree, number&gt;* <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::element_volume_handler = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The element volume container. </p>
+
+</div>
+</div>
+<a id="ac083253bb8e927cb6628d4072a1ae818" name="ac083253bb8e927cb6628d4072a1ae818"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac083253bb8e927cb6628d4072a1ae818">&#9670;&#160;</a></span>global_to_local_solution</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::global_to_local_solution</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mapping from global solution vectors to the local ones. </p>
+
+</div>
+</div>
+<a id="a7d2ddf007d498b90335a60c35032effd" name="a7d2ddf007d498b90335a60c35032effd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d2ddf007d498b90335a60c35032effd">&#9670;&#160;</a></span>index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::index = <a class="el" href="namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343">Numbers::invalid_index</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Field index that is being evaluated. </p>
+
+</div>
+</div>
+<a id="aa56892bade10951b7770930d8be8a0da" name="aa56892bade10951b7770930d8be8a0da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56892bade10951b7770930d8be8a0da">&#9670;&#160;</a></span>inverse_diagonal_entries</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;dealii::DiagonalMatrix&lt;<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a>&gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::inverse_diagonal_entries</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The inverse diagonal matrix. </p>
+
+</div>
+</div>
+<a id="aac5c81d349b15ee53de99d93531e6861" name="aac5c81d349b15ee53de99d93531e6861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac5c81d349b15ee53de99d93531e6861">&#9670;&#160;</a></span>pde_operator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;const <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt;dim, degree, number&gt; &gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::pde_operator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>PDE operator object for user defined PDEs. </p>
+
+</div>
+</div>
+<a id="a1831ee404b273fb99b42774f43ceaa92" name="a1831ee404b273fb99b42774f43ceaa92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1831ee404b273fb99b42774f43ceaa92">&#9670;&#160;</a></span>selected_fields</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;unsigned int&gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::selected_fields</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Selected fields for which we'll evaluate. </p>
+
+</div>
+</div>
+<a id="a945566d9a8f13f3698998657e7e1759b" name="a945566d9a8f13f3698998657e7e1759b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945566d9a8f13f3698998657e7e1759b">&#9670;&#160;</a></span>solve_block</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::solve_block = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The solve block that is being evaluated. </p>
+
+</div>
+</div>
+<a id="abfae8c49870387afc3d7d098ff90ca3f" name="abfae8c49870387afc3d7d098ff90ca3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfae8c49870387afc3d7d098ff90ca3f">&#9670;&#160;</a></span>src_solution_subset</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classMatrixFreeOperator.html#a95c7a427224aacec14104e144ec54fdf">VectorType</a> *&gt; <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::src_solution_subset</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subset of fields that are necessary for the source. </p>
+
+</div>
+</div>
+<a id="a783162eaab207977f2c67071d23ad171" name="a783162eaab207977f2c67071d23ad171"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a783162eaab207977f2c67071d23ad171">&#9670;&#160;</a></span>use_local_mapping</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; dim, degree, number &gt;::use_local_mapping = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether to use local mapping for the <a class="el" href="classVariableContainer.html" title="This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...">VariableContainer</a> object. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/core/<a class="el" href="matrix__free__operator_8h_source.html">matrix_free_operator.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/core/<b>matrix_free_operator.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/core/<a class="el" href="matrix__free__operator_8cc.html">matrix_free_operator.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

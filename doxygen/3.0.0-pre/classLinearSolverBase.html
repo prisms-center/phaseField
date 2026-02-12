@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -111,6 +118,7 @@ $(document).ready(function(){initNavTree('classLinearSolverBase.html',''); initR
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classLinearSolverBase-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LinearSolverBase&lt; dim, degree, number &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
@@ -125,25 +133,26 @@ Inheritance diagram for LinearSolverBase&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classLinearSolverBase__inherit__graph.svg" width="384" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for LinearSolverBase&lt; dim, degree, number &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classLinearSolverBase__coll__graph.svg" width="291" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a332ca24b0cbf404135abc79d8ed7d319" id="r_a332ca24b0cbf404135abc79d8ed7d319"><td class="memItemLeft" align="right" valign="top"><a id="a332ca24b0cbf404135abc79d8ed7d319" name="a332ca24b0cbf404135abc79d8ed7d319"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SystemMatrixType</b> = <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;</td></tr>
+<tr class="memitem:a332ca24b0cbf404135abc79d8ed7d319" id="r_a332ca24b0cbf404135abc79d8ed7d319"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> = <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;</td></tr>
 <tr class="separator:a332ca24b0cbf404135abc79d8ed7d319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6221d064c47a84d2b087cb2b3624ef6f" id="r_a6221d064c47a84d2b087cb2b3624ef6f"><td class="memItemLeft" align="right" valign="top"><a id="a6221d064c47a84d2b087cb2b3624ef6f" name="a6221d064c47a84d2b087cb2b3624ef6f"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a>&#160;</td><td class="memItemRight" valign="bottom"><b>VectorType</b> = dealii::LinearAlgebra::distributed::Vector&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;</td></tr>
+<tr class="memitem:a6221d064c47a84d2b087cb2b3624ef6f" id="r_a6221d064c47a84d2b087cb2b3624ef6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> = dealii::LinearAlgebra::distributed::Vector&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;</td></tr>
 <tr class="separator:a6221d064c47a84d2b087cb2b3624ef6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5648f863c367f567c8a8e3f0a30f8c6c" id="r_a5648f863c367f567c8a8e3f0a30f8c6c"><td class="memItemLeft" align="right" valign="top"><a id="a5648f863c367f567c8a8e3f0a30f8c6c" name="a5648f863c367f567c8a8e3f0a30f8c6c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>LinearSolverBase</b> (<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">_solver_context</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">_variable_attributes</a>)</td></tr>
-<tr class="memdesc:a5648f863c367f567c8a8e3f0a30f8c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:a5648f863c367f567c8a8e3f0a30f8c6c" id="r_a5648f863c367f567c8a8e3f0a30f8c6c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a5648f863c367f567c8a8e3f0a30f8c6c">LinearSolverBase</a> (<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">_solver_context</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">_variable_attributes</a>)</td></tr>
+<tr class="memdesc:a5648f863c367f567c8a8e3f0a30f8c6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a5648f863c367f567c8a8e3f0a30f8c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcca6fc35fd8f8039287acfed6849368" id="r_adcca6fc35fd8f8039287acfed6849368"><td class="memItemLeft" align="right" valign="top"><a id="adcca6fc35fd8f8039287acfed6849368" name="adcca6fc35fd8f8039287acfed6849368"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><b>~LinearSolverBase</b> ()=<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">default</a></td></tr>
-<tr class="memdesc:adcca6fc35fd8f8039287acfed6849368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:adcca6fc35fd8f8039287acfed6849368" id="r_adcca6fc35fd8f8039287acfed6849368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#adcca6fc35fd8f8039287acfed6849368">~LinearSolverBase</a> ()=<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">default</a></td></tr>
+<tr class="memdesc:adcca6fc35fd8f8039287acfed6849368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:adcca6fc35fd8f8039287acfed6849368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1be885be9a3c637647b8eba13aa74bb" id="r_ac1be885be9a3c637647b8eba13aa74bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ac1be885be9a3c637647b8eba13aa74bb">LinearSolverBase</a> (<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a> &amp;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">solver</a>)=<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">delete</a></td></tr>
 <tr class="memdesc:ac1be885be9a3c637647b8eba13aa74bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
@@ -166,132 +175,242 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aefbb4ad4b99b75f90b653afa8e41cc15" id="r_aefbb4ad4b99b75f90b653afa8e41cc15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">virtual</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aefbb4ad4b99b75f90b653afa8e41cc15">solve</a> (<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &amp;step_length=1.0)=0</td></tr>
 <tr class="memdesc:aefbb4ad4b99b75f90b653afa8e41cc15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the system Ax=b.  <br /></td></tr>
 <tr class="separator:aefbb4ad4b99b75f90b653afa8e41cc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9cafbd67a07076ddfa80530adf11a37" id="r_ad9cafbd67a07076ddfa80530adf11a37"><td class="memItemLeft" align="right" valign="top"><a id="ad9cafbd67a07076ddfa80530adf11a37" name="ad9cafbd67a07076ddfa80530adf11a37"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_newton_update_l2_norm</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:ad9cafbd67a07076ddfa80530adf11a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the l2-norm of the newton update. <br /></td></tr>
+<tr class="memitem:ad9cafbd67a07076ddfa80530adf11a37" id="r_ad9cafbd67a07076ddfa80530adf11a37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ad9cafbd67a07076ddfa80530adf11a37">get_newton_update_l2_norm</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:ad9cafbd67a07076ddfa80530adf11a37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the l2-norm of the newton update.  <br /></td></tr>
 <tr class="separator:ad9cafbd67a07076ddfa80530adf11a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaec15d49964bafdcfbafbac395cc9da8" id="r_aaec15d49964bafdcfbafbac395cc9da8"><td class="memItemLeft" align="right" valign="top"><a id="aaec15d49964bafdcfbafbac395cc9da8" name="aaec15d49964bafdcfbafbac395cc9da8"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>compute_solver_tolerance</b> ()</td></tr>
-<tr class="memdesc:aaec15d49964bafdcfbafbac395cc9da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the solver tolerance based on the specified tolerance type. <br /></td></tr>
+<tr class="memitem:aaec15d49964bafdcfbafbac395cc9da8" id="r_aaec15d49964bafdcfbafbac395cc9da8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aaec15d49964bafdcfbafbac395cc9da8">compute_solver_tolerance</a> ()</td></tr>
+<tr class="memdesc:aaec15d49964bafdcfbafbac395cc9da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the solver tolerance based on the specified tolerance type.  <br /></td></tr>
 <tr class="separator:aaec15d49964bafdcfbafbac395cc9da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfe2da6556eff393d4bf5b4849f7843e" id="r_abfe2da6556eff393d4bf5b4849f7843e"><td class="memItemLeft" align="right" valign="top"><a id="abfe2da6556eff393d4bf5b4849f7843e" name="abfe2da6556eff393d4bf5b4849f7843e"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clear_system_matrices</b> ()</td></tr>
-<tr class="memdesc:abfe2da6556eff393d4bf5b4849f7843e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the system matrix and update system matrix. <br /></td></tr>
+<tr class="memitem:abfe2da6556eff393d4bf5b4849f7843e" id="r_abfe2da6556eff393d4bf5b4849f7843e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#abfe2da6556eff393d4bf5b4849f7843e">clear_system_matrices</a> ()</td></tr>
+<tr class="memdesc:abfe2da6556eff393d4bf5b4849f7843e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the system matrix and update system matrix.  <br /></td></tr>
 <tr class="separator:abfe2da6556eff393d4bf5b4849f7843e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1df82c8f098a66b90526096a1413bf4" id="r_ac1df82c8f098a66b90526096a1413bf4"><td class="memItemLeft" align="right" valign="top"><a id="ac1df82c8f098a66b90526096a1413bf4" name="ac1df82c8f098a66b90526096a1413bf4"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>initialize_system_matrices</b> ()</td></tr>
-<tr class="memdesc:ac1df82c8f098a66b90526096a1413bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the system matrix and update system matrix. <br /></td></tr>
+<tr class="memitem:ac1df82c8f098a66b90526096a1413bf4" id="r_ac1df82c8f098a66b90526096a1413bf4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ac1df82c8f098a66b90526096a1413bf4">initialize_system_matrices</a> ()</td></tr>
+<tr class="memdesc:ac1df82c8f098a66b90526096a1413bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the system matrix and update system matrix.  <br /></td></tr>
 <tr class="separator:ac1df82c8f098a66b90526096a1413bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa224e5dc237f71fadd7ab41cc2b89507" id="r_aa224e5dc237f71fadd7ab41cc2b89507"><td class="memItemLeft" align="right" valign="top"><a id="aa224e5dc237f71fadd7ab41cc2b89507" name="aa224e5dc237f71fadd7ab41cc2b89507"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>finalize_system_matrices</b> ()</td></tr>
-<tr class="memdesc:aa224e5dc237f71fadd7ab41cc2b89507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the residual and newton update src and global to local solution vectors. <br /></td></tr>
+<tr class="memitem:aa224e5dc237f71fadd7ab41cc2b89507" id="r_aa224e5dc237f71fadd7ab41cc2b89507"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aa224e5dc237f71fadd7ab41cc2b89507">finalize_system_matrices</a> ()</td></tr>
+<tr class="memdesc:aa224e5dc237f71fadd7ab41cc2b89507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the residual and newton update src and global to local solution vectors.  <br /></td></tr>
 <tr class="separator:aa224e5dc237f71fadd7ab41cc2b89507"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0871909bfb8fa75633142c19793c189f" id="r_a0871909bfb8fa75633142c19793c189f"><td class="memItemLeft" align="right" valign="top"><a id="a0871909bfb8fa75633142c19793c189f" name="a0871909bfb8fa75633142c19793c189f"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>apply_constraints</b> ()</td></tr>
-<tr class="memdesc:a0871909bfb8fa75633142c19793c189f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply constraints to the solution vector. <br /></td></tr>
+<tr class="memitem:a0871909bfb8fa75633142c19793c189f" id="r_a0871909bfb8fa75633142c19793c189f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a0871909bfb8fa75633142c19793c189f">apply_constraints</a> ()</td></tr>
+<tr class="memdesc:a0871909bfb8fa75633142c19793c189f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply constraints to the solution vector.  <br /></td></tr>
 <tr class="separator:a0871909bfb8fa75633142c19793c189f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb07f81027304a530f1b68f3c353b55e" id="r_afb07f81027304a530f1b68f3c353b55e"><td class="memItemLeft" align="right" valign="top"><a id="afb07f81027304a530f1b68f3c353b55e" name="afb07f81027304a530f1b68f3c353b55e"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_user_inputs</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:afb07f81027304a530f1b68f3c353b55e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs. <br /></td></tr>
+<tr class="memitem:afb07f81027304a530f1b68f3c353b55e" id="r_afb07f81027304a530f1b68f3c353b55e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#afb07f81027304a530f1b68f3c353b55e">get_user_inputs</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:afb07f81027304a530f1b68f3c353b55e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user-inputs.  <br /></td></tr>
 <tr class="separator:afb07f81027304a530f1b68f3c353b55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8273e5c76ab83d6a11a2a6c275cf974c" id="r_a8273e5c76ab83d6a11a2a6c275cf974c"><td class="memItemLeft" align="right" valign="top"><a id="a8273e5c76ab83d6a11a2a6c275cf974c" name="a8273e5c76ab83d6a11a2a6c275cf974c"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_variable_attributes</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a8273e5c76ab83d6a11a2a6c275cf974c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable attributes. <br /></td></tr>
+<tr class="memitem:a8273e5c76ab83d6a11a2a6c275cf974c" id="r_a8273e5c76ab83d6a11a2a6c275cf974c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a8273e5c76ab83d6a11a2a6c275cf974c">get_variable_attributes</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a8273e5c76ab83d6a11a2a6c275cf974c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable attributes.  <br /></td></tr>
 <tr class="separator:a8273e5c76ab83d6a11a2a6c275cf974c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea73bbca5d7f73f24f798b0682d96d8d" id="r_aea73bbca5d7f73f24f798b0682d96d8d"><td class="memItemLeft" align="right" valign="top"><a id="aea73bbca5d7f73f24f798b0682d96d8d" name="aea73bbca5d7f73f24f798b0682d96d8d"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_dof_handler</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:aea73bbca5d7f73f24f798b0682d96d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler. <br /></td></tr>
+<tr class="memitem:aea73bbca5d7f73f24f798b0682d96d8d" id="r_aea73bbca5d7f73f24f798b0682d96d8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aea73bbca5d7f73f24f798b0682d96d8d">get_dof_handler</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:aea73bbca5d7f73f24f798b0682d96d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof handler.  <br /></td></tr>
 <tr class="separator:aea73bbca5d7f73f24f798b0682d96d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefa7a1d2e26ed629b0ab31319e45d484" id="r_aefa7a1d2e26ed629b0ab31319e45d484"><td class="memItemLeft" align="right" valign="top"><a id="aefa7a1d2e26ed629b0ab31319e45d484" name="aefa7a1d2e26ed629b0ab31319e45d484"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_matrix_free_container</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:aefa7a1d2e26ed629b0ab31319e45d484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container. <br /></td></tr>
+<tr class="memitem:aefa7a1d2e26ed629b0ab31319e45d484" id="r_aefa7a1d2e26ed629b0ab31319e45d484"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aefa7a1d2e26ed629b0ab31319e45d484">get_matrix_free_container</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:aefa7a1d2e26ed629b0ab31319e45d484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix-free container.  <br /></td></tr>
 <tr class="separator:aefa7a1d2e26ed629b0ab31319e45d484"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d8e37fc39833122ff319973bb022552" id="r_a4d8e37fc39833122ff319973bb022552"><td class="memItemLeft" align="right" valign="top"><a id="a4d8e37fc39833122ff319973bb022552" name="a4d8e37fc39833122ff319973bb022552"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_constraint_handler</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a4d8e37fc39833122ff319973bb022552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler. <br /></td></tr>
+<tr class="memitem:a4d8e37fc39833122ff319973bb022552" id="r_a4d8e37fc39833122ff319973bb022552"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a4d8e37fc39833122ff319973bb022552">get_constraint_handler</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a4d8e37fc39833122ff319973bb022552"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint handler.  <br /></td></tr>
 <tr class="separator:a4d8e37fc39833122ff319973bb022552"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7dbe15ba4c5487211ddd3775b7f92c3" id="r_ad7dbe15ba4c5487211ddd3775b7f92c3"><td class="memItemLeft" align="right" valign="top"><a id="ad7dbe15ba4c5487211ddd3775b7f92c3" name="ad7dbe15ba4c5487211ddd3775b7f92c3"></a>
-<a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solution_handler</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:ad7dbe15ba4c5487211ddd3775b7f92c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler. <br /></td></tr>
+<tr class="memitem:ad7dbe15ba4c5487211ddd3775b7f92c3" id="r_ad7dbe15ba4c5487211ddd3775b7f92c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ad7dbe15ba4c5487211ddd3775b7f92c3">get_solution_handler</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:ad7dbe15ba4c5487211ddd3775b7f92c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution handler.  <br /></td></tr>
 <tr class="separator:ad7dbe15ba4c5487211ddd3775b7f92c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7dec1c79739ab8bb3a40eef8c396fac" id="r_af7dec1c79739ab8bb3a40eef8c396fac"><td class="memItemLeft" align="right" valign="top"><a id="af7dec1c79739ab8bb3a40eef8c396fac" name="af7dec1c79739ab8bb3a40eef8c396fac"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_field_index</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:af7dec1c79739ab8bb3a40eef8c396fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field index. <br /></td></tr>
+<tr class="memitem:af7dec1c79739ab8bb3a40eef8c396fac" id="r_af7dec1c79739ab8bb3a40eef8c396fac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#af7dec1c79739ab8bb3a40eef8c396fac">get_field_index</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:af7dec1c79739ab8bb3a40eef8c396fac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the field index.  <br /></td></tr>
 <tr class="separator:af7dec1c79739ab8bb3a40eef8c396fac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae196932ac69511c77078fb6d5ba9c12e" id="r_ae196932ac69511c77078fb6d5ba9c12e"><td class="memItemLeft" align="right" valign="top"><a id="ae196932ac69511c77078fb6d5ba9c12e" name="ae196932ac69511c77078fb6d5ba9c12e"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; Types::Index &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_residual_global_to_local_solution</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:ae196932ac69511c77078fb6d5ba9c12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping from global solution vectors to the local ones for the residual solve. <br /></td></tr>
+<tr class="memitem:ae196932ac69511c77078fb6d5ba9c12e" id="r_ae196932ac69511c77078fb6d5ba9c12e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ae196932ac69511c77078fb6d5ba9c12e">get_residual_global_to_local_solution</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:ae196932ac69511c77078fb6d5ba9c12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping from global solution vectors to the local ones for the residual solve.  <br /></td></tr>
 <tr class="separator:ae196932ac69511c77078fb6d5ba9c12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a061db2c799f0434ca5115d3206abaf9d" id="r_a061db2c799f0434ca5115d3206abaf9d"><td class="memItemLeft" align="right" valign="top"><a id="a061db2c799f0434ca5115d3206abaf9d" name="a061db2c799f0434ca5115d3206abaf9d"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; VectorType * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_residual_src</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a061db2c799f0434ca5115d3206abaf9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of fields that are necessary for the source of the residual solve. <br /></td></tr>
+<tr class="memitem:a061db2c799f0434ca5115d3206abaf9d" id="r_a061db2c799f0434ca5115d3206abaf9d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a061db2c799f0434ca5115d3206abaf9d">get_residual_src</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a061db2c799f0434ca5115d3206abaf9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of fields that are necessary for the source of the residual solve.  <br /></td></tr>
 <tr class="separator:a061db2c799f0434ca5115d3206abaf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1575b703089fecbea98aeee0dc9b89d" id="r_ac1575b703089fecbea98aeee0dc9b89d"><td class="memItemLeft" align="right" valign="top"><a id="ac1575b703089fecbea98aeee0dc9b89d" name="ac1575b703089fecbea98aeee0dc9b89d"></a>
-VectorType *&#160;</td><td class="memItemRight" valign="bottom"><b>get_residual</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:ac1575b703089fecbea98aeee0dc9b89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the residual vector. <br /></td></tr>
+<tr class="memitem:ac1575b703089fecbea98aeee0dc9b89d" id="r_ac1575b703089fecbea98aeee0dc9b89d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ac1575b703089fecbea98aeee0dc9b89d">get_residual</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:ac1575b703089fecbea98aeee0dc9b89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the residual vector.  <br /></td></tr>
 <tr class="separator:ac1575b703089fecbea98aeee0dc9b89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe5d05bcc2f0247e6cd5271012d3506d" id="r_abe5d05bcc2f0247e6cd5271012d3506d"><td class="memItemLeft" align="right" valign="top"><a id="abe5d05bcc2f0247e6cd5271012d3506d" name="abe5d05bcc2f0247e6cd5271012d3506d"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; Types::Index &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_newton_update_global_to_local_solution</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:abe5d05bcc2f0247e6cd5271012d3506d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping from global solution vectors to the local ones for the newton update. <br /></td></tr>
+<tr class="memitem:abe5d05bcc2f0247e6cd5271012d3506d" id="r_abe5d05bcc2f0247e6cd5271012d3506d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#abe5d05bcc2f0247e6cd5271012d3506d">get_newton_update_global_to_local_solution</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:abe5d05bcc2f0247e6cd5271012d3506d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the mapping from global solution vectors to the local ones for the newton update.  <br /></td></tr>
 <tr class="separator:abe5d05bcc2f0247e6cd5271012d3506d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3e4a9ea4813c62a66ddb8fe8d2b65ad" id="r_af3e4a9ea4813c62a66ddb8fe8d2b65ad"><td class="memItemLeft" align="right" valign="top"><a id="af3e4a9ea4813c62a66ddb8fe8d2b65ad" name="af3e4a9ea4813c62a66ddb8fe8d2b65ad"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; VectorType * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_newton_update_src</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:af3e4a9ea4813c62a66ddb8fe8d2b65ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of fields that are necessary for the source of the newton update. <br /></td></tr>
+<tr class="memitem:af3e4a9ea4813c62a66ddb8fe8d2b65ad" id="r_af3e4a9ea4813c62a66ddb8fe8d2b65ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#af3e4a9ea4813c62a66ddb8fe8d2b65ad">get_newton_update_src</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:af3e4a9ea4813c62a66ddb8fe8d2b65ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset of fields that are necessary for the source of the newton update.  <br /></td></tr>
 <tr class="separator:af3e4a9ea4813c62a66ddb8fe8d2b65ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6099ceecdff8a3078fcc0c7e798ec4c1" id="r_a6099ceecdff8a3078fcc0c7e798ec4c1"><td class="memItemLeft" align="right" valign="top"><a id="a6099ceecdff8a3078fcc0c7e798ec4c1" name="a6099ceecdff8a3078fcc0c7e798ec4c1"></a>
-VectorType *&#160;</td><td class="memItemRight" valign="bottom"><b>get_newton_update</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a6099ceecdff8a3078fcc0c7e798ec4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the newton update vector. <br /></td></tr>
+<tr class="memitem:a6099ceecdff8a3078fcc0c7e798ec4c1" id="r_a6099ceecdff8a3078fcc0c7e798ec4c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a6099ceecdff8a3078fcc0c7e798ec4c1">get_newton_update</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a6099ceecdff8a3078fcc0c7e798ec4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the newton update vector.  <br /></td></tr>
 <tr class="separator:a6099ceecdff8a3078fcc0c7e798ec4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18dbff54357aff66bc20721ac9e0ccca" id="r_a18dbff54357aff66bc20721ac9e0ccca"><td class="memItemLeft" align="right" valign="top"><a id="a18dbff54357aff66bc20721ac9e0ccca" name="a18dbff54357aff66bc20721ac9e0ccca"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pde_operator</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a18dbff54357aff66bc20721ac9e0ccca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator. <br /></td></tr>
+<tr class="memitem:a18dbff54357aff66bc20721ac9e0ccca" id="r_a18dbff54357aff66bc20721ac9e0ccca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a18dbff54357aff66bc20721ac9e0ccca">get_pde_operator</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a18dbff54357aff66bc20721ac9e0ccca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator.  <br /></td></tr>
 <tr class="separator:a18dbff54357aff66bc20721ac9e0ccca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb1120de2599a3e99c5a7a7e9976eed1" id="r_adb1120de2599a3e99c5a7a7e9976eed1"><td class="memItemLeft" align="right" valign="top"><a id="adb1120de2599a3e99c5a7a7e9976eed1" name="adb1120de2599a3e99c5a7a7e9976eed1"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">float</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_pde_operator_float</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:adb1120de2599a3e99c5a7a7e9976eed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator for float. <br /></td></tr>
+<tr class="memitem:adb1120de2599a3e99c5a7a7e9976eed1" id="r_adb1120de2599a3e99c5a7a7e9976eed1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">float</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#adb1120de2599a3e99c5a7a7e9976eed1">get_pde_operator_float</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:adb1120de2599a3e99c5a7a7e9976eed1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pde operator for float.  <br /></td></tr>
 <tr class="separator:adb1120de2599a3e99c5a7a7e9976eed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af605ecc5324779405a72eda71e084c85" id="r_af605ecc5324779405a72eda71e084c85"><td class="memItemLeft" align="right" valign="top"><a id="af605ecc5324779405a72eda71e084c85" name="af605ecc5324779405a72eda71e084c85"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classMatrixFreeOperator.html">SystemMatrixType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_system_matrix</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:af605ecc5324779405a72eda71e084c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the system matrix. <br /></td></tr>
+<tr class="memitem:af605ecc5324779405a72eda71e084c85" id="r_af605ecc5324779405a72eda71e084c85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#af605ecc5324779405a72eda71e084c85">get_system_matrix</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:af605ecc5324779405a72eda71e084c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the system matrix.  <br /></td></tr>
 <tr class="separator:af605ecc5324779405a72eda71e084c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee46a741dfbe0b280cdb6e83387ed80f" id="r_aee46a741dfbe0b280cdb6e83387ed80f"><td class="memItemLeft" align="right" valign="top"><a id="aee46a741dfbe0b280cdb6e83387ed80f" name="aee46a741dfbe0b280cdb6e83387ed80f"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classMatrixFreeOperator.html">SystemMatrixType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_update_system_matrix</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:aee46a741dfbe0b280cdb6e83387ed80f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the update system matrix. <br /></td></tr>
+<tr class="memitem:aee46a741dfbe0b280cdb6e83387ed80f" id="r_aee46a741dfbe0b280cdb6e83387ed80f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aee46a741dfbe0b280cdb6e83387ed80f">get_update_system_matrix</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:aee46a741dfbe0b280cdb6e83387ed80f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the update system matrix.  <br /></td></tr>
 <tr class="separator:aee46a741dfbe0b280cdb6e83387ed80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7f23e37de4152b8b184079ba3ee5977" id="r_ae7f23e37de4152b8b184079ba3ee5977"><td class="memItemLeft" align="right" valign="top"><a id="ae7f23e37de4152b8b184079ba3ee5977" name="ae7f23e37de4152b8b184079ba3ee5977"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::map&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_subset_attributes</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:ae7f23e37de4152b8b184079ba3ee5977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset attributes. <br /></td></tr>
+<tr class="memitem:ae7f23e37de4152b8b184079ba3ee5977" id="r_ae7f23e37de4152b8b184079ba3ee5977"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::map&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ae7f23e37de4152b8b184079ba3ee5977">get_subset_attributes</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:ae7f23e37de4152b8b184079ba3ee5977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the subset attributes.  <br /></td></tr>
 <tr class="separator:ae7f23e37de4152b8b184079ba3ee5977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad14623d89e8d8ca24b758cff53213d8c" id="r_ad14623d89e8d8ca24b758cff53213d8c"><td class="memItemLeft" align="right" valign="top"><a id="ad14623d89e8d8ca24b758cff53213d8c" name="ad14623d89e8d8ca24b758cff53213d8c"></a>
-dealii::SolverControl &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solver_control</b> ()</td></tr>
-<tr class="memdesc:ad14623d89e8d8ca24b758cff53213d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver control. <br /></td></tr>
+<tr class="memitem:ad14623d89e8d8ca24b758cff53213d8c" id="r_ad14623d89e8d8ca24b758cff53213d8c"><td class="memItemLeft" align="right" valign="top">dealii::SolverControl &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ad14623d89e8d8ca24b758cff53213d8c">get_solver_control</a> ()</td></tr>
+<tr class="memdesc:ad14623d89e8d8ca24b758cff53213d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver control.  <br /></td></tr>
 <tr class="separator:ad14623d89e8d8ca24b758cff53213d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a753cce6cf98776375f2f91cc7cc6a121" id="r_a753cce6cf98776375f2f91cc7cc6a121"><td class="memItemLeft" align="right" valign="top"><a id="a753cce6cf98776375f2f91cc7cc6a121" name="a753cce6cf98776375f2f91cc7cc6a121"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&#160;</td><td class="memItemRight" valign="bottom"><b>get_tolerance</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a753cce6cf98776375f2f91cc7cc6a121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver tolerance. <br /></td></tr>
+<tr class="memitem:a753cce6cf98776375f2f91cc7cc6a121" id="r_a753cce6cf98776375f2f91cc7cc6a121"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a753cce6cf98776375f2f91cc7cc6a121">get_tolerance</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a753cce6cf98776375f2f91cc7cc6a121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver tolerance.  <br /></td></tr>
 <tr class="separator:a753cce6cf98776375f2f91cc7cc6a121"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a119d2006fb0df189893ce4100ebd40ab" id="r_a119d2006fb0df189893ce4100ebd40ab"><td class="memItemLeft" align="right" valign="top"><a id="a119d2006fb0df189893ce4100ebd40ab" name="a119d2006fb0df189893ce4100ebd40ab"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_element_volume_container</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a119d2006fb0df189893ce4100ebd40ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container. <br /></td></tr>
+<tr class="memitem:a119d2006fb0df189893ce4100ebd40ab" id="r_a119d2006fb0df189893ce4100ebd40ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a119d2006fb0df189893ce4100ebd40ab">get_element_volume_container</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a119d2006fb0df189893ce4100ebd40ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element volume container.  <br /></td></tr>
 <tr class="separator:a119d2006fb0df189893ce4100ebd40ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27b1531e9f3bd5105b64a2dcf6e4e9e5" id="r_a27b1531e9f3bd5105b64a2dcf6e4e9e5"><td class="memItemLeft" align="right" valign="top"><a id="a27b1531e9f3bd5105b64a2dcf6e4e9e5" name="a27b1531e9f3bd5105b64a2dcf6e4e9e5"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_mg_info</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a27b1531e9f3bd5105b64a2dcf6e4e9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info. <br /></td></tr>
+<tr class="memitem:a27b1531e9f3bd5105b64a2dcf6e4e9e5" id="r_a27b1531e9f3bd5105b64a2dcf6e4e9e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a27b1531e9f3bd5105b64a2dcf6e4e9e5">get_mg_info</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a27b1531e9f3bd5105b64a2dcf6e4e9e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the multigrid info.  <br /></td></tr>
 <tr class="separator:a27b1531e9f3bd5105b64a2dcf6e4e9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a070c7c2e65037b3a0f64ac8d8b05f0e3" id="r_a070c7c2e65037b3a0f64ac8d8b05f0e3"><td class="memItemLeft" align="right" valign="top"><a id="a070c7c2e65037b3a0f64ac8d8b05f0e3" name="a070c7c2e65037b3a0f64ac8d8b05f0e3"></a>
-<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_triangulation_handler</b> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
-<tr class="memdesc:a070c7c2e65037b3a0f64ac8d8b05f0e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler. <br /></td></tr>
+<tr class="memitem:a070c7c2e65037b3a0f64ac8d8b05f0e3" id="r_a070c7c2e65037b3a0f64ac8d8b05f0e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a070c7c2e65037b3a0f64ac8d8b05f0e3">get_triangulation_handler</a> () <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a></td></tr>
+<tr class="memdesc:a070c7c2e65037b3a0f64ac8d8b05f0e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the triangulation handler.  <br /></td></tr>
 <tr class="separator:a070c7c2e65037b3a0f64ac8d8b05f0e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a99095b7809756d2e555fb85be85ecba7" id="r_a99095b7809756d2e555fb85be85ecba7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a99095b7809756d2e555fb85be85ecba7">solver_context</a></td></tr>
+<tr class="memdesc:a99095b7809756d2e555fb85be85ecba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver context.  <br /></td></tr>
+<tr class="separator:a99095b7809756d2e555fb85be85ecba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4f0a6a8e5ed4b46b924f59df5264827" id="r_ab4f0a6a8e5ed4b46b924f59df5264827"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ab4f0a6a8e5ed4b46b924f59df5264827">variable_attributes</a></td></tr>
+<tr class="memdesc:ab4f0a6a8e5ed4b46b924f59df5264827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variable attributes for field.  <br /></td></tr>
+<tr class="separator:ab4f0a6a8e5ed4b46b924f59df5264827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a044f6fa6da5670aa1b5b3bb5732aebd4" id="r_a044f6fa6da5670aa1b5b3bb5732aebd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a044f6fa6da5670aa1b5b3bb5732aebd4">field_index</a></td></tr>
+<tr class="memdesc:a044f6fa6da5670aa1b5b3bb5732aebd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The field index we are solving.  <br /></td></tr>
+<tr class="separator:a044f6fa6da5670aa1b5b3bb5732aebd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6cc7976d587ddf56b7b53d70b1d800a" id="r_af6cc7976d587ddf56b7b53d70b1d800a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#af6cc7976d587ddf56b7b53d70b1d800a">residual_global_to_local_solution</a></td></tr>
+<tr class="memdesc:af6cc7976d587ddf56b7b53d70b1d800a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from global solution vectors to the local ones for the residual solve.  <br /></td></tr>
+<tr class="separator:af6cc7976d587ddf56b7b53d70b1d800a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97e9cb044cc4abf897b6774cc4888b0d" id="r_a97e9cb044cc4abf897b6774cc4888b0d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a97e9cb044cc4abf897b6774cc4888b0d">residual_src</a></td></tr>
+<tr class="memdesc:a97e9cb044cc4abf897b6774cc4888b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subset of fields that are necessary for the source of the residual solve.  <br /></td></tr>
+<tr class="separator:a97e9cb044cc4abf897b6774cc4888b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10bb7c222aaac330d8d2a9bebcae353b" id="r_a10bb7c222aaac330d8d2a9bebcae353b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a10bb7c222aaac330d8d2a9bebcae353b">residual</a> = <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">nullptr</a></td></tr>
+<tr class="memdesc:a10bb7c222aaac330d8d2a9bebcae353b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Residual vector.  <br /></td></tr>
+<tr class="separator:a10bb7c222aaac330d8d2a9bebcae353b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402848db218728f49fc6d8338f1bcabb" id="r_a402848db218728f49fc6d8338f1bcabb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a402848db218728f49fc6d8338f1bcabb">newton_update_global_to_local_solution</a></td></tr>
+<tr class="memdesc:a402848db218728f49fc6d8338f1bcabb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from global solution vectors to the local ones for the newton update.  <br /></td></tr>
+<tr class="separator:a402848db218728f49fc6d8338f1bcabb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bd4246d0a822b212ed0248504ded627" id="r_a7bd4246d0a822b212ed0248504ded627"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a7bd4246d0a822b212ed0248504ded627">newton_update_src</a></td></tr>
+<tr class="memdesc:a7bd4246d0a822b212ed0248504ded627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subset of fields that are necessary for the source of the newton update.  <br /></td></tr>
+<tr class="separator:a7bd4246d0a822b212ed0248504ded627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b175a85b5c84f7c7b3697363d714a23" id="r_a2b175a85b5c84f7c7b3697363d714a23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a2b175a85b5c84f7c7b3697363d714a23">newton_update</a> = <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">nullptr</a></td></tr>
+<tr class="memdesc:a2b175a85b5c84f7c7b3697363d714a23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Newton update vector.  <br /></td></tr>
+<tr class="separator:a2b175a85b5c84f7c7b3697363d714a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12b5d4290833626afa9fcc8de63b7604" id="r_a12b5d4290833626afa9fcc8de63b7604"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#a12b5d4290833626afa9fcc8de63b7604">system_matrix</a></td></tr>
+<tr class="memdesc:a12b5d4290833626afa9fcc8de63b7604"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free operator for the residual side.  <br /></td></tr>
+<tr class="separator:a12b5d4290833626afa9fcc8de63b7604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb40fecf81e3a9a525b2771f1d04603a" id="r_aeb40fecf81e3a9a525b2771f1d04603a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#aeb40fecf81e3a9a525b2771f1d04603a">update_system_matrix</a></td></tr>
+<tr class="memdesc:aeb40fecf81e3a9a525b2771f1d04603a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free operator for the newton update side.  <br /></td></tr>
+<tr class="separator:aeb40fecf81e3a9a525b2771f1d04603a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5d3a0564642c14df429c31af552adf" id="r_acc5d3a0564642c14df429c31af552adf"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#acc5d3a0564642c14df429c31af552adf">subset_attributes</a></td></tr>
+<tr class="memdesc:acc5d3a0564642c14df429c31af552adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subset attributes.  <br /></td></tr>
+<tr class="separator:acc5d3a0564642c14df429c31af552adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc9e5162d63baefdf35e87a62aa45f9c" id="r_adc9e5162d63baefdf35e87a62aa45f9c"><td class="memItemLeft" align="right" valign="top">dealii::SolverControl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#adc9e5162d63baefdf35e87a62aa45f9c">solver_control</a></td></tr>
+<tr class="memdesc:adc9e5162d63baefdf35e87a62aa45f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver control.  <br /></td></tr>
+<tr class="separator:adc9e5162d63baefdf35e87a62aa45f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae561675f9ba3bc7cfd8e5639e98bf72d" id="r_ae561675f9ba3bc7cfd8e5639e98bf72d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolverBase.html#ae561675f9ba3bc7cfd8e5639e98bf72d">tolerance</a> = 0.0</td></tr>
+<tr class="memdesc:ae561675f9ba3bc7cfd8e5639e98bf72d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver tolerance.  <br /></td></tr>
+<tr class="separator:ae561675f9ba3bc7cfd8e5639e98bf72d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&gt;<br />
 class LinearSolverBase&lt; dim, degree, number &gt;</div><p>Base class that handles the assembly and linear solving of a field. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a332ca24b0cbf404135abc79d8ed7d319" name="a332ca24b0cbf404135abc79d8ed7d319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332ca24b0cbf404135abc79d8ed7d319">&#9670;&#160;</a></span>SystemMatrixType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::SystemMatrixType =  <a class="el" href="classMatrixFreeOperator.html">MatrixFreeOperator</a>&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6221d064c47a84d2b087cb2b3624ef6f" name="a6221d064c47a84d2b087cb2b3624ef6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6221d064c47a84d2b087cb2b3624ef6f">&#9670;&#160;</a></span>VectorType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">using</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::VectorType =  dealii::LinearAlgebra::distributed::Vector&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a5648f863c367f567c8a8e3f0a30f8c6c" name="a5648f863c367f567c8a8e3f0a30f8c6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5648f863c367f567c8a8e3f0a30f8c6c">&#9670;&#160;</a></span>LinearSolverBase() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;<a class="el" href="classLinearSolverBase.html">::LinearSolverBase</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_solver_context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp;&#160;</td>
+          <td class="paramname"><em>_variable_attributes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="adcca6fc35fd8f8039287acfed6849368" name="adcca6fc35fd8f8039287acfed6849368"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcca6fc35fd8f8039287acfed6849368">&#9670;&#160;</a></span>~LinearSolverBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">virtual</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::~<a class="el" href="classLinearSolverBase.html">LinearSolverBase</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
 <a id="ac1be885be9a3c637647b8eba13aa74bb" name="ac1be885be9a3c637647b8eba13aa74bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1be885be9a3c637647b8eba13aa74bb">&#9670;&#160;</a></span>LinearSolverBase() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1be885be9a3c637647b8eba13aa74bb">&#9670;&#160;</a></span>LinearSolverBase() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +441,7 @@ template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cc
 </div>
 </div>
 <a id="a5c27afdd71825c8c9b6baf0fe8e4626d" name="a5c27afdd71825c8c9b6baf0fe8e4626d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c27afdd71825c8c9b6baf0fe8e4626d">&#9670;&#160;</a></span>LinearSolverBase() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c27afdd71825c8c9b6baf0fe8e4626d">&#9670;&#160;</a></span>LinearSolverBase() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -353,6 +472,818 @@ template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cc
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0871909bfb8fa75633142c19793c189f" name="a0871909bfb8fa75633142c19793c189f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0871909bfb8fa75633142c19793c189f">&#9670;&#160;</a></span>apply_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::apply_constraints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Apply constraints to the solution vector. </p>
+
+</div>
+</div>
+<a id="abfe2da6556eff393d4bf5b4849f7843e" name="abfe2da6556eff393d4bf5b4849f7843e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfe2da6556eff393d4bf5b4849f7843e">&#9670;&#160;</a></span>clear_system_matrices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::clear_system_matrices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clear the system matrix and update system matrix. </p>
+
+</div>
+</div>
+<a id="aaec15d49964bafdcfbafbac395cc9da8" name="aaec15d49964bafdcfbafbac395cc9da8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaec15d49964bafdcfbafbac395cc9da8">&#9670;&#160;</a></span>compute_solver_tolerance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::compute_solver_tolerance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the solver tolerance based on the specified tolerance type. </p>
+
+</div>
+</div>
+<a id="aa224e5dc237f71fadd7ab41cc2b89507" name="aa224e5dc237f71fadd7ab41cc2b89507"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa224e5dc237f71fadd7ab41cc2b89507">&#9670;&#160;</a></span>finalize_system_matrices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::finalize_system_matrices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the residual and newton update src and global to local solution vectors. </p>
+
+</div>
+</div>
+<a id="a4d8e37fc39833122ff319973bb022552" name="a4d8e37fc39833122ff319973bb022552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d8e37fc39833122ff319973bb022552">&#9670;&#160;</a></span>get_constraint_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classConstraintHandler.html">ConstraintHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_constraint_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the constraint handler. </p>
+
+</div>
+</div>
+<a id="aea73bbca5d7f73f24f798b0682d96d8d" name="aea73bbca5d7f73f24f798b0682d96d8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea73bbca5d7f73f24f798b0682d96d8d">&#9670;&#160;</a></span>get_dof_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classDofHandler.html">DofHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_dof_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dof handler. </p>
+
+</div>
+</div>
+<a id="a119d2006fb0df189893ce4100ebd40ab" name="a119d2006fb0df189893ce4100ebd40ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a119d2006fb0df189893ce4100ebd40ab">&#9670;&#160;</a></span>get_element_volume_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classElementVolumeContainer.html">ElementVolumeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_element_volume_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the element volume container. </p>
+
+</div>
+</div>
+<a id="af7dec1c79739ab8bb3a40eef8c396fac" name="af7dec1c79739ab8bb3a40eef8c396fac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7dec1c79739ab8bb3a40eef8c396fac">&#9670;&#160;</a></span>get_field_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_field_index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the field index. </p>
+
+</div>
+</div>
+<a id="aefa7a1d2e26ed629b0ab31319e45d484" name="aefa7a1d2e26ed629b0ab31319e45d484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefa7a1d2e26ed629b0ab31319e45d484">&#9670;&#160;</a></span>get_matrix_free_container()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMatrixFreeContainer.html">MatrixFreeContainer</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_matrix_free_container </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the matrix-free container. </p>
+
+</div>
+</div>
+<a id="a27b1531e9f3bd5105b64a2dcf6e4e9e5" name="a27b1531e9f3bd5105b64a2dcf6e4e9e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27b1531e9f3bd5105b64a2dcf6e4e9e5">&#9670;&#160;</a></span>get_mg_info()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classMGInfo.html">MGInfo</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_mg_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the multigrid info. </p>
+
+</div>
+</div>
+<a id="a6099ceecdff8a3078fcc0c7e798ec4c1" name="a6099ceecdff8a3078fcc0c7e798ec4c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6099ceecdff8a3078fcc0c7e798ec4c1">&#9670;&#160;</a></span>get_newton_update()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_newton_update </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the newton update vector. </p>
+
+</div>
+</div>
+<a id="abe5d05bcc2f0247e6cd5271012d3506d" name="abe5d05bcc2f0247e6cd5271012d3506d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe5d05bcc2f0247e6cd5271012d3506d">&#9670;&#160;</a></span>get_newton_update_global_to_local_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_newton_update_global_to_local_solution </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the mapping from global solution vectors to the local ones for the newton update. </p>
+
+</div>
+</div>
+<a id="ad9cafbd67a07076ddfa80530adf11a37" name="ad9cafbd67a07076ddfa80530adf11a37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9cafbd67a07076ddfa80530adf11a37">&#9670;&#160;</a></span>get_newton_update_l2_norm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_newton_update_l2_norm </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the l2-norm of the newton update. </p>
+
+</div>
+</div>
+<a id="af3e4a9ea4813c62a66ddb8fe8d2b65ad" name="af3e4a9ea4813c62a66ddb8fe8d2b65ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3e4a9ea4813c62a66ddb8fe8d2b65ad">&#9670;&#160;</a></span>get_newton_update_src()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_newton_update_src </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the subset of fields that are necessary for the source of the newton update. </p>
+
+</div>
+</div>
+<a id="a18dbff54357aff66bc20721ac9e0ccca" name="a18dbff54357aff66bc20721ac9e0ccca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18dbff54357aff66bc20721ac9e0ccca">&#9670;&#160;</a></span>get_pde_operator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_pde_operator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the pde operator. </p>
+
+</div>
+</div>
+<a id="adb1120de2599a3e99c5a7a7e9976eed1" name="adb1120de2599a3e99c5a7a7e9976eed1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb1120de2599a3e99c5a7a7e9976eed1">&#9670;&#160;</a></span>get_pde_operator_float()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::shared_ptr&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classPDEOperator.html">PDEOperator</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">float</a> &gt; &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_pde_operator_float </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the pde operator for float. </p>
+
+</div>
+</div>
+<a id="ac1575b703089fecbea98aeee0dc9b89d" name="ac1575b703089fecbea98aeee0dc9b89d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1575b703089fecbea98aeee0dc9b89d">&#9670;&#160;</a></span>get_residual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_residual </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the residual vector. </p>
+
+</div>
+</div>
+<a id="ae196932ac69511c77078fb6d5ba9c12e" name="ae196932ac69511c77078fb6d5ba9c12e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae196932ac69511c77078fb6d5ba9c12e">&#9670;&#160;</a></span>get_residual_global_to_local_solution()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_residual_global_to_local_solution </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the mapping from global solution vectors to the local ones for the residual solve. </p>
+
+</div>
+</div>
+<a id="a061db2c799f0434ca5115d3206abaf9d" name="a061db2c799f0434ca5115d3206abaf9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a061db2c799f0434ca5115d3206abaf9d">&#9670;&#160;</a></span>get_residual_src()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::vector&lt; <a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> * &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_residual_src </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the subset of fields that are necessary for the source of the residual solve. </p>
+
+</div>
+</div>
+<a id="ad7dbe15ba4c5487211ddd3775b7f92c3" name="ad7dbe15ba4c5487211ddd3775b7f92c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7dbe15ba4c5487211ddd3775b7f92c3">&#9670;&#160;</a></span>get_solution_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSolutionHandler.html">SolutionHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_solution_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solution handler. </p>
+
+</div>
+</div>
+<a id="ad14623d89e8d8ca24b758cff53213d8c" name="ad14623d89e8d8ca24b758cff53213d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad14623d89e8d8ca24b758cff53213d8c">&#9670;&#160;</a></span>get_solver_control()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::SolverControl &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_solver_control </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solver control. </p>
+
+</div>
+</div>
+<a id="ae7f23e37de4152b8b184079ba3ee5977" name="ae7f23e37de4152b8b184079ba3ee5977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7f23e37de4152b8b184079ba3ee5977">&#9670;&#160;</a></span>get_subset_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::map&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_subset_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the subset attributes. </p>
+
+</div>
+</div>
+<a id="af605ecc5324779405a72eda71e084c85" name="af605ecc5324779405a72eda71e084c85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af605ecc5324779405a72eda71e084c85">&#9670;&#160;</a></span>get_system_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_system_matrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the system matrix. </p>
+
+</div>
+</div>
+<a id="a753cce6cf98776375f2f91cc7cc6a121" name="a753cce6cf98776375f2f91cc7cc6a121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a753cce6cf98776375f2f91cc7cc6a121">&#9670;&#160;</a></span>get_tolerance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_tolerance </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the solver tolerance. </p>
+
+</div>
+</div>
+<a id="a070c7c2e65037b3a0f64ac8d8b05f0e3" name="a070c7c2e65037b3a0f64ac8d8b05f0e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a070c7c2e65037b3a0f64ac8d8b05f0e3">&#9670;&#160;</a></span>get_triangulation_handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classTriangulationHandler.html">TriangulationHandler</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_triangulation_handler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the triangulation handler. </p>
+
+</div>
+</div>
+<a id="aee46a741dfbe0b280cdb6e83387ed80f" name="aee46a741dfbe0b280cdb6e83387ed80f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee46a741dfbe0b280cdb6e83387ed80f">&#9670;&#160;</a></span>get_update_system_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> std::unique_ptr&lt; <a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_update_system_matrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the update system matrix. </p>
+
+</div>
+</div>
+<a id="afb07f81027304a530f1b68f3c353b55e" name="afb07f81027304a530f1b68f3c353b55e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb07f81027304a530f1b68f3c353b55e">&#9670;&#160;</a></span>get_user_inputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a> &gt; &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_user_inputs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the user-inputs. </p>
+
+</div>
+</div>
+<a id="a8273e5c76ab83d6a11a2a6c275cf974c" name="a8273e5c76ab83d6a11a2a6c275cf974c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8273e5c76ab83d6a11a2a6c275cf974c">&#9670;&#160;</a></span>get_variable_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a> &amp; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::get_variable_attributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the variable attributes. </p>
+
+</div>
+</div>
 <a id="a4324717adde04d7ea0d9e76795c081ca" name="a4324717adde04d7ea0d9e76795c081ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4324717adde04d7ea0d9e76795c081ca">&#9670;&#160;</a></span>init()</h2>
 
@@ -381,6 +1312,35 @@ template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cc
 <p>Initialize the system. </p>
 
 <p>Reimplemented in <a class="el" href="classGMGSolver.html#a94aa5dd8ee5012011c733ef991fa495a">GMGSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classIdentitySolver.html#a9e1565b9cd16c560b62908ee7aebdc6c">IdentitySolver&lt; dim, degree, number &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ac1df82c8f098a66b90526096a1413bf4" name="ac1df82c8f098a66b90526096a1413bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1df82c8f098a66b90526096a1413bf4">&#9670;&#160;</a></span>initialize_system_matrices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">void</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::initialize_system_matrices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the system matrix and update system matrix. </p>
 
 </div>
 </div>
@@ -509,9 +1469,374 @@ template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cc
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a044f6fa6da5670aa1b5b3bb5732aebd4" name="a044f6fa6da5670aa1b5b3bb5732aebd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a044f6fa6da5670aa1b5b3bb5732aebd4">&#9670;&#160;</a></span>field_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::field_index</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The field index we are solving. </p>
+
+</div>
+</div>
+<a id="a2b175a85b5c84f7c7b3697363d714a23" name="a2b175a85b5c84f7c7b3697363d714a23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b175a85b5c84f7c7b3697363d714a23">&#9670;&#160;</a></span>newton_update</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a>* <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::newton_update = <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">nullptr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Newton update vector. </p>
+
+</div>
+</div>
+<a id="a402848db218728f49fc6d8338f1bcabb" name="a402848db218728f49fc6d8338f1bcabb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a402848db218728f49fc6d8338f1bcabb">&#9670;&#160;</a></span>newton_update_global_to_local_solution</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::newton_update_global_to_local_solution</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mapping from global solution vectors to the local ones for the newton update. </p>
+
+</div>
+</div>
+<a id="a7bd4246d0a822b212ed0248504ded627" name="a7bd4246d0a822b212ed0248504ded627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bd4246d0a822b212ed0248504ded627">&#9670;&#160;</a></span>newton_update_src</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::newton_update_src</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subset of fields that are necessary for the source of the newton update. </p>
+
+</div>
+</div>
+<a id="a10bb7c222aaac330d8d2a9bebcae353b" name="a10bb7c222aaac330d8d2a9bebcae353b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10bb7c222aaac330d8d2a9bebcae353b">&#9670;&#160;</a></span>residual</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a>* <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::residual = <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">nullptr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Residual vector. </p>
+
+</div>
+</div>
+<a id="af6cc7976d587ddf56b7b53d70b1d800a" name="af6cc7976d587ddf56b7b53d70b1d800a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6cc7976d587ddf56b7b53d70b1d800a">&#9670;&#160;</a></span>residual_global_to_local_solution</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::residual_global_to_local_solution</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mapping from global solution vectors to the local ones for the residual solve. </p>
+
+</div>
+</div>
+<a id="a97e9cb044cc4abf897b6774cc4888b0d" name="a97e9cb044cc4abf897b6774cc4888b0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97e9cb044cc4abf897b6774cc4888b0d">&#9670;&#160;</a></span>residual_src</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classLinearSolverBase.html#a6221d064c47a84d2b087cb2b3624ef6f">VectorType</a> *&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::residual_src</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subset of fields that are necessary for the source of the residual solve. </p>
+
+</div>
+</div>
+<a id="a99095b7809756d2e555fb85be85ecba7" name="a99095b7809756d2e555fb85be85ecba7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99095b7809756d2e555fb85be85ecba7">&#9670;&#160;</a></span>solver_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="classSolverContext.html">SolverContext</a>&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a>&gt;* <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::solver_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver context. </p>
+
+</div>
+</div>
+<a id="adc9e5162d63baefdf35e87a62aa45f9c" name="adc9e5162d63baefdf35e87a62aa45f9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc9e5162d63baefdf35e87a62aa45f9c">&#9670;&#160;</a></span>solver_control</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::SolverControl <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::solver_control</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver control. </p>
+
+</div>
+</div>
+<a id="acc5d3a0564642c14df429c31af552adf" name="acc5d3a0564642c14df429c31af552adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5d3a0564642c14df429c31af552adf">&#9670;&#160;</a></span>subset_attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a>, <a class="el" href="structVariableAttributes.html">VariableAttributes</a>&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::subset_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subset attributes. </p>
+
+</div>
+</div>
+<a id="a12b5d4290833626afa9fcc8de63b7604" name="a12b5d4290833626afa9fcc8de63b7604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12b5d4290833626afa9fcc8de63b7604">&#9670;&#160;</a></span>system_matrix</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a>&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::system_matrix</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free operator for the residual side. </p>
+
+</div>
+</div>
+<a id="ae561675f9ba3bc7cfd8e5639e98bf72d" name="ae561675f9ba3bc7cfd8e5639e98bf72d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae561675f9ba3bc7cfd8e5639e98bf72d">&#9670;&#160;</a></span>tolerance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::tolerance = 0.0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver tolerance. </p>
+
+</div>
+</div>
+<a id="aeb40fecf81e3a9a525b2771f1d04603a" name="aeb40fecf81e3a9a525b2771f1d04603a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb40fecf81e3a9a525b2771f1d04603a">&#9670;&#160;</a></span>update_system_matrix</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="classLinearSolverBase.html#a332ca24b0cbf404135abc79d8ed7d319">SystemMatrixType</a>&gt; <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::update_system_matrix</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free operator for the newton update side. </p>
+
+</div>
+</div>
+<a id="ab4f0a6a8e5ed4b46b924f59df5264827" name="ab4f0a6a8e5ed4b46b924f59df5264827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4f0a6a8e5ed4b46b924f59df5264827">&#9670;&#160;</a></span>variable_attributes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> dim, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">unsigned</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">int</a> degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">typename</a> <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">const</a> <a class="el" href="structVariableAttributes.html">VariableAttributes</a>* <a class="el" href="classLinearSolverBase.html">LinearSolverBase</a>&lt; <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">dim</a>, degree, <a class="el" href="classLinearSolverBase.html#a9d6b97410e6a6d2c11cccd0c52c8e5cc">number</a> &gt;::variable_attributes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Variable attributes for field. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/solvers/<a class="el" href="linear__solver__base_8h_source.html">linear_solver_base.h</a></li>
-<li>/home/runner/work/phaseField/phaseField/src/solvers/<b>linear_solver_base.cc</b></li>
+<li>/home/runner/work/phaseField/phaseField/src/solvers/<a class="el" href="linear__solver__base_8cc.html">linear_solver_base.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,5 +1,26 @@
 var classPDEProblem =
 [
     [ "PDEProblem", "classPDEProblem.html#a835ed254186c3ab70a10383e46b35f3f", null ],
-    [ "run", "classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2", null ]
+    [ "init_system", "classPDEProblem.html#ab35cca97746ae90e0a30e5a026073774", null ],
+    [ "reinit_system", "classPDEProblem.html#acebc4fa35d20506028a9eeb2207f02c6", null ],
+    [ "run", "classPDEProblem.html#ac6fd6f7ce829f5608e7c0d8a0a02eeb2", null ],
+    [ "solve", "classPDEProblem.html#a96efe44030cbbae82e78b6dbe7f7320b", null ],
+    [ "solve_increment", "classPDEProblem.html#ac88293482c8b458168f7d98991ccab44", null ],
+    [ "constraint_handler", "classPDEProblem.html#a0b65014240c1e2c8c492fbdc33d55a16", null ],
+    [ "dof_handler", "classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d", null ],
+    [ "element_volume_container", "classPDEProblem.html#a6713bde2051c90cf8455ac82bf6ce140", null ],
+    [ "fe_system", "classPDEProblem.html#a484e624852487bb94c86825136e9553f", null ],
+    [ "grid_refiner", "classPDEProblem.html#a81305eca89f044512353513f1ee22bed", null ],
+    [ "grid_refiner_context", "classPDEProblem.html#a66951704dc23105992d9053c6dd2c536", null ],
+    [ "integrator", "classPDEProblem.html#a30821a224f268ab0c790d5d07a9e3771", null ],
+    [ "invm_handler", "classPDEProblem.html#ab09033db1a53ad50fe6e809bd6a54d9c", null ],
+    [ "mapping", "classPDEProblem.html#a90b5b06f3b54feda2ca008b4f922939c", null ],
+    [ "matrix_free_container", "classPDEProblem.html#afbea8233e41feee0e745010147d3c6ee", null ],
+    [ "mg_info", "classPDEProblem.html#a18a731d32f0538abd6562174d17f01d5", null ],
+    [ "pf_tools", "classPDEProblem.html#a6cfb17f7854cd907ce5b17ad85169021", null ],
+    [ "solution_handler", "classPDEProblem.html#a0d8305c01f9229c44d0669c7b91b2118", null ],
+    [ "solver_context", "classPDEProblem.html#a9d7826fdbd81e02413ca599f10675b7d", null ],
+    [ "solver_handler", "classPDEProblem.html#a2dbf5013b7d8d788867226e7907c7dc9", null ],
+    [ "triangulation_handler", "classPDEProblem.html#a1d047857ce7ef964c74fda54d4421ade", null ],
+    [ "user_inputs", "classPDEProblem.html#a2544df8c2bc21b77765a0a1b316a20fa", null ]
 ];

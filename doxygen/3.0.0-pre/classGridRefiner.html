@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -109,20 +116,22 @@ $(document).ready(function(){initNavTree('classGridRefiner.html',''); initResiza
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classGridRefiner-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GridRefiner&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="grid__refiner_8h_source.html">grid_refiner.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aefc76a1eaa081532a39c24dcc7562cfe" id="r_aefc76a1eaa081532a39c24dcc7562cfe"><td class="memItemLeft" align="right" valign="top"><a id="aefc76a1eaa081532a39c24dcc7562cfe" name="aefc76a1eaa081532a39c24dcc7562cfe"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GridRefiner</b> (<a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt; &amp;grid_refinement_context)</td></tr>
-<tr class="memdesc:aefc76a1eaa081532a39c24dcc7562cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="memitem:aefc76a1eaa081532a39c24dcc7562cfe" id="r_aefc76a1eaa081532a39c24dcc7562cfe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#aefc76a1eaa081532a39c24dcc7562cfe">GridRefiner</a> (<a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt; &amp;<a class="el" href="classGridRefiner.html#ac59b2576c86a985a8f36d90436ed5505">grid_refinement_context</a>)</td></tr>
+<tr class="memdesc:aefc76a1eaa081532a39c24dcc7562cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:aefc76a1eaa081532a39c24dcc7562cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419771c0b3e36afe8203a93e2da01860" id="r_a419771c0b3e36afe8203a93e2da01860"><td class="memItemLeft" align="right" valign="top"><a id="a419771c0b3e36afe8203a93e2da01860" name="a419771c0b3e36afe8203a93e2da01860"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>~GridRefiner</b> ()=default</td></tr>
-<tr class="memdesc:a419771c0b3e36afe8203a93e2da01860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:a419771c0b3e36afe8203a93e2da01860" id="r_a419771c0b3e36afe8203a93e2da01860"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a419771c0b3e36afe8203a93e2da01860">~GridRefiner</a> ()=default</td></tr>
+<tr class="memdesc:a419771c0b3e36afe8203a93e2da01860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a419771c0b3e36afe8203a93e2da01860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41e1ac3455930f0e404b1b8410f1b1c4" id="r_a41e1ac3455930f0e404b1b8410f1b1c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a41e1ac3455930f0e404b1b8410f1b1c4">GridRefiner</a> (const <a class="el" href="classGridRefiner.html">GridRefiner</a> &amp;grid_refiner)=delete</td></tr>
 <tr class="memdesc:a41e1ac3455930f0e404b1b8410f1b1c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <br /></td></tr>
@@ -136,26 +145,120 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a49f073df9c221b9ec7d059d2518694eb" id="r_a49f073df9c221b9ec7d059d2518694eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGridRefiner.html">GridRefiner</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a49f073df9c221b9ec7d059d2518694eb">operator=</a> (<a class="el" href="classGridRefiner.html">GridRefiner</a> &amp;&amp;grid_refiner) noexcept=delete</td></tr>
 <tr class="memdesc:a49f073df9c221b9ec7d059d2518694eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment.  <br /></td></tr>
 <tr class="separator:a49f073df9c221b9ec7d059d2518694eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42940ca3000f49fed0c54aecb7a297e3" id="r_a42940ca3000f49fed0c54aecb7a297e3"><td class="memItemLeft" align="right" valign="top"><a id="a42940ca3000f49fed0c54aecb7a297e3" name="a42940ca3000f49fed0c54aecb7a297e3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system)</td></tr>
-<tr class="memdesc:a42940ca3000f49fed0c54aecb7a297e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the object. <br /></td></tr>
+<tr class="memitem:a42940ca3000f49fed0c54aecb7a297e3" id="r_a42940ca3000f49fed0c54aecb7a297e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a42940ca3000f49fed0c54aecb7a297e3">init</a> (const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;fe_system)</td></tr>
+<tr class="memdesc:a42940ca3000f49fed0c54aecb7a297e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the object.  <br /></td></tr>
 <tr class="separator:a42940ca3000f49fed0c54aecb7a297e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b1e9f582591f960958f2a07a1268b6c" id="r_a2b1e9f582591f960958f2a07a1268b6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a2b1e9f582591f960958f2a07a1268b6c">do_adaptive_refinement</a> ()</td></tr>
 <tr class="memdesc:a2b1e9f582591f960958f2a07a1268b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do the adaptive refinement.  <br /></td></tr>
 <tr class="separator:a2b1e9f582591f960958f2a07a1268b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1120852c61463caa5a36ee91d7d0a14" id="r_ae1120852c61463caa5a36ee91d7d0a14"><td class="memItemLeft" align="right" valign="top"><a id="ae1120852c61463caa5a36ee91d7d0a14" name="ae1120852c61463caa5a36ee91d7d0a14"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add_refinement_marker</b> (std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; marker)</td></tr>
+<tr class="memitem:ae1120852c61463caa5a36ee91d7d0a14" id="r_ae1120852c61463caa5a36ee91d7d0a14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#ae1120852c61463caa5a36ee91d7d0a14">add_refinement_marker</a> (std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; marker)</td></tr>
 <tr class="separator:ae1120852c61463caa5a36ee91d7d0a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6ad6ef8cda51de6d3b95cdfaef9da7" id="r_a8c6ad6ef8cda51de6d3b95cdfaef9da7"><td class="memItemLeft" align="right" valign="top"><a id="a8c6ad6ef8cda51de6d3b95cdfaef9da7" name="a8c6ad6ef8cda51de6d3b95cdfaef9da7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clear_refinement_markers</b> ()</td></tr>
+<tr class="memitem:a8c6ad6ef8cda51de6d3b95cdfaef9da7" id="r_a8c6ad6ef8cda51de6d3b95cdfaef9da7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a8c6ad6ef8cda51de6d3b95cdfaef9da7">clear_refinement_markers</a> ()</td></tr>
 <tr class="separator:a8c6ad6ef8cda51de6d3b95cdfaef9da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c28c6ac2d94d10a5bfc53fa5de3ba46" id="r_a4c28c6ac2d94d10a5bfc53fa5de3ba46"><td class="memItemLeft" align="right" valign="top"><a id="a4c28c6ac2d94d10a5bfc53fa5de3ba46" name="a4c28c6ac2d94d10a5bfc53fa5de3ba46"></a>
-const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_refinement_markers</b> () const</td></tr>
+<tr class="memitem:a4c28c6ac2d94d10a5bfc53fa5de3ba46" id="r_a4c28c6ac2d94d10a5bfc53fa5de3ba46"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a4c28c6ac2d94d10a5bfc53fa5de3ba46">get_refinement_markers</a> () const</td></tr>
 <tr class="separator:a4c28c6ac2d94d10a5bfc53fa5de3ba46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:af335971dc17df607da4e6b2c857f6674" id="r_af335971dc17df607da4e6b2c857f6674"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#af335971dc17df607da4e6b2c857f6674">mark_cells_for_refinement_and_coarsening</a> ()</td></tr>
+<tr class="memdesc:af335971dc17df607da4e6b2c857f6674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark cells for refinement and coarsening.  <br /></td></tr>
+<tr class="separator:af335971dc17df607da4e6b2c857f6674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b2a2f8a5cb3c646f63aca894eb5b01b" id="r_a0b2a2f8a5cb3c646f63aca894eb5b01b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a0b2a2f8a5cb3c646f63aca894eb5b01b">mark_cells_for_refinement</a> ()</td></tr>
+<tr class="memdesc:a0b2a2f8a5cb3c646f63aca894eb5b01b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark cells based on function. Note: cells are only marked for refinement but not coarsening.  <br /></td></tr>
+<tr class="separator:a0b2a2f8a5cb3c646f63aca894eb5b01b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a038aa92063b12bd8dc8292886410b63b" id="r_a038aa92063b12bd8dc8292886410b63b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a038aa92063b12bd8dc8292886410b63b">refine_grid</a> ()</td></tr>
+<tr class="memdesc:a038aa92063b12bd8dc8292886410b63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refine the grid.  <br /></td></tr>
+<tr class="separator:a038aa92063b12bd8dc8292886410b63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ac59b2576c86a985a8f36d90436ed5505" id="r_ac59b2576c86a985a8f36d90436ed5505"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#ac59b2576c86a985a8f36d90436ed5505">grid_refinement_context</a></td></tr>
+<tr class="memdesc:ac59b2576c86a985a8f36d90436ed5505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grid refinement context.  <br /></td></tr>
+<tr class="separator:ac59b2576c86a985a8f36d90436ed5505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6534250be7e05409fd02c0a2fcda811b" id="r_a6534250be7e05409fd02c0a2fcda811b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; dealii::UpdateFlags &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a6534250be7e05409fd02c0a2fcda811b">fe_values_flags</a></td></tr>
+<tr class="memdesc:a6534250be7e05409fd02c0a2fcda811b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update flags for the FEValues object as determined by the grid refinement criterion.  <br /></td></tr>
+<tr class="separator:a6534250be7e05409fd02c0a2fcda811b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a843bb07c46109c92e53b5fcd88c22b" id="r_a0a843bb07c46109c92e53b5fcd88c22b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a0a843bb07c46109c92e53b5fcd88c22b">fe_systems</a></td></tr>
+<tr class="memdesc:a0a843bb07c46109c92e53b5fcd88c22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finite element systems for scalar and vector fields.  <br /></td></tr>
+<tr class="separator:a0a843bb07c46109c92e53b5fcd88c22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89f692c39fdfb42440fc378b66dedea" id="r_ad89f692c39fdfb42440fc378b66dedea"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FEValues&lt; dim &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#ad89f692c39fdfb42440fc378b66dedea">fe_values</a></td></tr>
+<tr class="memdesc:ad89f692c39fdfb42440fc378b66dedea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finite element values for scalar and vector fields.  <br /></td></tr>
+<tr class="separator:ad89f692c39fdfb42440fc378b66dedea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b593961819a3eb8aadad4aa094a5385" id="r_a0b593961819a3eb8aadad4aa094a5385"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a0b593961819a3eb8aadad4aa094a5385">num_quad_points</a> = 0</td></tr>
+<tr class="memdesc:a0b593961819a3eb8aadad4aa094a5385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of quadrature points.  <br /></td></tr>
+<tr class="separator:a0b593961819a3eb8aadad4aa094a5385"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ea724159a58652ceb4f887991eca46" id="r_a86ea724159a58652ceb4f887991eca46"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a86ea724159a58652ceb4f887991eca46">max_refinement</a> = 0</td></tr>
+<tr class="memdesc:a86ea724159a58652ceb4f887991eca46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum global refinement level.  <br /></td></tr>
+<tr class="separator:a86ea724159a58652ceb4f887991eca46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ba1105f2b9193b04d6d5dc5f54c12d" id="r_a67ba1105f2b9193b04d6d5dc5f54c12d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a67ba1105f2b9193b04d6d5dc5f54c12d">min_refinement</a> = 0</td></tr>
+<tr class="memdesc:a67ba1105f2b9193b04d6d5dc5f54c12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum global refinement level.  <br /></td></tr>
+<tr class="separator:a67ba1105f2b9193b04d6d5dc5f54c12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bb6162f4a315b380300b4504d90b9b4" id="r_a9bb6162f4a315b380300b4504d90b9b4"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGridRefiner.html#a9bb6162f4a315b380300b4504d90b9b4">marker_functions</a></td></tr>
+<tr class="memdesc:a9bb6162f4a315b380300b4504d90b9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marker functions.  <br /></td></tr>
+<tr class="separator:a9bb6162f4a315b380300b4504d90b9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aefc76a1eaa081532a39c24dcc7562cfe" name="aefc76a1eaa081532a39c24dcc7562cfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefc76a1eaa081532a39c24dcc7562cfe">&#9670;&#160;</a></span>GridRefiner() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;<a class="el" href="classGridRefiner.html">::GridRefiner</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt; dim, degree, number &gt; &amp;&#160;</td>
+          <td class="paramname"><em>grid_refinement_context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a419771c0b3e36afe8203a93e2da01860" name="a419771c0b3e36afe8203a93e2da01860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a419771c0b3e36afe8203a93e2da01860">&#9670;&#160;</a></span>~GridRefiner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::~<a class="el" href="classGridRefiner.html">GridRefiner</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
 <a id="a41e1ac3455930f0e404b1b8410f1b1c4" name="a41e1ac3455930f0e404b1b8410f1b1c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41e1ac3455930f0e404b1b8410f1b1c4">&#9670;&#160;</a></span>GridRefiner() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a41e1ac3455930f0e404b1b8410f1b1c4">&#9670;&#160;</a></span>GridRefiner() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,7 +289,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 </div>
 </div>
 <a id="a50a723e7dc9450edcb4fee167d65a6cb" name="a50a723e7dc9450edcb4fee167d65a6cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50a723e7dc9450edcb4fee167d65a6cb">&#9670;&#160;</a></span>GridRefiner() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a723e7dc9450edcb4fee167d65a6cb">&#9670;&#160;</a></span>GridRefiner() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,6 +320,61 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae1120852c61463caa5a36ee91d7d0a14" name="ae1120852c61463caa5a36ee91d7d0a14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1120852c61463caa5a36ee91d7d0a14">&#9670;&#160;</a></span>add_refinement_marker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::add_refinement_marker </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt;&#160;</td>
+          <td class="paramname"><em>marker</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c6ad6ef8cda51de6d3b95cdfaef9da7" name="a8c6ad6ef8cda51de6d3b95cdfaef9da7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6ad6ef8cda51de6d3b95cdfaef9da7">&#9670;&#160;</a></span>clear_refinement_markers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::clear_refinement_markers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2b1e9f582591f960958f2a07a1268b6c" name="a2b1e9f582591f960958f2a07a1268b6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b1e9f582591f960958f2a07a1268b6c">&#9670;&#160;</a></span>do_adaptive_refinement()</h2>
 
@@ -251,6 +409,128 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 <li>Recompute and reapply the constraints (this is done in the solvers)</li>
 <li>Recompute invm &amp; element volume (if applicable) </li>
 </ol>
+
+</div>
+</div>
+<a id="a4c28c6ac2d94d10a5bfc53fa5de3ba46" name="a4c28c6ac2d94d10a5bfc53fa5de3ba46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c28c6ac2d94d10a5bfc53fa5de3ba46">&#9670;&#160;</a></span>get_refinement_markers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt; dim &gt; &gt; &gt; &amp; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::get_refinement_markers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a42940ca3000f49fed0c54aecb7a297e3" name="a42940ca3000f49fed0c54aecb7a297e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42940ca3000f49fed0c54aecb7a297e3">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::init </td>
+          <td>(</td>
+          <td class="paramtype">const std::map&lt; <a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt; dim &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>fe_system</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the object. </p>
+
+</div>
+</div>
+<a id="a0b2a2f8a5cb3c646f63aca894eb5b01b" name="a0b2a2f8a5cb3c646f63aca894eb5b01b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2a2f8a5cb3c646f63aca894eb5b01b">&#9670;&#160;</a></span>mark_cells_for_refinement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::mark_cells_for_refinement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark cells based on function. Note: cells are only marked for refinement but not coarsening. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">refinement_function</td><td>A function that determines if a cell should be refined. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if any cell was marked for refinement, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="af335971dc17df607da4e6b2c857f6674" name="af335971dc17df607da4e6b2c857f6674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af335971dc17df607da4e6b2c857f6674">&#9670;&#160;</a></span>mark_cells_for_refinement_and_coarsening()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::mark_cells_for_refinement_and_coarsening </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark cells for refinement and coarsening. </p>
 
 </div>
 </div>
@@ -313,6 +593,244 @@ template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
 
 <p>Move assignment. </p>
 <p>Deleted so grid refiner instances aren't moved. </p>
+
+</div>
+</div>
+<a id="a038aa92063b12bd8dc8292886410b63b" name="a038aa92063b12bd8dc8292886410b63b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a038aa92063b12bd8dc8292886410b63b">&#9670;&#160;</a></span>refine_grid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::refine_grid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Refine the grid. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0a843bb07c46109c92e53b5fcd88c22b" name="a0a843bb07c46109c92e53b5fcd88c22b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a843bb07c46109c92e53b5fcd88c22b">&#9670;&#160;</a></span>fe_systems</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FESystem&lt;dim&gt; &gt; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::fe_systems</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finite element systems for scalar and vector fields. </p>
+
+</div>
+</div>
+<a id="ad89f692c39fdfb42440fc378b66dedea" name="ad89f692c39fdfb42440fc378b66dedea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad89f692c39fdfb42440fc378b66dedea">&#9670;&#160;</a></span>fe_values</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;<a class="el" href="structFieldInfo.html#a295c8d1544c52eebed4af0778ad98467">FieldInfo::TensorRank</a>, dealii::FEValues&lt;dim&gt; &gt; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::fe_values</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finite element values for scalar and vector fields. </p>
+
+</div>
+</div>
+<a id="a6534250be7e05409fd02c0a2fcda811b" name="a6534250be7e05409fd02c0a2fcda811b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6534250be7e05409fd02c0a2fcda811b">&#9670;&#160;</a></span>fe_values_flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;dealii::UpdateFlags&gt; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::fe_values_flags</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update flags for the FEValues object as determined by the grid refinement criterion. </p>
+
+</div>
+</div>
+<a id="ac59b2576c86a985a8f36d90436ed5505" name="ac59b2576c86a985a8f36d90436ed5505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac59b2576c86a985a8f36d90436ed5505">&#9670;&#160;</a></span>grid_refinement_context</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGridRefinementContext.html">GridRefinementContext</a>&lt;dim, degree, number&gt; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::grid_refinement_context</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Grid refinement context. </p>
+
+</div>
+</div>
+<a id="a9bb6162f4a315b380300b4504d90b9b4" name="a9bb6162f4a315b380300b4504d90b9b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bb6162f4a315b380300b4504d90b9b4">&#9670;&#160;</a></span>marker_functions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;std::shared_ptr&lt;const <a class="el" href="classCellMarkerBase.html">CellMarkerBase</a>&lt;dim&gt; &gt; &gt; <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::marker_functions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Marker functions. </p>
+
+</div>
+</div>
+<a id="a86ea724159a58652ceb4f887991eca46" name="a86ea724159a58652ceb4f887991eca46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86ea724159a58652ceb4f887991eca46">&#9670;&#160;</a></span>max_refinement</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::max_refinement = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum global refinement level. </p>
+
+</div>
+</div>
+<a id="a67ba1105f2b9193b04d6d5dc5f54c12d" name="a67ba1105f2b9193b04d6d5dc5f54c12d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67ba1105f2b9193b04d6d5dc5f54c12d">&#9670;&#160;</a></span>min_refinement</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::min_refinement = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Minimum global refinement level. </p>
+
+</div>
+</div>
+<a id="a0b593961819a3eb8aadad4aa094a5385" name="a0b593961819a3eb8aadad4aa094a5385"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b593961819a3eb8aadad4aa094a5385">&#9670;&#160;</a></span>num_quad_points</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classGridRefiner.html">GridRefiner</a>&lt; dim, degree, number &gt;::num_quad_points = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of quadrature points. </p>
 
 </div>
 </div>

@@ -16,5 +16,7 @@ var structBoundaryCondition =
     [ "get_boundary_condition_map", "structBoundaryCondition.html#a532ffec182189a883e0f31dcc82284c8", null ],
     [ "get_dirichlet_value", "structBoundaryCondition.html#a8c3e8abec2b25f4d55cca517b6498f51", null ],
     [ "operator==", "structBoundaryCondition.html#a7724eca82134670d65e76468a2573a48", null ],
-    [ "to_string", "structBoundaryCondition.html#a5da711a29e6535c02197ad71418500c7", null ]
+    [ "to_string", "structBoundaryCondition.html#a5da711a29e6535c02197ad71418500c7", null ],
+    [ "boundary_condition_map", "structBoundaryCondition.html#a1137d55300dbe17c0bb72af16d2dc60c", null ],
+    [ "dirichlet_value_map", "structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58", null ]
 ];

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -115,42 +122,44 @@ $(document).ready(function(){initNavTree('exceptions_8h_source.html',''); initRe
   <div class="headertitle"><div class="title">exceptions.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
+<a href="exceptions_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">// SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// SPDX-License-Identifier: GNU Lesser General Public Version 2.1</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;deal.II/base/exceptions.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;prismspf/core/types.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">prismspf/core/types.h</a>&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>PRISMS_PF_BEGIN_NAMESPACE</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// NOLINTBEGIN(readability-identifier-naming)</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#ifdef DEBUG</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Condition, <span class="keyword">typename</span> Exception&gt;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">constexpr</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>AssertThrowDebug(<span class="keyword">const</span> Condition &amp;cond, <span class="keyword">const</span> Exception &amp;exc)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_function" href="exceptions_8h.html#a3aa53aaede4070eba6caaceefd766cac">AssertThrowDebug</a>(<span class="keyword">const</span> Condition &amp;cond, <span class="keyword">const</span> Exception &amp;exc)</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  AssertThrow(cond, exc);</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Condition, <span class="keyword">typename</span> Exception&gt;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">constexpr</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>AssertThrowDebug(<span class="keyword">const</span> Condition &amp;, <span class="keyword">const</span> Exception &amp;)</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a3aa53aaede4070eba6caaceefd766cac">   30</a></span><a class="code hl_function" href="exceptions_8h.html#a3aa53aaede4070eba6caaceefd766cac">AssertThrowDebug</a>(<span class="keyword">const</span> Condition &amp;, <span class="keyword">const</span> Exception &amp;)</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="comment">// Do nothing in release mode</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// NOLINTEND(readability-identifier-naming)</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// NOLINTBEGIN</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>DeclException1(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">   44</a></span><a class="code hl_function" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">DeclException1</a>(</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  FeatureNotImplemented,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  std::string,</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  &lt;&lt; <span class="stringliteral">&quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;</span> &lt;&lt; arg1</div>
@@ -158,10 +167,10 @@ $(document).ready(function(){initNavTree('exceptions_8h_source.html',''); initRe
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>     <span class="stringliteral">&quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot;</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>     <span class="stringliteral">&quot;feel that feature is worthwhile for yourself and others.&quot;</span>);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>DeclExceptionMsg(UnreachableCode, <span class="stringliteral">&quot;This code should not have been reached.&quot;</span>);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">   56</a></span><a class="code hl_function" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a>(UnreachableCode, <span class="stringliteral">&quot;This code should not have been reached.&quot;</span>);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>DeclException2(DependencyNotFound,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>               Types::Index,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">   62</a></span><a class="code hl_function" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a>(DependencyNotFound,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>               <a class="code hl_typedef" href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a>,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>               std::string,</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>               &lt;&lt; <span class="stringliteral">&quot;Attempted access of the variable with index &quot;</span> &lt;&lt; arg1</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>               &lt;&lt; <span class="stringliteral">&quot; and dependency type &quot;</span> &lt;&lt; arg2</div>
@@ -170,12 +179,19 @@ $(document).ready(function(){initNavTree('exceptions_8h_source.html',''); initRe
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">// NOLINTEND</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aexceptions_8h_html_a3aa53aaede4070eba6caaceefd766cac"><div class="ttname"><a href="exceptions_8h.html#a3aa53aaede4070eba6caaceefd766cac">AssertThrowDebug</a></div><div class="ttdeci">PRISMS_PF_BEGIN_NAMESPACE constexpr void AssertThrowDebug(const Condition &amp;, const Exception &amp;)</div><div class="ttdef"><b>Definition</b> exceptions.h:30</div></div>
+<div class="ttc" id="aexceptions_8h_html_a8d86451113c706c6d08508cfafc6380f"><div class="ttname"><a href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a></div><div class="ttdeci">DeclExceptionMsg(UnreachableCode, &quot;This code should not have been reached.&quot;)</div></div>
+<div class="ttc" id="aexceptions_8h_html_ab27ff3a391d6de427c4c5317b62999a8"><div class="ttname"><a href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a></div><div class="ttdeci">DeclException2(DependencyNotFound, Types::Index, std::string,&lt;&lt; &quot;Attempted access of the variable with index &quot;&lt;&lt; arg1&lt;&lt; &quot; and dependency type &quot;&lt;&lt; arg2&lt;&lt; &quot; that was not marked as needed. Please check CustomAttributeLoader.&quot;)</div></div>
+<div class="ttc" id="aexceptions_8h_html_af272af578fc89a269c2755b84af53962"><div class="ttname"><a href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">DeclException1</a></div><div class="ttdeci">DeclException1(FeatureNotImplemented, std::string,&lt;&lt; &quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;&lt;&lt; arg1&lt;&lt; &quot;\nCheck the issues section of PRISMS-PF's github to see if this feature is under &quot; &quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot; &quot;feel that feature is worthwhile for yourself and others.&quot;)</div></div>
+<div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
+<div class="ttc" id="anamespaceTypes_html_ad43767ccbb4d5208362d886b906fb7b7"><div class="ttname"><a href="namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7">Types::Index</a></div><div class="ttdeci">unsigned int Index</div><div class="ttdoc">Type for field indices.</div><div class="ttdef"><b>Definition</b> types.h:19</div></div>
+<div class="ttc" id="atypes_8h_html"><div class="ttname"><a href="types_8h.html">types.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><b>exceptions.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_72d2fbe96e504e5d9d70c5885bd9c513.html">core</a></li><li class="navelem"><a class="el" href="exceptions_8h.html">exceptions.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -107,15 +114,18 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
 <li>gather_exclude_broadcast_nuclei()&#160;:&#160;<a class="el" href="classNucleationHandler.html#a682c95317df5190d439ff081ce694489">NucleationHandler&lt; dim, degree, number &gt;</a></li>
-<li>generate_mesh()&#160;:&#160;<a class="el" href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#af7281276d928e6586b1921522009d10a">TriangulationHandler&lt; dim &gt;</a></li>
+<li>generate_mesh()&#160;:&#160;<a class="el" href="classMesh.html#a0793da0367691c51176aaeb796366e47">Mesh&lt; dim &gt;</a>, <a class="el" href="classRectangularMesh.html#aa6068adb9f2d66743fbe56e90b153239">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a1374378e479ba02b08652e979d0fea8c">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationHandler.html#af7281276d928e6586b1921522009d10a">TriangulationHandler&lt; dim &gt;</a></li>
 <li>get_boundary_condition_list()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a82f53d76b2bcdcd41fa7413f8133b33e">BoundaryParameters&lt; dim &gt;</a></li>
 <li>get_boundary_condition_map()&#160;:&#160;<a class="el" href="structBoundaryCondition.html#a532ffec182189a883e0f31dcc82284c8">BoundaryCondition</a></li>
 <li>get_boundary_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#aea494b06547c936780e66bf3809618c4">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_checkpoint_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a9f3863e6ec0735641b08d72f16fea490">UserInputParameters&lt; dim &gt;</a></li>
+<li>get_cij_matrix()&#160;:&#160;<a class="el" href="classUserConstants.html#a2b19e5b49fbced44f89ba5ab1c884b0d">UserConstants&lt; dim &gt;</a></li>
+<li>get_cij_tensor()&#160;:&#160;<a class="el" href="classUserConstants.html#a91accacbe3b53404bbb45cfdc12ff737">UserConstants&lt; dim &gt;</a></li>
+<li>get_cmd_option()&#160;:&#160;<a class="el" href="classParseCMDOptions.html#a9d4bc9cdc4b80bf2a414da900649ff53">ParseCMDOptions</a></li>
 <li>get_constraint()&#160;:&#160;<a class="el" href="classConstraintHandler.html#a99acfc759ed49649beac3f65f65252f0">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
 <li>get_constraint_handler()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#af25c41b0db602a392afccc1c875e9ace">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#a4d8e37fc39833122ff319973bb022552">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#aed61b68cdc45532ef09defeba2405ca6">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#ac228f5a340e0206699accdf5de65b4e5">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_constraints()&#160;:&#160;<a class="el" href="classConstraintHandler.html#ac4cb661c9d7e57b97d3ea0d2f9cf0e34">ConstraintHandler&lt; dim, degree, number &gt;</a></li>
@@ -157,9 +167,10 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_invm_handler()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a6e714f8bf97c8cf80f7dcc990b3aa2ac">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a66bac73b8f10cd0e462e3a93269948b8">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#af343dd9493834b2dbe6c279267f7aeb0">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_laplacian()&#160;:&#160;<a class="el" href="classVariableContainer.html#ab90df1178ee639b1afab078619f92fee">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_lhs_fields()&#160;:&#160;<a class="el" href="classMGInfo.html#a61165902f84a6bdfd824b87031e2d62e">MGInfo&lt; dim &gt;</a></li>
-<li>get_linear_solve_parameters()&#160;:&#160;<a class="el" href="structLinearSolveParameters.html#ad7a51c3522a517574c31e8b2816766d6">LinearSolveParameters</a>, <a class="el" href="classUserInputParameters.html#a61d570fb6ce886c9117e1f94b4d1c337">UserInputParameters&lt; dim &gt;</a></li>
+<li>get_linear_solve_parameters()&#160;:&#160;<a class="el" href="structLinearSolveParameters.html#a1cf8ea2e7ed79bba9950aaadcf6cada9">LinearSolveParameters</a>, <a class="el" href="classUserInputParameters.html#a61d570fb6ce886c9117e1f94b4d1c337">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_load_initial_condition_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a1de65b26110b8e297a7e81ce08ad4d54">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_local_index()&#160;:&#160;<a class="el" href="classMGInfo.html#a0c961e2c6cb8288474ae99788fd4b8e7">MGInfo&lt; dim &gt;</a></li>
+<li>get_local_solution_index()&#160;:&#160;<a class="el" href="classVariableContainer.html#a2c38db78808d29be871cc19eabe3e692">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_lower_bound()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ace7508bea5621dd932f020c3e64ca96a">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_mapping()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a59faa3d3eacc229a0b28f6d4d2e3f199">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a92c13ddf0ae193e8db6c58b2470c7af2">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a0cba864a57f1118071ec5c45e5ac9e4e">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_matrix_diagonal_inverse()&#160;:&#160;<a class="el" href="classMatrixFreeOperator.html#a460f16c20eb365b574a5c560881db06a">MatrixFreeOperator&lt; dim, degree, number &gt;</a></li>
@@ -193,8 +204,9 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_n_cells()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a6fcebfe92631edeaa378e9650186f4ee">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_n_initial_condition_files()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">LoadInitialConditionParameters</a></li>
 <li>get_n_points()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a025261ecdaccf28fc4835529c69e3ed2">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
+<li>get_n_q_points()&#160;:&#160;<a class="el" href="classVariableContainer.html#a5b6267c0da96fec8654a1764eaf1b922">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_name()&#160;:&#160;<a class="el" href="structVariableAttributes.html#a912399c784fdf168bf5150bb1afb484e">VariableAttributes</a></li>
-<li>get_new_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a485b203a1f83df41698726ac22bc4936">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>get_new_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a0f68c49f91269bacb48839be5c05b824">SolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_newton_update()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a6099ceecdff8a3078fcc0c7e798ec4c1">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_newton_update_global_to_local_solution()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#abe5d05bcc2f0247e6cd5271012d3506d">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_newton_update_l2_norm()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ad9cafbd67a07076ddfa80530adf11a37">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
@@ -206,16 +218,19 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_output()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a6cdaaa5d7880f6e1182627a0932849c8">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_output_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a0ce6ddd620f2c9a5eeb701e6fa738d13">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_parameter_handler()&#160;:&#160;<a class="el" href="classInputFileReader.html#a43516d8890cdc244ac27cdc8ca65b932">InputFileReader</a></li>
+<li>get_parameters_filename()&#160;:&#160;<a class="el" href="classParseCMDOptions.html#ae0592fb24306a984c5a930be3de46e11">ParseCMDOptions</a></li>
 <li>get_patch_subdivisions()&#160;:&#160;<a class="el" href="structOutputParameters.html#a4c7ff6a16a7b1317fb61a5838a5d710b">OutputParameters</a></li>
 <li>get_pde_operator()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#a18dbff54357aff66bc20721ac9e0ccca">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a8c03660522ed7abc933fc35b4c81044c">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#af7df834c71121c6e699e69e17f0375b1">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_pde_operator_float()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#adb1120de2599a3e99c5a7a7e9976eed1">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#ac42452c750847f3bc0a01864341dc656">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#aed0d934cc993453dd364151ac345769c">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_pde_type()&#160;:&#160;<a class="el" href="structVariableAttributes.html#aff2506452f6847ce518c44e7689cb412">VariableAttributes</a></li>
 <li>get_periodicity()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a538e1c2ed71a6a5c36ea4252fff10f6d">BoundaryParameters&lt; dim &gt;</a></li>
-<li>get_pf_tools()&#160;:&#160;<a class="el" href="classPDEOperator.html#a7edd8b269425268bbc67d7a9351519dd">PDEOperator&lt; dim, degree, number &gt;</a></li>
+<li>get_pf_tools()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a7a1168aa44a44f2cc2add15507911141">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEOperator.html#a7edd8b269425268bbc67d7a9351519dd">PDEOperator&lt; dim, degree, number &gt;</a></li>
 <li>get_pinned_point()&#160;:&#160;<a class="el" href="structBoundaryParameters.html#a0cc87d8496a7c6c754919bf08bd43ce4">BoundaryParameters&lt; dim &gt;</a></li>
+<li>get_q_point_location()&#160;:&#160;<a class="el" href="classVariableContainer.html#a9fd71a1ecd355d7c6c19937dbe3b043c">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_radius()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#acf1bb39a8e60f8d228feaa78faac4255">SpatialDiscretization&lt; dim &gt;</a>, <a class="el" href="classSphericalMesh.html#a956ea745f028c4cbd8028e679628661f">SphericalMesh&lt; dim &gt;</a></li>
 <li>get_read_initial_conditions_from_file()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#aba56dc8491df4d2fa9f3bfa81401d3c5">LoadInitialConditionParameters</a></li>
 <li>get_refinement_criteria()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ac741099c1cd22298732b8856e662147e">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>get_refinement_markers()&#160;:&#160;<a class="el" href="classGridRefiner.html#a4c28c6ac2d94d10a5bfc53fa5de3ba46">GridRefiner&lt; dim, degree, number &gt;</a></li>
 <li>get_refinement_radius()&#160;:&#160;<a class="el" href="structNucleationParameters.html#af6b8d32cc895fa58a18fb6c9cf6e6449">NucleationParameters</a></li>
 <li>get_remeshing_period()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#a8f57dac6076fe3111dc45acd675b426a">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_residual()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ac1575b703089fecbea98aeee0dc9b89d">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
@@ -226,7 +241,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_scalars_names()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a38b6eb828f026967cfcdd047414ff322">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_seeding_increments()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a5172ddb92117dab3f25bd71838108cb9">NucleationParameters</a></li>
 <li>get_seeding_time()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a000b2981783486287fceb8c8d892f7bd">NucleationParameters</a></li>
-<li>get_size()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>get_size()&#160;:&#160;<a class="el" href="classRectangularMesh.html#a0067cf007378cfea4337441a0df39de4">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_solution_handler()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#acbb56d01319ae922fd42be920ac5a127">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#ad7dbe15ba4c5487211ddd3775b7f92c3">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a382d46ddd79012ef69a52348f9bd4bc2">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a09b6295d682287bb5f1b2843bd532535">SolverContext&lt; dim, degree, number &gt;</a></li>
 <li>get_solution_vector()&#160;:&#160;<a class="el" href="classSolutionHandler.html#a853170fddb360c47a9f32baff6b35647">SolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_solve_block()&#160;:&#160;<a class="el" href="classSolverBase.html#a4fe9748e84b22f239cead0cc6d4b8ef0">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="structVariableAttributes.html#ab1111b93b64f7400ca09f0cf6e582ae0">VariableAttributes</a></li>
@@ -234,7 +249,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_solver_control()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ad14623d89e8d8ca24b758cff53213d8c">LinearSolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_spatial_discretization()&#160;:&#160;<a class="el" href="classUserInputParameters.html#aba6a259333d8086d8417b6d2e4b32771">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_src_solution_subset()&#160;:&#160;<a class="el" href="classConcurrentSolver.html#a6dccd4cbf125481df183d7bde7e51c72">ConcurrentSolver&lt; dim, degree, number &gt;</a></li>
-<li>get_subdivisions()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>get_subdivisions()&#160;:&#160;<a class="el" href="classRectangularMesh.html#a46c4d23d37a9ebf0d2e2fad8b12ee4d8">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="structSpatialDiscretization.html#a42eb18131ab4ff7a2bfd521fd1b72414">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_subset_attributes()&#160;:&#160;<a class="el" href="classLinearSolverBase.html#ae7f23e37de4152b8b184079ba3ee5977">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#a3371e5fdf3265e19a265407d3ff63178">SolverBase&lt; dim, degree, number &gt;</a></li>
 <li>get_symmetric_gradient()&#160;:&#160;<a class="el" href="classVariableContainer.html#a4e7641cc3a016ed95b1589cc9fdf5992">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_system_matrix()&#160;:&#160;<a class="el" href="classConcurrentSolver.html#a6919798c751973e98ea3566404376430">ConcurrentSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#af605ecc5324779405a72eda71e084c85">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSequentialSolver.html#a3a95495a8d97e9ad3f9411a90844fbb4">SequentialSolver&lt; dim, degree, number &gt;</a></li>
@@ -251,7 +266,7 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_upper_bound()&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#a2bc7092512142e8f884b1b5c9a6950a9">SpatialDiscretization&lt; dim &gt;</a></li>
 <li>get_user_constants()&#160;:&#160;<a class="el" href="classUserInputParameters.html#aa8919249b1d943666f03461f6016dbe1">UserInputParameters&lt; dim &gt;</a></li>
 <li>get_user_inputs()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#a23ff117fb4794a212882934a4c2a31ae">GridRefinementContext&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolverBase.html#afb07f81027304a530f1b68f3c353b55e">LinearSolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classPDEOperator.html#ab6b0d9458704bfa92c9dd9fe040d4aeb">PDEOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverBase.html#ad04cc95439b41fd2120af073ee1cdd9f">SolverBase&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolverContext.html#a09ed12fc430331b593a0d6e2f67cc047">SolverContext&lt; dim, degree, number &gt;</a></li>
-<li>get_value()&#160;:&#160;<a class="el" href="classVariableContainer.html#a68fcd59cbfdfdbb0c3a7af4f2766cbc7">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>get_value()&#160;:&#160;<a class="el" href="classReadBinary.html#a036a6ebd12854907038fa3bb22e01d28">ReadBinary&lt; dim, number &gt;</a>, <a class="el" href="classVariableContainer.html#a68fcd59cbfdfdbb0c3a7af4f2766cbc7">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_value_lower_bound()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ad3fc7658e41eb166e32a4cca4facff5d">GridRefinement::RefinementCriterion</a></li>
 <li>get_value_upper_bound()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a4f708f87381ba9db3d206fad05b8030f">GridRefinement::RefinementCriterion</a></li>
 <li>get_var_attributes()&#160;:&#160;<a class="el" href="classInputFileReader.html#a62c3ef7cb2b39de9b1154bedd1e8060b">InputFileReader</a>, <a class="el" href="classVariableAttributeLoader.html#a5a2b54ccc2b012fca367d4225e1eb720">VariableAttributeLoader</a></li>
@@ -259,8 +274,20 @@ $(document).ready(function(){initNavTree('functions_g.html',''); initResizable()
 <li>get_vector_curl()&#160;:&#160;<a class="el" href="classVariableContainer.html#a7b00d794ecad460daac9cee183e0f7d7">VariableContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_vector_value()&#160;:&#160;<a class="el" href="classReadBinary.html#ae9af07a8712437645674e88279f1bbdd">ReadBinary&lt; dim, number &gt;</a>, <a class="el" href="classReadFieldBase.html#ab395ec2d93523d8079a0962c0b14db14">ReadFieldBase&lt; dim, number &gt;</a>, <a class="el" href="classReadUnstructuredVTK.html#ae37e92a2860fe3b410f10997e5354d84">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_vectors_names()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a59b44bdd14602633f788b92c7dbc93f6">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
+<li>global_field_index&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a635e51f4f7112cf16b636595d407035e">GridRefinement::RefinementCriterion</a></li>
+<li>global_index&#160;:&#160;<a class="el" href="structFieldInfo.html#a484a52ac5f0122ae6bc7ce118ee4c253">FieldInfo</a></li>
+<li>global_mg_level&#160;:&#160;<a class="el" href="classMGInfo.html#a7676a7b7d1cc47b165b930d199e7df5a">MGInfo&lt; dim &gt;</a></li>
+<li>global_min_level&#160;:&#160;<a class="el" href="classConstraintHandler.html#a0f404c4025ec7d7defaede841dac509c">ConstraintHandler&lt; dim, degree, number &gt;</a>, <a class="el" href="classDofHandler.html#a0b3d45c1b5e3bac2e9d9c615b5b981ca">DofHandler&lt; dim &gt;</a>, <a class="el" href="classSolutionHandler.html#a949b23377f3e29658eae2978236869e4">SolutionHandler&lt; dim, number &gt;</a></li>
+<li>global_refinement&#160;:&#160;<a class="el" href="structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2">SpatialDiscretization&lt; dim &gt;</a></li>
+<li>global_to_local_solution&#160;:&#160;<a class="el" href="classConcurrentSolver.html#a3de092ced11addb2bf1e834144f5eebc">ConcurrentSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMatrixFreeOperator.html#ac083253bb8e927cb6628d4072a1ae818">MatrixFreeOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSequentialSolver.html#a299105cc97d6cd0ae7f701ab0c78fa0d">SequentialSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classVariableContainer.html#a348d68b7385ec4d0c1a0f9120425984a">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>global_to_local_solution_exists()&#160;:&#160;<a class="el" href="classVariableContainer.html#a4c4b97cddf78bad475aadd60e510bab2">VariableContainer&lt; dim, degree, number &gt;</a></li>
+<li>gmg_solvers&#160;:&#160;<a class="el" href="classSequentialSolver.html#a9ad6e1a70fd5c2f8050e023208e49ed3">SequentialSolver&lt; dim, degree, number &gt;</a></li>
 <li>GMGSolver()&#160;:&#160;<a class="el" href="classGMGSolver.html#af9dfbcb44f848847178f198ad76e68d9">GMGSolver&lt; dim, degree, number &gt;</a></li>
+<li>gradient_lower_bound&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#a475bbf66b917822f1bc58ec2326f3539">GridRefinement::RefinementCriterion</a></li>
 <li>gradient_magnitude_above_threshold()&#160;:&#160;<a class="el" href="classGridRefinement_1_1RefinementCriterion.html#ac7ed0b368e82e0221ef02db5d637f18e">GridRefinement::RefinementCriterion</a></li>
+<li>grid_refinement_context&#160;:&#160;<a class="el" href="classGridRefiner.html#ac59b2576c86a985a8f36d90436ed5505">GridRefiner&lt; dim, degree, number &gt;</a></li>
+<li>grid_refiner&#160;:&#160;<a class="el" href="classPDEProblem.html#a81305eca89f044512353513f1ee22bed">PDEProblem&lt; dim, degree, number &gt;</a></li>
+<li>grid_refiner_context&#160;:&#160;<a class="el" href="classPDEProblem.html#a66951704dc23105992d9053c6dd2c536">PDEProblem&lt; dim, degree, number &gt;</a></li>
 <li>GridRefinementContext()&#160;:&#160;<a class="el" href="classGridRefinementContext.html#ae91ccb11f166f6880a1adcce261d0dce">GridRefinementContext&lt; dim, degree, number &gt;</a></li>
 <li>GridRefiner()&#160;:&#160;<a class="el" href="classGridRefiner.html#aefc76a1eaa081532a39c24dcc7562cfe">GridRefiner&lt; dim, degree, number &gt;</a></li>
 </ul>

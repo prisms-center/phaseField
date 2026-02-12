@@ -1,5 +1,7 @@
 var classIdentitySolver =
 [
+    [ "SystemMatrixType", "classIdentitySolver.html#a852349ae40283cafff99e075afe15971", null ],
+    [ "VectorType", "classIdentitySolver.html#a713e8a4b35a1634fede3b8c46e662294", null ],
     [ "IdentitySolver", "classIdentitySolver.html#ad2805f6f757cdde67c07a15f181714a1", null ],
     [ "~IdentitySolver", "classIdentitySolver.html#acbdf54988db57b061e9aaf62e6f77414", null ],
     [ "IdentitySolver", "classIdentitySolver.html#a14a4ad3f9f4791e804ba035e8841d28f", null ],

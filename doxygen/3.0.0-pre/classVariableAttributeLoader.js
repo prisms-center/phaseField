@@ -4,6 +4,8 @@ var classVariableAttributeLoader =
     [ "~VariableAttributeLoader", "classVariableAttributeLoader.html#ab4ff697662bcae8e80863156e1b3c573", null ],
     [ "VariableAttributeLoader", "classVariableAttributeLoader.html#a895311a46c378e8c48c7949f501482f7", null ],
     [ "VariableAttributeLoader", "classVariableAttributeLoader.html#af758622815fd5b413e2f5e91a6b3da00", null ],
+    [ "compute_shared_dependencies", "classVariableAttributeLoader.html#a350bc87ac499ae1168f373b57cdfe0a1", null ],
+    [ "compute_subset_attributes", "classVariableAttributeLoader.html#a955ba9807789cc0f7835bd558948db4a", null ],
     [ "get_var_attributes", "classVariableAttributeLoader.html#a5a2b54ccc2b012fca367d4225e1eb720", null ],
     [ "init_variable_attributes", "classVariableAttributeLoader.html#af080b9bdfee9ff74083a40653d6a94d4", null ],
     [ "insert_dependencies_gradient_term_lhs", "classVariableAttributeLoader.html#a8bca90c793be0882b03d0a7cae66666a", null ],
@@ -13,6 +15,7 @@ var classVariableAttributeLoader =
     [ "load_variable_attributes", "classVariableAttributeLoader.html#aaec3896d284f17c75452f5306f1f06d8", null ],
     [ "operator=", "classVariableAttributeLoader.html#a1d2e826151dd66b0d4f9446b9937d94b", null ],
     [ "operator=", "classVariableAttributeLoader.html#a3f0bb6f29bbaeb2f5e14d3436949816c", null ],
+    [ "populate_dependencies", "classVariableAttributeLoader.html#ae3fb08f9aeb8a6d54c6b37fbc08a75c7", null ],
     [ "set_dependencies_gradient_term_lhs", "classVariableAttributeLoader.html#a3813e0de10fb6cc17c010a131f330a19", null ],
     [ "set_dependencies_gradient_term_rhs", "classVariableAttributeLoader.html#a13232c48a740dc3228e3ca165f7d2138", null ],
     [ "set_dependencies_value_term_lhs", "classVariableAttributeLoader.html#a55ac79d7113fda3e05493b96ed855aec", null ],
@@ -22,5 +25,10 @@ var classVariableAttributeLoader =
     [ "set_solve_block", "classVariableAttributeLoader.html#aac25ceb35f589943b2d9cca5a756187d", null ],
     [ "set_variable_equation_type", "classVariableAttributeLoader.html#acc930b43e656b64830ba363d3e57a7e7", null ],
     [ "set_variable_name", "classVariableAttributeLoader.html#a05d4c65ca045bcdd1198897eb4e785d0", null ],
-    [ "set_variable_type", "classVariableAttributeLoader.html#aa23470aef9b522511fce8615f49f73d5", null ]
+    [ "set_variable_type", "classVariableAttributeLoader.html#aa23470aef9b522511fce8615f49f73d5", null ],
+    [ "validate_attributes", "classVariableAttributeLoader.html#a5001e06fdcff765c4b08cd81f01c13ac", null ],
+    [ "validate_dependencies", "classVariableAttributeLoader.html#aca2a0f753f134f2499776db44e89b4d0", null ],
+    [ "validate_old_solution_dependencies", "classVariableAttributeLoader.html#aa4d11f49c625260ef3446a66df9248dc", null ],
+    [ "validate_variable_name", "classVariableAttributeLoader.html#a4e4cde131d056a496793b4a50d93ffe5", null ],
+    [ "var_attributes", "classVariableAttributeLoader.html#affa75595fc50c71c1c0fb3b387062ae1", null ]
 ];

@@ -18,6 +18,13 @@
   <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="custom.css" rel="stylesheet" type="text/css"/>
@@ -121,19 +128,67 @@ $(document).ready(function(){initNavTree('structNonlinearSolverParameters.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a102446805d57273733d71f3dc298a5a6" id="r_a102446805d57273733d71f3dc298a5a6"><td class="memItemLeft" align="right" valign="top"><a id="a102446805d57273733d71f3dc298a5a6" name="a102446805d57273733d71f3dc298a5a6"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>step_length</b> = 1.0</td></tr>
+<tr class="memitem:a102446805d57273733d71f3dc298a5a6" id="r_a102446805d57273733d71f3dc298a5a6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolverParameters.html#a102446805d57273733d71f3dc298a5a6">step_length</a> = 1.0</td></tr>
 <tr class="separator:a102446805d57273733d71f3dc298a5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9c2d85cf60c6d8ca722c1e44ebd5a6d" id="r_ad9c2d85cf60c6d8ca722c1e44ebd5a6d"><td class="memItemLeft" align="right" valign="top"><a id="ad9c2d85cf60c6d8ca722c1e44ebd5a6d" name="ad9c2d85cf60c6d8ca722c1e44ebd5a6d"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>max_iterations</b> = Defaults::iterations</td></tr>
+<tr class="memitem:ad9c2d85cf60c6d8ca722c1e44ebd5a6d" id="r_ad9c2d85cf60c6d8ca722c1e44ebd5a6d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolverParameters.html#ad9c2d85cf60c6d8ca722c1e44ebd5a6d">max_iterations</a> = <a class="el" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></td></tr>
 <tr class="separator:ad9c2d85cf60c6d8ca722c1e44ebd5a6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cb4140d98eb62e33dccfa9c8da6c65c" id="r_a3cb4140d98eb62e33dccfa9c8da6c65c"><td class="memItemLeft" align="right" valign="top"><a id="a3cb4140d98eb62e33dccfa9c8da6c65c" name="a3cb4140d98eb62e33dccfa9c8da6c65c"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>tolerance_value</b> = Defaults::tolerance</td></tr>
+<tr class="memitem:a3cb4140d98eb62e33dccfa9c8da6c65c" id="r_a3cb4140d98eb62e33dccfa9c8da6c65c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNonlinearSolverParameters.html#a3cb4140d98eb62e33dccfa9c8da6c65c">tolerance_value</a> = <a class="el" href="namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081">Defaults::tolerance</a></td></tr>
 <tr class="separator:a3cb4140d98eb62e33dccfa9c8da6c65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that stores relevant nonlinear solve information of a certain field. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad9c2d85cf60c6d8ca722c1e44ebd5a6d" name="ad9c2d85cf60c6d8ca722c1e44ebd5a6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9c2d85cf60c6d8ca722c1e44ebd5a6d">&#9670;&#160;</a></span>max_iterations</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int NonlinearSolverParameters::max_iterations = <a class="el" href="namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b">Defaults::iterations</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a102446805d57273733d71f3dc298a5a6" name="a102446805d57273733d71f3dc298a5a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a102446805d57273733d71f3dc298a5a6">&#9670;&#160;</a></span>step_length</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double NonlinearSolverParameters::step_length = 1.0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3cb4140d98eb62e33dccfa9c8da6c65c" name="a3cb4140d98eb62e33dccfa9c8da6c65c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cb4140d98eb62e33dccfa9c8da6c65c">&#9670;&#160;</a></span>tolerance_value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double NonlinearSolverParameters::tolerance_value = <a class="el" href="namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081">Defaults::tolerance</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/home/runner/work/phaseField/phaseField/include/prismspf/user_inputs/<a class="el" href="nonlinear__solve__parameters_8h_source.html">nonlinear_solve_parameters.h</a></li>
 </ul>
 </div><!-- contents -->
