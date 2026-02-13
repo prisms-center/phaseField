@@ -116,9 +116,6 @@ your machine. These include:
 - Caliper (for profiling) **[optional]**
 - deal.II (version 9.6 or higher)
 
-<div class="tabbed">
-
-- <b class="tab-title">Linux</b>
 You can install these prerequisites however you like. The
 first five are typically available on most OSes through your package manager. For example,
 on Ubuntu, you can install them with:
@@ -170,16 +167,6 @@ make -j <numprocs> install
 Be sure to permanently set the `VTK_DIR` environment variable to point to the VTK
 installation (e.g.,`$HOME/vtk-install/lib/cmake/vtk-9.xx`).
 
-- <b class="tab-title">MacOS</b> This is the content of tab 2
-
-
-- <b class="tab-title">Windows</b> **PRISMS-PF has no plans to support Windows.** If you
-are on Windows, we recommend using Docker, another virtual machine, or Windows Subsystem
-for Linux (WSL) to run a Linux environment. Please follow the Linux instructions if you
-use any of those options.
-
-</div>
-
 \subsection install_prismspf Installing PRISMS-PF
 
 Once you have all the prerequisites installed, you can clone the PRISMS-PF repository
@@ -190,7 +177,7 @@ cd phaseField
 mkdir build
 cd build
 cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=<prisms-install-dir> ..
-make -j <nprocs>
+make -j <nprocs> install
 ```
 This will build the PRISMS-PF library in both debug and release modes.
 Next, set the `PRISMS_PF_DIR` environment variable to point to the PRISMS-PF installation
@@ -204,9 +191,4 @@ cmake .
 make
 mpirun -n <nprocs> ./main
 ```
-(Note: there is a known bug with compiling application using multiple processors for the
-first time. This will be fixed in a future release. After compiling once, the issue should
-go away.)
-
-
 */

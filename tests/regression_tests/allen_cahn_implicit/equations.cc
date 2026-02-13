@@ -19,7 +19,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(0, ImplicitTimeDependent);
   set_dependencies_value_term_rhs(0, "n, old_1(n)");
   set_dependencies_gradient_term_rhs(0, "grad(n)");
-  set_dependencies_value_term_lhs(0, "change(n)");
+  set_dependencies_value_term_lhs(0, "n, change(n)");
   set_dependencies_gradient_term_lhs(0, "grad(change(n))");
 
   set_variable_name(1, "mg_n");
@@ -79,11 +79,12 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
 {
   if (index == 0)
     {
+      ScalarValue n         = variable_list.template get_value<ScalarValue>(0);
       ScalarValue change_n  = variable_list.template get_value<ScalarValue>(0, Change);
       ScalarGrad  change_nx = variable_list.template get_gradient<ScalarGrad>(0, Change);
 
-      ScalarValue fnV          = 4.0 * change_n * (change_n - 1.0) * (change_n - 0.5);
-      ScalarValue eq_change_n  = change_n + get_timestep() * MnV * fnV;
+      ScalarValue fnnV         = 12.0 * n * (n - 1.0) + 2.0;
+      ScalarValue eq_change_n  = change_n * (1.0 + get_timestep() * MnV * fnnV);
       ScalarGrad  eqx_change_n = get_timestep() * KnV * MnV * change_nx;
 
       variable_list.set_value_term(0, eq_change_n, Change);

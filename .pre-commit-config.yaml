@@ -10,8 +10,6 @@ repos:
   - id: check-merge-conflict
   - id: end-of-file-fixer
     exclude: ^contrib/catch/
-  - id: no-commit-to-branch
-    args: [--branch,master]
   - id: trailing-whitespace
     exclude: ^contrib/catch/
 - repo: https://github.com/gitleaks/gitleaks

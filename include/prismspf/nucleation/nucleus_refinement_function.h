@@ -10,11 +10,12 @@
 #include <prismspf/core/cell_marker_base.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/nucleation/nucleus.h>
+
 #include <prismspf/user_inputs/nucleation_parameters.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleus.h>
 
 #include <iostream>
 #include <memory>

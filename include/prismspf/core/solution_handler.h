@@ -3,12 +3,18 @@
 
 #pragma once
 
+#include <deal.II/base/memory_space.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/distributed/solution_transfer.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
+#include <prismspf/core/matrix_free_handler.h>
+#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -16,19 +22,61 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+/**
+ * @brief Struct to hold the solution vectors.
+ *
+ * In PRISMS-PF we have several different allowable solves. At the core, each solve
+ * updates some number of solution vectors using some number of old solutions.
+ *
+ * For explicit updates, we can represent it using a summation of old solutions with
+ * arbitrary coefficients.
+ *
+ * \f[
+ *  u^{n} = \sum_{j=1}^m a_j u^{n-j} = a_1 u^{n-1} + a_2 u^{n-2} ... a_j u^{n-j}
+ * \f]
+ *
+ * \remark \f$ m \f$ is finite and determined at compile time through
+ * `prismspf::Numbers::max_saved_solutions`.
+ *
+ * For implicit updates, this becomes a little more complicated due to the use of
+ * Newton's method, where \f$ u^n = u^{n-1} + \alpha^n \Delta u^n \f$. Here \f$ \alpha^n
+ * \f$ is a damping parameter and \f$ \Delta u^n \f$ is the solution of the Newton step.
+ * For each Newton step we solve for \f$ \Delta u^n \f$ and add it to the estimate of \f$
+ * u^n \f$, iterating until we reach a satisfactory convergence.
+ *
+ * \f[
+ *  u^{n} = a_0 \alpha^n \Delta u^n + \sum_{j=1}^m a_j u^{n-j} =  a_0 \alpha^n \Delta u^n
+ * + a_1 u^{n-1} + a_2 u^{n-2} ... a_j u^{n-j}
+ * \f]
+ */
 template <unsigned int dim, typename number>
-class MatrixFreeContainer;
+struct SolutionBlock
+{
+  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
+  using SolutionVector = BlockVector::BlockType;
 
-template <unsigned int dim>
-class MGInfo;
+  /**
+   * @brief Solutions being solved for.
+   */
+  BlockVector solutions;
 
-struct VariableAttributes;
+  /**
+   * @brief Old solution states.
+   */
+  std::array<BlockVector, Numbers::max_saved_solutions> old_solutions;
+
+  /**
+   * @brief Newton step solutions for implicit solves.
+   */
+  BlockVector change_solutions;
+};
 
 /**
  * @brief Class that manages solution initialization and swapping with old solutions.
  */
 template <unsigned int dim, typename number>
 class SolutionHandler
+
 {
 public:
   using VectorType   = dealii::LinearAlgebra::distributed::Vector<number>;

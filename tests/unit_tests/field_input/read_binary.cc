@@ -3,8 +3,9 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/config.h>
 #include <prismspf/field_input/read_binary.h>
+
+#include <prismspf/config.h>
 
 #include "catch.hpp"
 
