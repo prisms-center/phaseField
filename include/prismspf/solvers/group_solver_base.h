@@ -116,7 +116,7 @@ public:
   }
 
   /**
-   * @brief Reinitialize the solver.
+   * @brief Reinitialize the solution vectors & apply constraints.
    */
   virtual void
   reinit()
@@ -229,7 +229,7 @@ public:
   /**
    * @brief Get the solution handler.
    */
-  [[nodiscard]] SolutionHandler<dim, number> &
+  [[nodiscard]] GroupSolutionHandler<dim, number> &
   get_solution_manager() const;
 
   /**
