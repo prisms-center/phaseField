@@ -12,6 +12,20 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
+std::set<GroupSolutionHandler<dim, number>>
+get_solution_managers_from_solvers(
+  const std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+{
+  // Todo: upgrade to recursive for aux solvers
+  std::set<GroupSolutionHandler<dim, number>> solution_managers;
+  for (const auto &solver : solvers)
+    {
+      solution_managers.insert(solver->get_solution_manager());
+    }
+  return solution_managers;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
   const std::vector<FieldAttributes>                            &_field_attributes,
   const std::vector<SolveGroup>                                 &_solve_groups,
@@ -23,15 +37,16 @@ Problem<dim, degree, number>::Problem(
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
   , triangulation_manager(false)
-  , dof_manager(field_attributes, solve_groups)
+  , dof_manager(field_attributes)
   , constraint_manager(field_attributes, solve_groups, dof_manager, _pde_operator)
   , solvers(solve_groups.size(), nullptr)
-  , solver_context(_user_inputs,
-                   triangulation_manager,
-                   constraint_manager,
-                   dof_manager,
-                   SystemWide<dim, degree>::mapping,
-                   _pde_operator)
+  , solution_indexer(get_solution_managers_from_solvers(solvers))
+  , solve_context(_user_inputs,
+                  triangulation_manager,
+                  constraint_manager,
+                  dof_manager,
+                  solution_indexer,
+                  _pde_operator)
   , grid_refiner(_user_inputs, triangulation_manager)
 {}
 
@@ -85,17 +100,16 @@ Problem<dim, degree, number>::init_system()
       switch (solve_group.pde_type)
         {
           case PDEType::Explicit:
-            solver =
-              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
-                                                                    solver_context);
+            solver = std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
+                                                                           solve_context);
             break;
           case PDEType::Linear:
             solver = std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
-                                                                         solver_context);
+                                                                         solve_context);
             break;
           case PDEType::Newton:
             solver = std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
-                                                                         solver_context);
+                                                                         solve_context);
             break;
           default:
             AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
@@ -110,7 +124,7 @@ Problem<dim, degree, number>::init_system()
   Timer::start_section("Update ghosts");
   for (auto solver : solvers)
     {
-      solver.update_ghosts();
+      solver->update_ghosts();
     }
   Timer::end_section("Update ghosts");
 
@@ -137,13 +151,13 @@ Problem<dim, degree, number>::init_system()
       // Reinitialize the solvers
       for (auto solver : solvers)
         {
-          solver.reinit();
+          solver->reinit();
         }
       // Update the ghosts
       Timer::start_section("Update ghosts");
       for (auto solver : solvers)
         {
-          solver.update_ghosts();
+          solver->update_ghosts();
         }
       Timer::end_section("Update ghosts");
 
@@ -229,7 +243,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment))
     {
       any_nucleation_occurred =
-        NucleationHandler<dim, degree, number>::attempt_nucleation(solver_context,
+        NucleationHandler<dim, degree, number>::attempt_nucleation(solve_context,
                                                                    pf_tools->nuclei_list);
     }
   Timer::end_section("Check for nucleation");
@@ -250,14 +264,14 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       // Reinitialize the solvers
       for (auto solver : solvers)
         {
-          solver.reinit();
+          solver->reinit();
         }
 
       // Update the ghosts
       Timer::start_section("Update ghosts");
       for (auto solver : solvers)
         {
-          solver.update_ghosts();
+          solver->update_ghosts();
         }
       Timer::end_section("Update ghosts");
     }
@@ -277,10 +291,8 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::start_section("Solve Increment");
   for (auto solver : solvers)
     {
-      solver.reinit(sim_timer);
-      solver.solve();
+      solver->solve();
     }
-
   Timer::end_section("Solve Increment");
 
   // Output results if needed
@@ -288,7 +300,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     {
       Timer::start_section("Output");
       SolutionOutput<dim, number>(field_attributes,
-                                  solver_context->solution_indexer,
+                                  solve_context->solution_indexer,
                                   dof_manager,
                                   degree,
                                   "solution",
@@ -300,7 +312,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       for (unsigned int index = 0; index < field_attributes.size(); ++index)
         {
           const auto &solution =
-            solver_context->solution_indexer.get_solution_vector(index);
+            solve_context->solution_indexer.get_solution_vector(index);
           ConditionalOStreams::pout_base()
             << " Solution index " << index << " l2-norm: " << solution.l2_norm()
             << " integrated value: ";
@@ -334,5 +346,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       solver.update();
     }
 }
+
+// #include "core/problem.inst"
 
 PRISMS_PF_END_NAMESPACE

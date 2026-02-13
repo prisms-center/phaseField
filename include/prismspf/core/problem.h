@@ -13,6 +13,7 @@
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/solvers/solve_context.h>
 #include <prismspf/solvers/solvers.h>
 
 #include <prismspf/utilities/integrator.h>
@@ -22,7 +23,6 @@
 #include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include "prismspf/core/field_attributes.h"
-#include "prismspf/core/group_solution_handler.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -116,9 +116,14 @@ private:
   std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
 
   /**
+   * @brief Solution indexer
+   */
+  SolutionIndexer<dim, number> solution_indexer;
+
+  /**
    * @brief Solver context.
    */
-  SolverContext<dim, degree, number> solver_context;
+  SolveContext<dim, degree, number> solve_context;
 
   /**
    * @brief Grid refiner.
