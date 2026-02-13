@@ -3,11 +3,11 @@
 
 #include <deal.II/base/exceptions.h>
 
+#include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solution_indexer.h>
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/group_solution_handler.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
