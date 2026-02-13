@@ -49,7 +49,7 @@ $$
 
 $$
 \begin{align}
-  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \nabla^2 c)) 
+  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \nabla^2 c))
 \end{align}
 $$
 
@@ -73,7 +73,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-  \mu^{n+1} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n} 
+  \mu^{n+1} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n}
 \end{align}
 $$
 

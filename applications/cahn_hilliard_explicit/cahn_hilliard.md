@@ -49,7 +49,7 @@ $$
 
 $$
 \begin{align}
-  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \nabla^2 c)) 
+  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \nabla^2 c))
 \end{align}
 $$
 
@@ -81,7 +81,7 @@ The auxiliary field is updated as
 
 $$
 \begin{align}
-  \mu^{n+1} &= f_{,c}^{n+1} -  \kappa \nabla^2 c^{n+1} 
+  \mu^{n+1} &= f_{,c}^{n+1} -  \kappa \nabla^2 c^{n+1}
 \end{align}
 $$
 

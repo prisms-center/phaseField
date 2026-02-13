@@ -46,7 +46,7 @@ $$
 
 $$
 \begin{align}
-\varepsilon^0(c, \eta_1, \eta_2, \eta_3) &= H(\eta_1) \varepsilon^0_{\eta_1} (c_{\beta})+ H(\eta_2) \varepsilon^0_{\eta_2} (c_{\beta}) + H(\eta_3) \varepsilon^0_{\eta_3} (c_{\beta}) 
+\varepsilon^0(c, \eta_1, \eta_2, \eta_3) &= H(\eta_1) \varepsilon^0_{\eta_1} (c_{\beta})+ H(\eta_2) \varepsilon^0_{\eta_2} (c_{\beta}) + H(\eta_3) \varepsilon^0_{\eta_3} (c_{\beta})
 C(\eta_1, \eta_2, \eta_3) \\
 &= H(\eta_1) C_{\eta_1}+ H(\eta_2) C_{\eta_2} + H(\eta_3) C_{\eta_3} + \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right)  C_{\alpha}
 \end{align}

@@ -21,7 +21,7 @@ $$
 
 $$
 \begin{align}
-  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta 
+  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta
 \end{align}
 $$
 
@@ -50,7 +50,7 @@ $$
 
 $$
 \begin{align}
-  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta) 
+  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta)
 \end{align}
 $$
 

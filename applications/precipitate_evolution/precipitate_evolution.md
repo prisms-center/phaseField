@@ -105,7 +105,7 @@ Considering variations on the displacement $u$ of the from $u+\epsilon w$, we ha
 
 $$
 \begin{align}
-\delta_u \Pi =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+\delta_u \Pi =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
@@ -115,7 +115,7 @@ Now consider
 
 $$
 \begin{align}
-R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0 
+R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
@@ -123,7 +123,7 @@ We solve for $R=0$ using a gradient scheme which involves the following lineariz
 
 $$
 \begin{align}
-R(u)|_{u_0} + \int_{\Omega} \frac{\delta R}{\delta u} \Delta u ~dV = 0 
+R(u)|_{u_0} + \int_{\Omega} \frac{\delta R}{\delta u} \Delta u ~dV = 0
 \end{align}
 $$
 
@@ -133,7 +133,7 @@ $$
 \end{align}
 $$
 
-This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme. 
+This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme.
 <!-- For clarity, here in the left hand side (LHS) $A=\frac{\delta R}{\delta u}$, $x=\Delta u$ and the right hand side (RHS) is $b=-R|_{u_0}$. -->
 
 
@@ -216,7 +216,7 @@ $$
 \int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \Bigg[\eta_p^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H_{,\eta_p}(\eta_p^n) \\
 &- C_{ijkl} \left( H_{,\eta_p}(\eta_p) \epsilon_{ij}^{0 \eta_p}\right)\left(\epsilon_{kl} - \epsilon_{kl}^{0} \right)\\
 &+ \frac{1}{2} \left[ (C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H_{,\eta_p}(\eta_p) \right] \left(\epsilon_{ij} - \epsilon_{ij}^{0} \right) \left(\epsilon_{kl} - \epsilon_{kl}^{0} \right) \bigg] \Bigg]\\
-&+ \nabla w \cdot (-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n ) dV 
+&+ \nabla w \cdot (-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n ) dV
 \end{align}
 $$
 

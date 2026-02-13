@@ -53,7 +53,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
                      get_user_inputs().get_spatial_discretization().get_size()[dir]);
         }
       dist = std::sqrt(dist) - rad[i];
-      sdf = std::min(sdf, dist);
+      sdf  = std::min(sdf, dist);
     }
   scalar_value += 0.5 * (1.0 - std::tanh(sdf / 1.5));
 }

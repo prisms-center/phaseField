@@ -129,8 +129,8 @@ $$
 \end{equation}
 $$
 
-The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface, 
-$\hat{n}=-\nabla \phi / |\nabla \phi|$ (Note: The code uses the opposite sign convention). For a solid phase with $m$-fold symmetry this factor is given by 
+The function $a_s$ is the anisotropy factor for the solid-liquid interfacial energy, which depends on the outward normal (with respect to the solid) of the interface,
+$\hat{n}=-\nabla \phi / |\nabla \phi|$ (Note: The code uses the opposite sign convention). For a solid phase with $m$-fold symmetry this factor is given by
 
 $$
 \begin{equation}
@@ -293,7 +293,7 @@ into the gradient of $1/\tau_U$:
 
 $$
 \begin{align}
-\int_{\Omega}   \omega  U^{n+1}  ~dV =& 
+\int_{\Omega}   \omega  U^{n+1}  ~dV =&
 \int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV\\
 &+\int_{\Omega}  \nabla  \omega  \cdot \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV.
 \end{align}
