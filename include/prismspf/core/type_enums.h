@@ -19,7 +19,10 @@ enum PDEType : std::uint8_t
   ImplicitTimeDependent,
   TimeIndependent,
   Auxiliary,
-  Constant
+  Constant,
+  Explicit,
+  Linear,
+  Newton
 };
 
 /**
@@ -69,9 +72,9 @@ enum FieldSolveType : std::uint8_t
 /**
  * @brief Internal classification for types of variable dependencies.
  */
-enum DependencyType : std::uint8_t
+enum DependencyType : int
 {
-  Normal,
+  Normal = -1,
   Change,
   OldOne,
   OldTwo,

@@ -83,9 +83,9 @@ struct FieldInfo
    */
   enum class TensorRank : std::uint8_t
   {
-    Undefined,
-    Scalar,
-    Vector
+    Undefined = static_cast<std::uint8_t>(-1),
+    Scalar    = 0,
+    Vector    = 1
   };
 
   /**
