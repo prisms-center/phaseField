@@ -21,7 +21,7 @@ $$
 
 $$
 \begin{align}
-  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta
+  \mu_{\eta}  &= (f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta
 \end{align}
 $$
 
@@ -50,7 +50,7 @@ $$
 
 $$
 \begin{align}
-  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \Delta \eta)
+  &=-M_\eta ~ ((f_{\beta}-f_{\alpha})H_{,\eta} - \kappa \nabla^2 \eta)
 \end{align}
 $$
 
@@ -61,7 +61,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
- \eta^{n+1} &= \eta^{n}  - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)
+ \eta^{n+1} &= \eta^{n}  - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \nabla^2 \eta^n)
 \end{align}
 $$
 
@@ -76,7 +76,7 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \Delta \eta^n)  ~dV
+  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \nabla^2 \eta^n)  ~dV
 \end{align}
 $$
 

@@ -26,7 +26,7 @@ $$
 
 $$
 \begin{align}
-&=  \int_{\Omega}   w \left( f_{,c} -  \kappa \Delta c \right)  ~dV  +   \int_{\partial \Omega}   w \kappa \nabla c \cdot n   ~dS
+&=  \int_{\Omega}   w \left( f_{,c} -  \kappa \nabla^2 c \right)  ~dV  +   \int_{\partial \Omega}   w \kappa \nabla c \cdot n   ~dS
 \end{align}
 $$
 
@@ -34,7 +34,7 @@ Assuming $\kappa \nabla c \cdot n = 0$, and using standard variational arguments
 
 $$
 \begin{equation}
-  \mu  = f_{,c} -  \kappa \Delta c
+  \mu  = f_{,c} -  \kappa \nabla^2 c
 \end{equation}
 $$
 
@@ -49,7 +49,7 @@ $$
 
 $$
 \begin{align}
-  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \Delta c))
+  &=-M~\nabla \cdot (-\nabla (f_{,c} -  \kappa \nabla^2 c))
 \end{align}
 $$
 
@@ -57,7 +57,7 @@ where $M$ is the constant mobility. This equation can be split into two equation
 
 $$
 \begin{align}
-  \mu &= f_{,c} -  \kappa \Delta c
+  \mu &= f_{,c} -  \kappa \nabla^2 c
 \end{align}
 $$
 
@@ -73,7 +73,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-  \mu^{n+1} &= f_{,c}^{n} -  \kappa \Delta c^{n}
+  \mu^{n+1} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n}
 \end{align}
 $$
 
@@ -88,7 +88,7 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \mu^{n+1}  ~dV &= \int_{\Omega}  w  f_{,c}^{n} - w \kappa \Delta c^{n}~dV
+  \int_{\Omega}   w  \mu^{n+1}  ~dV &= \int_{\Omega}  w  f_{,c}^{n} - w \kappa \nabla^2 c^{n}~dV
 \end{align}
 $$
 

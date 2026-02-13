@@ -268,7 +268,7 @@ J^* (\mathbf{r},t)=Zn\beta^* \exp \left( -\frac{\Delta G^* }{k_B T} \right) \exp
 \end{align}
 $$
 
-where $Z$ is the Zeldovich factor, $n$ is the number of nucleation sites per volume, $\beta^\*\$ is the frequency at which a critical nucleus becomes supercritical, $\Delta G^*$ is the nucleation energy barrier, $k_B$ is the Boltzmann constant, $T$ is the temperature, $t$ is time and $\tau$ is the incubation time. It can be shown that, in the dilute limit and for constant temperature, the previous equation can be simplified by grouping approximately constant terms in both the exponential and pre-exponential factors:
+where $Z$ is the Zeldovich factor, $n$ is the number of nucleation sites per volume, $\beta^*$ is the frequency at which a critical nucleus becomes supercritical, $\Delta G^*$ is the nucleation energy barrier, $k_B$ is the Boltzmann constant, $T$ is the temperature, $t$ is time and $\tau$ is the incubation time. It can be shown that, in the dilute limit and for constant temperature, the previous equation can be simplified by grouping approximately constant terms in both the exponential and pre-exponential factors:
 
 $$
 \begin{align}

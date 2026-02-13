@@ -25,9 +25,11 @@ $$
 where
 
 $$
-\begin{equation}
-f_{chem}(c, \eta_1, \eta_2, \eta_3) = f_{\alpha}(c,\eta_1, \eta_2, \eta_3) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) + f_{\beta}(c,\eta_1, \eta_2, \eta_3) \sum_{p=1}^3 H(\eta_p)+ W f_{Landau}(\eta_1, \eta_2, \eta_3)
-\end{equation}
+\begin{align}
+f_{chem}(c, \eta_1, \eta_2, \eta_3) &= f_{\alpha}(c,\eta_1, \eta_2, \eta_3) \left( 1- \sum_{p=1}^3 H(\eta_p)\right) \\
+&+ f_{\beta}(c,\eta_1, \eta_2, \eta_3) \sum_{p=1}^3 H(\eta_p)\\
+&+ W f_{Landau}(\eta_1, \eta_2, \eta_3)
+\end{align}
 $$
 
 $$
@@ -43,10 +45,11 @@ f_{elastic}(c,\eta_1, \eta_2, \eta_3,\epsilon) = \frac{1}{2} C_{ijkl}(\eta_1, \e
 $$
 
 $$
-\begin{gather}
-\varepsilon^0(c, \eta_1, \eta_2, \eta_3) = H(\eta_1) \varepsilon^0_{\eta_1} (c_{\beta})+ H(\eta_2) \varepsilon^0_{\eta_2} (c_{\beta}) + H(\eta_3) \varepsilon^0_{\eta_3} (c_{\beta})
-C(\eta_1, \eta_2, \eta_3) = H(\eta_1) C_{\eta_1}+ H(\eta_2) C_{\eta_2} + H(\eta_3) C_{\eta_3} + \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right)  C_{\alpha}
-\end{gather}
+\begin{align}
+\varepsilon^0(c, \eta_1, \eta_2, \eta_3) &= H(\eta_1) \varepsilon^0_{\eta_1} (c_{\beta})+ H(\eta_2) \varepsilon^0_{\eta_2} (c_{\beta}) + H(\eta_3) \varepsilon^0_{\eta_3} (c_{\beta})
+C(\eta_1, \eta_2, \eta_3) \\
+&= H(\eta_1) C_{\eta_1}+ H(\eta_2) C_{\eta_2} + H(\eta_3) C_{\eta_3} + \left( 1- H(\eta_1)-H(\eta_2)-H(\eta_3)\right)  C_{\alpha}
+\end{align}
 $$
 
 Here $\varepsilon^0_{\eta_p}$ are the composition dependent stress free strain transformation tensor corresponding to each structural order parameter, which is a function of the $\beta$ phase concentration, $c_{\beta}$, defined below.
