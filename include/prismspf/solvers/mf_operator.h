@@ -139,7 +139,7 @@ public:
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
   {
     solve_group          = dst_solution.get_solve_group();
-    data                 = dst_solution.get_matrix_free();
+    data                 = dst_solution.get_matrix_free(relative_level);
     field_to_block_index = dst_solution.get_global_to_block_index();
   }
 

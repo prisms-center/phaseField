@@ -16,7 +16,6 @@
 
 #include <prismspf/config.h>
 
-#include <map>
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -31,37 +30,52 @@ public:
   /**
    * @brief Constructor.
    */
-  DofManager(const std::vector<FieldAttributes> &field_attributes,
-             const std::set<SolveGroup>         &solve_groups);
+  explicit DofManager(const std::vector<FieldAttributes> &field_attributes);
 
   /**
    * @brief Initialize the DoFHandlers
    */
   void
-  init(const TriangulationManager<dim>    &triangulation_handler,
-       const std::vector<FieldAttributes> &field_attributes);
+  init(const TriangulationManager<dim> &triangulation_handler);
 
   /**
    * @brief Reinitialize the DoFHandlers
    */
   void
-  reinit(const TriangulationManager<dim>    &triangulation_handler,
-         const std::vector<FieldAttributes> &field_attributes);
+  reinit(const TriangulationManager<dim> &triangulation_handler);
 
   /**
    * @brief Getter function for the DoFHandlers (constant reference).
    */
   [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
-  get_dof_handlers(const std::set<unsigned int> &field_indices,
-                   unsigned int                  relative_level = 0) const;
+  get_field_dof_handlers(const std::set<unsigned int> &field_indices,
+                         unsigned int                  relative_level = 0) const;
 
   /**
    * @brief Getter function for the DoFHandler (reference).
    */
   [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_dof_handler(Types::Index index, unsigned int relative_level = 0) const
+  get_field_dof_handler(Types::Index field_index, unsigned int relative_level = 0) const
   {
-    return *dof_handlers[index][relative_level];
+    return *dof_handlers[field_index][relative_level];
+  }
+
+  /**
+   * @brief Getter function for the scalar and vector DoFHandlers.
+   */
+  const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &
+  get_dof_handlers() const
+  {
+    return level_dof_handlers;
+  }
+
+  /**
+   * @brief Getter function for a specific scalar or vector DoFHandler.
+   */
+  [[nodiscard]] const dealii::DoFHandler<dim> &
+  get_dof_handler(const unsigned int &rank, unsigned int relative_level = 0) const
+  {
+    return level_dof_handlers[relative_level][rank];
   }
 
   /**
@@ -89,11 +103,10 @@ private:
    */
   std::vector<std::vector<std::shared_ptr<dealii::DoFHandler<dim>>>> dof_handlers;
 
-  // TODO (fractalsbyx): move somewhere else. Maybe make an array?
-  static const std::map<FieldInfo::TensorRank, dealii::FESystem<dim>> fe_systems {
-    {FieldInfo::TensorRank::Scalar, dealii::FESystem<dim>(dealii::FE_Q<dim>(1), 1)  },
-    {FieldInfo::TensorRank::Vector, dealii::FESystem<dim>(dealii::FE_Q<dim>(1), dim)}
-  };
+  /**
+   * @brief A scalar and a vector dof handler for each level
+   */
+  std::vector<std::array<dealii::DoFHandler<dim>, 2>> level_dof_handlers;
 };
 
 PRISMS_PF_END_NAMESPACE

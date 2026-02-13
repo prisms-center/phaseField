@@ -7,11 +7,16 @@
 #include <deal.II/fe/fe_values.h>
 
 #include <prismspf/core/cell_marker_base.h>
+#include <prismspf/core/constraint_manager.h>
+#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/system_wide.h>
+#include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solver_context.h>
 
 #include <prismspf/config.h>
+
+#include "prismspf/core/field_attributes.h"
 
 #include <memory>
 
@@ -26,14 +31,15 @@ public:
    */
   explicit RefinementManager(SolverContext<dim, degree, number> &solver_context)
     : solver_context(solver_context)
-    , num_quad_points(SystemWide<dim, degree>::quadrature.size())
     , fe_values_flags()
+    , num_quad_points(SystemWide<dim, degree>::quadrature.size())
     , max_refinement(solver_context.get_user_inputs()
                        .get_spatial_discretization()
                        .get_max_refinement())
     , min_refinement(solver_context.get_user_inputs()
                        .get_spatial_discretization()
                        .get_min_refinement())
+    , marker_functions()
   {
     fe_values_flags.fill(dealii::UpdateFlags::update_default);
     for (const auto &criterion : solver_context.get_user_inputs()
@@ -63,7 +69,7 @@ public:
         fe_values[field_type] =
           dealii::FEValues<dim>(SystemWide<dim, degree>::fe_systems[field_type],
                                 SystemWide<dim, degree>::quadrature,
-                                fe_values_flags[int(field_type)]);
+                                fe_values_flags.at(int(field_type)));
       }
   }
 
@@ -124,6 +130,14 @@ public:
         return;
       }
 
+    TriangulationManager<dim> &triangulation_manager =
+      solver_context.get_triangulation_manager();
+    DofManager<dim> &dof_manager = solver_context.get_dof_manager();
+    ConstraintManager<dim, degree, number> &constraint_manager =
+      solver_context.get_constraint_manager();
+    std::vector<FieldAttributes> &field_attributes =
+      solver_context.get_field_attributes();
+
     // Step 1
     mark_cells_for_refinement_and_coarsening();
     bool first_iteration = true;
@@ -132,8 +146,9 @@ public:
       first_iteration)
       {
         first_iteration = false;
-        for (int field_index = 0; field_index < solver_context.field_attributes.size();
-             field_index++)
+
+        // Update ghosts of all fields.
+        for (int field_index = 0; field_index < field_attributes.size(); field_index++)
           {
             solver_context.get_solution_indexer()
               .get_solution(field_index)
@@ -144,44 +159,20 @@ public:
         refine_grid();
 
         // Step 3
-        solver_context.get_triangulation_handler().reinit();
-        solver_context.get_dof_handler().reinit(
-          solver_context.get_triangulation_handler(),
-          solver_context.get_finite_element_systems(),
-          solver_context.get_multigrid_info());
-        solver_context.get_constraint_handler().make_constraints(
-          solver_context.get_mapping(),
-          solver_context.get_dof_handler().get_dof_handlers());
-        if (solver_context.get_multigrid_info().has_multigrid())
-          {
-            const unsigned int min_level =
-              solver_context.get_multigrid_info().get_mg_min_level();
-            const unsigned int max_level =
-              solver_context.get_multigrid_info().get_mg_max_level();
-            for (unsigned int level = min_level; level <= max_level; ++level)
-              {
-                solver_context.get_constraint_handler().make_mg_constraints(
-                  solver_context.get_mapping(),
-                  solver_context.get_dof_handler().get_mg_dof_handlers(level),
-                  level);
-              }
-          }
+        triangulation_manager.reinit();
+        dof_manager.reinit(triangulation_manager, field_attributes);
+        constraint_manager().make_constraints(SystemWide<dim, degree>::mapping,
+                                              dof_manager.get_dof_handlers());
 
-        solver_context.get_matrix_free_container().template reinit<degree, 1>(
-          solver_context.get_mapping(),
-          solver_context.get_dof_handler(),
-          solver_context.get_constraint_handler(),
-          dealii::QGaussLobatto<1>(degree + 1));
+        // Todo: reinit matrix free operators?
 
-        solver_context.get_solution_handler().reinit(
-          solver_context.get_matrix_free_container());
+        // Todo: reinit solutions?
 
         // Step 4
-        solver_context.get_solution_handler().execute_solution_transfer();
+        // Todo execute solution transfer
 
         // Step 6
-        solver_context.get_invm_handler().recompute_invm();
-        solver_context.get_element_volume_container().recompute_element_volume();
+        // Todo: Recompute invm & element volume
       }
   }
 
@@ -395,7 +386,7 @@ private:
   mark_cells_for_refinement()
   {
     bool any_cell_marked = false;
-    for (const auto &cell : solver_context.get_triangulation_handler()
+    for (const auto &cell : solver_context.get_triangulation_manager()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -406,11 +397,11 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(
-                        *cell,
-                        solver_context.get_user_inputs().get_temporal_discretization());
-                    }))
+                  {
+                    return marker_function->flag(
+                      *cell,
+                      solver_context.get_user_inputs().get_temporal_discretization());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
@@ -432,13 +423,13 @@ private:
   refine_grid()
   {
     // Prepare for grid refinement
-    solver_context.get_triangulation_handler().prepare_for_grid_refinement();
+    solver_context.get_triangulation_manager().prepare_for_grid_refinement();
 
     // Prepare the solution transfer objects
     solver_context.get_solution_handler().prepare_for_solution_transfer();
 
     // Execute grid refinement
-    solver_context.get_triangulation_handler().execute_grid_refinement();
+    solver_context.get_triangulation_manager().execute_grid_refinement();
   }
 
   /**

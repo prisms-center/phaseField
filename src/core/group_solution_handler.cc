@@ -258,7 +258,6 @@ GroupSolutionHandler<dim, number>::reinit()
               old_solutions[i].reinit(partitioners);
             }
         }
-      // TODO (fractalsbyx): Check if ghosts need to be updated here
     }
 }
 

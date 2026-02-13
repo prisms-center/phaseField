@@ -6,68 +6,49 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
+#include <prismspf/core/system_wide.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes,
-                            const std::set<SolveGroup>         &solve_groups)
+DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes)
 {
+  unsigned int num_mg_levels = 1; // Todo: upgrade to multigrid
+  level_dof_handlers.resize(num_mg_levels);
   dof_handlers.resize(field_attributes.size());
-  for (const auto &solve_group : solve_groups)
-    {
-      /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
-       * primary fields, as well as any dependencies*/
-      unsigned int num_mg_levels = 1;
-      for (const auto &field_index : solve_group.field_indices)
-        {
-          dof_handlers[field_index].resize(num_mg_levels, nullptr);
-          for (unsigned int relative_level = 0; relative_level < num_mg_levels;
-               relative_level++)
-            {
-              dof_handlers[field_index][relative_level] =
-                std::make_shared<dealii::DoFHandler<dim>>();
-            }
-        }
-    }
-}
-
-template <unsigned int dim>
-void
-DofManager<dim>::init(const TriangulationManager<dim>    &triangulation_handler,
-                      const std::vector<FieldAttributes> &field_attributes)
-{
-  unsigned int n_dofs         = 0;
-  unsigned int n_dofs_with_mg = 0;
   for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
-      for (unsigned int relative_level = 0;
-           relative_level < dof_handlers[field_index].size();
+      dof_handlers[field_index].resize(num_mg_levels, nullptr);
+      for (unsigned int relative_level = 0; relative_level < num_mg_levels;
            ++relative_level)
         {
-          std::shared_ptr<dealii::DoFHandler<dim>> &dof_handler =
-            dof_handlers[field_index][relative_level];
-          dof_handler->reinit(triangulation_handler.get_triangulation(relative_level));
-          dof_handler->distribute_dofs(
-            fe_systems.at(field_attributes[field_index].field_type));
-          n_dofs_with_mg += dof_handler->n_dofs();
-          n_dofs += bool(relative_level) ? 0 : dof_handler->n_dofs();
+          dof_handlers[field_index][relative_level] =
+            &level_dof_handlers[relative_level][field_attributes[field_index].field_type];
         }
     }
-
-  // TODO (landinjm): Print other useful information in debug mode
-  ConditionalOStreams::pout_base()
-    << "  number of degrees of freedom: " << n_dofs << "\n"
-    << "    with multigrid levels: " << n_dofs_with_mg << "\n"
-    << std::flush;
 }
 
 template <unsigned int dim>
 void
-DofManager<dim>::reinit(const TriangulationManager<dim>    &triangulation_handler,
-                        const std::vector<FieldAttributes> &field_attributes)
+DofManager<dim>::init(const TriangulationManager<dim> &triangulation_handler)
 {
-  init(triangulation_handler, field_attributes);
+  for (unsigned int relative_level = 0; relative_level < level_dof_handlers.size();
+       ++relative_level)
+    {
+      for (unsigned int rank = 0; rank < 2; ++rank)
+        {
+          dealii::DoFHandler<dim> &dof_handler = level_dof_handlers[relative_level][rank];
+          dof_handler.reinit(triangulation_handler.get_triangulation(relative_level));
+          dof_handler.distribute_dofs(SystemWide<dim, 1>::fe_systems.at(rank));
+        }
+    }
+}
+
+template <unsigned int dim>
+void
+DofManager<dim>::reinit(const TriangulationManager<dim> &triangulation_handler)
+{
+  init(triangulation_handler);
 }
 
 template <unsigned int dim>
