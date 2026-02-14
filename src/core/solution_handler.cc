@@ -449,6 +449,11 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
             new_vector->swap(
               *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
           }
+        else // auxiliary don't have old
+          {
+            new_vector->swap(
+              *(solution_set.at(std::make_pair(index, DependencyType::Normal))));
+          }
       }
   };
 
@@ -481,13 +486,18 @@ SolutionHandler<dim, number>::update(FieldSolveType field_solve_type,
             swap_all_dependency_vectors(index, new_vector);
             break;
           case FieldSolveType::NonexplicitLinear:
+            if (variable_index == index)
+              {
+                swap_all_dependency_vectors(index, new_vector, true);
+              }
+            break;
           case FieldSolveType::NonexplicitAuxiliary:
           case FieldSolveType::NonexplicitSelfnonlinear:
           case FieldSolveType::NonexplicitCononlinear:
             // For Nonexplicit types we swap all dependency types if the index matches
             if (variable_index == index)
               {
-                swap_all_dependency_vectors(index, new_vector, true);
+                swap_all_dependency_vectors(index, new_vector, false);
               }
             break;
           default:
