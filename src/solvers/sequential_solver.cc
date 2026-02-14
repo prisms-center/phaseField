@@ -393,6 +393,11 @@ SequentialSolver<dim, degree, number>::solve_linear_solver(
   // Grab the global field index
   const Types::Index global_field_index = variable.get_field_index();
 
+  // Zero out the ghosts
+  Timer::start_section("Zero ghosts");
+  this->get_solution_handler().zero_out_ghosts();
+  Timer::end_section("Zero ghosts");
+
   // Skip if the field type is ImplicitTimeDependent and the increment is 0.
   if (variable.get_pde_type() == PDEType::ImplicitTimeDependent &&
       this->get_user_inputs().get_temporal_discretization().get_increment() == 0)
