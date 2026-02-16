@@ -15,7 +15,6 @@
 
 #include <string>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -68,7 +67,7 @@ public:
     else
       {
         coarsened_triangulations.clear();
-        coarsened_triangulations.push_back(&triangulation);
+        coarsened_triangulations.push_back(std::make_shared(triangulation));
       }
     // TODO (landinjm): p-multigrid
   };

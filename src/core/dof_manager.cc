@@ -14,7 +14,7 @@ template <unsigned int dim>
 DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes)
 {
   unsigned int num_mg_levels = 1; // Todo: upgrade to multigrid
-  level_dof_handlers.resize(num_mg_levels);
+  level_dof_handlers = std::vector<std::array<dealii::DoFHandler<dim>, 2>>(num_mg_levels);
   dof_handlers.resize(field_attributes.size());
   for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
@@ -23,7 +23,8 @@ DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes
            ++relative_level)
         {
           dof_handlers[field_index][relative_level] =
-            &level_dof_handlers[relative_level][field_attributes[field_index].field_type];
+            &(level_dof_handlers.at(relative_level)
+                .at(uint(field_attributes[field_index].field_type)));
         }
     }
 }
@@ -52,15 +53,15 @@ DofManager<dim>::reinit(const TriangulationManager<dim> &triangulation_handler)
 }
 
 template <unsigned int dim>
-const std::vector<const dealii::DoFHandler<dim> *> &
-DofManager<dim>::get_dof_handlers(const std::set<unsigned int> &field_indices,
-                                  unsigned int                  relative_level) const
+std::vector<const dealii::DoFHandler<dim> *>
+DofManager<dim>::get_field_dof_handlers(const std::set<unsigned int> &field_indices,
+                                        unsigned int relative_level) const
 {
   std::vector<const dealii::DoFHandler<dim> *> selected_dof_handlers;
   selected_dof_handlers.reserve(field_indices.size());
   for (const auto index : field_indices)
     {
-      selected_dof_handlers.push_back(dof_handlers[index][relative_level].get());
+      selected_dof_handlers.push_back(dof_handlers[index][relative_level]);
     }
   return selected_dof_handlers;
 }
