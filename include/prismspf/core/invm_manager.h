@@ -52,19 +52,20 @@ public:
    * @brief Initialize.
    */
   void
-  initialize()
+  initialize(unsigned int num_levels)
   {
+    data.resize(num_levels);
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         if (calculate_scalar)
           {
-            data[i][0]->initialize_dof_vector(jxw_scalar);
-            data[i][0]->initialize_dof_vector(invm_scalar);
+            data[i][0].initialize_dof_vector(jxw_scalar);
+            data[i][0].initialize_dof_vector(invm_scalar);
           }
         if (calculate_vector)
           {
-            data[i][1]->initialize_dof_vector(jxw_vector);
-            data[i][1]->initialize_dof_vector(invm_vector);
+            data[i][1].initialize_dof_vector(jxw_vector);
+            data[i][1].initialize_dof_vector(invm_vector);
           }
       }
   }
@@ -139,6 +140,22 @@ public:
       }
   }
 
+  const SolutionVector &
+  get_invm(FieldInfo::TensorRank rank, unsigned int relative_level) const
+  {
+    Assert((rank == FieldInfo::TensorRank::Scalar && calculate_scalar) ||
+             (rank == FieldInfo::TensorRank::Vector && calculate_vector),
+           dealii::ExcInternalError("Requested invm that was not calculated"));
+    if (rank == FieldInfo::TensorRank::Scalar)
+      {
+        return invm_scalar;
+      }
+    // else
+    {
+      return invm_vector;
+    }
+  }
+
 private:
   void
   invert(SolutionVector &dst, const SolutionVector &src) const
@@ -161,20 +178,20 @@ private:
   /**
    * @brief Vector that stores element volumes
    */
-  SolutionVector jxw_scalar;
-  SolutionVector jxw_vector;
-  SolutionVector invm_scalar;
-  SolutionVector invm_vector;
+  std::vector<SolutionVector> jxw_scalar;
+  std::vector<SolutionVector> jxw_vector;
+  std::vector<SolutionVector> invm_scalar;
+  std::vector<SolutionVector> invm_vector;
 
   inline static const VectorValue one = []()
-  {
-    VectorValue one1;
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        one1[i] = 1.0;
-      }
-    return one1;
-  }();
+    {
+      VectorValue one1;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          one1[i] = 1.0;
+        }
+      return one1;
+    }();
 };
 
 PRISMS_PF_END_NAMESPACE
