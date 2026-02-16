@@ -22,13 +22,13 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class ExplicitSolver : public GroupSolverBase<dim, degree, number>
 {
-public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
   using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
   using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
 
+public:
   /**
    * @brief Constructor.
    */

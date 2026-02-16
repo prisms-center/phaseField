@@ -9,15 +9,14 @@
 #include <prismspf/core/cell_marker_base.h>
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/triangulation_manager.h>
 
+#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/solve_context.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/solvers/group_solver_base.h"
 
 #include <memory>
 
@@ -60,15 +59,6 @@ public:
           {
             fe_values_flags[int(rank)] |= dealii::UpdateFlags::update_gradients;
           }
-      }
-    // Create the FEValues
-    for (const auto field_type :
-         {FieldInfo::TensorRank::Scalar, FieldInfo::TensorRank::Vector})
-      {
-        fe_values[field_type] =
-          dealii::FEValues<dim>(SystemWide<dim, degree>::fe_systems[field_type],
-                                SystemWide<dim, degree>::quadrature,
-                                fe_values_flags.at(int(field_type)));
       }
   }
 
@@ -171,10 +161,10 @@ private:
     std::vector<number> values(num_quad_points, 0.0);
 
     // Clear user flags
-    solve_context.get_triangulation_handler().clear_user_flags();
+    solve_context.get_triangulation_manager().clear_user_flags();
 
     // Loop over the cells provided by the triangulation
-    for (const auto &cell : solve_context.get_triangulation_handler()
+    for (const auto &cell : solve_context.get_triangulation_manager()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -201,17 +191,21 @@ private:
                   solve_context.get_dof_manager().get_dof_handler(index));
 
                 // Reinit the cell
-                fe_values.at(local_field_type).reinit(dof_iterator);
+                dealii::FEValues<dim> fe_values(
+                  SystemWide<dim, degree>::fe_systems[int(local_field_type)],
+                  SystemWide<dim, degree>::quadrature,
+                  fe_values_flags.at(int(local_field_type)));
+
+                fe_values.reinit(dof_iterator);
 
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
                   {
                     if (local_field_type == FieldInfo::TensorRank::Scalar)
                       {
                         // Get the values for a scalar field
-                        fe_values.at(local_field_type)
-                          .get_function_values(solve_context.get_solution_manager()
-                                                 .get_solution_vector(index),
-                                               values);
+                        fe_values.get_function_values(
+                          solve_context.get_solution_indexer().get_solution_vector(index),
+                          values);
                       }
                     else
                       {
@@ -220,10 +214,9 @@ private:
                         std::vector<dealii::Vector<number>> vector_values(
                           num_quad_points,
                           dealii::Vector<number>(dim));
-                        fe_values.at(local_field_type)
-                          .get_function_values(solve_context.get_solution_manager()
-                                                 .get_solution_vector(index),
-                                               vector_values);
+                        fe_values.get_function_values(
+                          solve_context.get_solution_indexer().get_solution_vector(index),
+                          vector_values);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -255,10 +248,9 @@ private:
                         // TODO (landinjm): Should be zeroing this out?
                         std::vector<dealii::Tensor<1, dim, number>> scalar_gradients(
                           num_quad_points);
-                        fe_values.at(local_field_type)
-                          .get_function_gradients(solve_context.get_solution_manager()
-                                                    .get_solution_vector(index),
-                                                  scalar_gradients);
+                        fe_values.get_function_gradients(
+                          solve_context.get_solution_indexer().get_solution_vector(index),
+                          scalar_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -272,10 +264,9 @@ private:
                           vector_gradients(num_quad_points,
                                            std::vector<dealii::Tensor<1, dim, number>>(
                                              dim));
-                        fe_values.at(local_field_type)
-                          .get_function_gradients(solve_context.get_solution_manager()
-                                                    .get_solution_vector(index),
-                                                  vector_gradients);
+                        fe_values.get_function_gradients(
+                          solve_context.get_solution_manager().get_solution_vector(index),
+                          vector_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -403,9 +394,9 @@ private:
 
     // Redistribute DoFs and reinit the solvers
     triangulation_manager.reinit();
-    dof_manager.reinit(triangulation_manager, solve_context.get_field_attributes());
-    constraint_manager().make_constraints(SystemWide<dim, degree>::mapping,
-                                          dof_manager.get_dof_handlers());
+    dof_manager.reinit(triangulation_manager);
+    constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
+                                        dof_manager.get_dof_handlers());
 
     // Reinit solutions, apply constraints, then solution transfer
     for (auto &solver : solvers)
@@ -426,11 +417,6 @@ private:
    * fields.
    */
   std::array<dealii::UpdateFlags, 2> fe_values_flags;
-
-  /**
-   * @brief Finite element values for scalar and vector fields.
-   */
-  std::array<dealii::FEValues<dim>, 2> fe_values;
 
   /**
    * @brief Number of quadrature points.

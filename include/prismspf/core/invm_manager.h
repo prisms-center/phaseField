@@ -148,11 +148,11 @@ public:
            dealii::ExcInternalError("Requested invm that was not calculated"));
     if (rank == FieldInfo::TensorRank::Scalar)
       {
-        return invm_scalar;
+        return invm_scalar[relative_level];
       }
     // else
     {
-      return invm_vector;
+      return invm_vector[relative_level];
     }
   }
 
