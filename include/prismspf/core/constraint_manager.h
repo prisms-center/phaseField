@@ -50,9 +50,9 @@ public:
    * @brief Constructor.
    */
   ConstraintManager(const std::vector<FieldAttributes>     &field_attributes,
-                    const std::set<SolveGroup>             &solve_groups,
+                    const std::vector<SolveGroup>          &solve_groups,
                     const DofManager<dim>                  &_dof_manager,
-                    const PDEOperator<dim, degree, number> &_pde_operator);
+                    const PDEOperator<dim, degree, number> *_pde_operator);
 
   /**
    * @brief Getter function for the constraints.

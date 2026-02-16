@@ -1,26 +1,27 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#pragma once
 #include <prismspf/core/problem.h>
+#include <prismspf/core/simulation_timer.h>
+#include <prismspf/core/solution_output.h>
 #include <prismspf/core/system_wide.h>
 
-#include "prismspf/core/simulation_timer.h"
-#include "prismspf/user_inputs/temporal_discretization.h"
-#include "prismspf/user_inputs/user_input_parameters.h"
+#include <prismspf/user_inputs/temporal_discretization.h>
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-std::set<GroupSolutionHandler<dim, number>>
+std::vector<GroupSolutionHandler<dim, number>>
 get_solution_managers_from_solvers(
   const std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
 {
   // Todo: upgrade to recursive for aux solvers
-  std::set<GroupSolutionHandler<dim, number>> solution_managers;
+  std::vector<GroupSolutionHandler<dim, number>> solution_managers;
+  solution_managers.reserve(solvers.size());
   for (const auto &solver : solvers)
     {
-      solution_managers.insert(solver->get_solution_manager());
+      solution_managers.push_back(solver->get_solution_manager());
     }
   return solution_managers;
 }
@@ -38,16 +39,17 @@ Problem<dim, degree, number>::Problem(
   , pf_tools(&_pf_tools)
   , triangulation_manager(false)
   , dof_manager(field_attributes)
-  , constraint_manager(field_attributes, solve_groups, dof_manager, _pde_operator)
+  , constraint_manager(field_attributes, solve_groups, dof_manager, _pde_operator.get())
   , solvers(solve_groups.size(), nullptr)
-  , solution_indexer(get_solution_managers_from_solvers(solvers))
-  , solve_context(_user_inputs,
+  , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
+  , solve_context(field_attributes,
+                  _user_inputs,
                   triangulation_manager,
-                  constraint_manager,
                   dof_manager,
+                  constraint_manager,
                   solution_indexer,
                   _pde_operator)
-  , grid_refiner(_user_inputs, triangulation_manager)
+  , grid_refiner(solve_context)
 {}
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -70,13 +72,13 @@ Problem<dim, degree, number>::init_system()
   // Create the mesh
   ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
-  triangulation_manager.generate_mesh();
+  triangulation_manager.generate_mesh(user_inputs);
   Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.init(triangulation_manager, SystemWide<dim, degree>::fe_systems);
+  dof_manager.init(triangulation_manager);
   Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
@@ -85,9 +87,8 @@ Problem<dim, degree, number>::init_system()
   for (const auto &solve_group : solve_groups)
     {
       // TODO: Loop over levels, pass in current time
-      constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
-                                          dof_manager.get_dof_handlers(
-                                            solve_group.field_indices));
+      // constraint_manager.make_constraints(dof_manager.get_field_dof_handlers(
+      //                                      solve_group.field_indices));
     }
   Timer::end_section("Create constraints");
 
@@ -122,7 +123,7 @@ Problem<dim, degree, number>::init_system()
 
   // Update the ghosts
   Timer::start_section("Update ghosts");
-  for (auto solver : solvers)
+  for (auto &solver : solvers)
     {
       solver->update_ghosts();
     }
@@ -131,7 +132,6 @@ Problem<dim, degree, number>::init_system()
   // Perform the initial grid refinement. For this one, we have to do a loop to sufficient
   // coarsen cells to the minimum level
   ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
-  grid_refiner.init(SystemWide<dim, degree>::fe_systems);
   grid_refiner.add_refinement_marker(std::make_shared<NucleusRefinementFunction<dim>>(
     user_inputs.get_nucleation_parameters(),
     pf_tools->nuclei_list));
@@ -148,14 +148,9 @@ Problem<dim, degree, number>::init_system()
       grid_refiner.do_adaptive_refinement(solvers);
       Timer::end_section("Grid refinement");
 
-      // Reinitialize the solvers
-      for (auto solver : solvers)
-        {
-          solver->reinit();
-        }
       // Update the ghosts
       Timer::start_section("Update ghosts");
-      for (auto solver : solvers)
+      for (auto &solver : solvers)
         {
           solver->update_ghosts();
         }
@@ -243,7 +238,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment))
     {
       any_nucleation_occurred =
-        NucleationHandler<dim, degree, number>::attempt_nucleation(solve_context,
+        NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
                                                                    pf_tools->nuclei_list);
     }
   Timer::end_section("Check for nucleation");
@@ -263,7 +258,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 
       // Update the ghosts
       Timer::start_section("Update ghosts");
-      for (auto solver : solvers)
+      for (auto &solver : solvers)
         {
           solver->update_ghosts();
         }
@@ -277,13 +272,13 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       // TODO: Loop over levels, pass in current time
       constraint_manager.update_time_dependent_constraints(
         SystemWide<dim, degree>::mapping,
-        dof_manager.get_dof_handlers(solve_group.field_indices));
+        dof_manager.get_field_dof_handlers(solve_group.field_indices));
     }
   Timer::end_section("Update time-dependent constraints");
 
   // Solve a single increment
   Timer::start_section("Solve Increment");
-  for (auto solver : solvers)
+  for (auto &solver : solvers)
     {
       solver->solve();
     }
@@ -294,7 +289,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     {
       Timer::start_section("Output");
       SolutionOutput<dim, number>(field_attributes,
-                                  solve_context->solution_indexer,
+                                  solve_context.get_solution_indexer(),
                                   dof_manager,
                                   degree,
                                   "solution",
@@ -306,7 +301,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       for (unsigned int index = 0; index < field_attributes.size(); ++index)
         {
           const auto &solution =
-            solve_context->solution_indexer.get_solution_vector(index);
+            solve_context.get_solution_indexer().get_solution_vector(index);
           ConditionalOStreams::pout_base()
             << " Solution index " << index << " l2-norm: " << solution.l2_norm()
             << " integrated value: ";
@@ -335,9 +330,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 
   // Update the field labels in preparation for next increment (c_n -> c_n-1)
-  for (auto solver : solvers)
+  for (auto &solver : solvers)
     {
-      solver.update();
+      solver->update();
     }
 }
 
