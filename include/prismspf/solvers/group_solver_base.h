@@ -19,7 +19,7 @@
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/solvers/mf_operator.h>
-#include <prismspf/solvers/solver_context.h>
+#include <prismspf/solvers/solve_context.h>
 
 #include <prismspf/config.h>
 
@@ -34,12 +34,11 @@ public:
   /**
    * @brief Constructor.
    */
-  GroupSolverBase(SolveGroup                                _solve_group,
-                  const SolverContext<dim, degree, number> &_solver_context)
+  GroupSolverBase(SolveGroup                               _solve_group,
+                  const SolveContext<dim, degree, number> &_solve_context)
     : solve_group(std::move(_solve_group))
     , solutions()
-    , solver_context(
-        std::make_shared<SolverContext<dim, degree, number>>(_solver_context))
+    , solve_context(std::make_shared<SolveContext<dim, degree, number>>(_solve_context))
   {}
 
   /**
@@ -85,11 +84,11 @@ public:
   {
     // Initialize vectors
     solutions =
-      GroupSolutionHandler<dim, number>(solve_group, solver_context->field_attributes);
-    solutions.init(solver_context->mapping,
-                   solver_context->dof_manager,
-                   solver_context->constraint_manager,
-                   solver_context->quadrature);
+      GroupSolutionHandler<dim, number>(solve_group, solve_context->field_attributes);
+    solutions.init(solve_context->mapping,
+                   solve_context->dof_manager,
+                   solve_context->constraint_manager,
+                   solve_context->quadrature);
 
     // Set the initial condition
     set_initial_condition();
@@ -102,10 +101,10 @@ public:
          ++relative_level)
       {
         rhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solver_context->pde_operator,
+          solve_context->pde_operator,
           PDEOperator<dim, degree, number>::compute_explicit_rhs,
-          solver_context->field_attributes,
-          solver_context->solution_indexer,
+          solve_context->field_attributes,
+          solve_context->solution_indexer,
           relative_level,
           solve_group.dependencies_rhs);
         rhs_operators[relative_level].initialize(solve_group,
@@ -143,21 +142,37 @@ public:
   }
 
   /**
-   * @brief Update the fields. This is separate from solve because some derived solvers
-   * call solve methods from other solvers.
+   * @brief Update the fields.
    */
   virtual void
   update()
   {}
 
   /**
-   * @brief Update the fields. This is separate from solve because some derived solvers
-   * call solve methods from other solvers.
+   * @brief Update the ghosts.
    */
   virtual void
   update_ghosts()
   {
     solutions.update_ghosts();
+  }
+
+  /**
+   * @brief Prepare for solution transfer (for AMR).
+   */
+  void
+  prepare_for_solution_transfer()
+  {
+    solutions.prepare_for_solution_transfer();
+  }
+
+  /**
+   * @brief Execute solution transfer (for AMR).
+   */
+  void
+  execute_solution_transfer()
+  {
+    solutions.execute_solution_transfer();
   }
 
   /**
@@ -175,12 +190,12 @@ public:
   {
     for (const auto &global_index : solve_group.field_indices)
       {
-        if (solver_context->get_user_inputs()
+        if (solve_context->get_user_inputs()
               .get_load_initial_condition_parameters()
               .get_read_initial_conditions_from_file())
           {
             const auto &initial_condition_parameters =
-              solver_context->get_user_inputs().get_load_initial_condition_parameters();
+              solve_context->get_user_inputs().get_load_initial_condition_parameters();
             for (const auto &initial_condition_file :
                  initial_condition_parameters.get_initial_condition_files())
               {
@@ -191,13 +206,13 @@ public:
                 if (name_it != initial_condition_file.simulation_variable_names.end())
                   {
                     dealii::VectorTools::interpolate(
-                      solver_context->get_mapping(),
-                      solver_context->get_dof_manager().get_dof_handler(global_index),
+                      solve_context->get_mapping(),
+                      solve_context->get_dof_manager().get_dof_handler(global_index),
                       ReadInitialCondition<dim, number>(
                         *name_it,
                         attributes_list[global_index].field_type,
                         initial_condition_file,
-                        solver_context->get_user_inputs().get_spatial_discretization()),
+                        solve_context->get_user_inputs().get_spatial_discretization()),
                       solutions.get_solution_vector(global_index));
                   }
               }
@@ -205,12 +220,12 @@ public:
         else
           {
             dealii::VectorTools::interpolate(
-              solver_context->get_mapping(),
-              solver_context->get_dof_manager().get_dof_handler(index),
+              solve_context->get_mapping(),
+              solve_context->get_dof_manager().get_dof_handler(index),
               InitialCondition<dim, degree, number>(
                 index,
                 attributes_list[global_index].field_type,
-                solver_context->get_pde_operator()),
+                solve_context->get_pde_operator()),
               solutions.get_solution_vector(global_index));
           }
         solutions.apply_initial_condition_for_old_fields();
@@ -223,7 +238,7 @@ public:
   [[nodiscard]] const InvmHandler<dim, degree, number> &
   get_invm_handler() const
   {
-    return solver_context->get_invm_handler();
+    return solve_context->get_invm_handler();
   }
 
   /**
@@ -238,7 +253,7 @@ public:
   [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
   get_element_volume_container() const
   {
-    return solver_context->get_element_volume_container();
+    return solve_context->get_element_volume_container();
   }
 
   /**
@@ -247,17 +262,17 @@ public:
   [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
   get_pde_operator() const
   {
-    return solver_context->get_pde_operator();
+    return solve_context->get_pde_operator();
   }
 
   /**
    * @brief Get the solver context.
    */
-  [[nodiscard]] const SolverContext<dim, degree, number> &
-  get_solver_context() const
+  [[nodiscard]] const SolveContext<dim, degree, number> &
+  get_solve_context() const
   {
-    Assert(solver_context != nullptr, dealii::ExcNotInitialized());
-    return *solver_context;
+    Assert(solve_context != nullptr, dealii::ExcNotInitialized());
+    return *solve_context;
   }
 
 protected:
@@ -281,7 +296,7 @@ protected:
   /**
    * @brief Solver context provides access to external information.
    */
-  const std::shared_ptr<SolverContext<dim, degree, number>> solver_context;
+  const std::shared_ptr<SolveContext<dim, degree, number>> solve_context;
 };
 
 PRISMS_PF_END_NAMESPACE

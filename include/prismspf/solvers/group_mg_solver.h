@@ -27,7 +27,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class SolverContext;
+class SolveContext;
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
@@ -39,8 +39,8 @@ class MGSolver : public LinearSolver<dim, degree, number>
   using LinearSolver    = LinearSolver<dim, degree, number>;
   using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
+  using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
-  using GroupSolverBase::solver_context;
   using LinearSolver::do_linear_solve;
   using LinearSolver::lhs_operators;
   using BlockVector = SolutionHandler<dim, number>::BlockVector;
@@ -49,9 +49,9 @@ public:
   /**
    * @brief Constructor.
    */
-  MGSolver(SolveGroup                                _solve_group,
-           const SolverContext<dim, degree, number> &_solver_context)
-    : LinearSolver(_solve_group, _solver_context)
+  MGSolver(SolveGroup                               _solve_group,
+           const SolveContext<dim, degree, number> &_solve_context)
+    : LinearSolver(_solve_group, _solve_context)
   {}
 
   /**
@@ -82,7 +82,7 @@ public:
     dealii::MGTransferBlockMatrixFree<dim, number> mg_transfer; // Constraints?
     // NOTE: dof_handler.distribute_mg_dofs() must have been called
     mg_transfer.build(
-      solver_context->dof_manager.get_dof_handlers(solve_group.field_indices, 0));
+      solve_context->dof_manager.get_dof_handlers(solve_group.field_indices, 0));
 
     // 4. MG Smoother (takes in operators) This is similar to a solver, but is
     // conceptually different.
@@ -140,7 +140,7 @@ public:
     dealii::
       PreconditionMG<dim, BlockVector, dealii::MGTransferBlockMatrixFree<dim, number>>
         preconditioner_mg(
-          solver_context->dof_manager.get_dof_handlers(solve_group.field_indices, 0),
+          solve_context->dof_manager.get_dof_handlers(solve_group.field_indices, 0),
           multigrid,
           mg_transfer);
 

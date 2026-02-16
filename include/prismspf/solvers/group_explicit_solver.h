@@ -14,7 +14,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class SolverContext;
+class SolveContext;
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
@@ -26,15 +26,15 @@ public:
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
   using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
+  using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
-  using GroupSolverBase::solver_context;
 
   /**
    * @brief Constructor.
    */
-  ExplicitSolver(SolveGroup                                _solve_group,
-                 const SolverContext<dim, degree, number> &_solver_context)
-    : GroupSolverBase(_solve_group, _solver_context)
+  ExplicitSolver(SolveGroup                               _solve_group,
+                 const SolveContext<dim, degree, number> &_solve_context)
+    : GroupSolverBase(_solve_group, _solve_context)
   {}
 
   /**
@@ -51,13 +51,14 @@ public:
     rhs_operators[relative_level].compute_operator(
       solutions.get_new_solution_full_vector(relative_level));
 
-    // TODO: if it's used for all solvers, define invm in solution handler. originally
-    // this was done as a loop over fields. Scale the update by the respective
-    // (Scalar/Vector) invm.
-    solutions.get_new_solution_full_vector(relative_level).scale(block_invm);
-
-    // Update the solutions
-    solutions.update(relative_level);
+    // Scale by invm
+    for (auto field_index : solve_group.field_indices)
+      {
+        solutions.get_solution_vector(field_index, relative_level)
+          .scale(solve_context->get_invm_manager().get_invm(
+            solve_context->get_field_attributes().at(field_index).field_type,
+            relative_level));
+      }
 
     // Apply constraints
     solutions.apply_constraints(relative_level);

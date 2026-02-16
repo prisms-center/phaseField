@@ -16,7 +16,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class SolverContext;
+class SolveContext;
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
@@ -27,17 +27,17 @@ class LinearSolver : public GroupSolverBase<dim, degree, number>
   using GroupSolverBase = GroupSolverBase<dim, degree, number>;
   using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
+  using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
-  using GroupSolverBase::solver_context;
   using BlockVector = SolutionHandler<dim, number>::BlockVector;
 
 public:
   /**
    * @brief Constructor.
    */
-  LinearSolver(SolveGroup                                _solve_group,
-               const SolverContext<dim, degree, number> &_solver_context)
-    : GroupSolverBase(_solve_group, _solver_context)
+  LinearSolver(SolveGroup                               _solve_group,
+               const SolveContext<dim, degree, number> &_solve_context)
+    : GroupSolverBase(_solve_group, _solve_context)
   {}
 
   /**
@@ -52,10 +52,10 @@ public:
          ++relative_level)
       {
         lhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solver_context->pde_operator,
+          solve_context->pde_operator,
           PDEOperator<dim, degree, number>::compute_explicit_lhs,
-          solver_context->field_attributes,
-          solver_context->solution_indexer,
+          solve_context->field_attributes,
+          solve_context->solution_indexer,
           relative_level,
           solve_group.dependencies_lhs);
         lhs_operators[relative_level].initialize(solve_group,

@@ -226,6 +226,6 @@ TriangulationManager<dim>::mark_periodic(const UserInputParameters<dim> &user_in
     }
 }
 
-// #include "core/triangulation_manager.inst"
+#include "core/triangulation_manager.inst"
 
 PRISMS_PF_END_NAMESPACE

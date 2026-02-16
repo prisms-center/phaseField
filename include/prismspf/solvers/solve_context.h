@@ -17,6 +17,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/field_attributes.h"
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -34,18 +36,29 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(const UserInputParameters<dim>               &_user_inputs,
+  SolveContext(FieldAttributes                               _field_attributes,
+               const UserInputParameters<dim>               &_user_inputs,
                const TriangulationManager<dim>              &_triangulation_manager,
                const ConstraintManager<dim, degree, number> &_constraint_manager,
                const DofManager<dim>                        &_dof_manager,
                SolutionIndexer<dim, number>                 &_solution_indexer,
                std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
-    : user_inputs(&_user_inputs)
+    : field_attributes(std::move(_field_attributes))
+    , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
     , constraint_manager(&_constraint_manager)
     , dof_manager(&_dof_manager)
     , solution_indexer(&_solution_indexer)
     , pde_operator(_pde_operator) {};
+
+  /**
+   * @brief Get the field attributes.
+   */
+  [[nodiscard]] const FieldAttributes &
+  get_field_attributes() const
+  {
+    return field_attributes;
+  }
 
   /**
    * @brief Get the user-inputs.
@@ -108,6 +121,11 @@ public:
   }
 
 private:
+  /**
+   * @brief Field attributes.
+   */
+  FieldAttributes field_attributes;
+
   /**
    * @brief User-inputs.
    */

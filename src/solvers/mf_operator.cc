@@ -252,9 +252,9 @@ MFOperator<dim, degree, number>::m() const
                     selected_fields.end(),
                     0U,
                     [this](unsigned int sum, unsigned int field)
-                    {
-                      return sum + data->get_vector_partitioner(field)->size();
-                    });
+                      {
+                        return sum + data->get_vector_partitioner(field)->size();
+                      });
 
   return total_size;
 }
@@ -339,6 +339,6 @@ MFOperator<dim, degree, number>::Tvmult(SolutionVector       &dst,
 
 // NOLINTEND(readability-identifier-naming)
 
-// #include "core/matrix_free_operator.inst"
+#include "solvers/mf_operator.inst"
 
 PRISMS_PF_END_NAMESPACE
