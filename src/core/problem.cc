@@ -145,7 +145,7 @@ Problem<dim, degree, number>::init_system()
       // Perform grid refinement
       ConditionalOStreams::pout_base() << "performing grid refinement...\n" << std::flush;
       Timer::start_section("Grid refinement");
-      grid_refiner.do_adaptive_refinement();
+      grid_refiner.do_adaptive_refinement(solvers);
       Timer::end_section("Grid refinement");
 
       // Reinitialize the solvers
@@ -257,15 +257,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       ConditionalOStreams::pout_base()
         << "[Increment " << sim_timer.get_increment() << "] : Grid Refinement\n";
       Timer::start_section("Grid refinement");
-      grid_refiner.do_adaptive_refinement();
+      grid_refiner.do_adaptive_refinement(solvers);
       Timer::end_section("Grid refinement");
       ConditionalOStreams::pout_base() << "\n" << std::flush;
-
-      // Reinitialize the solvers
-      for (auto solver : solvers)
-        {
-          solver->reinit();
-        }
 
       // Update the ghosts
       Timer::start_section("Update ghosts");
@@ -347,6 +341,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 }
 
-// #include "core/problem.inst"
+#include "core/problem.inst"
 
 PRISMS_PF_END_NAMESPACE

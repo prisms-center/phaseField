@@ -65,6 +65,6 @@ DofManager<dim>::get_dof_handlers(const std::set<unsigned int> &field_indices,
   return selected_dof_handlers;
 }
 
-// #include "core/dof_manager.inst"
+#include "core/dof_manager.inst"
 
 PRISMS_PF_END_NAMESPACE

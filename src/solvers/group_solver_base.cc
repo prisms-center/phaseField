@@ -5,6 +5,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// #include "solvers/group_solver_base.inst"
+#include "solvers/group_solver_base.inst"
 
 PRISMS_PF_END_NAMESPACE
