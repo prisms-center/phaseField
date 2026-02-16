@@ -29,7 +29,7 @@ class LinearSolver : public GroupSolverBase<dim, degree, number>
   using GroupSolverBase::solutions;
   using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
-  using BlockVector = SolutionHandler<dim, number>::BlockVector;
+  using BlockVector = GroupSolutionHandler<dim, number>::BlockVector;
 
 public:
   /**
@@ -51,13 +51,13 @@ public:
     for (unsigned int relative_level = 0; relative_level < lhs_operators.size();
          ++relative_level)
       {
-        lhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solve_context->pde_operator,
-          PDEOperator<dim, degree, number>::compute_explicit_lhs,
-          solve_context->field_attributes,
-          solve_context->solution_indexer,
-          relative_level,
-          solve_group.dependencies_lhs);
+        lhs_operators[relative_level] =
+          MFOperator<dim, degree, number>(solve_context->pde_operator,
+                                          PDEOperator<dim, degree, number>::compute_lhs,
+                                          solve_context->field_attributes,
+                                          solve_context->solution_indexer,
+                                          relative_level,
+                                          solve_group.dependencies_lhs);
         lhs_operators[relative_level].initialize(solve_group,
                                                  solutions.get_matrix_free(
                                                    relative_level),
@@ -107,7 +107,7 @@ public:
       {
         // TODO: Make member?
         dealii::SolverCG<BlockVector> cg_solver(linear_solver_control);
-        cg_solver.solve(lhs_operator, x_vector, b_vector);
+        cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());
       }
     catch (...) // TODO: more specific catch
       {

@@ -77,7 +77,7 @@ public:
     std::vector<Value<rank>> quad_values(num_quad_points);
 
     // Loop over the cells provided by the DoFHandler
-    Value<rank> value(0);
+    Value<rank> value = 0;
     for (const auto &cell : dof_handler.active_cell_iterators())
       {
         if (cell->is_locally_owned())

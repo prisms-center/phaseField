@@ -32,9 +32,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 ConstraintManager<dim, degree, number>::ConstraintManager(
   const std::vector<FieldAttributes>     &field_attributes,
-  const std::set<SolveGroup>             &solve_groups,
+  const std::vector<SolveGroup>          &solve_groups,
   const DofManager<dim>                  &_dof_manager,
-  const PDEOperator<dim, degree, number> &_pde_operator)
+  const PDEOperator<dim, degree, number> *_pde_operator)
   : dof_manager(_dof_manager)
   , pde_operator(_pde_operator)
   , constraints(field_attributes.size())

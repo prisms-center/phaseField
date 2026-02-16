@@ -92,7 +92,8 @@ field_index_map(const std::vector<FieldAttributes> &fields)
   for (unsigned int i = 0; i < fields.size(); ++i)
     {
       AssertThrow(map.find(fields[i].name) == map.end(),
-                  "The names of the fields are not unique. This is not allowed.");
+                  dealii::ExcMessage(
+                    "The names of the fields are not unique. This is not allowed."));
       map[fields[i].name] = i;
     }
   return map;
@@ -107,8 +108,8 @@ field_map(const std::vector<FieldAttributes> &fields)
   std::map<std::string, FieldAttributes> map;
   for (const FieldAttributes &field : fields)
     {
-      AssertThrow(map.find(field.name) == map.end(),
-                  "The names of the fields are not unique. This is not allowed.");
+      // AssertThrow(map.find(field.name) == map.end(),
+      //             "The names of the fields are not unique. This is not allowed.");
       map[field.name] = field;
     }
   return map;

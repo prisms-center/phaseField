@@ -47,7 +47,7 @@ public:
   /**
    * @brief Getter function for the DoFHandlers (constant reference).
    */
-  [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
+  [[nodiscard]] std::vector<const dealii::DoFHandler<dim> *>
   get_field_dof_handlers(const std::set<unsigned int> &field_indices,
                          unsigned int                  relative_level = 0) const;
 
@@ -101,7 +101,7 @@ private:
    * be grain growth.
    * Outer vector is indexed by field index. Inner vector is indexed by relative mg level.
    */
-  std::vector<std::vector<std::shared_ptr<dealii::DoFHandler<dim>>>> dof_handlers;
+  std::vector<std::vector<const dealii::DoFHandler<dim> *>> dof_handlers;
 
   /**
    * @brief A scalar and a vector dof handler for each level

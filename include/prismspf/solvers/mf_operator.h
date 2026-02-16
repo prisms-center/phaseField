@@ -73,38 +73,36 @@ public:
   Value<Rank>
   identity()
   {
-    static Value<Rank> ident = []()
-    {
-      Value<Rank> obj;
-      for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-        {
-          obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-        }
-    }();
-    return ident;
-  }
-
-  template <>
-  ScalarValue
-  identity()
-  {
-    static ScalarValue ident(1.0);
-    return ident;
+    if constexpr (Rank == TensorRank::Scalar)
+      {
+        return ScalarValue(1.0);
+      }
+    else
+      {
+        static Value<Rank> ident = []()
+          {
+            Value<Rank> obj;
+            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+              {
+                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+              }
+          }();
+        return ident;
+      }
   }
 
   template <TensorRank Rank>
   Value<Rank>
   zero()
   {
-    return Value<Rank>();
-  }
-
-  template <>
-  ScalarValue
-  zero()
-  {
-    static ScalarValue zeroo(0.0);
-    return zeroo;
+    if constexpr (Rank == TensorRank::Scalar)
+      {
+        return ScalarValue(0.0);
+      }
+    else
+      {
+        return Value<Rank>();
+      }
   }
 
   /**

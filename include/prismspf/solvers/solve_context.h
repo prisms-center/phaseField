@@ -18,6 +18,7 @@
 #include <prismspf/config.h>
 
 #include "prismspf/core/field_attributes.h"
+#include "prismspf/core/invm_manager.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -36,7 +37,7 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(FieldAttributes                               _field_attributes,
+  SolveContext(std::vector<FieldAttributes>                  _field_attributes,
                const UserInputParameters<dim>               &_user_inputs,
                const TriangulationManager<dim>              &_triangulation_manager,
                const ConstraintManager<dim, degree, number> &_constraint_manager,
@@ -46,15 +47,16 @@ public:
     : field_attributes(std::move(_field_attributes))
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
-    , constraint_manager(&_constraint_manager)
     , dof_manager(&_dof_manager)
+    , constraint_manager(&_constraint_manager)
     , solution_indexer(&_solution_indexer)
+    , invm_manager(dof_manager, true, true)
     , pde_operator(_pde_operator) {};
 
   /**
    * @brief Get the field attributes.
    */
-  [[nodiscard]] const FieldAttributes &
+  [[nodiscard]] const std::vector<FieldAttributes> &
   get_field_attributes() const
   {
     return field_attributes;
@@ -81,13 +83,13 @@ public:
   }
 
   /**
-   * @brief Get the constraint manager.
+   * @brief Get the triangulation manager.
    */
-  [[nodiscard]] const ConstraintManager<dim, degree, number> &
-  get_constraint_manager() const
+  [[nodiscard]] TriangulationManager<dim> &
+  get_triangulation_manager()
   {
-    Assert(constraint_manager != nullptr, dealii::ExcNotInitialized());
-    return *constraint_manager;
+    Assert(triangulation_manager != nullptr, dealii::ExcNotInitialized());
+    return *triangulation_manager;
   }
 
   /**
@@ -101,6 +103,36 @@ public:
   }
 
   /**
+   * @brief Get the dof manager.
+   */
+  [[nodiscard]] DofManager<dim> &
+  get_dof_manager()
+  {
+    Assert(dof_manager != nullptr, dealii::ExcNotInitialized());
+    return *dof_manager;
+  }
+
+  /**
+   * @brief Get the constraint manager.
+   */
+  [[nodiscard]] const ConstraintManager<dim, degree, number> &
+  get_constraint_manager() const
+  {
+    Assert(constraint_manager != nullptr, dealii::ExcNotInitialized());
+    return *constraint_manager;
+  }
+
+  /**
+   * @brief Get the constraint manager.
+   */
+  [[nodiscard]] ConstraintManager<dim, degree, number> &
+  get_constraint_manager()
+  {
+    Assert(constraint_manager != nullptr, dealii::ExcNotInitialized());
+    return *constraint_manager;
+  }
+
+  /**
    * @brief Get the solution manager.
    */
   [[nodiscard]] SolutionIndexer<dim, number> &
@@ -108,6 +140,24 @@ public:
   {
     Assert(solution_indexer != nullptr, dealii::ExcNotInitialized());
     return *solution_indexer;
+  }
+
+  /**
+   * @brief Get the invm manager.
+   */
+  [[nodiscard]] const InvMManager<dim, degree, number> &
+  get_invm_manager() const
+  {
+    return invm_manager;
+  }
+
+  /**
+   * @brief Get the invm manager.
+   */
+  [[nodiscard]] InvMManager<dim, degree, number> &
+  get_invm_manager()
+  {
+    return invm_manager;
   }
 
   /**
@@ -124,7 +174,7 @@ private:
   /**
    * @brief Field attributes.
    */
-  FieldAttributes field_attributes;
+  std::vector<FieldAttributes> field_attributes;
 
   /**
    * @brief User-inputs.
@@ -134,12 +184,7 @@ private:
   /**
    * @brief Triangulation manager.
    */
-  const TriangulationManager<dim> *triangulation_manager;
-
-  /**
-   * @brief Constraint manager.
-   */
-  const ConstraintManager<dim, degree, number> *constraint_manager;
+  TriangulationManager<dim> *triangulation_manager;
 
   /**
    * @brief DoF manager.
@@ -147,19 +192,24 @@ private:
   const DofManager<dim> *dof_manager;
 
   /**
+   * @brief Constraint manager.
+   */
+  const ConstraintManager<dim, degree, number> *constraint_manager;
+
+  /**
    * @brief Solution manager.
    */
   SolutionIndexer<dim, number> *solution_indexer;
 
   /**
+   * @brief Solution manager.
+   */
+  InvMManager<dim, degree, number> invm_manager;
+
+  /**
    * @brief PDE operator.
    */
   std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
-
-  /**
-   * @brief PDE operator for float precision.
-   */
-  std::shared_ptr<const PDEOperator<dim, degree, float>> pde_operator_float;
 };
 
 PRISMS_PF_END_NAMESPACE

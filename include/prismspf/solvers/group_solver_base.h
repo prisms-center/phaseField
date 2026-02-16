@@ -13,6 +13,7 @@
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/solve_group.h>
+#include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -37,8 +38,8 @@ public:
   GroupSolverBase(SolveGroup                               _solve_group,
                   const SolveContext<dim, degree, number> &_solve_context)
     : solve_group(std::move(_solve_group))
-    , solutions()
     , solve_context(std::make_shared<SolveContext<dim, degree, number>>(_solve_context))
+    , solutions(solve_group, solve_context->get_field_attributes())
   {}
 
   /**
@@ -82,13 +83,10 @@ public:
   virtual void
   init()
   {
-    // Initialize vectors
-    solutions =
-      GroupSolutionHandler<dim, number>(solve_group, solve_context->field_attributes);
-    solutions.init(solve_context->mapping,
-                   solve_context->dof_manager,
-                   solve_context->constraint_manager,
-                   solve_context->quadrature);
+    solutions.init(SystemWide<dim, degree>::mapping,
+                   solve_context->get_dof_manager(),
+                   solve_context->get_constraint_manager(),
+                   SystemWide<dim, degree>::quadrature);
 
     // Set the initial condition
     set_initial_condition();
@@ -202,15 +200,15 @@ public:
                 auto name_it =
                   std::find(initial_condition_file.simulation_variable_names.begin(),
                             initial_condition_file.simulation_variable_names.end(),
-                            attributes_list[global_index].name);
+                            solve_context->get_field_attributes()[global_index].name);
                 if (name_it != initial_condition_file.simulation_variable_names.end())
                   {
                     dealii::VectorTools::interpolate(
-                      solve_context->get_mapping(),
+                      SystemWide<dim, degree>::mapping,
                       solve_context->get_dof_manager().get_dof_handler(global_index),
                       ReadInitialCondition<dim, number>(
                         *name_it,
-                        attributes_list[global_index].field_type,
+                        solve_context->get_field_attributes()[global_index].field_type,
                         initial_condition_file,
                         solve_context->get_user_inputs().get_spatial_discretization()),
                       solutions.get_solution_vector(global_index));
@@ -220,11 +218,11 @@ public:
         else
           {
             dealii::VectorTools::interpolate(
-              solve_context->get_mapping(),
-              solve_context->get_dof_manager().get_dof_handler(index),
+              SystemWide<dim, degree>::mapping,
+              solve_context->get_dof_manager().get_dof_handler(global_index),
               InitialCondition<dim, degree, number>(
-                index,
-                attributes_list[global_index].field_type,
+                global_index,
+                solve_context->get_field_attributes()[global_index].field_type,
                 solve_context->get_pde_operator()),
               solutions.get_solution_vector(global_index));
           }
@@ -233,28 +231,10 @@ public:
   }
 
   /**
-   * @brief Get the invm handler.
-   */
-  [[nodiscard]] const InvmHandler<dim, degree, number> &
-  get_invm_handler() const
-  {
-    return solve_context->get_invm_handler();
-  }
-
-  /**
    * @brief Get the solution handler.
    */
   [[nodiscard]] GroupSolutionHandler<dim, number> &
   get_solution_manager() const;
-
-  /**
-   * @brief Get the element volume container.
-   */
-  [[nodiscard]] const ElementVolumeContainer<dim, degree, number> &
-  get_element_volume_container() const
-  {
-    return solve_context->get_element_volume_container();
-  }
 
   /**
    * @brief Get the pde operator.
@@ -277,13 +257,15 @@ public:
 
 protected:
   /**
-   * @brief List of field attributes available.
-   */
-  const std::vector<FieldAttributes> attributes_list;
-  /**
    * @brief Information about the solve group this handler is responsible for.
    */
   SolveGroup solve_group;
+
+  /**
+   * @brief Solver context provides access to external information.
+   */
+  const std::shared_ptr<SolveContext<dim, degree, number>> solve_context;
+
   /**
    * @brief Solution vectors for fields handled by this solver.
    */
@@ -292,11 +274,6 @@ protected:
   std::vector<MFOperator<dim, degree, number>> rhs_operators;
 
   std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
-
-  /**
-   * @brief Solver context provides access to external information.
-   */
-  const std::shared_ptr<SolveContext<dim, degree, number>> solve_context;
 };
 
 PRISMS_PF_END_NAMESPACE

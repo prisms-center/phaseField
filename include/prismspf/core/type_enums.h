@@ -61,7 +61,7 @@ enum ElasticityModel : std::uint8_t
 enum FieldSolveType : std::uint8_t
 {
   ExplicitConstant,
-  Explicit,
+  // Explicit,
   NonexplicitLinear,
   NonexplicitSelfnonlinear,
   NonexplicitAuxiliary,
@@ -184,8 +184,8 @@ to_string(FieldSolveType type)
 {
   switch (type)
     {
-      case FieldSolveType::Explicit:
-        return "Explicit";
+      // case FieldSolveType::Explicit:
+      //   return "Explicit";
       case FieldSolveType::NonexplicitLinear:
         return "NonexplicitLinear";
       case FieldSolveType::NonexplicitSelfnonlinear:
