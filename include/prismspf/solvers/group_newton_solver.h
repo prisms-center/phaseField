@@ -16,7 +16,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class SolverContext;
+class SolveContext;
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
@@ -28,8 +28,8 @@ class NewtonSolver : public LinearSolver<dim, degree, number>
   using LinearSolver    = LinearSolver<dim, degree, number>;
   using GroupSolverBase::rhs_operators;
   using GroupSolverBase::solutions;
+  using GroupSolverBase::solve_context;
   using GroupSolverBase::solve_group;
-  using GroupSolverBase::solver_context;
   using LinearSolver::do_linear_solve;
   using LinearSolver::lhs_operators;
 
@@ -37,9 +37,9 @@ public:
   /**
    * @brief Constructor.
    */
-  NewtonSolver(SolveGroup                                _solve_group,
-               const SolverContext<dim, degree, number> &_solver_context)
-    : LinearSolver(_solve_group, _solver_context)
+  NewtonSolver(SolveGroup                               _solve_group,
+               const SolveContext<dim, degree, number> &_solve_context)
+    : LinearSolver(_solve_group, _solve_context)
   {}
 
   /**

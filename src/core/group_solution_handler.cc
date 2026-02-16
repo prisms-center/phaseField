@@ -379,6 +379,6 @@ GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
   solution_level.solutions.swap(solution_level.new_solutions);
 }
 
-// #include "core/group_solution_handler.inst"
+#include "core/group_solution_handler.inst"
 
 PRISMS_PF_END_NAMESPACE

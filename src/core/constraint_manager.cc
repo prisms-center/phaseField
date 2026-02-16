@@ -13,8 +13,8 @@
 #include <deal.II/numerics/vector_tools_boundary.h>
 
 #include <prismspf/core/constraint_manager.h>
+#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
-#include <prismspf/core/multigrid_info.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
@@ -24,9 +24,6 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/dof_manager.h"
-
-#include <cmath>
 #include <string>
 #include <vector>
 
@@ -310,16 +307,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks[i] = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks[i] = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

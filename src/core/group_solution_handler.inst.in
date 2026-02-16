@@ -1,0 +1,8 @@
+for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+  {
+    template class SolutionLevel<dimension, number>;
+  }
+for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+  {
+    template class GroupSolutionHandler<dimension, number>;
+  }

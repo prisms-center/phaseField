@@ -8,7 +8,6 @@
 
 #include <prismspf/config.h>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
@@ -123,6 +122,6 @@ SolutionIndexer<dim, number>::get_block_index(unsigned int global_index) const
   return solutions[global_index]->get_block_index(global_index);
 }
 
-// #include "core/solution_indexer.inst"
+#include "core/solution_indexer.inst"
 
 PRISMS_PF_END_NAMESPACE
