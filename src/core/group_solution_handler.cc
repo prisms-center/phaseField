@@ -38,6 +38,14 @@ GroupSolutionHandler<dim, number>::get_solution_full_vector(unsigned int relativ
 
 template <unsigned int dim, typename number>
 auto
+GroupSolutionHandler<dim, number>::get_solution_full_vector(
+  unsigned int relative_level) const -> const BlockVector &
+{
+  return solution_levels[relative_level].solutions;
+}
+
+template <unsigned int dim, typename number>
+auto
 GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
                                                        unsigned int relative_level)
   -> SolutionVector &
@@ -48,9 +56,28 @@ GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index
 
 template <unsigned int dim, typename number>
 auto
+GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
+                                                       unsigned int relative_level) const
+  -> const SolutionVector &
+{
+  return solution_levels[relative_level].solutions.block(
+    global_to_block_index[global_index]);
+}
+
+template <unsigned int dim, typename number>
+auto
 GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
   unsigned int age,
   unsigned int relative_level) -> BlockVector &
+{
+  return solution_levels[relative_level].old_solutions[age];
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
+  unsigned int age,
+  unsigned int relative_level) const -> const BlockVector &
 {
   return solution_levels[relative_level].old_solutions[age];
 }
@@ -68,8 +95,27 @@ GroupSolutionHandler<dim, number>::get_old_solution_vector(unsigned int age,
 
 template <unsigned int dim, typename number>
 auto
+GroupSolutionHandler<dim, number>::get_old_solution_vector(
+  unsigned int age,
+  unsigned int global_index,
+  unsigned int relative_level) const -> const SolutionVector &
+{
+  return solution_levels[relative_level].old_solutions[age].block(
+    global_to_block_index[global_index]);
+}
+
+template <unsigned int dim, typename number>
+auto
 GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
   unsigned int relative_level) -> BlockVector &
+{
+  return solution_levels[relative_level].new_solutions;
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
+  unsigned int relative_level) const -> const BlockVector &
 {
   return solution_levels[relative_level].new_solutions;
 }
@@ -85,67 +131,6 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_i
 }
 
 template <unsigned int dim, typename number>
-SolutionLevel<dim, number> &
-GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_level)
-{
-  return solution_levels[relative_level];
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
-  -> MatrixFree &
-{
-  return solution_levels[relative_level].matrix_free;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_solution_full_vector(
-  unsigned int relative_level) const -> const BlockVector &
-{
-  return solution_levels[relative_level].solutions;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
-                                                       unsigned int relative_level) const
-  -> const SolutionVector &
-{
-  return solution_levels[relative_level].solutions.block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
-  unsigned int age,
-  unsigned int relative_level) const -> const BlockVector &
-{
-  return solution_levels[relative_level].old_solutions[age];
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_old_solution_vector(
-  unsigned int age,
-  unsigned int global_index,
-  unsigned int relative_level) const -> const SolutionVector &
-{
-  return solution_levels[relative_level].old_solutions[age].block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
-  unsigned int relative_level) const -> const BlockVector &
-{
-  return solution_levels[relative_level].new_solutions;
-}
-
-template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_new_solution_vector(
   unsigned int global_index,
@@ -156,10 +141,61 @@ GroupSolutionHandler<dim, number>::get_new_solution_vector(
 }
 
 template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_change_solution_vector(unsigned int global_index,
+                                                              unsigned int relative_level)
+  -> SolutionVector &
+{
+  return solution_levels[relative_level].change_solutions.block(
+    global_to_block_index[global_index]);
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_change_solution_vector(
+  unsigned int global_index,
+  unsigned int relative_level) const -> const SolutionVector &
+{
+  return solution_levels[relative_level].change_solutions.block(
+    global_to_block_index[global_index]);
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_change_solution_full_vector(
+  unsigned int relative_level) -> BlockVector &
+{
+  return solution_levels[relative_level].change_solutions;
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_change_solution_full_vector(
+  unsigned int relative_level) const -> const BlockVector &
+{
+  return solution_levels[relative_level].change_solutions;
+}
+
+template <unsigned int dim, typename number>
+SolutionLevel<dim, number> &
+GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_level)
+{
+  return solution_levels[relative_level];
+}
+
+template <unsigned int dim, typename number>
 const SolutionLevel<dim, number> &
 GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_level) const
 {
   return solution_levels[relative_level];
+}
+
+template <unsigned int dim, typename number>
+auto
+GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
+  -> MatrixFree &
+{
+  return solution_levels[relative_level].matrix_free;
 }
 
 template <unsigned int dim, typename number>

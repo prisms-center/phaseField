@@ -28,11 +28,11 @@ get_solution_managers_from_solvers(
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
-  const std::vector<FieldAttributes>                            &_field_attributes,
-  const std::vector<SolveGroup>                                 &_solve_groups,
-  const UserInputParameters<dim>                                &_user_inputs,
-  PhaseFieldTools<dim>                                          &_pf_tools,
-  const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator)
+  const std::vector<FieldAttributes>                                &_field_attributes,
+  const std::vector<SolveGroup>                                     &_solve_groups,
+  const UserInputParameters<dim>                                    &_user_inputs,
+  PhaseFieldTools<dim>                                              &_pf_tools,
+  const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &_pde_operator)
   : field_attributes(_field_attributes)
   , solve_groups(_solve_groups)
   , user_inputs_ptr(&_user_inputs)
@@ -86,6 +86,7 @@ Problem<dim, degree, number>::init_system()
   Timer::start_section("Create constraints");
   for (const auto &solve_group : solve_groups)
     {
+      (void) solve_group;
       // TODO: Loop over levels, pass in current time
       // constraint_manager.make_constraints(dof_manager.get_field_dof_handlers(
       //                                      solve_group.field_indices));
@@ -311,17 +312,17 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
           if (tensor_rank == FieldInfo::TensorRank::Vector)
             {
               ConditionalOStreams::pout_base()
-                << Integrator<dim, degree, number>::template integrate<
-                     FieldInfo::TensorRank::Vector>(dof_manager.get_dof_handler(index),
-                                                    solution)
+                << Integrator<dim, degree, number>::template integrate<1>(
+                     dof_manager.get_dof_handler(index),
+                     solution)
                 << "\n";
             }
           else if (tensor_rank == FieldInfo::TensorRank::Scalar)
             {
               ConditionalOStreams::pout_base()
-                << Integrator<dim, degree, number>::template integrate<
-                     FieldInfo::TensorRank::Scalar>(dof_manager.get_dof_handler(index),
-                                                    solution)
+                << Integrator<dim, degree, number>::template integrate<0>(
+                     dof_manager.get_dof_handler(index),
+                     solution)
                 << "\n";
             }
         }

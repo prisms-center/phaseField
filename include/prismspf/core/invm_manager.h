@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
@@ -34,7 +35,8 @@ public:
     : calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
   {
-    auto dof_handlers = dof_manager.get_dof_handlers();
+    const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
+      dof_manager.get_dof_handlers();
     data.resize(dof_handlers.size());
     for (unsigned int i = 0; i < data.size(); ++i)
       {
@@ -184,14 +186,14 @@ private:
   std::vector<SolutionVector> invm_vector;
 
   inline static const VectorValue one = []()
-    {
-      VectorValue one1;
-      for (unsigned int i = 0; i < dim; ++i)
-        {
-          one1[i] = 1.0;
-        }
-      return one1;
-    }();
+  {
+    VectorValue one1;
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        one1[i] = 1.0;
+      }
+    return one1;
+  }();
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -9,7 +9,7 @@
 
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/triangulation_manager.h>
 
@@ -37,20 +37,21 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(std::vector<FieldAttributes>                  _field_attributes,
-               const UserInputParameters<dim>               &_user_inputs,
-               const TriangulationManager<dim>              &_triangulation_manager,
-               const ConstraintManager<dim, degree, number> &_constraint_manager,
-               const DofManager<dim>                        &_dof_manager,
-               SolutionIndexer<dim, number>                 &_solution_indexer,
-               std::shared_ptr<const PDEOperator<dim, degree, number>> _pde_operator)
+  SolveContext(
+    std::vector<FieldAttributes>            _field_attributes,
+    const UserInputParameters<dim>         &_user_inputs,
+    TriangulationManager<dim>              &_triangulation_manager,
+    DofManager<dim>                        &_dof_manager,
+    ConstraintManager<dim, degree, number> &_constraint_manager,
+    SolutionIndexer<dim, number>           &_solution_indexer,
+    std::shared_ptr<const PDEOperatorBaseBase<dim, degree, number>> _pde_operator)
     : field_attributes(std::move(_field_attributes))
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
     , dof_manager(&_dof_manager)
     , constraint_manager(&_constraint_manager)
     , solution_indexer(&_solution_indexer)
-    , invm_manager(dof_manager, true, true)
+    , invm_manager(*dof_manager, true, true)
     , pde_operator(_pde_operator) {};
 
   /**
@@ -163,7 +164,7 @@ public:
   /**
    * @brief Get a shared pointer to the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
+  [[nodiscard]] const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &
   get_pde_operator() const
   {
     Assert(pde_operator != nullptr, dealii::ExcNotInitialized());
@@ -189,12 +190,12 @@ private:
   /**
    * @brief DoF manager.
    */
-  const DofManager<dim> *dof_manager;
+  DofManager<dim> *dof_manager;
 
   /**
    * @brief Constraint manager.
    */
-  const ConstraintManager<dim, degree, number> *constraint_manager;
+  ConstraintManager<dim, degree, number> *constraint_manager;
 
   /**
    * @brief Solution manager.
@@ -209,7 +210,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+  std::shared_ptr<const PDEOperatorBaseBase<dim, degree, number>> pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

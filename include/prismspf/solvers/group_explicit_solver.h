@@ -22,11 +22,10 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class ExplicitSolver : public GroupSolverBase<dim, degree, number>
 {
-  using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using GroupSolverBase::rhs_operators;
-  using GroupSolverBase::solutions;
-  using GroupSolverBase::solve_context;
-  using GroupSolverBase::solve_group;
+  using GroupSolverBase<dim, degree, number>::rhs_operators;
+  using GroupSolverBase<dim, degree, number>::solutions;
+  using GroupSolverBase<dim, degree, number>::solve_context;
+  using GroupSolverBase<dim, degree, number>::solve_group;
 
 public:
   /**
@@ -34,7 +33,7 @@ public:
    */
   ExplicitSolver(SolveGroup                               _solve_group,
                  const SolveContext<dim, degree, number> &_solve_context)
-    : GroupSolverBase(_solve_group, _solve_context)
+    : GroupSolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
 
   /**
