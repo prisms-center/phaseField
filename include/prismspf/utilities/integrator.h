@@ -4,9 +4,10 @@
 #pragma once
 
 #include <deal.II/dofs/dof_handler.h>
+#include <deal.II/fe/fe_values.h>
 #include <deal.II/lac/la_parallel_vector.h>
 
-#include <prismspf/core/field_container.h>
+#include <prismspf/core/system_wide.h>
 
 #include <prismspf/config.h>
 
@@ -44,40 +45,33 @@ public:
                    const dealii::DoFHandler<dim> &dof_handler,
                    const VectorType              &vector) const;
 
-  using TensorRank = FieldInfo::TensorRank;
-  template <TensorRank Rank>
-  using Value = std::conditional_t<Rank == TensorRank::Scalar,
-                                   number,
-                                   dealii::Tensor<int(Rank), dim, number>>;
-
-  template <TensorRank rank>
-  static Value<rank>
-  integrate(const dealii::DoFHandler<dim> &dof_handler, const VectorType &vector)
+  template <int rank>
+  static dealii::Vector<number>
+  integrate(const dealii::DoFHandler<dim> &dof_handler, const auto &solution_vector)
   {
-    [[maybe_unused]] constexpr unsigned int expected_components =
-      dealii::Tensor<int(rank), dim>::n_independent_components;
+    constexpr unsigned int expected_components =
+      dealii::Tensor<rank, dim>::n_independent_components;
     Assert(dof_handler.get_fe().n_components() == expected_components,
            dealii::ExcMessage("The provided DoFHandler does not have the same number of "
                               "components as the expected ones. For scalar fields there "
                               "should be 1 component."));
 
     // Update ghosts
-    vector.update_ghost_values();
+    solution_vector.update_ghost_values();
 
     // Set quadrature rule and FEValues to update the JxW values
-    const dealii::QGaussLobatto<dim> quadrature(degree + 1);
-    dealii::FEValues<dim>            fe_values(dof_handler.get_fe(),
-                                    quadrature,
+    dealii::FEValues<dim> fe_values(dof_handler.get_fe(),
+                                    SystemWide<dim, degree>::quadrature,
                                     dealii::update_values | dealii::update_JxW_values);
 
     // Get the number of quadrature points
-    const unsigned int num_quad_points = quadrature.size();
+    const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
     // Create a value vector
-    std::vector<Value<rank>> quad_values(num_quad_points);
+    std::vector<dealii::Vector<number>> quad_values(num_quad_points);
 
     // Loop over the cells provided by the DoFHandler
-    Value<rank> value = 0;
+    dealii::Vector<number> value(expected_components);
     for (const auto &cell : dof_handler.active_cell_iterators())
       {
         if (cell->is_locally_owned())
@@ -86,19 +80,27 @@ public:
             fe_values.reinit(cell);
 
             // Get the values
-            fe_values.get_function_values(vector, quad_values);
+            fe_values.get_function_values(solution_vector, quad_values);
 
             // Sum up the product of the JxW and values at each quadrature point to
             // compute the element integral.
             for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
               {
-                value += quad_values[q_point] * fe_values.JxW(q_point);
+                for (unsigned int component = 0; component < expected_components;
+                     component++)
+                  {
+                    value[component] +=
+                      quad_values[q_point][component] * fe_values.JxW(q_point);
+                  }
               }
           }
       }
 
-    Value<rank> integral = dealii::Utilities::MPI::sum(value, MPI_COMM_WORLD);
-    return integral;
+    for (unsigned int component = 0; component < expected_components; component++)
+      {
+        value[component] = dealii::Utilities::MPI::sum(value[component], MPI_COMM_WORLD);
+      }
+    return value;
   }
 };
 

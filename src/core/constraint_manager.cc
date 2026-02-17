@@ -16,7 +16,6 @@
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
-#include <prismspf/core/pde_operator.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
@@ -29,36 +28,37 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+// Forward declaration to avoid circular dependency.
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperatorBase;
+
 template <unsigned int dim, unsigned int degree, typename number>
 ConstraintManager<dim, degree, number>::ConstraintManager(
-  const std::vector<FieldAttributes>     &field_attributes,
-  const std::vector<SolveGroup>          &solve_groups,
-  const DofManager<dim>                  &_dof_manager,
-  const PDEOperator<dim, degree, number> *_pde_operator)
-  : dof_manager(_dof_manager)
+  const std::vector<FieldAttributes>         &field_attributes,
+  const std::vector<SolveGroup>              &solve_groups,
+  const DofManager<dim>                      &_dof_manager,
+  const PDEOperatorBase<dim, degree, number> *_pde_operator)
+  : dof_manager(&_dof_manager)
   , pde_operator(_pde_operator)
   , constraints(field_attributes.size())
 {
-  for (const auto &solve_group : solve_groups)
+  /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
+   * primary fields, as well as any dependencies*/
+  unsigned int num_mg_levels = 1;
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
-      /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
-       * primary fields, as well as any dependencies*/
-      unsigned int num_mg_levels = 1;
-      for (const auto &field_index : solve_group.field_indices)
+      constraints[field_index].resize(num_mg_levels, nullptr);
+      for (unsigned int relative_level = 0; relative_level < num_mg_levels;
+           relative_level++)
         {
-          constraints[field_index].resize(num_mg_levels, nullptr);
-          for (unsigned int relative_level = 0; relative_level < num_mg_levels;
-               relative_level++)
-            {
-              const dealii::DoFHandler<dim> &dof_handler =
-                dof_manager->get_dof_handler(field_index, relative_level);
-              constraints[field_index][relative_level] =
-                std::make_shared<dealii::AffineConstraints<number>>(
-                  dof_handler.locally_owned_dofs(),
-                  dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
-            }
-          // TODO (fractalsbyx): construct change_constraints
+          const dealii::DoFHandler<dim> &dof_handler =
+            dof_manager->get_dof_handler(field_index, relative_level);
+          constraints[field_index][relative_level] =
+            std::make_shared<dealii::AffineConstraints<number>>(
+              dof_handler.locally_owned_dofs(),
+              dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
         }
+      // TODO (fractalsbyx): construct change_constraints
     }
 }
 
@@ -307,16 +307,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-  {
-    std::array<dealii::ComponentMask, dim> masks {};
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        dealii::ComponentMask temp_mask(dim, false);
-        temp_mask.set(i, true);
-        masks[i] = temp_mask;
-      }
-    return masks;
-  }();
+{
+  std::array<dealii::ComponentMask, dim> masks {};
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      dealii::ComponentMask temp_mask(dim, false);
+      temp_mask.set(i, true);
+      masks[i] = temp_mask;
+    }
+  return masks;
+}();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};
@@ -364,16 +364,17 @@ ConstraintManager<dim, degree, number>::make_nonuniform_dirichlet_constraints(
 {
   if (!is_change_term)
     {
-      dealii::VectorTools::interpolate_boundary_values(
-        mapping,
-        dof_handler,
-        boundary_id,
-        NonuniformDirichlet<dim, degree, number>(field_index,
-                                                 boundary_id,
-                                                 pde_operator,
-                                                 is_vector_field ? dim : 1),
-        _constraints,
-        mask);
+      // TODO
+      // dealii::VectorTools::interpolate_boundary_values(
+      //   mapping,
+      //   dof_handler,
+      //   boundary_id,
+      //   NonuniformDirichlet<dim, degree, number>(field_index,
+      //                                            boundary_id,
+      //                                            pde_operator,
+      //                                            is_vector_field ? dim : 1),
+      //   _constraints,
+      //   mask);
     }
   else
     {
@@ -452,12 +453,12 @@ ConstraintManager<dim, degree, number>::set_pinned_point(
             {
               constraint.add_line(dof_index + component);
               constraint.set_inhomogeneity(dof_index + component,
-                                           is_change_term ? value[component] : 0.0);
+                                           is_change_term ? value.at(component) : 0.0);
             }
         }
     }
 }
 
-// #include "core/constraint_managser.inst"
+#include "core/constraint_manager.inst"
 
 PRISMS_PF_END_NAMESPACE

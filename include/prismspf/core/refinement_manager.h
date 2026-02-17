@@ -197,15 +197,15 @@ private:
                   fe_values_flags.at(int(local_field_type)));
 
                 fe_values.reinit(dof_iterator);
+                const auto &solution_vector =
+                  solve_context.get_solution_indexer().get_solution_vector(index);
 
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
                   {
                     if (local_field_type == FieldInfo::TensorRank::Scalar)
                       {
                         // Get the values for a scalar field
-                        fe_values.get_function_values(
-                          solve_context.get_solution_indexer().get_solution_vector(index),
-                          values);
+                        fe_values.get_function_values(solution_vector, values);
                       }
                     else
                       {
@@ -214,9 +214,7 @@ private:
                         std::vector<dealii::Vector<number>> vector_values(
                           num_quad_points,
                           dealii::Vector<number>(dim));
-                        fe_values.get_function_values(
-                          solve_context.get_solution_indexer().get_solution_vector(index),
-                          vector_values);
+                        fe_values.get_function_values(solution_vector, vector_values);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -248,9 +246,8 @@ private:
                         // TODO (landinjm): Should be zeroing this out?
                         std::vector<dealii::Tensor<1, dim, number>> scalar_gradients(
                           num_quad_points);
-                        fe_values.get_function_gradients(
-                          solve_context.get_solution_indexer().get_solution_vector(index),
-                          scalar_gradients);
+                        fe_values.get_function_gradients(solution_vector,
+                                                         scalar_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -264,9 +261,8 @@ private:
                           vector_gradients(num_quad_points,
                                            std::vector<dealii::Tensor<1, dim, number>>(
                                              dim));
-                        fe_values.get_function_gradients(
-                          solve_context.get_solution_manager().get_solution_vector(index),
-                          vector_gradients);
+                        fe_values.get_function_gradients(solution_vector,
+                                                         vector_gradients);
                         for (unsigned int q_point = 0; q_point < num_quad_points;
                              ++q_point)
                           {
@@ -345,11 +341,11 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(
-                        *cell,
-                        solve_context.get_user_inputs().get_temporal_discretization());
-                    }))
+                  {
+                    return marker_function->flag(
+                      *cell,
+                      solve_context.get_user_inputs().get_temporal_discretization());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
@@ -395,8 +391,9 @@ private:
     // Redistribute DoFs and reinit the solvers
     triangulation_manager.reinit();
     dof_manager.reinit(triangulation_manager);
-    constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
-                                        dof_manager.get_dof_handlers());
+    // TODO
+    // constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
+    //                                    dof_manager.get_dof_handlers());
 
     // Reinit solutions, apply constraints, then solution transfer
     for (auto &solver : solvers)

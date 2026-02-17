@@ -12,25 +12,22 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/dependencies.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solution_indexer.h>
+#include <prismspf/core/solve_group.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
+#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/dependencies.h"
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/core/solve_group.h"
-#include "prismspf/core/variable_attributes.h"
 
 #include <memory>
 #include <type_traits>
 #include <vector>
 
-PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree, typename number>
-class ElementVolume;
+PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief This class permits the access of a subset of indexed fields and gives an error
@@ -90,17 +87,29 @@ public:
   template <typename Type>
   struct GetRankHelper
   {
-    static constexpr TensorRank rank_from_val  = TensorRank(Type::rank);
-    static constexpr TensorRank rank_from_grad = TensorRank(Type::rank - 1);
-  };
+    static constexpr TensorRank rank_from_val = []() constexpr
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank);
+        }
+    }();
 
-  template <>
-  struct GetRankHelper<ScalarValue>
-  {
-    static constexpr TensorRank rank_from_val = TensorRank::Scalar;
-    // TODO: make sure the enable_if is correct syntax
-    template <typename std::enable_if<dim == 1>>
-    static constexpr TensorRank rank_from_grad = TensorRank::Scalar;
+    static constexpr TensorRank rank_from_grad = []() constexpr
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>) //&& dim == 1)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank - 1);
+        }
+    }();
   };
 
   template <typename ValType>
@@ -538,11 +547,6 @@ private:
   std::vector<FEEValuationDeps<VectorFEEvaluation>> feeval_deps_vector;
   std::vector<std::unique_ptr<ScalarFEEvaluation>>  dst_feeval_scalar;
   std::vector<std::unique_ptr<VectorFEEvaluation>>  dst_feeval_vector;
-
-  /**
-   * @brief The element volume container
-   */
-  const ElementVolume<dim, degree, number> *element_volume_handler;
 
   /**
    * @brief The quadrature point index.

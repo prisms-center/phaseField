@@ -10,16 +10,15 @@
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/type_enums.h>
+#include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/types.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -49,10 +48,10 @@ public:
   /**
    * @brief Constructor.
    */
-  ConstraintManager(const std::vector<FieldAttributes>     &field_attributes,
-                    const std::vector<SolveGroup>          &solve_groups,
-                    const DofManager<dim>                  &_dof_manager,
-                    const PDEOperator<dim, degree, number> *_pde_operator);
+  ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
+                    const std::vector<SolveGroup>              &solve_groups,
+                    const DofManager<dim>                      &_dof_manager,
+                    const PDEOperatorBase<dim, degree, number> *_pde_operator);
 
   /**
    * @brief Getter function for the constraints.
@@ -194,7 +193,7 @@ private:
   /**
    * @brief PDE operator number.
    */
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
 
   /**
    * @brief Whether we have multigrid.
@@ -210,12 +209,13 @@ private:
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed
    * by relative mg level.
    */
-  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<float>>>> constraints;
+  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<number>>>>
+    constraints;
   /**
    * @brief Constraints for Newton-Change solutions. Outer vector is indexed by field
    * index. Inner vector is indexed by relative mg level.
    */
-  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<float>>>>
+  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<number>>>>
     change_constraints;
 };
 

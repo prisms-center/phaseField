@@ -67,7 +67,8 @@ public:
     else
       {
         coarsened_triangulations.clear();
-        coarsened_triangulations.push_back(std::make_shared(triangulation));
+        coarsened_triangulations.push_back(
+          std::make_shared<const dealii::Triangulation<dim>>(&triangulation));
       }
     // TODO (landinjm): p-multigrid
   };

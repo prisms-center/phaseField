@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 
 #include <prismspf/core/timer.h>
@@ -24,11 +25,11 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class LinearSolver : public GroupSolverBase<dim, degree, number>
 {
-  using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using GroupSolverBase::rhs_operators;
-  using GroupSolverBase::solutions;
-  using GroupSolverBase::solve_context;
-  using GroupSolverBase::solve_group;
+protected:
+  using GroupSolverBase<dim, degree, number>::rhs_operators;
+  using GroupSolverBase<dim, degree, number>::solutions;
+  using GroupSolverBase<dim, degree, number>::solve_context;
+  using GroupSolverBase<dim, degree, number>::solve_group;
   using BlockVector = GroupSolutionHandler<dim, number>::BlockVector;
 
 public:
@@ -37,7 +38,7 @@ public:
    */
   LinearSolver(SolveGroup                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
-    : GroupSolverBase(_solve_group, _solve_context)
+    : GroupSolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
 
   /**
@@ -46,22 +47,19 @@ public:
   void
   init() override
   {
-    GroupSolverBase::init();
+    GroupSolverBase<dim, degree, number>::init();
     // Initialize lhs_operators
     for (unsigned int relative_level = 0; relative_level < lhs_operators.size();
          ++relative_level)
       {
-        lhs_operators[relative_level] =
-          MFOperator<dim, degree, number>(solve_context->pde_operator,
-                                          PDEOperator<dim, degree, number>::compute_lhs,
-                                          solve_context->field_attributes,
-                                          solve_context->solution_indexer,
-                                          relative_level,
-                                          solve_group.dependencies_lhs);
-        lhs_operators[relative_level].initialize(solve_group,
-                                                 solutions.get_matrix_free(
-                                                   relative_level),
-                                                 solutions.get_global_to_block_index());
+        lhs_operators[relative_level] = MFOperator<dim, degree, number>(
+          solve_context->get_pde_operator(),
+          &PDEOperatorBase<dim, degree, number>::compute_lhs,
+          solve_context->get_field_attributes(),
+          solve_context->get_solution_indexer(),
+          relative_level,
+          solve_group.dependencies_lhs);
+        lhs_operators[relative_level].initialize(solutions);
       }
   }
 
