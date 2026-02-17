@@ -11,6 +11,7 @@
 #include <prismspf/core/dst_container.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
+#include <prismspf/core/group_solution_handler.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -19,9 +20,6 @@
 #include <prismspf/utilities/element_volume.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/group_solution_handler.h"
-#include "prismspf/core/solve_group.h"
 
 #include <memory>
 #include <utility>
@@ -252,9 +250,9 @@ MFOperator<dim, degree, number>::m() const
                     selected_fields.end(),
                     0U,
                     [this](unsigned int sum, unsigned int field)
-                      {
-                        return sum + data->get_vector_partitioner(field)->size();
-                      });
+                    {
+                      return sum + data->get_vector_partitioner(field)->size();
+                    });
 
   return total_size;
 }

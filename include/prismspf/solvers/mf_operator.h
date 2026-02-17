@@ -12,7 +12,7 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/group_solution_handler.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/types.h>
@@ -56,11 +56,9 @@ public:
   using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
   using MatrixFree     = dealii::MatrixFree<dim, number, ScalarValue>;
 
-  using Operator = void (PDEOperator<dim, degree, number>::*)(
-    FieldContainer<dim, degree, number> &,                       /* variable_list */
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &, /* q_point_loc */
-    const dealii::VectorizedArray<number> &,                     /* element_volume */
-    unsigned int                                                 /* solve_group_id */
+  using Operator = void (PDEOperatorBase<dim, degree, number>::*)(
+    FieldContainer<dim, degree, number> &, /* variable_list */
+    unsigned int                           /* solve_group_id */
   ) const;
 
   using TensorRank = FieldInfo::TensorRank;
@@ -80,13 +78,13 @@ public:
     else
       {
         static Value<Rank> ident = []()
-          {
-            Value<Rank> obj;
-            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-              {
-                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-              }
-          }();
+        {
+          Value<Rank> obj;
+          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+            {
+              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+            }
+        }();
         return ident;
       }
   }
@@ -108,12 +106,12 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit MFOperator(PDEOperator<dim, degree, number>   &operator_owner,
-                      Operator                            oper,
-                      const std::vector<FieldAttributes> &_field_attributes,
-                      const SolutionIndexer<dim, number> &_solution_indexer,
-                      unsigned int                        _relative_level,
-                      DependencySet                       _dependency_map)
+  explicit MFOperator(PDEOperatorBase<dim, degree, number> &operator_owner,
+                      Operator                              oper,
+                      const std::vector<FieldAttributes>   &_field_attributes,
+                      const SolutionIndexer<dim, number>   &_solution_indexer,
+                      unsigned int                          _relative_level,
+                      DependencySet                         _dependency_map)
     : MATRIX_FREE_OPERATOR_BASE()
     , pde_operator(&operator_owner)
     , pde_op(oper)
@@ -276,7 +274,7 @@ private:
   /**
    * @brief PDE operator object (owning class instance of pde_op) for user defined PDEs.
    */
-  const PDEOperator<dim, degree, number> *pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator;
   /**
    * @brief The actual PDE operator function ptr (eg. compute_rhs) for user defined PDEs.
    */

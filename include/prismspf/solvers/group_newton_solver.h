@@ -24,14 +24,13 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class NewtonSolver : public LinearSolver<dim, degree, number>
 {
-  using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using LinearSolver    = LinearSolver<dim, degree, number>;
-  using GroupSolverBase::rhs_operators;
-  using GroupSolverBase::solutions;
-  using GroupSolverBase::solve_context;
-  using GroupSolverBase::solve_group;
-  using LinearSolver::do_linear_solve;
-  using LinearSolver::lhs_operators;
+protected:
+  using GroupSolverBase<dim, degree, number>::rhs_operators;
+  using GroupSolverBase<dim, degree, number>::solutions;
+  using GroupSolverBase<dim, degree, number>::solve_context;
+  using GroupSolverBase<dim, degree, number>::solve_group;
+  using LinearSolver<dim, degree, number>::do_linear_solve;
+  using LinearSolver<dim, degree, number>::lhs_operators;
 
 public:
   /**
@@ -39,7 +38,7 @@ public:
    */
   NewtonSolver(SolveGroup                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
-    : LinearSolver(_solve_group, _solve_context)
+    : LinearSolver<dim, degree, number>(_solve_group, _solve_context)
   {}
 
   /**

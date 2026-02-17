@@ -89,17 +89,29 @@ public:
   template <typename Type>
   struct GetRankHelper
   {
-    static constexpr TensorRank rank_from_val  = TensorRank(Type::rank);
-    static constexpr TensorRank rank_from_grad = TensorRank(Type::rank - 1);
-  };
+    static constexpr TensorRank rank_from_val = []() constexpr
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank);
+        }
+    }();
 
-  template <>
-  struct GetRankHelper<ScalarValue>
-  {
-    static constexpr TensorRank rank_from_val = TensorRank::Scalar;
-    // TODO: make sure the enable_if is correct syntax
-    template <typename std::enable_if<dim == 1>>
-    static constexpr TensorRank rank_from_grad = TensorRank::Scalar;
+    static constexpr TensorRank rank_from_grad = []() constexpr
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>) //&& dim == 1)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank - 1);
+        }
+    }();
   };
 
   template <typename ValType>
