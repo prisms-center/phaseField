@@ -11,7 +11,7 @@
 #include <prismspf/core/constraint_handler.h> //
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
@@ -99,16 +99,13 @@ public:
          ++relative_level)
       {
         rhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solve_context->pde_operator,
-          PDEOperator<dim, degree, number>::compute_explicit_rhs,
-          solve_context->field_attributes,
-          solve_context->solution_indexer,
+          solve_context->get_pde_operator(),
+          &PDEOperatorBase<dim, degree, number>::compute_rhs,
+          solve_context->get_field_attributes(),
+          solve_context->get_solution_indexer(),
           relative_level,
           solve_group.dependencies_rhs);
-        rhs_operators[relative_level].initialize(solve_group,
-                                                 solutions.get_matrix_free(
-                                                   relative_level),
-                                                 solutions.get_global_to_block_index());
+        rhs_operators[relative_level].initialize(solutions);
       }
   }
 
@@ -239,7 +236,7 @@ public:
   /**
    * @brief Get the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<const PDEOperator<dim, degree, number>> &
+  [[nodiscard]] const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &
   get_pde_operator() const
   {
     return solve_context->get_pde_operator();
