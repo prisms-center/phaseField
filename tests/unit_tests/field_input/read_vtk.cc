@@ -3,8 +3,9 @@
 
 #ifdef PRISMS_PF_WITH_VTK
 
-#  include <prismspf/config.h>
 #  include <prismspf/field_input/read_vtk.h>
+
+#  include <prismspf/config.h>
 
 #  include "catch.hpp"
 

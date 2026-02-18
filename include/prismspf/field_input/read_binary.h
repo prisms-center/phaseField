@@ -9,9 +9,9 @@
 
 #include <prismspf/core/types.h>
 
-#include <prismspf/utilities/utilities.h>
-
 #include <prismspf/field_input/read_field_base.h>
+
+#include <prismspf/utilities/utilities.h>
 
 #include "prismspf/core/conditional_ostreams.h"
 

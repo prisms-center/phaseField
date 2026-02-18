@@ -54,29 +54,53 @@ def pprint(message, type="None"):
 
 
 def grab_cpu_information():
-    # Get the CPU information
-    cpu_info_raw = subprocess.check_output("lscpu", shell=True).decode()
+    if sys.platform == "darwin":
+        # macOS
+        def get_sysctl(name):
+            try:
+                return subprocess.check_output(["sysctl", "-n", name]).decode().strip()
+            except:
+                return "Unknown"
 
-    # Split into lines
-    cpu_info_lines = cpu_info_raw.splitlines()
+        architecture = get_sysctl("hw.machine")
+        cpu_model = get_sysctl("machdep.cpu.brand_string")
+        cpu_cores = get_sysctl("hw.ncpu")
+        cpu_max_freq = "N/A"
+        cpu_min_freq = "N/A"
+        hypervisor = "macOS Native"
 
-    # Create dict to store parsed info
-    cpu_info = {}
+        return (
+            architecture,
+            cpu_model,
+            cpu_cores,
+            cpu_max_freq,
+            cpu_min_freq,
+            hypervisor,
+        )
+    else:
+        # Linux
+        try:
+            # Get the CPU information
+            cpu_info_raw = subprocess.check_output("lscpu", shell=True).decode()
+            # Split into lines
+            cpu_info_lines = cpu_info_raw.splitlines()
+            # Create dict to store parsed info
+            cpu_info = {}
+            for line in cpu_info_lines:
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    cpu_info[key.strip()] = value.strip()
 
-    for line in cpu_info_lines:
-        if ":" in line:
-            key, value = line.split(":", 1)
-            cpu_info[key.strip()] = value.strip()
-
-    # Grab relevant fields
-    architecture = cpu_info.get("Architecture")
-    cpu_model = cpu_info.get("Model name")
-    cpu_cores = cpu_info.get("CPU(s)")
-    cpu_max_freq = cpu_info.get("CPU max MHz")
-    cpu_min_freq = cpu_info.get("CPU min MHz")
-    hypervisor = cpu_info.get("Hypervisor vendor")
-
-    return architecture, cpu_model, cpu_cores, cpu_max_freq, cpu_min_freq, hypervisor
+            return (
+                cpu_info.get("Architecture"),
+                cpu_info.get("Model name"),
+                cpu_info.get("CPU(s)"),
+                cpu_info.get("CPU max MHz"),
+                cpu_info.get("CPU min MHz"),
+                cpu_info.get("Hypervisor vendor"),
+            )
+        except Exception:
+            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown", "Unknown"
 
 
 def regression_directory_valid(regression_dir: str, applications: list = None):

@@ -1,4 +1,4 @@
-# PRISMS-PF Application Formulation:
+# PRISMS-PF: Precipitate Evolution
 
 ## Variational formulation
 The total free energy of the system (neglecting boundary terms) is of the form,
@@ -105,7 +105,7 @@ Considering variations on the displacement $u$ of the from $u+\epsilon w$, we ha
 
 $$
 \begin{align}
-\delta_u \Pi &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
+\delta_u \Pi =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
@@ -115,7 +115,7 @@ Now consider
 
 $$
 \begin{align}
-R &=  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
+R =  \int_{\Omega}   \nabla w :  C(\eta_1, \eta_2, \eta_3) : \left( \epsilon - \epsilon^0(c,\eta_1, \eta_2, \eta_3)\right) ~dV = 0
 \end{align}
 $$
 
@@ -123,17 +123,18 @@ We solve for $R=0$ using a gradient scheme which involves the following lineariz
 
 $$
 \begin{align}
-R_{u}~| + \frac{\delta R}{\delta u} \Delta u &= 0
+R(u)|_{u_0} + \int_{\Omega} \frac{\delta R}{\delta u} \Delta u ~dV = 0
 \end{align}
 $$
 
 $$
 \begin{align}
-\Rightarrow \frac{\delta R}{\delta u} \Delta u &= -R_{u}~|
+\Rightarrow \int_{\Omega} \frac{\delta R}{\delta u} \Delta u ~dV = -R(u)|_{u_0}
 \end{align}
 $$
 
-This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme. For clarity, here in the left hand side (LHS) $A=\frac{\delta R}{\delta u}$, $x=\Delta u$ and the right hand side (RHS) is $b=-R~|_{u}$.
+This is the linear system $Ax=b$ which we solve implicitly using the Conjugate Gradient scheme.
+<!-- For clarity, here in the left hand side (LHS) $A=\frac{\delta R}{\delta u}$, $x=\Delta u$ and the right hand side (RHS) is $b=-R|_{u_0}$. -->
 
 
 ## Time discretization
@@ -157,38 +158,8 @@ Writing the Cahn-Hillard and Allen-Cahn equations in the weak form, with the arb
 
 $$
 \begin{align}
-\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t [\nabla \cdot (M \nabla \mu_c) ] dV
-\end{align}
-$$
-
-$$
-\begin{align}
-%&= \int_\Omega w c^{n}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
-\end{align}
-$$
-
-$$
-\begin{align}
-r_c &= c^{n}
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{cx} &= \Delta t  M \nabla \mu_c
-\end{align}
-$$
-
-$$
-\begin{align}
-\int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \eta_p^{n}-w  \Delta t L \mu_{\eta_p} dV
-%&= \int_\Omega w\underbrace{c^{n}}_{r_c}+\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{cx} &= \Delta t  M \nabla \mu_c
+\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t [\nabla \cdot (M \nabla \mu_c) ] dV \\
+&= \int_\Omega w c^{n}+\nabla w \cdot (-\Delta t  M \nabla \mu_c ) dV
 \end{align}
 $$
 
@@ -242,24 +213,9 @@ Expanding $\mu_{\eta_p}$ in the weak AC equation and applying the divergence the
 
 $$
 \begin{align}
-\int_\Omega w \eta_p^{n+1} dV &=
-\end{align}
-$$
-
-$$
-\begin{align}
-&\int_\Omega w \Bigg\[\eta_p^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H_{,\eta_p}(\eta_p^n) - C_{ijkl} \left( H_{,\eta_p}(\eta_p) \epsilon_{ij}^{0 \eta_p}\right)\left(\epsilon_{kl} - \epsilon_{kl}^{0} \right)
-\end{align}
-$$
-
-$$
-\begin{align}
-&+ \frac{1}{2} \left[ (C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H_{,\eta_p}(\eta_p) \right] \left(\epsilon_{ij} - \epsilon_{ij}^{0} \right) \left(\epsilon_{kl} - \epsilon_{kl}^{0} \right) \bigg] \Bigg\]
-\end{align}
-$$
-
-$$
-\begin{align}
+\int_\Omega w \eta_p^{n+1} dV &= \int_\Omega w \Bigg[\eta_p^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H_{,\eta_p}(\eta_p^n) \\
+&- C_{ijkl} \left( H_{,\eta_p}(\eta_p) \epsilon_{ij}^{0 \eta_p}\right)\left(\epsilon_{kl} - \epsilon_{kl}^{0} \right)\\
+&+ \frac{1}{2} \left[ (C_{ijkl}^{\eta_p} - C_{ijkl}^{\alpha}) H_{,\eta_p}(\eta_p) \right] \left(\epsilon_{ij} - \epsilon_{ij}^{0} \right) \left(\epsilon_{kl} - \epsilon_{kl}^{0} \right) \bigg] \Bigg]\\
 &+ \nabla w \cdot (-\Delta t  L \kappa_{ij}^{\eta_p} \eta_{p,i}^n ) dV
 \end{align}
 $$
@@ -288,57 +244,7 @@ $$
 \end{gather}
 $$
 
-where $\Delta u = u - u_0$. Then, applying the discretization that $u = \sum_i w^i U^i$, we can write the following linearization:
-
-$$
-\begin{equation}
-\frac{\delta R(u)}{\delta u} \Delta U = -R(u_0)
-\end{equation}
-$$
-
-The discretized form of this equation can be written as a matrix inversion problem. However, in PRISMS-PF, we only care about the product $\frac{\delta R(u)}{\delta u} \Delta U$. Taking the variational derivative of $R(u)$ yields:
-
-$$
-\begin{align}
-\frac{\delta R(u)}{\delta u} &= \frac{d}{d\alpha} \int_{\Omega}   \nabla w :C: \left[ \epsilon (u+\alpha w) - \epsilon^0 \right] ~dV  \bigg{|}_{\alpha=0}
-\end{align}
-$$
-
-$$
-\begin{align}
-&=  \int_{\Omega}   \nabla w :C: \frac{1}{2}\frac{d}{d\alpha}\left[ \nabla(u+\alpha w) + \nabla(u+\alpha w)^T  - \epsilon^0\right] ~dV \bigg{|}_{\alpha=0}
-\end{align}
-$$
-
-$$
-\begin{align}
-&= \int_{\Omega}   \nabla w :C: \frac{d}{d\alpha} \left[ \nabla(u+\alpha w) - \epsilon^0 \right]  ~dV \bigg{|}_{\alpha=0} \quad (due ~to ~the ~symmetry ~of ~C)
-\end{align}
-$$
-
-$$
-\begin{align}
-&= \int_{\Omega}   \nabla w :C: \nabla w  ~dV
-\end{align}
-$$
-
-In its discretized form $\frac{\delta R(u)}{\delta u} \Delta U$ is:
-
-$$
-\begin{equation}
-\frac{\delta R(u)}{\delta u} \Delta U = \sum_i \sum_j \int_{\Omega} \nabla N^i : C : \nabla N^j dV ~\Delta U^j
-\end{equation}
-$$
-
-Moving back to the non-discretized form yields:
-
-$$
-\begin{equation}
-\frac{\delta R(u)}{\delta u} \Delta U = \int_{\Omega} \nabla w : C : \nabla (\Delta u) dV
-\end{equation}
-$$
-
-Thus, the full equation relating $u_0$ and $\Delta u$ is:
+where $\Delta u = u - u_0$. Following the derivation given in `applications/eshelby_inclusion/eshelby_inclusion.md`, we have the full equation relating $u_0$ and $\Delta u$:
 
 $$
 \begin{align}
@@ -348,13 +254,8 @@ $$
 
 $$
 \begin{align}
-r_{ux}^{LHS} &= C : \nabla (\Delta u)
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{ux} &= \sigma
+r_{ux}^{LHS} &= C : \nabla (\Delta u)\\
+r_{ux} &= -\sigma
 \end{align}
 $$
 
@@ -413,8 +314,8 @@ $$
 
 $$
 \begin{align}
-\frac{d}{d\alpha} \left[ f_{grad}(\eta_p+\alpha w,\eta_q,\eta_r)\right]\_{\alpha=0}
-&= \frac{1}{2} \left[ \kappa_{ij}^{\eta_p} (\eta_p+\alpha w)\_{,i} (\eta_p+\alpha w)\_{,j} +\kappa_{ij}^{\eta_q} (\eta_q)\_{,i}(\eta_q)\_{,j} + \kappa\_{ij}^{\eta_r} (\eta_r)\_{,i}(\eta_r)\_{,j}  \right]_{\alpha=0}
+\frac{d}{d\alpha} \left[ f_{grad}(\eta_p+\alpha w,\eta_q,\eta_r)\right]_{\alpha=0}
+&= \frac{1}{2} \left[ \kappa_{ij}^{\eta_p} (\eta_p+\alpha w)_{,i} (\eta_p+\alpha w)_{,j} +\kappa_{ij}^{\eta_q} (\eta_q)_{,i}(\eta_q)_{,j} + \kappa_{ij}^{\eta_r} (\eta_r)_{,i}(\eta_r)_{,j}  \right]_{\alpha=0}
 \end{align}
 $$
 

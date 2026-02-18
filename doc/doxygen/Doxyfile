@@ -94,13 +94,13 @@ TIMESTAMP              = NO
 # Build related configuration options
 #---------------------------------------------------------------------------
 
-EXTRACT_ALL            = NO
-EXTRACT_PRIVATE        = NO
-EXTRACT_PRIV_VIRTUAL   = NO
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PRIV_VIRTUAL   = YES
 EXTRACT_PACKAGE        = NO
-EXTRACT_STATIC         = NO
+EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
-EXTRACT_LOCAL_METHODS  = NO
+EXTRACT_LOCAL_METHODS  = YES
 EXTRACT_ANON_NSPACES   = NO
 RESOLVE_UNNAMED_PARAMS = YES
 HIDE_UNDOC_MEMBERS     = NO
@@ -306,7 +306,7 @@ OBFUSCATE_EMAILS       = YES
 HTML_FORMULA_FORMAT    = png
 FORMULA_FONTSIZE       = 10
 FORMULA_MACROFILE      =
-USE_MATHJAX            = NO
+USE_MATHJAX            = YES
 MATHJAX_VERSION        = MathJax_2
 MATHJAX_FORMAT         = HTML-CSS
 MATHJAX_RELPATH        =
