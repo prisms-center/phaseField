@@ -10,7 +10,6 @@
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -21,6 +20,10 @@
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+// Forward declaration to avoid circular dependency.
+template <unsigned int dim, unsigned int degree, typename number>
+class PDEOperatorBase;
 
 // TODO (fractalsbyx): The following snippet is from dealii. Using this (by
 // pre-constructing the needed maps and functions) may be cleaner than how dirichlet are
@@ -49,7 +52,6 @@ public:
    * @brief Constructor.
    */
   ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
-                    const std::vector<SolveGroup>              &solve_groups,
                     const DofManager<dim>                      &_dof_manager,
                     const PDEOperatorBase<dim, degree, number> *_pde_operator);
 
@@ -83,16 +85,14 @@ public:
    * @brief Make constraints based on the inputs of the constructor.
    */
   void
-  reinit(const dealii::Mapping<dim> &mapping);
+  reinit(const std::vector<FieldAttributes> &field_attributes);
 
   /**
    * @brief Update time-dependent constraints.
    * For now this only updates the non-uniform dirichlet constraints.
    */
   void
-  update_time_dependent_constraints(
-    const dealii::Mapping<dim>                         &mapping,
-    const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers);
+  update_time_dependent_constraints(const std::vector<FieldAttributes> &field_attributes);
 
 private:
   /**
@@ -102,11 +102,22 @@ private:
   static const dealii::ComponentMask                  scalar_empty_mask;
 
   /**
+   * @brief Construct constraints for a single field based on the boundary conditions.
+   */
+  void
+  make_constraints_for_single_field(
+    dealii::AffineConstraints<number>               &constraint,
+    const dealii::DoFHandler<dim>                   &dof_handler,
+    const std::map<unsigned int, BoundaryCondition> &bc_set,
+    FieldInfo::TensorRank                            tensor_rank,
+    Types::Index                                     field_index,
+    bool                                             for_change_term);
+
+  /**
    * @brief Add boundary conditions to a single constraint.
    */
   void
   make_bc_constraints(dealii::AffineConstraints<number>               &constraint,
-                      const dealii::Mapping<dim>                      &mapping,
                       const dealii::DoFHandler<dim>                   &dof_handler,
                       const std::map<unsigned int, BoundaryCondition> &boundary_condition,
                       FieldInfo::TensorRank                            tensor_rank,
@@ -122,7 +133,6 @@ private:
                                unsigned int                       component,
                                BoundaryCondition::Type            boundary_type,
                                number                             dirichlet_value,
-                               const dealii::Mapping<dim>        &mapping,
                                const dealii::DoFHandler<dim>     &dof_handler,
                                FieldInfo::TensorRank              tensor_rank,
                                Types::Index                       field_index,
@@ -139,7 +149,6 @@ private:
    */
   void
   make_uniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
-                                     const dealii::Mapping<dim>        &mapping,
                                      const dealii::DoFHandler<dim>     &dof_handler,
                                      const unsigned int                &boundary_id,
                                      const bool                        &is_vector_field,
@@ -152,7 +161,6 @@ private:
    */
   void
   make_nonuniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
-                                        const dealii::Mapping<dim>        &mapping,
                                         const dealii::DoFHandler<dim>     &dof_handler,
                                         const unsigned int                &boundary_id,
                                         const unsigned int                &field_index,
@@ -193,7 +201,7 @@ private:
   /**
    * @brief PDE operator number.
    */
-  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator;
 
   /**
    * @brief Whether we have multigrid.
@@ -209,14 +217,13 @@ private:
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed
    * by relative mg level.
    */
-  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<number>>>>
-    constraints;
+  std::vector<std::vector<dealii::AffineConstraints<number>>> constraints;
+
   /**
    * @brief Constraints for Newton-Change solutions. Outer vector is indexed by field
    * index. Inner vector is indexed by relative mg level.
    */
-  std::vector<std::vector<std::shared_ptr<dealii::AffineConstraints<number>>>>
-    change_constraints;
+  std::vector<std::vector<dealii::AffineConstraints<number>>> change_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

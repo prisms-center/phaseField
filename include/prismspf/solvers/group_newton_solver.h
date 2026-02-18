@@ -25,12 +25,12 @@ template <unsigned int dim, unsigned int degree, typename number>
 class NewtonSolver : public LinearSolver<dim, degree, number>
 {
 protected:
-  using GroupSolverBase<dim, degree, number>::rhs_operators;
   using GroupSolverBase<dim, degree, number>::solutions;
   using GroupSolverBase<dim, degree, number>::solve_context;
   using GroupSolverBase<dim, degree, number>::solve_group;
   using LinearSolver<dim, degree, number>::do_linear_solve;
   using LinearSolver<dim, degree, number>::lhs_operators;
+  using LinearSolver<dim, degree, number>::rhs_operators;
 
 public:
   /**

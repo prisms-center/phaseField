@@ -26,7 +26,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 class LinearSolver : public GroupSolverBase<dim, degree, number>
 {
 protected:
-  using GroupSolverBase<dim, degree, number>::rhs_operators;
   using GroupSolverBase<dim, degree, number>::solutions;
   using GroupSolverBase<dim, degree, number>::solve_context;
   using GroupSolverBase<dim, degree, number>::solve_group;
@@ -48,12 +47,25 @@ public:
   init() override
   {
     GroupSolverBase<dim, degree, number>::init();
+    // Initialize rhs_operators
+    for (unsigned int relative_level = 0; relative_level < rhs_operators.size();
+         ++relative_level)
+      {
+        rhs_operators[relative_level] = MFOperator<dim, degree, number>(
+          *(solve_context->get_pde_operator()),
+          &PDEOperatorBase<dim, degree, number>::compute_rhs,
+          solve_context->get_field_attributes(),
+          solve_context->get_solution_indexer(),
+          relative_level,
+          solve_group.dependencies_rhs);
+        rhs_operators[relative_level].initialize(solutions);
+      }
     // Initialize lhs_operators
     for (unsigned int relative_level = 0; relative_level < lhs_operators.size();
          ++relative_level)
       {
         lhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solve_context->get_pde_operator(),
+          *(solve_context->get_pde_operator()),
           &PDEOperatorBase<dim, degree, number>::compute_lhs,
           solve_context->get_field_attributes(),
           solve_context->get_solution_indexer(),
@@ -118,6 +130,7 @@ protected:
   /**
    * @brief Matrix free operators for each level
    */
+  std::vector<MFOperator<dim, degree, number>> rhs_operators;
   std::vector<MFOperator<dim, degree, number>> lhs_operators;
 
 private:
