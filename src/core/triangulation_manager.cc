@@ -28,14 +28,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <>
 TriangulationManager<1U>::TriangulationManager(bool _has_multigrid)
   : has_multigrid(_has_multigrid)
-  , triangulation(dealii::Triangulation<1U>::limit_level_difference_at_vertices)
+  , triangulation(Triangulation::limit_level_difference_at_vertices)
 {}
 
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager(bool _has_multigrid)
   : has_multigrid(_has_multigrid)
-  , triangulation(MPI_COMM_WORLD,
-                  dealii::Triangulation<dim>::limit_level_difference_at_vertices)
+  , triangulation(MPI_COMM_WORLD, Triangulation::limit_level_difference_at_vertices)
 {}
 
 template <unsigned int dim>
@@ -46,7 +45,8 @@ TriangulationManager<dim>::get_triangulation() const
 }
 
 template <unsigned int dim>
-const std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> &
+const std::vector<
+  std::shared_ptr<const typename TriangulationManager<dim>::Triangulation>> &
 TriangulationManager<dim>::get_mg_triangulation() const
 {
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
@@ -54,7 +54,7 @@ TriangulationManager<dim>::get_mg_triangulation() const
 }
 
 template <unsigned int dim>
-const dealii::Triangulation<dim> &
+const typename TriangulationManager<dim>::Triangulation &
 TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 {
   Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());

@@ -12,16 +12,16 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 SolutionIndexer<dim, number>::SolutionIndexer(
-  unsigned int num_fields, // attributes_list.size()
-  const std::vector<GroupSolutionHandler<dim, number>> &solution_handlers)
+  unsigned int                                     num_fields, // attributes_list.size()
+  std::vector<GroupSolutionHandler<dim, number> *> solution_handlers)
 {
   solutions.clear();
   solutions.resize(num_fields, nullptr);
-  for (const GroupSolutionHandler<dim, number> &solution_handler : solution_handlers)
+  for (GroupSolutionHandler<dim, number> *solution_handler : solution_handlers)
     {
-      for (unsigned int field_index : solution_handler.get_solve_group().field_indices)
+      for (unsigned int field_index : solution_handler->get_solve_group().field_indices)
         {
-          solutions[field_index] = &solution_handler;
+          solutions[field_index] = solution_handler;
         }
     }
 }
