@@ -3,6 +3,7 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/conditional_ostreams.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/constraint_manager.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/dof_manager.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/field_container.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/initial_conditions.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/pde_operator.cc
@@ -12,12 +13,12 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/triangulation_manager.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/variable_container.cc
 )
 
 set(_inst
     constraint_manager.inst.in
     dof_manager.inst.in
+    field_container.inst.in
     initial_conditions.inst.in
     nonuniform_dirichlet.inst.in
     pde_operator.inst.in
