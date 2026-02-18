@@ -22,7 +22,6 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class ExplicitSolver : public GroupSolverBase<dim, degree, number>
 {
-  using GroupSolverBase<dim, degree, number>::rhs_operators;
   using GroupSolverBase<dim, degree, number>::solutions;
   using GroupSolverBase<dim, degree, number>::solve_context;
   using GroupSolverBase<dim, degree, number>::solve_group;
@@ -35,6 +34,25 @@ public:
                  const SolveContext<dim, degree, number> &_solve_context)
     : GroupSolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
+
+  void
+  init() override
+  {
+    GroupSolverBase<dim, degree, number>::init();
+    // Initialize rhs_operators
+    for (unsigned int relative_level = 0; relative_level < rhs_operators.size();
+         ++relative_level)
+      {
+        rhs_operators[relative_level] = MFOperator<dim, degree, number>(
+          *(solve_context->get_pde_operator()),
+          &PDEOperatorBase<dim, degree, number>::compute_rhs,
+          solve_context->get_field_attributes(),
+          solve_context->get_solution_indexer(),
+          relative_level,
+          solve_group.dependencies_rhs);
+        rhs_operators[relative_level].initialize(solutions);
+      }
+  }
 
   /**
    * @brief Solve for a single update step.
@@ -84,7 +102,8 @@ private:
   /**
    * @brief Matrix free operators for each level
    */
-  // std::vector<MFOperator<dim, degree, number>> rhs_operators;
+
+  std::vector<MFOperator<dim, degree, number>> rhs_operators;
 };
 
 PRISMS_PF_END_NAMESPACE

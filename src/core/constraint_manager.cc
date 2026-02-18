@@ -7,7 +7,6 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 #include <deal.II/fe/component_mask.h>
-#include <deal.II/fe/mapping.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/lac/affine_constraints.h>
 #include <deal.II/numerics/vector_tools_boundary.h>
@@ -15,7 +14,9 @@
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/boundary_parameters.h>
@@ -28,14 +29,9 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// Forward declaration to avoid circular dependency.
-template <unsigned int dim, unsigned int degree, typename number>
-class PDEOperatorBase;
-
 template <unsigned int dim, unsigned int degree, typename number>
 ConstraintManager<dim, degree, number>::ConstraintManager(
   const std::vector<FieldAttributes>         &field_attributes,
-  const std::vector<SolveGroup>              &solve_groups,
   const DofManager<dim>                      &_dof_manager,
   const PDEOperatorBase<dim, degree, number> *_pde_operator)
   : dof_manager(&_dof_manager)
@@ -47,16 +43,15 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
   unsigned int num_mg_levels = 1;
   for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
-      constraints[field_index].resize(num_mg_levels, nullptr);
+      constraints[field_index].resize(num_mg_levels);
       for (unsigned int relative_level = 0; relative_level < num_mg_levels;
            relative_level++)
         {
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_dof_handler(field_index, relative_level);
-          constraints[field_index][relative_level] =
-            std::make_shared<dealii::AffineConstraints<number>>(
-              dof_handler.locally_owned_dofs(),
-              dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+          constraints[field_index][relative_level] = dealii::AffineConstraints<number>(
+            dof_handler.locally_owned_dofs(),
+            dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
         }
       // TODO (fractalsbyx): construct change_constraints
     }
@@ -72,7 +67,7 @@ ConstraintManager<dim, degree, number>::get_constraints(
   selected_constraints.reserve(field_indices.size());
   for (const auto index : field_indices)
     {
-      selected_constraints.push_back(constraints[index][relative_level].get());
+      selected_constraints.push_back(&constraints[index][relative_level]);
     }
   return selected_constraints;
 }
@@ -82,7 +77,7 @@ const dealii::AffineConstraints<number> &
 ConstraintManager<dim, degree, number>::get_constraint(Types::Index index,
                                                        unsigned int relative_level) const
 {
-  return *constraints[index][relative_level];
+  return constraints[index][relative_level];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -95,7 +90,7 @@ ConstraintManager<dim, degree, number>::get_change_constraints(
   selected_constraints.reserve(field_indices.size());
   for (const auto index : field_indices)
     {
-      selected_constraints.push_back(change_constraints[index][relative_level].get());
+      selected_constraints.push_back(&change_constraints[index][relative_level]);
     }
   return selected_constraints;
 }
@@ -106,72 +101,86 @@ ConstraintManager<dim, degree, number>::get_change_constraint(
   Types::Index index,
   unsigned int relative_level) const
 {
-  return *change_constraints[index][relative_level];
+  return change_constraints[index][relative_level];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-ConstraintManager<dim, degree, number>::reinit(const dealii::Mapping<dim> &mapping)
+ConstraintManager<dim, degree, number>::reinit(
+  const std::vector<FieldAttributes> &field_attributes)
 {
+  const BoundaryParameters<dim> &boundary_parameters =
+    user_inputs->get_boundary_parameters();
   for (unsigned int field_index = 0; field_index < constraints.size(); ++field_index)
     {
       for (unsigned int relative_level = 0;
            relative_level < constraints[field_index].size();
            ++relative_level)
         {
-          std::shared_ptr<dealii::AffineConstraints<number>> &constraint =
+          dealii::AffineConstraints<number> &constraint =
             constraints[field_index][relative_level];
-          const dealii::DoFHandler<dim> &dof_handler =
-            dof_manager->get_dof_handler(field_index, relative_level);
-          constraint->reinit(dof_handler.locally_owned_dofs(),
-                             dealii::DoFTools::extract_locally_relevant_dofs(
-                               dof_handler));
-
-          // 1. Make hanging node constraints
-          dealii::DoFTools::make_hanging_node_constraints(dof_handler, *constraint);
-          // 2. Make boundary constraints
-          const BoundaryCondition &boundary_condition =
-            user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
-              field_index);
-          make_bc_constraints(mapping, dof_handler, boundary_condition);
-          // 3. Make pinned point constraints
-          if (user_inputs->get_boundary_parameters().has_pinned_point(index))
-            {
-              const auto &[value, target_point] =
-                user_inputs->get_boundary_parameters().get_pinned_point(index);
-              set_pinned_point(constraint, target_point, value, dof_handler, false);
-            }
-          constraint.close();
-        }
-      for (unsigned int relative_level = 0;
-           relative_level < change_constraints[field_index].size();
-           ++relative_level)
-        {
-          std::shared_ptr<dealii::AffineConstraints<number>> &constraint =
+          dealii::AffineConstraints<number> &change_constraint =
             change_constraints[field_index][relative_level];
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_dof_handler(field_index, relative_level);
-          constraint->reinit(dof_handler.locally_owned_dofs(),
-                             dealii::DoFTools::extract_locally_relevant_dofs(
-                               dof_handler));
+          const auto &bc_set =
+            boundary_parameters.get_boundary_condition_list().at(field_index);
 
-          // 1. Make hanging node constraints
-          dealii::DoFTools::make_hanging_node_constraints(dof_handler, *constraint);
-          // 2. Make boundary constraints
-          const std::map<unsigned int, BoundaryCondition> &boundary_condition =
-            user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
-              field_index);
-          make_bc_constraints(mapping, dof_handler, boundary_condition, true);
-          constraint.close();
+          make_constraints_for_single_field(constraint,
+                                            dof_handler,
+                                            bc_set,
+                                            field_attributes[field_index].field_type,
+                                            field_index,
+                                            false);
+          make_constraints_for_single_field(change_constraint,
+                                            dof_handler,
+                                            bc_set,
+                                            field_attributes[field_index].field_type,
+                                            field_index,
+                                            true);
         }
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
+ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
+  dealii::AffineConstraints<number>               &constraint,
+  const dealii::DoFHandler<dim>                   &dof_handler,
+  const std::map<unsigned int, BoundaryCondition> &bc_set,
+  FieldInfo::TensorRank                            tensor_rank,
+  Types::Index                                     field_index,
+  bool                                             for_change_term)
+{
+  // 0. Reinitialize constraint with the correct dof numbering
+  constraint.reinit(dof_handler.locally_owned_dofs(),
+                    dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+
+  // 1. Make hanging node constraints
+  dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
+
+  // 2. Make boundary constraints
+  make_bc_constraints(constraint,
+                      dof_handler,
+                      bc_set,
+                      tensor_rank,
+                      field_index,
+                      for_change_term);
+
+  // 3. TODO: Make pinned point constraints
+  // if (boundary_parameters.has_pinned_point(field_index))
+  //  {
+  //    const auto &[value, target_point] =
+  //      boundary_parameters.get_pinned_point(field_index);
+  //    set_pinned_point(constraint, target_point, value, dof_handler, for_change_term);
+  //  }
+  constraint.close();
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
 ConstraintManager<dim, degree, number>::make_bc_constraints(
   dealii::AffineConstraints<number>               &constraint,
-  const dealii::Mapping<dim>                      &mapping,
   const dealii::DoFHandler<dim>                   &dof_handler,
   const std::map<unsigned int, BoundaryCondition> &boundary_condition,
   const FieldInfo::TensorRank                      tensor_rank,
@@ -189,7 +198,6 @@ ConstraintManager<dim, degree, number>::make_bc_constraints(
                                        component,
                                        boundary_type,
                                        dirichlet_value,
-                                       mapping,
                                        dof_handler,
                                        tensor_rank,
                                        field_index,
@@ -206,7 +214,6 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
   const unsigned int                 component,
   BoundaryCondition::Type            boundary_type,
   const number                       dirichlet_value,
-  const dealii::Mapping<dim>        &mapping,
   const dealii::DoFHandler<dim>     &dof_handler,
   FieldInfo::TensorRank              tensor_rank,
   Types::Index                       field_index,
@@ -214,7 +221,7 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
 {
   const bool is_vector_field = tensor_rank == FieldInfo::TensorRank::Vector;
   const dealii::ComponentMask mask =
-    is_vector_field ? vector_component_mask[component] : scalar_empty_mask;
+    is_vector_field ? vector_component_mask.at(component) : scalar_empty_mask;
 
   // Apply the boundary conditions
   switch (boundary_type)
@@ -227,7 +234,6 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
       case BoundaryCondition::Type::Dirichlet:
         {
           make_uniform_dirichlet_constraints(_constraints,
-                                             mapping,
                                              dof_handler,
                                              boundary_id,
                                              is_vector_field,
@@ -240,7 +246,6 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
       case BoundaryCondition::Type::TimeDependentNonuniformDirichlet:
         {
           make_nonuniform_dirichlet_constraints(_constraints,
-                                                mapping,
                                                 dof_handler,
                                                 boundary_id,
                                                 field_index,
@@ -257,7 +262,7 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
             {
               break;
             }
-          make_periodic_constraints(dof_handler, boundary_id, _constraints, mask);
+          make_periodic_constraints(_constraints, dof_handler, boundary_id, mask);
           break;
         }
       case BoundaryCondition::Type::Neumann:
@@ -287,19 +292,43 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
-  const dealii::Mapping<dim>                         &mapping,
-  const std::vector<const dealii::DoFHandler<dim> *> &dof_handlers)
+  const std::vector<FieldAttributes> &field_attributes)
 {
-  for (const auto &[index, variable] : user_inputs->get_variable_attributes())
+  for (unsigned int field_index = 0; field_index < constraints.size(); ++field_index)
     {
-      // Check that we have time-dependent constraints before recreating the whole
-      // constraint set.
-      if (user_inputs->get_boundary_parameters().is_time_dependent(index))
+      if (user_inputs->get_boundary_parameters().is_time_dependent(field_index))
         {
-          // TODO (landinjm): Is there a way to update the constraint set without
-          // recreating
-          // it?
-          make_constraint(mapping, *dof_handlers.at(index), index);
+          for (unsigned int relative_level = 0;
+               relative_level < constraints[field_index].size();
+               ++relative_level)
+            {
+              dealii::AffineConstraints<number> &constraint =
+                constraints[field_index][relative_level];
+              const dealii::DoFHandler<dim> &dof_handler =
+                dof_manager->get_dof_handler(field_index, relative_level);
+              constraint.clear();
+              // 1. Make hanging node constraints
+              dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
+
+              // 2. Make boundary constraints
+              const auto &bc_set =
+                user_inputs->get_boundary_parameters().get_boundary_condition_list().at(
+                  field_index);
+              make_bc_constraints(constraint,
+                                  dof_handler,
+                                  bc_set,
+                                  field_attributes[field_index].field_type,
+                                  field_index);
+
+              // 3. TODO: Make pinned point constraints
+              // if (boundary_parameters.has_pinned_point(field_index))
+              //  {
+              //    const auto &[value, target_point] =
+              //      boundary_parameters.get_pinned_point(field_index);
+              //    set_pinned_point(constraint, target_point, value, dof_handler, false);
+              //  }
+              constraint.close();
+            }
         }
     }
 }
@@ -313,7 +342,7 @@ const std::array<dealii::ComponentMask, dim>
     {
       dealii::ComponentMask temp_mask(dim, false);
       temp_mask.set(i, true);
-      masks[i] = temp_mask;
+      masks.at(i) = temp_mask;
     }
   return masks;
 }();
@@ -332,7 +361,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 ConstraintManager<dim, degree, number>::make_uniform_dirichlet_constraints(
   dealii::AffineConstraints<number> &_constraints,
-  const dealii::Mapping<dim>        &mapping,
   const dealii::DoFHandler<dim>     &dof_handler,
   const unsigned int                &boundary_id,
   const bool                        &is_vector_field,
@@ -341,7 +369,7 @@ ConstraintManager<dim, degree, number>::make_uniform_dirichlet_constraints(
   const dealii::ComponentMask &mask) const
 {
   dealii::VectorTools::interpolate_boundary_values(
-    mapping,
+    SystemWide<dim, degree>::mapping,
     dof_handler,
     boundary_id,
     dealii::Functions::ConstantFunction<dim, number>(value, is_vector_field ? dim : 1),
@@ -353,7 +381,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 ConstraintManager<dim, degree, number>::make_nonuniform_dirichlet_constraints(
   dealii::AffineConstraints<number> &_constraints,
-  const dealii::Mapping<dim>        &mapping,
   const dealii::DoFHandler<dim>     &dof_handler,
   const unsigned int                &boundary_id,
   const unsigned int                &field_index,
@@ -379,7 +406,7 @@ ConstraintManager<dim, degree, number>::make_nonuniform_dirichlet_constraints(
   else
     {
       dealii::VectorTools::interpolate_boundary_values(
-        mapping,
+        SystemWide<dim, degree>::mapping,
         dof_handler,
         boundary_id,
         dealii::Functions::ZeroFunction<dim, number>(is_vector_field ? dim : 1),

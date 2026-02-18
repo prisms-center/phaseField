@@ -135,7 +135,7 @@ public:
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
   {
     solve_group          = dst_solution.get_solve_group();
-    data                 = dst_solution.get_matrix_free(relative_level);
+    data                 = &(dst_solution.get_matrix_free(relative_level));
     field_to_block_index = dst_solution.get_global_to_block_index();
   }
 
@@ -156,46 +156,29 @@ private:
                          const BlockVector                           &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
-public:
-  /**
-   * @brief Compute the diagonal of this operator.
-   */
-  void
-  compute_diagonal();
-
-private:
-  /**
-   * @brief Local computation of the diagonal of the operator.
-   */
-  void
-  compute_local_diagonal(const MatrixFree                            &_data,
-                         BlockVector                                 &dst,
-                         const unsigned int                          &dummy,
-                         const std::pair<unsigned int, unsigned int> &cell_range) const;
-
-  template <TensorRank Rank>
-  dealii::AlignedVector<Value<Rank>>
-  compute_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
-                         DSTContainer<dim, degree, number>   &dst_fields,
-                         unsigned int                         field_index) const;
-
-public:
-  /**
-   * @brief Compute the element volume. (And store in this object? void?)
-   */
-  void
-  compute_element_volume();
-
-private:
-  /**
-   * @brief Local computation of the element volume.
-   */
-  void
-  compute_local_element_volume(
-    const MatrixFree                            &_data,
-    SolutionVector                              &dst,
-    const unsigned int                          &dummy,
-    const std::pair<unsigned int, unsigned int> &cell_range) const;
+  // public:
+  //   /**
+  //    * @brief Compute the diagonal of this operator.
+  //    */
+  //   void
+  //   compute_diagonal();
+  //
+  // private:
+  //   /**
+  //    * @brief Local computation of the diagonal of the operator.
+  //    */
+  //   void
+  //   compute_local_diagonal(const MatrixFree                            &_data,
+  //                          BlockVector                                 &dst,
+  //                          const unsigned int                          &dummy,
+  //                          const std::pair<unsigned int, unsigned int> &cell_range)
+  //                          const;
+  //
+  //   template <TensorRank Rank>
+  //   dealii::AlignedVector<Value<Rank>>
+  //   compute_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
+  //                          DSTContainer<dim, degree, number>   &dst_fields,
+  //                          unsigned int                         field_index) const;
 
 public:
   /**
@@ -229,13 +212,13 @@ public:
   /**
    * @brief Set constrained entries to one.
    */
-  void
-  set_constrained_entries_to_one(SolutionVector &dst) const;
+  // void
+  // set_constrained_entries_to_one(SolutionVector &dst) const;
 
   /**
    * @brief Get read access to the MatrixFree object stored with this operator.
    */
-  std::shared_ptr<const MatrixFree>
+  const MatrixFree *
   get_matrix_free() const;
 
   /**
@@ -248,7 +231,7 @@ public:
    * @brief Matrix-vector multiplication.
    */
   void
-  vmult(SolutionVector &dst, const SolutionVector &src) const;
+  vmult(BlockVector &dst, const BlockVector &src) const;
 
   // NOLINTBEGIN(readability-identifier-naming)
 
@@ -256,7 +239,7 @@ public:
    * @brief Transpose matrix-vector multiplication.
    */
   void
-  Tvmult(SolutionVector &dst, const SolutionVector &src) const;
+  Tvmult(BlockVector &dst, const BlockVector &src) const;
 
   // NOLINTEND(readability-identifier-naming)
 
@@ -302,7 +285,7 @@ private:
   /**
    * @brief Matrix-free object.
    */
-  std::shared_ptr<const MatrixFree> data;
+  const MatrixFree *data;
 
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.

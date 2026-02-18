@@ -26,9 +26,8 @@ public:
   /**
    * @brief Constructor.
    */
-  SolutionIndexer(
-    unsigned int num_fields, // attributes_list.size()
-    const std::vector<GroupSolutionHandler<dim, number>> &solution_handlers);
+  SolutionIndexer(unsigned int num_fields, // attributes_list.size()
+                  std::vector<GroupSolutionHandler<dim, number> *> solution_handlers);
 
   /**
    * @brief Get a solution vector of a given field index.
@@ -102,7 +101,7 @@ public:
   get_block_index(unsigned int global_index) const;
 
 private:
-  std::vector<const GroupSolutionHandler<dim, number> *> solutions;
+  std::vector<GroupSolutionHandler<dim, number> *> solutions;
 };
 
 PRISMS_PF_END_NAMESPACE

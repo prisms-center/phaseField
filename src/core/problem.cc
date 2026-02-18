@@ -12,34 +12,34 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-std::vector<GroupSolutionHandler<dim, number>>
+std::vector<GroupSolutionHandler<dim, number> *>
 get_solution_managers_from_solvers(
   const std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
 {
   // Todo: upgrade to recursive for aux solvers
-  std::vector<GroupSolutionHandler<dim, number>> solution_managers;
+  std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
   solution_managers.reserve(solvers.size());
   for (const auto &solver : solvers)
     {
-      solution_managers.push_back(solver->get_solution_manager());
+      solution_managers.push_back(&(solver->get_solution_manager()));
     }
   return solution_managers;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
-  const std::vector<FieldAttributes>                                &_field_attributes,
-  const std::vector<SolveGroup>                                     &_solve_groups,
-  const UserInputParameters<dim>                                    &_user_inputs,
-  PhaseFieldTools<dim>                                              &_pf_tools,
-  const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &_pde_operator)
+  const std::vector<FieldAttributes>                          &_field_attributes,
+  const std::vector<SolveGroup>                               &_solve_groups,
+  const UserInputParameters<dim>                              &_user_inputs,
+  PhaseFieldTools<dim>                                        &_pf_tools,
+  const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &_pde_operator)
   : field_attributes(_field_attributes)
   , solve_groups(_solve_groups)
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
   , triangulation_manager(false)
   , dof_manager(field_attributes)
-  , constraint_manager(field_attributes, solve_groups, dof_manager, _pde_operator.get())
+  , constraint_manager(field_attributes, dof_manager, _pde_operator.get())
   , solvers(solve_groups.size(), nullptr)
   , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , solve_context(field_attributes,
@@ -268,13 +268,10 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 
   // Update the time-dependent constraints
   Timer::start_section("Update time-dependent constraints");
-  for (const auto &solve_group : solve_groups)
-    {
-      // TODO: Loop over levels, pass in current time
-      constraint_manager.update_time_dependent_constraints(
-        SystemWide<dim, degree>::mapping,
-        dof_manager.get_field_dof_handlers(solve_group.field_indices));
-    }
+
+  // TODO: Loop over levels, pass in current time
+  constraint_manager.update_time_dependent_constraints(field_attributes);
+
   Timer::end_section("Update time-dependent constraints");
 
   // Solve a single increment
