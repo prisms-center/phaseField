@@ -19,7 +19,6 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/solvers/mf_operator.h>
 #include <prismspf/solvers/solve_context.h>
 
 #include <prismspf/config.h>
@@ -93,20 +92,6 @@ public:
 
     // Apply constraints.
     solutions.apply_constraints();
-
-    // Initialize rhs_operators
-    for (unsigned int relative_level = 0; relative_level < rhs_operators.size();
-         ++relative_level)
-      {
-        rhs_operators[relative_level] = MFOperator<dim, degree, number>(
-          solve_context->get_pde_operator(),
-          &PDEOperatorBase<dim, degree, number>::compute_rhs,
-          solve_context->get_field_attributes(),
-          solve_context->get_solution_indexer(),
-          relative_level,
-          solve_group.dependencies_rhs);
-        rhs_operators[relative_level].initialize(solutions);
-      }
   }
 
   /**
@@ -214,14 +199,15 @@ public:
           }
         else
           {
-            dealii::VectorTools::interpolate(
-              SystemWide<dim, degree>::mapping,
-              solve_context->get_dof_manager().get_dof_handler(global_index),
-              InitialCondition<dim, degree, number>(
-                global_index,
-                solve_context->get_field_attributes()[global_index].field_type,
-                solve_context->get_pde_operator()),
-              solutions.get_solution_vector(global_index));
+            // TODO
+            // dealii::VectorTools::interpolate(
+            //   SystemWide<dim, degree>::mapping,
+            //   solve_context->get_dof_manager().get_dof_handler(global_index),
+            //   InitialCondition<dim, degree, number>(
+            //     global_index,
+            //     solve_context->get_field_attributes()[global_index].field_type,
+            //     solve_context->get_pde_operator()),
+            //   solutions.get_solution_vector(global_index));
           }
         solutions.apply_initial_condition_for_old_fields();
       }
@@ -267,8 +253,6 @@ protected:
    * @brief Solution vectors for fields handled by this solver.
    */
   GroupSolutionHandler<dim, number> solutions;
-
-  std::vector<MFOperator<dim, degree, number>> rhs_operators;
 
   std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
 };
