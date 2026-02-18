@@ -89,6 +89,12 @@ public:
   get_matrix_free(unsigned int index, unsigned int relative_level = 0);
 
   /**
+   * @brief Get the solve group of a given field index.
+   */
+  [[nodiscard]] const SolveGroup &
+  get_solve_group(unsigned int index) const;
+
+  /**
    * @brief Get the matrixfree object of the group a given field index.
    */
   [[nodiscard]] std::pair<const SolutionLevel<dim, number> &, unsigned int>

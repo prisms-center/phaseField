@@ -2,28 +2,10 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/base/point.h>
-#include <deal.II/base/tensor.h>
-#include <deal.II/base/vectorization.h>
-#include <deal.II/matrix_free/evaluation_flags.h>
-#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
-#include <prismspf/core/type_enums.h>
-#include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
-#include <prismspf/utilities/element_volume.h>
-
-#include <prismspf/config.h>
-
-#include "prismspf/core/dependencies.h"
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/core/solution_indexer.h"
-#include "prismspf/core/solve_group.h"
-
-#include <memory>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -31,13 +13,18 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 FieldContainer<dim, degree, number>::FieldContainer(
   const std::vector<FieldAttributes> &_field_attributes,
-  SolutionIndexer<dim, number>       &_solution_indexer,
+  const SolutionIndexer<dim, number> &_solution_indexer,
   unsigned int                        _relative_level,
-  const DependencySet                &dependency_map)
+  const DependencySet                &dependency_map,
+  const SolveGroup                   &_solve_group,
+  const MatrixFree                   &matrix_free)
   : field_attributes_ptr(&_field_attributes)
+  , solution_indexer(&_solution_indexer)
   , relative_level(_relative_level)
+  , solve_group(&_solve_group)
+  , shared_feeval_scalar(matrix_free)
 {
-  const std::vector<FieldAttributes> field_attributes;
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   // Initialize the feeval vectors
   feeval_deps_scalar.clear();
   feeval_deps_vector.clear();
@@ -50,134 +37,142 @@ FieldContainer<dim, degree, number>::FieldContainer(
         solution_indexer->get_solution_level_and_block_index(field_index, relative_level);
       if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
         {
-          feeval_deps_scalar[field_index] = {dependency, mf_id_pair};
+          feeval_deps_scalar[field_index] = {
+            dependency,
+            mf_id_pair,
+            solve_group->id == solution_indexer->get_solve_group(field_index).id};
         }
       else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
         {
-          feeval_deps_vector[field_index] = {dependency, mf_id_pair};
+          feeval_deps_vector[field_index] = {
+            dependency,
+            mf_id_pair,
+            solve_group->id == solution_indexer->get_solve_group(field_index).id};
         }
       // else Assert unreachable
     }
-  MatrixFree   matrix_free;
-  unsigned int block_index = 0;
-  for (const auto &field_index : solve_group->field_indices)
-    {
-      if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
-        {
-          dst_feeval_scalar[field_index] = std::make_unique(matrix_free, block_index);
-        }
-      else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
-        {
-          dst_feeval_vector[field_index] = std::make_unique(matrix_free, block_index);
-        }
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-unsigned int
-FieldContainer<dim, degree, number>::get_n_q_points() const
-{}
-
-template <unsigned int dim, unsigned int degree, typename number>
-dealii::Point<dim, typename FieldContainer<dim, degree, number>::ScalarValue>
-FieldContainer<dim, degree, number>::get_q_point_location() const
-{
-  Types::Index                        field_index = *(solve_group->field_indices.begin());
-  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  if (field_attributes[field_index].field_type == TensorRank::Scalar)
-    {
-      return dst_feeval_scalar[field_index]->quadrature_point(q_point);
-    }
-  /*else if vector */
-  {
-    return dst_feeval_vector[field_index]->quadrature_point(q_point);
-  }
-  /* unreachable */
-  return dealii::Point<dim, ScalarValue>();
+  //================================================================================
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::reinit(unsigned int cell)
 {
-  const DependencySet &dependency_map; // rhs or lhs
-  for (const auto &[field_index, dependency] : dependency_map)
+  for (const auto &fe_eval : feeval_deps_scalar)
     {
-      feeval_deps_scalar[field_index].reinit(cell);
+      fe_eval.reinit(cell);
+    }
+  for (const auto &fe_eval : feeval_deps_vector)
+    {
+      fe_eval.reinit(cell);
+    }
+  //================================================================================
+  shared_feeval_scalar.reinit(cell);
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::eval(const BlockVector *src_solutions)
+{
+  for (const auto &fe_eval : feeval_deps_scalar)
+    {
+      fe_eval.eval(src_solutions);
+    }
+  for (const auto &fe_eval : feeval_deps_vector)
+    {
+      fe_eval.eval(src_solutions);
     }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::eval()
+FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int       cell,
+                                                     const BlockVector *src_solutions)
 {
-  const DependencySet &dependency_map; // rhs or lhs
-  for (const auto &[field_index, dependency] : dependency_map)
+  for (const auto &fe_eval : feeval_deps_scalar)
     {
-      feeval_deps_scalar[field_index].eval();
+      fe_eval.reinit_and_eval(cell, src_solutions);
     }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int cell)
-{
-  const DependencySet &dependency_map; // rhs or lhs
-  for (const auto &[field_index, dependency] : dependency_map)
+  for (const auto &fe_eval : feeval_deps_vector)
     {
-      feeval_deps_scalar[field_index].reinit_and_eval(cell);
+      fe_eval.reinit_and_eval(cell, src_solutions);
     }
+  //================================================================================
+  shared_feeval_scalar.reinit(cell);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::integrate()
 {
-  const std::vector<FieldAttributes> field_attributes = *field_attributes_ptr;
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_group->field_indices)
     {
-      const EvalFlags submission_flags = equation_type == EquationType::RHS
-                                           ? field_attributes[field_index].eval_flags_rhs
-                                           : field_attributes[field_index].eval_flags_lhs;
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          dst_feeval_scalar[field_index]->integrate(submission_flags);
+          feeval_deps_scalar[field_index]->integrate();
         }
       else /* vector */
         {
-          dst_feeval_vector[field_index]->integrate(submission_flags);
+          feeval_deps_vector[field_index]->integrate();
         }
     }
-  /* AssertThrow(false,
-              dealii::ExcMessage(
-                "Integrate called for a solve type that is not NonexplicitLHS.")); */
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::integrate_and_distribute()
+FieldContainer<dim, degree, number>::integrate_and_distribute(BlockVector *dst_solutions)
 {
-  const std::vector<FieldAttributes> field_attributes = *field_attributes_ptr;
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_group->field_indices)
     {
-      const EvalFlags submission_flags = equation_type == EquationType::RHS
-                                           ? field_attributes[field_index].eval_flags_rhs
-                                           : field_attributes[field_index].eval_flags_lhs;
-      SolutionVector &dst              = equation_type == EquationType::RHS
-                                           ? solutions.new_solutions(field_index, relative_level)
-                                           : solutions.change_solutions(field_index, relative_level);
-      ;
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          dst_feeval_scalar[field_index]->integrate_scatter(submission_flags, dst);
+          feeval_deps_scalar[field_index]->integrate_and_distribute(dst_solutions);
         }
       else /* vector */
         {
-          dst_feeval_vector[field_index]->integrate_scatter(submission_flags, dst);
+          feeval_deps_vector[field_index]->integrate_and_distribute(dst_solutions);
         }
     }
 }
 
-// #include "core/field_container.inst"
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::feevaluation_size_valid(
+  Types::Index field_index) const
+{
+  // TODO
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::feevaluation_exists(
+  Types::Index field_index,
+  Types::Index dependency_index) const
+{
+  // TODO
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::access_valid(
+  Types::Index                             field_index,
+  DependencyType                           dependency_type,
+  dealii::EvaluationFlags::EvaluationFlags flag) const
+{
+  // TODO
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::submission_valid(
+  Types::Index   field_index,
+  DependencyType dependency_type) const
+{
+  // TODO
+}
+
+#include "core/field_container.inst"
 
 PRISMS_PF_END_NAMESPACE
