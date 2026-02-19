@@ -1,4 +1,0 @@
-for ( dimension : SPACE_DIMENSIONS)
-  {
-    template class DofHandler<dimension>;
-  }

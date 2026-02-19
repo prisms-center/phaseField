@@ -23,7 +23,7 @@ template <unsigned int dim>
 struct SpatialDiscretization;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class PDEOperator;
+class PDEOperatorBase;
 
 template <unsigned int dim, typename number>
 class ReadFieldBase;
@@ -41,9 +41,9 @@ public:
    * @brief Constructor.
    */
   InitialCondition(
-    const unsigned int                                            &_index,
-    const FieldInfo::TensorRank                                   &_field_type,
-    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator);
+    const unsigned int                                                &_index,
+    const FieldInfo::TensorRank                                       &_field_type,
+    const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
 
@@ -60,7 +60,7 @@ private:
 
   FieldInfo::TensorRank field_type;
 
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
 };
 
 /**

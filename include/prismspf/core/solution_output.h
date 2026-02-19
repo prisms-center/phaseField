@@ -5,6 +5,9 @@
 
 #include <deal.II/lac/la_parallel_vector.h>
 
+#include <prismspf/core/dof_manager.h>
+#include <prismspf/core/solution_indexer.h>
+
 #include <prismspf/config.h>
 
 #include <string>
@@ -40,6 +43,16 @@ public:
                  const unsigned int                                 &degree,
                  const std::string                                  &name,
                  const UserInputParameters<dim>                     &user_inputs);
+
+  /**
+   * @brief Outputs all fields in the solution set.
+   */
+  SolutionOutput(const std::vector<FieldAttributes> &field_attributes,
+                 const SolutionIndexer<dim, number> &solution_indexer,
+                 const DofManager<dim>              &dof_manager,
+                 const unsigned int                 &degree,
+                 const std::string                  &file_prefix,
+                 const UserInputParameters<dim>     &user_inputs);
 };
 
 PRISMS_PF_END_NAMESPACE

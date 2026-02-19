@@ -19,7 +19,10 @@ enum PDEType : std::uint8_t
   ImplicitTimeDependent,
   TimeIndependent,
   Auxiliary,
-  Constant
+  Constant,
+  Explicit,
+  Linear,
+  Newton
 };
 
 /**
@@ -58,7 +61,7 @@ enum ElasticityModel : std::uint8_t
 enum FieldSolveType : std::uint8_t
 {
   ExplicitConstant,
-  Explicit,
+  // Explicit,
   NonexplicitLinear,
   NonexplicitSelfnonlinear,
   NonexplicitAuxiliary,
@@ -69,9 +72,9 @@ enum FieldSolveType : std::uint8_t
 /**
  * @brief Internal classification for types of variable dependencies.
  */
-enum DependencyType : std::uint8_t
+enum DependencyType : int
 {
-  Normal,
+  Normal = -1,
   Change,
   OldOne,
   OldTwo,
@@ -181,8 +184,8 @@ to_string(FieldSolveType type)
 {
   switch (type)
     {
-      case FieldSolveType::Explicit:
-        return "Explicit";
+      // case FieldSolveType::Explicit:
+      //   return "Explicit";
       case FieldSolveType::NonexplicitLinear:
         return "NonexplicitLinear";
       case FieldSolveType::NonexplicitSelfnonlinear:

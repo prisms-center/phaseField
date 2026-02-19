@@ -81,11 +81,11 @@ struct FieldInfo
    *
    * Currently, only scalar and vectors are supported.
    */
-  enum class TensorRank : std::uint8_t
+  enum class TensorRank : unsigned int
   {
-    Undefined,
-    Scalar,
-    Vector
+    Undefined = static_cast<unsigned int>(-1),
+    Scalar    = 0,
+    Vector    = 1
   };
 
   /**

@@ -6,7 +6,7 @@
 #include <deal.II/lac/vector.h>
 
 #include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/pde_operator.h>
+#include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/field_input/read_field_factory.h>
@@ -21,9 +21,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 InitialCondition<dim, degree, number>::InitialCondition(
-  const unsigned int                                            &_index,
-  const FieldInfo::TensorRank                                   &_field_type,
-  const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator)
+  const unsigned int                                                &_index,
+  const FieldInfo::TensorRank                                       &_field_type,
+  const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &_pde_operator)
   : dealii::Function<dim, number>((_field_type == FieldInfo::TensorRank::Vector) ? dim
                                                                                  : 1)
   , index(_index)

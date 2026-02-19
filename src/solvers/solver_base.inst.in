@@ -1,4 +1,0 @@
-for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
-  {
-    template class SolverBase<dimension, degree, number>;
-  }
