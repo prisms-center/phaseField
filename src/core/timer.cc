@@ -107,6 +107,11 @@ namespace
 
 } // namespace
 
+Timer::~Timer()
+{
+  print_summary();
+}
+
 void
 Timer::start_section(const char *name)
 {
@@ -177,18 +182,34 @@ Timer::print_summary()
 
   auto lookup = [](const std::map<std::string, double> &data,
                    const std::string                   &key) -> double
+  {
+    const auto iterator = data.find(key);
+    return iterator != data.end() ? iterator->second : 0.0;
+  };
+
+  // Compute the max depth to adjust column widths
+  unsigned int max_depth = 0;
+  for (const auto &key : stack.insertion_order)
     {
-      const auto iterator = data.find(key);
-      return iterator != data.end() ? iterator->second : 0.0;
-    };
+      max_depth = std::max(max_depth, stack.meta.at(key).depth);
+    }
+
+  // Each depth level adds 2 spaces + "|- " (3 chars) for non-root
+  const int depth_padding = (static_cast<int>(max_depth) * 2) + (max_depth > 0 ? 3 : 0);
+
+  // Column names
+  std::string calls  = "N Calls";
+  std::string wall   = "Wall Time (s)";
+  std::string cpu    = "CPU Time (s)";
+  std::string parent = "% Parent";
 
   // Column widths
-  constexpr int w_label = 44;
-  constexpr int w_calls = 8;
-  constexpr int w_wall  = 12;
-  constexpr int w_cpu   = 12;
-  constexpr int w_pct   = 9;
-  constexpr int total_w = w_label + w_calls + w_wall + w_cpu + w_pct;
+  const int w_label = 44 + depth_padding;
+  const int w_calls = static_cast<int>(calls.size()) + 2;
+  const int w_wall  = static_cast<int>(wall.size()) + 2;
+  const int w_cpu   = static_cast<int>(cpu.size()) + 2;
+  const int w_pct   = static_cast<int>(parent.size()) + 2;
+  const int total_w = w_label + w_calls + w_wall + w_cpu + w_pct;
 
   auto &out = ConditionalOStreams::pout_base();
 
@@ -197,9 +218,8 @@ Timer::print_summary()
       << "  PRISMS-PF Timing Summary\n"
       << std::string(total_w, '=') << "\n"
       << std::left << std::setw(w_label) << "Section" << std::right << std::setw(w_calls)
-      << "N Calls" << std::setw(w_wall) << "Wall Time (s)" << std::setw(w_cpu)
-      << "CPU Time (s)" << std::setw(w_pct) << "% Parent."
-      << "\n"
+      << calls << std::setw(w_wall) << wall << std::setw(w_cpu) << cpu << std::setw(w_pct)
+      << parent << "\n"
       << std::string(total_w, '-') << "\n";
 
   for (const auto &key : stack.insertion_order)
@@ -223,9 +243,9 @@ Timer::print_summary()
         }
 
       // Bare section name (last segment after " > ")
-      const std::size_t seperator = key.rfind(" > ");
+      const std::size_t separator = key.rfind(" > ");
       const std::string bare =
-        seperator == std::string::npos ? key : key.substr(seperator + 3);
+        separator == std::string::npos ? key : key.substr(separator + 3);
 
       const std::string indent(static_cast<std::size_t>(depth) * 2, ' ');
       const std::string label = indent + (depth > 0 ? "|- " : "") + bare;

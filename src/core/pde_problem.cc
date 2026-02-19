@@ -65,7 +65,8 @@ PDEProblem<dim, degree, number>::PDEProblem(
   PhaseFieldTools<dim>                                          &_pf_tools,
   const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
   const std::shared_ptr<const PDEOperator<dim, degree, float>>  &_pde_operator_float)
-  : user_inputs(&_user_inputs)
+  : timer_scope("Problem")
+  , user_inputs(&_user_inputs)
   , pf_tools(&_pf_tools)
   , mg_info(_user_inputs)
   , triangulation_handler(_user_inputs, mg_info)
@@ -488,8 +489,6 @@ PDEProblem<dim, degree, number>::run()
     << std::flush;
 
   solve();
-
-  Timer::print_summary();
 }
 
 #include "core/pde_problem.inst"
