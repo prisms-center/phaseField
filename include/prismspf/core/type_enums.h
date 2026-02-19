@@ -26,6 +26,18 @@ enum PDEType : std::uint8_t
 };
 
 /**
+ * @brief Tensor rank of the field.
+ *
+ * Currently, only scalar and vectors are supported.
+ */
+enum class TensorRank : unsigned int
+{
+  Undefined = static_cast<unsigned int>(-1),
+  Scalar    = 0,
+  Vector    = 1
+};
+
+/**
  * @brief Type of solve.
  */
 enum SolveType : std::uint8_t

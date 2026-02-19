@@ -72,117 +72,118 @@ VariableAttributes::parse_dependencies(
   const Types::Index                         &_max_dependency_types)
 {
   const std::map<std::string, std::pair<DependencyType, EvalFlags>> relevant_flag = []()
-  {
-    // Modifiers for the dependency types
-    const std::vector<std::pair<std::string, DependencyType>> dependency_types = {
-      {"",        DependencyType::Normal  },
-      {"_change", DependencyType::Change  },
-      {"_old_1",  DependencyType::OldOne  },
-      {"_old_2",  DependencyType::OldTwo  },
-      {"_old_3",  DependencyType::OldThree},
-      {"_old_4",  DependencyType::OldFour },
-    };
+    {
+      // Modifiers for the dependency types
+      const std::vector<std::pair<std::string, DependencyType>> dependency_types = {
+        {"",        DependencyType::Normal  },
+        {"_change", DependencyType::Change  },
+        {"_old_1",  DependencyType::OldOne  },
+        {"_old_2",  DependencyType::OldTwo  },
+        {"_old_3",  DependencyType::OldThree},
+        {"_old_4",  DependencyType::OldFour },
+      };
 
-    // Dependency evaluation types & their corresponding evaluation flag
-    const std::vector<std::pair<std::string, EvalFlags>> eval_flags = {
-      {"value",              dealii::EvaluationFlags::EvaluationFlags::values   },
-      {"gradient",           dealii::EvaluationFlags::EvaluationFlags::gradients},
-      {"hessian",            dealii::EvaluationFlags::EvaluationFlags::hessians },
-      {"hessian_diagonal",   dealii::EvaluationFlags::EvaluationFlags::hessians },
-      {"laplacian",          dealii::EvaluationFlags::EvaluationFlags::hessians },
-      {"divergence",         dealii::EvaluationFlags::EvaluationFlags::gradients},
-      {"symmetric_gradient", dealii::EvaluationFlags::EvaluationFlags::gradients},
-      {"curl",               dealii::EvaluationFlags::EvaluationFlags::gradients},
-    };
+      // Dependency evaluation types & their corresponding evaluation flag
+      const std::vector<std::pair<std::string, EvalFlags>> eval_flags = {
+        {"value",              dealii::EvaluationFlags::EvaluationFlags::values   },
+        {"gradient",           dealii::EvaluationFlags::EvaluationFlags::gradients},
+        {"hessian",            dealii::EvaluationFlags::EvaluationFlags::hessians },
+        {"hessian_diagonal",   dealii::EvaluationFlags::EvaluationFlags::hessians },
+        {"laplacian",          dealii::EvaluationFlags::EvaluationFlags::hessians },
+        {"divergence",         dealii::EvaluationFlags::EvaluationFlags::gradients},
+        {"symmetric_gradient", dealii::EvaluationFlags::EvaluationFlags::gradients},
+        {"curl",               dealii::EvaluationFlags::EvaluationFlags::gradients},
+      };
 
-    std::map<std::string, std::pair<DependencyType, EvalFlags>> map;
-    for (const auto &dep : dependency_types)
-      {
-        for (const auto &eval : eval_flags)
-          {
-            map[eval.first + dep.first] = {dep.second, eval.second};
-          }
-      }
+      std::map<std::string, std::pair<DependencyType, EvalFlags>> map;
+      for (const auto &dep : dependency_types)
+        {
+          for (const auto &eval : eval_flags)
+            {
+              map[eval.first + dep.first] = {dep.second, eval.second};
+            }
+        }
 
-    return map;
-  }();
+      return map;
+    }();
 
   const std::map<std::string, std::pair<std::string, std::string>> delimiters = []()
-  {
-    // Delimiters for the dependency types. Note that there are
-    // various overloads for the delimiters.
-    const std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
-      dependency_types_delimiters = {
-        {"",        {"", ""}        },
-        {"_change", {"change(", ")"}},
-        {"_old_1",  {"old_1(", ")"} },
-        {"_old_2",  {"old_2(", ")"} },
-        {"_old_3",  {"old_3(", ")"} },
-        {"_old_4",  {"old_4(", ")"} },
-    };
+    {
+      // Delimiters for the dependency types. Note that there are
+      // various overloads for the delimiters.
+      const std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
+        dependency_types_delimiters = {
+          {"",        {"", ""}        },
+          {"_change", {"change(", ")"}},
+          {"_old_1",  {"old_1(", ")"} },
+          {"_old_2",  {"old_2(", ")"} },
+          {"_old_3",  {"old_3(", ")"} },
+          {"_old_4",  {"old_4(", ")"} },
+      };
 
-    // Dependency evaluation types & their corresponding delimiter.
-    const std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
-      base_delimiters = {
-        {"value",              {"", ""}          },
-        {"gradient",           {"grad(", ")"}    },
-        {"hessian",            {"hess(", ")"}    },
-        {"hessian_diagonal",   {"hessdiag(", ")"}},
-        {"laplacian",          {"lap(", ")"}     },
-        {"divergence",         {"div(", ")"}     },
-        {"symmetric_gradient", {"symgrad(", ")"} },
-        {"curl",               {"curl(", ")"}    },
-    };
+      // Dependency evaluation types & their corresponding delimiter.
+      const std::vector<std::pair<std::string, std::pair<std::string, std::string>>>
+        base_delimiters = {
+          {"value",              {"", ""}          },
+          {"gradient",           {"grad(", ")"}    },
+          {"hessian",            {"hess(", ")"}    },
+          {"hessian_diagonal",   {"hessdiag(", ")"}},
+          {"laplacian",          {"lap(", ")"}     },
+          {"divergence",         {"div(", ")"}     },
+          {"symmetric_gradient", {"symgrad(", ")"} },
+          {"curl",               {"curl(", ")"}    },
+      };
 
-    std::map<std::string, std::pair<std::string, std::string>> map;
-    for (const auto &dep : dependency_types_delimiters)
-      {
-        for (const auto &base : base_delimiters)
-          {
-            map[base.first + dep.first] = {base.second.first + dep.second.first,
-                                           dep.second.second + base.second.second};
-          }
-      }
+      std::map<std::string, std::pair<std::string, std::string>> map;
+      for (const auto &dep : dependency_types_delimiters)
+        {
+          for (const auto &base : base_delimiters)
+            {
+              map[base.first + dep.first] = {base.second.first + dep.second.first,
+                                             dep.second.second + base.second.second};
+            }
+        }
 
-    return map;
-  }();
+      return map;
+    }();
 
   // Helper lambda to validate and fill in dependency sets
   auto set_dependencies = [&](const std::set<std::string>         &dependencies,
                               std::vector<std::vector<EvalFlags>> &eval_flag_set,
                               const std::string                   &context)
-  {
-    // Loop through the available delimiters
-    for (const auto &[variation, delimiter] : delimiters)
-      {
-        // Loop through all known VariableAttributes
-        for (auto &[other_index, other_variable] : other_var_attributes)
-          {
-            // Grab the potential dependency for the variable. For example, if we are in
-            // the variableAttributre for "phi" enumerate all possible dependencies for
-            // the variable, like "change(phi)".
-            const std::string possible_dependency =
-              delimiter.first + other_variable.name + delimiter.second;
+    {
+      // Loop through the available delimiters
+      for (const auto &[variation, delimiter] : delimiters)
+        {
+          // Loop through all known VariableAttributes
+          for (auto &[other_index, other_variable] : other_var_attributes)
+            {
+              // Grab the potential dependency for the variable. For example, if we are in
+              // the variableAttributre for "phi" enumerate all possible dependencies for
+              // the variable, like "change(phi)".
+              const std::string possible_dependency =
+                delimiter.first + other_variable.name + delimiter.second;
 
-            // Populate the dependencies
-            if (dependencies.contains(possible_dependency))
-              {
-                const DependencyType        dep_type = relevant_flag.at(variation).first;
-                const EvalFlags             flags    = relevant_flag.at(variation).second;
-                const FieldInfo::TensorRank other_field_type =
-                  other_variable.field_info.tensor_rank;
+              // Populate the dependencies
+              if (dependencies.contains(possible_dependency))
+                {
+                  const DependencyType dep_type = relevant_flag.at(variation).first;
+                  const EvalFlags      flags    = relevant_flag.at(variation).second;
+                  const TensorRank     other_field_type =
+                    other_variable.field_info.tensor_rank;
 
-                validate_dependency(variation,
-                                    dep_type,
-                                    other_index,
-                                    other_field_type,
-                                    context);
+                  validate_dependency(variation,
+                                      dep_type,
+                                      other_index,
+                                      other_field_type,
+                                      context);
 
-                eval_flag_set[other_index][static_cast<Types::Index>(dep_type)] |= flags;
-              }
-          }
-      }
-  };
+                  eval_flag_set[other_index][static_cast<Types::Index>(dep_type)] |=
+                    flags;
+                }
+            }
+        }
+    };
 
   // Initialize the eval flag sets
   eval_flag_set_rhs.resize(
@@ -345,11 +346,11 @@ VariableAttributes::print() const
 
 void
 VariableAttributes::validate_dependency(
-  [[maybe_unused]] const std::string           &variation,
-  [[maybe_unused]] DependencyType               dep_type,
-  [[maybe_unused]] const unsigned int          &other_index,
-  [[maybe_unused]] const FieldInfo::TensorRank &other_field_type,
-  [[maybe_unused]] const std::string           &context) const
+  [[maybe_unused]] const std::string  &variation,
+  [[maybe_unused]] DependencyType      dep_type,
+  [[maybe_unused]] const unsigned int &other_index,
+  [[maybe_unused]] const TensorRank   &other_field_type,
+  [[maybe_unused]] const std::string  &context) const
 {
   AssertThrow(context != "RHS" || dep_type != DependencyType::Change,
               dealii::ExcMessage("Dependencies with the delimiter change(var) are "
@@ -364,15 +365,15 @@ VariableAttributes::validate_dependency(
                 "Dependencies with the delimiter change(var) are only allowed as "
                 "dependencies for the same field (e.g, change(phi) is only "
                 "allowed as a dependency for phi)."));
-  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
+  AssertThrow(other_field_type == TensorRank::Vector ||
                 variation.find("divergence") == std::string::npos,
               dealii::ExcMessage("Dependencies with the divergence delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
+  AssertThrow(other_field_type == TensorRank::Vector ||
                 variation.find("symmetric_gradient") == std::string::npos,
               dealii::ExcMessage("Dependencies with the symmetric gradient delimiter are "
                                  "only allowed on vector fields."));
-  AssertThrow(other_field_type == FieldInfo::TensorRank::Vector ||
+  AssertThrow(other_field_type == TensorRank::Vector ||
                 variation.find("curl") == std::string::npos,
               dealii::ExcMessage("Dependencies with the curl delimiter are "
                                  "only allowed on vector fields."));
@@ -389,14 +390,12 @@ VariableAttributes::compute_dependency_set(
 
   // First resize the dependency_set_rhs and dependency_set_lhs and populate them with
   // invalid entries. This is so we don't create the FEEvaluation objects.
-  dependency_set_rhs.resize(
-    eval_flag_set_rhs.size(),
-    std::vector<FieldInfo::TensorRank>(eval_flag_set_rhs.begin()->size(),
-                                       FieldInfo::TensorRank::Undefined));
-  dependency_set_lhs.resize(
-    eval_flag_set_lhs.size(),
-    std::vector<FieldInfo::TensorRank>(eval_flag_set_lhs.begin()->size(),
-                                       FieldInfo::TensorRank::Undefined));
+  dependency_set_rhs.resize(eval_flag_set_rhs.size(),
+                            std::vector<TensorRank>(eval_flag_set_rhs.begin()->size(),
+                                                    TensorRank::Undefined));
+  dependency_set_lhs.resize(eval_flag_set_lhs.size(),
+                            std::vector<TensorRank>(eval_flag_set_lhs.begin()->size(),
+                                                    TensorRank::Undefined));
 
   Types::Index index = 0;
   for (const auto &dependency_set : eval_flag_set_rhs)
@@ -467,34 +466,34 @@ VariableAttributes::compute_simplified_dependency_set(
   // interfere with the map and flag circularity. If the dependencies have different solve
   // blocks ignore those as well.
   auto compute_dependencies = [&](const auto &eval_flag_set)
-  {
-    Types::Index index = 0;
-    for (const auto &dependency_set : eval_flag_set)
-      {
-        Types::Index dep_index = 0;
-        for (const auto &value : dependency_set)
-          {
-            if (static_cast<DependencyType>(dep_index) != DependencyType::Normal ||
-                value == EvalFlags::nothing ||
-                other_var_attributes.at(index).pde_type ==
-                  PDEType::ExplicitTimeDependent ||
-                other_var_attributes.at(index).pde_type == PDEType::Constant ||
-                index == field_index ||
-                other_var_attributes.at(index).solve_block !=
-                  other_var_attributes.at(dep_index).solve_block)
-              {
-                dep_index++;
-                continue;
-              }
+    {
+      Types::Index index = 0;
+      for (const auto &dependency_set : eval_flag_set)
+        {
+          Types::Index dep_index = 0;
+          for (const auto &value : dependency_set)
+            {
+              if (static_cast<DependencyType>(dep_index) != DependencyType::Normal ||
+                  value == EvalFlags::nothing ||
+                  other_var_attributes.at(index).pde_type ==
+                    PDEType::ExplicitTimeDependent ||
+                  other_var_attributes.at(index).pde_type == PDEType::Constant ||
+                  index == field_index ||
+                  other_var_attributes.at(index).solve_block !=
+                    other_var_attributes.at(dep_index).solve_block)
+                {
+                  dep_index++;
+                  continue;
+                }
 
-            simplified_dependency_set.insert(index);
+              simplified_dependency_set.insert(index);
 
-            dep_index++;
-          }
+              dep_index++;
+            }
 
-        index++;
-      }
-  };
+          index++;
+        }
+    };
 
   compute_dependencies(eval_flag_set_rhs);
   compute_dependencies(eval_flag_set_lhs);

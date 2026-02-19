@@ -8,7 +8,6 @@
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -18,7 +17,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
-using Rank      = FieldInfo::TensorRank;
+using Rank      = TensorRank;
 
 // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
 /**
@@ -33,14 +32,10 @@ struct FieldAttributes
   explicit FieldAttributes(
     std::string               _name                        = "",
     Rank                      _field_type                  = Rank::Undefined,
-    EvalFlags                 _eval_flags_rhs              = EvalFlags::nothing,
-    EvalFlags                 _eval_flags_lhs              = EvalFlags::nothing,
     bool                      _is_nucleation_rate_variable = false,
     std::vector<Types::Index> _nucleating_field_indices    = std::vector<Types::Index>())
     : name(std::move(_name))
     , field_type(_field_type)
-    , eval_flags_rhs(_eval_flags_rhs)
-    , eval_flags_lhs(_eval_flags_lhs)
     , is_nucleation_rate_variable(_is_nucleation_rate_variable)
     , nucleating_field_indices(std::move(_nucleating_field_indices))
   {}
@@ -54,18 +49,6 @@ struct FieldAttributes
    * @brief Field type (Scalar/Vector).
    */
   Rank field_type = Rank::Undefined;
-
-  /**
-   * @brief Evaluation flags for the types of residual the user is expected to submit to
-   * on the RHS.
-   */
-  EvalFlags eval_flags_rhs = EvalFlags::nothing;
-
-  /**
-   * @brief Evaluation flags for the types of residual the user is expected to submit to
-   * on the LHS. This is empty for Explicit fields.
-   */
-  EvalFlags eval_flags_lhs = EvalFlags::nothing;
 
   /**
    * @brief Is a nucleation rate
