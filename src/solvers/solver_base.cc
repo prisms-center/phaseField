@@ -134,73 +134,73 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 SolverBase<dim, degree, number>::set_initial_condition()
 {
-    for (const auto &[index, variable] : subset_attributes)
+  for (const auto &[index, variable] : subset_attributes)
     {
-        // TODO (landinjm): Skip certain fields for initial conditions
+      // TODO (landinjm): Skip certain fields for initial conditions
 
-        Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
-               dealii::ExcMessage(
-                   "The const DoFHandler set is smaller than the given index = " +
-                   std::to_string(index)));
-        Assert(subset_attributes.contains(index),
-               dealii::ExcMessage(
-                   "There is no entry in the attribute subset for the given index = " +
-                   std::to_string(index)));
+      Assert(solver_context->get_dof_handler().get_dof_handlers().size() > index,
+             dealii::ExcMessage(
+               "The const DoFHandler set is smaller than the given index = " +
+               std::to_string(index)));
+      Assert(subset_attributes.contains(index),
+             dealii::ExcMessage(
+               "There is no entry in the attribute subset for the given index = " +
+               std::to_string(index)));
 
-        for (const auto &[index, variable] : subset_attributes)
+      for (const auto &[index, variable] : subset_attributes)
         {
-            bool initialized_from_file = false;
+          bool initialized_from_file = false;
 
-            // First, try to find this variable in IC files
-            auto &initial_condition_parameters =
-                solver_context->get_user_inputs().get_load_initial_condition_parameters();
+          // First, try to find this variable in IC files
+          auto &initial_condition_parameters =
+            solver_context->get_user_inputs().get_load_initial_condition_parameters();
 
-            for (const auto &initial_condition_file :
-                     initial_condition_parameters.get_initial_condition_files())
+          for (const auto &initial_condition_file :
+               initial_condition_parameters.get_initial_condition_files())
             {
-                auto iterator =
-                    std::find(initial_condition_file.simulation_variable_names.begin(),
-                              initial_condition_file.simulation_variable_names.end(),
-                              variable.get_name());
+              auto iterator =
+                std::find(initial_condition_file.simulation_variable_names.begin(),
+                          initial_condition_file.simulation_variable_names.end(),
+                          variable.get_name());
 
-                if (iterator != initial_condition_file.simulation_variable_names.end())
+              if (iterator != initial_condition_file.simulation_variable_names.end())
                 {
-                    // Found in file - read from file
-                    dealii::VectorTools::interpolate(
-                        solver_context->get_mapping(),
-                        *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-                        ReadInitialCondition<dim, number>(
-                            initial_condition_file.file_variable_names
-                            [iterator -
-                             initial_condition_file.simulation_variable_names.begin()],
-                            subset_attributes.at(index).field_info.tensor_rank,
-                            initial_condition_file,
-                            solver_context->get_user_inputs().get_spatial_discretization()),
-                        *(solver_context->get_solution_handler()
-                          .get_solution_vector(index, DependencyType::Normal)));
+                  // Found in file - read from file
+                  dealii::VectorTools::interpolate(
+                    solver_context->get_mapping(),
+                    *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+                    ReadInitialCondition<dim, number>(
+                      initial_condition_file.file_variable_names
+                        [iterator -
+                         initial_condition_file.simulation_variable_names.begin()],
+                      subset_attributes.at(index).field_info.tensor_rank,
+                      initial_condition_file,
+                      solver_context->get_user_inputs().get_spatial_discretization()),
+                    *(solver_context->get_solution_handler()
+                        .get_solution_vector(index, DependencyType::Normal)));
 
-                    initialized_from_file = true;
-                    break;  // Stop searching once found
+                  initialized_from_file = true;
+                  break; // Stop searching once found
                 }
             }
 
-            // If not found in files, use programmatic IC
-            if (!initialized_from_file)
+          // If not found in files, use programmatic IC
+          if (!initialized_from_file)
             {
-                dealii::VectorTools::interpolate(
-                    solver_context->get_mapping(),
-                    *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
-                    InitialCondition<dim, degree, number>(
-                        index,
-                        subset_attributes.at(index).field_info.tensor_rank,
-                        solver_context->get_pde_operator()),
-                    *(solver_context->get_solution_handler()
-                      .get_solution_vector(index, DependencyType::Normal)));
+              dealii::VectorTools::interpolate(
+                solver_context->get_mapping(),
+                *(solver_context->get_dof_handler().get_dof_handlers().at(index)),
+                InitialCondition<dim, degree, number>(
+                  index,
+                  subset_attributes.at(index).field_info.tensor_rank,
+                  solver_context->get_pde_operator()),
+                *(solver_context->get_solution_handler()
+                    .get_solution_vector(index, DependencyType::Normal)));
             }
 
-            // TODO (landinjm): Fix so that we apply some sort of initial condition to all old
-            // vector for all types.
-            solver_context->get_solution_handler().apply_initial_condition_for_old_fields();
+          // TODO (landinjm): Fix so that we apply some sort of initial condition to all
+          // old vector for all types.
+          solver_context->get_solution_handler().apply_initial_condition_for_old_fields();
         }
     }
 }
