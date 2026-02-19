@@ -114,11 +114,11 @@ template <unsigned int dim, typename number>
 auto
 SolutionIndexer<dim, number>::get_solution_level_and_block_index(
   unsigned int global_index,
-  unsigned int relative_level)
-  -> std::pair<const SolutionLevel<dim, number> &, unsigned int>
+  unsigned int relative_level) const
+  -> std::pair<const SolutionLevel<dim, number> *, unsigned int>
 {
   auto &sol = solutions[global_index];
-  return {sol->get_solution_level(relative_level), sol->get_block_index(global_index)};
+  return {&(sol->get_solution_level(relative_level)), sol->get_block_index(global_index)};
 }
 
 template <unsigned int dim, typename number>
