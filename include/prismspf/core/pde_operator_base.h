@@ -5,6 +5,7 @@
 
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/phase_field_tools.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/config.h>
@@ -57,6 +58,7 @@ public:
    */
   virtual void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
+              const SimulationTimer               &sim_timer,
               unsigned int                         solver_id) const = 0;
 
   /**
@@ -64,6 +66,7 @@ public:
    */
   virtual void
   compute_lhs(FieldContainer<dim, degree, number> &variable_list,
+              const SimulationTimer               &sim_timer,
               unsigned int                         solver_id) const = 0;
 
   /**

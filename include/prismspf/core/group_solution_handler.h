@@ -60,7 +60,6 @@ public:
   GroupSolutionHandler(const SolveGroup                   &_solve_group,
                        const std::vector<FieldAttributes> &_attributes_list);
 
-  // TODO (fractalsbyx): add 'const T& get() const' versions.
   /**
    * @brief Get the solution vector set. This contains all the normal fields and is
    * typically used for output.

@@ -69,7 +69,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
         {
           variable_list.set_q_point(quad);
           // Evaluate the function pointer (the user-defined pde)
-          (pde_operator->*pde_op)(variable_list, solve_group.id);
+          (pde_operator->*pde_op)(variable_list, *sim_timer, solve_group.id);
         }
 
       // Integrate and add to global vector dst

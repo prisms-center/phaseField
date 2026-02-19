@@ -126,8 +126,13 @@ public:
         refine_grid(solvers);
       }
     // Step 3
-    // Todo: Recompute invm & element volume
+    // Recompute invm & element volume
+    solve_context.get_invm_manager().compute_invm();
     // Todo: reinit matrix free operators?
+    for (auto &solver : solvers)
+      {
+        solver->reinit();
+      }
   }
 
   void
@@ -341,11 +346,11 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(
-                      *cell,
-                      solve_context.get_user_inputs().get_temporal_discretization());
-                  }))
+                    {
+                      return marker_function->flag(
+                        *cell,
+                        solve_context.get_user_inputs().get_temporal_discretization());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();

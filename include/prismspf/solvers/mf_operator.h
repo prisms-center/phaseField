@@ -12,6 +12,7 @@
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/pde_operator_base.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/types.h>
@@ -57,6 +58,7 @@ public:
 
   using Operator = void (PDEOperatorBase<dim, degree, number>::*)(
     FieldContainer<dim, degree, number> &, /* variable_list */
+    const SimulationTimer &,               /* sim_timer */
     unsigned int                           /* solve_group_id */
   ) const;
 
@@ -77,13 +79,13 @@ public:
     else
       {
         static Value<Rank> ident = []()
-        {
-          Value<Rank> obj;
-          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-            {
-              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-            }
-        }();
+          {
+            Value<Rank> obj;
+            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+              {
+                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+              }
+          }();
         return ident;
       }
   }
@@ -104,13 +106,16 @@ public:
 
   /**
    * @brief Constructor.
+   * @note It might be better to provide a SolveContext object instead of individual
+   * components
    */
   explicit MFOperator(PDEOperatorBase<dim, degree, number> &operator_owner,
                       Operator                              oper,
                       const std::vector<FieldAttributes>   &_field_attributes,
                       const SolutionIndexer<dim, number>   &_solution_indexer,
                       unsigned int                          _relative_level,
-                      DependencySet                         _dependency_map)
+                      DependencySet                         _dependency_map,
+                      const SimulationTimer                &_sim_timer)
     : MATRIX_FREE_OPERATOR_BASE()
     , pde_operator(&operator_owner)
     , pde_op(oper)
@@ -118,6 +123,7 @@ public:
     , solution_indexer(&_solution_indexer)
     , relative_level(_relative_level)
     , dependency_map(std::move(_dependency_map))
+    , sim_timer(&_sim_timer)
   {}
 
   /**
@@ -268,6 +274,11 @@ private:
    * @brief Which fields should be available to the solve.
    */
   DependencySet dependency_map;
+
+  /**
+   * @brief Simulation timer
+   */
+  const SimulationTimer *sim_timer;
 
   /**
    * @brief Mapping from field index to block index (only for dst).

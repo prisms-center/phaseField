@@ -5,6 +5,9 @@
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_output.h>
 #include <prismspf/core/system_wide.h>
+#include <prismspf/core/timer.h>
+
+#include <prismspf/solvers/solvers.h>
 
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
@@ -120,8 +123,6 @@ Problem<dim, degree, number>::init_system()
     }
   Timer::end_section("Initialize Solvers");
 
-  // TODO: InvM and element volume
-
   // Update the ghosts
   Timer::start_section("Update ghosts");
   for (auto &solver : solvers)
@@ -167,6 +168,9 @@ Problem<dim, degree, number>::init_system()
         }
       old_dofs = new_dofs;
     }
+
+  // InvM
+  solve_context.get_invm_manager().compute_invm();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -200,7 +204,7 @@ Problem<dim, degree, number>::solve()
 
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
   const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
-  SimulationTimer                 sim_timer(time_info.get_timestep());
+  SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
   while (sim_timer.get_increment() < time_info.get_total_increments())
     {
@@ -264,14 +268,15 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
           solver->update_ghosts();
         }
       Timer::end_section("Update ghosts");
+
+      // Recalculate InvM
+      solve_context.get_invm_manager().compute_invm();
     }
 
   // Update the time-dependent constraints
   Timer::start_section("Update time-dependent constraints");
-
   // TODO: Loop over levels, pass in current time
   constraint_manager.update_time_dependent_constraints(field_attributes);
-
   Timer::end_section("Update time-dependent constraints");
 
   // Solve a single increment

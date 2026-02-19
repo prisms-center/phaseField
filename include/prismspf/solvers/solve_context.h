@@ -10,6 +10,7 @@
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/pde_operator_base.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/triangulation_manager.h>
 
@@ -51,6 +52,7 @@ public:
     , constraint_manager(&_constraint_manager)
     , solution_indexer(&_solution_indexer)
     , invm_manager(*dof_manager, true, true)
+    , sim_timer(user_inputs->get_temporal_discretization().get_timestep())
     , pde_operator(_pde_operator) {};
 
   /**
@@ -161,6 +163,24 @@ public:
   }
 
   /**
+   * @brief Get the simulation timer.
+   */
+  [[nodiscard]] const SimulationTimer &
+  get_simulation_timer() const
+  {
+    return sim_timer;
+  }
+
+  /**
+   * @brief Get the simulation timer.
+   */
+  [[nodiscard]] SimulationTimer &
+  get_simulation_timer()
+  {
+    return sim_timer;
+  }
+
+  /**
    * @brief Get a shared pointer to the pde operator.
    */
   [[nodiscard]] const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &
@@ -205,6 +225,11 @@ private:
    * @brief Solution manager.
    */
   InvMManager<dim, degree, number> invm_manager;
+
+  /**
+   * @brief Simulation timer.
+   */
+  SimulationTimer sim_timer;
 
   /**
    * @brief PDE operator.
