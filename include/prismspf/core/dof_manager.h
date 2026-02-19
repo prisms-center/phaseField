@@ -12,7 +12,6 @@
 #include <prismspf/core/triangulation_manager.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 

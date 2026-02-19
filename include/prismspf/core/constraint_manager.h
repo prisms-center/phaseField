@@ -107,7 +107,7 @@ private:
     dealii::AffineConstraints<number>               &constraint,
     const dealii::DoFHandler<dim>                   &dof_handler,
     const std::map<unsigned int, BoundaryCondition> &bc_set,
-    FieldInfo::TensorRank                            tensor_rank,
+    TensorRank                                       tensor_rank,
     Types::Index                                     field_index,
     bool                                             for_change_term);
 
@@ -118,7 +118,7 @@ private:
   make_bc_constraints(dealii::AffineConstraints<number>               &constraint,
                       const dealii::DoFHandler<dim>                   &dof_handler,
                       const std::map<unsigned int, BoundaryCondition> &boundary_condition,
-                      FieldInfo::TensorRank                            tensor_rank,
+                      TensorRank                                       tensor_rank,
                       Types::Index                                     field_index,
                       bool for_change_term = false);
 
@@ -132,7 +132,7 @@ private:
                                BoundaryCondition::Type            boundary_type,
                                number                             dirichlet_value,
                                const dealii::DoFHandler<dim>     &dof_handler,
-                               FieldInfo::TensorRank              tensor_rank,
+                               TensorRank                         tensor_rank,
                                Types::Index                       field_index,
                                bool for_change_term = false) const;
 
@@ -183,7 +183,7 @@ private:
                    const dealii::Point<dim>          &target_point,
                    const std::array<number, dim>     &value,
                    const dealii::DoFHandler<dim>     &dof_handler,
-                   FieldInfo::TensorRank              tensor_rank,
+                   TensorRank                         tensor_rank,
                    bool                               is_change_term = false) const;
 
   /**

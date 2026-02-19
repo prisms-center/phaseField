@@ -148,7 +148,7 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   dealii::AffineConstraints<number>               &constraint,
   const dealii::DoFHandler<dim>                   &dof_handler,
   const std::map<unsigned int, BoundaryCondition> &bc_set,
-  FieldInfo::TensorRank                            tensor_rank,
+  TensorRank                                       tensor_rank,
   Types::Index                                     field_index,
   bool                                             for_change_term)
 {
@@ -183,7 +183,7 @@ ConstraintManager<dim, degree, number>::make_bc_constraints(
   dealii::AffineConstraints<number>               &constraint,
   const dealii::DoFHandler<dim>                   &dof_handler,
   const std::map<unsigned int, BoundaryCondition> &boundary_condition,
-  const FieldInfo::TensorRank                      tensor_rank,
+  const TensorRank                                 tensor_rank,
   Types::Index                                     field_index,
   bool                                             for_change_term)
 {
@@ -215,11 +215,11 @@ ConstraintManager<dim, degree, number>::make_one_boundary_constraint(
   BoundaryCondition::Type            boundary_type,
   const number                       dirichlet_value,
   const dealii::DoFHandler<dim>     &dof_handler,
-  FieldInfo::TensorRank              tensor_rank,
+  TensorRank                         tensor_rank,
   Types::Index                       field_index,
   bool                               for_change_term) const
 {
-  const bool is_vector_field = tensor_rank == FieldInfo::TensorRank::Vector;
+  const bool                  is_vector_field = tensor_rank == TensorRank::Vector;
   const dealii::ComponentMask mask =
     is_vector_field ? vector_component_mask.at(component) : scalar_empty_mask;
 
@@ -336,16 +336,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};
@@ -451,7 +451,7 @@ ConstraintManager<dim, degree, number>::set_pinned_point(
   const dealii::Point<dim>          &target_point,
   const std::array<number, dim>     &value,
   const dealii::DoFHandler<dim>     &dof_handler,
-  const FieldInfo::TensorRank        tensor_rank,
+  const TensorRank                   tensor_rank,
   bool                               is_change_term) const
 {
   const double tolerance = 1.0e-2;
@@ -473,8 +473,7 @@ ConstraintManager<dim, degree, number>::set_pinned_point(
             }
 
           const unsigned int dof_index = cell->vertex_dof_index(vertex, 0);
-          const unsigned int dimension =
-            tensor_rank == FieldInfo::TensorRank::Vector ? dim : 1;
+          const unsigned int dimension = tensor_rank == TensorRank::Vector ? dim : 1;
           for (unsigned int component = 0; component < dimension; ++component)
             {
               constraint.add_line(dof_index + component);

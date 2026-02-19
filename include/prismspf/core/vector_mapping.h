@@ -2,8 +2,6 @@
 
 #include <deal.II/lac/block_vector.h>
 
-#include <prismspf/core/variable_attributes.h>
-
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE

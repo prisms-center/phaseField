@@ -62,7 +62,6 @@ public:
     unsigned int                           /* solve_group_id */
   ) const;
 
-  using TensorRank = FieldInfo::TensorRank;
   template <TensorRank Rank>
   using Value = std::conditional_t<Rank == TensorRank::Scalar,
                                    ScalarValue,
