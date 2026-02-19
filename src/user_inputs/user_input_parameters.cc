@@ -228,11 +228,11 @@ UserInputParameters<dim>::assign_boundary_parameters(
         }
 
       const unsigned int n_components =
-        (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar) ? 1 : dim;
+        (variable.field_info.tensor_rank == TensorRank::Scalar) ? 1 : dim;
       for (unsigned int i = 0; i < n_components; i++)
         {
           std::string bc_text = "boundary condition for " + variable.get_name();
-          if (variable.field_info.tensor_rank != FieldInfo::TensorRank::Scalar)
+          if (variable.field_info.tensor_rank != TensorRank::Scalar)
             {
               bc_text += ", " + axis_labels[i] + " component";
             }
@@ -253,8 +253,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
       parameter_handler.enter_subsection(pinning_text);
 
       const std::string value_key =
-        (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar) ? "value"
-                                                                           : "x value";
+        (variable.field_info.tensor_rank == TensorRank::Scalar) ? "value" : "x value";
 
       // Skip if the value is the default INT_MAX
       if (parameter_handler.get_double(value_key) == INT_MAX)
@@ -270,7 +269,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
           point[i] = parameter_handler.get_double(axis_labels[i]);
         }
 
-      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Scalar)
+      if (variable.field_info.tensor_rank == TensorRank::Scalar)
         {
           boundary_parameters.set_pinned_point(parameter_handler.get_double("value"),
                                                point,

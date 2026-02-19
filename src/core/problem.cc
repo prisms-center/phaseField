@@ -260,17 +260,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       grid_refiner.do_adaptive_refinement(solvers);
       Timer::end_section("Grid refinement");
       ConditionalOStreams::pout_base() << "\n" << std::flush;
-
-      // Update the ghosts
-      Timer::start_section("Update ghosts");
-      for (auto &solver : solvers)
-        {
-          solver->update_ghosts();
-        }
-      Timer::end_section("Update ghosts");
-
-      // Recalculate InvM
-      solve_context.get_invm_manager().compute_invm();
     }
 
   // Update the time-dependent constraints
@@ -311,7 +300,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 
           const auto tensor_rank = field_attributes[index].field_type;
 
-          if (tensor_rank == FieldInfo::TensorRank::Vector)
+          if (tensor_rank == TensorRank::Vector)
             {
               ConditionalOStreams::pout_base()
                 << Integrator<dim, degree, number>::template integrate<1>(
@@ -319,7 +308,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
                      solution)
                 << "\n";
             }
-          else if (tensor_rank == FieldInfo::TensorRank::Scalar)
+          else if (tensor_rank == TensorRank::Scalar)
             {
               ConditionalOStreams::pout_base()
                 << Integrator<dim, degree, number>::template integrate<0>(

@@ -81,12 +81,12 @@ public:
    * @param relative_level The relative level to get the invm for.
    */
   const SolutionVector &
-  get_invm(FieldInfo::TensorRank rank, unsigned int relative_level) const
+  get_invm(TensorRank rank, unsigned int relative_level) const
   {
-    Assert((rank == FieldInfo::TensorRank::Scalar && calculate_scalar) ||
-             (rank == FieldInfo::TensorRank::Vector && calculate_vector),
+    Assert((rank == TensorRank::Scalar && calculate_scalar) ||
+             (rank == TensorRank::Vector && calculate_vector),
            dealii::ExcInternalError("Requested invm that was not calculated"));
-    if (rank == FieldInfo::TensorRank::Scalar)
+    if (rank == TensorRank::Scalar)
       {
         return invm_scalar[relative_level];
       }

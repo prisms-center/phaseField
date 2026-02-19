@@ -252,9 +252,9 @@ public:
     return std::any_of(periodicity.begin(),
                        periodicity.end(),
                        [](const bool val)
-                       {
-                         return val;
-                       });
+                         {
+                           return val;
+                         });
   }
 
   /**
@@ -310,7 +310,7 @@ BoundaryParameters<dim>::postprocess_and_validate(
     {
       // Ensure that boundary conditions are specified for all variables and their
       // components
-      if (variable.field_info.tensor_rank == FieldInfo::TensorRank::Vector)
+      if (variable.field_info.tensor_rank == TensorRank::Vector)
         {
           for (unsigned int i = 0; i < dim; i++)
             {
@@ -506,19 +506,19 @@ BoundaryParameters<dim>::print_parameter_summary() const
       // Handle variant value printing
       std::visit(
         [&](const auto &value)
-        {
-          if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
-            {
-              ConditionalOStreams::pout_summary() << value;
-            }
-          else
-            {
-              for (unsigned int i = 0; i < value.size(); ++i)
-                {
-                  ConditionalOStreams::pout_summary() << value[i] << " ";
-                }
-            }
-        },
+          {
+            if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
+              {
+                ConditionalOStreams::pout_summary() << value;
+              }
+            else
+              {
+                for (unsigned int i = 0; i < value.size(); ++i)
+                  {
+                    ConditionalOStreams::pout_summary() << value[i] << " ";
+                  }
+              }
+          },
         point_value_pair.first);
 
       ConditionalOStreams::pout_summary()
@@ -638,14 +638,14 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
       // Validate that vector values have the correct size
       std::visit(
         [&](const auto &value)
-        {
-          if constexpr (std::is_same_v<std::decay_t<decltype(value)>,
-                                       std::vector<double>>)
-            {
-              AssertThrow(value.size() == dim,
-                          dealii::ExcMessage("Vector value size must match dimension"));
-            }
-        },
+          {
+            if constexpr (std::is_same_v<std::decay_t<decltype(value)>,
+                                         std::vector<double>>)
+              {
+                AssertThrow(value.size() == dim,
+                            dealii::ExcMessage("Vector value size must match dimension"));
+              }
+          },
         point_value_pair.first);
     }
 

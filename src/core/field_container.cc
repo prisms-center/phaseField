@@ -35,14 +35,14 @@ FieldContainer<dim, degree, number>::FieldContainer(
     {
       const auto mf_id_pair =
         solution_indexer->get_solution_level_and_block_index(field_index, relative_level);
-      if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
+      if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
           feeval_deps_scalar[field_index] = FEEValuationDeps<ScalarFEEvaluation>(
             dependency,
             mf_id_pair,
             solve_group->id == solution_indexer->get_solve_group(field_index).id);
         }
-      else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
+      else if (field_attributes[field_index].field_type == TensorRank::Vector)
         {
           feeval_deps_vector[field_index] = FEEValuationDeps<VectorFEEvaluation>(
             dependency,

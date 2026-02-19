@@ -18,7 +18,6 @@
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/config.h>
 
@@ -42,7 +41,6 @@ template <unsigned int dim, unsigned int degree, typename number>
 class FieldContainer
 {
 public:
-  using TensorRank = FieldInfo::TensorRank;
   /**
    * @brief Typedef for the basic vector that apply our operations to.
    */
