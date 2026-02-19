@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/vectorization.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/lac/affine_constraints.h>
@@ -29,6 +30,12 @@ public:
   using ScalarValue    = dealii::VectorizedArray<number>;
   using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
 
+  /**
+   * @brief Constructor.
+   * @param dof_manager The DoF manager to get the triangulation and DoF handlers from.
+   * @param _calculate_scalar Whether to calculate the scalar invm (element volume).
+   * @param _calculate_vector Whether to calculate the vector invm (for vector fields).
+   */
   explicit InvMManager(const DofManager<dim> &dof_manager,
                        bool                   _calculate_scalar,
                        bool                   _calculate_vector)
@@ -51,87 +58,12 @@ public:
   }
 
   /**
-   * @brief Initialize.
+   * @brief Recompute the invm vectors.
    */
-  void
-  initialize(unsigned int num_levels)
-  {
-    data.resize(num_levels);
-    for (unsigned int i = 0; i < data.size(); ++i)
-      {
-        if (calculate_scalar)
-          {
-            data[i][0].initialize_dof_vector(jxw_scalar);
-            data[i][0].initialize_dof_vector(invm_scalar);
-          }
-        if (calculate_vector)
-          {
-            data[i][1].initialize_dof_vector(jxw_vector);
-            data[i][1].initialize_dof_vector(invm_vector);
-          }
-      }
-  }
-
-  /**
-   * @brief Compute element volume for the triangulation
-   */
-  void
-  compute_scalar_invm()
-  {
-    data->cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar, 0);
-    invert(invm_scalar, jxw_scalar);
-  }
-
-  void
-  compute_vector_invm()
-  {
-    data->cell_loop(&InvMManager::compute_local_vector, this, jxw_vector, 0);
-    invert(invm_vector, jxw_vector);
-  }
-
-  void
-  compute_local_scalar(const MatrixFree                            &_data,
-                       SolutionVector                              &dst,
-                       [[maybe_unused]] const int                  &src,
-                       const std::pair<unsigned int, unsigned int> &cell_range) const
-  {
-    dealii::FEEvaluation<dim, degree, degree + 1, 1, number, ScalarValue> fe_eval(_data);
-    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
-      {
-        fe_eval.reinit(cell);
-        fe_eval->first.evaluate(dealii::update_JxW_values);
-        for (unsigned int quad = 0; quad < SystemWide<dim, degree>::quadrature.size();
-             ++quad)
-          {
-            fe_eval.submit_value(fe_eval.JxW(quad));
-          }
-        fe_eval.integrate_scatter(dealii::EvaluationFlags::values, dst);
-      }
-  }
-
-  void
-  compute_local_vector(const MatrixFree                            &_data,
-                       SolutionVector                              &dst,
-                       [[maybe_unused]] const int                  &src,
-                       const std::pair<unsigned int, unsigned int> &cell_range) const
-  {
-    dealii::FEEvaluation<dim, degree, degree + 1, 1, number, VectorValue> fe_eval(_data);
-    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
-      {
-        fe_eval.reinit(cell);
-        fe_eval->first.evaluate(dealii::update_JxW_values);
-        for (unsigned int quad = 0; quad < SystemWide<dim, degree>::quadrature.size();
-             ++quad)
-          {
-            fe_eval.submit_value(fe_eval.JxW(quad) * one);
-          }
-        fe_eval.integrate_scatter(dealii::EvaluationFlags::values, dst);
-      }
-  }
-
   void
   compute_invm()
   {
+    initialize();
     if (calculate_scalar)
       {
         compute_scalar_invm();
@@ -142,6 +74,12 @@ public:
       }
   }
 
+  /**
+   * @brief Get the invm vector for a given rank and level.
+   *
+   * @param rank The tensor rank of the field (scalar or vector).
+   * @param relative_level The relative level to get the invm for.
+   */
   const SolutionVector &
   get_invm(FieldInfo::TensorRank rank, unsigned int relative_level) const
   {
@@ -159,6 +97,88 @@ public:
   }
 
 private:
+  /**
+   * @brief Initialize.
+   */
+  void
+  initialize()
+  {
+    for (unsigned int i = 0; i < data.size(); ++i)
+      {
+        if (calculate_scalar)
+          {
+            jxw_scalar[i].reinit(data[i][0].get_vector_partitioner());
+            invm_scalar[i].reinit(data[i][0].get_vector_partitioner());
+          }
+        if (calculate_vector)
+          {
+            jxw_vector[i].reinit(data[i][1].get_vector_partitioner());
+            invm_vector[i].reinit(data[i][1].get_vector_partitioner());
+          }
+      }
+  }
+
+  /**
+   * @brief Compute element volume for the triangulation
+   */
+  void
+  compute_scalar_invm()
+  {
+    for (unsigned int i = 0; i < data.size(); ++i)
+      {
+        data[i][0].cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar[i], 0);
+        invert(invm_scalar[i], jxw_scalar[i]);
+      }
+  }
+
+  void
+  compute_vector_invm()
+  {
+    for (unsigned int i = 0; i < data.size(); ++i)
+      {
+        data[i][1].cell_loop(&InvMManager::compute_local_vector, this, jxw_vector[i], 0);
+        invert(invm_vector[i], jxw_vector[i]);
+      }
+  }
+
+  void
+  compute_local_scalar(const MatrixFree                            &_data,
+                       SolutionVector                              &dst,
+                       [[maybe_unused]] const int                  &src,
+                       const std::pair<unsigned int, unsigned int> &cell_range) const
+  {
+    dealii::FEEvaluation<dim, degree, degree + 1, 1, number, ScalarValue> fe_eval(_data);
+    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+      {
+        fe_eval.reinit(cell);
+        for (unsigned int quad = 0; quad < SystemWide<dim, degree>::quadrature.size();
+             ++quad)
+          {
+            fe_eval.submit_value(dealii::make_vectorized_array<number>(1.0), quad);
+          }
+        fe_eval.integrate_scatter(dealii::EvaluationFlags::values, dst);
+      }
+  }
+
+  void
+  compute_local_vector(const MatrixFree                            &_data,
+                       SolutionVector                              &dst,
+                       [[maybe_unused]] const int                  &src,
+                       const std::pair<unsigned int, unsigned int> &cell_range) const
+  {
+    dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(_data);
+    for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+      {
+        fe_eval.reinit(cell);
+        for (unsigned int quad = 0; quad < SystemWide<dim, degree>::quadrature.size();
+             ++quad)
+          {
+            fe_eval.submit_value(one, quad);
+          }
+        fe_eval.integrate_scatter(dealii::EvaluationFlags::values, dst);
+      }
+  }
+
   void
   invert(SolutionVector &dst, const SolutionVector &src) const
   {
@@ -186,14 +206,14 @@ private:
   std::vector<SolutionVector> invm_vector;
 
   inline static const VectorValue one = []()
-  {
-    VectorValue one1;
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        one1[i] = 1.0;
-      }
-    return one1;
-  }();
+    {
+      VectorValue one1;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          one1[i] = 1.0;
+        }
+      return one1;
+    }();
 };
 
 PRISMS_PF_END_NAMESPACE

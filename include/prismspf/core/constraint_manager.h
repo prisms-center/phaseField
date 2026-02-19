@@ -38,8 +38,6 @@ class PDEOperatorBase;
     AffineConstraints<number> &constraints,
     const ComponentMask       &component_mask = {}); */
 
-// TODO (fractalsbyx): This class seems to parallel DofManager quite a bit. Consider
-// merging them?
 /**
  * @brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.
