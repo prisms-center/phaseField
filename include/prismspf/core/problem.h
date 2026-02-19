@@ -12,7 +12,6 @@
 #include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include <prismspf/solvers/solve_context.h>
-#include <prismspf/solvers/solvers.h>
 
 #include <prismspf/utilities/integrator.h>
 
