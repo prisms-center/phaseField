@@ -6,7 +6,6 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/field_container.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/initial_conditions.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/pde_operator.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/problem.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/phase_field_tools.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_indexer.cc
@@ -21,7 +20,6 @@ set(_inst
     field_container.inst.in
     initial_conditions.inst.in
     nonuniform_dirichlet.inst.in
-    pde_operator.inst.in
     problem.inst.in
     phase_field_tools.inst.in
     solution_indexer.inst.in

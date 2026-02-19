@@ -4,10 +4,12 @@
 #pragma once
 
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/grid_refiner.h>
 #include <prismspf/core/refinement_manager.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/types.h>
+
+#include <prismspf/nucleation/nucleation_manager.h>
+#include <prismspf/nucleation/nucleus_refinement_function.h>
 
 #include <prismspf/solvers/solve_context.h>
 #include <prismspf/solvers/solvers.h>
@@ -15,8 +17,6 @@
 #include <prismspf/utilities/integrator.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleation_manager.h>
-#include <prismspf/nucleation/nucleus_refinement_function.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 

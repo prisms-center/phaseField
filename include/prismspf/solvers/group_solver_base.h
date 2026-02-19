@@ -8,7 +8,6 @@
 
 #include <boost/geometry/core/cs.hpp>
 
-#include <prismspf/core/constraint_handler.h> //
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/pde_operator_base.h>
@@ -17,9 +16,9 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/solvers/solve_context.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -199,15 +198,14 @@ public:
           }
         else
           {
-            // TODO
-            // dealii::VectorTools::interpolate(
-            //   SystemWide<dim, degree>::mapping,
-            //   solve_context->get_dof_manager().get_dof_handler(global_index),
-            //   InitialCondition<dim, degree, number>(
-            //     global_index,
-            //     solve_context->get_field_attributes()[global_index].field_type,
-            //     solve_context->get_pde_operator()),
-            //   solutions.get_solution_vector(global_index));
+            dealii::VectorTools::interpolate(
+              SystemWide<dim, degree>::mapping,
+              solve_context->get_dof_manager().get_dof_handler(global_index),
+              InitialCondition<dim, degree, number>(
+                global_index,
+                solve_context->get_field_attributes()[global_index].field_type,
+                solve_context->get_pde_operator()),
+              solutions.get_solution_vector(global_index));
           }
         solutions.apply_initial_condition_for_old_fields();
       }

@@ -391,17 +391,16 @@ ConstraintManager<dim, degree, number>::make_nonuniform_dirichlet_constraints(
 {
   if (!is_change_term)
     {
-      // TODO
-      // dealii::VectorTools::interpolate_boundary_values(
-      //   mapping,
-      //   dof_handler,
-      //   boundary_id,
-      //   NonuniformDirichlet<dim, degree, number>(field_index,
-      //                                            boundary_id,
-      //                                            pde_operator,
-      //                                            is_vector_field ? dim : 1),
-      //   _constraints,
-      //   mask);
+      dealii::VectorTools::interpolate_boundary_values(
+        SystemWide<dim, degree>::mapping,
+        dof_handler,
+        boundary_id,
+        NonuniformDirichlet<dim, degree, number>(field_index,
+                                                 boundary_id,
+                                                 *pde_operator,
+                                                 is_vector_field ? dim : 1),
+        _constraints,
+        mask);
     }
   else
     {

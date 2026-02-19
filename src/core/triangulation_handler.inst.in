@@ -1,4 +1,0 @@
-for ( dimension : SPACE_DIMENSIONS)
-  {
-    template class TriangulationHandler<dimension>;
-  }
