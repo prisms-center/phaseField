@@ -52,39 +52,30 @@ MFOperator<dim, degree, number>::compute_local_operator(
   // The reason this is constructed here, rather than as a private member is because
   // compute_local_rhs is called by cell_loop, which multithreads. There would be data
   // races.
-  FieldContainer<dim, degree, number> variable_list(1 /*args*/);
-  DSTContainer<dim, degree, number>   dst_fields(solve_group.field_indices,
-                                               field_attributes,
-                                               *data,
-                                               field_to_block_index);
+  FieldContainer<dim, degree, number> variable_list(field_attributes,
+                                                    *solution_indexer,
+                                                    relative_level,
+                                                    dependency_map,
+                                                    solve_group,
+                                                    _data);
 
   // Initialize, evaluate, and submit based on user function.
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
-      // Grab the element volume
-      // const ScalarValue element_volume =
-      // element_volume_handler->get_element_volume(cell);
-
       // Initialize, read DOFs, and set evaulation flags for each variable
-      variable_list.reinit_and_eval(cell);
-      dst_fields.reinit(cell);
+      variable_list.reinit_and_eval(cell, &src);
 
       // Evaluate the user-defined pde at each quadrature point
       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
         {
           variable_list.set_q_point(quad);
-          dst_fields.set_q_point(quad);
           // Evaluate the function pointer (the user-defined pde)
-          pde_operator->*pde_op(variable_list, dst_fields);
+          (pde_operator->*pde_op)(variable_list, solve_group.id);
         }
 
       // Integrate and add to global vector dst
-      for (unsigned int field_index : solve_group.field_indices)
-        {
-          dst_fields.integrate_and_distribute(field_index,
-                                              dst.block(
-                                                field_to_block_index[field_index]));
-        }
+
+      variable_list.integrate_and_distribute(&dst);
     }
 }
 
@@ -255,15 +246,6 @@ MFOperator<dim, degree, number>::clear()
   data = nullptr;
   diagonal_entries.reset();
   inverse_diagonal_entries.reset();
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-MFOperator<dim, degree, number>::initialize_dof_vector(
-  SolutionVector &dst,
-  unsigned int    dof_handler_index) const
-{
-  data->initialize_dof_vector(dst, dof_handler_index);
 }
 
 // template <unsigned int dim, unsigned int degree, typename number>

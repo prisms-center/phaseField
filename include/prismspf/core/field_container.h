@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -176,6 +177,12 @@ public:
    */
   void
   integrate();
+
+  /**
+   * @brief Distribute the integrated residuals.
+   */
+  void
+  distribute(BlockVector *dst_solutions);
 
   /**
    * @brief Integrate the residuals and distribute from local to global.
@@ -418,7 +425,8 @@ private:
   template <typename FEEvaluationType>
   struct FEEValuationDeps
   {
-    using FEEDepPairPtr = std::unique_ptr<std::pair<FEEvaluationType, EvalFlags>>;
+    using FEEDepPair    = std::pair<FEEvaluationType, EvalFlags>;
+    using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
     FEEDepPairPtr                                            fe_eval;
     FEEDepPairPtr                                            fe_eval_src_dst;
     std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
@@ -431,31 +439,38 @@ private:
     const SolutionLevel<dim, number> *solution_level = nullptr;
     unsigned int                      block_index    = -1;
 
+    FEEValuationDeps() = default;
+
     FEEValuationDeps(
-      const Dependencies::Dependency                             &dependency,
-      std::pair<const SolutionLevel<dim, number> *, unsigned int> mf_id_pair,
-      bool                                                        is_dst)
+      const Dependencies::Dependency                                    &dependency,
+      const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
+      bool                                                               is_dst)
       : solution_level(mf_id_pair.first)
       , block_index(mf_id_pair.second)
     {
       if (dependency.flag)
         {
           fe_eval =
-            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
+            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                          block_index),
+                                         dependency.flag);
         }
       for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
         {
           if (dependency.old_flags.at(age))
             {
               fe_eval_old[age] =
-                std::make_unique<FEEvaluationType>(solution_level->matrix_free,
-                                                   block_index);
+                std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                              block_index),
+                                             dependency.old_flags.at(age));
             }
         }
       if (dependency.change_flag || is_dst)
         {
           fe_eval_src_dst =
-            std::make_unique<FEEvaluationType>(solution_level->matrix_free, block_index);
+            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                          block_index),
+                                         dependency.change_flag);
         }
     }
 
@@ -563,12 +578,22 @@ private:
     }
 
     void
-    integrate_and_distribute(BlockVector &dst_solutions)
+    integrate_and_distribute(BlockVector *dst_solutions)
     {
       if (fe_eval_src_dst)
         {
           fe_eval_src_dst->first.integrate_scatter(integration_flags,
-                                                   dst_solutions.block(block_index));
+                                                   dst_solutions->block(block_index));
+        }
+    }
+
+    void
+    distribute(BlockVector *dst_solutions)
+    {
+      if (fe_eval_src_dst)
+        {
+          fe_eval_src_dst->first.distribute_local_to_global(
+            dst_solutions->block(block_index));
         }
     }
   };

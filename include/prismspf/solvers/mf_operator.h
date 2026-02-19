@@ -78,13 +78,13 @@ public:
     else
       {
         static Value<Rank> ident = []()
-        {
-          Value<Rank> obj;
-          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-            {
-              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-            }
-        }();
+          {
+            Value<Rank> obj;
+            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+              {
+                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+              }
+          }();
         return ident;
       }
   }
@@ -201,13 +201,6 @@ public:
    */
   void
   clear();
-
-  /**
-   * @brief Initialize a given vector with the MatrixFree object that this object
-   * contains.
-   */
-  void
-  initialize_dof_vector(SolutionVector &dst, unsigned int dof_handler_index = 0) const;
 
   /**
    * @brief Set constrained entries to one.

@@ -37,17 +37,17 @@ FieldContainer<dim, degree, number>::FieldContainer(
         solution_indexer->get_solution_level_and_block_index(field_index, relative_level);
       if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Scalar)
         {
-          feeval_deps_scalar[field_index] = {
+          feeval_deps_scalar[field_index] = FEEValuationDeps<ScalarFEEvaluation>(
             dependency,
             mf_id_pair,
-            solve_group->id == solution_indexer->get_solve_group(field_index).id};
+            solve_group->id == solution_indexer->get_solve_group(field_index).id);
         }
       else if (field_attributes[field_index].field_type == FieldInfo::TensorRank::Vector)
         {
-          feeval_deps_vector[field_index] = {
+          feeval_deps_vector[field_index] = FEEValuationDeps<VectorFEEvaluation>(
             dependency,
             mf_id_pair,
-            solve_group->id == solution_indexer->get_solve_group(field_index).id};
+            solve_group->id == solution_indexer->get_solve_group(field_index).id);
         }
       // else Assert unreachable
     }
@@ -58,11 +58,11 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::reinit(unsigned int cell)
 {
-  for (const auto &fe_eval : feeval_deps_scalar)
+  for (auto &fe_eval : feeval_deps_scalar)
     {
       fe_eval.reinit(cell);
     }
-  for (const auto &fe_eval : feeval_deps_vector)
+  for (auto &fe_eval : feeval_deps_vector)
     {
       fe_eval.reinit(cell);
     }
@@ -74,11 +74,11 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::eval(const BlockVector *src_solutions)
 {
-  for (const auto &fe_eval : feeval_deps_scalar)
+  for (auto &fe_eval : feeval_deps_scalar)
     {
       fe_eval.eval(src_solutions);
     }
-  for (const auto &fe_eval : feeval_deps_vector)
+  for (auto &fe_eval : feeval_deps_vector)
     {
       fe_eval.eval(src_solutions);
     }
@@ -89,11 +89,11 @@ void
 FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int       cell,
                                                      const BlockVector *src_solutions)
 {
-  for (const auto &fe_eval : feeval_deps_scalar)
+  for (auto &fe_eval : feeval_deps_scalar)
     {
       fe_eval.reinit_and_eval(cell, src_solutions);
     }
-  for (const auto &fe_eval : feeval_deps_vector)
+  for (auto &fe_eval : feeval_deps_vector)
     {
       fe_eval.reinit_and_eval(cell, src_solutions);
     }
@@ -110,11 +110,29 @@ FieldContainer<dim, degree, number>::integrate()
     {
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          feeval_deps_scalar[field_index]->integrate();
+          feeval_deps_scalar[field_index].integrate();
         }
       else /* vector */
         {
-          feeval_deps_vector[field_index]->integrate();
+          feeval_deps_vector[field_index].integrate();
+        }
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+FieldContainer<dim, degree, number>::distribute(BlockVector *dst_solutions)
+{
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
+  for (const Types::Index &field_index : solve_group->field_indices)
+    {
+      if (field_attributes[field_index].field_type == TensorRank::Scalar)
+        {
+          feeval_deps_scalar[field_index].distribute(dst_solutions);
+        }
+      else /* vector */
+        {
+          feeval_deps_vector[field_index].distribute(dst_solutions);
         }
     }
 }
@@ -128,11 +146,11 @@ FieldContainer<dim, degree, number>::integrate_and_distribute(BlockVector *dst_s
     {
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
-          feeval_deps_scalar[field_index]->integrate_and_distribute(dst_solutions);
+          feeval_deps_scalar[field_index].integrate_and_distribute(dst_solutions);
         }
       else /* vector */
         {
-          feeval_deps_vector[field_index]->integrate_and_distribute(dst_solutions);
+          feeval_deps_vector[field_index].integrate_and_distribute(dst_solutions);
         }
     }
 }
