@@ -11,6 +11,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief Timer class for PRISMS-PF
+ *
+ * This class keeps track of nested timing sections so we can print a structured summary
+ * at the end of the simulation.
+ *
+ * Fortunately, `Caliper` handles this nicely (and more!) or us. `deal.II` doesn't do this
+ * so we have to keep track of a few additional objects. The logical way to represent this
+ * is with a tree node structure.
  */
 class Timer
 {
