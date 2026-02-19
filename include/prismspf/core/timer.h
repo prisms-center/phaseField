@@ -11,6 +11,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief Timer class for PRISMS-PF
+ *
+ * This class keeps track of nested timing sections so we can print a structured summary
+ * at the end of the simulation.
+ *
+ * Fortunately, `Caliper` handles this nicely (and more!) or us. `deal.II` doesn't do this
+ * so we have to keep track of a few additional objects. The logical way to represent this
+ * is with a tree node structure.
  */
 class Timer
 {
@@ -18,7 +25,65 @@ public:
   /**
    * @brief Constructor.
    */
-  Timer();
+  Timer() = default;
+
+  /**
+   * @brief Destructor.
+   *
+   * Calls `print_summary` upon destruction.
+   */
+  ~Timer();
+
+  Timer(const Timer &) = delete;
+  Timer &
+  operator=(const Timer &) = delete;
+  Timer(Timer &&)          = delete;
+  Timer &
+  operator=(Timer &&) = delete;
+
+  /**
+   * @brief Timer scope guard.
+   *
+   * This allows you to use the timer like the following
+   * @code
+   * void f()
+   * {
+   *  Timer::Scope outer("outer");
+   *
+   *  {
+   *    Timer::Scope inner("inner");
+   *    // Work goes here
+   *  } // Inner scope ends here
+   *
+   * // Work goes here
+   * } // Outer scope ends here
+   * @endcode
+   *
+   */
+  struct Scope
+  {
+  public:
+    explicit Scope(const char *name)
+      : name(name)
+    {
+      Timer::start_section(name);
+    }
+
+    ~Scope()
+    {
+      Timer::end_section(name);
+    }
+
+    Scope(const Scope &) = delete;
+    Scope &
+    operator=(const Scope &) = delete;
+    Scope(Scope &&)          = delete;
+    Scope &
+    operator=(Scope &&) = delete;
+
+  private:
+    const char *name;
+  };
 
   /**
    * @brief Start a new timer section.

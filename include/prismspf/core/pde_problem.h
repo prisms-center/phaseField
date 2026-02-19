@@ -9,6 +9,7 @@
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/mapping_q1.h>
 
+#include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 #include <prismspf/core/vector_mapping.h>
 
@@ -112,6 +113,11 @@ private:
    */
   void
   reinit_system();
+
+  /**
+   * @brief Timer instance for the class.
+   */
+  Timer::Scope timer_scope;
 
   /**
    * @brief User-inputs.
