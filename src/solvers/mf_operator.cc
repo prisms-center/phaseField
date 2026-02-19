@@ -8,14 +8,13 @@
 #include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
-#include <prismspf/core/dst_container.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/group_solution_handler.h>
 
-#include <prismspf/user_inputs/user_input_parameters.h>
-
 #include <prismspf/solvers/mf_operator.h>
+
+#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/utilities/element_volume.h>
 
