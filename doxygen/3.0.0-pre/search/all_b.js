@@ -12,7 +12,7 @@ var searchData=
   ['n_5fspace_5fcoordinates_9',['n_space_coordinates',['../classReadUnstructuredVTK.html#ac57fc1dec7be986bfe5f8676f7bf0815',1,'ReadUnstructuredVTK']]],
   ['n_5fvalues_10',['n_values',['../classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8',1,'ReadBinary']]],
   ['n_5fvectors_11',['n_vectors',['../classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5',1,'ReadUnstructuredVTK']]],
-  ['name_12',['name',['../structVariableAttributes.html#ae2e6d22f263eef45abf980a990672af1',1,'VariableAttributes']]],
+  ['name_12',['name',['../structTimer_1_1Scope.html#a12869177bcdd56be2a412fde224e5337',1,'Timer::Scope::name'],['../structVariableAttributes.html#ae2e6d22f263eef45abf980a990672af1',1,'VariableAttributes::name']]],
   ['natural_13',['Natural',['../structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1a820812422effafc6d44fc3c364fa1a9b',1,'BoundaryCondition']]],
   ['neumann_14',['Neumann',['../structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1adea0abf8ce060fb94e596b1d23ef40e2',1,'BoundaryCondition']]],
   ['new_15',['New',['../structFieldInfo.html#aba207d6d68037aae3c2696d13ef03dcaa03c2e7e41ffc181a4e84080b4710e81e',1,'FieldInfo']]],

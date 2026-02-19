@@ -21,6 +21,7 @@ var classPDEProblem =
     [ "solution_handler", "classPDEProblem.html#a0d8305c01f9229c44d0669c7b91b2118", null ],
     [ "solver_context", "classPDEProblem.html#a9d7826fdbd81e02413ca599f10675b7d", null ],
     [ "solver_handler", "classPDEProblem.html#a2dbf5013b7d8d788867226e7907c7dc9", null ],
+    [ "timer_scope", "classPDEProblem.html#a7861fe4fea4257beca83aeda2f52f7d2", null ],
     [ "triangulation_handler", "classPDEProblem.html#a1d047857ce7ef964c74fda54d4421ade", null ],
     [ "user_inputs", "classPDEProblem.html#a2544df8c2bc21b77765a0a1b316a20fa", null ]
 ];

@@ -14,7 +14,7 @@ var dir_aebb8dcc11953d78e620bbef0b9e2183 =
     [ "solution_handler.cc", "solution__handler_8cc.html", null ],
     [ "solution_output.cc", "solution__output_8cc.html", null ],
     [ "solver_handler.cc", "solver__handler_8cc.html", null ],
-    [ "timer.cc", "timer_8cc.html", null ],
+    [ "timer.cc", "timer_8cc.html", "timer_8cc" ],
     [ "triangulation_handler.cc", "triangulation__handler_8cc.html", null ],
     [ "variable_attribute_loader.cc", "variable__attribute__loader_8cc.html", null ],
     [ "variable_attributes.cc", "variable__attributes_8cc.html", null ],

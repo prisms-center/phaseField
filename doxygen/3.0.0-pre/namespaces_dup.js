@@ -22,9 +22,7 @@ var namespaces_dup =
       [ "max_saved_solutions", "namespaceNumbers.html#aad9796e3a0ba79044c53b630e38cf907", null ],
       [ "max_subsections", "namespaceNumbers.html#a7fd0f4fb864f0d5d700ac403660f3054", null ]
     ] ],
-    [ "PRISMS_PF_BEGIN_NAMESPACE", "namespacePRISMS__PF__BEGIN__NAMESPACE.html", [
-      [ "get_summary_log_file", "namespacePRISMS__PF__BEGIN__NAMESPACE.html#a98086cf878f2f16ac184d1513ab16ef4", null ]
-    ] ],
+    [ "PRISMS_PF_BEGIN_NAMESPACE", "namespacePRISMS__PF__BEGIN__NAMESPACE.html", "namespacePRISMS__PF__BEGIN__NAMESPACE" ],
     [ "Types", "namespaceTypes.html", [
       [ "Index", "namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7", null ]
     ] ]

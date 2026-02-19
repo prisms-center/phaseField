@@ -3,6 +3,9 @@ var annotated_dup =
     [ "GridRefinement", "namespaceGridRefinement.html", [
       [ "RefinementCriterion", "classGridRefinement_1_1RefinementCriterion.html", "classGridRefinement_1_1RefinementCriterion" ]
     ] ],
+    [ "PRISMS_PF_BEGIN_NAMESPACE", "namespacePRISMS__PF__BEGIN__NAMESPACE.html", [
+      [ "TimerStack", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack" ]
+    ] ],
     [ "BoundaryCondition", "structBoundaryCondition.html", "structBoundaryCondition" ],
     [ "BoundaryParameters", "structBoundaryParameters.html", "structBoundaryParameters" ],
     [ "CellMarkerBase", "classCellMarkerBase.html", "classCellMarkerBase" ],

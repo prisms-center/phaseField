@@ -12,10 +12,11 @@ var searchData=
   ['dependency_5fset_5flhs_9',['dependency_set_lhs',['../structVariableAttributes.html#afa0d0597db5b9abf8a53e2af4ef91e09',1,'VariableAttributes']]],
   ['dependency_5fset_5frhs_10',['dependency_set_rhs',['../structVariableAttributes.html#a14be1dbb38ca28f76bc6c692442eeed9',1,'VariableAttributes']]],
   ['dependency_5ftype_5fflags_11',['dependency_type_flags',['../structFieldInfo.html#aa84782f47b95c146ae3fd356b5b73785',1,'FieldInfo']]],
-  ['diagonal_12',['diagonal',['../classVariableContainer.html#a254a09fd3e97869e7865b1d1ef785a65',1,'VariableContainer']]],
-  ['diagonal_5fentries_13',['diagonal_entries',['../classMatrixFreeOperator.html#a573df491287fc3b35a7e8dfb41e9d8c2',1,'MatrixFreeOperator']]],
-  ['dirichlet_5fvalue_5fmap_14',['dirichlet_value_map',['../structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58',1,'BoundaryCondition']]],
-  ['dof_5fhandler_15',['dof_handler',['../classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615',1,'GridRefinementContext::dof_handler'],['../classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d',1,'PDEProblem::dof_handler'],['../classSolverContext.html#a1233b08ab0adba0e3b0502c460a8f20c',1,'SolverContext::dof_handler']]],
-  ['dof_5fhandlers_16',['dof_handlers',['../classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb',1,'DofHandler']]],
-  ['dt_17',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
+  ['depth_12',['depth',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta']]],
+  ['diagonal_13',['diagonal',['../classVariableContainer.html#a254a09fd3e97869e7865b1d1ef785a65',1,'VariableContainer']]],
+  ['diagonal_5fentries_14',['diagonal_entries',['../classMatrixFreeOperator.html#a573df491287fc3b35a7e8dfb41e9d8c2',1,'MatrixFreeOperator']]],
+  ['dirichlet_5fvalue_5fmap_15',['dirichlet_value_map',['../structBoundaryCondition.html#a0f1cbcf1871ec96a576315f16fdccd58',1,'BoundaryCondition']]],
+  ['dof_5fhandler_16',['dof_handler',['../classGridRefinementContext.html#ae3b3600e322172ec8227f0eef7c26615',1,'GridRefinementContext::dof_handler'],['../classPDEProblem.html#a6dd36bc65d93e4ed72939df79549793d',1,'PDEProblem::dof_handler'],['../classSolverContext.html#a1233b08ab0adba0e3b0502c460a8f20c',1,'SolverContext::dof_handler']]],
+  ['dof_5fhandlers_17',['dof_handlers',['../classDofHandler.html#a04d910518b6e382f66d0f8271f5ac7cb',1,'DofHandler']]],
+  ['dt_18',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];

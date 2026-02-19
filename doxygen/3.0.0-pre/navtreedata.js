@@ -78,10 +78,11 @@ var NAVTREEINDEX =
 "annotated.html",
 "classGridRefiner.html#af335971dc17df607da4e6b2c857f6674",
 "classPDEProblem.html",
-"classSolverBase.html#aec39ee189618d0d21f362dcea55727d8",
-"concurrent__solver_8h.html",
-"periodic__distance_8h.html#a1f33d121e1aedb6615cd5a2f0de10f04",
-"structOutputParameters.html#a9771dee0609ee12001963d53b58f3373"
+"classSolverBase.html#ae815598882fb5248c6a2c8892ea52231",
+"concurrent__explicit__postprocess__solver_8h.html",
+"pde__operator_8cc.html",
+"structOutputParameters.html#a5fa6cc46a4e5b7f24380ece97dd18316",
+"types_8h.html#ad7531b8494683016a6acb0dd20264ec8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
