@@ -77,18 +77,6 @@ struct RawDependencies
 struct FieldInfo
 {
   /**
-   * @brief Tensor rank of the field.
-   *
-   * Currently, only scalar and vectors are supported.
-   */
-  enum class TensorRank : unsigned int
-  {
-    Undefined = static_cast<unsigned int>(-1),
-    Scalar    = 0,
-    Vector    = 1
-  };
-
-  /**
    * @brief Type of PDE that is being solved.
    */
   enum class PDEType : std::uint8_t
@@ -183,15 +171,15 @@ struct FieldInfo
 };
 
 inline std::string
-to_string(FieldInfo::TensorRank tensor_rank)
+to_string(TensorRank tensor_rank)
 {
   switch (tensor_rank)
     {
-      case FieldInfo::TensorRank::Undefined:
+      case TensorRank::Undefined:
         return "Undefined";
-      case FieldInfo::TensorRank::Scalar:
+      case TensorRank::Scalar:
         return "Scalar";
-      case FieldInfo::TensorRank::Vector:
+      case TensorRank::Vector:
         return "Vector";
       default:
         return "Unknown TensorRank";
@@ -346,7 +334,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the RHS.
    */
-  [[nodiscard]] const std::vector<std::vector<FieldInfo::TensorRank>> &
+  [[nodiscard]] const std::vector<std::vector<TensorRank>> &
   get_dependency_set_rhs() const
   {
     return dependency_set_rhs;
@@ -355,7 +343,7 @@ struct VariableAttributes
   /**
    * @brief Get the dependency set for the LHS.
    */
-  [[nodiscard]] const std::vector<std::vector<FieldInfo::TensorRank>> &
+  [[nodiscard]] const std::vector<std::vector<TensorRank>> &
   get_dependency_set_lhs() const
   {
     return dependency_set_lhs;
@@ -427,11 +415,11 @@ private:
    * @brief Validate a dependency.
    */
   void
-  validate_dependency(const std::string           &variation,
-                      DependencyType               dep_type,
-                      const unsigned int          &other_index,
-                      const FieldInfo::TensorRank &other_field_type,
-                      const std::string           &context) const;
+  validate_dependency(const std::string  &variation,
+                      DependencyType      dep_type,
+                      const unsigned int &other_index,
+                      const TensorRank   &other_field_type,
+                      const std::string  &context) const;
 
   /**
    * @brief Compute the dependency sets from eval_flag_set_rhs &
@@ -581,7 +569,7 @@ private:
    *
    * @remark Internally determined
    */
-  std::vector<std::vector<FieldInfo::TensorRank>> dependency_set_rhs;
+  std::vector<std::vector<TensorRank>> dependency_set_rhs;
 
   /**
    * @brief TODO (Landinjm): Add brief description.
@@ -598,7 +586,7 @@ private:
    *
    * @remark Internally determined
    */
-  std::vector<std::vector<FieldInfo::TensorRank>> dependency_set_lhs;
+  std::vector<std::vector<TensorRank>> dependency_set_lhs;
 
   /**
    * @brief Raw dependencies of the field.

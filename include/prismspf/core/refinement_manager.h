@@ -11,6 +11,7 @@
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/system_wide.h>
+#include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/group_solver_base.h>
@@ -45,11 +46,11 @@ public:
                                    .get_refinement_criteria())
       {
         // Grab the index and field type
-        const Types::Index          index = criterion.get_index();
-        const FieldInfo::TensorRank rank  = solve_context.get_user_inputs()
-                                             .get_variable_attributes()
-                                             .at(index)
-                                             .field_info.tensor_rank;
+        const Types::Index index = criterion.get_index();
+        const TensorRank   rank  = solve_context.get_user_inputs()
+                                  .get_variable_attributes()
+                                  .at(index)
+                                  .field_info.tensor_rank;
 
         if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
           {
@@ -115,7 +116,7 @@ public:
         return;
       }
 
-    // Step 1
+    // Mark cells and refine until no more cells are marked
     mark_cells_for_refinement_and_coarsening();
     bool first_iteration = true;
     while (
@@ -125,14 +126,21 @@ public:
         first_iteration = false;
         refine_grid(solvers);
       }
-    // Step 3
-    // Recompute invm & element volume
+
+    // Update anything affected by the grid change:
+    // Recalculate InvM and reinit the solvers since the grid has changed
     solve_context.get_invm_manager().compute_invm();
-    // Todo: reinit matrix free operators?
     for (auto &solver : solvers)
       {
         solver->reinit();
       }
+    // Update the ghosts
+    Timer::start_section("Update ghosts");
+    for (auto &solver : solvers)
+      {
+        solver->update_ghosts();
+      }
+    Timer::end_section("Update ghosts");
   }
 
   void
@@ -188,7 +196,7 @@ private:
                 const Types::Index index = criterion.get_index();
 
                 // Grab the field type
-                const FieldInfo::TensorRank local_field_type =
+                const TensorRank local_field_type =
                   solve_context.get_field_attributes().at(index).field_type;
 
                 // Grab the DoFHandler iterator
@@ -207,7 +215,7 @@ private:
 
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
                   {
-                    if (local_field_type == FieldInfo::TensorRank::Scalar)
+                    if (local_field_type == TensorRank::Scalar)
                       {
                         // Get the values for a scalar field
                         fe_values.get_function_values(solution_vector, values);
@@ -245,7 +253,7 @@ private:
                   }
                 if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
                   {
-                    if (local_field_type == FieldInfo::TensorRank::Scalar)
+                    if (local_field_type == TensorRank::Scalar)
                       {
                         // Get the magnitude of the gradient for a scalar field
                         // TODO (landinjm): Should be zeroing this out?
