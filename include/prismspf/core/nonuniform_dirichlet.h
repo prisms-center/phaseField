@@ -17,7 +17,7 @@ template <unsigned int dim>
 class UserInputParameters;
 
 template <unsigned int dim, unsigned int degree, typename number>
-class PDEOperator;
+class PDEOperatorBase;
 
 /**
  * @brief Function for user-implemented nonuniform dirichlet boundary condition.
@@ -29,11 +29,10 @@ public:
   /**
    * @brief Constructor.
    */
-  NonuniformDirichlet(
-    unsigned int                                                   _index,
-    unsigned int                                                   _boundary_id,
-    const std::shared_ptr<const PDEOperator<dim, degree, number>> &_pde_operator,
-    unsigned int                                                   spacedim);
+  NonuniformDirichlet(unsigned int                                _index,
+                      unsigned int                                _boundary_id,
+                      const PDEOperatorBase<dim, degree, number> &_pde_operator,
+                      unsigned int                                spacedim);
 
   // NOLINTBEGIN(readability-identifier-length, readability-avoid-const-params-in-decls)
 
@@ -56,7 +55,7 @@ private:
 
   unsigned int boundary_id;
 
-  std::shared_ptr<const PDEOperator<dim, degree, number>> pde_operator;
+  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE
