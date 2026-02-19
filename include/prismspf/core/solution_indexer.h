@@ -97,8 +97,9 @@ public:
   /**
    * @brief Get the matrixfree object of the group a given field index.
    */
-  [[nodiscard]] std::pair<const SolutionLevel<dim, number> &, unsigned int>
-  get_solution_level_and_block_index(unsigned int index, unsigned int relative_level = 0);
+  [[nodiscard]] std::pair<const SolutionLevel<dim, number> *, unsigned int>
+  get_solution_level_and_block_index(unsigned int index,
+                                     unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the block index of a field within its solve group
