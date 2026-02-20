@@ -225,9 +225,9 @@ OutputParameters::postprocess_and_validate(
       output_list.insert(0);
       for (unsigned int output = 1; output <= n_outputs; output++)
         {
-          output_list.insert(static_cast<unsigned int>(std::round(
-            std::pow(static_cast<double>(temporal_discretization.get_total_increments()),
-                     static_cast<double>(output) / static_cast<double>(n_outputs)))));
+          output_list.insert(static_cast<unsigned int>(
+            std::round(std::pow(double(temporal_discretization.get_total_increments()),
+                                double(output) / double(n_outputs)))));
         }
     }
   else if (condition == "N_PER_DECADE")
