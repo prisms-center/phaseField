@@ -4,7 +4,7 @@
 #pragma once
 
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/variable_attributes.h>
+#include <prismspf/core/solve_group.h>
 
 #include <prismspf/config.h>
 
@@ -20,8 +20,7 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(
-    const std::map<unsigned int, VariableAttributes> &var_attributes);
+  postprocess_and_validate(const std::vector<SolveGroup> &solve_groups);
 
   /**
    * @brief Print parameters to summary.log
@@ -142,19 +141,18 @@ private:
 
 inline void
 TemporalDiscretization::postprocess_and_validate(
-  const std::map<unsigned int, VariableAttributes> &var_attributes)
+  const std::vector<SolveGroup> &solve_groups)
 {
   // If all of the variables are `TimeIndependent`, `Auxiliary`, or `Constant` then
   // total_increments should be 0 and final_time should be 0
   bool only_time_independent_pdes = true;
-  for (const auto &[index, variable] : var_attributes)
+  for (const auto &solve_group : solve_groups)
     {
-      if (variable.is_postprocess())
+      if (solve_group.is_postprocess)
         {
           continue;
         }
-      if (variable.get_pde_type() == PDEType::ExplicitTimeDependent ||
-          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
+      if (solve_group.is_time_dependent)
         {
           only_time_independent_pdes = false;
           break;
