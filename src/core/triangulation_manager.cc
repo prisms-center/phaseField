@@ -169,61 +169,28 @@ void
 TriangulationManager<dim>::mark_periodic(const UserInputParameters<dim> &user_inputs)
 {
   // Create a little set of boundary ids we've already marked
-  std::set<unsigned int> periodic_ids;
-
-  // Add periodicity in the triangulation where specified in the boundary conditions. Note
-  // that if one field is periodic all others should be as well.
-  // TODO (fractalsbyx): Enforce above condition systematically
-  for (const auto &[index, boundary_condition] :
-       user_inputs.get_boundary_parameters().get_boundary_condition_list())
+  std::set<unsigned int> periodic_directions;
+  // Create a vector of matched pairs that we fill and enforce upon the
+  // constaints
+  std::vector<dealii::GridTools::PeriodicFacePair<typename Triangulation::cell_iterator>>
+    periodicity_vector;
+  for (unsigned int direction : periodic_directions)
     {
-      for (const auto &[component, condition] : boundary_condition)
-        {
-          for (const auto &[boundary_id, boundary_type] :
-               condition.get_boundary_condition_map())
-            {
-              if (boundary_type == BoundaryCondition::Type::Periodic)
-                {
-                  // Skip boundary ids that are odd since those map to the even faces
-                  if (boundary_id % 2 != 0)
-                    {
-                      continue;
-                    }
+      // Grab the offset vector from one vertex to another
+      dealii::Tensor<1, dim> offset;
+      offset[direction] = user_inputs.get_spatial_discretization().get_size()[direction];
 
-                  // Skip the id if we've already added periodic boundaries to id
-                  if (!periodic_ids.insert(boundary_id).second)
-                    {
-                      continue;
-                    }
-
-                  // Create a vector of matched pairs that we fill and enforce upon the
-                  // constaints
-                  std::vector<dealii::GridTools::PeriodicFacePair<
-                    typename Triangulation::cell_iterator>>
-                    periodicity_vector;
-
-                  // Determine the direction
-                  const auto direction = boundary_id / 2;
-
-                  // Grab the offset vector from one vertex to another
-                  dealii::Tensor<1, dim> offset;
-                  offset[direction] =
-                    user_inputs.get_spatial_discretization().get_size()[direction];
-
-                  // Collect the matched pairs on the coarsest level of the mesh
-                  dealii::GridTools::collect_periodic_faces(triangulation,
-                                                            boundary_id,
-                                                            boundary_id + 1,
-                                                            direction,
-                                                            periodicity_vector,
-                                                            offset);
-
-                  // Set constraints
-                  triangulation.add_periodicity(periodicity_vector);
-                }
-            }
-        }
+      // Collect the matched pairs on the coarsest level of the mesh
+      unsigned int boundary_id = direction * 2;
+      dealii::GridTools::collect_periodic_faces(triangulation,
+                                                boundary_id,
+                                                boundary_id + 1,
+                                                direction,
+                                                periodicity_vector,
+                                                offset);
     }
+  // Set constraints
+  triangulation.add_periodicity(periodicity_vector);
 }
 
 #include "core/triangulation_manager.inst"

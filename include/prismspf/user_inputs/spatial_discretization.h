@@ -84,10 +84,8 @@ public:
    * @brief Mark the periodic faces of the mesh.
    */
   void
-  mark_periodic(
-    [[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
-    [[maybe_unused]] const typename BoundaryParameters<dim>::BoundaryConditionMap
-      &boundary_condition_list)
+  mark_periodic([[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
+                [[maybe_unused]] const std::set<unsigned int>  &periodic_directions)
   {
     AssertThrow(is_generated,
                 dealii::ExcMessage(
@@ -196,7 +194,7 @@ class RectangularMesh : public Mesh<dim>
              ++face_number)
           {
             // Direction for quad and hex cells
-            auto direction = static_cast<unsigned int>(std::floor(face_number / 2));
+            auto direction = face_number / 2;
 
             // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
             if (std::fabs(cell->face(face_number)->center()(direction) - 0) <
@@ -215,56 +213,34 @@ class RectangularMesh : public Mesh<dim>
    */
   void
   mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                const typename BoundaryParameters<dim>::BoundaryConditionMap
-                  &boundary_condition_list) override
+                const std::set<unsigned int> &periodic_directions) override
   {
     // Call base class mark boundaries to check that the mesh has been generated and
     // boundaries marked
-    this->Mesh<dim>::mark_periodic(triangulation, boundary_condition_list);
+    Mesh<dim>::mark_periodic(triangulation, periodic_directions);
 
-    // TODO (landinjm): Add some assertions here
-
-    // Add periodicity in the triangulation where specified in the boundary conditions.
-    // Note
-    // that if one field is periodic all others should be as well.
-    for (const auto &[index, boundary_conditions] : boundary_condition_list)
+    // Create a vector of matched pairs that we fill and enforce upon the
+    // constaints
+    std::vector<dealii::GridTools::PeriodicFacePair<
+      typename Mesh<dim>::Triangulation::cell_iterator>>
+      periodicity_vector;
+    for (unsigned int direction : periodic_directions)
       {
-        for (const auto &[component, condition] : boundary_conditions)
-          {
-            for (const auto &[boundary_id, boundary_type] :
-                 condition.get_boundary_condition_map())
-              {
-                if (boundary_type == BoundaryCondition::Type::Periodic)
-                  {
-                    // Skip boundary ids that are odd since those map to the even faces
-                    if (boundary_id % 2 != 0)
-                      {
-                        continue;
-                      }
+        // Grab the offset vector from one vertex to another
+        dealii::Tensor<1, dim> offset;
+        offset[direction] = get_size()[direction];
 
-                    // Create a vector of matched pairs that we fill and enforce upon the
-                    // constraints
-                    std::vector<dealii::GridTools::PeriodicFacePair<
-                      typename Mesh<dim>::Triangulation::cell_iterator>>
-                      periodicity_vector;
-
-                    // Determine the direction
-                    const auto direction =
-                      static_cast<unsigned int>(std::floor(boundary_id / dim));
-
-                    // Collect the matched pairs on the coarsest level of the mesh
-                    dealii::GridTools::collect_periodic_faces(*triangulation,
-                                                              boundary_id,
-                                                              boundary_id + 1,
-                                                              direction,
-                                                              periodicity_vector);
-
-                    // Set constraints
-                    triangulation->add_periodicity(periodicity_vector);
-                  }
-              }
-          }
+        // Collect the matched pairs on the coarsest level of the mesh
+        unsigned int boundary_id = direction * 2;
+        dealii::GridTools::collect_periodic_faces(triangulation,
+                                                  boundary_id,
+                                                  boundary_id + 1,
+                                                  direction,
+                                                  periodicity_vector,
+                                                  offset);
       }
+    // Set constraints
+    triangulation.add_periodicity(periodicity_vector);
   };
 
   /**
@@ -367,22 +343,18 @@ public:
    */
   void
   mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                const typename BoundaryParameters<dim>::BoundaryConditionMap
-                  &boundary_condition_list) override
+                const std::set<unsigned int> &periodic_directions) override
   {
     // Call base class mark boundaries to check that the mesh has been generated and
     // boundaries marked
-    this->Mesh<dim>::mark_periodic(triangulation, boundary_condition_list);
+    Mesh<dim>::mark_periodic(triangulation, periodic_directions);
 
     // There are no periodic boundaries for a spherical mesh. Check that the user has not
     // specified any.
-    for (const auto &[index, boundary_conditions] : boundary_condition_list)
-      {
-        AssertThrow(boundary_conditions.get_boundary_condition_map().begin()->second !=
-                      BoundaryCondition::Type::Periodic,
-                    dealii::ExcMessage("Spherical meshes cannot have periodic boundary "
-                                       "conditions."));
-      }
+
+    AssertThrow(periodic_directions.empty(),
+                dealii::ExcMessage("Spherical meshes cannot have periodic boundary "
+                                   "conditions."));
   };
 
   /**

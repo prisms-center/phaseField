@@ -46,31 +46,6 @@ UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_fi
   assign_nucleation_parameters(parameter_handler);
   assign_miscellaneous_parameters(parameter_handler);
   load_model_constants(input_file_reader, parameter_handler);
-
-  // Perform and postprocessing of user inputs and run checks
-  spatial_discretization.postprocess_and_validate();
-  temporal_discretization.postprocess_and_validate();
-  linear_solve_parameters.postprocess_and_validate();
-  nonlinear_solve_parameters.postprocess_and_validate();
-  output_parameters.postprocess_and_validate();
-  checkpoint_parameters.postprocess_and_validate();
-  boundary_parameters.postprocess_and_validate();
-  nucleation_parameters.postprocess_and_validate();
-  misc_parameters.postprocess_and_validate();
-  load_ic_parameters.postprocess_and_validate();
-
-  // Print all the parameters to summary.log
-  spatial_discretization.print_parameter_summary();
-  temporal_discretization.print_parameter_summary();
-  linear_solve_parameters.print_parameter_summary();
-  nonlinear_solve_parameters.print_parameter_summary();
-  output_parameters.print_parameter_summary();
-  checkpoint_parameters.print_parameter_summary();
-  boundary_parameters.print_parameter_summary();
-  load_ic_parameters.print_parameter_summary();
-  nucleation_parameters.print_parameter_summary();
-  misc_parameters.print_parameter_summary();
-  user_constants.print();
 }
 
 template <unsigned int dim>
@@ -120,6 +95,18 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
   spatial_discretization.set_min_refinement(
     static_cast<unsigned int>(parameter_handler.get_integer("min refinement")));
 
+  for (unsigned int criterion_id = 0; criterion_id < InputFileReader::max_criteria;
+       criterion_id++)
+    {
+      std::string subsection_text =
+        "refinement criterion: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        std::vector<std::string> field_names =
+          dealii::Utilities::split_string_list(parameter_handler.get("variables"));
+      }
+      parameter_handler.leave_subsection();
+    }
   for (const auto &[index, variable] : var_attributes)
     {
       std::string subsection_text = "refinement criterion: ";
@@ -287,7 +274,8 @@ UserInputParameters<dim>::assign_boundary_parameters(
           }
 
         parameter_handler.enter_subsection("pinning point");
-        {}
+        {
+        }
         parameter_handler.leave_subsection();
       }
       parameter_handler.leave_subsection();
