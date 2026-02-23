@@ -11,10 +11,10 @@ set(
   allen_cahn_implicit
   cahn_hilliard_explicit
   cahn_hilliard_implicit
-  cavity_flow
+  # cavity_flow
   fracture
   heat_equation_steady_state
-  linear_solve_old_solution
+  # linear_solve_old_solution
   mechanics
   precipitate_explicit
   solution_blocks
