@@ -25,7 +25,25 @@ struct CheckpointParameters
 {
 public:
   /**
-   * @brief Return if the increment should be checkpointed.
+   * @brief Set whether to load from a checkpoint file.
+   */
+  void
+  set_should_load_checkpoint(bool should_load_checkpoint)
+  {
+    load_from_checkpoint = should_load_checkpoint;
+  }
+
+  /**
+   * @brief Return if checkpoint should be loaded.
+   */
+  [[nodiscard]] bool
+  should_load_checkpoint() const
+  {
+    return load_from_checkpoint;
+  }
+
+  /**
+   * @brief Return if the increment should be checkpointted.
    */
   [[nodiscard]] bool
   should_checkpoint(unsigned int increment) const;
@@ -34,7 +52,7 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(const TemporalDiscretization &temporal_discretization);
+  postprocess_and_validate();
 
   /**
    * @brief Print parameters to summary.log
@@ -43,55 +61,121 @@ public:
   print_parameter_summary() const;
 
   /**
-   * @brief Set whether to load from a checkpoint.
+   * @brief Get the file name.
    */
-  void
-  set_load_from_checkpoint(bool _load_from_checkpoint)
+  [[nodiscard]] const std::string &
+  get_file_name() const
   {
-    load_from_checkpoint = _load_from_checkpoint;
+    return file_name;
   }
 
   /**
-   * @brief Set the checkpoint condition.
+   * @brief Set the file name
    */
   void
-  set_condition(const std::string &_condition)
+  set_file_name(const std::string &_file_name)
   {
-    condition = _condition;
+    file_name = _file_name;
   }
 
   /**
-   * @brief Set the number of checkpoints.
+   * @brief Set the user checkpoint list
    */
+  template <typename ListType>
   void
-  set_n_checkpoints(unsigned int _n_checkpoints)
+  add_checkpoint_list(const ListType &list)
   {
-    n_checkpoints = _n_checkpoints;
+    checkpoint_list.insert(list.begin(), list.end());
   }
 
   /**
-   * @brief Set the user checkpoint list.
+   * @brief Set the user checkpoint list
    */
   void
-  set_user_checkpoint_list(const std::vector<int> &_user_checkpoint_list)
+  add_equal_spacing_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
   {
-    user_checkpoint_list = _user_checkpoint_list;
+    for (unsigned int checkpoint = 0; checkpoint <= num_increments;
+         checkpoint += num_increments / num_checkpoints)
+      {
+        checkpoint_list.insert(checkpoint);
+      }
+  }
+
+  /**
+   * @brief Set the user checkpoint list
+   */
+  void
+  add_log_spacing_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
+  {
+    for (unsigned int checkpoint = 1; checkpoint <= num_checkpoints; checkpoint++)
+      {
+        checkpoint_list.insert(static_cast<unsigned int>(
+          std::round(std::pow(double(num_increments),
+                              double(checkpoint) / double(num_checkpoints)))));
+      }
+  }
+
+  /**
+   * @brief Set the user checkpoint list
+   */
+  void
+  add_n_per_decade_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
+  {
+    AssertThrow(num_increments > 1,
+                dealii::ExcMessage("For n per decaded spaced checkpoints, the number of "
+                                   "increments must be greater than 1."));
+
+    for (unsigned int iteration = 2; iteration <= num_increments; iteration++)
+      {
+        const auto decade = static_cast<unsigned int>(std::ceil(std::log10(iteration)));
+        const auto step_size =
+          static_cast<unsigned int>(std::pow(10, decade) / num_checkpoints);
+        if (iteration % step_size == 0)
+          {
+            checkpoint_list.insert(iteration);
+          }
+      }
+  }
+
+  /**
+   * @brief Set the user checkpoint list
+   */
+  void
+  clear_checkpoint_list()
+  {
+    checkpoint_list.clear();
+  }
+
+  /**
+   * @brief Get the number of checkpoints that will be made
+   */
+  [[nodiscard]] unsigned int
+  get_num_checkpoints() const
+  {
+    return checkpoint_list.size();
+  }
+
+  /**
+   * @brief Whether to print timing information with checkpoint
+   */
+  void
+  set_print_timing_with_checkpoint(const bool &_print_timing_with_checkpoint)
+  {
+    print_timing_with_checkpoint = _print_timing_with_checkpoint;
   }
 
 private:
   // Whether to load from a checkpoint
   bool load_from_checkpoint = false;
 
-  // Checkpoint condition type
-  std::string condition;
+  // Checkpoint file name
+  std::string file_name;
 
-  // Number of checkpoints
-  unsigned int n_checkpoints = 0;
+  // Whether to print timing information with checkpoint
+  // TODO (landinjm): Implement this.
+  bool print_timing_with_checkpoint = false;
 
-  // User given checkpoint list
-  std::vector<int> user_checkpoint_list;
-
-  // List of increments for checkpoints
+  // List of increments that checkpoint the solution to file
   std::set<unsigned int> checkpoint_list;
 };
 
@@ -102,83 +186,8 @@ CheckpointParameters::should_checkpoint(unsigned int increment) const
 }
 
 inline void
-CheckpointParameters::postprocess_and_validate(
-  const TemporalDiscretization &temporal_discretization)
-{
-  // If the user has specified a list and we have list checkpoint use that and return
-  // early
-  if (condition == "LIST")
-    {
-      for (const auto &increment : user_checkpoint_list)
-        {
-          checkpoint_list.insert(static_cast<unsigned int>(increment));
-        }
-      return;
-    }
-
-  // If the number of checkpoints is 0 return early
-  if (n_checkpoints == 0)
-    {
-      return;
-    }
-
-  // If the number of outputs is greater than the number of increments, force them to be
-  // equivalent
-  n_checkpoints = std::min(n_checkpoints, temporal_discretization.get_total_increments());
-
-  // If the number of increments is 0, the number of checkpoints should be 0, so we return
-  // early
-  if (temporal_discretization.get_total_increments() == 0)
-    {
-      return;
-    }
-
-  // Determine the output list from the other criteria
-  if (condition == "EQUAL_SPACING")
-    {
-      for (unsigned int iteration = 0;
-           iteration <= temporal_discretization.get_total_increments();
-           iteration += temporal_discretization.get_total_increments() / n_checkpoints)
-        {
-          checkpoint_list.insert(iteration);
-        }
-    }
-  else if (condition == "LOG_SPACING")
-    {
-      checkpoint_list.insert(0);
-      for (unsigned int output = 1; output <= n_checkpoints; output++)
-        {
-          checkpoint_list.insert(static_cast<unsigned int>(std::round(
-            std::pow(static_cast<double>(temporal_discretization.get_total_increments()),
-                     static_cast<double>(output) / static_cast<double>(n_checkpoints)))));
-        }
-    }
-  else if (condition == "N_PER_DECADE")
-    {
-      AssertThrow(temporal_discretization.get_total_increments() > 1,
-                  dealii::ExcMessage("For n per decaded spaced outputs, the number of "
-                                     "increments must be greater than 1."));
-
-      checkpoint_list.insert(0);
-      checkpoint_list.insert(1);
-      for (unsigned int iteration = 2;
-           iteration <= temporal_discretization.get_total_increments();
-           iteration++)
-        {
-          const auto decade = static_cast<unsigned int>(std::ceil(std::log10(iteration)));
-          const auto step_size =
-            static_cast<unsigned int>(std::pow(10, decade) / n_checkpoints);
-          if (iteration % step_size == 0)
-            {
-              checkpoint_list.insert(iteration);
-            }
-        }
-    }
-  else
-    {
-      AssertThrow(false, UnreachableCode());
-    }
-}
+CheckpointParameters::postprocess_and_validate()
+{}
 
 inline void
 CheckpointParameters::print_parameter_summary() const
@@ -187,10 +196,11 @@ CheckpointParameters::print_parameter_summary() const
     << "================================================\n"
     << "  Checkpoint Parameters\n"
     << "================================================\n"
-    << "Checkpoint condition: " << condition << "\n"
-    << "Number of checkpoints: " << n_checkpoints << "\n";
+    << "Checkpoint file name: " << file_name << "\n"
+    << "Number of checkpoints: " << get_num_checkpoints() << "\n"
+    << "Print timing info: " << bool_to_string(print_timing_with_checkpoint) << "\n";
 
-  ConditionalOStreams::pout_summary() << "Checkpoint iteration list: ";
+  ConditionalOStreams::pout_summary() << "Checkpoint increment list: ";
   for (const auto &iteration : checkpoint_list)
     {
       ConditionalOStreams::pout_summary() << iteration << " ";

@@ -4,6 +4,7 @@
 #include <prismspf/core/problem.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_output.h>
+#include <prismspf/core/solve_group.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 
@@ -237,15 +238,17 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 {
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
   unsigned int                    increment   = sim_timer.get_increment();
+  bool is_output_increment = user_inputs.get_output_parameters().should_output(increment);
+  bool is_nucleation_increment =
+    user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment);
+
   // Check for stochastic nucleation
   Timer::start_section("Check for nucleation");
-  bool any_nucleation_occurred = false;
-  if (user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment))
-    {
-      any_nucleation_occurred =
-        NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
-                                                                   pf_tools->nuclei_list);
-    }
+  bool any_nucleation_occurred =
+    is_nucleation_increment &&
+    NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
+                                                               pf_tools->nuclei_list);
+
   Timer::end_section("Check for nucleation");
 
   // Perform grid refinement if necessary
@@ -272,6 +275,13 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::start_section("Solve Increment");
   for (auto &solver : solvers)
     {
+      SolveTiming solve_timing = solver->get_solve_group().solve_timing;
+      if ((solve_timing == PostProcess && !is_output_increment) ||
+          (solve_timing == NucleationRate &&
+           !(is_nucleation_increment || is_output_increment)))
+        {
+          continue;
+        }
       solver->solve();
     }
   Timer::end_section("Solve Increment");
