@@ -13,6 +13,7 @@
 #include <prismspf/config.h>
 
 #include <cmath>
+#include <numbers>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
