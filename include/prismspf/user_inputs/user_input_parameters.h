@@ -5,6 +5,9 @@
 
 #include <deal.II/base/parameter_handler.h>
 
+#include <prismspf/core/field_attributes.h>
+#include <prismspf/core/solve_group.h>
+
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -20,7 +23,11 @@
 
 #include <prismspf/config.h>
 
+#include <vector>
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+// TODO: convert to a simple struct
 
 template <unsigned int dim>
 class UserInputParameters
@@ -43,10 +50,28 @@ public:
   }
 
   /**
+   * @brief Return the spatial discretization parameters.
+   */
+  [[nodiscard]] SpatialDiscretization<dim> &
+  get_spatial_discretization()
+  {
+    return spatial_discretization;
+  }
+
+  /**
    * @brief Return the temporal discretization parameters.
    */
   [[nodiscard]] const TemporalDiscretization &
   get_temporal_discretization() const
+  {
+    return temporal_discretization;
+  }
+
+  /**
+   * @brief Return the temporal discretization parameters.
+   */
+  [[nodiscard]] TemporalDiscretization &
+  get_temporal_discretization()
   {
     return temporal_discretization;
   }
@@ -61,10 +86,28 @@ public:
   }
 
   /**
+   * @brief Return the linear solve parameters.
+   */
+  [[nodiscard]] LinearSolveParameters &
+  get_linear_solve_parameters()
+  {
+    return linear_solve_parameters;
+  }
+
+  /**
    * @brief Return the nonlinear solve parameters.
    */
   [[nodiscard]] const NonlinearSolveParameterSet &
   get_nonlinear_solve_parameters() const
+  {
+    return nonlinear_solve_parameters;
+  }
+
+  /**
+   * @brief Return the nonlinear solve parameters.
+   */
+  [[nodiscard]] NonlinearSolveParameterSet &
+  get_nonlinear_solve_parameters()
   {
     return nonlinear_solve_parameters;
   }
@@ -79,10 +122,28 @@ public:
   }
 
   /**
+   * @brief Return the output parameters.
+   */
+  [[nodiscard]] OutputParameters &
+  get_output_parameters()
+  {
+    return output_parameters;
+  }
+
+  /**
    * @brief Return the checkpoint parameters.
    */
   [[nodiscard]] const CheckpointParameters &
   get_checkpoint_parameters() const
+  {
+    return checkpoint_parameters;
+  }
+
+  /**
+   * @brief Return the checkpoint parameters.
+   */
+  [[nodiscard]] CheckpointParameters &
+  get_checkpoint_parameters()
   {
     return checkpoint_parameters;
   }
@@ -97,10 +158,28 @@ public:
   }
 
   /**
+   * @brief Return the boundary parameters.
+   */
+  [[nodiscard]] BoundaryParameters<dim> &
+  get_boundary_parameters()
+  {
+    return boundary_parameters;
+  }
+
+  /**
    * @brief Return the load IC parameters.
    */
   [[nodiscard]] const LoadInitialConditionParameters &
   get_load_initial_condition_parameters() const
+  {
+    return load_ic_parameters;
+  }
+
+  /**
+   * @brief Return the load IC parameters.
+   */
+  [[nodiscard]] LoadInitialConditionParameters &
+  get_load_initial_condition_parameters()
   {
     return load_ic_parameters;
   }
@@ -115,10 +194,28 @@ public:
   }
 
   /**
+   * @brief Return the nucleation parameters.
+   */
+  [[nodiscard]] NucleationParameters &
+  get_nucleation_parameters()
+  {
+    return nucleation_parameters;
+  }
+
+  /**
    * @brief Return the miscellaneous parameters.
    */
   [[nodiscard]] const MiscellaneousParameters &
   get_miscellaneous_parameters() const
+  {
+    return misc_parameters;
+  }
+
+  /**
+   * @brief Return the miscellaneous parameters.
+   */
+  [[nodiscard]] MiscellaneousParameters &
+  get_miscellaneous_parameters()
   {
     return misc_parameters;
   }
@@ -130,6 +227,56 @@ public:
   get_user_constants() const
   {
     return user_constants;
+  }
+
+  /**
+   * @brief Return the user constants.
+   */
+  [[nodiscard]] UserConstants<dim> &
+  get_user_constants()
+  {
+    return user_constants;
+  }
+
+  /**
+   * @brief Ensure that the parameters are compatible with a set of fields and solvers.
+   */
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveGroup>      &solve_groups)
+  {
+    // Perform and postprocessing of user inputs and run checks
+    spatial_discretization.postprocess_and_validate();
+    temporal_discretization.postprocess_and_validate();
+    linear_solve_parameters.postprocess_and_validate();
+    nonlinear_solve_parameters.postprocess_and_validate();
+    output_parameters.postprocess_and_validate();
+    checkpoint_parameters.postprocess_and_validate();
+    boundary_parameters.postprocess_and_validate();
+    nucleation_parameters.postprocess_and_validate();
+    misc_parameters.postprocess_and_validate();
+    load_ic_parameters.postprocess_and_validate();
+  }
+
+  /**
+   * @brief Ensure that the parameters are compatible with a set of fields and solvers.
+   */
+  std::string
+  parameter_summary()
+  {
+    // Print all the parameters to summary.log
+    spatial_discretization.print_parameter_summary();
+    temporal_discretization.print_parameter_summary();
+    linear_solve_parameters.print_parameter_summary();
+    nonlinear_solve_parameters.print_parameter_summary();
+    output_parameters.print_parameter_summary();
+    checkpoint_parameters.print_parameter_summary();
+    boundary_parameters.print_parameter_summary();
+    load_ic_parameters.print_parameter_summary();
+    nucleation_parameters.print_parameter_summary();
+    misc_parameters.print_parameter_summary();
+    user_constants.print();
+    return "";
   }
 
 private:
