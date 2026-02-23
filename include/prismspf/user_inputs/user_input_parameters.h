@@ -5,8 +5,9 @@
 
 #include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/checkpoint_parameters.h>
+#include <prismspf/user_inputs/constraint_parameters.h>
+#include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
@@ -21,10 +22,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct VariableAttributes;
-
-class InputFileReader;
-
 template <unsigned int dim>
 class UserInputParameters
 {
@@ -35,15 +32,6 @@ public:
    */
   UserInputParameters(InputFileReader          &input_file_reader,
                       dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Return the variable attributes.
-   */
-  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
-  get_variable_attributes() const
-  {
-    return var_attributes;
-  }
 
   /**
    * @brief Return the spatial discretization parameters.
@@ -228,9 +216,6 @@ private:
   void
   load_model_constants(const InputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
-
-  // Variable attributes
-  std::map<unsigned int, VariableAttributes> var_attributes;
 
   // Spatial discretization parameters
   SpatialDiscretization<dim> spatial_discretization;

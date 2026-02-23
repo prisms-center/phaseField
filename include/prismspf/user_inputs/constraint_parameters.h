@@ -11,6 +11,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -30,46 +31,85 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 enum Condition : std::uint8_t
 {
-  UndefinedBoundary,
   Natural,
   Dirichlet,
-  Periodic,
   Neumann,
-  NonuniformDirichlet,
-  NonuniformNeumann,
-  TimeDependentNonuniformDirichlet,
-  TimeDependentNonuniformNeumann,
+  TimeDependentDirichlet,
+  TimeDependentNeumann,
+  UniformDirichlet,
+  UniformNeumann,
+  Periodic,
 };
 
 /**
- * @brief Enum to string for Condition
+ * @brief Enum to string for type
  */
 [[nodiscard]] std::string
 to_string(Condition boundary_type)
 {
   switch (boundary_type)
     {
-      case Condition::UndefinedBoundary:
-        return "UndefinedBoundary";
       case Condition::Natural:
         return "Natural";
       case Condition::Dirichlet:
         return "Dirichlet";
-      case Condition::Periodic:
-        return "Periodic";
       case Condition::Neumann:
         return "Neumann";
-      case Condition::NonuniformDirichlet:
-        return "NonuniformDirichlet";
-      case Condition::NonuniformNeumann:
-        return "NonuniformNeumann";
-      case Condition::TimeDependentNonuniformDirichlet:
-        return "TimeDependentNonuniformDirichlet";
-      case Condition::TimeDependentNonuniformNeumann:
-        return "TimeDependentNonuniformNeumann";
+      case Condition::TimeDependentDirichlet:
+        return "TimeDependentDirichlet";
+      case Condition::TimeDependentNeumann:
+        return "TimeDependentNeumann";
+      case Condition::UniformDirichlet:
+        return "UniformDirichlet";
+      case Condition::UniformNeumann:
+        return "UniformNeumann";
+      case Condition::Periodic:
+        return "Periodic";
       default:
         return "UNKNOWN";
     }
+}
+
+/**
+ * @brief Enum to string for type
+ */
+[[nodiscard]] Condition
+condition_from_string(const std::string &boundary_string)
+{
+  if (boundary_string == "Natural")
+    {
+      return Condition::Natural;
+    }
+  if (boundary_string == "Dirichlet")
+    {
+      return Condition::Dirichlet;
+    }
+  if (boundary_string == "Neumann")
+    {
+      return Condition::Neumann;
+    }
+  if (boundary_string == "TimeDependentDirichlet")
+    {
+      return Condition::TimeDependentDirichlet;
+    }
+  if (boundary_string == "TimeDependentNeumann")
+    {
+      return Condition::TimeDependentNeumann;
+    }
+  if (boundary_string == "UniformDirichlet")
+    {
+      return Condition::UniformDirichlet;
+    }
+  if (boundary_string == "UniformNeumann")
+    {
+      return Condition::UniformNeumann;
+    }
+  if (boundary_string == "Periodic")
+    {
+      return Condition::Periodic;
+    }
+  AssertThrow(false, dealii::ExcMessage("Invalid boundary condition " + boundary_string));
+  return Condition::Natural;
 }
 
 /**
@@ -113,7 +153,6 @@ public:
   void
   add_boundary_condition(unsigned int boundary_id, Condition boundary_type)
   {
-    conditions.resize(std::max(boundary_id, (unsigned int) conditions.size()), Natural);
     conditions[boundary_id] = boundary_type;
   }
 
@@ -134,9 +173,6 @@ public:
   void
   add_uniform_dirichlet_value(unsigned int boundary_id, double boundary_value)
   {
-    uniform_dirichlet_values.resize(
-      std::max(boundary_id, (unsigned int) uniform_dirichlet_values.size()),
-      Natural);
     uniform_dirichlet_values[boundary_id] = boundary_value;
   }
 
@@ -145,10 +181,10 @@ private:
   // simple geometry like a square the boundary ids are marked, in order, by x=0, x=max,
   // y=0, y=max. More complex geometries can have somewhat arbitrary ordering, but will
   // render some of our assertions moot.
-  std::vector<Condition> conditions;
+  std::map<unsigned int, Condition> conditions;
 
   // A map of boundary values for dirichlet boundary conditions
-  std::vector<double> uniform_dirichlet_values;
+  std::map<unsigned int, double> uniform_dirichlet_values;
 };
 
 /**
@@ -158,23 +194,14 @@ template <unsigned int dim>
 struct BoundaryParameters
 {
 public:
-  using FieldConstraints = std::vector<ComponentConditions>;
-  using PinnedPointMap =
-    std::map<Types::Index,
-             std::pair<std::variant<double, std::vector<double>>, dealii::Point<dim>>>;
+  using FieldConstraints = std::array<ComponentConditions, dim>;
+  using PinnedPointMap   = std::map<unsigned int, dealii::Point<dim>>;
 
   /**
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate();
-
-  /**
-   * @brief Check whether the boundary conditions for two fields are the same.
-   */
-  [[nodiscard]] bool
-  check_degenerate_boundary_conditions(const Types::Index &index_1,
-                                       const Types::Index &index_2) const;
+  postprocess_and_validate(std::vector<FieldAttributes> &field_attributes);
 
   /**
    * @brief Print parameters to summary.log
@@ -239,9 +266,9 @@ public:
     return std::any_of(boundary_condition_list.begin(),
                        boundary_condition_list.end(),
                        [](const FieldConstraints &val)
-                         {
+                       {
 
-                         });
+                       });
   }
 
 private:
@@ -271,164 +298,8 @@ private:
 template <unsigned int dim>
 inline void
 BoundaryParameters<dim>::postprocess_and_validate(
-  std::map<unsigned int, VariableAttributes> &var_attributes)
-{
-  for (const auto &[index, variable] : var_attributes)
-    {
-      // Ensure that boundary conditions are specified for all variables and their
-      // components
-      if (variable.field_info.tensor_rank == TensorRank::Vector)
-        {
-          for (unsigned int i = 0; i < dim; i++)
-            {
-              // For postprocess and constant fields, the boundary condition is built-in
-              // to whatever the user sets. Thus, we set it to natural.
-              if (variable.is_postprocess() ||
-                  variable.get_pde_type() == PDEType::Constant)
-                {
-                  set_boundary("Natural", variable.get_field_index(), i);
-                }
-              else
-                {
-                  AssertThrow(bc_list.contains(variable.get_field_index()),
-                              dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(bc_list.at(variable.get_field_index()).contains(i),
-                              dealii::ExcMessage("Invalid entry"));
-                  AssertThrow(!bc_list.at(variable.get_field_index()).at(i).empty(),
-                              dealii::ExcMessage(
-                                "Boundary conditions must be specified "
-                                "for all components in all vector field."));
-
-                  set_boundary(bc_list.at(variable.get_field_index()).at(i),
-                               variable.get_field_index(),
-                               i);
-                }
-            }
-        }
-      else
-        {
-          if (variable.is_postprocess() || variable.get_pde_type() == PDEType::Constant)
-            {
-              set_boundary("Natural", variable.get_field_index(), 0);
-            }
-          else
-            {
-              AssertThrow(bc_list.contains(variable.get_field_index()),
-                          dealii::ExcMessage("Invalid entry"));
-              AssertThrow(bc_list.at(variable.get_field_index()).contains(0),
-                          dealii::ExcMessage("Invalid entry"));
-              AssertThrow(!bc_list.at(variable.get_field_index()).at(0).empty(),
-                          dealii::ExcMessage("Boundary conditions must be specified "
-                                             "for all scalar fields."));
-
-              set_boundary(bc_list.at(variable.get_field_index()).at(0),
-                           variable.get_field_index(),
-                           0);
-            }
-        }
-    }
-
-  // Set periodicity flags
-  periodicity.fill(false);
-  for (const auto &[index, component_map] : boundary_condition_list)
-    {
-      for (const auto &[component, boundary_condition] : component_map)
-        {
-          for (const auto &[domain_id, boundary_type] :
-               boundary_condition.get_boundary_condition_map())
-            {
-              if (boundary_type == Condition::Periodic)
-                {
-                  periodicity[domain_id / 2] = true;
-                }
-            }
-        }
-    }
-
-  // Validate boundary conditions
-  validate_boundary_conditions();
-
-  // Clear the bc_list now that it's no longer necessary
-  bc_list.clear();
-
-#ifdef ADDITIONAL_OPTIMIZATIONS
-  // Check if any fields are degenerate in terms of boundary conditions
-  // TODO (landinjm): Clean this up
-  for (const auto &[index_1, variable_1] : var_attributes)
-    {
-      // Skip is the degenerate index has already been assigned
-      if (variable_1.get_degenerate_field_index() != Numbers::invalid_index)
-        {
-          continue;
-        }
-      if (variable_1.is_postprocess())
-        {
-          continue;
-        }
-
-      const auto field_type_1 = variable_1.field_info.tensor_rank;
-
-      for (auto &[index_2, variable_2] : var_attributes)
-        {
-          if (variable_2.is_postprocess())
-            {
-              continue;
-            }
-
-          bool is_degenerate = false;
-
-          const auto field_type_2 = variable_2.field_info.tensor_rank;
-
-          is_degenerate = field_type_1 == field_type_2 &&
-                          check_degenerate_boundary_conditions(index_1, index_2);
-
-          if (is_degenerate)
-            {
-              ConditionalOStreams::pout_verbose()
-                << "Field " << variable_1.get_name()
-                << " has the same boundary conditions as " << variable_2.get_name()
-                << ". Using optimizations...\n";
-              variable_2.set_degenerate_field_index(index_1);
-            }
-        }
-    }
-#endif
-}
-
-template <unsigned int dim>
-inline bool
-BoundaryParameters<dim>::check_degenerate_boundary_conditions(
-  const Types::Index &index_1,
-  const Types::Index &index_2) const
-{
-  // If the indices are the same return false
-  if (index_1 == index_2)
-    {
-      return false;
-    }
-
-  Assert(boundary_condition_list.contains(index_1),
-         dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_1)));
-  Assert(boundary_condition_list.contains(index_2),
-         dealii::ExcMessage("Invalid entry for index = " + std::to_string(index_2)));
-
-  bool is_degenerate = false;
-
-  // First check the boundary_condition_list
-  const auto &boundary_condition_1 = boundary_condition_list.at(index_1);
-  const auto &boundary_condition_2 = boundary_condition_list.at(index_2);
-
-  is_degenerate = boundary_condition_1 == boundary_condition_2;
-
-  // Check the pinned points
-  if (pinned_point_list.contains(index_1) && pinned_point_list.contains(index_2))
-    {
-      is_degenerate =
-        is_degenerate && pinned_point_list.at(index_1) == pinned_point_list.at(index_2);
-    }
-
-  return is_degenerate;
-}
+  std::vector<FieldAttributes> &field_attributes)
+{}
 
 template <unsigned int dim>
 inline void
@@ -473,19 +344,19 @@ BoundaryParameters<dim>::print_parameter_summary() const
       // Handle variant value printing
       std::visit(
         [&](const auto &value)
-          {
-            if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
-              {
-                ConditionalOStreams::pout_summary() << value;
-              }
-            else
-              {
-                for (unsigned int i = 0; i < value.size(); ++i)
-                  {
-                    ConditionalOStreams::pout_summary() << value[i] << " ";
-                  }
-              }
-          },
+        {
+          if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
+            {
+              ConditionalOStreams::pout_summary() << value;
+            }
+          else
+            {
+              for (unsigned int i = 0; i < value.size(); ++i)
+                {
+                  ConditionalOStreams::pout_summary() << value[i] << " ";
+                }
+            }
+        },
         point_value_pair.first);
 
       ConditionalOStreams::pout_summary()
@@ -603,14 +474,14 @@ BoundaryParameters<dim>::validate_boundary_conditions() const
       // Validate that vector values have the correct size
       std::visit(
         [&](const auto &value)
-          {
-            if constexpr (std::is_same_v<std::decay_t<decltype(value)>,
-                                         std::vector<double>>)
-              {
-                AssertThrow(value.size() == dim,
-                            dealii::ExcMessage("Vector value size must match dimension"));
-              }
-          },
+        {
+          if constexpr (std::is_same_v<std::decay_t<decltype(value)>,
+                                       std::vector<double>>)
+            {
+              AssertThrow(value.size() == dim,
+                          dealii::ExcMessage("Vector value size must match dimension"));
+            }
+        },
         point_value_pair.first);
     }
 
