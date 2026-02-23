@@ -229,11 +229,10 @@ public:
   /**
    * @brief Get the solver context.
    */
-  [[nodiscard]] const SolveContext<dim, degree, number> &
-  get_solve_context() const
+  [[nodiscard]] const SolveGroup &
+  get_solve_group() const
   {
-    Assert(solve_context != nullptr, dealii::ExcNotInitialized());
-    return *solve_context;
+    return solve_group;
   }
 
 protected:

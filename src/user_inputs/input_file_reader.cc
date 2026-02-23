@@ -8,7 +8,6 @@
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
 
@@ -24,23 +23,17 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-InputFileReader::InputFileReader(
-  std::string                                       input_file_name,
-  const std::map<unsigned int, VariableAttributes> &_var_attributes)
-  : parameters_file_name(input_file_name)
-  , var_attributes(&_var_attributes)
+InputFileReader::InputFileReader(std::string input_file_name)
+  : parameters_file_name(std::move(input_file_name))
 {
   model_constant_names     = get_model_constant_names();
   const auto num_constants = static_cast<unsigned int>(model_constant_names.size());
 
-  ConditionalOStreams::pout_base()
-    << "Number of constants: " << num_constants << "\n"
-    << "Number of variables: " << var_attributes->size() << "\n";
+  ConditionalOStreams::pout_base() << "Number of constants: " << num_constants << "\n";
 
   // Read in all of the parameters now
   declare_parameters();
   parameter_handler.parse_input(parameters_file_name);
-  number_of_dimensions = static_cast<unsigned int>(parameter_handler.get_integer("dim"));
 }
 
 void
@@ -220,17 +213,6 @@ InputFileReader::declare_parameters()
 void
 InputFileReader::declare_mesh()
 {
-  parameter_handler.declare_entry("dim",
-                                  "1",
-                                  dealii::Patterns::Integer(1, 3),
-                                  "The number of dimensions for the simulation.",
-                                  true);
-  parameter_handler.declare_entry("degree",
-                                  "1",
-                                  dealii::Patterns::Integer(1,
-                                                            Numbers::max_element_degree),
-                                  "The polynomial order of the finite element.",
-                                  true);
   parameter_handler.declare_entry("global refinement",
                                   "0",
                                   dealii::Patterns::Integer(0, INT_MAX),
@@ -308,12 +290,17 @@ InputFileReader::declare_mesh()
     dealii::Patterns::Integer(1, INT_MAX),
     "The number of time steps between mesh refinement operations.");
 
-  for (const auto &[index, variable] : *var_attributes)
+  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
     {
-      std::string subsection_text = "refinement criterion: ";
-      subsection_text.append(variable.get_name());
+      std::string subsection_text =
+        "refinement criterion: " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
       {
+        parameter_handler.declare_entry(
+          "variables",
+          "",
+          dealii::Patterns::Anything(),
+          "The names of the fields that will use this refinement criterion.");
         parameter_handler.declare_entry(
           "type",
           "none",
@@ -363,111 +350,107 @@ InputFileReader::declare_time_discretization()
 void
 InputFileReader::declare_solver_parameters()
 {
-  // For linear solves
-  for (const auto &[index, variable] : *var_attributes)
+  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
     {
-      if (variable.get_pde_type() == PDEType::TimeIndependent ||
-          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
-        {
-          std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.get_name());
-          parameter_handler.enter_subsection(subsection_text);
-          {
-            parameter_handler.declare_entry("tolerance type",
-                                            "AbsoluteResidual",
-                                            dealii::Patterns::Selection(
-                                              "AbsoluteResidual|RelativeResidualChange"),
-                                            "The tolerance type for the linear solver.");
-            parameter_handler.declare_entry(
-              "tolerance value",
-              "1.0e-10",
-              dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-              "The value of for the linear solver tolerance.");
-            parameter_handler.declare_entry(
-              "max iterations",
-              "100",
-              dealii::Patterns::Integer(1, INT_MAX),
-              "The maximum number of linear solver iterations before the loop "
-              "is stopped.");
-            parameter_handler.declare_entry(
-              "preconditioner type",
-              "GMG",
-              dealii::Patterns::Selection("None|GMG"),
-              "The preconditioner type for the linear solver.");
-            parameter_handler.declare_entry("smoothing range",
-                                            "15.0",
-                                            dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-                                            "The smoothing range for eigenvalues.");
-            parameter_handler.declare_entry("smoother degree",
-                                            "5",
-                                            dealii::Patterns::Integer(1, INT_MAX),
-                                            "The smoother polynomial degree.");
-            parameter_handler.declare_entry(
-              "eigenvalue cg iterations",
-              "10",
-              dealii::Patterns::Integer(1, INT_MAX),
-              "The maximum number of CG iterations used to find the maximum eigenvalue.");
-            parameter_handler.declare_entry("min mg level",
-                                            "0",
-                                            dealii::Patterns::Integer(0, INT_MAX),
-                                            "The minimum multigrid level.");
-          }
-          parameter_handler.leave_subsection();
-        }
-    }
+      // For linear solves
+      std::string subsection_text =
+        "linear solver parameters: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        parameter_handler.declare_entry(
+          "solver_ids",
+          "",
+          dealii::Patterns::Anything(),
+          "The ids of the solvers that will use these settings.");
+        parameter_handler.declare_entry("tolerance type",
+                                        "AbsoluteResidual",
+                                        dealii::Patterns::Selection(
+                                          "AbsoluteResidual|RelativeResidualChange"),
+                                        "The tolerance type for the linear solver.");
+        parameter_handler.declare_entry("tolerance value",
+                                        "1.0e-10",
+                                        dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+                                        "The value of for the linear solver tolerance.");
+        parameter_handler.declare_entry(
+          "max iterations",
+          "100",
+          dealii::Patterns::Integer(1, INT_MAX),
+          "The maximum number of linear solver iterations before the loop "
+          "is stopped.");
+        parameter_handler.declare_entry("preconditioner type",
+                                        "GMG",
+                                        dealii::Patterns::Selection("None|GMG"),
+                                        "The preconditioner type for the linear solver.");
+        parameter_handler.declare_entry("smoothing range",
+                                        "15.0",
+                                        dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+                                        "The smoothing range for eigenvalues.");
+        parameter_handler.declare_entry("smoother degree",
+                                        "5",
+                                        dealii::Patterns::Integer(1, INT_MAX),
+                                        "The smoother polynomial degree.");
+        parameter_handler.declare_entry(
+          "eigenvalue cg iterations",
+          "10",
+          dealii::Patterns::Integer(1, INT_MAX),
+          "The maximum number of CG iterations used to find the maximum eigenvalue.");
+        parameter_handler.declare_entry("min mg level",
+                                        "0",
+                                        dealii::Patterns::Integer(0, INT_MAX),
+                                        "The minimum multigrid level.");
+      }
+      parameter_handler.leave_subsection();
 
-  // For nonlinear solves
-  for (const auto &[index, variable] : *var_attributes)
-    {
-      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
-          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
-        {
-          std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.get_name());
-          parameter_handler.enter_subsection(subsection_text);
-          {
-            parameter_handler.declare_entry("max iterations",
-                                            "100",
-                                            dealii::Patterns::Integer(1, INT_MAX),
-                                            "The maximum number of nonlinear solver "
-                                            "iterations before the loop is stopped.");
-            parameter_handler.declare_entry(
-              "tolerance type",
-              "AbsoluteResidual",
-              dealii::Patterns::Selection("AbsoluteResidual|RelativeResidualChange"),
-              "The tolerance type for the nonlinear solver.");
-            parameter_handler.declare_entry(
-              "tolerance value",
-              "1.0e-10",
-              dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-              "The value of for the nonlinear solver tolerance.");
-            parameter_handler.declare_entry(
-              "use backtracking line search",
-              "true",
-              dealii::Patterns::Bool(),
-              "Whether to use a backtracking line-search to find the best "
-              "choice of the damping coefficient.");
-            parameter_handler.declare_entry(
-              "step size modifier",
-              "0.5",
-              dealii::Patterns::Double(0.0, 1.0),
-              "The constant that determines how much the step size decreases "
-              "per backtrack. The 'tau' parameter.");
-            parameter_handler.declare_entry(
-              "residual decrease coefficient",
-              "0.5",
-              dealii::Patterns::Double(0.0, 1.0),
-              "The constant that determines how much the residual must "
-              "decrease to be accepted as sufficient. The 'c' parameter.");
-            parameter_handler.declare_entry(
-              "step size",
-              "1.0",
-              dealii::Patterns::Double(0.0, 1.0),
-              "The constant damping value to be used if the backtrace "
-              "line-search approach isn't used.");
-          }
-          parameter_handler.leave_subsection();
-        }
+      // For nonlinear solves
+      subsection_text = "nonlinear solver parameters: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        parameter_handler.declare_entry(
+          "solver_ids",
+          "",
+          dealii::Patterns::Anything(),
+          "The ids of the solvers that will use these settings.");
+        parameter_handler.declare_entry("max iterations",
+                                        "100",
+                                        dealii::Patterns::Integer(1, INT_MAX),
+                                        "The maximum number of nonlinear solver "
+                                        "iterations before the loop is stopped.");
+        parameter_handler.declare_entry("tolerance type",
+                                        "AbsoluteResidual",
+                                        dealii::Patterns::Selection(
+                                          "AbsoluteResidual|RelativeResidualChange"),
+                                        "The tolerance type for the nonlinear solver.");
+        parameter_handler.declare_entry(
+          "tolerance value",
+          "1.0e-10",
+          dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+          "The value of for the nonlinear solver tolerance.");
+        parameter_handler.declare_entry(
+          "use backtracking line search",
+          "true",
+          dealii::Patterns::Bool(),
+          "Whether to use a backtracking line-search to find the best "
+          "choice of the damping coefficient.");
+        parameter_handler.declare_entry(
+          "step size modifier",
+          "0.5",
+          dealii::Patterns::Double(0.0, 1.0),
+          "The constant that determines how much the step size decreases "
+          "per backtrack. The 'tau' parameter.");
+        parameter_handler.declare_entry(
+          "residual decrease coefficient",
+          "0.5",
+          dealii::Patterns::Double(0.0, 1.0),
+          "The constant that determines how much the residual must "
+          "decrease to be accepted as sufficient. The 'c' parameter.");
+        parameter_handler.declare_entry(
+          "step size",
+          "1.0",
+          dealii::Patterns::Double(0.0, 1.0),
+          "The constant damping value to be used if the backtrace "
+          "line-search approach isn't used.");
+      }
+      parameter_handler.leave_subsection();
     }
 }
 
@@ -605,101 +588,60 @@ InputFileReader::declare_checkpoint_parameters()
 void
 InputFileReader::declare_bc_parameters()
 {
-  for (const auto &[index, variable] : *var_attributes)
+  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
     {
-      if (variable.is_postprocess())
-        {
-          continue;
-        }
-      if (variable.field_info.tensor_rank == TensorRank::Scalar)
-        {
-          std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.get_name());
-          parameter_handler.declare_entry(
-            bc_text,
-            "",
-            dealii::Patterns::Anything(),
-            "The boundary conditions for one of the governing equations).");
-        }
-      else
-        {
-          std::string bc_text = "boundary condition for ";
-          bc_text.append(variable.get_name());
-          bc_text.append(", x component");
-          parameter_handler.declare_entry(
-            bc_text,
-            "",
-            dealii::Patterns::Anything(),
-            "The boundary conditions for one of the governing equations).");
-
-          bc_text = "boundary condition for ";
-          bc_text.append(variable.get_name());
-          bc_text.append(", y component");
-          parameter_handler.declare_entry(
-            bc_text,
-            "",
-            dealii::Patterns::Anything(),
-            "The boundary conditions for one of the governing equations).");
-
-          bc_text = "boundary condition for ";
-          bc_text.append(variable.get_name());
-          bc_text.append(", z component");
-          parameter_handler.declare_entry(
-            bc_text,
-            "",
-            dealii::Patterns::Anything(),
-            "The boundary conditions for one of the governing equations).");
-        }
-    }
-}
-
-void
-InputFileReader::declare_pinning_parameters()
-{
-  for (const auto &[index, variable] : *var_attributes)
-    {
-      if (variable.is_postprocess())
-        {
-          continue;
-        }
-      std::string pinning_text = "pinning point for ";
-      pinning_text.append(variable.get_name());
-      parameter_handler.enter_subsection(pinning_text);
+      std::string subsection_text =
+        "boundary conditions: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
       {
-        if (variable.field_info.tensor_rank == TensorRank::Scalar)
-          {
-            parameter_handler.declare_entry("value",
-                                            "2147483647",
-                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                            "Value of pinned point.");
-          }
-        else
-          {
-            parameter_handler.declare_entry("x value",
-                                            "2147483647",
-                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                            "Value of pinned point for the x-component.");
-            parameter_handler.declare_entry("y value",
-                                            "2147483647",
-                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                            "Value of pinned point for the y-component.");
-            parameter_handler.declare_entry("z value",
-                                            "2147483647",
-                                            dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                            "Value of pinned point for the z-component.");
-          }
-        parameter_handler.declare_entry("x",
-                                        "0.0",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "X-coordinate of the point");
-        parameter_handler.declare_entry("y",
-                                        "0.0",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "Y-coordinate of the point");
-        parameter_handler.declare_entry("z",
-                                        "0.0",
-                                        dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                        "Z-coordinate of the point");
+        parameter_handler.declare_entry(
+          "variables",
+          "",
+          dealii::Patterns::Anything(),
+          "The names of the fields that will use these constraints.");
+        parameter_handler.declare_entry("conditions",
+                                        "",
+                                        dealii::Patterns::Anything(),
+                                        "List of conditions.");
+        parameter_handler.enter_subsection("pinning point");
+        {
+          parameter_handler.declare_entry("enable pinned point",
+                                          "false",
+                                          dealii::Patterns::Bool(),
+                                          "Whether to use a pinned point");
+
+          parameter_handler.declare_entry("x",
+                                          "0.0",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "X-coordinate of the point");
+          parameter_handler.declare_entry("y",
+                                          "0.0",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Y-coordinate of the point");
+          parameter_handler.declare_entry("z",
+                                          "0.0",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Z-coordinate of the point");
+
+          parameter_handler.declare_entry("value",
+                                          "2147483647",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Value of pinned point.");
+
+          parameter_handler.declare_entry("x value",
+                                          "2147483647",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Value of pinned point for the x-component.");
+          parameter_handler.declare_entry("y value",
+                                          "2147483647",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Value of pinned point for the y-component.");
+          parameter_handler.declare_entry("z value",
+                                          "2147483647",
+                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                          "Value of pinned point for the z-component.");
+        }
+        parameter_handler.leave_subsection();
       }
       parameter_handler.leave_subsection();
     }

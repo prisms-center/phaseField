@@ -7,13 +7,10 @@
 
 #include <prismspf/config.h>
 
-#include <map>
 #include <set>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
-
-struct VariableAttributes;
 
 /**
  * @brief Parameters file reader. Declares parameter names in a dealii parameter_handler
@@ -25,8 +22,7 @@ public:
   /**
    * @brief Constructor.
    */
-  InputFileReader(std::string                                       input_file_name,
-                  const std::map<unsigned int, VariableAttributes> &_var_attributes);
+  explicit InputFileReader(std::string input_file_name);
 
   /**
    * @brief Get the trailing part of the entry name after a specified string (used to
@@ -34,15 +30,6 @@ public:
    */
   [[nodiscard]] std::set<std::string>
   get_model_constant_names();
-
-  /**
-   * @brief Get the variable attributes.
-   */
-  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
-  get_var_attributes() const
-  {
-    return *var_attributes;
-  }
 
   /**
    * @brief Get the parameter handler.
@@ -61,15 +48,6 @@ public:
   {
     return model_constant_names;
   }
-
-  /**
-   * @brief Get the number of dimensions.
-   */
-  [[nodiscard]] unsigned int
-  get_dim() const
-  {
-    return number_of_dimensions;
-  };
 
   /**
    * @brief Method to declare the parameters to be read from an input file.
@@ -177,12 +155,15 @@ public:
   void
   declare_model_constants();
 
+  /**
+   * @brief Number of available independent settings for certain fields.
+   */
+  static constexpr unsigned int max_criteria = 16;
+
 private:
-  std::string                                       parameters_file_name;
-  const std::map<unsigned int, VariableAttributes> *var_attributes;
-  dealii::ParameterHandler                          parameter_handler;
-  std::set<std::string>                             model_constant_names;
-  unsigned int                                      number_of_dimensions = 0;
+  std::string              parameters_file_name;
+  dealii::ParameterHandler parameter_handler;
+  std::set<std::string>    model_constant_names;
 };
 
 PRISMS_PF_END_NAMESPACE

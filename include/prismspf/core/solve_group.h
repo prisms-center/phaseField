@@ -18,6 +18,35 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+/**
+ * @brief Enum describing when each group of fields gets solved.
+ */
+enum SolveTiming
+{
+  /**
+   * @brief Primary fields are initialized explicitly through initial conditions rather
+   * than through the solver on increment zero.
+   * @example Concentration variable
+   */
+  Primary,
+  /**
+   * @brief Secondary fields are only evaluated by the pde solver, not initialized by a
+   * seperate function.
+   * @example Chemical potential
+   */
+  Secondary,
+  /**
+   * @brief PostProcess fields are only solved on output increments.
+   * @example Local free energy density
+   */
+  PostProcess,
+  /**
+   * @brief NucleationRate fields are only solved on nucleation attempt and output
+   * increments.
+   */
+  NucleationRate
+};
+
 // NOLINTBEGIN(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
 // readability-simplify-boolean-expr
 
@@ -30,15 +59,15 @@ public:
   using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
   using FieldType = TensorRank;
 
-  explicit SolveGroup(int                    _id                = -1,
-                      PDEType                _pde_type          = PDEType::Explicit,
-                      bool                   _is_time_dependent = true,
-                      std::set<Types::Index> _field_indices     = {},
-                      DependencySet          _dependencies_rhs  = {},
-                      DependencySet          _dependencies_lhs  = {})
+  explicit SolveGroup(int                    _id               = -1,
+                      PDEType                _pde_type         = Explicit,
+                      SolveTiming            _solve_timing     = Primary,
+                      std::set<Types::Index> _field_indices    = {},
+                      DependencySet          _dependencies_rhs = {},
+                      DependencySet          _dependencies_lhs = {})
     : id(_id)
     , pde_type(_pde_type)
-    , is_time_dependent(_is_time_dependent)
+    , solve_timing(_solve_timing)
     , field_indices(std::move(_field_indices))
     , dependencies_rhs(std::move(_dependencies_rhs))
     , dependencies_lhs(std::move(_dependencies_lhs))
@@ -56,10 +85,10 @@ public:
   PDEType pde_type;
 
   /**
-   * @brief Whether the solve is time dependent. This is used to determine whether to
+   * @brief This is used to determine whether to
    * initialize the solution vector with the initial conditions or just solve.
    */
-  bool is_time_dependent;
+  SolveTiming solve_timing;
 
   /**
    * @brief Indices of the fields to be solved in this group.
