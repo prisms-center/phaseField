@@ -20,6 +20,8 @@ var annotated_dup =
     [ "ElementVolume", "classElementVolume.html", "classElementVolume" ],
     [ "ElementVolumeContainer", "classElementVolumeContainer.html", "classElementVolumeContainer" ],
     [ "FieldInfo", "structFieldInfo.html", "structFieldInfo" ],
+    [ "FieldOutputParameterLoader", "classFieldOutputParameterLoader.html", "classFieldOutputParameterLoader" ],
+    [ "FieldOutputParameters", "structFieldOutputParameters.html", "structFieldOutputParameters" ],
     [ "GMGSolver", "classGMGSolver.html", "classGMGSolver" ],
     [ "GridRefinementContext", "classGridRefinementContext.html", "classGridRefinementContext" ],
     [ "GridRefiner", "classGridRefiner.html", "classGridRefiner" ],

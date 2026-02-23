@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('periodic__distance_8h_source.html','')
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>          <span class="keyword">const</span> real length      = spatial_discretization.<a class="code hl_function" href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">get_size</a>()[d];</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>          <span class="keyword">const</span> real half_length = length / 2.0;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>          delta                  = <a class="code hl_function" href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">pmod</a>(delta - half_length, length) - half_length;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>          delta                  = <a class="code hl_function" href="utilities_8h.html#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a>(delta - half_length, length) - half_length;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      dist += delta * delta;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('periodic__distance_8h_source.html','')
 <div class="ttc" id="astructSpatialDiscretization_html_ab74292ff1361be375336600a383f3ef5"><div class="ttname"><a href="structSpatialDiscretization.html#ab74292ff1361be375336600a383f3ef5">SpatialDiscretization::get_size</a></div><div class="ttdeci">const dealii::Tensor&lt; 1, dim, double &gt; &amp; get_size() const</div><div class="ttdoc">Get the domain extents in each cartesian direction.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:452</div></div>
 <div class="ttc" id="auser__input__parameters_8h_html"><div class="ttname"><a href="user__input__parameters_8h.html">user_input_parameters.h</a></div></div>
 <div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
-<div class="ttc" id="autilities_8h_html_aa5fa44cb376bf1e32d84a5bf6b51ade3"><div class="ttname"><a href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">pmod</a></div><div class="ttdeci">PRISMS_PF_BEGIN_NAMESPACE Real pmod(const Real &amp;value, const OtherReal &amp;modulus)</div><div class="ttdoc">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negati...</div><div class="ttdef"><b>Definition</b> utilities.h:26</div></div>
+<div class="ttc" id="autilities_8h_html_a4bd4c1b2e176e9c19da4d66eae956efe"><div class="ttname"><a href="utilities_8h.html#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a></div><div class="ttdeci">Real pmod(const Real &amp;value, const OtherReal &amp;modulus)</div><div class="ttdoc">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negati...</div><div class="ttdef"><b>Definition</b> utilities.h:119</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

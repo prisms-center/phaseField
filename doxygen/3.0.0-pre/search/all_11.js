@@ -28,7 +28,7 @@ var searchData=
   ['tolerance_5fvalue_25',['tolerance_value',['../structNonlinearSolverParameters.html#a3cb4140d98eb62e33dccfa9c8da6c65c',1,'NonlinearSolverParameters']]],
   ['total_5fincrements_26',['total_increments',['../structTemporalDiscretization.html#a40d22fe8fac27ef5599e9d682683d866',1,'TemporalDiscretization']]],
   ['transverse_27',['Transverse',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa166ba25013d18e883657ccd4aee51c29',1,'type_enums.h']]],
-  ['triangulation_28',['triangulation',['../classMesh.html#a2ed9c724e274c72038be6dfffe063067',1,'Mesh::Triangulation'],['../classTriangulationHandler.html#a0f42d3ec0c399f926a7494f37c086143',1,'TriangulationHandler::triangulation'],['../classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee',1,'TriangulationHandler::Triangulation']]],
+  ['triangulation_28',['triangulation',['../classTriangulationHandler.html#a0f42d3ec0c399f926a7494f37c086143',1,'TriangulationHandler::triangulation'],['../classTriangulationHandler.html#accae320bc6c353f5c59261ce57d436ee',1,'TriangulationHandler::Triangulation'],['../classMesh.html#a2ed9c724e274c72038be6dfffe063067',1,'Mesh::Triangulation']]],
   ['triangulation_5fhandler_29',['triangulation_handler',['../classSolverContext.html#adf30cfc51e22c36432ad7b7a83cffc82',1,'SolverContext::triangulation_handler'],['../classPDEProblem.html#a1d047857ce7ef964c74fda54d4421ade',1,'PDEProblem::triangulation_handler'],['../classGridRefinementContext.html#aa4f7d8de357f5a5c30cab3d5916ace12',1,'GridRefinementContext::triangulation_handler']]],
   ['triangulation_5fhandler_2ecc_30',['triangulation_handler.cc',['../triangulation__handler_8cc.html',1,'']]],
   ['triangulation_5fhandler_2eh_31',['triangulation_handler.h',['../triangulation__handler_8h.html',1,'']]],
@@ -37,7 +37,7 @@ var searchData=
   ['tutorial_34',['tutorial',['../tutorial.html#autotoc_md1',1,'Tutorial'],['../applications.html#autotoc_md0',1,'Tutorial'],['../tutorial.html',1,'Tutorial']]],
   ['tutorial_2eh_35',['tutorial.h',['../tutorial_8h.html',1,'']]],
   ['tvmult_36',['Tvmult',['../classMatrixFreeOperator.html#a6439cafb5fe56b683318596fd7f282ab',1,'MatrixFreeOperator']]],
-  ['type_37',['type',['../structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb',1,'SpatialDiscretization::type'],['../read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7',1,'Type:&#160;read_field_factory.h'],['../structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1',1,'BoundaryCondition::Type']]],
+  ['type_37',['type',['../structBoundaryCondition.html#a11ebfe2a932d8fa52f3d6d6e7ad927c1',1,'BoundaryCondition::Type'],['../read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7',1,'Type:&#160;read_field_factory.h'],['../structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb',1,'SpatialDiscretization::type']]],
   ['type_5fenums_2eh_38',['type_enums.h',['../type__enums_8h.html',1,'']]],
   ['types_39',['Types',['../namespaceTypes.html',1,'']]],
   ['types_2eh_40',['types.h',['../types_8h.html',1,'']]]

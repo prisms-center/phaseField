@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html" target="_top" xlink:title="Section depth and parent key.">
+<g id="a_Node000000"><a xlink:href="structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="172,-30 0,-30 0,0 172,0 172,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">PRISMS_PF_BEGIN_NAMESPACE</text>
-<text text-anchor="middle" x="86" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::TimerStack::Meta</text>
+<text text-anchor="middle" x="86" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::TimerStack</text>
 </a>
 </g>
 </g>

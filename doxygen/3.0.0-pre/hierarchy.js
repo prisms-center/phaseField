@@ -12,6 +12,7 @@ var hierarchy =
     [ "ElementVolume< dim, degree, number >", "classElementVolume.html", null ],
     [ "ElementVolumeContainer< dim, degree, number >", "classElementVolumeContainer.html", null ],
     [ "FieldInfo", "structFieldInfo.html", null ],
+    [ "FieldOutputParameters", "structFieldOutputParameters.html", null ],
     [ "dealii::Function", null, [
       [ "InitialCondition< dim, degree, number >", "classInitialCondition.html", null ],
       [ "NonuniformDirichlet< dim, degree, number >", "classNonuniformDirichlet.html", null ],
@@ -50,7 +51,9 @@ var hierarchy =
       [ "TeeStream", "classTeeStream.html", null ]
     ] ],
     [ "OutputParameters", "structOutputParameters.html", null ],
-    [ "ParameterBase< dim >", "classParameterBase.html", null ],
+    [ "ParameterBase", "classParameterBase.html", [
+      [ "FieldOutputParameterLoader", "classFieldOutputParameterLoader.html", null ]
+    ] ],
     [ "ParseCMDOptions", "classParseCMDOptions.html", null ],
     [ "PDEOperator< dim, degree, number >", "classPDEOperator.html", null ],
     [ "PDEProblem< dim, degree, number >", "classPDEProblem.html", null ],

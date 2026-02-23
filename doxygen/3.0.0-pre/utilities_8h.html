@@ -120,7 +120,8 @@ $(document).ready(function(){initNavTree('utilities_8h.html',''); initResizable(
   <div class="headertitle"><div class="title">utilities.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;deal.II/base/point.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
+<code>#include &lt;deal.II/base/point.h&gt;</code><br />
 <code>#include &lt;deal.II/base/tensor.h&gt;</code><br />
 <code>#include &lt;deal.II/base/vectorization.h&gt;</code><br />
 <code>#include &lt;deal.II/matrix_free/evaluation_flags.h&gt;</code><br />
@@ -128,26 +129,37 @@ $(document).ready(function(){initNavTree('utilities_8h.html',''); initResizable(
 <code>#include &lt;boost/range/algorithm_ext.hpp&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
 <code>#include &lt;<a class="el" href="vectorized__operations_8h_source.html">prismspf/utilities/vectorized_operations.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utilities.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="1275" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="1844" height="227"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__dep__incl.svg" width="4832" height="902"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__dep__incl.svg" width="5932" height="799"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="utilities_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa5fa44cb376bf1e32d84a5bf6b51ade3" id="r_aa5fa44cb376bf1e32d84a5bf6b51ade3"><td class="memTemplParams" colspan="2">template&lt;typename Real , typename OtherReal &gt; </td></tr>
-<tr class="memitem:aa5fa44cb376bf1e32d84a5bf6b51ade3"><td class="memTemplItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE Real&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#aa5fa44cb376bf1e32d84a5bf6b51ade3">pmod</a> (const Real &amp;value, const OtherReal &amp;modulus)</td></tr>
-<tr class="memdesc:aa5fa44cb376bf1e32d84a5bf6b51ade3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)  <br /></td></tr>
-<tr class="separator:aa5fa44cb376bf1e32d84a5bf6b51ade3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ae86ae51f63e53c56d4a600a1db9b7" id="r_aa5ae86ae51f63e53c56d4a600a1db9b7"><td class="memTemplParams" colspan="2">template&lt;typename <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; </td></tr>
+<tr class="memitem:aa5ae86ae51f63e53c56d4a600a1db9b7"><td class="memTemplItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#aa5ae86ae51f63e53c56d4a600a1db9b7">string_to_type</a> (const std::string &amp;string, const std::unordered_map&lt; std::string, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; &amp;table)</td></tr>
+<tr class="memdesc:aa5ae86ae51f63e53c56d4a600a1db9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function that converts a string to some type, given a mapping.  <br /></td></tr>
+<tr class="separator:aa5ae86ae51f63e53c56d4a600a1db9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a332c5b699f76d9002da29b4db8931786" id="r_a332c5b699f76d9002da29b4db8931786"><td class="memTemplParams" colspan="2">template&lt;typename <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> , typename OtherType &gt; </td></tr>
+<tr class="memitem:a332c5b699f76d9002da29b4db8931786"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; OtherType, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a332c5b699f76d9002da29b4db8931786">string_to_type_pair_with_delimiters</a> (const std::string &amp;string, const std::unordered_map&lt; std::string, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; &amp;table, const std::unordered_map&lt; std::string, OtherType &gt; &amp;other_table, const std::pair&lt; char, char &gt; &amp;delimiters={'(', ')'})</td></tr>
+<tr class="memdesc:a332c5b699f76d9002da29b4db8931786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function that converts a string to some type pair, given two mappings and a set of delimiters.  <br /></td></tr>
+<tr class="separator:a332c5b699f76d9002da29b4db8931786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bd4c1b2e176e9c19da4d66eae956efe" id="r_a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memTemplParams" colspan="2">template&lt;typename Real , typename OtherReal &gt; </td></tr>
+<tr class="memitem:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memTemplItemLeft" align="right" valign="top">Real&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a> (const Real &amp;value, const OtherReal &amp;modulus)</td></tr>
+<tr class="memdesc:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)  <br /></td></tr>
+<tr class="separator:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f87f41d5e8d087ca7181c79897c4dd8" id="r_a9f87f41d5e8d087ca7181c79897c4dd8"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T &gt; </td></tr>
 <tr class="memitem:a9f87f41d5e8d087ca7181c79897c4dd8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilities_8h.html#a9f87f41d5e8d087ca7181c79897c4dd8">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="utilities_8h.html#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
 <tr class="memdesc:a9f87f41d5e8d087ca7181c79897c4dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
@@ -353,8 +365,8 @@ template&lt;unsigned int dim, typename number &gt; </div>
 
 </div>
 </div>
-<a id="aa5fa44cb376bf1e32d84a5bf6b51ade3" name="aa5fa44cb376bf1e32d84a5bf6b51ade3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5fa44cb376bf1e32d84a5bf6b51ade3">&#9670;&#160;</a></span>pmod()</h2>
+<a id="a4bd4c1b2e176e9c19da4d66eae956efe" name="a4bd4c1b2e176e9c19da4d66eae956efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bd4c1b2e176e9c19da4d66eae956efe">&#9670;&#160;</a></span>pmod()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,7 +377,7 @@ template&lt;typename Real , typename OtherReal &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE Real pmod </td>
+          <td class="memname">Real pmod </td>
           <td>(</td>
           <td class="paramtype">const Real &amp;&#160;</td>
           <td class="paramname"><em>value</em>, </td>
@@ -390,6 +402,85 @@ template&lt;typename Real , typename OtherReal &gt; </div>
 </div><div class="memdoc">
 
 <p>Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers) </p>
+
+</div>
+</div>
+<a id="aa5ae86ae51f63e53c56d4a600a1db9b7" name="aa5ae86ae51f63e53c56d4a600a1db9b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ae86ae51f63e53c56d4a600a1db9b7">&#9670;&#160;</a></span>string_to_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> string_to_type </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>table</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper function that converts a string to some type, given a mapping. </p>
+
+</div>
+</div>
+<a id="a332c5b699f76d9002da29b4db8931786" name="a332c5b699f76d9002da29b4db8931786"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332c5b699f76d9002da29b4db8931786">&#9670;&#160;</a></span>string_to_type_pair_with_delimiters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> , typename OtherType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; OtherType, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; string_to_type_pair_with_delimiters </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, OtherType &gt; &amp;&#160;</td>
+          <td class="paramname"><em>other_table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::pair&lt; char, char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>delimiters</em> = <code>{'(',&#160;')'}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper function that converts a string to some type pair, given two mappings and a set of delimiters. </p>
+<p>Note that this function requires the general form of one of the below cases. Parentheses are used for delimiters for simplicity.</p>
+<p>Case 1: Input - <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7" title="Factory function to create appropriate reader based on input file type not a member of ReadFieldBase ...">Type(OtherType)</a> Output - {OtherType, Type} Case 2: Input - OtherType Output - {OtherType, Type}</p>
+<p>The input string would have the types replaced with their respective mappings. </p>
 
 </div>
 </div>

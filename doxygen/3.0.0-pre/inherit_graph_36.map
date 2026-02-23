@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classParseCMDOptions.html" title="Class to parse command line options." alt="" coords="5,5,144,31"/>
+<area shape="rect" id="Node000000" href="$classParameterBase.html" title="A base class for the various subcontainers of the user inputs." alt="" coords="5,5,127,31"/>
+<area shape="rect" id="Node000001" href="$classFieldOutputParameterLoader.html" title="A class that determines how often and what fields are output." alt="" coords="175,5,383,31"/>
+<area shape="poly" id="edge10_Node000000_Node000001" title=" " alt="" coords="141,15,175,15,175,21,141,21"/>
 </map>
