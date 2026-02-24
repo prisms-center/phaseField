@@ -44,9 +44,16 @@ struct RectangularMesh
   /**
    * @brief Constructor.
    */
+  RectangularMesh() = default;
+
+  /**
+   * @brief Constructor.
+   */
   RectangularMesh(dealii::Tensor<1, dim, double> _size,
+                  dealii::Tensor<1, dim, double> _lower_bound,
                   std::array<unsigned int, dim>  _subdivisions)
     : size(_size)
+    , lower_bound(_lower_bound)
     , subdivisions(_subdivisions) {};
 
   /**
@@ -58,7 +65,7 @@ struct RectangularMesh
     validate();
     dealii::GridGenerator::subdivided_hyper_rectangle(triangulation,
                                                       subdivisions,
-                                                      dealii::Point<dim>(),
+                                                      dealii::Point<dim>(lower_bound),
                                                       dealii::Point<dim>(size));
     mark_boundaries(triangulation);
     mark_periodic(triangulation);
@@ -75,6 +82,11 @@ struct RectangularMesh
    * @brief Domain extents in each cartesian direction.
    */
   dealii::Tensor<1, dim, double> size;
+
+  /**
+   * @brief Domain extents in each cartesian direction.
+   */
+  dealii::Tensor<1, dim, double> lower_bound;
 
   /**
    * @brief Mesh subdivisions in each cartesian direction.
@@ -156,6 +168,11 @@ struct SphericalMesh
   /**
    * @brief Constructor.
    */
+  SphericalMesh() = default;
+
+  /**
+   * @brief Constructor.
+   */
   explicit SphericalMesh(double _radius)
     : radius(_radius)
   {}
@@ -203,12 +220,6 @@ private:
 template <unsigned int dim>
 struct SpatialDiscretization
 {
-public:
-  /**
-   * @brief Constructor.
-   */
-  SpatialDiscretization() = default;
-
   /**
    * @brief Print parameters to summary.log
    */
