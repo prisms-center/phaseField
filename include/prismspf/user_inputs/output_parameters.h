@@ -23,7 +23,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct OutputParameters
 {
-public:
   /**
    * @brief Return if the increment should be outputted.
    */
@@ -34,76 +33,13 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate();
+  validate();
 
   /**
    * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
-
-  /**
-   * @brief Get the file type.
-   */
-  [[nodiscard]] const std::string &
-  get_file_type() const
-  {
-    return file_type;
-  }
-
-  /**
-   * @brief Set the file type
-   */
-  void
-  set_file_type(const std::string &_file_type)
-  {
-    file_type = _file_type;
-  }
-
-  /**
-   * @brief Get the file name.
-   */
-  [[nodiscard]] const std::string &
-  get_file_name() const
-  {
-    return file_name;
-  }
-
-  /**
-   * @brief Set the file name
-   */
-  void
-  set_file_name(const std::string &_file_name)
-  {
-    file_name = _file_name;
-  }
-
-  /**
-   * @brief Set the print output period
-   */
-  void
-  set_print_output_period(const unsigned int &_print_output_period)
-  {
-    print_output_period = _print_output_period;
-  }
-
-  /**
-   * @brief Get the patch subdivisions
-   */
-  [[nodiscard]] unsigned int
-  get_patch_subdivisions() const
-  {
-    return patch_subdivisions;
-  }
-
-  /**
-   * @brief Set the patch subdivisions
-   */
-  void
-  set_patch_subdivisions(const unsigned int &_patch_subdivisions)
-  {
-    patch_subdivisions = _patch_subdivisions;
-  }
 
   /**
    * @brief Set the user output list
@@ -183,16 +119,6 @@ public:
     return output_list.size();
   }
 
-  /**
-   * @brief Whether to print timing information with output
-   */
-  void
-  set_print_timing_with_output(const bool &_print_timing_with_output)
-  {
-    print_timing_with_output = _print_timing_with_output;
-  }
-
-private:
   // Output file type ()
   std::string file_type;
 
@@ -221,7 +147,7 @@ OutputParameters::should_output(unsigned int increment) const
 }
 
 inline void
-OutputParameters::postprocess_and_validate()
+OutputParameters::validate()
 {}
 
 inline void

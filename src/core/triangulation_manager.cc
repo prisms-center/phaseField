@@ -66,10 +66,9 @@ TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 
 template <unsigned int dim>
 void
-TriangulationManager<dim>::generate_mesh(const UserInputParameters<dim> &user_inputs)
+TriangulationManager<dim>::generate_mesh(
+  const SpatialDiscretization<dim> &discretization_params)
 {
-  const SpatialDiscretization<dim> &discretization_params =
-    user_inputs.get_spatial_discretization();
   // TODO (landinjm): Add more generality in selecting mesh types
   if (discretization_params.get_radius() != 0.0)
     {

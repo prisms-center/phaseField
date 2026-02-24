@@ -8,8 +8,6 @@
 
 #include <prismspf/config.h>
 
-#include <algorithm>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -38,7 +36,8 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate();
+  validate()
+  {}
 
   /**
    * @brief Print parameters to summary.log
@@ -46,43 +45,6 @@ public:
   void
   print_parameter_summary() const;
 
-  /**
-   * @brief Set the timestep.
-   */
-  void
-  set_timestep(double _dt)
-  {
-    dt = _dt;
-  }
-
-  /**
-   * @brief Get the timestep.
-   */
-  [[nodiscard]] double
-  get_timestep() const
-  {
-    return dt;
-  }
-
-  /**
-   * @brief Get the total number of increments.
-   */
-  [[nodiscard]] unsigned int
-  get_num_increments() const
-  {
-    return num_increments;
-  }
-
-  /**
-   * @brief Set the total number of increments.
-   */
-  void
-  set_num_increments(unsigned int _total_increments)
-  {
-    num_increments = _total_increments;
-  }
-
-private:
   // Timestep
   double dt = 1.0;
 

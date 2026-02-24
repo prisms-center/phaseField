@@ -22,169 +22,79 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Base class for mesh parameters with a generator functions.
+ * @brief Internal enum for various triangulation types.
  */
-template <unsigned int dim>
-class Mesh
+enum TriangulationType : std::uint8_t
 {
-public:
-  using Triangulation =
-    std::conditional_t<dim == 1,
-                       dealii::Triangulation<dim>,
-                       dealii::parallel::distributed::Triangulation<dim>>;
-
-  /**
-   * @brief Constructor.
-   */
-  Mesh() = default;
-
-  /**
-   * @brief Virtual destructor.
-   */
-  virtual ~Mesh() = default;
-
-  /**
-   * @brief Generate the mesh.
-   */
-  virtual void
-  generate_mesh([[maybe_unused]] std::shared_ptr<Triangulation> triangulation)
-  {
-    AssertThrow(
-      is_initialized,
-      dealii::ExcMessage(
-        "Mesh parameters not initialized correctly. You tried to generate a mesh that "
-        "has default parameters. Typically this yields a mesh with size 0.0."));
-    AssertThrow(
-      triangulation->n_cells() == 0,
-      dealii::ExcMessage(
-        "Mesh triangulation is not empty. This is likely because you "
-        "tried to generate a mesh without setting the parameters first. "
-        "Please ensure that you have set the parameters before generating "
-        "the mesh. Another possibility is that you tried to generate multiple meshes. "
-        "Check that you only have one subsection in the parameters file for the mesh."));
-    is_generated = true;
-  };
-
-  /**
-   * @brief Mark the boundaries of the mesh.
-   */
-  void
-  mark_boundaries(
-    [[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
-    [[maybe_unused]] const typename BoundaryParameters<dim>::BoundaryConditionMap
-      &boundary_condition_list)
-  {
-    AssertThrow(is_generated,
-                dealii::ExcMessage(
-                  "Mesh must be generated before marking boundary ids."));
-    boundaries_marked = true;
-  };
-
-  /**
-   * @brief Mark the periodic faces of the mesh.
-   */
-  void
-  mark_periodic([[maybe_unused]] std::shared_ptr<Triangulation> triangulation,
-                [[maybe_unused]] const std::set<unsigned int>  &periodic_directions)
-  {
-    AssertThrow(is_generated,
-                dealii::ExcMessage(
-                  "Mesh must be generated before marking periodic boundaries."));
-    AssertThrow(boundaries_marked,
-                dealii::ExcMessage(
-                  "Mesh boundaries must be marked before marking periodic boundaries."));
-  };
-
-  /**
-   * @brief Set that the mesh parameters are initialized correctly.
-   */
-  void
-  set_initialized()
-  {
-    is_initialized = true;
-  };
-
-private:
-  /**
-   * @brief Whether the class is initialized correctly.
-   *
-   * This is necessary because the parameters are determined at runtime, leading to the
-   * generation of a bunch of empty mesh objects.
-   */
-  bool is_initialized = false;
-
-  /**
-   * @brief Whether the mesh has been generated.
-   */
-  bool is_generated = false;
-
-  /**
-   * @brief Whether the boundaries have been marked.
-   */
-  bool boundaries_marked = false;
+  Rectangular,
+  Spherical,
+  Custom
 };
+
+template <unsigned int dim>
+using Triangulation =
+  std::conditional_t<dim == 1,
+                     dealii::Triangulation<dim>,
+                     dealii::parallel::distributed::Triangulation<dim>>;
 
 /**
  * @brief Class for rectangular mesh parameters.
  */
 template <unsigned int dim>
-class RectangularMesh : public Mesh<dim>
+struct RectangularMesh
 {
   /**
    * @brief Constructor.
    */
   RectangularMesh(dealii::Tensor<1, dim, double> _size,
-                  std::vector<unsigned int>      _subdivisions)
+                  std::array<unsigned int, dim>  _subdivisions)
     : size(_size)
-  {
-    Assert(_subdivisions.size() == dim,
-           dealii::ExcMessage(
-             "Subdivisions vector size must match the number of dimensions"));
-    subdivisions = _subdivisions;
-
-    // If the x direction is greater than 0, we set the mesh as initialized.
-    // TODO (landinjm): Check that the other directions are also greater than 0.
-    if (size[0] > 0.0)
-      {
-        this->Mesh<dim>::set_initialized();
-      }
-  };
+    , subdivisions(_subdivisions) {};
 
   /**
    * @brief Generate the mesh.
    */
   void
-  generate_mesh(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation) override
+  generate_mesh(Triangulation<dim> &triangulation) override
   {
-    // Call base class generate mesh to check initialization
-    this->Mesh<dim>::generate_mesh(triangulation);
-
-    dealii::GridGenerator::subdivided_hyper_rectangle(*triangulation,
+    validate();
+    dealii::GridGenerator::subdivided_hyper_rectangle(triangulation,
                                                       subdivisions,
                                                       dealii::Point<dim>(),
                                                       dealii::Point<dim>(size));
+    mark_boundaries(triangulation);
+    mark_periodic(triangulation);
   };
 
+  /**
+   * @brief Validate
+   */
+  void
+  validate()
+  {}
+
+  /**
+   * @brief Domain extents in each cartesian direction.
+   */
+  dealii::Tensor<1, dim, double> size;
+
+  /**
+   * @brief Mesh subdivisions in each cartesian direction.
+   */
+  std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
+
+  /**
+   * @brief Which directions have periodic conditions
+   */
+  std::set<unsigned int> periodic_directions;
+
+private:
   /**
    * @brief Mark the boundaries of the mesh.
    */
   void
-  mark_boundaries(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                  const typename BoundaryParameters<dim>::BoundaryConditionMap
-                    &boundary_condition_list) override
+  mark_boundaries(Triangulation<dim> &triangulation) const
   {
-    // Call base class mark boundaries to check that the mesh has been generated
-    this->Mesh<dim>::mark_boundaries(triangulation, boundary_condition_list);
-
-    // Check that the user has not specified extra boundary conditions
-    for (const auto &[index, boundary_conditions] : boundary_condition_list)
-      {
-        AssertThrow(boundary_conditions.get_boundary_condition_map().size() == (2 * dim),
-                    dealii::ExcMessage(
-                      "Rectangular meshes only have 2*dim boundaries. Please ensure that "
-                      "you have not specified extra boundary conditions."));
-      }
-
     // Loop through the cells
     for (const auto &cell : triangulation->active_cell_iterators())
       {
@@ -194,13 +104,13 @@ class RectangularMesh : public Mesh<dim>
              ++face_number)
           {
             // Direction for quad and hex cells
-            auto direction = face_number / 2;
+            unsigned int direction = face_number / 2;
 
             // Mark the boundary id for x=0, y=0, z=0 and x=max, y=max, z=max
-            if (std::fabs(cell->face(face_number)->center()(direction) - 0) <
+            if (std::fabs(cell->face(face_number)->center()(direction)) <
                   Defaults::mesh_tolerance ||
                 std::fabs(cell->face(face_number)->center()(direction) -
-                          (size[direction])) < Defaults::mesh_tolerance)
+                          size[direction]) < Defaults::mesh_tolerance)
               {
                 cell->face(face_number)->set_boundary_id(face_number);
               }
@@ -212,23 +122,18 @@ class RectangularMesh : public Mesh<dim>
    * @brief Mark the periodic faces of the mesh.
    */
   void
-  mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                const std::set<unsigned int> &periodic_directions) override
+  mark_periodic(Triangulation<dim> &triangulation) const
   {
-    // Call base class mark boundaries to check that the mesh has been generated and
-    // boundaries marked
-    Mesh<dim>::mark_periodic(triangulation, periodic_directions);
-
     // Create a vector of matched pairs that we fill and enforce upon the
     // constaints
-    std::vector<dealii::GridTools::PeriodicFacePair<
-      typename Mesh<dim>::Triangulation::cell_iterator>>
+    std::vector<
+      dealii::GridTools::PeriodicFacePair<typename Triangulation<dim>::cell_iterator>>
       periodicity_vector;
     for (unsigned int direction : periodic_directions)
       {
         // Grab the offset vector from one vertex to another
         dealii::Tensor<1, dim> offset;
-        offset[direction] = get_size()[direction];
+        offset[direction] = size[direction];
 
         // Collect the matched pairs on the coarsest level of the mesh
         unsigned int boundary_id = direction * 2;
@@ -239,140 +144,59 @@ class RectangularMesh : public Mesh<dim>
                                                   periodicity_vector,
                                                   offset);
       }
-    // Set constraints
+    // Add periodicity
     triangulation.add_periodicity(periodicity_vector);
   };
-
-  /**
-   * @brief Get the size in a certain direction.
-   */
-  [[nodiscard]] double
-  get_size(unsigned int direction) const
-  {
-    Assert(direction < dim,
-           dealii::ExcMessage("Direction must be less than the number of dimensions"));
-    Assert(size[direction] > 0.0,
-           dealii::ExcMessage("Size in the specified direction must be greater than zero "
-                              "for rectangular meshes"));
-    return size[direction];
-  };
-
-  /**
-   * @brief Get the subdivisions in a certain direction.
-   */
-  [[nodiscard]] unsigned int
-  get_subdivisions(unsigned int direction) const
-  {
-    Assert(direction < dim,
-           dealii::ExcMessage("Direction must be less than the number of dimensions"));
-    Assert(subdivisions[direction] > 0,
-           dealii::ExcMessage(
-             "Subdivisions in the specified direction must be greater than zero "
-             "for rectangular meshes"));
-    return subdivisions[direction];
-  }
-
-private:
-  /**
-   * @brief Domain extents in each cartesian direction.
-   */
-  dealii::Tensor<1, dim, double> size;
-
-  /**
-   * @brief Mesh subdivisions in each cartesian direction.
-   */
-  std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
 };
 
 /**
  * @brief Class for spherical mesh parameters.
  */
 template <unsigned int dim>
-class SphericalMesh
+struct SphericalMesh
 {
-public:
   /**
    * @brief Constructor.
    */
   explicit SphericalMesh(double _radius)
     : radius(_radius)
-  {
-    if (radius > 0.0)
-      {
-        this->Mesh<dim>::set_initialized();
-      }
-  };
+  {}
 
   /**
    * @brief Generate the mesh.
    */
   void
-  generate_mesh(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation) override
+  generate_mesh(Triangulation<dim> &triangulation) override
   {
-    // Call base class generate mesh to check initialization
-    this->Mesh<dim>::generate_mesh(triangulation);
-
+    validate();
+    // TODO: can we just generate a 1d mesh using
+    // dealii::GridGenerator::subdivided_hyper_rectangle instead of throwing an exception?
     AssertThrow(dim != 1, dealii::ExcMessage("Spherical mesh not valid in 1D"));
-    dealii::GridGenerator::hyper_ball(*triangulation, dealii::Point<dim>(), radius);
+    dealii::GridGenerator::hyper_ball(triangulation, dealii::Point<dim>(), radius);
+    mark_boundaries(triangulation);
   };
 
+  /**
+   * @brief Validate
+   */
+  void
+  validate()
+  {}
+
+  /**
+   * @brief Radius of the spherical domain.
+   */
+  double radius = 1.0;
+
+private:
   /**
    * @brief Mark the boundaries of the mesh.
    */
   void
-  mark_boundaries(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                  const typename BoundaryParameters<dim>::BoundaryConditionMap
-                    &boundary_condition_list) override
+  mark_boundaries([[maybe_unused]] Triangulation<dim> &triangulation) const
   {
-    // Call base class mark boundaries to check that the mesh has been generated
-    this->Mesh<dim>::mark_boundaries(triangulation, boundary_condition_list);
-
-    for (const auto &[index, boundary_conditions] : boundary_condition_list)
-      {
-        // There are no special boundary ids to mark for a spherical mesh. Check that the
-        // user has specified extra boundary conditions.
-        AssertThrow(boundary_conditions.get_boundary_condition_map().size() == 1,
-                    dealii::ExcMessage("Spherical meshes only have one boundary. Please "
-                                       "ensure that you have not specified "
-                                       "extra boundary conditions."));
-      }
-  };
-
-  /**
-   * @brief Mark the periodic faces of the mesh.
-   */
-  void
-  mark_periodic(std::shared_ptr<typename Mesh<dim>::Triangulation> triangulation,
-                const std::set<unsigned int> &periodic_directions) override
-  {
-    // Call base class mark boundaries to check that the mesh has been generated and
-    // boundaries marked
-    Mesh<dim>::mark_periodic(triangulation, periodic_directions);
-
-    // There are no periodic boundaries for a spherical mesh. Check that the user has not
-    // specified any.
-
-    AssertThrow(periodic_directions.empty(),
-                dealii::ExcMessage("Spherical meshes cannot have periodic boundary "
-                                   "conditions."));
-  };
-
-  /**
-   * @brief Get the radius of the spherical domain.
-   */
-  [[nodiscard]] double
-  get_radius() const
-  {
-    Assert(radius > 0.0,
-           dealii::ExcMessage("Spherical mesh radius must be greater than zero."));
-    return radius;
+    // TODO mark all as 0, or come up with something complicated
   }
-
-private:
-  /**
-   * @brief Radius of the spherical domain.
-   */
-  double radius = 0.0;
 };
 
 /**
@@ -383,24 +207,9 @@ struct SpatialDiscretization
 {
 public:
   /**
-   * @brief Internal enum for various triangulation types.
-   */
-  enum TriangulationType : std::uint8_t
-  {
-    Rectangular,
-    Spherical
-  };
-
-  /**
    * @brief Constructor.
    */
   SpatialDiscretization() = default;
-
-  /**
-   * @brief Postprocess and validate parameters.
-   */
-  void
-  postprocess_and_validate();
 
   /**
    * @brief Print parameters to summary.log
@@ -409,250 +218,57 @@ public:
   print_parameter_summary() const;
 
   /**
-   * @brief Whether the provided increment is a valid grid refinement step.
-   */
-  [[nodiscard]] bool
-  should_refine_mesh(unsigned int increment) const
-  {
-    return increment % remeshing_period == 0;
-  }
-
-  /**
-   * @brief Get the domain extents in each cartesian direction
-   */
-  [[nodiscard]] const dealii::Tensor<1, dim, double> &
-  get_size() const
-  {
-    return size;
-  }
-
-  /**
-   * @brief Set the domain extents in each cartesian direction
+   * @brief Validate
    */
   void
-  set_size(const unsigned int &direction, const double &_size)
-  {
-    size[direction] = _size;
+  validate()
+  { // Check that AMR is not enabled for 1D
+    AssertThrow(
+      (!has_adaptivity || dim != 1),
+      dealii::ExcMessage(
+        "Adaptive meshing for the matrix-free method is not currently supported."));
+
+    // Some check if AMR is enabled
+    if (has_adaptivity)
+      {
+        // Check that the minimum and maximum refinement levels are valid
+        AssertThrow((max_refinement >= global_refinement),
+                    dealii::ExcMessage(
+                      "The maximum refinement level must be greater than or equal to the "
+                      "global refinement level."));
+        AssertThrow((min_refinement <= global_refinement),
+                    dealii::ExcMessage(
+                      "The minimum refinement level must be less than or equal to the "
+                      "global refinement level."));
+        AssertThrow((max_refinement >= min_refinement),
+                    dealii::ExcMessage(
+                      "The maximum refinement level must be greater than or equal to the "
+                      "minimum refinement level."));
+      }
+    // Validate whichever mesh generator is being used
+    if (type == TriangulationType::Rectangular)
+      {
+        rectangular_mesh.validate();
+      }
+    else if (type == TriangulationType::Spherical)
+      {
+        spherical_mesh.validate();
+      }
+    else if (type == TriangulationType::Custom)
+      {
+        return;
+      }
+    AssertThrow(false, UnreachableCode("Invalid TriangulationType"));
   }
 
-  /**
-   * @brief Get the radius of the Spherical domain
-   */
-  [[nodiscard]] double
-  get_radius() const
-  {
-    return radius;
-  }
-
-  /**
-   * @brief Set the radius of the Spherical domain
-   */
-  void
-  set_radius(const double &_radius)
-  {
-    radius = _radius;
-  }
-
-  /**
-   * @brief Get the mesh subdivisions in each cartesian direction
-   */
-  [[nodiscard]] const std::vector<unsigned int> &
-  get_subdivisions() const
-  {
-    return subdivisions;
-  }
-
-  /**
-   * @brief Set the mesh subdivisions in each cartesian direction
-   */
-  void
-  set_subdivisions(const unsigned int &direction, const unsigned int &_subdivisions)
-  {
-    subdivisions[direction] = _subdivisions;
-  }
-
-  /**
-   * @brief Get the global refinement of mesh
-   */
-  [[nodiscard]] unsigned int
-  get_global_refinement() const
-  {
-    return global_refinement;
-  }
-
-  /**
-   * @brief Set the global refinement of mesh
-   */
-  void
-  set_global_refinement(const unsigned int &_global_refinement)
-  {
-    global_refinement = _global_refinement;
-  }
-
-  /**
-   * @brief Get the element polynomial degree
-   */
-  [[nodiscard]] unsigned int
-  get_degree() const
-  {
-    return degree;
-  }
-
-  /**
-   * @brief Set the element polynomial degree
-   */
-  void
-  set_degree(const unsigned int &_degree)
-  {
-    degree = _degree;
-  }
-
-  /**
-   * @brief Get whether adaptive meshing (AMR) is enabled
-   */
-  [[nodiscard]] bool
-  get_has_adaptivity() const
-  {
-    return has_adaptivity;
-  }
-
-  /**
-   * @brief Set whether adaptive meshing (AMR) is enabled
-   */
-  void
-  set_has_adaptivity(const bool &_has_adaptivity)
-  {
-    has_adaptivity = _has_adaptivity;
-  }
-
-  /**
-   * @brief Get the maximum global refinement for AMR
-   */
-  [[nodiscard]] unsigned int
-  get_max_refinement() const
-  {
-    return max_refinement;
-  }
-
-  /**
-   * @brief Set the maximum global refinement for AMR
-   */
-  void
-  set_max_refinement(const unsigned int &_max_refinement)
-  {
-    max_refinement = _max_refinement;
-  }
-
-  /**
-   * @brief Get the minimum global refinement for AMR
-   */
-  [[nodiscard]] unsigned int
-  get_min_refinement() const
-  {
-    return min_refinement;
-  }
-
-  /**
-   * @brief Set the minimum global refinement for AMR
-   */
-  void
-  set_min_refinement(const unsigned int &_min_refinement)
-  {
-    min_refinement = _min_refinement;
-  }
-
-  /**
-   * @brief Get the number of steps between remeshing
-   */
-  [[nodiscard]] unsigned int
-  get_remeshing_period() const
-  {
-    return remeshing_period;
-  }
-
-  /**
-   * @brief Set the number of steps between remeshing
-   */
-  void
-  set_remeshing_period(const unsigned int &_remeshing_period)
-  {
-    remeshing_period = _remeshing_period;
-  }
-
-  /**
-   * @brief Get the refinement criteria
-   */
-  [[nodiscard]] const std::vector<GridRefinement::RefinementCriterion> &
-  get_refinement_criteria() const
-  {
-    return refinement_criteria;
-  }
-
-  /**
-   * @brief Set the refinement criteria
-   */
-  void
-  add_refinement_criteria(
-    const GridRefinement::RefinementCriterion &_refinement_criterion)
-  {
-    refinement_criteria.push_back(_refinement_criterion);
-  }
-
-  /**
-   * @brief Get the triangulation type
-   */
-  [[nodiscard]] TriangulationType
-  get_type() const
-  {
-    return type;
-  }
-
-  /**
-   * @brief Set the lower bound in each cartesian direction
-   */
-  void
-  set_lower_bound(const unsigned int &direction, const double &_lower_bound)
-  {
-    lower_bound[direction] = _lower_bound;
-  }
-
-  /**
-   * @brief Get the lower bound for the rectangular grid
-   */
-  [[nodiscard]] const dealii::Point<dim, double> &
-  get_lower_bound() const
-  {
-    return lower_bound;
-  }
-
-  /**
-   * @brief Get the upper bound for the rectangular grid
-   */
-  [[nodiscard]] const dealii::Point<dim, double> &
-  get_upper_bound() const
-  {
-    upper_bound = dealii::Point<dim>(size) + lower_bound;
-    return upper_bound;
-  }
-
-private:
   // Triangulation type
   TriangulationType type = TriangulationType::Rectangular;
 
-  // Domain lower bound for rectangular domains
-  dealii::Point<dim, double> lower_bound;
+  // Rectangular mesh parameters
+  RectangularMesh<dim> rectangular_mesh;
 
-  // Domain upper bound for rectangular domains
-  mutable dealii::Point<dim, double> upper_bound;
-
-  // Domain extents in each cartesian direction
-  dealii::Tensor<1, dim, double> size;
-
-  // Radius of the Spherical domain
-  double radius = 0.0;
-
-  // Mesh subdivisions in each cartesian direction
-  std::vector<unsigned int> subdivisions = std::vector<unsigned int>(dim, 1);
+  // Spherical mesh parameters
+  SphericalMesh<dim> spherical_mesh;
 
   // Global refinement of mesh
   unsigned int global_refinement = 0;
@@ -673,61 +289,8 @@ private:
   unsigned int remeshing_period = UINT_MAX;
 
   // The criteria used for remeshing
-  std::vector<GridRefinement::RefinementCriterion> refinement_criteria;
+  std::map<std::string, RefinementCriterion> refinement_criteria;
 };
-
-template <unsigned int dim>
-inline void
-SpatialDiscretization<dim>::postprocess_and_validate()
-{
-  // Assign the triangulation type
-  if (radius != 0.0 && size.norm() == 0.0)
-    {
-      type = TriangulationType::Spherical;
-    }
-  else if (radius == 0.0 && size.norm() != 0.0)
-    {
-      type = TriangulationType::Rectangular;
-    }
-  else
-    {
-      AssertThrow(false, UnreachableCode());
-    }
-
-  // Check that AMR is not enabled for 1D
-  AssertThrow(
-    (!has_adaptivity || dim != 1),
-    dealii::ExcMessage(
-      "Adaptive meshing for the matrix-free method is not currently supported."));
-
-  // Some check if AMR is enabled
-  if (has_adaptivity)
-    {
-      // Check that the minimum and maximum refinement levels are valid
-      AssertThrow((max_refinement >= global_refinement),
-                  dealii::ExcMessage(
-                    "The maximum refinement level must be greater than or equal to the "
-                    "global refinement level."));
-      AssertThrow((min_refinement <= global_refinement),
-                  dealii::ExcMessage(
-                    "The minimum refinement level must be less than or equal to the "
-                    "global refinement level."));
-      AssertThrow((max_refinement >= min_refinement),
-                  dealii::ExcMessage(
-                    "The maximum refinement level must be greater than or equal to the "
-                    "minimum refinement level."));
-
-      // Check that the refinement criteria are valid for the lower and upper bounds
-      for (const auto &criterion : refinement_criteria)
-        {
-          AssertThrow((criterion.get_value_lower_bound() <=
-                       criterion.get_value_upper_bound()),
-                      dealii::ExcMessage(
-                        "The lower bound of the value-based refinement "
-                        "criteria must be less than or equal to the upper bound."));
-        }
-    }
-}
 
 template <unsigned int dim>
 inline void
@@ -740,34 +303,12 @@ SpatialDiscretization<dim>::print_parameter_summary() const
 
   if (type == TriangulationType::Spherical)
     {
-      ConditionalOStreams::pout_summary() << "Domain radius: " << radius << "\n";
     }
   else if (type == TriangulationType::Rectangular)
     {
-      if constexpr (dim == 1)
-        {
-          ConditionalOStreams::pout_summary()
-            << "Domain size: x=" << size[0] << "\n"
-            << "Subdivisions: x=" << subdivisions[0] << "\n";
-        }
-      else if constexpr (dim == 2)
-        {
-          ConditionalOStreams::pout_summary()
-            << "Domain size: x=" << size[0] << ", y=" << size[1] << "\n"
-            << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1] << "\n";
-        }
-      else if constexpr (dim == 3)
-        {
-          ConditionalOStreams::pout_summary()
-            << "Domain size: x=" << size[0] << ", y=" << size[1] << ", z=" << size[2]
-            << "\n"
-            << "Subdivisions: x=" << subdivisions[0] << ", y=" << subdivisions[1]
-            << ", z=" << subdivisions[2] << "\n";
-        }
     }
-  else
+  else if (type == TriangulationType::Custom)
     {
-      AssertThrow(false, UnreachableCode());
     }
 
   ConditionalOStreams::pout_summary()
@@ -781,15 +322,16 @@ SpatialDiscretization<dim>::print_parameter_summary() const
   if (!refinement_criteria.empty())
     {
       ConditionalOStreams::pout_summary() << "Refinement criteria:\n";
+      for (const auto &[field_name, criterion] : refinement_criteria)
+        {
+          ConditionalOStreams::pout_summary()
+            << "  Criterion type: " << criterion.criterion_string() << "\n"
+            << "  Value lower bound: " << criterion.value_lower_bound << "\n"
+            << "  Value upper bound: " << criterion.value_upper_bound << "\n"
+            << "  Gradient lower bound: " << criterion.gradient_lower_bound << "\n\n";
+        }
     }
-  for (const auto &criterion : refinement_criteria)
-    {
-      ConditionalOStreams::pout_summary()
-        << "  Criterion type: " << criterion.criterion_to_string() << "\n"
-        << "  Value lower bound: " << criterion.get_value_lower_bound() << "\n"
-        << "  Value upper bound: " << criterion.get_value_upper_bound() << "\n"
-        << "  Gradient lower bound: " << criterion.get_gradient_lower_bound() << "\n\n";
-    }
+
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 
