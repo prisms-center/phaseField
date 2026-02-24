@@ -76,7 +76,7 @@ Problem<dim, degree, number>::init_system()
   // Create the mesh
   ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
-  triangulation_manager.generate_mesh(user_inputs);
+  triangulation_manager.generate_mesh(user_inputs.get_spatial_discretization());
   Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
@@ -141,8 +141,8 @@ Problem<dim, degree, number>::init_system()
   dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
   dealii::types::global_dof_index new_dofs = 0;
   for (unsigned int remesh_index = 0;
-       remesh_index < (user_inputs.get_spatial_discretization().get_max_refinement() -
-                       user_inputs.get_spatial_discretization().get_min_refinement());
+       remesh_index < (user_inputs.get_spatial_discretization().max_refinement -
+                       user_inputs.get_spatial_discretization().min_refinement);
        remesh_index++)
     {
       // Perform grid refinement
@@ -207,7 +207,7 @@ Problem<dim, degree, number>::solve()
   const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
-  while (sim_timer.get_increment() < time_info.get_total_increments())
+  while (sim_timer.get_increment() < time_info.num_increments)
     {
       // Solve a single increment
       // Includes nucleation, refinement, constraints, solve, output, and update
@@ -252,7 +252,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::end_section("Check for nucleation");
 
   // Perform grid refinement if necessary
-  if (user_inputs.get_spatial_discretization().get_has_adaptivity() &&
+  if (user_inputs.get_spatial_discretization().has_adaptivity &&
       (user_inputs.get_spatial_discretization().should_refine_mesh(increment) ||
        any_nucleation_occurred))
     {
@@ -292,6 +292,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       Timer::start_section("Output");
       SolutionOutput<dim, number>(field_attributes,
                                   solve_context.get_solution_indexer(),
+                                  sim_timer,
                                   dof_manager,
                                   degree,
                                   "solution",

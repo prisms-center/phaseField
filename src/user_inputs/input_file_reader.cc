@@ -402,7 +402,7 @@ InputFileReader::declare_solver_parameters()
       parameter_handler.leave_subsection();
 
       // For nonlinear solves
-      subsection_text = "nonlinear solver parameters: " + std::to_string(criterion_id);
+      subsection_text = "newton solver parameters: " + std::to_string(criterion_id);
       parameter_handler.enter_subsection(subsection_text);
       {
         parameter_handler.declare_entry(

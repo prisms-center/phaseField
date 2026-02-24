@@ -5,6 +5,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
+#include <prismspf/core/simulation_timer.h>
 
 #include <prismspf/nucleation/nucleus.h>
 
@@ -14,10 +15,7 @@
 
 #include <prismspf/config.h>
 
-#include "prismspf/core/variable_attributes.h"
-
 #include <climits>
-#include <set>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -38,8 +36,7 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate(
-    const std::map<unsigned int, VariableAttributes> &var_attributes);
+  validate() const;
 
   /**
    * @brief Print parameters to summary.log
@@ -169,7 +166,7 @@ public:
    */
   template <unsigned int dim>
   [[nodiscard]] bool
-  check_active(const Nucleus<dim> &nucleus, const TemporalDiscretization &time_info) const
+  check_active(const Nucleus<dim> &nucleus, const SimulationTimer &time_info) const
   {
     return nucleus.seed_increment <= time_info.get_increment() &&
            ((time_info.get_increment() - nucleus.seed_increment) < seeding_increments ||
@@ -228,22 +225,11 @@ NucleationParameters::should_attempt_nucleation(unsigned int increment) const
 }
 
 inline void
-NucleationParameters::postprocess_and_validate(
-  const std::map<unsigned int, VariableAttributes> &var_attributes)
+NucleationParameters::validate() const
 {
   // Check if the nucleation period is valid
   AssertThrow(nucleation_period > 0,
               dealii::ExcMessage("Nucleation period must be positive."));
-
-  // Check if the postprocessed nucleation rate exists
-  for (const auto &[index, variable] : var_attributes)
-    {
-      if (variable.is_postprocess() && variable.is_nucleation_rate())
-        {
-          pp_nucleation_rate_exists = true;
-          break;
-        }
-    }
 }
 
 inline void

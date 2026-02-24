@@ -5,7 +5,6 @@
 
 #include <deal.II/base/point.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -24,12 +23,9 @@ template <unsigned int dim, typename real>
 real
 distance(const dealii::Point<dim, real> &point1,
          const dealii::Point<dim, real> &point2,
-         const UserInputParameters<dim> &user_inputs)
+         const RectangularMesh<dim>     &rectangular_mesh)
 {
-  const BoundaryParameters<dim> &boundary_params = user_inputs.get_boundary_parameters();
-  const SpatialDiscretization<dim> &spatial_discretization =
-    user_inputs.get_spatial_discretization();
-  if (!boundary_params.has_periodic_boundaries())
+  if (rectangular_mesh.periodic_directions.empty())
     {
       return point1.distance(point2);
     }
@@ -39,9 +35,9 @@ distance(const dealii::Point<dim, real> &point1,
     {
       using std::min;
       real delta = point2[d] - point1[d];
-      if (boundary_params.get_periodicity()[d])
+      if (rectangular_mesh.periodic_directions.contains(d))
         {
-          const real length      = spatial_discretization.get_size()[d];
+          const real length      = rectangular_mesh.size[d];
           const real half_length = length / 2.0;
           delta                  = pmod(delta - half_length, length) - half_length;
         }

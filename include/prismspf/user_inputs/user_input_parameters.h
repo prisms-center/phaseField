@@ -246,14 +246,14 @@ public:
            const std::vector<SolveGroup>      &solve_groups)
   {
     // Perform and postprocessing of user inputs and run checks
-    spatial_discretization.postprocess_and_validate();
-    temporal_discretization.postprocess_and_validate();
-    linear_solve_parameters.postprocess_and_validate();
-    nonlinear_solve_parameters.postprocess_and_validate();
-    output_parameters.postprocess_and_validate();
-    checkpoint_parameters.postprocess_and_validate();
+    spatial_discretization.validate();
+    temporal_discretization.validate();
+    linear_solve_parameters.validate();
+    nonlinear_solve_parameters.validate();
+    output_parameters.validate();
+    checkpoint_parameters.validate();
     boundary_parameters.postprocess_and_validate();
-    nucleation_parameters.postprocess_and_validate();
+    nucleation_parameters.validate();
     misc_parameters.postprocess_and_validate();
     load_ic_parameters.postprocess_and_validate();
   }

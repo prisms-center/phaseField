@@ -13,8 +13,6 @@
 #include <prismspf/core/grid_refiner_criterion.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
-
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
@@ -55,7 +53,7 @@ struct RectangularMesh
    * @brief Generate the mesh.
    */
   void
-  generate_mesh(Triangulation<dim> &triangulation) override
+  generate_mesh(Triangulation<dim> &triangulation) const
   {
     validate();
     dealii::GridGenerator::subdivided_hyper_rectangle(triangulation,
@@ -70,7 +68,7 @@ struct RectangularMesh
    * @brief Validate
    */
   void
-  validate()
+  validate() const
   {}
 
   /**
@@ -96,7 +94,7 @@ private:
   mark_boundaries(Triangulation<dim> &triangulation) const
   {
     // Loop through the cells
-    for (const auto &cell : triangulation->active_cell_iterators())
+    for (const auto &cell : triangulation.active_cell_iterators())
       {
         // Mark the faces (faces_per_cell = 2*dim)
         for (unsigned int face_number = 0;
@@ -166,7 +164,7 @@ struct SphericalMesh
    * @brief Generate the mesh.
    */
   void
-  generate_mesh(Triangulation<dim> &triangulation) override
+  generate_mesh(Triangulation<dim> &triangulation) const
   {
     validate();
     // TODO: can we just generate a 1d mesh using
@@ -180,7 +178,7 @@ struct SphericalMesh
    * @brief Validate
    */
   void
-  validate()
+  validate() const
   {}
 
   /**
@@ -259,6 +257,15 @@ public:
         return;
       }
     AssertThrow(false, UnreachableCode("Invalid TriangulationType"));
+  }
+
+  /**
+   * @brief Whether the provided increment is a valid grid refinement step.
+   */
+  [[nodiscard]] bool
+  should_refine_mesh(unsigned int increment) const
+  {
+    return increment % remeshing_period == 0;
   }
 
   // Triangulation type
