@@ -35,28 +35,27 @@ public:
     , fe_values_flags()
     , num_quad_points(SystemWide<dim, degree>::quadrature.size())
     , max_refinement(
-        solve_context.get_user_inputs().get_spatial_discretization().get_max_refinement())
+        solve_context.get_user_inputs().get_spatial_discretization().max_refinement)
     , min_refinement(
-        solve_context.get_user_inputs().get_spatial_discretization().get_min_refinement())
+        solve_context.get_user_inputs().get_spatial_discretization().min_refinement)
     , marker_functions()
   {
     fe_values_flags.fill(dealii::UpdateFlags::update_default);
-    for (const auto &criterion : solve_context.get_user_inputs()
-                                   .get_spatial_discretization()
-                                   .get_refinement_criteria())
+    std::map<std::string, Types::Index> field_indices =
+      field_index_map(solve_context.get_field_attributes());
+    for (const auto &[name, field_criterion] :
+         solve_context.get_user_inputs().get_spatial_discretization().refinement_criteria)
       {
         // Grab the index and field type
-        const Types::Index index = criterion.get_index();
-        const TensorRank   rank  = solve_context.get_user_inputs()
-                                  .get_variable_attributes()
-                                  .at(index)
-                                  .field_info.tensor_rank;
+        const unsigned   field_index = field_indices.at(name);
+        const TensorRank rank =
+          solve_context.get_field_attributes().at(field_index).field_type;
 
-        if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
+        if (field_criterion.criterion & RefinementFlags::Value)
           {
             fe_values_flags[int(rank)] |= dealii::UpdateFlags::update_values;
           }
-        else if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
+        else if (field_criterion.criterion & RefinementFlags::Gradient)
           {
             fe_values_flags[int(rank)] |= dealii::UpdateFlags::update_gradients;
           }
@@ -109,9 +108,7 @@ public:
     std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     // Return early if adaptive meshing is disabled
-    if (!solve_context.get_user_inputs()
-           .get_spatial_discretization()
-           .get_has_adaptivity())
+    if (!solve_context.get_user_inputs().get_spatial_discretization().has_adaptivity)
       {
         return;
       }
@@ -188,12 +185,14 @@ private:
 
             // TODO (landinjm): We can probably avoid checking some of the neighboring
             // cells when coarsening them
-            for (const auto &criterion : solve_context.get_user_inputs()
-                                           .get_spatial_discretization()
-                                           .get_refinement_criteria())
+            std::map<std::string, Types::Index> field_indices =
+              field_index_map(solve_context.get_field_attributes());
+            for (const auto &[name, field_criterion] : solve_context.get_user_inputs()
+                                                         .get_spatial_discretization()
+                                                         .refinement_criteria)
               {
                 // Grab the index
-                const Types::Index index = criterion.get_index();
+                const unsigned int index = field_indices.at(name);
 
                 // Grab the field type
                 const TensorRank local_field_type =
@@ -213,7 +212,7 @@ private:
                 const auto &solution_vector =
                   solve_context.get_solution_indexer().get_solution_vector(index);
 
-                if (criterion.get_criterion() & GridRefinement::RefinementFlags::Value)
+                if (field_criterion.criterion & RefinementFlags::Value)
                   {
                     if (local_field_type == TensorRank::Scalar)
                       {
@@ -238,7 +237,7 @@ private:
                     // Check if any of the quadrature points meet the refinement criterion
                     for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                       {
-                        if (criterion.value_in_open_range(values[q_point]))
+                        if (field_criterion.value_in_open_range(values[q_point]))
                           {
                             should_refine = true;
                             break;
@@ -251,7 +250,7 @@ private:
                         break;
                       }
                   }
-                if (criterion.get_criterion() & GridRefinement::RefinementFlags::Gradient)
+                if (field_criterion.criterion & RefinementFlags::Gradient)
                   {
                     if (local_field_type == TensorRank::Scalar)
                       {
@@ -294,7 +293,8 @@ private:
                     // Check if any of the quadrature points meet the refinement criterion
                     for (unsigned int q_point = 0; q_point < num_quad_points; ++q_point)
                       {
-                        if (criterion.gradient_magnitude_above_threshold(values[q_point]))
+                        if (field_criterion.gradient_magnitude_above_threshold(
+                              values[q_point]))
                           {
                             should_refine = true;
                             break;
@@ -354,11 +354,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(
-                        *cell,
-                        solve_context.get_user_inputs().get_temporal_discretization());
-                    }))
+                  {
+                    return marker_function->flag(*cell,
+                                                 solve_context.get_simulation_timer());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
