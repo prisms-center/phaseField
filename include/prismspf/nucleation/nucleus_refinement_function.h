@@ -42,8 +42,8 @@ public:
   {}
 
   bool
-  flag(const CellIterator                            &cell,
-       [[maybe_unused]] const TemporalDiscretization &time_info) const override
+  flag(const CellIterator                     &cell,
+       [[maybe_unused]] const SimulationTimer &time_info) const override
   {
     for (const Nucleus<dim> &nucleus : *nuclei_list)
       {

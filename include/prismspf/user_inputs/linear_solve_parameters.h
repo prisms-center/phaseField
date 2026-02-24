@@ -20,7 +20,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct LinearSolverParameters
 {
-public:
   // Solver tolerance
   double tolerance = Defaults::tolerance;
 
@@ -54,12 +53,11 @@ public:
  */
 struct LinearSolveParameters
 {
-public:
   /**
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate();
+  validate();
 
   /**
    * @brief Print parameters to summary.log
@@ -67,62 +65,12 @@ public:
   void
   print_parameter_summary() const;
 
-  /**
-   * @brief Whether we have any linear solve parameters.
-   */
-  [[nodiscard]] bool
-  has_linear_solve_parameters() const
-  {
-    return !linear_solve.empty();
-  }
-
-  /**
-   * @brief Whether we have linear solve parameters for a given field.
-   */
-  [[nodiscard]] bool
-  has_linear_solve_parameters(unsigned int field_index) const
-  {
-    return linear_solve.contains(field_index);
-  }
-
-  /**
-   * @brief Set the linear solve parameters for a given field.
-   */
-  void
-  set_linear_solve_parameters(unsigned int                  field_index,
-                              const LinearSolverParameters &linear_solver_parameters)
-  {
-    linear_solve[field_index] = linear_solver_parameters;
-  }
-
-  /**
-   * @brief Return the linear solve parameters for a given field.
-   */
-  [[nodiscard]] const LinearSolverParameters &
-  get_linear_solve_parameters(unsigned int field_index) const
-  {
-    AssertThrow(has_linear_solve_parameters(field_index),
-                dealii::ExcMessage("No linear solve parameters found for field index " +
-                                   std::to_string(field_index)));
-    return linear_solve.at(field_index);
-  }
-
-  /**
-   * @brief Return the linear solve parameters for a given field.
-   */
-  [[nodiscard]] const std::map<unsigned int, LinearSolverParameters> &
-  get_linear_solve_parameters() const
-  {
-    return linear_solve;
-  }
-
-private:
   // Map of linear solve parameters for fields that require them
-  std::map<unsigned int, LinearSolverParameters> linear_solve;
+  std::map<unsigned int, LinearSolverParameters> linear_solvers;
 };
 
 inline void
-LinearSolveParameters::postprocess_and_validate()
+LinearSolveParameters::validate()
 {
   // Nothing to do here for now
 }
@@ -130,14 +78,14 @@ LinearSolveParameters::postprocess_and_validate()
 inline void
 LinearSolveParameters::print_parameter_summary() const
 {
-  if (!linear_solve.empty())
+  if (!linear_solvers.empty())
     {
       ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Linear Solve Parameters\n"
         << "================================================\n";
 
-      for (const auto &[index, linear_solver_parameters] : linear_solve)
+      for (const auto &[index, linear_solver_parameters] : linear_solvers)
         {
           ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"

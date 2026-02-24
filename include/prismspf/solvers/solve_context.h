@@ -52,7 +52,7 @@ public:
     , constraint_manager(&_constraint_manager)
     , solution_indexer(&_solution_indexer)
     , invm_manager(*dof_manager, true, true)
-    , sim_timer(user_inputs->get_temporal_discretization().get_timestep())
+    , sim_timer(user_inputs->get_temporal_discretization().dt)
     , pde_operator(_pde_operator) {};
 
   /**

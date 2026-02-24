@@ -68,7 +68,7 @@ struct FieldAttributes
 /**
  * @brief Make a map that maps field names to field indices.
  */
-std::map<std::string, Types::Index>
+inline std::map<std::string, Types::Index>
 field_index_map(const std::vector<FieldAttributes> &fields)
 {
   std::map<std::string, Types::Index> map;

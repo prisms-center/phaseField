@@ -125,8 +125,7 @@ inline ReadBinary<dim, number>::ReadBinary(
               dealii::ExcMessage("Only one field can be read in from a binary file"));
 
   // Make sure we have a rectangular domain
-  AssertThrow(_spatial_discretization.get_type() ==
-                SpatialDiscretization<dim>::TriangulationType::Rectangular,
+  AssertThrow(_spatial_discretization.type == TriangulationType::Rectangular,
               dealii::ExcMessage(
                 "Only rectangular domains are supported for binary input files"));
 
@@ -251,7 +250,7 @@ ReadBinary<dim, number>::interpolate(const dealii::Point<dim> &point,
   std::array<number, dim> spacing;
   for (unsigned int d : std::views::iota(0U, dim))
     {
-      spacing[d] = spatial_discretization.get_size()[d] /
+      spacing[d] = spatial_discretization.rectangular_mesh.size[d] /
                    static_cast<number>(this->ic_file.n_data_points[d]);
     }
 

@@ -253,6 +253,9 @@ UserInputParameters<dim>::assign_boundary_parameters(
                   condition_from_string(conditions_strings[boundary_id]);
               }
           }
+        parameter_handler.enter_subsection("pinning point");
+        {}
+        parameter_handler.leave_subsection();
 
         // Attatch conditions to fields
         for (const auto &field_comp_name : field_names)
@@ -287,10 +290,6 @@ UserInputParameters<dim>::assign_boundary_parameters(
                   .component_constraints.at(component) = component_conditions;
               }
           }
-
-        parameter_handler.enter_subsection("pinning point");
-        {}
-        parameter_handler.leave_subsection();
       }
       parameter_handler.leave_subsection();
     }
@@ -301,65 +300,67 @@ void
 UserInputParameters<dim>::assign_linear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (unsigned int criterion_id = 0; criterion_id < InputFileReader::max_criteria;
+       criterion_id++)
     {
-      if (variable.get_pde_type() == PDEType::TimeIndependent ||
-          variable.get_pde_type() == PDEType::ImplicitTimeDependent)
-        {
-          std::string subsection_text = "linear solver parameters: ";
-          subsection_text.append(variable.get_name());
-          parameter_handler.enter_subsection(subsection_text);
+      // For linear solves
+      std::string subsection_text =
+        "linear solver parameters: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        std::vector<int> solver_ids = dealii::Utilities::string_to_int(
+          dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
 
-          LinearSolverParameters linear_solver_parameters;
+        LinearSolverParameters linear_solver_parameters;
+        // Set the tolerance type
+        const std::string type_string = parameter_handler.get("tolerance type");
+        if (boost::iequals(type_string, "AbsoluteResidual"))
+          {
+            linear_solver_parameters.tolerance_type =
+              SolverToleranceType::AbsoluteResidual;
+          }
+        else if (boost::iequals(type_string, "RelativeResidualChange"))
+          {
+            linear_solver_parameters.tolerance_type =
+              SolverToleranceType::RelativeResidualChange;
+          }
+        else
+          {
+            AssertThrow(false, UnreachableCode());
+          }
 
-          // Set the tolerance type
-          const std::string type_string = parameter_handler.get("tolerance type");
-          if (boost::iequals(type_string, "AbsoluteResidual"))
-            {
-              linear_solver_parameters.tolerance_type =
-                SolverToleranceType::AbsoluteResidual;
-            }
-          else if (boost::iequals(type_string, "RelativeResidualChange"))
-            {
-              linear_solver_parameters.tolerance_type =
-                SolverToleranceType::RelativeResidualChange;
-            }
-          else
-            {
-              AssertThrow(false, UnreachableCode());
-            }
+        // Set the tolerance value
+        linear_solver_parameters.tolerance =
+          parameter_handler.get_double("tolerance value");
 
-          // Set the tolerance value
-          linear_solver_parameters.tolerance =
-            parameter_handler.get_double("tolerance value");
+        // Set the maximum number of iterations
+        linear_solver_parameters.max_iterations =
+          static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
 
-          // Set the maximum number of iterations
-          linear_solver_parameters.max_iterations =
-            static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
+        // Set preconditioner type and related parameters
+        linear_solver_parameters.preconditioner =
+          boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
+            ? PreconditionerType::GMG
+            : PreconditionerType::None;
 
-          // Set preconditioner type and related parameters
-          linear_solver_parameters.preconditioner =
-            boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
-              ? PreconditionerType::GMG
-              : PreconditionerType::None;
+        linear_solver_parameters.smoothing_range =
+          parameter_handler.get_double("smoothing range");
 
-          linear_solver_parameters.smoothing_range =
-            parameter_handler.get_double("smoothing range");
+        linear_solver_parameters.smoother_degree =
+          static_cast<unsigned int>(parameter_handler.get_integer("smoother degree"));
 
-          linear_solver_parameters.smoother_degree =
-            static_cast<unsigned int>(parameter_handler.get_integer("smoother degree"));
+        linear_solver_parameters.eig_cg_n_iterations = static_cast<unsigned int>(
+          parameter_handler.get_integer("eigenvalue cg iterations"));
 
-          linear_solver_parameters.eig_cg_n_iterations = static_cast<unsigned int>(
-            parameter_handler.get_integer("eigenvalue cg iterations"));
-
-          linear_solver_parameters.min_mg_level =
-            static_cast<unsigned int>(parameter_handler.get_integer("min mg level"));
-
-          linear_solve_parameters.set_linear_solve_parameters(index,
-                                                              linear_solver_parameters);
-
-          parameter_handler.leave_subsection();
-        }
+        linear_solver_parameters.min_mg_level =
+          static_cast<unsigned int>(parameter_handler.get_integer("min mg level"));
+        for (auto solver_id : solver_ids)
+          {
+            linear_solve_parameters.linear_solvers[static_cast<unsigned int>(solver_id)] =
+              linear_solver_parameters;
+          }
+      }
+      parameter_handler.leave_subsection();
     }
 }
 
@@ -368,27 +369,29 @@ void
 UserInputParameters<dim>::assign_nonlinear_solve_parameters(
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const auto &[index, variable] : var_attributes)
+  for (unsigned int criterion_id = 0; criterion_id < InputFileReader::max_criteria;
+       criterion_id++)
     {
-      if (variable.get_field_solve_type() == FieldSolveType::NonexplicitSelfnonlinear ||
-          variable.get_field_solve_type() == FieldSolveType::NonexplicitCononlinear)
-        {
-          std::string subsection_text = "nonlinear solver parameters: ";
-          subsection_text.append(variable.get_name());
-          parameter_handler.enter_subsection(subsection_text);
-
-          NonlinearSolverParameters nonlinear_solver_parameters;
-          nonlinear_solver_parameters.max_iterations =
-            static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
-          nonlinear_solver_parameters.step_length =
-            parameter_handler.get_double("step size");
-          nonlinear_solve_parameters
-            .set_nonlinear_solve_parameters(index, nonlinear_solver_parameters);
-
-          // TODO (landinjm): Implement backtracking line search
-
-          parameter_handler.leave_subsection();
-        }
+      // For newton solves
+      std::string subsection_text =
+        "newton solver parameters: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        std::vector<int> solver_ids = dealii::Utilities::string_to_int(
+          dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
+        NonlinearSolverParameters nonlinear_solver_parameters;
+        nonlinear_solver_parameters.max_iterations =
+          static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
+        nonlinear_solver_parameters.step_length =
+          parameter_handler.get_double("step size");
+        for (auto solver_id : solver_ids)
+          {
+            nonlinear_solve_parameters
+              .newton_solvers[static_cast<unsigned int>(solver_id)] =
+              nonlinear_solver_parameters;
+          }
+      }
+      parameter_handler.leave_subsection();
     }
 }
 
@@ -435,9 +438,9 @@ UserInputParameters<dim>::assign_load_initial_condition_parameters(
             // Defaults to 0 for unused dimensions/cases that don't require it
             for (unsigned int k = 0; k < dim; ++k)
               {
-                ic_file.n_data_points[k] =
+                ic_file.n_data_points.at(k) =
                   static_cast<unsigned int>(parameter_handler.get_integer(
-                    "data points in " + axis_labels[k] + " direction"));
+                    "data points in " + axis_labels.at(k) + " direction"));
               }
             load_ic_parameters.add_initial_condition_file(ic_file);
           }

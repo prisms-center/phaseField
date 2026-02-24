@@ -14,7 +14,7 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
+#include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
@@ -103,24 +103,23 @@ private:
    * @brief Construct constraints for a single field based on the boundary conditions.
    */
   void
-  make_constraints_for_single_field(
-    dealii::AffineConstraints<number>               &constraint,
-    const dealii::DoFHandler<dim>                   &dof_handler,
-    const std::map<unsigned int, BoundaryCondition> &bc_set,
-    TensorRank                                       tensor_rank,
-    Types::Index                                     field_index,
-    bool                                             for_change_term);
+  make_constraints_for_single_field(dealii::AffineConstraints<number> &constraint,
+                                    const dealii::DoFHandler<dim>     &dof_handler,
+                                    const FieldConstraints<dim>       &field_constraints,
+                                    TensorRank                         tensor_rank,
+                                    Types::Index                       field_index,
+                                    bool                               for_change_term);
 
   /**
    * @brief Add boundary conditions to a single constraint.
    */
   void
-  make_bc_constraints(dealii::AffineConstraints<number>               &constraint,
-                      const dealii::DoFHandler<dim>                   &dof_handler,
-                      const std::map<unsigned int, BoundaryCondition> &boundary_condition,
-                      TensorRank                                       tensor_rank,
-                      Types::Index                                     field_index,
-                      bool for_change_term = false);
+  make_bc_constraints(dealii::AffineConstraints<number> &constraint,
+                      const dealii::DoFHandler<dim>     &dof_handler,
+                      const FieldConstraints<dim>       &boundary_condition,
+                      TensorRank                         tensor_rank,
+                      Types::Index                       field_index,
+                      bool                               for_change_term = false);
 
   /**
    * @brief Apply constraints for common boundary conditions.
@@ -129,8 +128,7 @@ private:
   make_one_boundary_constraint(dealii::AffineConstraints<number> &_constraints,
                                unsigned int                       boundary_id,
                                unsigned int                       component,
-                               BoundaryCondition::Type            boundary_type,
-                               number                             dirichlet_value,
+                               Condition                          boundary_type,
                                const dealii::DoFHandler<dim>     &dof_handler,
                                TensorRank                         tensor_rank,
                                Types::Index                       field_index,
@@ -143,30 +141,19 @@ private:
   make_natural_constraints() const;
 
   /**
-   * @brief make dirichlet constraints.
+   * @brief Make dirichlet constraints.
    */
   void
-  make_uniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
-                                     const dealii::DoFHandler<dim>     &dof_handler,
-                                     const unsigned int                &boundary_id,
-                                     const bool                        &is_vector_field,
-                                     const number                      &value,
-
-                                     const dealii::ComponentMask &mask) const;
-
-  /**
-   * @brief make nonuniform dirichlet constraints.
-   */
-  void
-  make_nonuniform_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
-                                        const dealii::DoFHandler<dim>     &dof_handler,
-                                        const unsigned int                &boundary_id,
-                                        const unsigned int                &field_index,
-                                        const bool                  &is_vector_field,
-                                        const dealii::ComponentMask &mask,
-                                        bool is_change_term = false) const;
+  make_dirichlet_constraints(dealii::AffineConstraints<number> &_constraints,
+                             const dealii::DoFHandler<dim>     &dof_handler,
+                             const unsigned int                &boundary_id,
+                             const unsigned int                &field_index,
+                             const bool                        &is_vector_field,
+                             const dealii::ComponentMask       &mask,
+                             bool is_change_term = false) const;
 
   /**
+   * @deprecated We apply periodic conditions to the mesh itself
    * @brief make periodic constraints.
    */
   void
@@ -197,19 +184,9 @@ private:
   std::shared_ptr<const DofManager<dim>> dof_manager;
 
   /**
-   * @brief PDE operator number.
+   * @brief PDE operator.
    */
   const PDEOperatorBase<dim, degree, number> *pde_operator;
-
-  /**
-   * @brief Whether we have multigrid.
-   */
-  bool has_multigrid = false;
-
-  /**
-   * @brief Global minimum level for multigrid.
-   */
-  unsigned int global_min_level = 0;
 
   /**
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed

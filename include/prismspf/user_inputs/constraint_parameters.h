@@ -22,7 +22,6 @@
 #include <map>
 #include <set>
 #include <string>
-#include <variant>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -45,7 +44,7 @@ enum Condition : std::uint8_t
 /**
  * @brief Enum to string for type
  */
-[[nodiscard]] std::string
+[[nodiscard]] inline std::string
 to_string(Condition boundary_type)
 {
   switch (boundary_type)
@@ -74,7 +73,7 @@ to_string(Condition boundary_type)
 /**
  * @brief Enum to string for type
  */
-[[nodiscard]] Condition
+[[nodiscard]] inline Condition
 condition_from_string(const std::string &boundary_string)
 {
   if (boundary_string == "Natural")
@@ -124,6 +123,18 @@ struct ComponentConditions
   // y=0, y=max. More complex geometries can have somewhat arbitrary ordering, but will
   // render some of our assertions moot.
   std::map<unsigned int, Condition> conditions;
+
+  [[nodiscard]] bool
+  has_time_dependent_bcs() const
+  {
+    return std::any_of(conditions.begin(),
+                       conditions.end(),
+                       [](const auto &dir_cond)
+                       {
+                         return dir_cond.second == Condition::TimeDependentDirichlet ||
+                                dir_cond.second == Condition::TimeDependentNeumann;
+                       });
+  }
 };
 
 template <unsigned int dim>
@@ -131,6 +142,17 @@ struct FieldConstraints
 {
   std::array<ComponentConditions, dim>                            component_constraints;
   std::set<std::pair<dealii::Point<dim>, dealii::Tensor<1, dim>>> pinned_points;
+
+  [[nodiscard]] bool
+  has_time_dependent_bcs() const
+  {
+    return std::any_of(component_constraints.begin(),
+                       component_constraints.end(),
+                       [](const ComponentConditions &comp)
+                       {
+                         return comp.has_time_dependent_bcs();
+                       });
+  }
 };
 
 /**
@@ -201,37 +223,8 @@ BoundaryParameters<dim>::print_parameter_summary() const
             }
         }
     }
+  // TODO print pinned points
 
-  if (!pinned_point_list.empty())
-    {
-      ConditionalOStreams::pout_summary() << "Pinned field index: ";
-    }
-  for (const auto &[index, point_value_pair] : pinned_point_list)
-    {
-      ConditionalOStreams::pout_summary() << index << "\n"
-                                          << "  Value: ";
-
-      // Handle variant value printing
-      std::visit(
-        [&](const auto &value)
-        {
-          if constexpr (std::is_same_v<std::decay_t<decltype(value)>, double>)
-            {
-              ConditionalOStreams::pout_summary() << value;
-            }
-          else
-            {
-              for (unsigned int i = 0; i < value.size(); ++i)
-                {
-                  ConditionalOStreams::pout_summary() << value[i] << " ";
-                }
-            }
-        },
-        point_value_pair.first);
-
-      ConditionalOStreams::pout_summary()
-        << "\n  Point: " << point_value_pair.second << "\n";
-    }
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }
 

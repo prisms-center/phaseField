@@ -20,9 +20,9 @@ FieldContainer<dim, degree, number>::FieldContainer(
   const MatrixFree                   &matrix_free)
   : field_attributes_ptr(&_field_attributes)
   , solution_indexer(&_solution_indexer)
-  , relative_level(_relative_level)
   , solve_group(&_solve_group)
   , shared_feeval_scalar(matrix_free)
+  , relative_level(_relative_level)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   // Initialize the feeval vectors
@@ -158,7 +158,7 @@ FieldContainer<dim, degree, number>::integrate_and_distribute(BlockVector *dst_s
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::feevaluation_size_valid(
-  Types::Index field_index) const
+  [[maybe_unused]] Types::Index field_index) const
 {
   // TODO
 }
@@ -166,8 +166,8 @@ FieldContainer<dim, degree, number>::feevaluation_size_valid(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::feevaluation_exists(
-  Types::Index field_index,
-  Types::Index dependency_index) const
+  [[maybe_unused]] Types::Index field_index,
+  [[maybe_unused]] Types::Index dependency_index) const
 {
   // TODO
 }
@@ -175,9 +175,9 @@ FieldContainer<dim, degree, number>::feevaluation_exists(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::access_valid(
-  Types::Index                             field_index,
-  DependencyType                           dependency_type,
-  dealii::EvaluationFlags::EvaluationFlags flag) const
+  [[maybe_unused]] Types::Index                             field_index,
+  [[maybe_unused]] DependencyType                           dependency_type,
+  [[maybe_unused]] dealii::EvaluationFlags::EvaluationFlags flag) const
 {
   // TODO
 }
@@ -185,8 +185,8 @@ FieldContainer<dim, degree, number>::access_valid(
 template <unsigned int dim, unsigned int degree, typename number>
 void
 FieldContainer<dim, degree, number>::submission_valid(
-  Types::Index   field_index,
-  DependencyType dependency_type) const
+  [[maybe_unused]] Types::Index   field_index,
+  [[maybe_unused]] DependencyType dependency_type) const
 {
   // TODO
 }

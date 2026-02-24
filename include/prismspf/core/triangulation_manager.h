@@ -7,9 +7,8 @@
 #include <deal.II/grid/tria.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
+#include <prismspf/user_inputs/constraint_parameters.h>
 #include <prismspf/user_inputs/spatial_discretization.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -24,11 +23,6 @@ template <unsigned int dim>
 class TriangulationManager
 {
 public:
-  using Triangulation =
-    std::conditional_t<dim == 1,
-                       dealii::Triangulation<dim>,
-                       dealii::parallel::distributed::Triangulation<dim>>;
-
   /**
    * @brief Constructor.
    */
@@ -69,7 +63,7 @@ public:
     // {
     // coarsened_triangulations.clear();
     // coarsened_triangulations.push_back(
-    // std::make_shared<const Triangulation>(&triangulation));
+    // std::make_shared<const Triangulation<dim>>(&triangulation));
     // }
     // TODO (landinjm): p-multigrid
   };
@@ -77,27 +71,27 @@ public:
   /**
    * @brief Getter function for triangulation (constant reference).
    */
-  [[nodiscard]] const Triangulation &
+  [[nodiscard]] const Triangulation<dim> &
   get_triangulation() const;
 
   /**
    * @brief Getter function for the multigrid triangulation (constant reference).
    */
-  [[nodiscard]] const std::vector<std::shared_ptr<const Triangulation>> &
+  [[nodiscard]] const std::vector<std::shared_ptr<const Triangulation<dim>>> &
   get_mg_triangulation() const;
 
   /**
    * @brief Getter function for a level in the globally coarsening multigrid triangulation
    * (constant reference).
    */
-  [[nodiscard]] const Triangulation &
+  [[nodiscard]] const Triangulation<dim> &
   get_triangulation(unsigned int relative_level) const;
 
   /**
    * @brief Generate mesh based on the inputs provided by the user.
    */
   void
-  generate_mesh(const SpatialDiscretization<dim> &spatial_parameters);
+  generate_mesh(const SpatialDiscretization<dim> &discretization_params);
 
   /**
    * @brief Export triangulation to vtk. This is done for debugging purposes when dealing
@@ -142,12 +136,12 @@ private:
   /**
    * @brief Main triangulation.
    */
-  Triangulation triangulation;
+  Triangulation<dim> triangulation;
 
   /**
    * @brief Coarsened triangulations for multigrid.
    */
-  std::vector<std::shared_ptr<const Triangulation>> coarsened_triangulations;
+  std::vector<std::shared_ptr<const Triangulation<dim>>> coarsened_triangulations;
 };
 
 PRISMS_PF_END_NAMESPACE
