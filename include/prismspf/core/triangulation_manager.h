@@ -58,20 +58,20 @@ public:
              "have to create a sequence of coarser meshes.")); */
     // TODO: this seems to not be implemented for distributed triangulations
     // if (has_multigrid)
-    //  {
-    //    coarsened_triangulations =
-    //      dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
-    //        triangulation);
-    //    std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
-    //  }
+    // {
+    // coarsened_triangulations =
+    // dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
+    // triangulation);
+    // std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
+    // }
     // TODO ?
     // else
-    //   {
-    //     coarsened_triangulations.clear();
-    //     coarsened_triangulations.push_back(
-    //       std::make_shared<const Triangulation>(&triangulation));
-    //   }
-    //  TODO (landinjm): p-multigrid
+    // {
+    // coarsened_triangulations.clear();
+    // coarsened_triangulations.push_back(
+    // std::make_shared<const Triangulation>(&triangulation));
+    // }
+    // TODO (landinjm): p-multigrid
   };
 
   /**
@@ -97,7 +97,7 @@ public:
    * @brief Generate mesh based on the inputs provided by the user.
    */
   void
-  generate_mesh(const UserInputParameters<dim> &user_inputs);
+  generate_mesh(const SpatialDiscretization<dim> &spatial_parameters);
 
   /**
    * @brief Export triangulation to vtk. This is done for debugging purposes when dealing
@@ -134,22 +134,6 @@ public:
   }
 
 private:
-  /**
-   * @brief Mark the domain ids on the triangulation to get the proper mapping of
-   * specified boundary conditions.
-   *
-   * TODO (landinjm): When the user has different meshs (or custom for that matter), we
-   * should let them manually set the boundary ids.
-   */
-  void
-  mark_boundaries(const SpatialDiscretization<dim> &discretization_params) const;
-
-  /**
-   * @brief Mark certain faces of the triangulation periodic.
-   */
-  void
-  mark_periodic(const UserInputParameters<dim> &user_inputs);
-
   /**
    * @brief Whether we have multigrid.
    */
