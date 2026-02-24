@@ -8,7 +8,7 @@
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
 
-#include <prismspf/user_inputs/temporal_discretization.h>
+#include <prismspf/core/simulation_timer.h>
 
 #include <prismspf/config.h>
 
@@ -32,15 +32,15 @@ public:
   virtual ~CellMarkerBase() = default;
 
   [[nodiscard]] virtual bool
-  flag([[maybe_unused]] const CellIterator           &cell,
-       [[maybe_unused]] const TemporalDiscretization &time_info) const
+  flag([[maybe_unused]] const CellIterator    &cell,
+       [[maybe_unused]] const SimulationTimer &time_info) const
   {
     return this->flag(cell.center(), time_info);
   }
 
   [[nodiscard]] virtual bool
-  flag([[maybe_unused]] const dealii::Point<dim>     &point,
-       [[maybe_unused]] const TemporalDiscretization &time_info) const
+  flag([[maybe_unused]] const dealii::Point<dim> &point,
+       [[maybe_unused]] const SimulationTimer    &time_info) const
   {
     return false;
   }

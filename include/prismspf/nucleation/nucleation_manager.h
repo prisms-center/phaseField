@@ -8,20 +8,22 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/phase_field_tools.h>
+#include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/types.h>
+
+#include <prismspf/nucleation/nucleus.h>
+
+#include <prismspf/solvers/solve_context.h>
 
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
 #include <prismspf/user_inputs/nucleation_parameters.h>
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/solvers/solve_context.h>
-
 #include <prismspf/utilities/periodic_distance.h>
 
 #include <prismspf/config.h>
-#include <prismspf/nucleation/nucleus.h>
 
 #include <algorithm>
 #include <list>
@@ -71,7 +73,8 @@ public:
   static bool
   gather_exclude_broadcast_nuclei(std::list<Nucleus<dim>>        &new_nuclei_list,
                                   std::vector<Nucleus<dim>>      &global_nuclei,
-                                  const UserInputParameters<dim> &user_inputs);
+                                  const UserInputParameters<dim> &user_inputs,
+                                  const SimulationTimer          &time_info);
 
   /**
    * @brief Gathers nuclei lists to root.
@@ -97,7 +100,7 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   // Set up references.
   const UserInputParameters<dim> &user_inputs = solve_context.get_user_inputs();
   const NucleationParameters     &nuc_params  = user_inputs.get_nucleation_parameters();
-  const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
+  const SimulationTimer          &time_info   = solve_context.get_simulation_timer();
   const double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
   auto        &rng     = user_inputs.get_miscellaneous_parameters().rng;
 
@@ -180,71 +183,7 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
             }
         }
     }
-  return gather_exclude_broadcast_nuclei(new_nuclei_list, nuclei, user_inputs);
-  //// If any nuclei were created, gather them to rank 0, exclude based on distance, and
-  //// broadcast back to all ranks
-  // if (dealii::Utilities::MPI::sum(new_nuclei_list.size(),
-  //                                 MPI_COMM_WORLD)) // dont waste time if
-  //                                                  // no nuclei appeared
-  //   {
-  //     // Gather to root process
-  //     std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(),
-  //                                          new_nuclei_list.end());
-  //     mpi_gather_nuclei(new_nuclei);
-  //     if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
-  //       {
-  //         // Remove nuclei within their exclusion distance and add to nuclei list
-  //         ConditionalOStreams::pout_base()
-  //           << new_nuclei.size() << " nuclei generated before exclusion.\n"
-  //           << "Excluding nuclei...\n";
-  //         unsigned int count = 0;
-  //
-  //        // remove bias from cell order
-  //        std::shuffle(new_nuclei.begin(), new_nuclei.end(), rng);
-  //
-  //        while (!new_nuclei.empty())
-  //          {
-  //            Nucleus<dim> &nuc   = new_nuclei.back();
-  //            bool          valid = std::none_of(
-  //              nuclei.begin(),
-  //              nuclei.end(),
-  //              [&](const Nucleus<dim> &existing_nucleus)
-  //              {
-  //                const double distance =
-  //                  prisms::distance<dim, double>(nuc.location,
-  //                                                existing_nucleus.location,
-  //                                                user_inputs);
-  //                return nuc_params.check_active(existing_nucleus, time_info) &&
-  //                       (distance < nuc_params.get_exclusion_distance() ||
-  //                        (nuc.field_index == existing_nucleus.field_index &&
-  //                         distance < nuc_params.get_same_field_exclusion_distance()));
-  //              });
-  //            if (valid)
-  //              {
-  //                // Note: Using push_back() in a loop is not good use for
-  //                // vectors. We also don't want to use reserve() on the upper bound
-  //                // because that could allocate much more space than needed. I
-  //                originally
-  //                // was using a std::list to avoid this issue, but that is unfriendly
-  //                to
-  //                // the MPI functions. One solution could be to convert between data
-  //                // structures as needed, but that also adds overhead. For now, I will
-  //                // assume that the total number of nuclei is not enough to
-  //                // cause significant performance issues.
-  //                nuclei.push_back(nuc);
-  //                ++count;
-  //                any_nucleation_occurred = true;
-  //              }
-  //            new_nuclei.pop_back();
-  //          }
-  //        ConditionalOStreams::pout_base()
-  //          << count << " nuclei generated after exclusion.\n"
-  //          << nuclei.size() << " total nuclei.\n";
-  //      }
-  //    MPI_Bcast(&any_nucleation_occurred, 1, MPI_CXX_BOOL, 0, MPI_COMM_WORLD);
-  //    mpi_broadcast_nuclei(nuclei);
-  //  }
-  // return any_nucleation_occurred;
+  return gather_exclude_broadcast_nuclei(new_nuclei_list, nuclei, user_inputs, time_info);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -252,7 +191,8 @@ inline bool
 NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
   std::list<Nucleus<dim>>        &new_nuclei_list,
   std::vector<Nucleus<dim>>      &global_nuclei,
-  const UserInputParameters<dim> &user_inputs)
+  const UserInputParameters<dim> &user_inputs,
+  const SimulationTimer          &time_info)
 {
   // dont waste time if no nuclei appeared
   if (!bool(dealii::Utilities::MPI::sum(new_nuclei_list.size(), MPI_COMM_WORLD)))
@@ -261,9 +201,8 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
     }
 
   // Set up refs
-  const NucleationParameters   &nuc_params = user_inputs.get_nucleation_parameters();
-  const TemporalDiscretization &time_info  = user_inputs.get_temporal_discretization();
-  RNGEngine                    &rng = user_inputs.get_miscellaneous_parameters().rng;
+  const NucleationParameters &nuc_params = user_inputs.get_nucleation_parameters();
+  RNGEngine                  &rng        = user_inputs.get_miscellaneous_parameters().rng;
 
   // Gather new nuclei to root process
   std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(), new_nuclei_list.end());
@@ -283,21 +222,22 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
 
       while (!new_nuclei.empty())
         {
-          const Nucleus<dim> &nuc   = new_nuclei.back();
-          bool                valid = std::none_of(
-            global_nuclei.begin(),
-            global_nuclei.end(),
-            [&](const Nucleus<dim> &existing_nucleus)
-              {
-                const double distance =
-                  prisms::distance<dim, double>(nuc.location,
-                                                existing_nucleus.location,
-                                                user_inputs);
-                return nuc_params.check_active(existing_nucleus, time_info) &&
-                       (distance < nuc_params.get_exclusion_distance() ||
-                        (nuc.field_index == existing_nucleus.field_index &&
-                         distance < nuc_params.get_same_field_exclusion_distance()));
-              });
+          const Nucleus<dim> &nuc = new_nuclei.back();
+          bool                valid =
+            std::none_of(global_nuclei.begin(),
+                         global_nuclei.end(),
+                         [&](const Nucleus<dim> &existing_nucleus)
+                         {
+                           const double distance = prisms::distance<dim, double>(
+                             nuc.location,
+                             existing_nucleus.location,
+                             user_inputs.get_spatial_discretization().rectangular_mesh);
+                           return nuc_params.check_active(existing_nucleus, time_info) &&
+                                  (distance < nuc_params.get_exclusion_distance() ||
+                                   (nuc.field_index == existing_nucleus.field_index &&
+                                    distance <
+                                      nuc_params.get_same_field_exclusion_distance()));
+                         });
           if (valid)
             {
               // Note: Using push_back() in a loop is not good use for
