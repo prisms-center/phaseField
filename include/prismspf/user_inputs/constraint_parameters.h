@@ -166,7 +166,7 @@ public:
    * @brief Postprocess and validate parameters.
    */
   void
-  validate(const std::vector<FieldAttributes> &field_attributes);
+  validate();
 
   /**
    * @brief Print parameters to summary.log
@@ -188,8 +188,7 @@ public:
 
 template <unsigned int dim>
 inline void
-BoundaryParameters<dim>::validate(
-  [[maybe_unused]] const std::vector<FieldAttributes> &field_attributes)
+BoundaryParameters<dim>::validate()
 { // todo
 }
 
@@ -204,24 +203,7 @@ BoundaryParameters<dim>::print_parameter_summary() const
 
   for (const auto &[index, component_map] : boundary_condition_list)
     {
-      ConditionalOStreams::pout_summary() << "Index: " << index << "\n";
-      for (const auto &[component, boundary_condition] : component_map)
-        {
-          ConditionalOStreams::pout_summary() << "  Component: " << component << "\n";
-          for (const auto &[domain_id, boundary_type] :
-               boundary_condition.get_boundary_condition_map())
-            {
-              ConditionalOStreams::pout_summary()
-                << "    Boundary id: " << domain_id << "    "
-                << "Condition: " << boundary_condition.to_string(boundary_type);
-              if (boundary_type == Condition::Dirichlet)
-                {
-                  ConditionalOStreams::pout_summary()
-                    << " = " << boundary_condition.get_dirichlet_value(domain_id);
-                }
-              ConditionalOStreams::pout_summary() << "\n";
-            }
-        }
+      // Todo
     }
   // TODO print pinned points
 

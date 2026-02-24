@@ -31,9 +31,10 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim>
-UserInputParameters<dim>::UserInputParameters(InputFileReader          &input_file_reader,
-                                              dealii::ParameterHandler &parameter_handler)
+UserInputParameters<dim>::UserInputParameters(const std::string &file_name)
 {
+  InputFileReader           input_file_reader(file_name);
+  dealii::ParameterHandler &parameter_handler = input_file_reader.get_parameter_handler();
   // Assign the parameters to the appropriate data structures
   assign_spatial_discretization_parameters(parameter_handler);
   assign_temporal_discretization_parameters(parameter_handler);

@@ -34,11 +34,14 @@ class UserInputParameters
 {
 public:
   /**
+   * @brief Default Constructor.
+   */
+  UserInputParameters() = default;
+  /**
    * @brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
-  UserInputParameters(InputFileReader          &input_file_reader,
-                      dealii::ParameterHandler &parameter_handler);
+  explicit UserInputParameters(const std::string &file_name);
 
   /**
    * @brief Return the spatial discretization parameters.
@@ -252,7 +255,7 @@ public:
     nonlinear_solve_parameters.validate();
     output_parameters.validate();
     checkpoint_parameters.validate();
-    boundary_parameters.postprocess_and_validate();
+    boundary_parameters.validate();
     nucleation_parameters.validate();
     misc_parameters.postprocess_and_validate();
     load_ic_parameters.postprocess_and_validate();
