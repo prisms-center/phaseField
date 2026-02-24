@@ -77,13 +77,13 @@ operator&=(RefinementFlags &flag_1, const RefinementFlags flag_2)
 struct RefinementCriterion
 {
   /**
-   * @brief Default constructor.
-   *
+   * @brief Constructor.
    */
-  explicit RefinementCriterion(const RefinementFlags &_criterion,
-                               const double          &_value_lower_bound    = DBL_MAX,
-                               const double          &_value_upper_bound    = DBL_MAX,
-                               const double          &_gradient_lower_bound = DBL_MAX)
+  explicit RefinementCriterion(
+    const RefinementFlags &_criterion            = RefinementFlags::Nothing,
+    const double          &_value_lower_bound    = DBL_MAX,
+    const double          &_value_upper_bound    = DBL_MAX,
+    const double          &_gradient_lower_bound = DBL_MAX)
     : criterion(_criterion)
     , value_lower_bound(_value_lower_bound)
     , value_upper_bound(_value_upper_bound)
