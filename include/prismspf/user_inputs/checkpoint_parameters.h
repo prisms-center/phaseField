@@ -23,60 +23,26 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct CheckpointParameters
 {
-public:
-  /**
-   * @brief Set whether to load from a checkpoint file.
-   */
-  void
-  set_should_load_checkpoint(bool should_load_checkpoint)
-  {
-    load_from_checkpoint = should_load_checkpoint;
-  }
-
-  /**
-   * @brief Return if checkpoint should be loaded.
-   */
-  [[nodiscard]] bool
-  should_load_checkpoint() const
-  {
-    return load_from_checkpoint;
-  }
-
   /**
    * @brief Return if the increment should be checkpointted.
    */
   [[nodiscard]] bool
-  should_checkpoint(unsigned int increment) const;
+  should_checkpoint(unsigned int increment) const
+  {
+    return checkpoint_list.contains(increment);
+  }
 
   /**
    * @brief Postprocess and validate parameters.
    */
   void
-  postprocess_and_validate();
+  validate();
 
   /**
    * @brief Print parameters to summary.log
    */
   void
   print_parameter_summary() const;
-
-  /**
-   * @brief Get the file name.
-   */
-  [[nodiscard]] const std::string &
-  get_file_name() const
-  {
-    return file_name;
-  }
-
-  /**
-   * @brief Set the file name
-   */
-  void
-  set_file_name(const std::string &_file_name)
-  {
-    file_name = _file_name;
-  }
 
   /**
    * @brief Set the user checkpoint list
@@ -155,18 +121,8 @@ public:
     return checkpoint_list.size();
   }
 
-  /**
-   * @brief Whether to print timing information with checkpoint
-   */
-  void
-  set_print_timing_with_checkpoint(const bool &_print_timing_with_checkpoint)
-  {
-    print_timing_with_checkpoint = _print_timing_with_checkpoint;
-  }
-
-private:
   // Whether to load from a checkpoint
-  bool load_from_checkpoint = false;
+  bool should_load_checkpoint = false;
 
   // Checkpoint file name
   std::string file_name;
@@ -178,16 +134,6 @@ private:
   // List of increments that checkpoint the solution to file
   std::set<unsigned int> checkpoint_list;
 };
-
-inline bool
-CheckpointParameters::should_checkpoint(unsigned int increment) const
-{
-  return checkpoint_list.contains(increment);
-}
-
-inline void
-CheckpointParameters::postprocess_and_validate()
-{}
 
 inline void
 CheckpointParameters::print_parameter_summary() const
