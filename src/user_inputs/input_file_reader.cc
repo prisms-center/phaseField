@@ -201,7 +201,6 @@ InputFileReader::declare_parameters()
   declare_load_ic_parameters();
   declare_checkpoint_parameters();
   declare_bc_parameters();
-  declare_pinning_parameters();
   declare_nucleation_parameters();
   declare_grain_remapping_parameters();
   declare_grain_loading_parameters();
@@ -259,6 +258,19 @@ InputFileReader::declare_mesh()
       "1",
       dealii::Patterns::Integer(1, INT_MAX),
       "The number of mesh subdivisions in the z direction.");
+
+    parameter_handler.declare_entry("periodic x",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the x-direction.");
+    parameter_handler.declare_entry("periodic y",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the y-direction.");
+    parameter_handler.declare_entry("periodic z",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the z-direction.");
   }
   parameter_handler.leave_subsection();
 
