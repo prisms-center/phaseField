@@ -26,7 +26,14 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit TriangulationManager(bool _has_multigrid);
+  explicit TriangulationManager(bool _has_multigrid = false);
+
+  explicit TriangulationManager(const SpatialDiscretization<dim> &discretization_params,
+                                bool                              _has_multigrid = false)
+    : TriangulationManager(_has_multigrid)
+  {
+    generate_mesh(discretization_params);
+  }
 
   /**
    * @brief Set whether multigrid triangulations will be generated.

@@ -36,7 +36,9 @@ struct CheckpointParameters
    * @brief Postprocess and validate parameters.
    */
   void
-  validate();
+  validate()
+  { // todo
+  }
 
   /**
    * @brief Print parameters to summary.log

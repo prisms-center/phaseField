@@ -32,6 +32,12 @@ public:
   explicit DofManager(const std::vector<FieldAttributes> &field_attributes);
 
   /**
+   * @brief Constructor.
+   */
+  DofManager(const std::vector<FieldAttributes> &field_attributes,
+             const TriangulationManager<dim>    &triangulation_handler);
+
+  /**
    * @brief Initialize the DoFHandlers
    */
   void

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/parameter_handler.h>
+
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/parse_cmd_options.h>
@@ -36,8 +38,8 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , m_well(get_user_inputs().get_user_constants().get_model_constant_double("m_well"))
-    , kappa(get_user_inputs().get_user_constants().get_model_constant_double("kappa"))
+    , m_well(1.0)
+    , kappa(2.0)
   {}
 
 private:
@@ -162,8 +164,11 @@ main(int argc, char *argv[])
       solve_groups.push_back(exp_group);
       solve_groups.push_back(pp_group);
 
-      UserInputParameters<dim>                              user_inputs;
-      PhaseFieldTools<dim>                                  pf_tools;
+      InputFileReader prm(parameters_filename);
+      const auto     &param_handler = prm.get_parameter_handler();
+      param_handler.print_parameters("thing.prm", dealii::ParameterHandler::PRM);
+      UserInputParameters<dim> user_inputs(parameters_filename);
+      PhaseFieldTools<dim>     pf_tools;
       std::shared_ptr<PDEOperatorBase<dim, degree, double>> pde_operator =
         std::make_shared<CustomPDE<dim, degree, double>>(user_inputs, pf_tools);
       Problem<dim, degree, double> problem(field_attributes,

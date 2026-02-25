@@ -7,6 +7,7 @@
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/triangulation_manager.h>
 
 #include <prismspf/solvers/solvers.h>
 
@@ -41,8 +42,8 @@ Problem<dim, degree, number>::Problem(
   , solve_groups(_solve_groups)
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
-  , triangulation_manager(false)
-  , dof_manager(field_attributes)
+  , triangulation_manager(_user_inputs.get_spatial_discretization(), false)
+  , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes, dof_manager, _pde_operator.get())
   , solvers(solve_groups.size(), nullptr)
   , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
