@@ -37,19 +37,13 @@ public:
           const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &_pde_operator);
 
   /**
-   * @brief Run initialization and solving steps of the given problem.
-   */
-  void
-  run();
-
-private:
-  /**
    * @brief Main time-stepping loop that calls solve_increment, reinit_system,
    * output_results, etc...
    */
   void
   solve();
 
+private:
   /**
    * @brief Solve a single increment of the given PDEs.
    */

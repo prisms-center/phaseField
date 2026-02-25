@@ -6,3 +6,11 @@ for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
   {
     template class GroupSolutionHandler<dimension, number>;
   }
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
+  {
+    template void GroupSolutionHandler<dimension, number>::init( 
+      const dealii::Mapping<dimension>                   &mapping,
+      const DofManager<dimension>                        &dof_manager,
+      const ConstraintManager<dimension, degree, number> &constraint_manager,
+      const dealii::Quadrature<dimension>                &quad);
+  }

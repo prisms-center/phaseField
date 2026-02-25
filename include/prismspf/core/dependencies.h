@@ -132,7 +132,7 @@ using Dependencies::Dependency;
 
 using DependencySet = std::map<Types::Index, Dependency>;
 
-DependencySet
+inline DependencySet
 make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
                     std::set<std::string>               dependency_strings)
 {
@@ -200,7 +200,7 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
   return result;
 }
 
-DependencySet
+inline DependencySet
 make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
                     const std::string                  &dependency_string)
 {

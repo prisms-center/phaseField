@@ -214,8 +214,20 @@ public:
   /**
    * @brief Get the solution handler.
    */
+  [[nodiscard]] const GroupSolutionHandler<dim, number> &
+  get_solution_manager() const
+  {
+    return solutions;
+  }
+
+  /**
+   * @brief Get the solution handler.
+   */
   [[nodiscard]] GroupSolutionHandler<dim, number> &
-  get_solution_manager() const;
+  get_solution_manager()
+  {
+    return solutions;
+  }
 
   /**
    * @brief Get the pde operator.
