@@ -87,23 +87,10 @@ public:
     Timer::end_section("Update ghosts");
   }
 
-  /**
-   * @brief Solve for a single update step.
-   */
-  void
-  solve() override;
-
-  /**
-   * @brief Print information about the solver to summary.log.
-   */
-  void
-  print() override;
-
 private:
   /**
    * @brief Matrix free operators for each level
    */
-
   std::vector<MFOperator<dim, degree, number>> rhs_operators;
 };
 

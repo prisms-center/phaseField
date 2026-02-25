@@ -8,6 +8,7 @@ set(_src
     ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/problem.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/phase_field_tools.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/group_solution_handler.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_indexer.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
@@ -22,6 +23,7 @@ set(_inst
     nonuniform_dirichlet.inst.in
     problem.inst.in
     phase_field_tools.inst.in
+    group_solution_handler.inst.in
     solution_indexer.inst.in
     solution_output.inst.in
     triangulation_manager.inst.in

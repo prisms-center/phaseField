@@ -85,7 +85,7 @@ field_index_map(const std::vector<FieldAttributes> &fields)
 /**
  * @brief Make a map that maps field names to field attributes.
  */
-std::map<std::string, FieldAttributes>
+inline std::map<std::string, FieldAttributes>
 field_map(const std::vector<FieldAttributes> &fields)
 {
   std::map<std::string, FieldAttributes> map;

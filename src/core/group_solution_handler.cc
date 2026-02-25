@@ -3,6 +3,7 @@
 
 #include <deal.II/base/exceptions.h>
 
+#include <prismspf/core/dof_manager.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/timer.h>
@@ -252,7 +253,7 @@ GroupSolutionHandler<dim, number>::init(
       MatrixFree                 &matrix_free    = solution_level.matrix_free;
       matrix_free.reinit(
         mapping,
-        dof_manager.get_dof_handlers(solve_group.field_indices, relative_level),
+        dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
         constraint_manager.get_constraints(solve_group.field_indices, relative_level),
         quad);
     }
@@ -303,12 +304,13 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::init_solution_transfer()
 {
-  const dealii::DoFHandler<dim> &dof_handler =
-    solution_levels[0].matrix_free.get_dof_handler();
-  solution_transfer = SolutionTransfer(dof_handler);
-  for (unsigned int i = 0; i < oldest_saved; ++i)
+  unsigned int num_blocks = solve_group.field_indices.size();
+  block_solution_transfer.clear();
+  block_solution_transfer.reserve(num_blocks);
+  for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      old_solution_transfer[i] = SolutionTransfer(dof_handler);
+      block_solution_transfer.emplace_back(
+        get_matrix_free().get_dof_handler(block_index));
     }
 }
 
@@ -316,11 +318,19 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
 {
-  solution_transfer.prepare_for_coarsening_and_refinement(solution_levels[0].solutions);
-  for (unsigned int i = 0; i < oldest_saved; ++i)
+  unsigned int                        num_blocks = solve_group.field_indices.size();
+  std::vector<const SolutionVector *> fields_at_ages;
+  fields_at_ages.reserve(oldest_saved);
+  for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      old_solution_transfer[i].prepare_for_coarsening_and_refinement(
-        solution_levels[0].old_solutions[i]);
+      fields_at_ages.push_back(&(solution_levels[0].solutions.block(block_index)));
+      for (unsigned int age = 0; age < oldest_saved; age++)
+        {
+          fields_at_ages.push_back(
+            &(solution_levels[0].old_solutions[age].block(block_index)));
+        }
+      block_solution_transfer[block_index].prepare_for_coarsening_and_refinement(
+        fields_at_ages);
     }
 }
 
@@ -328,11 +338,21 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::execute_solution_transfer()
 {
-  solution_transfer.interpolate(solution_levels[0].solutions);
-  for (unsigned int i = 0; i < oldest_saved; ++i)
+  // implementation will have identical structure to `prepare_for_solution_transfer()`
+  unsigned int                  num_blocks = solve_group.field_indices.size();
+  std::vector<SolutionVector *> fields_at_ages;
+  fields_at_ages.reserve(oldest_saved);
+  for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      old_solution_transfer[i].interpolate(solution_levels[0].old_solutions[i]);
+      fields_at_ages.push_back(&(solution_levels[0].solutions.block(block_index)));
+      for (unsigned int age = 0; age < oldest_saved; age++)
+        {
+          fields_at_ages.push_back(
+            &(solution_levels[0].old_solutions[age].block(block_index)));
+        }
+      block_solution_transfer[block_index].interpolate(fields_at_ages);
     }
+  // todo have all block vectors refresh their size (not automatic btw)
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
@@ -369,10 +389,13 @@ GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level
   BlockVector &new_solutions = solution_levels[relative_level].new_solutions;
   MatrixFree  &matrix_free   = solution_levels[relative_level].matrix_free;
 
-  for (unsigned int i = 0; i < matrix_free.get_affine_constraints().size(); ++i)
+  unsigned int num_blocks = solve_group.field_indices.size();
+  for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      matrix_free.get_affine_constraints()[i].distribute(solutions.block(i));
-      matrix_free.get_affine_constraints()[i].distribute(new_solutions.block(i));
+      matrix_free.get_affine_constraints(block_index)
+        .distribute(solutions.block(block_index));
+      matrix_free.get_affine_constraints(block_index)
+        .distribute(new_solutions.block(block_index));
       // TODO: Check if this needs to be done to both or just one of the above
     }
 }
