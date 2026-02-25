@@ -25,7 +25,10 @@ public:
    * @brief Constructor.
    */
   explicit PDEOperatorBase(const UserInputParameters<dim> &_user_inputs,
-                           const PhaseFieldTools<dim>     &_pf_tools);
+                           const PhaseFieldTools<dim>     &_pf_tools)
+    : user_inputs(&_user_inputs)
+    , pf_tools(&_pf_tools)
+  {}
 
   /**
    * @brief Destructor.
@@ -36,50 +39,60 @@ public:
    * @brief User-implemented class for the setting initial conditions.
    */
   virtual void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        number                   &scalar_value,
-                        number                   &vector_component_value) const = 0;
+  set_initial_condition([[maybe_unused]] const unsigned int       &index,
+                        [[maybe_unused]] const unsigned int       &component,
+                        [[maybe_unused]] const dealii::Point<dim> &point,
+                        [[maybe_unused]] number                   &scalar_value,
+                        [[maybe_unused]] number &vector_component_value) const
+  {}
 
   /**
    * @brief User-implemented class for the setting nonuniform boundary conditions.
    */
   virtual void
-  set_nonuniform_dirichlet(const unsigned int       &index,
-                           const unsigned int       &boundary_id,
-                           const unsigned int       &component,
-                           const dealii::Point<dim> &point,
-                           number                   &scalar_value,
-                           number                   &vector_component_value) const = 0;
+  set_nonuniform_dirichlet([[maybe_unused]] const unsigned int       &index,
+                           [[maybe_unused]] const unsigned int       &boundary_id,
+                           [[maybe_unused]] const unsigned int       &component,
+                           [[maybe_unused]] const dealii::Point<dim> &point,
+                           [[maybe_unused]] number                   &scalar_value,
+                           [[maybe_unused]] number &vector_component_value) const
+  {}
 
   /**
    * @brief User-implemented class for the RHS of explicit equations.
    */
   virtual void
-  compute_rhs(FieldContainer<dim, degree, number> &variable_list,
-              const SimulationTimer               &sim_timer,
-              unsigned int                         solver_id) const = 0;
+  compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
+              [[maybe_unused]] const SimulationTimer               &sim_timer,
+              [[maybe_unused]] unsigned int                         solver_id) const
+  {}
 
   /**
    * @brief User-implemented class for the RHS of nonexplicit equations.
    */
   virtual void
-  compute_lhs(FieldContainer<dim, degree, number> &variable_list,
-              const SimulationTimer               &sim_timer,
-              unsigned int                         solver_id) const = 0;
+  compute_lhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
+              [[maybe_unused]] const SimulationTimer               &sim_timer,
+              [[maybe_unused]] unsigned int                         solver_id) const
+  {}
 
   /**
    * @brief Get the user inputs (constant reference).
    */
   [[nodiscard]] const UserInputParameters<dim> &
-  get_user_inputs() const;
+  get_user_inputs() const
+  {
+    return *user_inputs;
+  }
 
   /**
    * @brief Get the phase field tools (constant reference).
    */
   [[nodiscard]] const PhaseFieldTools<dim> &
-  get_pf_tools() const;
+  get_pf_tools() const
+  {
+    return *pf_tools;
+  }
 
 private:
   /**

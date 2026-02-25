@@ -22,6 +22,10 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+// Major TODO: remove 'new_solutions' as prismspf solves for n from n-1 rather than n+1
+// from n. Also remove 'change_solutions' as the vector should be provided by the /solver/
+// rather than in the core solution handler. Propogate these changes to FieldContainer.
+
 /**
  * @brief The solution vectors.
  */
@@ -32,6 +36,7 @@ struct SolutionLevel
   using SolutionVector = BlockVector::BlockType;
   using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
   BlockVector                                            solutions;
+  BlockVector                                            new_solutions;
   std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
   BlockVector                                            change_solutions;
   MatrixFree                                             matrix_free;
@@ -51,7 +56,7 @@ public:
   using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
 #else
   using SolutionTransfer =
-    dealii::parallel::distributed::SolutionTransfer<dim, BlockVector>;
+    dealii::parallel::distributed::SolutionTransfer<dim, SolutionVector>;
 #endif
 
   /**
@@ -279,7 +284,7 @@ private:
   /**
    * @brief Oldest saved age.
    */
-  int oldest_saved = 0;
+  unsigned int oldest_saved = 1;
 
   /**
    * @brief Mapping from block index to global field index.
@@ -296,10 +301,14 @@ private:
   std::vector<SolutionLevel<dim, number>> solution_levels;
 
   /**
-   * @brief Utility for solution transfer to different mesh (for AMR).
+   * @brief Utility for solution transfer to different mesh (for AMR). Can only work on
+   * one block at a time.
+   * @note solution transfers can work on multiple solutions as long as they are using the
+   * same underlying dof numbering. All of our scalars and vectors have identical dof
+   * handlers, so we may be able to take advantage of this instead of creating several
+   * solution transfers as we do here. I don't know if this affects performance. todo
    */
-  SolutionTransfer                                            solution_transfer;
-  std::array<SolutionTransfer, Numbers::max_saved_increments> old_solution_transfer;
+  std::vector<SolutionTransfer> block_solution_transfer;
 };
 
 PRISMS_PF_END_NAMESPACE
