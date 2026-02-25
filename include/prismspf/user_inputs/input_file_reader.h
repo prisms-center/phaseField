@@ -120,12 +120,6 @@ public:
   declare_bc_parameters();
 
   /**
-   * @brief Declare parameters for pinned points.
-   */
-  void
-  declare_pinning_parameters();
-
-  /**
    * @brief Declare parameters for nucleation
    */
   void

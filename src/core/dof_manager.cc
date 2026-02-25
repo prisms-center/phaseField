@@ -30,6 +30,14 @@ DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes
 }
 
 template <unsigned int dim>
+DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes,
+                            const TriangulationManager<dim>    &triangulation_handler)
+  : DofManager(field_attributes)
+{
+  init(triangulation_handler);
+}
+
+template <unsigned int dim>
 void
 DofManager<dim>::init(const TriangulationManager<dim> &triangulation_handler)
 {

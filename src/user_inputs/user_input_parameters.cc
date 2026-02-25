@@ -83,9 +83,6 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
   spatial_discretization.global_refinement =
     (static_cast<unsigned int>(parameter_handler.get_integer("global refinement")));
 
-  spatial_discretization.degree =
-    (static_cast<unsigned int>(parameter_handler.get_integer("degree")));
-
   spatial_discretization.has_adaptivity = (parameter_handler.get_bool("mesh adaptivity"));
 
   spatial_discretization.remeshing_period =
@@ -107,6 +104,7 @@ UserInputParameters<dim>::assign_spatial_discretization_parameters(
           dealii::Utilities::split_string_list(parameter_handler.get("variables"));
         static const std::map<std::string, RefinementFlags> crit_map {
           {"",                   RefinementFlags::Nothing                          },
+          {"none",               RefinementFlags::Nothing                          },
           {"value",              RefinementFlags::Value                            },
           {"gradient",           RefinementFlags::Gradient                         },
           {"value_and_gradient", RefinementFlags::Value | RefinementFlags::Gradient}
