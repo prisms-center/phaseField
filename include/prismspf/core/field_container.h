@@ -87,48 +87,34 @@ public:
   struct GetRankHelper
   {
     static constexpr TensorRank rank_from_val = []() constexpr
-      {
-        if constexpr (std::is_same_v<Type, ScalarValue>)
-          {
-            return TensorRank::Scalar;
-          }
-        else
-          {
-            return TensorRank(Type::rank);
-          }
-      }();
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank);
+        }
+    }();
 
     static constexpr TensorRank rank_from_grad = []() constexpr
-      {
-        if constexpr (std::is_same_v<Type, ScalarValue>) //&& dim == 1)
-          {
-            return TensorRank::Scalar;
-          }
-        else
-          {
-            return TensorRank(Type::rank - 1);
-          }
-      }();
+    {
+      if constexpr (std::is_same_v<Type, ScalarValue>) //&& dim == 1)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(Type::rank - 1);
+        }
+    }();
   };
 
   template <typename ValType>
-  using GetRankFromVal = GetRankHelper<ValType>::rank_from_val;
+  static constexpr TensorRank GetRankFromVal = GetRankHelper<ValType>::rank_from_val;
   template <typename GradType>
-  using GetRankFromGrad = GetRankHelper<GradType>::rank_from_grad;
-
-  template <TensorRank Rank>
-  std::vector<FEEval<Rank>>
-  get_relevant_feeval_vector()
-  {
-    if constexpr (Rank == TensorRank::Scalar)
-      {
-        return feeval_deps_scalar;
-      }
-    else if constexpr (Rank == TensorRank::Vector)
-      {
-        return feeval_deps_vector;
-      }
-  }
+  static constexpr TensorRank GetRankFromGrad = GetRankHelper<GradType>::rank_from_grad;
 
   /**
    * @brief Typedef for scalar diagonal matrix objects.
@@ -139,6 +125,204 @@ public:
    * @brief Typedef for vector diagonal matrix objects.
    */
   using VectorDiagonal = dealii::AlignedVector<VectorValue>;
+
+  /**
+   * @brief Struct to hold feevaluation relevant for this solve.
+   */
+  template <typename FEEvaluationType>
+  struct FEEValuationDeps
+  {
+    using FEEDepPair    = std::pair<FEEvaluationType, EvalFlags>;
+    using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
+    FEEDepPairPtr                                            fe_eval;
+    FEEDepPairPtr                                            fe_eval_src_dst;
+    std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
+    EvalFlags integration_flags = EvalFlags::nothing;
+    /**
+     * @brief The solution group and the block index
+     * @note It would look nicer to just use the SolutionIndexer, but this way decreases
+     * indexing
+     */
+    const SolutionLevel<dim, number> *solution_level = nullptr;
+    unsigned int                      block_index    = -1;
+
+    FEEValuationDeps() = default;
+
+    FEEValuationDeps(
+      const Dependencies::Dependency                                    &dependency,
+      const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
+      bool                                                               is_dst)
+      : solution_level(mf_id_pair.first)
+      , block_index(mf_id_pair.second)
+    {
+      if (dependency.flag)
+        {
+          fe_eval =
+            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                          block_index),
+                                         dependency.flag);
+        }
+      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+        {
+          if (dependency.old_flags.at(age))
+            {
+              fe_eval_old[age] =
+                std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                              block_index),
+                                             dependency.old_flags.at(age));
+            }
+        }
+      if (dependency.change_flag || is_dst)
+        {
+          fe_eval_src_dst =
+            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
+                                                          block_index),
+                                         dependency.change_flag);
+        }
+    }
+
+    template <DependencyType type>
+    const FEEvaluationType &
+    get() const
+    {
+      // TODO: Assertions
+      if constexpr (type == DependencyType::Change)
+        {
+          return fe_eval_src_dst->first;
+        }
+      else if constexpr (type == DependencyType::Normal)
+        {
+          return fe_eval->first;
+        }
+      else
+        {
+          return fe_eval_old[int(type)]->first;
+        }
+    }
+
+    template <DependencyType type>
+    FEEvaluationType &
+    get()
+    {
+      // TODO: Assertions
+      if constexpr (type == DependencyType::Change)
+        {
+          return fe_eval_src_dst->first;
+        }
+      else if constexpr (type == DependencyType::Normal)
+        {
+          return fe_eval->first;
+        }
+      else
+        {
+          return fe_eval_old[int(type)]->first;
+        }
+    }
+
+    void
+    reinit(unsigned int cell)
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.reinit(cell);
+        }
+      for (auto &old_fe_eval : fe_eval_old)
+        {
+          if (old_fe_eval)
+            {
+              old_fe_eval->first.reinit(cell);
+            }
+        }
+      if (fe_eval_src_dst)
+        {
+          fe_eval_src_dst->first.reinit(cell);
+        }
+    }
+
+    void
+    eval(const BlockVector *_src_solutions)
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.read_dof_values_plain(
+            solution_level->solutions.block(block_index));
+          fe_eval->first.evaluate(fe_eval->second);
+        }
+      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+        {
+          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
+            {
+              old_fe_eval->first.read_dof_values_plain(
+                solution_level->old_solutions[age].block(block_index));
+              old_fe_eval->first.evaluate(old_fe_eval->second);
+            }
+        }
+      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
+        {
+          fe_eval_src_dst->first.read_dof_values_plain(
+            _src_solutions->block(block_index));
+          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+        }
+    }
+
+    void
+    reinit_and_eval(unsigned int cell, const BlockVector *_src_solutions)
+    {
+      if (fe_eval)
+        {
+          fe_eval->first.reinit(cell);
+          fe_eval->first.read_dof_values_plain(
+            solution_level->solutions.block(block_index));
+          fe_eval->first.evaluate(fe_eval->second);
+        }
+      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+        {
+          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
+            {
+              old_fe_eval->first.reinit(cell);
+              old_fe_eval->first.read_dof_values_plain(
+                solution_level->old_solutions[age].block(block_index));
+              old_fe_eval->first.evaluate(old_fe_eval->second);
+            }
+        }
+      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
+        {
+          fe_eval_src_dst->first.reinit(cell);
+          fe_eval_src_dst->first.read_dof_values_plain(
+            _src_solutions->block(block_index));
+          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+        }
+    }
+
+    void
+    integrate()
+    {
+      if (fe_eval_src_dst)
+        {
+          fe_eval_src_dst->first.integrate(integration_flags);
+        }
+    }
+
+    void
+    integrate_and_distribute(BlockVector *dst_solutions)
+    {
+      if (fe_eval_src_dst)
+        {
+          fe_eval_src_dst->first.integrate_scatter(integration_flags,
+                                                   dst_solutions->block(block_index));
+        }
+    }
+
+    void
+    distribute(BlockVector *dst_solutions)
+    {
+      if (fe_eval_src_dst)
+        {
+          fe_eval_src_dst->first.distribute_local_to_global(
+            dst_solutions->block(block_index));
+        }
+    }
+  };
 
   /**
    * @brief Constructor.
@@ -388,6 +572,34 @@ public:
   }
 
 private:
+  template <TensorRank Rank>
+  std::vector<FEEValuationDeps<FEEval<Rank>>> &
+  get_relevant_feeval_vector()
+  {
+    if constexpr (Rank == TensorRank::Scalar)
+      {
+        return feeval_deps_scalar;
+      }
+    else if constexpr (Rank == TensorRank::Vector)
+      {
+        return feeval_deps_vector;
+      }
+  }
+
+  template <TensorRank Rank>
+  const std::vector<FEEValuationDeps<FEEval<Rank>>> &
+  get_relevant_feeval_vector() const
+  {
+    if constexpr (Rank == TensorRank::Scalar)
+      {
+        return feeval_deps_scalar;
+      }
+    else if constexpr (Rank == TensorRank::Vector)
+      {
+        return feeval_deps_vector;
+      }
+  }
+
   /**
    * @brief Check whether the entry for the FEEvaluation is within the bounds of the
    * vector.
@@ -416,185 +628,6 @@ private:
    */
   void
   submission_valid(Types::Index field_index, DependencyType dependency_type) const;
-
-  /**
-   * @brief Struct to hold feevaluation relevant for this solve.
-   */
-  template <typename FEEvaluationType>
-  struct FEEValuationDeps
-  {
-    using FEEDepPair    = std::pair<FEEvaluationType, EvalFlags>;
-    using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
-    FEEDepPairPtr                                            fe_eval;
-    FEEDepPairPtr                                            fe_eval_src_dst;
-    std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
-    EvalFlags integration_flags = EvalFlags::nothing;
-    /**
-     * @brief The solution group and the block index
-     * @note It would look nicer to just use the SolutionIndexer, but this way decreases
-     * indexing
-     */
-    const SolutionLevel<dim, number> *solution_level = nullptr;
-    unsigned int                      block_index    = -1;
-
-    FEEValuationDeps() = default;
-
-    FEEValuationDeps(
-      const Dependencies::Dependency                                    &dependency,
-      const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
-      bool                                                               is_dst)
-      : solution_level(mf_id_pair.first)
-      , block_index(mf_id_pair.second)
-    {
-      if (dependency.flag)
-        {
-          fe_eval =
-            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                          block_index),
-                                         dependency.flag);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (dependency.old_flags.at(age))
-            {
-              fe_eval_old[age] =
-                std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                              block_index),
-                                             dependency.old_flags.at(age));
-            }
-        }
-      if (dependency.change_flag || is_dst)
-        {
-          fe_eval_src_dst =
-            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                          block_index),
-                                         dependency.change_flag);
-        }
-    }
-
-    template <DependencyType type>
-    FEEvaluationType &
-    get()
-    {
-      // TODO: Assertions
-      if constexpr (type == DependencyType::Change)
-        {
-          return *fe_eval_src_dst;
-        }
-      else if constexpr (type == DependencyType::Normal)
-        {
-          return *fe_eval;
-        }
-      else
-        {
-          return *fe_eval_old[int(type)];
-        }
-    }
-
-    void
-    reinit(unsigned int cell)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-        }
-      for (auto &old_fe_eval : fe_eval_old)
-        {
-          if (old_fe_eval)
-            {
-              old_fe_eval->first.reinit(cell);
-            }
-        }
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.reinit(cell);
-        }
-    }
-
-    void
-    eval(const BlockVector *_src_solutions)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
-        {
-          fe_eval_src_dst->first.read_dof_values_plain(
-            _src_solutions->block(block_index));
-          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
-        }
-    }
-
-    void
-    reinit_and_eval(unsigned int cell, const BlockVector *_src_solutions)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.reinit(cell);
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
-        {
-          fe_eval_src_dst->first.reinit(cell);
-          fe_eval_src_dst->first.read_dof_values_plain(
-            _src_solutions->block(block_index));
-          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
-        }
-    }
-
-    void
-    integrate()
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.integrate(integration_flags);
-        }
-    }
-
-    void
-    integrate_and_distribute(BlockVector *dst_solutions)
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.integrate_scatter(integration_flags,
-                                                   dst_solutions->block(block_index));
-        }
-    }
-
-    void
-    distribute(BlockVector *dst_solutions)
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.distribute_local_to_global(
-            dst_solutions->block(block_index));
-        }
-    }
-  };
 
   //================================================================================
   // Members relevant for accessing the all fields and dependencies
