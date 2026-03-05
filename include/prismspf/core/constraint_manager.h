@@ -181,7 +181,7 @@ private:
   /**
    * @brief Dof manager pointer.
    */
-  std::shared_ptr<const DofManager<dim>> dof_manager;
+  const DofManager<dim> *dof_manager;
 
   /**
    * @brief PDE operator.
