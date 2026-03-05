@@ -12,6 +12,7 @@
 
 #include <prismspf/config.h>
 
+#include <memory>
 #include <string>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -33,6 +34,7 @@ public:
     : TriangulationManager(_has_multigrid)
   {
     generate_mesh(discretization_params);
+    reinit();
   }
 
   /**
@@ -49,31 +51,7 @@ public:
    * This is used for AMR with multigrid so the coarsened meshes can be reinitialized.
    */
   void
-  reinit() {
-    // Check that the initial global refinement matches the maximum adaptive refinement
-    /* Assert(user_inputs->get_spatial_discretization().get_global_refinement() ==
-             user_inputs->get_spatial_discretization().get_max_refinement(),
-           dealii::ExcMessage(
-             "Currently, we don't allow the initial refinement to be lower than the "
-             "maximum adpative refinement level when using multigrid. This is because we "
-             "have to create a sequence of coarser meshes.")); */
-    // TODO: this seems to not be implemented for distributed triangulations
-    // if (has_multigrid)
-    // {
-    // coarsened_triangulations =
-    // dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
-    // triangulation);
-    // std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
-    // }
-    // TODO ?
-    // else
-    // {
-    // coarsened_triangulations.clear();
-    // coarsened_triangulations.push_back(
-    // std::make_shared<const Triangulation<dim>>(&triangulation));
-    // }
-    // TODO (landinjm): p-multigrid
-  };
+  reinit();
 
   /**
    * @brief Getter function for triangulation (constant reference).
@@ -82,16 +60,10 @@ public:
   get_triangulation() const;
 
   /**
-   * @brief Getter function for the multigrid triangulation (constant reference).
-   */
-  [[nodiscard]] const std::vector<std::shared_ptr<const Triangulation<dim>>> &
-  get_mg_triangulation() const;
-
-  /**
    * @brief Getter function for a level in the globally coarsening multigrid triangulation
    * (constant reference).
    */
-  [[nodiscard]] const Triangulation<dim> &
+  [[nodiscard]] const dealii::Triangulation<dim> &
   get_triangulation(unsigned int relative_level) const;
 
   /**
@@ -148,7 +120,7 @@ private:
   /**
    * @brief Coarsened triangulations for multigrid.
    */
-  std::vector<std::shared_ptr<const Triangulation<dim>>> coarsened_triangulations;
+  std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> coarsened_triangulations;
 };
 
 PRISMS_PF_END_NAMESPACE

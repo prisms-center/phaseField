@@ -40,6 +40,28 @@ TriangulationManager<dim>::TriangulationManager(bool _has_multigrid)
 {}
 
 template <unsigned int dim>
+void
+TriangulationManager<dim>::reinit()
+{
+  if (has_multigrid)
+    {
+      coarsened_triangulations =
+        dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
+          triangulation);
+      std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
+    }
+  else
+    {
+      coarsened_triangulations.clear();
+      auto *temp = new dealii::Triangulation<dim>();
+      temp->copy_triangulation(triangulation);
+      std::shared_ptr<const dealii::Triangulation<dim>> shared(temp);
+      coarsened_triangulations.push_back(shared);
+    }
+  // TODO (landinjm): p-multigrid
+}
+
+template <unsigned int dim>
 const Triangulation<dim> &
 TriangulationManager<dim>::get_triangulation() const
 {
@@ -47,22 +69,22 @@ TriangulationManager<dim>::get_triangulation() const
 }
 
 template <unsigned int dim>
-const std::vector<std::shared_ptr<const Triangulation<dim>>> &
-TriangulationManager<dim>::get_mg_triangulation() const
-{
-  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
-  return coarsened_triangulations;
-}
-
-template <unsigned int dim>
-const Triangulation<dim> &
+const dealii::Triangulation<dim> &
 TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 {
-  Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
-  Assert(coarsened_triangulations.size() >= relative_level,
+  if (has_multigrid)
+    {
+      Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
+      Assert(coarsened_triangulations.size() >= relative_level,
+             dealii::ExcMessage(
+               "The coarse triangulation set does not contain that specified level"));
+      return *coarsened_triangulations[relative_level];
+    }
+  // else
+  Assert(relative_level == 0,
          dealii::ExcMessage(
-           "The coarse triangulation set does not contain that specified level"));
-  return *coarsened_triangulations[relative_level];
+           "Request for coarse triangulation when multigrid is disabled."));
+  return triangulation;
 }
 
 template <unsigned int dim>
