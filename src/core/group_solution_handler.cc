@@ -16,11 +16,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
-  const SolveGroup                   &_solve_group,
+  SolveGroup                          _solve_group,
   const std::vector<FieldAttributes> &_attributes_list)
+  : solve_group(std::move(_solve_group))
 {
-  block_to_global_index.assign(_solve_group.field_indices.begin(),
-                               _solve_group.field_indices.end());
+  block_to_global_index.assign(solve_group.field_indices.begin(),
+                               solve_group.field_indices.end());
   global_to_block_index =
     std::vector<Types::Index>(_attributes_list.size(), Numbers::invalid_index);
   for (unsigned int i = 0; i < block_to_global_index.size(); ++i)
@@ -244,14 +245,16 @@ GroupSolutionHandler<dim, number>::init(
     << std::flush;
   Timer::start_section("reinitialize solution set");
 
+  // TODO: figure out more consistent way of passing num_levels
+  const unsigned int num_levels = dof_manager.get_dof_handlers().size();
+  solution_levels.resize(num_levels);
+
   // Initialize matrixfree objects
-  // TODO
   for (unsigned int relative_level = 0; relative_level < solution_levels.size();
        ++relative_level)
     {
       SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
-      MatrixFree                 &matrix_free    = solution_level.matrix_free;
-      matrix_free.reinit(
+      solution_level.matrix_free.reinit(
         mapping,
         dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
         constraint_manager.get_constraints(solve_group.field_indices, relative_level),
@@ -259,6 +262,8 @@ GroupSolutionHandler<dim, number>::init(
     }
   // Initialize solution vectors
   reinit();
+  // Initialize solution transfer
+  init_solution_transfer();
 
   Timer::end_section("reinitialize solution set");
 }
@@ -288,11 +293,14 @@ GroupSolutionHandler<dim, number>::reinit()
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
       new_solutions.reinit(partitioners);
+      solutions.collect_sizes();
+      new_solutions.collect_sizes();
       for (unsigned int i = 0; i < Numbers::max_saved_increments; ++i)
         {
           if (i < oldest_saved)
             {
-              old_solutions[i].reinit(partitioners);
+              old_solutions.at(i).reinit(partitioners);
+              old_solutions.at(i).collect_sizes();
             }
         }
     }
