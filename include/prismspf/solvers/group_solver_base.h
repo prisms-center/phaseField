@@ -36,7 +36,7 @@ public:
   GroupSolverBase(SolveGroup                               _solve_group,
                   const SolveContext<dim, degree, number> &_solve_context)
     : solve_group(std::move(_solve_group))
-    , solve_context(std::make_shared<SolveContext<dim, degree, number>>(_solve_context))
+    , solve_context(&_solve_context)
     , solutions(solve_group, solve_context->get_field_attributes())
   {}
 
@@ -86,9 +86,6 @@ public:
                    solve_context->get_constraint_manager(),
                    SystemWide<dim, degree>::quadrature);
 
-    // Set the initial condition
-    set_initial_condition();
-
     // Apply constraints.
     solutions.apply_constraints();
   }
@@ -117,6 +114,13 @@ public:
   virtual void
   solve()
   {
+    if (solve_context->get_simulation_timer().get_increment() == 0 &&
+        solve_group.solve_timing == SolveTiming::Primary)
+      {
+        // Set the initial condition
+        set_initial_condition();
+        return;
+      }
     this->solve_level(0);
   }
 
@@ -186,7 +190,8 @@ public:
                   {
                     dealii::VectorTools::interpolate(
                       SystemWide<dim, degree>::mapping,
-                      solve_context->get_dof_manager().get_dof_handler(global_index),
+                      solve_context->get_dof_manager().get_field_dof_handler(
+                        global_index),
                       ReadInitialCondition<dim, number>(
                         *name_it,
                         solve_context->get_field_attributes()[global_index].field_type,
@@ -200,7 +205,7 @@ public:
           {
             dealii::VectorTools::interpolate(
               SystemWide<dim, degree>::mapping,
-              solve_context->get_dof_manager().get_dof_handler(global_index),
+              solve_context->get_dof_manager().get_field_dof_handler(global_index),
               InitialCondition<dim, degree, number>(
                 global_index,
                 solve_context->get_field_attributes()[global_index].field_type,
@@ -256,7 +261,7 @@ protected:
   /**
    * @brief Solver context provides access to external information.
    */
-  const std::shared_ptr<SolveContext<dim, degree, number>> solve_context;
+  const SolveContext<dim, degree, number> *solve_context;
 
   /**
    * @brief Solution vectors for fields handled by this solver.

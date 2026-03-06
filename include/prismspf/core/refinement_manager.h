@@ -200,7 +200,7 @@ private:
 
                 // Grab the DoFHandler iterator
                 const auto dof_iterator = cell->as_dof_handler_iterator(
-                  solve_context.get_dof_manager().get_dof_handler(index));
+                  solve_context.get_dof_manager().get_field_dof_handler(index));
 
                 // Reinit the cell
                 dealii::FEValues<dim> fe_values(
@@ -354,10 +354,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(*cell,
-                                                 solve_context.get_simulation_timer());
-                  }))
+                    {
+                      return marker_function->flag(*cell,
+                                                   solve_context.get_simulation_timer());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();

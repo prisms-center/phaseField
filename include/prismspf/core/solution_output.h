@@ -85,7 +85,7 @@ public:
 
         const std::vector<std::string> names(n_components, field.name);
 
-        data_out.add_data_vector(dof_manager.get_dof_handler(index),
+        data_out.add_data_vector(dof_manager.get_field_dof_handler(index),
                                  solution,
                                  names,
                                  data_type);
