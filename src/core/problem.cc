@@ -128,20 +128,14 @@ Problem<dim, degree, number>::init_system()
 
   // Create the constraints
   // See *1
-  /* ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   Timer::start_section("Create constraints");
-  for (const auto &solve_group : solve_groups)
-    {
-      (void) solve_group;
-      // TODO: Loop over levels, pass in current time
-      // constraint_manager.make_constraints(dof_manager.get_field_dof_handlers(
-      //                                      solve_group.field_indices));
-    }
-  Timer::end_section("Create constraints"); */
+  constraint_manager.reinit(field_attributes);
+  Timer::end_section("Create constraints");
 
   // Initialize the solvers
-  // See *1
   Timer::start_section("Initialize Solvers");
+  // See *1
   /*  solvers.reserve(solve_groups.size());
     for (const auto &solve_group : solve_groups)
       {

@@ -25,6 +25,7 @@
 #include <prismspf/config.h>
 
 #include <string>
+#include <type_traits>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -41,7 +42,7 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
 {
   /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
    * primary fields, as well as any dependencies*/
-  unsigned int num_mg_levels = 1;
+  unsigned int num_mg_levels = dof_manager->get_dof_handlers().size();
   for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
       constraints[field_index].resize(num_mg_levels);
@@ -118,9 +119,14 @@ ConstraintManager<dim, degree, number>::reinit(
     user_inputs->get_boundary_parameters();
   // The map from user inputs has string keys for now.
   std::map<std::string, Types::Index> field_indices = field_index_map(field_attributes);
-  for (const auto &[name, field_constraints] :
-       boundary_parameters.boundary_condition_list)
+  for (const auto &pair : boundary_parameters.boundary_condition_list)
     {
+      const std::string           &name              = pair.first;
+      const FieldConstraints<dim> &field_constraints = pair.second;
+      std::string                  blah              = "blah";
+      std::cout << "Blah: " << typeid(blah).name() << "\n";
+      std::cout << "Type: " << typeid(name).name() << "\n";
+      std::cout << "Name: " << name << "\n" << std::flush;
       const unsigned int field_index = field_indices.at(name);
       for (unsigned int relative_level = 0;
            relative_level < constraints[field_index].size();
@@ -300,6 +306,8 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
                 constraints[field_index][relative_level];
               dealii::AffineConstraints<number> &change_constraint =
                 change_constraints[field_index][relative_level];
+              constraint.clear();
+              change_constraint.clear();
               const dealii::DoFHandler<dim> &dof_handler =
                 dof_manager->get_field_dof_handler(field_index, relative_level);
 
