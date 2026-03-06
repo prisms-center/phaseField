@@ -37,6 +37,7 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
   : dof_manager(&_dof_manager)
   , pde_operator(_pde_operator)
   , constraints(field_attributes.size())
+  , change_constraints(field_attributes.size())
 {
   /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
    * primary fields, as well as any dependencies*/
@@ -44,16 +45,20 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
   for (unsigned int field_index = 0; field_index < field_attributes.size(); ++field_index)
     {
       constraints[field_index].resize(num_mg_levels);
+      change_constraints[field_index].resize(num_mg_levels);
       for (unsigned int relative_level = 0; relative_level < num_mg_levels;
            relative_level++)
         {
           const dealii::DoFHandler<dim> &dof_handler =
-            dof_manager->get_dof_handler(field_index, relative_level);
+            dof_manager->get_field_dof_handler(field_index, relative_level);
           constraints[field_index][relative_level] = dealii::AffineConstraints<number>(
             dof_handler.locally_owned_dofs(),
             dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+          change_constraints[field_index][relative_level] =
+            dealii::AffineConstraints<number>(
+              dof_handler.locally_owned_dofs(),
+              dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
         }
-      // TODO (fractalsbyx): construct change_constraints
     }
 }
 
@@ -126,7 +131,7 @@ ConstraintManager<dim, degree, number>::reinit(
           dealii::AffineConstraints<number> &change_constraint =
             change_constraints[field_index][relative_level];
           const dealii::DoFHandler<dim> &dof_handler =
-            dof_manager->get_dof_handler(field_index, relative_level);
+            dof_manager->get_field_dof_handler(field_index, relative_level);
 
           make_constraints_for_single_field(constraint,
                                             dof_handler,
@@ -296,7 +301,7 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
               dealii::AffineConstraints<number> &change_constraint =
                 change_constraints[field_index][relative_level];
               const dealii::DoFHandler<dim> &dof_handler =
-                dof_manager->get_dof_handler(field_index, relative_level);
+                dof_manager->get_field_dof_handler(field_index, relative_level);
 
               make_constraints_for_single_field(constraint,
                                                 dof_handler,
@@ -318,16 +323,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

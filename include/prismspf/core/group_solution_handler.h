@@ -62,7 +62,7 @@ public:
   /**
    * @brief Constructor.
    */
-  GroupSolutionHandler(const SolveGroup                   &_solve_group,
+  GroupSolutionHandler(SolveGroup                          _solve_group,
                        const std::vector<FieldAttributes> &_attributes_list);
 
   /**
