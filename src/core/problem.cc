@@ -9,12 +9,47 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
+#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+template <unsigned int dim, unsigned int degree, typename number>
+std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>>
+make_solvers(const std::vector<SolveGroup>           &solve_groups,
+             const SolveContext<dim, degree, number> &solve_context)
+{
+  // Todo: upgrade to recursive for aux solvers
+  std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
+  solvers.reserve(solve_groups.size());
+  for (const auto &solve_group : solve_groups)
+    {
+      switch (solve_group.pde_type)
+        {
+          case PDEType::Explicit:
+            solvers.emplace_back(
+              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
+                                                                    solve_context));
+            break;
+          case PDEType::Linear:
+            solvers.emplace_back(
+              std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
+                                                                  solve_context));
+            break;
+          case PDEType::Newton:
+            solvers.emplace_back(
+              std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
+                                                                  solve_context));
+            break;
+          default:
+            AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
+        }
+    }
+  return solvers;
+}
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<GroupSolutionHandler<dim, number> *>
@@ -31,6 +66,10 @@ get_solution_managers_from_solvers(
   return solution_managers;
 }
 
+// *1 Big TODO: Make these classes default-constructible, then use their `init()`
+// functions. I just want to get this working, so i'm working around this for now.
+// TriangulationManager, DoFManager, ConstraintManager, solvers, SolutionIndexer
+
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
   const std::vector<FieldAttributes>                          &_field_attributes,
@@ -45,7 +84,7 @@ Problem<dim, degree, number>::Problem(
   , triangulation_manager(_user_inputs.get_spatial_discretization(), false)
   , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes, dof_manager, _pde_operator.get())
-  , solvers(solve_groups.size(), nullptr)
+  , solvers(make_solvers(solve_groups, solve_context))
   , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , solve_context(field_attributes,
                   _user_inputs,
@@ -75,10 +114,11 @@ Problem<dim, degree, number>::init_system()
     << std::flush;
 
   // Create the mesh
-  ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  // See *1
+  /* ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
   triangulation_manager.generate_mesh(user_inputs.get_spatial_discretization());
-  Timer::end_section("Generate mesh");
+  Timer::end_section("Generate mesh"); */
 
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
@@ -87,7 +127,8 @@ Problem<dim, degree, number>::init_system()
   Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
-  ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  // See *1
+  /* ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   Timer::start_section("Create constraints");
   for (const auto &solve_group : solve_groups)
     {
@@ -96,32 +137,37 @@ Problem<dim, degree, number>::init_system()
       // constraint_manager.make_constraints(dof_manager.get_field_dof_handlers(
       //                                      solve_group.field_indices));
     }
-  Timer::end_section("Create constraints");
+  Timer::end_section("Create constraints"); */
 
   // Initialize the solvers
+  // See *1
   Timer::start_section("Initialize Solvers");
-  solvers.reserve(solve_groups.size());
-  for (const auto &solve_group : solve_groups)
-    {
-      std::shared_ptr<GroupSolverBase<dim, degree, number>> solver;
-      switch (solve_group.pde_type)
-        {
-          case PDEType::Explicit:
-            solver = std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
+  /*  solvers.reserve(solve_groups.size());
+    for (const auto &solve_group : solve_groups)
+      {
+        std::shared_ptr<GroupSolverBase<dim, degree, number>> solver;
+        switch (solve_group.pde_type)
+          {
+            case PDEType::Explicit:
+              solver = std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
+                                                                             solve_context);
+              break;
+            case PDEType::Linear:
+              solver = std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
                                                                            solve_context);
-            break;
-          case PDEType::Linear:
-            solver = std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
-                                                                         solve_context);
-            break;
-          case PDEType::Newton:
-            solver = std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
-                                                                         solve_context);
-            break;
-          default:
-            AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
-        }
-      solvers.push_back(std::move(solver));
+              break;
+            case PDEType::Newton:
+              solver = std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
+                                                                           solve_context);
+              break;
+            default:
+              AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
+          }
+        solvers.push_back(std::move(solver));
+      }*/
+  for (auto &solver : solvers)
+    {
+      solver->init();
     }
   Timer::end_section("Initialize Solvers");
 
@@ -316,7 +362,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
             {
               ConditionalOStreams::pout_base()
                 << Integrator<dim, degree, number>::template integrate<1>(
-                     dof_manager.get_dof_handler(index),
+                     dof_manager.get_field_dof_handler(index),
                      solution)
                 << "\n";
             }
@@ -324,7 +370,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
             {
               ConditionalOStreams::pout_base()
                 << Integrator<dim, degree, number>::template integrate<0>(
-                     dof_manager.get_dof_handler(index),
+                     dof_manager.get_field_dof_handler(index),
                      solution)
                 << "\n";
             }
