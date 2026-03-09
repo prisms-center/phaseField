@@ -15,7 +15,6 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
-#include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
 
@@ -50,6 +49,7 @@ public:
    * @brief Constructor.
    */
   ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
+                    const BoundaryParameters<dim>              &_boundary_parameters,
                     const DofManager<dim>                      &_dof_manager,
                     const PDEOperatorBase<dim, degree, number> *_pde_operator);
 
@@ -176,7 +176,7 @@ private:
   /**
    * @brief User-inputs.
    */
-  const UserInputParameters<dim> *user_inputs;
+  const BoundaryParameters<dim> *boundary_parameters;
 
   /**
    * @brief Dof manager pointer.

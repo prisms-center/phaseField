@@ -84,7 +84,10 @@ Problem<dim, degree, number>::Problem(
   , pf_tools(&_pf_tools)
   , triangulation_manager(_user_inputs.get_spatial_discretization(), false)
   , dof_manager(field_attributes, triangulation_manager)
-  , constraint_manager(field_attributes, dof_manager, _pde_operator.get())
+  , constraint_manager(field_attributes,
+                       _user_inputs.get_boundary_parameters(),
+                       dof_manager,
+                       _pde_operator.get())
   , solve_context(field_attributes,
                   _user_inputs,
                   triangulation_manager,
