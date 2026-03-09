@@ -39,12 +39,17 @@ public:
   explicit InvMManager(const DofManager<dim> &dof_manager,
                        bool                   _calculate_scalar,
                        bool                   _calculate_vector)
-    : calculate_scalar(_calculate_scalar)
+    : num_levels(dof_manager.get_dof_handlers().size())
+    , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
   {
     const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
       dof_manager.get_dof_handlers();
-    data.resize(dof_handlers.size());
+    data.resize(num_levels);
+    jxw_scalar.resize(num_levels);
+    invm_scalar.resize(num_levels);
+    jxw_vector.resize(num_levels);
+    invm_vector.resize(num_levels);
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         for (unsigned int rank = 0; rank < 2; ++rank)
@@ -103,7 +108,7 @@ private:
   void
   initialize()
   {
-    for (unsigned int i = 0; i < data.size(); ++i)
+    for (unsigned int i = 0; i < num_levels; ++i)
       {
         if (calculate_scalar)
           {
@@ -193,6 +198,8 @@ private:
    * @brief Matrix-free object.
    */
   std::vector<std::array<MatrixFree, 2>> data;
+
+  unsigned int num_levels;
 
   bool calculate_scalar = false;
   bool calculate_vector = false;
