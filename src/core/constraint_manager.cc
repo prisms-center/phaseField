@@ -25,7 +25,6 @@
 #include <prismspf/config.h>
 
 #include <string>
-#include <type_traits>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -33,9 +32,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 ConstraintManager<dim, degree, number>::ConstraintManager(
   const std::vector<FieldAttributes>         &field_attributes,
+  const BoundaryParameters<dim>              &_boundary_parameters,
   const DofManager<dim>                      &_dof_manager,
   const PDEOperatorBase<dim, degree, number> *_pde_operator)
-  : dof_manager(&_dof_manager)
+  : boundary_parameters(&_boundary_parameters)
+  , dof_manager(&_dof_manager)
   , pde_operator(_pde_operator)
   , constraints(field_attributes.size())
   , change_constraints(field_attributes.size())
@@ -115,18 +116,11 @@ void
 ConstraintManager<dim, degree, number>::reinit(
   const std::vector<FieldAttributes> &field_attributes)
 {
-  const BoundaryParameters<dim> &boundary_parameters =
-    user_inputs->get_boundary_parameters();
   // The map from user inputs has string keys for now.
   std::map<std::string, Types::Index> field_indices = field_index_map(field_attributes);
-  for (const auto &pair : boundary_parameters.boundary_condition_list)
+  for (const auto &[name, field_constraints] :
+       boundary_parameters->boundary_condition_list)
     {
-      const std::string           &name              = pair.first;
-      const FieldConstraints<dim> &field_constraints = pair.second;
-      std::string                  blah              = "blah";
-      std::cout << "Blah: " << typeid(blah).name() << "\n";
-      std::cout << "Type: " << typeid(name).name() << "\n";
-      std::cout << "Name: " << name << "\n" << std::flush;
       const unsigned int field_index = field_indices.at(name);
       for (unsigned int relative_level = 0;
            relative_level < constraints[field_index].size();
@@ -138,7 +132,6 @@ ConstraintManager<dim, degree, number>::reinit(
             change_constraints[field_index][relative_level];
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_field_dof_handler(field_index, relative_level);
-
           make_constraints_for_single_field(constraint,
                                             dof_handler,
                                             field_constraints,
@@ -151,6 +144,14 @@ ConstraintManager<dim, degree, number>::reinit(
                                             field_attributes[field_index].field_type,
                                             field_index,
                                             true);
+        }
+    }
+  // close all constraints.
+  for (auto &constraints_vector : constraints)
+    {
+      for (dealii::AffineConstraints<number> &constraint : constraints_vector)
+        {
+          constraint.close();
         }
     }
 }
@@ -181,10 +182,10 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
                       for_change_term);
 
   // 3. TODO: Make pinned point constraints
-  // if (boundary_parameters.has_pinned_point(field_index))
+  // if (boundary_parameters->has_pinned_point(field_index))
   //  {
   //    const auto &[value, target_point] =
-  //      boundary_parameters.get_pinned_point(field_index);
+  //      boundary_parameters->get_pinned_point(field_index);
   //    set_pinned_point(constraint, target_point, value, dof_handler, for_change_term);
   //  }
   constraint.close();
@@ -288,12 +289,10 @@ void
 ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
   const std::vector<FieldAttributes> &field_attributes)
 {
-  const BoundaryParameters<dim> &boundary_parameters =
-    user_inputs->get_boundary_parameters();
   // The map from user inputs has string keys for now.
   std::map<std::string, Types::Index> field_indices = field_index_map(field_attributes);
   for (const auto &[name, field_constraints] :
-       boundary_parameters.boundary_condition_list)
+       boundary_parameters->boundary_condition_list)
     {
       if (field_constraints.has_time_dependent_bcs())
         {
