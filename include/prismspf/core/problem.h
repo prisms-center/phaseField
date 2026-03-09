@@ -98,6 +98,11 @@ private:
   ConstraintManager<dim, degree, number> constraint_manager;
 
   /**
+   * @brief Solver context.
+   */
+  SolveContext<dim, degree, number> solve_context;
+
+  /**
    * @brief Solvers.
    */
   std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
@@ -106,11 +111,6 @@ private:
    * @brief Solution indexer
    */
   SolutionIndexer<dim, number> solution_indexer;
-
-  /**
-   * @brief Solver context.
-   */
-  SolveContext<dim, degree, number> solve_context;
 
   /**
    * @brief Grid refiner.
