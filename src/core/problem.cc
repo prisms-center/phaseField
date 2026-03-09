@@ -67,8 +67,9 @@ get_solution_managers_from_solvers(
 }
 
 // *1 Big TODO: Make these classes default-constructible, then use their `init()`
-// functions. I just want to get this working, so i'm working around this for now.
-// TriangulationManager, DoFManager, ConstraintManager, solvers, SolutionIndexer
+// functions. Also, it may be wise to make SolveContext the owner of all these as well
+// rather than Problem. I just want to get this working, so i'm working around this for
+// now. TriangulationManager, DoFManager, ConstraintManager, solvers, SolutionIndexer
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
@@ -84,8 +85,6 @@ Problem<dim, degree, number>::Problem(
   , triangulation_manager(_user_inputs.get_spatial_discretization(), false)
   , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes, dof_manager, _pde_operator.get())
-  , solvers(make_solvers(solve_groups, solve_context))
-  , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , solve_context(field_attributes,
                   _user_inputs,
                   triangulation_manager,
@@ -93,6 +92,8 @@ Problem<dim, degree, number>::Problem(
                   constraint_manager,
                   solution_indexer,
                   _pde_operator)
+  , solvers(make_solvers(solve_groups, solve_context))
+  , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , grid_refiner(solve_context)
 {}
 
