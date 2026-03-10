@@ -2,21 +2,11 @@
 #  CMake for the PRISMS-PF core library
 ##
 
-# cmake config
+# CMake config
 message(STATUS "Using CMake ${CMAKE_VERSION}")
 message(STATUS "")
-cmake_minimum_required(VERSION 3.18)
-cmake_policy(VERSION 3.18)
-
-# Grab modules
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules/)
-
-# Load macros
-file(GLOB macro_files "${CMAKE_SOURCE_DIR}/cmake/macros/*.cmake")
-foreach(file ${macro_files})
-  message(STATUS "Include ${file}")
-  include(${file})
-endforeach()
+cmake_minimum_required(VERSION 3.23)
+cmake_policy(VERSION 3.23)
 
 # Grab the version of PRISMS-PF
 file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
@@ -27,6 +17,20 @@ message(STATUS "Configuring PRISMS-PF v${PRISMS_PF_VERSION}")
 message(STATUS "=========================================================")
 message(STATUS "")
 
+# Declare the project
+project(prisms_pf CXX)
+
+# Set the location of additional CMake modules
+set(
+  CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  ${PROJECT_SOURCE_DIR}/cmake
+  ${PROJECT_SOURCE_DIR}/cmake/functions
+)
+
+# Function Definitions
+include(prisms_pf_cmake_functions)
+
 # =========================================================
 # Some basic bookkeeping
 # =========================================================
@@ -34,22 +38,21 @@ message(STATUS "")
 # Grab git information
 prisms_pf_git_version()
 
+message(STATUS "Branch:    ${PRISMS_PF_GIT_BRANCH}")
+message(STATUS "Tag:       ${PRISMS_PF_GIT_TAG}")
+message(STATUS "Revision:  ${PRISMS_PF_GIT_REVISION}")
+message(STATUS "Short rev: ${PRISMS_PF_GIT_SHORTREV}")
+message(STATUS "Timestamp: ${PRISMS_PF_GIT_TIMESTAMP}")
+
+# Prohibit in-source build
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+  message(FATAL_ERROR "In-source build prohibited.")
+endif()
+
+message(FATAL_ERROR "Kill yourself")
+
 # Include configuration options
 include(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
-
-# Declare the project
-project(prisms_pf CXX)
-
-# Set the default install prefix if it was not set by the user
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(
-    CMAKE_INSTALL_PREFIX
-    "${CMAKE_BINARY_DIR}/install"
-    CACHE PATH
-    "Installation prefix"
-    FORCE
-  )
-endif()
 
 # Include the PRISMS-PF setup
 include(${CMAKE_SOURCE_DIR}/cmake/setup_prisms_pf.cmake)
