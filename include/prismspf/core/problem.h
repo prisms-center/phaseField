@@ -90,7 +90,7 @@ private:
   /**
    * @brief DoF manager.
    */
-  DofManager<dim> dof_manager;
+  DoFManager<dim, degree> dof_manager;
 
   /**
    * @brief Constraint handler.

@@ -33,7 +33,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 ConstraintManager<dim, degree, number>::ConstraintManager(
   const std::vector<FieldAttributes>         &field_attributes,
   const BoundaryParameters<dim>              &_boundary_parameters,
-  const DofManager<dim>                      &_dof_manager,
+  const DoFManager<dim, degree>              &_dof_manager,
   const PDEOperatorBase<dim, degree, number> *_pde_operator)
   : boundary_parameters(&_boundary_parameters)
   , dof_manager(&_dof_manager)
@@ -330,16 +330,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-  {
-    std::array<dealii::ComponentMask, dim> masks {};
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        dealii::ComponentMask temp_mask(dim, false);
-        temp_mask.set(i, true);
-        masks.at(i) = temp_mask;
-      }
-    return masks;
-  }();
+{
+  std::array<dealii::ComponentMask, dim> masks {};
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      dealii::ComponentMask temp_mask(dim, false);
+      temp_mask.set(i, true);
+      masks.at(i) = temp_mask;
+    }
+  return masks;
+}();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

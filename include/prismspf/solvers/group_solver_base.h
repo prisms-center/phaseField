@@ -188,6 +188,7 @@ public:
                             solve_context->get_field_attributes()[global_index].name);
                 if (name_it != initial_condition_file.simulation_variable_names.end())
                   {
+                    solutions.get_solution_vector(global_index).zero_out_ghost_values();
                     dealii::VectorTools::interpolate(
                       SystemWide<dim, degree>::mapping,
                       solve_context->get_dof_manager().get_field_dof_handler(
@@ -203,6 +204,7 @@ public:
           }
         else
           {
+            solutions.get_solution_vector(global_index).zero_out_ghost_values();
             dealii::VectorTools::interpolate(
               SystemWide<dim, degree>::mapping,
               solve_context->get_dof_manager().get_field_dof_handler(global_index),
