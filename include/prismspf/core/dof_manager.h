@@ -22,19 +22,19 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Class that manages the deal.II DoFHandlers
  */
-template <unsigned int dim>
-class DofManager
+template <unsigned int dim, unsigned int degree>
+class DoFManager
 {
 public:
   /**
    * @brief Constructor.
    */
-  explicit DofManager(const std::vector<FieldAttributes> &field_attributes);
+  explicit DoFManager(const std::vector<FieldAttributes> &field_attributes);
 
   /**
    * @brief Constructor.
    */
-  DofManager(const std::vector<FieldAttributes> &field_attributes,
+  DoFManager(const std::vector<FieldAttributes> &field_attributes,
              const TriangulationManager<dim>    &triangulation_handler);
 
   /**

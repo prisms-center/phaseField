@@ -39,7 +39,7 @@ class UserInputParameters;
 /**
  * @brief Class that outputs a passed solution to vtu, vtk, or pvtu
  */
-template <unsigned int dim, typename number>
+template <unsigned int dim, unsigned int degree, typename number>
 class SolutionOutput
 {
 public:
@@ -51,8 +51,7 @@ public:
   SolutionOutput(const std::vector<FieldAttributes> &field_attributes,
                  const SolutionIndexer<dim, number> &solution_indexer,
                  const SimulationTimer              &sim_timer,
-                 const DofManager<dim>              &dof_manager,
-                 const unsigned int                 &degree,
+                 const DoFManager<dim, degree>      &dof_manager,
                  const std::string                  &file_prefix,
                  const UserInputParameters<dim>     &user_inputs)
   {

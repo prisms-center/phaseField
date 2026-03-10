@@ -36,9 +36,9 @@ public:
    * @param _calculate_scalar Whether to calculate the scalar invm (element volume).
    * @param _calculate_vector Whether to calculate the vector invm (for vector fields).
    */
-  explicit InvMManager(const DofManager<dim> &dof_manager,
-                       bool                   _calculate_scalar,
-                       bool                   _calculate_vector)
+  explicit InvMManager(const DoFManager<dim, degree> &dof_manager,
+                       bool                           _calculate_scalar,
+                       bool                           _calculate_vector)
     : num_levels(dof_manager.get_dof_handlers().size())
     , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
@@ -213,14 +213,14 @@ private:
   std::vector<SolutionVector> invm_vector;
 
   inline static const VectorValue one = []()
-    {
-      VectorValue one1;
-      for (unsigned int i = 0; i < dim; ++i)
-        {
-          one1[i] = 1.0;
-        }
-      return one1;
-    }();
+  {
+    VectorValue one1;
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        one1[i] = 1.0;
+      }
+    return one1;
+  }();
 };
 
 PRISMS_PF_END_NAMESPACE

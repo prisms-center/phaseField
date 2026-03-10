@@ -10,8 +10,8 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim>
-DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes)
+template <unsigned int dim, unsigned int degree>
+DoFManager<dim, degree>::DoFManager(const std::vector<FieldAttributes> &field_attributes)
 {
   unsigned int num_mg_levels = 1; // Todo: upgrade to multigrid
   level_dof_handlers = std::vector<std::array<dealii::DoFHandler<dim>, 2>>(num_mg_levels);
@@ -29,17 +29,18 @@ DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes
     }
 }
 
-template <unsigned int dim>
-DofManager<dim>::DofManager(const std::vector<FieldAttributes> &field_attributes,
-                            const TriangulationManager<dim>    &triangulation_handler)
-  : DofManager(field_attributes)
+template <unsigned int dim, unsigned int degree>
+DoFManager<dim, degree>::DoFManager(
+  const std::vector<FieldAttributes> &field_attributes,
+  const TriangulationManager<dim>    &triangulation_handler)
+  : DoFManager(field_attributes)
 {
   init(triangulation_handler);
 }
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 void
-DofManager<dim>::init(const TriangulationManager<dim> &triangulation_handler)
+DoFManager<dim, degree>::init(const TriangulationManager<dim> &triangulation_handler)
 {
   for (unsigned int relative_level = 0; relative_level < level_dof_handlers.size();
        ++relative_level)
@@ -48,22 +49,23 @@ DofManager<dim>::init(const TriangulationManager<dim> &triangulation_handler)
         {
           dealii::DoFHandler<dim> &dof_handler = level_dof_handlers[relative_level][rank];
           dof_handler.reinit(triangulation_handler.get_triangulation(relative_level));
-          dof_handler.distribute_dofs(SystemWide<dim, 1>::fe_systems.at(rank));
+          dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems.at(rank));
         }
     }
 }
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 void
-DofManager<dim>::reinit(const TriangulationManager<dim> &triangulation_handler)
+DoFManager<dim, degree>::reinit(const TriangulationManager<dim> &triangulation_handler)
 {
   init(triangulation_handler);
 }
 
-template <unsigned int dim>
+template <unsigned int dim, unsigned int degree>
 std::vector<const dealii::DoFHandler<dim> *>
-DofManager<dim>::get_field_dof_handlers(const std::set<unsigned int> &field_indices,
-                                        unsigned int relative_level) const
+DoFManager<dim, degree>::get_field_dof_handlers(
+  const std::set<unsigned int> &field_indices,
+  unsigned int                  relative_level) const
 {
   std::vector<const dealii::DoFHandler<dim> *> selected_dof_handlers;
   selected_dof_handlers.reserve(field_indices.size());
