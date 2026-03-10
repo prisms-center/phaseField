@@ -78,13 +78,13 @@ public:
     else
       {
         static Value<Rank> ident = []()
-          {
-            Value<Rank> obj;
-            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-              {
-                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-              }
-          }();
+        {
+          Value<Rank> obj;
+          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+            {
+              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+            }
+        }();
         return ident;
       }
   }
@@ -134,6 +134,11 @@ public:
    * using block vectors, for the MFOperator to work, it needs to have access to the index
    * mapping in addition to the matrix_free object. Both are stored in the solution
    * handler.
+   *
+   * Additionally, we modify dependency_map to include an entry for every field being
+   * solved. This is to avoid a troublesome problem downstream in FieldContainer, where we
+   * only want to initialize FEEvals for what is needed. (There is certainly a better way
+   * of handling this, but this is the least complicated for now.)
    */
   void
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
@@ -141,6 +146,10 @@ public:
     solve_group          = dst_solution.get_solve_group();
     data                 = &(dst_solution.get_matrix_free(relative_level));
     field_to_block_index = dst_solution.get_global_to_block_index();
+    for (unsigned int field_index : solve_group.field_indices)
+      {
+        dependency_map[field_index]; // creates entry if not already present
+      }
   }
 
   // public:
