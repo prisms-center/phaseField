@@ -41,7 +41,7 @@ public:
   SolveContext(std::vector<FieldAttributes>            _field_attributes,
                const UserInputParameters<dim>         &_user_inputs,
                TriangulationManager<dim>              &_triangulation_manager,
-               DofManager<dim>                        &_dof_manager,
+               DoFManager<dim, degree>                &_dof_manager,
                ConstraintManager<dim, degree, number> &_constraint_manager,
                SolutionIndexer<dim, number>           &_solution_indexer,
                std::shared_ptr<PDEOperatorBase<dim, degree, number>> _pde_operator)
@@ -97,7 +97,7 @@ public:
   /**
    * @brief Get the dof manager.
    */
-  [[nodiscard]] const DofManager<dim> &
+  [[nodiscard]] const DoFManager<dim, degree> &
   get_dof_manager() const
   {
     Assert(dof_manager != nullptr, dealii::ExcNotInitialized());
@@ -107,7 +107,7 @@ public:
   /**
    * @brief Get the dof manager.
    */
-  [[nodiscard]] DofManager<dim> &
+  [[nodiscard]] DoFManager<dim, degree> &
   get_dof_manager()
   {
     Assert(dof_manager != nullptr, dealii::ExcNotInitialized());
@@ -209,7 +209,7 @@ private:
   /**
    * @brief DoF manager.
    */
-  DofManager<dim> *dof_manager;
+  DoFManager<dim, degree> *dof_manager;
 
   /**
    * @brief Constraint manager.

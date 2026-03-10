@@ -285,12 +285,15 @@ public:
               old_fe_eval->first.evaluate(old_fe_eval->second);
             }
         }
-      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
+      if (fe_eval_src_dst)
         {
           fe_eval_src_dst->first.reinit(cell);
-          fe_eval_src_dst->first.read_dof_values_plain(
-            _src_solutions->block(block_index));
-          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+          if (fe_eval_src_dst->second != EvalFlags::nothing)
+            {
+              fe_eval_src_dst->first.read_dof_values_plain(
+                _src_solutions->block(block_index));
+              fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+            }
         }
     }
 

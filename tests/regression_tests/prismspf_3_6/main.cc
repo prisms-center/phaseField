@@ -86,13 +86,13 @@ private:
               const SimulationTimer               &sim_timer,
               unsigned int                         solve_group_id) const override
   {
-    ScalarValue n_val =
-      variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
-    ScalarGrad n_grad =
-      variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(0);
-
     if (solve_group_id == 1) // explicit
       {
+        ScalarValue n_val =
+          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
+        ScalarGrad n_grad =
+          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
+            0);
         ScalarValue f_well = 4.0 * n_val * (n_val - 1.0) * (n_val - 0.5);
         ScalarValue eq_n   = n_val - sim_timer.get_timestep() * m_well * f_well;
         ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * n_grad;
@@ -102,6 +102,11 @@ private:
       }
     else if (solve_group_id == 2) // postprocess
       {
+        ScalarValue n_val =
+          variable_list.template get_value<TensorRank::Scalar, DependencyType::Normal>(0);
+        ScalarGrad n_grad =
+          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::Normal>(
+            0);
         ScalarValue f_tot = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
