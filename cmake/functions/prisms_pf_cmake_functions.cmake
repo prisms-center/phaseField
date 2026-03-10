@@ -3,3 +3,5 @@
 #
 
 include(prisms_pf_git_version)
+include(prisms_pf_version_decomposition)
+include(prisms_pf_print)
