@@ -400,8 +400,6 @@ GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level
   unsigned int num_blocks = solve_group.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      std::cout << "Block " << block_index << " constraints "
-                << &matrix_free.get_affine_constraints(block_index) << " *\n";
       matrix_free.get_affine_constraints(block_index)
         .distribute(solutions.block(block_index));
       matrix_free.get_affine_constraints(block_index)

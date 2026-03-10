@@ -68,7 +68,9 @@ public:
     const unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
 
     // Create a value vector
-    std::vector<dealii::Vector<number>> quad_values(num_quad_points);
+    std::vector<dealii::Vector<number>> quad_values(num_quad_points,
+                                                    dealii::Vector<number>(
+                                                      expected_components));
 
     // Loop over the cells provided by the DoFHandler
     dealii::Vector<number> value(expected_components);
