@@ -569,6 +569,7 @@ public:
   {
     auto &relevant_feeval_vector =
       get_relevant_feeval_vector<GetRankFromGrad<GradType>>()[global_variable_index];
+
     relevant_feeval_vector.template get<DependencyType::Change>()
       .submit_gradient(val, q_point);
     relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::gradients;

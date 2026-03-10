@@ -70,7 +70,7 @@ public:
                                    solve_context->get_field_attributes(),
                                    solve_context->get_solution_indexer(),
                                    relative_level,
-                                   solve_group.dependencies_rhs,
+                                   solve_group.dependencies_lhs,
                                    solve_context->get_simulation_timer());
         lhs_operators[relative_level].initialize(solutions);
       }
