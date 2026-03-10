@@ -335,13 +335,12 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (user_inputs.get_output_parameters().should_output(increment))
     {
       Timer::start_section("Output");
-      SolutionOutput<dim, number>(field_attributes,
-                                  solve_context.get_solution_indexer(),
-                                  sim_timer,
-                                  dof_manager,
-                                  degree,
-                                  "solution",
-                                  user_inputs);
+      SolutionOutput<dim, degree, number>(field_attributes,
+                                          solve_context.get_solution_indexer(),
+                                          sim_timer,
+                                          dof_manager,
+                                          "solution",
+                                          user_inputs);
 
       // Print the l2-norms and integrals of each solution
       ConditionalOStreams::pout_base()

@@ -236,7 +236,7 @@ template <unsigned int degree>
 void
 GroupSolutionHandler<dim, number>::init(
   const dealii::Mapping<dim>                   &mapping,
-  const DofManager<dim>                        &dof_manager,
+  const DoFManager<dim, degree>                &dof_manager,
   const ConstraintManager<dim, degree, number> &constraint_manager,
   const dealii::Quadrature<dim>                &quad)
 {

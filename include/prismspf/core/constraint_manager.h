@@ -50,7 +50,7 @@ public:
    */
   ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
                     const BoundaryParameters<dim>              &_boundary_parameters,
-                    const DofManager<dim>                      &_dof_manager,
+                    const DoFManager<dim, degree>              &_dof_manager,
                     const PDEOperatorBase<dim, degree, number> *_pde_operator);
 
   /**
@@ -181,7 +181,7 @@ private:
   /**
    * @brief Dof manager pointer.
    */
-  const DofManager<dim> *dof_manager;
+  const DoFManager<dim, degree> *dof_manager;
 
   /**
    * @brief PDE operator.
