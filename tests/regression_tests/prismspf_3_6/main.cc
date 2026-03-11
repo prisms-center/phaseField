@@ -97,8 +97,8 @@ private:
         ScalarValue eq_n   = n_val - sim_timer.get_timestep() * m_well * f_well;
         ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * n_grad;
 
-        variable_list.set_value_term(0, n_val + 1.0);
-        variable_list.set_gradient_term(0, ScalarGrad());
+        variable_list.set_value_term(0, eq_n);
+        variable_list.set_gradient_term(0, eqx_n);
       }
     else if (solve_group_id == 2) // postprocess
       {

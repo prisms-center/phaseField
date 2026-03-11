@@ -35,10 +35,9 @@ struct SolutionLevel
   using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
   using SolutionVector = BlockVector::BlockType;
   using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
-  BlockVector                                            solutions;
-  std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
-  MatrixFree                                             matrix_free;
-  unsigned int                                           oldest_age = 0;
+  BlockVector              solutions;
+  std::vector<BlockVector> old_solutions;
+  MatrixFree               matrix_free;
 };
 
 /**
@@ -165,10 +164,9 @@ public:
    */
   template <unsigned int degree>
   void
-  init(const dealii::Mapping<dim>                   &mapping,
-       const DoFManager<dim, degree>                &dof_manager,
+  init(const DoFManager<dim, degree>                &dof_manager,
        const ConstraintManager<dim, degree, number> &constraint_manager,
-       const dealii::Quadrature<dim>                &quad);
+       unsigned int                                  num_old_saved);
 
   /**
    * @brief Reinitialize the solution set.
@@ -230,12 +228,6 @@ private:
    * @brief Information about the solve group this handler is responsible for.
    */
   SolveGroup solve_group;
-
-  // TODO (fractalsbyx): do this better
-  /**
-   * @brief Oldest saved age.
-   */
-  unsigned int oldest_saved = 1;
 
   /**
    * @brief Mapping from block index to global field index.
