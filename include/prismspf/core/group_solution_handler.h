@@ -36,10 +36,9 @@ struct SolutionLevel
   using SolutionVector = BlockVector::BlockType;
   using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
   BlockVector                                            solutions;
-  BlockVector                                            new_solutions;
   std::array<BlockVector, Numbers::max_saved_increments> old_solutions;
-  BlockVector                                            change_solutions;
   MatrixFree                                             matrix_free;
+  unsigned int                                           oldest_age = 0;
 };
 
 /**
@@ -118,54 +117,6 @@ public:
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
                           unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Get the "new" solution vector set.
-   */
-  [[nodiscard]] BlockVector &
-  get_new_solution_full_vector(unsigned int relative_level = 0);
-
-  /**
-   * @brief Get the "new" solution vector set.
-   */
-  [[nodiscard]] const BlockVector &
-  get_new_solution_full_vector(unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Get the "new" solution vector of a given field index.
-   */
-  [[nodiscard]] SolutionVector &
-  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
-
-  /**
-   * @brief Get the "new" solution vector of a given field index.
-   */
-  [[nodiscard]] const SolutionVector &
-  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Get the "change" solution vector of a given field index.
-   */
-  [[nodiscard]] SolutionVector &
-  get_change_solution_vector(unsigned int index, unsigned int relative_level = 0);
-
-  /**
-   * @brief Get the "change" solution vector of a given field index.
-   */
-  [[nodiscard]] const SolutionVector &
-  get_change_solution_vector(unsigned int index, unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Get the "change" solution vector set.
-   */
-  [[nodiscard]] BlockVector &
-  get_change_solution_full_vector(unsigned int relative_level = 0);
-
-  /**
-   * @brief Get the "change" solution vector set.
-   */
-  [[nodiscard]] const BlockVector &
-  get_change_solution_full_vector(unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the solutions object at a level.
@@ -251,7 +202,7 @@ public:
   apply_initial_condition_for_old_fields();
 
   /**
-   * @brief Update the `solutions` to the `new_solution` and propagate the old solutions.
+   * @brief Update and propagate the old solutions.
    */
   void
   update(unsigned int relative_level = 0);

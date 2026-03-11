@@ -137,7 +137,7 @@ public:
    *
    * Additionally, we modify dependency_map to include an entry for every field being
    * solved. This is to avoid a troublesome problem downstream in FieldContainer, where we
-   * only want to initialize FEEvals for what is needed. (There is certainly a better way
+   * only want to initialize FEEvals for what is needed. (There could be a better way
    * of handling this, but this is the least complicated for now.)
    */
   void
