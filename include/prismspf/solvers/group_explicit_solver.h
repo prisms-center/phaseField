@@ -67,7 +67,7 @@ public:
     Timer::end_section("Zero ghosts");
 
     rhs_operators[relative_level].compute_operator(
-      solutions.get_new_solution_full_vector(relative_level));
+      solutions.get_solution_full_vector(relative_level));
 
     // Scale by invm
     for (auto field_index : solve_group.field_indices)

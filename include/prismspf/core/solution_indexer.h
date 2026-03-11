@@ -56,28 +56,6 @@ public:
                           unsigned int relative_level = 0);
 
   /**
-   * @brief Get the "new" solution vector set.
-   */
-  [[nodiscard]] const BlockVector &
-  get_new_solution_full_vector(unsigned int relative_level = 0) const;
-  /**
-   * @brief Get the "new" solution vector set.
-   */
-  [[nodiscard]] BlockVector &
-  get_new_solution_full_vector(unsigned int relative_level = 0);
-
-  /**
-   * @brief Get the "new" solution vector of a given field index.
-   */
-  [[nodiscard]] const SolutionVector &
-  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0) const;
-  /**
-   * @brief Get the "new" solution vector of a given field index.
-   */
-  [[nodiscard]] SolutionVector &
-  get_new_solution_vector(unsigned int index, unsigned int relative_level = 0);
-
-  /**
    * @brief Get the matrixfree object of the group a given field index.
    */
   [[nodiscard]] const MatrixFree &

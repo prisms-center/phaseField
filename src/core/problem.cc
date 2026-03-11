@@ -287,7 +287,8 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   bool is_nucleation_increment =
     user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment);
 
-  // Check for stochastic nucleation
+  // Check for stochastic nucleation. TODO: this is taking up a ton of time, even when
+  // nucleation is completely off. Diagnose and fix.
   Timer::start_section("Check for nucleation");
   bool any_nucleation_occurred =
     is_nucleation_increment &&

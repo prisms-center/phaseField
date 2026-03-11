@@ -68,16 +68,16 @@ public:
 
         // Solve for Newton update.
         do_linear_solve(rhs_operators[relative_level],
-                        solutions.get_new_solution_full_vector(relative_level),
+                        solutions.get_solution_full_vector(relative_level),
                         lhs_operators[relative_level],
-                        solutions.get_change_solution_full_vector(relative_level));
+                        solutions.get_solution_full_vector(relative_level)); // todo!!!
 
         // TODO: Apply zero-constraints to 'change' vector
 
         // Perform Newton update.
         solutions.get_solution_full_vector(relative_level)
           .add(newton_step_length,
-               solutions.get_change_solution_full_vector(relative_level));
+               solutions.get_solution_full_vector(relative_level)); // todo!!!
 
         // Apply constraints to solution vector
         solutions.apply_constraints(relative_level);
@@ -89,7 +89,7 @@ public:
 
         // Check convergence.
         number l2_norm =
-          solutions.get_change_solution_full_vector(relative_level).l2_norm();
+          solutions.get_solution_full_vector(relative_level).l2_norm(); // todo!!!
         newton_unconverged = l2_norm > newton_tolerance;
       }
     ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
