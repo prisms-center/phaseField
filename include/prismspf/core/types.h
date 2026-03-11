@@ -33,11 +33,6 @@ namespace Numbers
   static constexpr unsigned int max_element_degree = 6;
 
   /**
-   * @brief How many increments of field history prismspf can store.
-   */
-  static constexpr unsigned int max_saved_increments = 4;
-
-  /**
    * @brief Max number of subsections.
    */
   static constexpr unsigned int max_subsections = 16;

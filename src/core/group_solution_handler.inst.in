@@ -8,9 +8,8 @@ for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
   }
 for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
   {
-    template void GroupSolutionHandler<dimension, number>::init( 
-      const dealii::Mapping<dimension>                   &mapping,
+    template void GroupSolutionHandler<dimension, number>::init(
       const DoFManager<dimension, degree>                &dof_manager,
       const ConstraintManager<dimension, degree, number> &constraint_manager,
-      const dealii::Quadrature<dimension>                &quad);
+      unsigned int                                        num_old_saved);
   }

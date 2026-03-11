@@ -134,10 +134,10 @@ public:
   {
     using FEEDepPair    = std::pair<FEEvaluationType, EvalFlags>;
     using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
-    FEEDepPairPtr                                            fe_eval;
-    FEEDepPairPtr                                            fe_eval_src_dst;
-    std::array<FEEDepPairPtr, Numbers::max_saved_increments> fe_eval_old;
-    EvalFlags integration_flags = EvalFlags::nothing;
+    FEEDepPairPtr              fe_eval;
+    FEEDepPairPtr              fe_eval_src_dst;
+    std::vector<FEEDepPairPtr> fe_eval_old;
+    EvalFlags                  integration_flags = EvalFlags::nothing;
     /**
      * @brief The solution group and the block index
      * @note It would look nicer to just use the SolutionIndexer, but this way decreases
@@ -162,9 +162,10 @@ public:
                                                           block_index),
                                          dependency.flag);
         }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+      fe_eval_old.resize(dependency.old_flags.size(), nullptr);
+      for (unsigned int age = 0; age < dependency.old_flags.size(); ++age)
         {
-          if (dependency.old_flags.at(age))
+          if (dependency.old_flags.at(age)) // kinda redundant... maybe remove?
             {
               fe_eval_old[age] =
                 std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
@@ -248,7 +249,7 @@ public:
             solution_level->solutions.block(block_index));
           fe_eval->first.evaluate(fe_eval->second);
         }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+      for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
         {
           if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
             {
@@ -275,7 +276,7 @@ public:
             solution_level->solutions.block(block_index));
           fe_eval->first.evaluate(fe_eval->second);
         }
-      for (unsigned int age = 0; age < Numbers::max_saved_increments; ++age)
+      for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
         {
           if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
             {

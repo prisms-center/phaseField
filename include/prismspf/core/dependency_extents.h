@@ -12,11 +12,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 inline unsigned int
 oldest(Dependencies::Dependency dependencies)
 {
-  for (unsigned int age = Numbers::max_saved_increments - 1; age >= 0; age--)
+  for (long int age_index = long(dependencies.old_flags.size()) - 1; age_index >= 0;
+       age_index--)
     {
-      if (dependencies.old_flags.at(age))
+      if (dependencies.old_flags[age_index])
         {
-          return age;
+          return age_index + 1;
         }
     }
   return 0;

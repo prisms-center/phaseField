@@ -44,9 +44,9 @@ public:
    * @brief Initialize the solver.
    */
   void
-  init() override
+  init(const std::list<DependencySet> &all_dependeny_sets) override
   {
-    GroupSolverBase<dim, degree, number>::init();
+    GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
     rhs_operators.reserve(num_levels);
