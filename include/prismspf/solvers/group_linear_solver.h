@@ -92,9 +92,9 @@ public:
 
     // Set up linear solver
     do_linear_solve(rhs_operators[relative_level],
-                    solutions.get_new_solution_full_vector(relative_level),
+                    solutions.get_solution_full_vector(relative_level),
                     lhs_operators[relative_level],
-                    solutions.get_solution_full_vector(relative_level));
+                    solutions.get_solution_full_vector(relative_level)); // todo!!!
 
     // Apply constraints
     solutions.apply_constraints(relative_level);
