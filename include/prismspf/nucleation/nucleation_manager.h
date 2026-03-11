@@ -105,12 +105,9 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   auto        &rng     = user_inputs.get_miscellaneous_parameters().rng;
 
   // Set up FEValues
-  static const dealii::QGaussLobatto<dim> quadrature(degree + 1);
-  static const unsigned int               num_quad_points = quadrature.size();
-  dealii::FESystem<dim> fe_system(dealii::FE_Q<dim>(dealii::QGaussLobatto<1>(degree + 1)),
-                                  1);
-  dealii::FEValues<dim> fe_values(fe_system,
-                                  quadrature,
+  unsigned int            num_quad_points = SystemWide<dim, degree>::quadrature.size();
+  dealii::FEValues<dim>   fe_values(SystemWide<dim, degree>::fe_systems[0],
+                                  SystemWide<dim, degree>::quadrature,
                                   dealii::UpdateFlags::update_values |
                                     dealii::UpdateFlags::update_JxW_values);
   std::list<Nucleus<dim>> new_nuclei_list;

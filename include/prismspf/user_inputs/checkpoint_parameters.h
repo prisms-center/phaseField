@@ -62,6 +62,10 @@ struct CheckpointParameters
   void
   add_equal_spacing_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
   {
+    if (!num_checkpoints)
+      {
+        return;
+      }
     for (unsigned int checkpoint = 0; checkpoint <= num_increments;
          checkpoint += num_increments / num_checkpoints)
       {
@@ -75,6 +79,10 @@ struct CheckpointParameters
   void
   add_log_spacing_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
   {
+    if (!num_checkpoints)
+      {
+        return;
+      }
     for (unsigned int checkpoint = 1; checkpoint <= num_checkpoints; checkpoint++)
       {
         checkpoint_list.insert(static_cast<unsigned int>(
@@ -89,6 +97,10 @@ struct CheckpointParameters
   void
   add_n_per_decade_checkpoints(unsigned int num_checkpoints, unsigned int num_increments)
   {
+    if (!num_checkpoints)
+      {
+        return;
+      }
     AssertThrow(num_increments > 1,
                 dealii::ExcMessage("For n per decaded spaced checkpoints, the number of "
                                    "increments must be greater than 1."));
