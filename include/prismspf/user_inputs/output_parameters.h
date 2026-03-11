@@ -57,6 +57,10 @@ struct OutputParameters
   void
   add_equal_spacing_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
+    if (!num_outputs)
+      {
+        return;
+      }
     for (unsigned int output = 0; output <= num_increments;
          output += num_increments / num_outputs)
       {
@@ -70,6 +74,10 @@ struct OutputParameters
   void
   add_log_spacing_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
+    if (!num_outputs)
+      {
+        return;
+      }
     for (unsigned int output = 1; output <= num_outputs; output++)
       {
         output_list.insert(static_cast<unsigned int>(std::round(
@@ -83,6 +91,10 @@ struct OutputParameters
   void
   add_n_per_decade_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
+    if (!num_outputs)
+      {
+        return;
+      }
     AssertThrow(num_increments > 1,
                 dealii::ExcMessage("For n per decaded spaced outputs, the number of "
                                    "increments must be greater than 1."));
