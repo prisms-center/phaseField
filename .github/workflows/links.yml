@@ -1,0 +1,37 @@
+name: Broken Links
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    # Run every Monday at 8am UTC-5
+    - cron: "0 13 * * 1"
+
+jobs:
+  link-checker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [master, gh-pages]
+    permissions:
+      # Write perms so issues can be created
+      issues: write
+    steps:
+      - name: Checkout branch
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: false
+
+      - name: Create Issue From File
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/out.md
+          labels: report, automated issue
