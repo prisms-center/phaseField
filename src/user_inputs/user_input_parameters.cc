@@ -156,15 +156,15 @@ UserInputParameters<dim>::assign_output_parameters(
     unsigned int num_outputs =
       static_cast<unsigned int>(parameter_handler.get_integer("number"));
     unsigned int num_increments = temporal_discretization.num_increments;
-    if (condition == "EQUAL SPACING")
+    if (condition == "EQUAL_SPACING")
       {
         output_parameters.add_equal_spacing_outputs(num_outputs, num_increments);
       }
-    else if (condition == "LOG SPACING")
+    else if (condition == "LOG_SPACING")
       {
         output_parameters.add_log_spacing_outputs(num_outputs, num_increments);
       }
-    else if (condition == "N PER DECADE")
+    else if (condition == "N_PER_DECADE")
       {
         output_parameters.add_n_per_decade_outputs(num_outputs, num_increments);
       }
@@ -193,17 +193,17 @@ UserInputParameters<dim>::assign_checkpoint_parameters(
     unsigned int num_checkpoints =
       static_cast<unsigned int>(parameter_handler.get_integer("number"));
     unsigned int num_increments = temporal_discretization.num_increments;
-    if (condition == "EQUAL SPACING")
+    if (condition == "EQUAL_SPACING")
       {
         checkpoint_parameters.add_equal_spacing_checkpoints(num_checkpoints,
                                                             num_increments);
       }
-    else if (condition == "LOG SPACING")
+    else if (condition == "LOG_SPACING")
       {
         checkpoint_parameters.add_log_spacing_checkpoints(num_checkpoints,
                                                           num_increments);
       }
-    else if (condition == "N PER DECADE")
+    else if (condition == "N_PER_DECADE")
       {
         checkpoint_parameters.add_n_per_decade_checkpoints(num_checkpoints,
                                                            num_increments);
