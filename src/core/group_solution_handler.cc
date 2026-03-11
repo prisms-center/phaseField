@@ -107,78 +107,6 @@ GroupSolutionHandler<dim, number>::get_old_solution_vector(
 }
 
 template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
-  unsigned int relative_level) -> BlockVector &
-{
-  return solution_levels[relative_level].new_solutions;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_new_solution_full_vector(
-  unsigned int relative_level) const -> const BlockVector &
-{
-  return solution_levels[relative_level].new_solutions;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_new_solution_vector(unsigned int global_index,
-                                                           unsigned int relative_level)
-  -> SolutionVector &
-{
-  return solution_levels[relative_level].new_solutions.block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_new_solution_vector(
-  unsigned int global_index,
-  unsigned int relative_level) const -> const SolutionVector &
-{
-  return solution_levels[relative_level].new_solutions.block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_change_solution_vector(unsigned int global_index,
-                                                              unsigned int relative_level)
-  -> SolutionVector &
-{
-  return solution_levels[relative_level].change_solutions.block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_change_solution_vector(
-  unsigned int global_index,
-  unsigned int relative_level) const -> const SolutionVector &
-{
-  return solution_levels[relative_level].change_solutions.block(
-    global_to_block_index[global_index]);
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_change_solution_full_vector(
-  unsigned int relative_level) -> BlockVector &
-{
-  return solution_levels[relative_level].change_solutions;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_change_solution_full_vector(
-  unsigned int relative_level) const -> const BlockVector &
-{
-  return solution_levels[relative_level].change_solutions;
-}
-
-template <unsigned int dim, typename number>
 SolutionLevel<dim, number> &
 GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_level)
 {
@@ -243,7 +171,7 @@ GroupSolutionHandler<dim, number>::init(
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_group.id << "...\n"
     << std::flush;
-  Timer::start_section("reinitialize solution set");
+  Timer::start_section("initialize solution set");
 
   // TODO: figure out more consistent way of passing num_levels
   const unsigned int num_levels = dof_manager.get_dof_handlers().size();
@@ -265,7 +193,7 @@ GroupSolutionHandler<dim, number>::init(
   // Initialize solution transfer
   init_solution_transfer();
 
-  Timer::end_section("reinitialize solution set");
+  Timer::end_section("initialize solution set");
 }
 
 template <unsigned int dim, typename number>
@@ -274,8 +202,7 @@ GroupSolutionHandler<dim, number>::reinit()
 {
   for (auto &solution_level : solution_levels)
     {
-      BlockVector &solutions     = solution_level.solutions;
-      BlockVector &new_solutions = solution_level.new_solutions;
+      BlockVector &solutions = solution_level.solutions;
       std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
         solution_level.old_solutions;
       MatrixFree &matrix_free = solution_level.matrix_free;
@@ -292,9 +219,7 @@ GroupSolutionHandler<dim, number>::reinit()
         }
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
-      new_solutions.reinit(partitioners);
       solutions.collect_sizes();
-      new_solutions.collect_sizes();
       for (unsigned int i = 0; i < Numbers::max_saved_increments; ++i)
         {
           if (i < oldest_saved)
@@ -369,7 +294,6 @@ void
 GroupSolutionHandler<dim, number>::update_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.update_ghost_values();
-  solution_levels[relative_level].new_solutions.update_ghost_values();
   for (unsigned int i = 0; i < oldest_saved; ++i)
     {
       solution_levels[relative_level].old_solutions[i].update_ghost_values();
@@ -382,7 +306,6 @@ void
 GroupSolutionHandler<dim, number>::zero_out_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.zero_out_ghost_values();
-  solution_levels[relative_level].new_solutions.zero_out_ghost_values();
   for (unsigned int i = 0; i < oldest_saved; ++i)
     {
       solution_levels[relative_level].old_solutions[i].zero_out_ghost_values();
@@ -393,18 +316,14 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level)
 {
-  BlockVector &solutions     = solution_levels[relative_level].solutions;
-  BlockVector &new_solutions = solution_levels[relative_level].new_solutions;
-  MatrixFree  &matrix_free   = solution_levels[relative_level].matrix_free;
+  BlockVector &solutions   = solution_levels[relative_level].solutions;
+  MatrixFree  &matrix_free = solution_levels[relative_level].matrix_free;
 
   unsigned int num_blocks = solve_group.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
       matrix_free.get_affine_constraints(block_index)
         .distribute(solutions.block(block_index));
-      matrix_free.get_affine_constraints(block_index)
-        .distribute(new_solutions.block(block_index));
-      // TODO: Check if this needs to be done to both or just one of the above
     }
 }
 
@@ -430,7 +349,7 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
-  // bubble-swap method. bubble the discarded solution up to 'new_solution'
+  // bubble-swap method. bubble the discarded solution up to 'solution'
   SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
   for (int age = oldest_saved - 1; age >= 0; --age)
     {
@@ -443,7 +362,6 @@ GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
           solution_level.old_solutions[age].swap(solution_level.solutions);
         }
     }
-  solution_level.solutions.swap(solution_level.new_solutions);
 }
 
 #include "core/group_solution_handler.inst"
