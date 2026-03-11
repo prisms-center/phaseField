@@ -80,8 +80,6 @@ option(
   OFF
 )
 
-configure_file(include/prismspf/config.h.in include/prismspf/config.h @ONLY)
-
 print_variables(
     ""
     PRISMS_PF_AUTODETECTION
@@ -106,13 +104,79 @@ print_variables(
 
 print_subsection("Configuring external libraries")
 
-# Start with finding MPI
+include(FetchContent)
+
+FetchContent_Declare(
+  libassert
+  GIT_REPOSITORY https://github.com/jeremy-rifkin/libassert.git
+  GIT_TAG        v2.2.1
+)
+
+if(PRISMS_PF_UNIT_TESTS)
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.13.0
+)
+endif()
+
+# Find MPI
+find_package(MPI REQUIRED COMPONENTS CXX)
+
+if(NOT MPI_CXX_FOUND)
+  message(FATAL_ERROR "MPI CXX component not found. Please make sure your MPI installation includes C++ support.")
+endif()
+if(NOT MPI_CXX_COMPILER)
+	message(FATAL_ERROR "MPI CXX compiler wrapper not found. Please make sure you have `mpicxx`")
+endif()
+
+# Find the MPI CXX version if not already populated
+if(NOT MPI_CXX_VERSION)
+  file(READ "${MPI_CXX_INCLUDE_DIRS}/mpi.h" _mpi_header_content)
+
+  string(REGEX MATCH "#define MPI_MAJOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
+  set(_mpi_major ${CMAKE_MATCH_1})
+
+  string(REGEX MATCH "#define MPI_MINOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
+  set(_mpi_major ${CMAKE_MATCH_1})
+
+  set(MPI_CXX_VERSION "${_mpi_major}.${_mpi_minor}")
+endif()
+
+# Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
+# a little differently, provide some directory hints.
+# find_package(deal.II 9.6.0 REQUIRED HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
+
+# Again we run into some more of the uniqueness of deal.II with the way they set
+# up build types. Their default build type is `DebugRelease`, which builds both
+# Debug and Release targets. As such, our project much choose what deal.II target
+# to link to when the user compiles with Debug and Release.
+#
+# When deal.II is built with only Debug or only Release, we link against for all
+# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in 
+# Debug will only contain assertions and debugging for our library. In most cases,
+# this is sufficient to catch most issues.
+#
+# When deal.II is build with DebugRelease, we link to the target that corresponds
+# to the PRISMS-PF build type. This is recommended for developers.
+
+# print_variable(DEAL_II_BUILD_TYPE)
+
+
+set(PRISMS_PF_VENDORED_PACKAGES libassert)
+if(PRISMS_PF_UNIT_TESTS)
+	list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
+endif()
+
+FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
 
 # =========================================================
 # Configure targets
 # =========================================================
 
 print_subsection("Configuring build targets")
+
+configure_file(include/prismspf/config.h.in include/prismspf/config.h @ONLY)
 
 # =========================================================
 # Installation
