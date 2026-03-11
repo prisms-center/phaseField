@@ -8,6 +8,7 @@
 
 #include <boost/geometry/core/cs.hpp>
 
+#include <prismspf/core/dependency_extents.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/pde_operator_base.h>
@@ -79,12 +80,12 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init()
+  init(const std::list<DependencySet> &all_dependeny_sets)
   {
-    solutions.init(SystemWide<dim, degree>::mapping,
-                   solve_context->get_dof_manager(),
+    DependencyExtents extents(solve_group.field_indices, all_dependeny_sets);
+    solutions.init(solve_context->get_dof_manager(),
                    solve_context->get_constraint_manager(),
-                   SystemWide<dim, degree>::quadrature);
+                   extents.oldest_age);
 
     // Apply constraints.
     solutions.apply_constraints();
@@ -129,7 +130,9 @@ public:
    */
   virtual void
   update()
-  {}
+  {
+    solutions.update();
+  }
 
   /**
    * @brief Update the ghosts.

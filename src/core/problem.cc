@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <prismspf/core/dependencies.h>
 #include <prismspf/core/problem.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_output.h>
@@ -49,6 +50,19 @@ make_solvers(const std::vector<SolveGroup>           &solve_groups,
         }
     }
   return solvers;
+}
+
+std::list<DependencySet>
+get_all_dependency_sets(const std::vector<SolveGroup> &solve_groups)
+{
+  // Todo: upgrade to recursive for aux solvers
+  std::list<DependencySet> output;
+  for (const auto &solve_group : solve_groups)
+    {
+      output.push_back(solve_group.dependencies_lhs);
+      output.push_back(solve_group.dependencies_rhs);
+    }
+  return output;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -165,7 +179,7 @@ Problem<dim, degree, number>::init_system()
       }*/
   for (auto &solver : solvers)
     {
-      solver->init();
+      solver->init(get_all_dependency_sets(solve_groups));
     }
   Timer::end_section("Initialize Solvers");
 

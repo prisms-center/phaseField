@@ -6,6 +6,7 @@
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solve_group.h>
+#include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 
 #include <prismspf/config.h>
@@ -163,10 +164,9 @@ template <unsigned int dim, typename number>
 template <unsigned int degree>
 void
 GroupSolutionHandler<dim, number>::init(
-  const dealii::Mapping<dim>                   &mapping,
   const DoFManager<dim, degree>                &dof_manager,
   const ConstraintManager<dim, degree, number> &constraint_manager,
-  const dealii::Quadrature<dim>                &quad)
+  unsigned int                                  num_old_saved)
 {
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_group.id << "...\n"
@@ -183,10 +183,11 @@ GroupSolutionHandler<dim, number>::init(
     {
       SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
       solution_level.matrix_free.reinit(
-        mapping,
+        SystemWide<dim, degree>::mapping,
         dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
         constraint_manager.get_constraints(solve_group.field_indices, relative_level),
-        quad);
+        SystemWide<dim, degree>::quadrature);
+      solution_level.old_solutions.resize(num_old_saved);
     }
   // Initialize solution vectors
   reinit();
@@ -202,10 +203,9 @@ GroupSolutionHandler<dim, number>::reinit()
 {
   for (auto &solution_level : solution_levels)
     {
-      BlockVector &solutions = solution_level.solutions;
-      std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
-        solution_level.old_solutions;
-      MatrixFree &matrix_free = solution_level.matrix_free;
+      BlockVector              &solutions     = solution_level.solutions;
+      std::vector<BlockVector> &old_solutions = solution_level.old_solutions;
+      MatrixFree               &matrix_free   = solution_level.matrix_free;
 
       // These partitioners basically just provide the number of elements in a distributed
       // way
@@ -220,13 +220,10 @@ GroupSolutionHandler<dim, number>::reinit()
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
       solutions.collect_sizes();
-      for (unsigned int i = 0; i < Numbers::max_saved_increments; ++i)
+      for (BlockVector &old_solution : old_solutions)
         {
-          if (i < oldest_saved)
-            {
-              old_solutions.at(i).reinit(partitioners);
-              old_solutions.at(i).collect_sizes();
-            }
+          old_solution.reinit(partitioners);
+          old_solution.collect_sizes();
         }
     }
 }
@@ -251,16 +248,16 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
 {
-  unsigned int                        num_blocks = solve_group.field_indices.size();
+  unsigned int                        num_blocks    = solve_group.field_indices.size();
+  const SolutionLevel<dim, number>   &top_solutions = solution_levels[0];
   std::vector<const SolutionVector *> fields_at_ages;
-  fields_at_ages.reserve(oldest_saved);
+  fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      fields_at_ages.push_back(&(solution_levels[0].solutions.block(block_index)));
-      for (unsigned int age = 0; age < oldest_saved; age++)
+      fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
+      for (const BlockVector &old_solution : top_solutions.old_solutions)
         {
-          fields_at_ages.push_back(
-            &(solution_levels[0].old_solutions[age].block(block_index)));
+          fields_at_ages.push_back(&(old_solution.block(block_index)));
         }
       block_solution_transfer[block_index].prepare_for_coarsening_and_refinement(
         fields_at_ages);
@@ -272,16 +269,16 @@ void
 GroupSolutionHandler<dim, number>::execute_solution_transfer()
 {
   // implementation will have identical structure to `prepare_for_solution_transfer()`
-  unsigned int                  num_blocks = solve_group.field_indices.size();
+  unsigned int                  num_blocks    = solve_group.field_indices.size();
+  SolutionLevel<dim, number>   &top_solutions = solution_levels[0];
   std::vector<SolutionVector *> fields_at_ages;
-  fields_at_ages.reserve(oldest_saved);
+  fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      fields_at_ages.push_back(&(solution_levels[0].solutions.block(block_index)));
-      for (unsigned int age = 0; age < oldest_saved; age++)
+      fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
+      for (BlockVector &old_solution : top_solutions.old_solutions)
         {
-          fields_at_ages.push_back(
-            &(solution_levels[0].old_solutions[age].block(block_index)));
+          fields_at_ages.push_back(&(old_solution.block(block_index)));
         }
       block_solution_transfer[block_index].interpolate(fields_at_ages);
     }
@@ -294,9 +291,9 @@ void
 GroupSolutionHandler<dim, number>::update_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.update_ghost_values();
-  for (unsigned int i = 0; i < oldest_saved; ++i)
+  for (const BlockVector &old_solution : solution_levels[relative_level].old_solutions)
     {
-      solution_levels[relative_level].old_solutions[i].update_ghost_values();
+      old_solution.update_ghost_values();
     }
 }
 
@@ -306,9 +303,9 @@ void
 GroupSolutionHandler<dim, number>::zero_out_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.zero_out_ghost_values();
-  for (unsigned int i = 0; i < oldest_saved; ++i)
+  for (const BlockVector &old_solution : solution_levels[relative_level].old_solutions)
     {
-      solution_levels[relative_level].old_solutions[i].zero_out_ghost_values();
+      old_solution.zero_out_ghost_values();
     }
 }
 
@@ -334,13 +331,12 @@ GroupSolutionHandler<dim, number>::apply_initial_condition_for_old_fields()
 {
   for (auto &solution_level : solution_levels)
     {
-      BlockVector &solutions = solution_level.solutions;
-      std::array<BlockVector, Numbers::max_saved_increments> &old_solutions =
-        solution_level.old_solutions;
+      BlockVector              &solutions     = solution_level.solutions;
+      std::vector<BlockVector> &old_solutions = solution_level.old_solutions;
 
-      for (unsigned int i = 0; i < oldest_saved; ++i)
+      for (BlockVector &old_solution : old_solutions)
         {
-          old_solutions[i] = solutions;
+          old_solution = solutions;
         }
     }
 }
@@ -351,7 +347,7 @@ GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
   // bubble-swap method. bubble the discarded solution up to 'solution'
   SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
-  for (int age = oldest_saved - 1; age >= 0; --age)
+  for (int age = solution_level.old_solutions.size() - 1; age >= 0; --age)
     {
       if (age > 0)
         {
