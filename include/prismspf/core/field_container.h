@@ -196,7 +196,7 @@ public:
         }
       else
         {
-          return fe_eval_old[int(type)]->first;
+          return fe_eval_old[int(type) - 1]->first;
         }
     }
 
@@ -215,7 +215,7 @@ public:
         }
       else
         {
-          return fe_eval_old[int(type)]->first;
+          return fe_eval_old[int(type) - 1]->first;
         }
     }
 
