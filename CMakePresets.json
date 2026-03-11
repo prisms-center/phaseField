@@ -3,7 +3,17 @@
     {
       "configurePreset": "default",
       "name": "default"
-    }
+    },
+		{
+    "configurePreset": "ninja-multi",
+    "name": "ninja-multi-release",
+    "configuration": "Release"
+  },
+  {
+    "configurePreset": "ninja-multi",
+    "name": "ninja-multi-debug",
+    "configuration": "Debug"
+  }
   ],
   "cmakeMinimumRequired": {
     "major": 3,
