@@ -19,3 +19,12 @@ end
 
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE
+
+subsection boundary conditions: 0
+  # List of conditions.
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Neumann, Neumann
+
+  # The names of the fields that will use these constraints.
+  set variables = n
+
+end
