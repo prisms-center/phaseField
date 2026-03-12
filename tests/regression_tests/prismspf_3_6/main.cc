@@ -50,7 +50,7 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
-    number center[12][3] = {
+    constexpr number center[12][3] = {
       {0.1, 0.3,  0},
       {0.8, 0.7,  0},
       {0.5, 0.2,  0},
@@ -64,8 +64,8 @@ private:
       {1,   1,    0},
       {0.7, 0.95, 0}
     };
-    number rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
-    number dist    = 0.0;
+    constexpr number rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+    number           dist    = 0.0;
     for (unsigned int i = 0; i < 12; i++)
       {
         dist = 0.0;
@@ -80,6 +80,15 @@ private:
       }
     scalar_value = std::min(scalar_value, static_cast<number>(1.0));
   }
+
+  /* void
+  set_nonuniform_dirichlet([[maybe_unused]] const unsigned int       &index,
+                           [[maybe_unused]] const unsigned int       &boundary_id,
+                           [[maybe_unused]] const unsigned int       &component,
+                           [[maybe_unused]] const dealii::Point<dim> &point,
+                           [[maybe_unused]] number                   &scalar_value,
+                           [[maybe_unused]] number &vector_component_value) const override
+  {} */
 
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
