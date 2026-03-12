@@ -7,6 +7,7 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
@@ -187,10 +188,12 @@ private:
   void
   invert(SolutionVector &dst, const SolutionVector &src) const
   {
+    src.update_ghost_values();
+    dst.update_ghost_values();
     Assert(dst.size() == src.size(), dealii::ExcInternalError());
     for (unsigned int i = 0; i < src.locally_owned_size(); ++i)
       {
-        dst[i] = 1.0 / src[i];
+        dst.local_element(i) = 1.0 / src.local_element(i);
       }
   }
 

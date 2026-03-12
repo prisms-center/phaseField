@@ -297,16 +297,11 @@ GroupSolutionHandler<dim, number>::update_ghosts(unsigned int relative_level) co
     }
 }
 
-// TODO (fractalsbyx): Check if this is necessary for all solutions
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::zero_out_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.zero_out_ghost_values();
-  for (const BlockVector &old_solution : solution_levels[relative_level].old_solutions)
-    {
-      old_solution.zero_out_ghost_values();
-    }
 }
 
 template <unsigned int dim, typename number>
@@ -345,7 +340,9 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
-  // bubble-swap method. bubble the discarded solution up to 'solution'
+  // 1. TODO: propogate solutions to coarser levels (relative level needn't be an arg)
+
+  // 3. bubble-swap method. bubble the discarded solution up to 'solution'
   SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
   for (int age = solution_level.old_solutions.size() - 1; age >= 0; --age)
     {
