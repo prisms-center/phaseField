@@ -332,7 +332,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::end_section("Update time-dependent constraints");
 
   // Solve a single increment
-  Timer::start_section("Solve Increment");
+  Timer::start_section("Solvers");
   for (auto &solver : solvers)
     {
       SolveTiming solve_timing = solver->get_solve_group().solve_timing;
@@ -343,8 +343,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
           continue;
         }
       solver->solve();
+      solver->update_ghosts();
     }
-  Timer::end_section("Solve Increment");
+  Timer::end_section("Solvers");
 
   // Output results if needed
   if (user_inputs.get_output_parameters().should_output(increment))
