@@ -49,7 +49,8 @@ public:
   {}
 
   /**
-   * @brief User-implemented class for the setting nonuniform boundary conditions.
+   * @brief User-implemented class for the setting nonuniform boundary conditions. Default
+   * behavior is to call initial conditions.
    */
   virtual void
   set_nonuniform_dirichlet([[maybe_unused]] const unsigned int       &index,
@@ -58,7 +59,13 @@ public:
                            [[maybe_unused]] const dealii::Point<dim> &point,
                            [[maybe_unused]] number                   &scalar_value,
                            [[maybe_unused]] number &vector_component_value) const
-  {}
+  {
+    this->set_initial_condition(index,
+                                component,
+                                point,
+                                scalar_value,
+                                vector_component_value);
+  }
 
   /**
    * @brief User-implemented class for the RHS of explicit equations.

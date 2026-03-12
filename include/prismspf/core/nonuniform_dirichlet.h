@@ -55,7 +55,7 @@ private:
 
   unsigned int boundary_id;
 
-  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -259,7 +259,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
         // Attatch conditions to fields
         for (const auto &field_comp_name : field_names)
           {
-            unsigned int           pos = field_comp_name.length() - 2;
+            int                    pos = field_comp_name.length() - 2;
             const std::string      end = field_comp_name.substr(pos > 0 ? pos : 0);
             std::string            field_name;
             std::set<unsigned int> comps;
