@@ -154,7 +154,7 @@ main(int argc, char *argv[])
       ParseCMDOptions cli_options(argc, argv);
       std::string     parameters_filename = cli_options.get_parameters_filename();
 
-      constexpr unsigned int dim    = 3;
+      constexpr unsigned int dim    = 2;
       constexpr unsigned int degree = 2;
 
       std::vector<FieldAttributes> field_attributes = {

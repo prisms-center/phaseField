@@ -197,37 +197,6 @@ Problem<dim, degree, number>::init_system()
   grid_refiner.add_refinement_marker(std::make_shared<NucleusRefinementFunction<dim>>(
     user_inputs.get_nucleation_parameters(),
     pf_tools->nuclei_list));
-  dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
-  dealii::types::global_dof_index new_dofs = 0;
-  for (unsigned int remesh_index = 0;
-       remesh_index < (user_inputs.get_spatial_discretization().max_refinement -
-                       user_inputs.get_spatial_discretization().min_refinement);
-       remesh_index++)
-    {
-      // Perform grid refinement
-      ConditionalOStreams::pout_base() << "performing grid refinement...\n" << std::flush;
-      Timer::start_section("Grid refinement");
-      grid_refiner.do_adaptive_refinement(solvers);
-      Timer::end_section("Grid refinement");
-
-      // Update the ghosts
-      Timer::start_section("Update ghosts");
-      for (auto &solver : solvers)
-        {
-          solver->update_ghosts();
-        }
-      Timer::end_section("Update ghosts");
-
-      // Recalculate the total DoFs
-      new_dofs = dof_manager.get_total_dofs();
-
-      // Check for convergence
-      if (old_dofs == new_dofs)
-        {
-          break;
-        }
-      old_dofs = new_dofs;
-    }
 
   // InvM
   solve_context.get_invm_manager().compute_invm();
@@ -301,30 +270,6 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   bool is_nucleation_increment =
     user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment);
 
-  // Check for stochastic nucleation. TODO: this is taking up a ton of time, even when
-  // nucleation is completely off. Diagnose and fix.
-  Timer::start_section("Check for nucleation");
-  bool any_nucleation_occurred =
-    is_nucleation_increment &&
-    NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
-                                                               pf_tools->nuclei_list);
-
-  Timer::end_section("Check for nucleation");
-
-  // Perform grid refinement if necessary
-  if (user_inputs.get_spatial_discretization().has_adaptivity &&
-      (user_inputs.get_spatial_discretization().should_refine_mesh(increment) ||
-       any_nucleation_occurred))
-    {
-      // Perform grid refinement
-      ConditionalOStreams::pout_base()
-        << "[Increment " << sim_timer.get_increment() << "] : Grid Refinement\n";
-      Timer::start_section("Grid refinement");
-      grid_refiner.do_adaptive_refinement(solvers);
-      Timer::end_section("Grid refinement");
-      ConditionalOStreams::pout_base() << "\n" << std::flush;
-    }
-
   // Update the time-dependent constraints
   Timer::start_section("Update time-dependent constraints");
   // TODO: Loop over levels, pass in current time
@@ -346,6 +291,35 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
       solver->update_ghosts();
     }
   Timer::end_section("Solvers");
+
+  // Check for stochastic nucleation. TODO: this is taking up a ton of time, even when
+  // nucleation is completely off. Diagnose and fix.
+  Timer::start_section("Check for nucleation");
+  bool any_nucleation_occurred =
+    is_nucleation_increment &&
+    NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
+                                                               pf_tools->nuclei_list);
+  Timer::end_section("Check for nucleation");
+
+  // Perform grid refinement if necessary
+  if (user_inputs.get_spatial_discretization().has_adaptivity && increment == 0)
+    {
+      Timer::start_section("Grid refinement");
+      grid_refiner.do_initial_refinement(solvers);
+      Timer::end_section("Grid refinement");
+    }
+  else if (user_inputs.get_spatial_discretization().has_adaptivity &&
+           (user_inputs.get_spatial_discretization().should_refine_mesh(increment) ||
+            any_nucleation_occurred))
+    {
+      // Perform grid refinement
+      ConditionalOStreams::pout_base()
+        << "[Increment " << sim_timer.get_increment() << "] : Grid Refinement\n";
+      Timer::start_section("Grid refinement");
+      grid_refiner.do_adaptive_refinement(solvers);
+      Timer::end_section("Grid refinement");
+      ConditionalOStreams::pout_base() << "\n" << std::flush;
+    }
 
   // Output results if needed
   if (user_inputs.get_output_parameters().should_output(increment))

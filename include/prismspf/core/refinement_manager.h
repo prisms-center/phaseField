@@ -17,6 +17,8 @@
 #include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/solve_context.h>
 
+#include <prismspf/user_inputs/spatial_discretization.h>
+
 #include <prismspf/config.h>
 
 #include <memory>
@@ -156,6 +158,50 @@ public:
   get_refinement_markers() const
   {
     return marker_functions;
+  }
+
+  /**
+   * @brief Similar to `do_adaptive_refinement` but loops coarsening.
+   *
+   * Perform a loop of flagging cells for refinement/coarsening and refining until no more
+   * cells are flagged.
+   */
+  void
+  do_initial_refinement(
+    std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+  {
+    const SpatialDiscretization<dim> &space_parameters =
+      solve_context.get_user_inputs().get_spatial_discretization();
+    const DoFManager<dim, degree> &dof_manager = solve_context.get_dof_manager();
+
+    dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
+    dealii::types::global_dof_index new_dofs = 0;
+    for (unsigned int remesh_index = 0; remesh_index < (space_parameters.max_refinement -
+                                                        space_parameters.min_refinement);
+         remesh_index++)
+      {
+        // Perform grid refinement
+        ConditionalOStreams::pout_base() << "performing grid refinement...\n"
+                                         << std::flush;
+        do_adaptive_refinement(solvers);
+        // Update the ghosts
+        Timer::start_section("Update ghosts");
+        for (auto &solver : solvers)
+          {
+            solver->update_ghosts();
+          }
+        Timer::end_section("Update ghosts");
+
+        // Recalculate the total DoFs
+        new_dofs = dof_manager.get_total_dofs();
+
+        // Check for convergence
+        if (old_dofs == new_dofs)
+          {
+            break;
+          }
+        old_dofs = new_dofs;
+      }
   }
 
 private:
@@ -354,10 +400,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(*cell,
-                                                 solve_context.get_simulation_timer());
-                  }))
+                    {
+                      return marker_function->flag(*cell,
+                                                   solve_context.get_simulation_timer());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
