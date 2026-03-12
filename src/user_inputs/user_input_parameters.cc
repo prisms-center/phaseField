@@ -253,7 +253,8 @@ UserInputParameters<dim>::assign_boundary_parameters(
               }
           }
         parameter_handler.enter_subsection("pinning point");
-        {}
+        {
+        }
         parameter_handler.leave_subsection();
 
         // Attatch conditions to fields
@@ -280,7 +281,10 @@ UserInputParameters<dim>::assign_boundary_parameters(
               }
             else
               {
-                comps      = {0, 1, 2};
+                for (unsigned int comp = 0; comp < dim; ++comp)
+                  {
+                    comps.insert(comp);
+                  }
                 field_name = field_comp_name;
               }
             for (unsigned int component : comps)
