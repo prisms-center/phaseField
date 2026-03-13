@@ -398,10 +398,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(*cell,
-                                                 solve_context->get_simulation_timer());
-                  }))
+                    {
+                      return marker_function->flag(*cell,
+                                                   solve_context->get_simulation_timer());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
@@ -447,7 +447,6 @@ private:
     // Redistribute DoFs and reinit the solvers
     triangulation_manager.reinit();
     dof_manager.reinit(triangulation_manager);
-    // TODO
     constraint_manager.reinit(solve_context->get_field_attributes());
 
     // Reinit solutions, apply constraints, then solution transfer

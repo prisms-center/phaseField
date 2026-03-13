@@ -20,9 +20,8 @@
 
 #include <algorithm>
 #include <map>
-#include <set>
 #include <string>
-#include <vector>
+#include <unordered_set>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -130,18 +129,20 @@ struct ComponentConditions
     return std::any_of(conditions.begin(),
                        conditions.end(),
                        [](const auto &dir_cond)
-                       {
-                         return dir_cond.second == Condition::TimeDependentDirichlet ||
-                                dir_cond.second == Condition::TimeDependentNeumann;
-                       });
+                         {
+                           return dir_cond.second == Condition::TimeDependentDirichlet ||
+                                  dir_cond.second == Condition::TimeDependentNeumann;
+                         });
   }
 };
 
 template <unsigned int dim>
 struct FieldConstraints
 {
-  std::array<ComponentConditions, dim>                            component_constraints;
-  std::set<std::pair<dealii::Point<dim>, dealii::Tensor<1, dim>>> pinned_points;
+  std::array<ComponentConditions, dim> component_constraints;
+
+  // std::unordered_set<std::pair<dealii::Point<dim>, dealii::Tensor<1, dim>>>
+  // pinned_points;
 
   [[nodiscard]] bool
   has_time_dependent_bcs() const
@@ -149,9 +150,9 @@ struct FieldConstraints
     return std::any_of(component_constraints.begin(),
                        component_constraints.end(),
                        [](const ComponentConditions &comp)
-                       {
-                         return comp.has_time_dependent_bcs();
-                       });
+                         {
+                           return comp.has_time_dependent_bcs();
+                         });
   }
 };
 
@@ -183,7 +184,7 @@ public:
   }
 
   // Map of boundary conditions. The first key is the field index.
-  std::map<std::string, FieldConstraints<dim>> boundary_condition_list;
+  std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list;
 };
 
 template <unsigned int dim>
