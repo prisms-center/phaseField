@@ -182,15 +182,10 @@ GroupSolutionHandler<dim, number>::init(
        ++relative_level)
     {
       SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
-      solution_level.matrix_free.reinit(
-        SystemWide<dim, degree>::mapping,
-        dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
-        constraint_manager.get_constraints(solve_group.field_indices, relative_level),
-        SystemWide<dim, degree>::quadrature);
       solution_level.old_solutions.resize(num_old_saved);
     }
   // Initialize solution vectors
-  reinit();
+  reinit(dof_manager, constraint_manager);
   // Initialize solution transfer
   init_solution_transfer();
 
@@ -198,9 +193,22 @@ GroupSolutionHandler<dim, number>::init(
 }
 
 template <unsigned int dim, typename number>
+template <unsigned int degree>
 void
-GroupSolutionHandler<dim, number>::reinit()
+GroupSolutionHandler<dim, number>::reinit(
+  const DoFManager<dim, degree>                &dof_manager,
+  const ConstraintManager<dim, degree, number> &constraint_manager)
 {
+  // Initialize matrixfree objects
+  for (unsigned int relative_level = 0; relative_level < solution_levels.size();
+       ++relative_level)
+    {
+      solution_levels[relative_level].matrix_free.reinit(
+        SystemWide<dim, degree>::mapping,
+        dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
+        constraint_manager.get_constraints(solve_group.field_indices, relative_level),
+        SystemWide<dim, degree>::quadrature);
+    }
   for (auto &solution_level : solution_levels)
     {
       BlockVector              &solutions     = solution_level.solutions;
@@ -248,12 +256,12 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
 {
-  unsigned int                        num_blocks    = solve_group.field_indices.size();
-  const SolutionLevel<dim, number>   &top_solutions = solution_levels[0];
-  std::vector<const SolutionVector *> fields_at_ages;
-  fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
+  unsigned int                      num_blocks    = solve_group.field_indices.size();
+  const SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
+      std::vector<const SolutionVector *> fields_at_ages;
+      fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
       fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
       for (const BlockVector &old_solution : top_solutions.old_solutions)
         {
@@ -269,12 +277,12 @@ void
 GroupSolutionHandler<dim, number>::execute_solution_transfer()
 {
   // implementation will have identical structure to `prepare_for_solution_transfer()`
-  unsigned int                  num_blocks    = solve_group.field_indices.size();
-  SolutionLevel<dim, number>   &top_solutions = solution_levels[0];
-  std::vector<SolutionVector *> fields_at_ages;
-  fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
+  unsigned int                num_blocks    = solve_group.field_indices.size();
+  SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
+      std::vector<SolutionVector *> fields_at_ages;
+      fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
       fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
       for (BlockVector &old_solution : top_solutions.old_solutions)
         {
@@ -282,7 +290,7 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
         }
       block_solution_transfer[block_index].interpolate(fields_at_ages);
     }
-  // todo have all block vectors refresh their size (not automatic btw)
+  update_ghosts(0);
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
