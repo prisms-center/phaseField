@@ -12,6 +12,9 @@ repos:
     exclude: ^contrib/catch/
   - id: trailing-whitespace
     exclude: ^contrib/catch/
+  - id: check-json
+  - id: pretty-format-json
+    args: [--autofix]
 - repo: https://github.com/gitleaks/gitleaks
   rev: v8.24.2
   hooks:
