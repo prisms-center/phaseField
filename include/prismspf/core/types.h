@@ -42,16 +42,6 @@ namespace Numbers
    */
   static constexpr unsigned int max_saved_solutions = 4;
 
-  /**
-   * @brief Invalid PDE type.
-   */
-  static const PDEType invalid_pde_type = static_cast<PDEType>(-1);
-
-  /**
-   * @brief Invalid field solve type.
-   */
-  static const FieldSolveType invalid_field_solve_type = static_cast<FieldSolveType>(-1);
-
 } // namespace Numbers
 
 namespace Defaults

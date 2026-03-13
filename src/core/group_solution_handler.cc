@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/dof_manager.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/solve_group.h>
 #include <prismspf/core/system_wide.h>
@@ -207,7 +209,8 @@ GroupSolutionHandler<dim, number>::reinit(
         SystemWide<dim, degree>::mapping,
         dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
         constraint_manager.get_constraints(solve_group.field_indices, relative_level),
-        SystemWide<dim, degree>::quadrature);
+        dealii::QGaussLobatto<1>(degree + 1) // should dim really be 1?
+      );
     }
   for (auto &solution_level : solution_levels)
     {
@@ -291,6 +294,7 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
       block_solution_transfer[block_index].interpolate(fields_at_ages);
     }
   update_ghosts(0);
+  apply_constraints(0);
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
