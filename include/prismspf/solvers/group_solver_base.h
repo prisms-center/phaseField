@@ -98,7 +98,8 @@ public:
   reinit()
   {
     // Apply constraints.
-    solutions.reinit();
+    solutions.reinit(solve_context->get_dof_manager(),
+                     solve_context->get_constraint_manager());
     solutions.apply_constraints();
   }
 
