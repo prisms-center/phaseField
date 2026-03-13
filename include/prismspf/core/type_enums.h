@@ -15,10 +15,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 enum PDEType : std::uint8_t
 {
-  ExplicitTimeDependent,
-  ImplicitTimeDependent,
-  TimeIndependent,
-  Auxiliary,
   Constant,
   Explicit,
   Linear,
@@ -38,17 +34,6 @@ enum class TensorRank : unsigned int
 };
 
 /**
- * @brief Type of solve.
- */
-enum SolveType : std::uint8_t
-{
-  ExplicitRHS,
-  NonexplicitRHS,
-  NonexplicitLHS,
-  Postprocess
-};
-
-/**
  * @brief Symmetry of elastic tensor.
  */
 enum ElasticityModel : std::uint8_t
@@ -57,28 +42,6 @@ enum ElasticityModel : std::uint8_t
   Transverse,
   Orthotropic,
   Anisotropic
-};
-
-/**
- * @brief Internal classification of combined field and solve types. There are six
- * different types of solve that are possible. For Explicit solves, all fields of that
- * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
- * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
- * conditionals in the user implementation. For NonexplicitCononlinear, there are at
- * least 2 fields that are nonlinear together, as opposed to NonexplicitSelfnonlinear,
- * which must be solved at the same time. A simply case for this is the steady-state
- * Cahn-Hilliard equation. Finally, for ExplicitPostprocess and ExplicitConstant, they
- * are more or less the same as Explicit.
- */
-enum FieldSolveType : std::uint8_t
-{
-  ExplicitConstant,
-  // Explicit,
-  NonexplicitLinear,
-  NonexplicitSelfnonlinear,
-  NonexplicitAuxiliary,
-  NonexplicitCononlinear,
-  ExplicitPostprocess,
 };
 
 /**
@@ -124,50 +87,6 @@ enum DataFormatType : std::uint8_t
 };
 
 /**
- * @brief Enum to string for PDEType
- */
-inline std::string
-to_string(PDEType type)
-{
-  switch (type)
-    {
-      case PDEType::ExplicitTimeDependent:
-        return "ExplicitTimeDependent";
-      case PDEType::ImplicitTimeDependent:
-        return "ImplicitTimeDependent";
-      case PDEType::TimeIndependent:
-        return "TimeIndependent";
-      case PDEType::Auxiliary:
-        return "Auxiliary";
-      case PDEType::Constant:
-        return "Constant";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
- * @brief Enum to string for SolveType
- */
-inline std::string
-to_string(SolveType type)
-{
-  switch (type)
-    {
-      case SolveType::ExplicitRHS:
-        return "ExplicitRHS";
-      case SolveType::NonexplicitRHS:
-        return "NonexplicitRHS";
-      case SolveType::NonexplicitLHS:
-        return "NonexplicitLHS";
-      case SolveType::Postprocess:
-        return "Postprocess";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
  * @brief Enum to string for ElasticityModel
  */
 inline std::string
@@ -183,33 +102,6 @@ to_string(ElasticityModel type)
         return "Orthotropic";
       case ElasticityModel::Anisotropic:
         return "Anisotropic";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
- * @brief Enum to string for FieldSolveType
- */
-inline std::string
-to_string(FieldSolveType type)
-{
-  switch (type)
-    {
-      // case FieldSolveType::Explicit:
-      //   return "Explicit";
-      case FieldSolveType::NonexplicitLinear:
-        return "NonexplicitLinear";
-      case FieldSolveType::NonexplicitSelfnonlinear:
-        return "NonexplicitSelfnonlinear";
-      case FieldSolveType::NonexplicitAuxiliary:
-        return "NonexplicitAuxiliary";
-      case FieldSolveType::NonexplicitCononlinear:
-        return "NonexplicitCononlinear";
-      case FieldSolveType::ExplicitPostprocess:
-        return "ExplicitPostprocess";
-      case FieldSolveType::ExplicitConstant:
-        return "ExplicitConstant";
       default:
         return "UNKNOWN";
     }
