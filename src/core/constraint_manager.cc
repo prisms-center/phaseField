@@ -117,11 +117,10 @@ ConstraintManager<dim, degree, number>::reinit(
   const std::vector<FieldAttributes> &field_attributes)
 {
   // The map from user inputs has string keys for now.
-  std::map<std::string, Types::Index> field_indices = field_index_map(field_attributes);
-  for (const auto &[name, field_constraints] :
-       boundary_parameters->boundary_condition_list)
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
     {
-      const unsigned int field_index = field_indices.at(name);
+      std::map<std::string, FieldConstraints<dim>> boundary_condition_list =
+        boundary_parameters->boundary_condition_list;
       for (unsigned int relative_level = 0;
            relative_level < constraints[field_index].size();
            ++relative_level)
@@ -132,18 +131,20 @@ ConstraintManager<dim, degree, number>::reinit(
             change_constraints[field_index][relative_level];
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_field_dof_handler(field_index, relative_level);
-          make_constraints_for_single_field(constraint,
-                                            dof_handler,
-                                            field_constraints,
-                                            field_attributes[field_index].field_type,
-                                            field_index,
-                                            false);
-          make_constraints_for_single_field(change_constraint,
-                                            dof_handler,
-                                            field_constraints,
-                                            field_attributes[field_index].field_type,
-                                            field_index,
-                                            true);
+          make_constraints_for_single_field(
+            constraint,
+            dof_handler,
+            boundary_condition_list[field_attributes[field_index].name],
+            field_attributes[field_index].field_type,
+            field_index,
+            false);
+          make_constraints_for_single_field(
+            change_constraint,
+            dof_handler,
+            boundary_condition_list[field_attributes[field_index].name],
+            field_attributes[field_index].field_type,
+            field_index,
+            true);
         }
     }
   // close all constraints.

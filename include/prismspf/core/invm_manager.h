@@ -44,13 +44,19 @@ public:
     , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
   {
-    const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
-      dof_manager.get_dof_handlers();
     data.resize(num_levels);
     jxw_scalar.resize(num_levels);
     invm_scalar.resize(num_levels);
     jxw_vector.resize(num_levels);
     invm_vector.resize(num_levels);
+    reinit(dof_manager);
+  }
+
+  void
+  reinit(const DoFManager<dim, degree> &dof_manager)
+  {
+    const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
+      dof_manager.get_dof_handlers();
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         for (unsigned int rank = 0; rank < 2; ++rank)
