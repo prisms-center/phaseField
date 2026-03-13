@@ -32,26 +32,27 @@ public:
   /**
    * @brief Constructor. Init the flags for refinement.
    */
-  explicit RefinementManager(SolveContext<dim, degree, number> &solve_context)
-    : solve_context(solve_context)
+  explicit RefinementManager(SolveContext<dim, degree, number> &_solve_context)
+    : solve_context(&_solve_context)
     , fe_values_flags()
     , num_quad_points(SystemWide<dim, degree>::quadrature.size())
     , max_refinement(
-        solve_context.get_user_inputs().get_spatial_discretization().max_refinement)
+        solve_context->get_user_inputs().get_spatial_discretization().max_refinement)
     , min_refinement(
-        solve_context.get_user_inputs().get_spatial_discretization().min_refinement)
+        solve_context->get_user_inputs().get_spatial_discretization().min_refinement)
     , marker_functions()
   {
     fe_values_flags.fill(dealii::UpdateFlags::update_default);
     std::map<std::string, Types::Index> field_indices =
-      field_index_map(solve_context.get_field_attributes());
-    for (const auto &[name, field_criterion] :
-         solve_context.get_user_inputs().get_spatial_discretization().refinement_criteria)
+      field_index_map(solve_context->get_field_attributes());
+    for (const auto &[name, field_criterion] : solve_context->get_user_inputs()
+                                                 .get_spatial_discretization()
+                                                 .refinement_criteria)
       {
         // Grab the index and field type
         const unsigned   field_index = field_indices.at(name);
         const TensorRank rank =
-          solve_context.get_field_attributes().at(field_index).field_type;
+          solve_context->get_field_attributes().at(field_index).field_type;
 
         if (field_criterion.criterion & RefinementFlags::Value)
           {
@@ -110,7 +111,7 @@ public:
     std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     // Return early if adaptive meshing is disabled
-    if (!solve_context.get_user_inputs().get_spatial_discretization().has_adaptivity)
+    if (!solve_context->get_user_inputs().get_spatial_discretization().has_adaptivity)
       {
         return;
       }
@@ -127,12 +128,9 @@ public:
       }
 
     // Update anything affected by the grid change:
-    // Recalculate InvM and reinit the solvers since the grid has changed
-    solve_context.get_invm_manager().compute_invm();
-    for (auto &solver : solvers)
-      {
-        solver->reinit();
-      }
+    // Recalculate InvM since the grid has changed
+    solve_context->get_invm_manager().reinit(solve_context->get_dof_manager());
+    solve_context->get_invm_manager().compute_invm();
     // Update the ghosts
     Timer::start_section("Update ghosts");
     for (auto &solver : solvers)
@@ -171,8 +169,8 @@ public:
     std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     const SpatialDiscretization<dim> &space_parameters =
-      solve_context.get_user_inputs().get_spatial_discretization();
-    const DoFManager<dim, degree> &dof_manager = solve_context.get_dof_manager();
+      solve_context->get_user_inputs().get_spatial_discretization();
+    const DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
 
     dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
     dealii::types::global_dof_index new_dofs = 0;
@@ -217,10 +215,10 @@ private:
     std::vector<number> values(num_quad_points, 0.0);
 
     // Clear user flags
-    solve_context.get_triangulation_manager().clear_user_flags();
+    solve_context->get_triangulation_manager().clear_user_flags();
 
     // Loop over the cells provided by the triangulation
-    for (const auto &cell : solve_context.get_triangulation_manager()
+    for (const auto &cell : solve_context->get_triangulation_manager()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -232,8 +230,8 @@ private:
             // TODO (landinjm): We can probably avoid checking some of the neighboring
             // cells when coarsening them
             std::map<std::string, Types::Index> field_indices =
-              field_index_map(solve_context.get_field_attributes());
-            for (const auto &[name, field_criterion] : solve_context.get_user_inputs()
+              field_index_map(solve_context->get_field_attributes());
+            for (const auto &[name, field_criterion] : solve_context->get_user_inputs()
                                                          .get_spatial_discretization()
                                                          .refinement_criteria)
               {
@@ -242,11 +240,11 @@ private:
 
                 // Grab the field type
                 const TensorRank local_field_type =
-                  solve_context.get_field_attributes().at(index).field_type;
+                  solve_context->get_field_attributes().at(index).field_type;
 
                 // Grab the DoFHandler iterator
                 const auto dof_iterator = cell->as_dof_handler_iterator(
-                  solve_context.get_dof_manager().get_field_dof_handler(index));
+                  solve_context->get_dof_manager().get_field_dof_handler(index));
 
                 // Reinit the cell
                 dealii::FEValues<dim> fe_values(
@@ -256,7 +254,7 @@ private:
 
                 fe_values.reinit(dof_iterator);
                 const auto &solution_vector =
-                  solve_context.get_solution_indexer().get_solution_vector(index);
+                  solve_context->get_solution_indexer().get_solution_vector(index);
 
                 if (field_criterion.criterion & RefinementFlags::Value)
                   {
@@ -389,7 +387,7 @@ private:
   mark_cells_for_refinement()
   {
     bool any_cell_marked = false;
-    for (const auto &cell : solve_context.get_triangulation_manager()
+    for (const auto &cell : solve_context->get_triangulation_manager()
                               .get_triangulation()
                               .active_cell_iterators())
       {
@@ -400,10 +398,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(*cell,
-                                                   solve_context.get_simulation_timer());
-                    }))
+                  {
+                    return marker_function->flag(*cell,
+                                                 solve_context->get_simulation_timer());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
@@ -425,10 +423,10 @@ private:
   refine_grid(std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     TriangulationManager<dim> &triangulation_manager =
-      solve_context.get_triangulation_manager();
-    DoFManager<dim, degree>                &dof_manager = solve_context.get_dof_manager();
+      solve_context->get_triangulation_manager();
+    DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
     ConstraintManager<dim, degree, number> &constraint_manager =
-      solve_context.get_constraint_manager();
+      solve_context->get_constraint_manager();
 
     // Update ghosts of all fields.
     for (auto solver : solvers)
@@ -450,8 +448,7 @@ private:
     triangulation_manager.reinit();
     dof_manager.reinit(triangulation_manager);
     // TODO
-    // constraint_manager.make_constraints(SystemWide<dim, degree>::mapping,
-    //                                    dof_manager.get_dof_handlers());
+    constraint_manager.reinit(solve_context->get_field_attributes());
 
     // Reinit solutions, apply constraints, then solution transfer
     for (auto &solver : solvers)
@@ -464,7 +461,7 @@ private:
   /**
    * @brief Grid refinement context.
    */
-  SolveContext<dim, degree, number> solve_context;
+  SolveContext<dim, degree, number> *solve_context;
 
   /**
    * @brief Update flags for the FEValues determined by the grid refinement

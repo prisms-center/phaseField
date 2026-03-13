@@ -171,8 +171,10 @@ public:
   /**
    * @brief Reinitialize the solution set.
    */
+  template <unsigned int degree>
   void
-  reinit();
+  reinit(const DoFManager<dim, degree>                &dof_manager,
+         const ConstraintManager<dim, degree, number> &constraint_manager);
 
   /**
    * @brief Update the ghost values.

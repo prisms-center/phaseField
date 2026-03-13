@@ -13,3 +13,9 @@ for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALA
       const ConstraintManager<dimension, degree, number> &constraint_manager,
       unsigned int                                        num_old_saved);
   }
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
+  {
+    template void GroupSolutionHandler<dimension, number>::reinit(
+      const DoFManager<dimension, degree>                &dof_manager,
+      const ConstraintManager<dimension, degree, number> &constraint_manager);
+  }
