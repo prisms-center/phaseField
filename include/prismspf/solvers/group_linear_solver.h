@@ -30,7 +30,6 @@ protected:
   using GroupSolverBase<dim, degree, number>::solutions;
   using GroupSolverBase<dim, degree, number>::solve_context;
   using GroupSolverBase<dim, degree, number>::solve_group;
-  using BlockVector = GroupSolutionHandler<dim, number>::BlockVector;
 
 public:
   /**
@@ -49,10 +48,10 @@ public:
   {
     GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
-    residual.resize(num_levels);
+    rhs_vector.resize(num_levels);
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
       {
-        residual[relative_level].reinit(
+        rhs_vector[relative_level].reinit(
           solutions.get_solution_full_vector(relative_level));
       }
     // Initialize rhs_operators
@@ -96,7 +95,7 @@ public:
 
     // Set up linear solver
     do_linear_solve(rhs_operators[relative_level],
-                    residual[relative_level],
+                    rhs_vector[relative_level],
                     lhs_operators[relative_level],
                     solutions.get_solution_full_vector(relative_level)); // todo!!!
 
@@ -111,9 +110,9 @@ public:
 
   void
   do_linear_solve(MFOperator<dim, degree, number> &rhs_operator,
-                  BlockVector                     &b_vector,
+                  BlockVector<number>             &b_vector,
                   MFOperator<dim, degree, number> &lhs_operator,
-                  BlockVector                     &x_vector)
+                  BlockVector<number>             &x_vector)
   {
     // Compute rhs
     rhs_operator.compute_operator(b_vector);
@@ -126,7 +125,7 @@ public:
         linear_solver_control.set_max_steps(params.max_iterations);
         linear_solver_control.set_tolerance(params.tolerance);
 
-        dealii::SolverCG<BlockVector> cg_solver(linear_solver_control);
+        dealii::SolverCG<BlockVector<number>> cg_solver(linear_solver_control);
         cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());
         if (solve_context->get_user_inputs().get_output_parameters().should_output(
               solve_context->get_simulation_timer().get_increment()))
@@ -152,7 +151,7 @@ protected:
    */
   std::vector<MFOperator<dim, degree, number>> rhs_operators;
   std::vector<MFOperator<dim, degree, number>> lhs_operators;
-  std::vector<BlockVector>                     residual;
+  std::vector<BlockVector<number>>             rhs_vector;
 
 private:
   /**

@@ -17,7 +17,7 @@ FieldContainer<dim, degree, number>::FieldContainer(
   unsigned int                        _relative_level,
   const DependencySet                &dependency_map,
   const SolveGroup                   &_solve_group,
-  const MatrixFree                   &matrix_free)
+  const MatrixFree<dim, number>      &matrix_free)
   : field_attributes_ptr(&_field_attributes)
   , solution_indexer(&_solution_indexer)
   , solve_group(&_solve_group)
@@ -72,7 +72,7 @@ FieldContainer<dim, degree, number>::reinit(unsigned int cell)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::eval(const BlockVector *src_solutions)
+FieldContainer<dim, degree, number>::eval(const BlockVector<number> *src_solutions)
 {
   for (auto &fe_eval : feeval_deps_scalar)
     {
@@ -86,8 +86,9 @@ FieldContainer<dim, degree, number>::eval(const BlockVector *src_solutions)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::reinit_and_eval(unsigned int       cell,
-                                                     const BlockVector *src_solutions)
+FieldContainer<dim, degree, number>::reinit_and_eval(
+  unsigned int               cell,
+  const BlockVector<number> *src_solutions)
 {
   for (auto &fe_eval : feeval_deps_scalar)
     {
@@ -121,7 +122,7 @@ FieldContainer<dim, degree, number>::integrate()
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::distribute(BlockVector *dst_solutions)
+FieldContainer<dim, degree, number>::distribute(BlockVector<number> *dst_solutions)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_group->field_indices)
@@ -139,7 +140,8 @@ FieldContainer<dim, degree, number>::distribute(BlockVector *dst_solutions)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-FieldContainer<dim, degree, number>::integrate_and_distribute(BlockVector *dst_solutions)
+FieldContainer<dim, degree, number>::integrate_and_distribute(
+  BlockVector<number> *dst_solutions)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_group->field_indices)

@@ -26,10 +26,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 class InvMManager
 {
 public:
-  using SolutionVector = GroupSolutionHandler<dim, number>::SolutionVector;
-  using MatrixFree     = GroupSolutionHandler<dim, number>::MatrixFree;
-  using ScalarValue    = dealii::VectorizedArray<number>;
-  using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
 
   /**
    * @brief Constructor.
@@ -92,7 +90,7 @@ public:
    * @param rank The tensor rank of the field (scalar or vector).
    * @param relative_level The relative level to get the invm for.
    */
-  const SolutionVector &
+  const SolutionVector<number> &
   get_invm(TensorRank rank, unsigned int relative_level) const
   {
     Assert((rank == TensorRank::Scalar && calculate_scalar) ||
@@ -154,8 +152,8 @@ private:
   }
 
   void
-  compute_local_scalar(const MatrixFree                            &_data,
-                       SolutionVector                              &dst,
+  compute_local_scalar(const MatrixFree<dim, number>               &_data,
+                       SolutionVector<number>                      &dst,
                        [[maybe_unused]] const int                  &src,
                        const std::pair<unsigned int, unsigned int> &cell_range) const
   {
@@ -173,8 +171,8 @@ private:
   }
 
   void
-  compute_local_vector(const MatrixFree                            &_data,
-                       SolutionVector                              &dst,
+  compute_local_vector(const MatrixFree<dim, number>               &_data,
+                       SolutionVector<number>                      &dst,
                        [[maybe_unused]] const int                  &src,
                        const std::pair<unsigned int, unsigned int> &cell_range) const
   {
@@ -192,7 +190,7 @@ private:
   }
 
   void
-  invert(SolutionVector &dst, const SolutionVector &src) const
+  invert(SolutionVector<number> &dst, const SolutionVector<number> &src) const
   {
     src.update_ghost_values();
     dst.update_ghost_values();
@@ -206,7 +204,7 @@ private:
   /**
    * @brief Matrix-free object.
    */
-  std::vector<std::array<MatrixFree, 2>> data;
+  std::vector<std::array<MatrixFree<dim, number>, 2>> data;
 
   unsigned int num_levels;
 
@@ -216,10 +214,10 @@ private:
   /**
    * @brief Vector that stores element volumes
    */
-  std::vector<SolutionVector> jxw_scalar;
-  std::vector<SolutionVector> jxw_vector;
-  std::vector<SolutionVector> invm_scalar;
-  std::vector<SolutionVector> invm_vector;
+  std::vector<SolutionVector<number>> jxw_scalar;
+  std::vector<SolutionVector<number>> jxw_vector;
+  std::vector<SolutionVector<number>> invm_scalar;
+  std::vector<SolutionVector<number>> invm_vector;
 
   inline static const VectorValue one = []()
   {
