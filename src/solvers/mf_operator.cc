@@ -33,8 +33,8 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::compute_operator(BlockVector       &dst,
-                                                  const BlockVector &src) const
+MFOperator<dim, degree, number>::compute_operator(BlockVector<number>       &dst,
+                                                  const BlockVector<number> &src) const
 {
   data->cell_loop(&MFOperator::compute_local_operator, this, dst, src, true);
 }
@@ -42,9 +42,9 @@ MFOperator<dim, degree, number>::compute_operator(BlockVector       &dst,
 template <unsigned int dim, unsigned int degree, typename number>
 void
 MFOperator<dim, degree, number>::compute_local_operator(
-  const MatrixFree                            &_data,
-  BlockVector                                 &dst,
-  const BlockVector                           &src,
+  const MatrixFree<dim, number>               &_data,
+  BlockVector<number>                         &dst,
+  const BlockVector<number>                   &src,
   const std::pair<unsigned int, unsigned int> &cell_range) const
 {
   // Construct FEEvaluation objects
@@ -82,8 +82,8 @@ MFOperator<dim, degree, number>::compute_local_operator(
 // void
 // MFOperator<dim, degree, number>::compute_diagonal()
 //{
-//   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<SolutionVector>());
-//   SolutionVector &inverse_diagonal = inverse_diagonal_entries->get_vector();
+//   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<SolutionVector<number>>());
+//   SolutionVector<number> &inverse_diagonal = inverse_diagonal_entries->get_vector();
 //   data->initialize_dof_vector(inverse_diagonal, field_index);
 //   const unsigned int dummy = 0;
 //   data->cell_loop(&MFOperator::compute_local_diagonal, this, inverse_diagonal, dummy);
@@ -103,8 +103,8 @@ MFOperator<dim, degree, number>::compute_local_operator(
 // template <unsigned int dim, unsigned int degree, typename number>
 // void
 // MFOperator<dim, degree, number>::compute_local_diagonal(
-//   const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> &_data,
-//   BlockVector                                                            &diagonal,
+//   const MatrixFree<dim, number>
+//   &_data, BlockVector<number> &diagonal,
 //   [[maybe_unused]] const unsigned int                                    &dummy,
 //   const std::pair<unsigned int, unsigned int> &cell_range) const
 // {
@@ -249,8 +249,8 @@ MFOperator<dim, degree, number>::clear()
 
 // template <unsigned int dim, unsigned int degree, typename number>
 // void
-// MFOperator<dim, degree, number>::set_constrained_entries_to_one(SolutionVector &dst)
-// const
+// MFOperator<dim, degree, number>::set_constrained_entries_to_one(SolutionVector<number>
+// &dst) const
 // {
 //   for (unsigned int j = 0; j < dealii::MatrixFreeOperators::BlockHelper::n_blocks(dst);
 //   ++j)
@@ -266,15 +266,14 @@ MFOperator<dim, degree, number>::clear()
 // }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>> *
+const MatrixFree<dim, number> *
 MFOperator<dim, degree, number>::get_matrix_free() const
 {
   return data;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const std::shared_ptr<
-  dealii::DiagonalMatrix<typename MFOperator<dim, degree, number>::SolutionVector>> &
+const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> &
 MFOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 {
   Assert(inverse_diagonal_entries.get() != nullptr && inverse_diagonal_entries->m() > 0,
@@ -284,7 +283,8 @@ MFOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::vmult(BlockVector &dst, const BlockVector &src) const
+MFOperator<dim, degree, number>::vmult(BlockVector<number>       &dst,
+                                       const BlockVector<number> &src) const
 {
   compute_operator(dst, src);
 }
@@ -293,7 +293,8 @@ MFOperator<dim, degree, number>::vmult(BlockVector &dst, const BlockVector &src)
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::Tvmult(BlockVector &dst, const BlockVector &src) const
+MFOperator<dim, degree, number>::Tvmult(BlockVector<number>       &dst,
+                                        const BlockVector<number> &src) const
 {
   vmult(dst, src);
 }

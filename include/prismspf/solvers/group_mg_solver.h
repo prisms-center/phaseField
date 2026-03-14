@@ -43,7 +43,6 @@ class MGSolver : public LinearSolver<dim, degree, number>
   using GroupSolverBase::solve_group;
   using LinearSolver::do_linear_solve;
   using LinearSolver::lhs_operators;
-  using BlockVector = SolutionHandler<dim, number>::BlockVector;
 
 public:
   /**
@@ -73,8 +72,8 @@ public:
 
     // 2. Solution and rhs vectors (rhs and solution here are used as scratch space by mg,
     // but are not actually the same as the top level vectors)
-    dealii::MGLevelObject<BlockVector> mg_solution_vectors(min_level, max_level);
-    dealii::MGLevelObject<BlockVector> mg_rhs_vectors(min_level, max_level);
+    dealii::MGLevelObject<BlockVector<number>> mg_solution_vectors(min_level, max_level);
+    dealii::MGLevelObject<BlockVector<number>> mg_rhs_vectors(min_level, max_level);
 
     // TODO: Initialize their shapes
 
@@ -89,7 +88,7 @@ public:
     // Preconditioner for smoother.
     // TODO: use PreconditionBlockJacobi or other block preconditioner instead
     using SmootherPrecond =
-      dealii::PreconditionChebyshev<MFOperator<dim, degree, number>, BlockVector>;
+      dealii::PreconditionChebyshev<MFOperator<dim, degree, number>, BlockVector<number>>;
     dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
       min_level,
       max_level);
@@ -104,7 +103,7 @@ public:
     // Wrapper around a generic preconditioner to be used as a smoother
     using Smoother = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
                                                     SmootherPrecond,
-                                                    BlockVector>;
+                                                    BlockVector<number>>;
     Smoother mg_smoother;
     mg_smoother.initialize(mg_lhs_operators, smoother_data);
 
@@ -112,21 +111,21 @@ public:
     // couple of main options:
     // A. Direct solve // we're not doing this
     // B. Iterative solve (using a Krylov method, (like CG))
-    /* dealii::MGCoarseGridIterativeSolver<BlockVector,
-                                        dealii::SolverCG<BlockVector>,
+    /* dealii::MGCoarseGridIterativeSolver<BlockVector<number>,
+                                        dealii::SolverCG<BlockVector<number>>,
                                         MFOperator<dim, degree, number>,
                                         dealii::PreconditionIdentity> mg_coarse_solver;*/
     // C. Smoothing operation (don't actually solve, just use the same smoother as on
     // other levels)
-    /* dealii::MGCoarseGridApplySmoother<BlockVector> mg_coarse_solver;
+    /* dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver;
     mg_coarse_solver.initialize(mg_smoother); */
 
     // 5. Coarse grid solver
-    dealii::MGCoarseGridApplySmoother<BlockVector> mg_coarse_solver;
+    dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver;
     mg_coarse_solver.initialize(mg_smoother);
 
     // 6. Multigrid object
-    dealii::Multigrid<BlockVector> multigrid(
+    dealii::Multigrid<BlockVector<number>> multigrid(
       mg_lhs_operators,
       mg_coarse_solver,
       mg_transfer,
@@ -134,19 +133,20 @@ public:
       mg_smoother,
       min_level,
       max_level,
-      dealii::Multigrid<BlockVector>::Cycle::v_cycle);
+      dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle);
 
     // 7. Turn MG into a preconditioner object
-    dealii::
-      PreconditionMG<dim, BlockVector, dealii::MGTransferBlockMatrixFree<dim, number>>
-        preconditioner_mg(
-          solve_context->dof_manager.get_field_dof_handlers(solve_group.field_indices, 0),
-          multigrid,
-          mg_transfer);
+    dealii::PreconditionMG<dim,
+                           BlockVector<number>,
+                           dealii::MGTransferBlockMatrixFree<dim, number>>
+      preconditioner_mg(
+        solve_context->dof_manager.get_field_dof_handlers(solve_group.field_indices, 0),
+        multigrid,
+        mg_transfer);
 
     // 8. Solve the system with CG + MG preconditioner
-    dealii::SolverControl         cg_solver_control(/* TODO */);
-    dealii::SolverCG<BlockVector> cg_solver(cg_solver_control);
+    dealii::SolverControl                 cg_solver_control(/* TODO */);
+    dealii::SolverCG<BlockVector<number>> cg_solver(cg_solver_control);
   }
 
 private:
