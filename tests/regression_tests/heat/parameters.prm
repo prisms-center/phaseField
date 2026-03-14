@@ -1,0 +1,53 @@
+subsection Rectangular mesh
+  set x size = 50
+  set y size = 50
+  set z size = 50
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 7
+set max refinement                    = 7
+set min refinement                    = 3
+set mesh adaptivity                   = false
+set remeshing period                  = 900
+
+subsection refinement criterion: 0
+  set type                           = value
+
+  set value lower bound              = 0.01
+  set value upper bound              = 0.99
+  #set variables                      = n
+end
+
+subsection linear solver parameters: 0
+  set solver_ids               = 1
+
+  set max iterations           = 100
+  #set tolerance type           = AbsoluteResidual
+  set tolerance value          = 1.0e-10
+
+  #set min mg level             = 0
+  #set preconditioner type      = GMG
+  #set smoother degree          = 5
+  #set smoothing range          = 15.0
+  #set eigenvalue cg iterations = 10
+end
+
+set time step = 1.0e-3
+set end time = 15
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 50
+end
+
+subsection boundary conditions: 0
+  # List of conditions.
+  #set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet
+
+  # The names of the fields that will use these constraints.
+  set variables = n
+
+end
