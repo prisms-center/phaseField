@@ -16,6 +16,8 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <filesystem>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -324,12 +326,16 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   // Output results if needed
   if (user_inputs.get_output_parameters().should_output(increment))
     {
+      std::string           output_prefix = "solutions/solution";
+      std::filesystem::path output_path   = output_prefix;
+      output_path.remove_filename();
+      std::filesystem::create_directories(output_path);
       Timer::start_section("Output");
       SolutionOutput<dim, degree, number>(field_attributes,
                                           solve_context.get_solution_indexer(),
                                           sim_timer,
                                           dof_manager,
-                                          "solution",
+                                          output_prefix,
                                           user_inputs);
 
       // Print the l2-norms and integrals of each solution
