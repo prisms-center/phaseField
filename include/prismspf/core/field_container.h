@@ -42,22 +42,10 @@ class FieldContainer
 {
 public:
   /**
-   * @brief Typedef for the basic value that the use manipulates.
+   * @brief Typedef for the basic value that the user manipulates.
    */
-  using ScalarValue    = dealii::VectorizedArray<number>;
-  using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
-  using ScalarGradient = VectorValue;
-  using VectorGradient = dealii::Tensor<2, dim, ScalarValue>;
-  /**
-   * @brief Typedef for scalar evaluation objects.
-   */
-  using ScalarFEEvaluation = dealii::
-    FEEvaluation<dim, degree, degree + 1, 1, number, dealii::VectorizedArray<number>>;
-  /**
-   * @brief Typedef for vector evaluation objects.
-   */
-  using VectorFEEvaluation = dealii::
-    FEEvaluation<dim, degree, degree + 1, dim, number, dealii::VectorizedArray<number>>;
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
 
   template <TensorRank Rank>
   using Value = std::conditional_t<Rank == TensorRank::Scalar,
@@ -76,56 +64,39 @@ public:
                          number,
                          ScalarValue>;
 
-  template <typename Type>
-  struct GetRankHelper
-  {
-    static constexpr TensorRank rank_from_val = []() constexpr
-    {
-      if constexpr (std::is_same_v<Type, ScalarValue>)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(Type::rank);
-        }
-    }();
-
-    static constexpr TensorRank rank_from_grad = []() constexpr
-    {
-      if constexpr (std::is_same_v<Type, ScalarValue>) //&& dim == 1)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(Type::rank - 1);
-        }
-    }();
-  };
-
   template <typename ValType>
-  static constexpr TensorRank GetRankFromVal = GetRankHelper<ValType>::rank_from_val;
+  static constexpr TensorRank RankFromVal = []() constexpr
+  {
+    if constexpr (std::is_same_v<ValType, ScalarValue>)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(ValType::rank);
+      }
+  }();
+
   template <typename GradType>
-  static constexpr TensorRank GetRankFromGrad = GetRankHelper<GradType>::rank_from_grad;
-
-  /**
-   * @brief Typedef for scalar diagonal matrix objects.
-   */
-  using ScalarDiagonal = dealii::AlignedVector<ScalarValue>;
-
-  /**
-   * @brief Typedef for vector diagonal matrix objects.
-   */
-  using VectorDiagonal = dealii::AlignedVector<VectorValue>;
+  static constexpr TensorRank RankFromGrad = []() constexpr
+  {
+    if constexpr (std::is_same_v<GradType, ScalarValue>) //&& dim == 1)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(GradType::rank - 1);
+      }
+  }();
 
   /**
    * @brief Struct to hold feevaluation relevant for this solve.
    */
-  template <typename FEEvaluationType>
+  template <TensorRank Rank>
   struct FEEValuationDeps
   {
-    using FEEDepPair    = std::pair<FEEvaluationType, EvalFlags>;
+    using FEEDepPair    = std::pair<FEEval<Rank>, EvalFlags>;
     using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
     FEEDepPairPtr              fe_eval;
     FEEDepPairPtr              fe_eval_src_dst;
@@ -150,10 +121,9 @@ public:
     {
       if (dependency.flag)
         {
-          fe_eval =
-            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                          block_index),
-                                         dependency.flag);
+          fe_eval = std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                              block_index),
+                                                 dependency.flag);
         }
       fe_eval_old.resize(dependency.old_flags.size(), nullptr);
       for (unsigned int age = 0; age < dependency.old_flags.size(); ++age)
@@ -161,22 +131,22 @@ public:
           if (dependency.old_flags.at(age)) // kinda redundant... maybe remove?
             {
               fe_eval_old[age] =
-                std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                              block_index),
+                std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                          block_index),
                                              dependency.old_flags.at(age));
             }
         }
       if (dependency.change_flag || is_dst)
         {
           fe_eval_src_dst =
-            std::make_shared<FEEDepPair>(FEEvaluationType(solution_level->matrix_free,
-                                                          block_index),
+            std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                      block_index),
                                          dependency.change_flag);
         }
     }
 
     template <DependencyType type>
-    const FEEvaluationType &
+    const FEEval<Rank> &
     get() const
     {
       // TODO: Assertions
@@ -195,7 +165,7 @@ public:
     }
 
     template <DependencyType type>
-    FEEvaluationType &
+    FEEval<Rank> &
     get()
     {
       // TODO: Assertions
@@ -548,7 +518,7 @@ public:
   set_value_term(Types::Index global_variable_index, const ValType &val)
   {
     auto &relevant_feeval_vector =
-      get_relevant_feeval_vector<GetRankFromVal<ValType>>()[global_variable_index];
+      get_relevant_feeval_vector<RankFromVal<ValType>>()[global_variable_index];
     relevant_feeval_vector.template get<DependencyType::Change>().submit_value(val,
                                                                                q_point);
     relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::values;
@@ -562,7 +532,7 @@ public:
   set_gradient_term(Types::Index global_variable_index, const GradType &val)
   {
     auto &relevant_feeval_vector =
-      get_relevant_feeval_vector<GetRankFromGrad<GradType>>()[global_variable_index];
+      get_relevant_feeval_vector<RankFromGrad<GradType>>()[global_variable_index];
 
     relevant_feeval_vector.template get<DependencyType::Change>()
       .submit_gradient(val, q_point);
@@ -571,7 +541,7 @@ public:
 
 private:
   template <TensorRank Rank>
-  std::vector<FEEValuationDeps<FEEval<Rank>>> &
+  std::vector<FEEValuationDeps<Rank>> &
   get_relevant_feeval_vector()
   {
     if constexpr (Rank == TensorRank::Scalar)
@@ -585,7 +555,7 @@ private:
   }
 
   template <TensorRank Rank>
-  const std::vector<FEEValuationDeps<FEEval<Rank>>> &
+  const std::vector<FEEValuationDeps<Rank>> &
   get_relevant_feeval_vector() const
   {
     if constexpr (Rank == TensorRank::Scalar)
@@ -632,8 +602,8 @@ private:
   //================================================================================
   const std::vector<FieldAttributes>               *field_attributes_ptr;
   const SolutionIndexer<dim, number>               *solution_indexer;
-  std::vector<FEEValuationDeps<ScalarFEEvaluation>> feeval_deps_scalar;
-  std::vector<FEEValuationDeps<VectorFEEvaluation>> feeval_deps_vector;
+  std::vector<FEEValuationDeps<TensorRank::Scalar>> feeval_deps_scalar;
+  std::vector<FEEValuationDeps<TensorRank::Vector>> feeval_deps_vector;
 
   //================================================================================
   // Members relevant for submitting values and integrating and accessing lhs fields
@@ -643,8 +613,8 @@ private:
   //================================================================================
   // Shared members for generic access
   //================================================================================
-  ScalarFEEvaluation shared_feeval_scalar;
-  unsigned int       relative_level;
+  FEEval<TensorRank::Scalar> shared_feeval_scalar;
+  unsigned int               relative_level;
 
   /**
    * @brief The quadrature point index.
