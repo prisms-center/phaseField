@@ -110,7 +110,7 @@ public:
                       const std::vector<FieldAttributes>   &_field_attributes,
                       const SolutionIndexer<dim, number>   &_solution_indexer,
                       unsigned int                          _relative_level,
-                      DependencySet                         _dependency_map,
+                      DependencyMap                         _dependency_map,
                       const SimulationTimer                &_sim_timer)
     : MATRIX_FREE_OPERATOR_BASE()
     , pde_operator(&operator_owner)
@@ -280,7 +280,7 @@ private:
   /**
    * @brief Which fields should be available to the solve.
    */
-  DependencySet dependency_map;
+  DependencyMap dependency_map;
 
   /**
    * @brief Simulation timer

@@ -63,8 +63,8 @@ public:
                       PDEType                _pde_type         = Explicit,
                       SolveTiming            _solve_timing     = Primary,
                       std::set<Types::Index> _field_indices    = {},
-                      DependencySet          _dependencies_rhs = {},
-                      DependencySet          _dependencies_lhs = {})
+                      DependencyMap          _dependencies_rhs = {},
+                      DependencyMap          _dependencies_lhs = {})
     : id(_id)
     , pde_type(_pde_type)
     , solve_timing(_solve_timing)
@@ -98,11 +98,11 @@ public:
   /**
    * @brief Dependencies for the rhs equation(s)
    */
-  DependencySet dependencies_rhs;
+  DependencyMap dependencies_rhs;
   /**
    * @brief Dependencies for the lhs equation(s)
    */
-  DependencySet dependencies_lhs;
+  DependencyMap dependencies_lhs;
 
 private:
   /**
