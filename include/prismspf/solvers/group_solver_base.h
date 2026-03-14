@@ -124,6 +124,10 @@ public:
         return;
       }
     this->solve_level(0);
+    if (solve_context->get_simulation_timer().get_increment() == 0)
+      {
+        solutions.apply_initial_condition_for_old_fields();
+      }
   }
 
   /**
