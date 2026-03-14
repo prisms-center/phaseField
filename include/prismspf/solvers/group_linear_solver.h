@@ -6,6 +6,7 @@
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
 
+#include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
@@ -48,6 +49,12 @@ public:
   {
     GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
+    residual.resize(num_levels);
+    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
+      {
+        residual[relative_level].reinit(
+          solutions.get_solution_full_vector(relative_level));
+      }
     // Initialize rhs_operators
     rhs_operators.reserve(num_levels);
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
@@ -82,9 +89,6 @@ public:
   void
   solve_level(unsigned int relative_level) override
   {
-    // Update the solutions
-    solutions.update(relative_level);
-
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
     solutions.zero_out_ghosts(relative_level);
@@ -92,7 +96,7 @@ public:
 
     // Set up linear solver
     do_linear_solve(rhs_operators[relative_level],
-                    solutions.get_solution_full_vector(relative_level),
+                    residual[relative_level],
                     lhs_operators[relative_level],
                     solutions.get_solution_full_vector(relative_level)); // todo!!!
 
@@ -114,16 +118,31 @@ public:
     // Compute rhs
     rhs_operator.compute_operator(b_vector);
     // Linear solve
+    const auto &params =
+      solve_context->get_user_inputs().get_linear_solve_parameters().linear_solvers.at(
+        solve_group.id);
     try
       {
-        // TODO: Make member?
+        linear_solver_control.set_max_steps(params.max_iterations);
+        linear_solver_control.set_tolerance(params.tolerance);
+
         dealii::SolverCG<BlockVector> cg_solver(linear_solver_control);
         cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());
+        if (solve_context->get_user_inputs().get_output_parameters().should_output(
+              solve_context->get_simulation_timer().get_increment()))
+          {
+            ConditionalOStreams::pout_summary()
+              << " Final residual: " << linear_solver_control.last_value()
+              << " Steps: " << linear_solver_control.last_step() << "\n"
+              << std::flush;
+          }
       }
     catch (...) // TODO: more specific catch
       {
         ConditionalOStreams::pout_base()
-          << "Warning: linear solver did not converge as per set tolerances.\n";
+          << "[Increment " << solve_context->get_simulation_timer().get_increment() << "]"
+          << "Warning: linear solver did not converge as per set tolerances before "
+          << params.max_iterations << " iterations.\n";
       }
   }
 
@@ -133,6 +152,7 @@ protected:
    */
   std::vector<MFOperator<dim, degree, number>> rhs_operators;
   std::vector<MFOperator<dim, degree, number>> lhs_operators;
+  std::vector<BlockVector>                     residual;
 
 private:
   /**
