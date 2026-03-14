@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 template <unsigned int dim, unsigned int degree, typename number>
 void
 ElementVolume<dim, degree, number>::initialize(
-  std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> _data)
+  std::shared_ptr<dealii::MatrixFree<dim, number>> _data)
 {
   data = _data;
 }

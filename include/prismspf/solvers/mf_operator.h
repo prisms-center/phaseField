@@ -50,11 +50,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 class MFOperator : public MATRIX_FREE_OPERATOR_BASE
 {
 public:
-  using BlockVector    = SolutionIndexer<dim, number>::BlockVector;
-  using SolutionVector = SolutionIndexer<dim, number>::SolutionVector;
-  using ScalarValue    = dealii::VectorizedArray<number>;
-  using VectorValue    = dealii::Tensor<1, dim, ScalarValue>;
-  using MatrixFree     = dealii::MatrixFree<dim, number, ScalarValue>;
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
 
   using Operator = void (PDEOperatorBase<dim, degree, number>::*)(
     FieldContainer<dim, degree, number> &, /* variable_list */
@@ -157,16 +154,17 @@ public:
    * @brief Calls cell_loop on function that calls user-defined operator
    */
   void
-  compute_operator(BlockVector &dst, const BlockVector &src = BlockVector()) const;
+  compute_operator(BlockVector<number>       &dst,
+                   const BlockVector<number> &src = BlockVector<number>()) const;
 
 private:
   /**
    * @brief Calls user-defiend operator
    */
   void
-  compute_local_operator(const MatrixFree                            &_data,
-                         BlockVector                                 &dst,
-                         const BlockVector                           &src,
+  compute_local_operator(const MatrixFree<dim, number>               &_data,
+                         BlockVector<number>                         &dst,
+                         const BlockVector<number>                   &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   // public:
@@ -181,8 +179,8 @@ private:
   //    * @brief Local computation of the diagonal of the operator.
   //    */
   //   void
-  //   compute_local_diagonal(const MatrixFree                            &_data,
-  //                          BlockVector                                 &dst,
+  //   compute_local_diagonal(const MatrixFree<dim, number> &_data,
+  //                          BlockVector<number>                                 &dst,
   //                          const unsigned int                          &dummy,
   //                          const std::pair<unsigned int, unsigned int> &cell_range)
   //                          const;
@@ -219,25 +217,26 @@ public:
    * @brief Set constrained entries to one.
    */
   // void
-  // set_constrained_entries_to_one(SolutionVector &dst) const;
+  // set_constrained_entries_to_one(SolutionVector<number> &dst) const;
 
   /**
-   * @brief Get read access to the MatrixFree object stored with this operator.
+   * @brief Get read access to the MatrixFree<dim, number> object stored with this
+   * operator.
    */
-  const MatrixFree *
+  const MatrixFree<dim, number> *
   get_matrix_free() const;
 
   /**
    * @brief Get read access to the inverse diagonal of this operator.
    */
-  const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector>> &
+  const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> &
   get_matrix_diagonal_inverse() const;
 
   /**
    * @brief Matrix-vector multiplication.
    */
   void
-  vmult(BlockVector &dst, const BlockVector &src) const;
+  vmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
 
   // NOLINTBEGIN(readability-identifier-naming)
 
@@ -245,7 +244,7 @@ public:
    * @brief Transpose matrix-vector multiplication.
    */
   void
-  Tvmult(BlockVector &dst, const BlockVector &src) const;
+  Tvmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
 
   // NOLINTEND(readability-identifier-naming)
 
@@ -296,7 +295,7 @@ private:
   /**
    * @brief Matrix-free object.
    */
-  const MatrixFree *data;
+  const MatrixFree<dim, number> *data;
 
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.
@@ -306,12 +305,13 @@ private:
   /**
    * @brief The diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector>> diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> diagonal_entries;
 
   /**
    * @brief The inverse diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector>> inverse_diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>>
+    inverse_diagonal_entries;
 };
 
 PRISMS_PF_END_NAMESPACE

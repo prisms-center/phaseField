@@ -27,17 +27,30 @@ PRISMS_PF_BEGIN_NAMESPACE
 // rather than in the core solution handler. Propogate these changes to FieldContainer.
 
 /**
+ * @brief Typedef for solution block vector.
+ */
+template <typename number>
+using BlockVector = dealii::LinearAlgebra::distributed::BlockVector<number>;
+/**
+ * @brief Typedef for solution vector.
+ */
+template <typename number>
+using SolutionVector = BlockVector<number>::BlockType;
+
+/**
+ * @brief Typedef for matrix_free.
+ */
+using dealii::MatrixFree;
+
+/**
  * @brief The solution vectors.
  */
 template <unsigned int dim, typename number>
 struct SolutionLevel
 {
-  using BlockVector    = dealii::LinearAlgebra::distributed::BlockVector<number>;
-  using SolutionVector = BlockVector::BlockType;
-  using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
-  BlockVector              solutions;
-  std::vector<BlockVector> old_solutions;
-  MatrixFree               matrix_free;
+  BlockVector<number>              solutions;
+  std::vector<BlockVector<number>> old_solutions;
+  MatrixFree<dim, number>          matrix_free;
 };
 
 /**
@@ -47,14 +60,11 @@ template <unsigned int dim, typename number>
 class GroupSolutionHandler
 {
 public:
-  using BlockVector    = SolutionLevel<dim, number>::BlockVector;
-  using SolutionVector = SolutionLevel<dim, number>::SolutionVector;
-  using MatrixFree     = SolutionLevel<dim, number>::MatrixFree;
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-  using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector>;
+  using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector<number>>;
 #else
   using SolutionTransfer =
-    dealii::parallel::distributed::SolutionTransfer<dim, SolutionVector>;
+    dealii::parallel::distributed::SolutionTransfer<dim, SolutionVector<number>>;
 #endif
 
   /**
@@ -67,44 +77,44 @@ public:
    * @brief Get the solution vector set. This contains all the normal fields and is
    * typically used for output.
    */
-  [[nodiscard]] BlockVector &
+  [[nodiscard]] BlockVector<number> &
   get_solution_full_vector(unsigned int relative_level = 0);
 
   /**
    * @brief Get the const solution vector set. This contains all the normal fields and is
    * typically used for output.
    */
-  [[nodiscard]] const BlockVector &
+  [[nodiscard]] const BlockVector<number> &
   get_solution_full_vector(unsigned int relative_level = 0) const;
 
   /**
    * @brief Get a solution vector of a given field index.
    */
-  [[nodiscard]] SolutionVector &
+  [[nodiscard]] SolutionVector<number> &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
 
   /**
    * @brief Get a solution vector of a given field index.
    */
-  [[nodiscard]] const SolutionVector &
+  [[nodiscard]] const SolutionVector<number> &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the old solution vector set at a given age.
    */
-  [[nodiscard]] BlockVector &
+  [[nodiscard]] BlockVector<number> &
   get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0);
 
   /**
    * @brief Get the old solution vector set at a given age.
    */
-  [[nodiscard]] const BlockVector &
+  [[nodiscard]] const BlockVector<number> &
   get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0) const;
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
-  [[nodiscard]] SolutionVector &
+  [[nodiscard]] SolutionVector<number> &
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
                           unsigned int relative_level = 0);
@@ -112,7 +122,7 @@ public:
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
-  [[nodiscard]] const SolutionVector &
+  [[nodiscard]] const SolutionVector<number> &
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
                           unsigned int relative_level = 0) const;
@@ -132,13 +142,13 @@ public:
   /**
    * @brief Get the matrix_free object at a level.
    */
-  [[nodiscard]] MatrixFree &
+  [[nodiscard]] MatrixFree<dim, number> &
   get_matrix_free(unsigned int relative_level = 0);
 
   /**
    * @brief Get the matrix_free object at a level.
    */
-  [[nodiscard]] const MatrixFree &
+  [[nodiscard]] const MatrixFree<dim, number> &
   get_matrix_free(unsigned int relative_level = 0) const;
 
   /**

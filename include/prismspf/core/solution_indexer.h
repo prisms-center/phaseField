@@ -19,10 +19,6 @@ template <unsigned int dim, typename number>
 class SolutionIndexer
 {
 public:
-  using BlockVector    = GroupSolutionHandler<dim, number>::BlockVector;
-  using SolutionVector = BlockVector::BlockType;
-  using MatrixFree     = GroupSolutionHandler<dim, number>::MatrixFree;
-
   /**
    * @brief Constructor.
    */
@@ -32,25 +28,25 @@ public:
   /**
    * @brief Get a solution vector of a given field index.
    */
-  [[nodiscard]] const SolutionVector &
+  [[nodiscard]] const SolutionVector<number> &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
   /**
    * @brief Get a solution vector of a given field index.
    */
-  [[nodiscard]] SolutionVector &
+  [[nodiscard]] SolutionVector<number> &
   get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
-  [[nodiscard]] const SolutionVector &
+  [[nodiscard]] const SolutionVector<number> &
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
                           unsigned int relative_level = 0) const;
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
-  [[nodiscard]] SolutionVector &
+  [[nodiscard]] SolutionVector<number> &
   get_old_solution_vector(unsigned int age,
                           unsigned int global_index,
                           unsigned int relative_level = 0);
@@ -58,12 +54,12 @@ public:
   /**
    * @brief Get the matrixfree object of the group a given field index.
    */
-  [[nodiscard]] const MatrixFree &
+  [[nodiscard]] const MatrixFree<dim, number> &
   get_matrix_free(unsigned int index, unsigned int relative_level = 0) const;
   /**
    * @brief Get the matrixfree object of the group a given field index.
    */
-  [[nodiscard]] MatrixFree &
+  [[nodiscard]] MatrixFree<dim, number> &
   get_matrix_free(unsigned int index, unsigned int relative_level = 0);
 
   /**

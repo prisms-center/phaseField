@@ -35,9 +35,7 @@ public:
    * @brief Initialize.
    */
   void
-  initialize(
-    std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>>
-      _data);
+  initialize(std::shared_ptr<dealii::MatrixFree<dim, number>> _data);
 
   /**
    * @brief Compute element volume for the triangulation
@@ -55,7 +53,7 @@ private:
   /**
    * @brief Matrix-free object.
    */
-  std::shared_ptr<dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>> data;
+  std::shared_ptr<dealii::MatrixFree<dim, number>> data;
 
   /**
    * @brief Vector that stores element volumes

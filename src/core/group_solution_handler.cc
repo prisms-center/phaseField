@@ -36,7 +36,7 @@ GroupSolutionHandler<dim, number>::GroupSolutionHandler(
 template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_solution_full_vector(unsigned int relative_level)
-  -> BlockVector &
+  -> BlockVector<number> &
 {
   return solution_levels[relative_level].solutions;
 }
@@ -44,7 +44,7 @@ GroupSolutionHandler<dim, number>::get_solution_full_vector(unsigned int relativ
 template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_solution_full_vector(
-  unsigned int relative_level) const -> const BlockVector &
+  unsigned int relative_level) const -> const BlockVector<number> &
 {
   return solution_levels[relative_level].solutions;
 }
@@ -53,7 +53,7 @@ template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
                                                        unsigned int relative_level)
-  -> SolutionVector &
+  -> SolutionVector<number> &
 {
   return solution_levels[relative_level].solutions.block(
     global_to_block_index[global_index]);
@@ -63,7 +63,7 @@ template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_solution_vector(unsigned int global_index,
                                                        unsigned int relative_level) const
-  -> const SolutionVector &
+  -> const SolutionVector<number> &
 {
   return solution_levels[relative_level].solutions.block(
     global_to_block_index[global_index]);
@@ -73,7 +73,7 @@ template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
   unsigned int age,
-  unsigned int relative_level) -> BlockVector &
+  unsigned int relative_level) -> BlockVector<number> &
 {
   return solution_levels[relative_level].old_solutions[age];
 }
@@ -82,7 +82,7 @@ template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_old_solution_full_vector(
   unsigned int age,
-  unsigned int relative_level) const -> const BlockVector &
+  unsigned int relative_level) const -> const BlockVector<number> &
 {
   return solution_levels[relative_level].old_solutions[age];
 }
@@ -92,7 +92,7 @@ auto
 GroupSolutionHandler<dim, number>::get_old_solution_vector(unsigned int age,
                                                            unsigned int global_index,
                                                            unsigned int relative_level)
-  -> SolutionVector &
+  -> SolutionVector<number> &
 {
   return solution_levels[relative_level].old_solutions[age].block(
     global_to_block_index[global_index]);
@@ -103,7 +103,7 @@ auto
 GroupSolutionHandler<dim, number>::get_old_solution_vector(
   unsigned int age,
   unsigned int global_index,
-  unsigned int relative_level) const -> const SolutionVector &
+  unsigned int relative_level) const -> const SolutionVector<number> &
 {
   return solution_levels[relative_level].old_solutions[age].block(
     global_to_block_index[global_index]);
@@ -126,7 +126,7 @@ GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_leve
 template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
-  -> MatrixFree &
+  -> MatrixFree<dim, number> &
 {
   return solution_levels[relative_level].matrix_free;
 }
@@ -134,7 +134,7 @@ GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
 template <unsigned int dim, typename number>
 auto
 GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level) const
-  -> const MatrixFree &
+  -> const MatrixFree<dim, number> &
 {
   return solution_levels[relative_level].matrix_free;
 }
@@ -214,9 +214,9 @@ GroupSolutionHandler<dim, number>::reinit(
     }
   for (auto &solution_level : solution_levels)
     {
-      BlockVector              &solutions     = solution_level.solutions;
-      std::vector<BlockVector> &old_solutions = solution_level.old_solutions;
-      MatrixFree               &matrix_free   = solution_level.matrix_free;
+      BlockVector<number>              &solutions     = solution_level.solutions;
+      std::vector<BlockVector<number>> &old_solutions = solution_level.old_solutions;
+      MatrixFree<dim, number>          &matrix_free   = solution_level.matrix_free;
 
       // These partitioners basically just provide the number of elements in a distributed
       // way
@@ -231,7 +231,7 @@ GroupSolutionHandler<dim, number>::reinit(
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
       solutions.collect_sizes();
-      for (BlockVector &old_solution : old_solutions)
+      for (BlockVector<number> &old_solution : old_solutions)
         {
           old_solution.reinit(partitioners);
           old_solution.collect_sizes();
@@ -263,10 +263,10 @@ GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
   const SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      std::vector<const SolutionVector *> fields_at_ages;
+      std::vector<const SolutionVector<number> *> fields_at_ages;
       fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
       fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
-      for (const BlockVector &old_solution : top_solutions.old_solutions)
+      for (const BlockVector<number> &old_solution : top_solutions.old_solutions)
         {
           fields_at_ages.push_back(&(old_solution.block(block_index)));
         }
@@ -284,10 +284,10 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
   SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      std::vector<SolutionVector *> fields_at_ages;
+      std::vector<SolutionVector<number> *> fields_at_ages;
       fields_at_ages.reserve(1 + top_solutions.old_solutions.size());
       fields_at_ages.push_back(&(top_solutions.solutions.block(block_index)));
-      for (BlockVector &old_solution : top_solutions.old_solutions)
+      for (BlockVector<number> &old_solution : top_solutions.old_solutions)
         {
           fields_at_ages.push_back(&(old_solution.block(block_index)));
         }
@@ -303,7 +303,8 @@ void
 GroupSolutionHandler<dim, number>::update_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.update_ghost_values();
-  for (const BlockVector &old_solution : solution_levels[relative_level].old_solutions)
+  for (const BlockVector<number> &old_solution :
+       solution_levels[relative_level].old_solutions)
     {
       old_solution.update_ghost_values();
     }
@@ -320,8 +321,8 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level)
 {
-  BlockVector &solutions   = solution_levels[relative_level].solutions;
-  MatrixFree  &matrix_free = solution_levels[relative_level].matrix_free;
+  BlockVector<number>     &solutions   = solution_levels[relative_level].solutions;
+  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
 
   unsigned int num_blocks = solve_group.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
@@ -338,10 +339,10 @@ GroupSolutionHandler<dim, number>::apply_initial_condition_for_old_fields()
 {
   for (auto &solution_level : solution_levels)
     {
-      BlockVector              &solutions     = solution_level.solutions;
-      std::vector<BlockVector> &old_solutions = solution_level.old_solutions;
+      BlockVector<number>              &solutions     = solution_level.solutions;
+      std::vector<BlockVector<number>> &old_solutions = solution_level.old_solutions;
 
-      for (BlockVector &old_solution : old_solutions)
+      for (BlockVector<number> &old_solution : old_solutions)
         {
           old_solution = solutions;
         }

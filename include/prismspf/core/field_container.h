@@ -42,13 +42,6 @@ class FieldContainer
 {
 public:
   /**
-   * @brief Typedef for the basic vector that apply our operations to.
-   */
-  using BlockVector    = SolutionIndexer<dim, number>::BlockVector;
-  using SolutionVector = SolutionIndexer<dim, number>::SolutionVector;
-  using MatrixFree     = dealii::MatrixFree<dim, number, dealii::VectorizedArray<number>>;
-
-  /**
    * @brief Typedef for the basic value that the use manipulates.
    */
   using ScalarValue    = dealii::VectorizedArray<number>;
@@ -241,7 +234,7 @@ public:
     }
 
     void
-    eval(const BlockVector *_src_solutions)
+    eval(const BlockVector<number> *_src_solutions)
     {
       if (fe_eval)
         {
@@ -267,7 +260,7 @@ public:
     }
 
     void
-    reinit_and_eval(unsigned int cell, const BlockVector *_src_solutions)
+    reinit_and_eval(unsigned int cell, const BlockVector<number> *_src_solutions)
     {
       if (fe_eval)
         {
@@ -308,7 +301,7 @@ public:
     }
 
     void
-    integrate_and_distribute(BlockVector *dst_solutions)
+    integrate_and_distribute(BlockVector<number> *dst_solutions)
     {
       if (fe_eval_src_dst)
         {
@@ -318,7 +311,7 @@ public:
     }
 
     void
-    distribute(BlockVector *dst_solutions)
+    distribute(BlockVector<number> *dst_solutions)
     {
       if (fe_eval_src_dst)
         {
@@ -336,7 +329,7 @@ public:
                  unsigned int                        _relative_level,
                  const DependencySet                &dependency_map,
                  const SolveGroup                   &_solve_group,
-                 const MatrixFree                   &matrix_free);
+                 const MatrixFree<dim, number>      &matrix_free);
 
   /**
    * @brief Initialize based on cell for all dependencies.
@@ -349,14 +342,14 @@ public:
    * dependency flags for all dependencies.
    */
   void
-  eval(const BlockVector *src_solutions);
+  eval(const BlockVector<number> *src_solutions);
 
   /**
    * @brief Initialize based on cell, read solution vector, and evaluate based on
    * dependency flags for all dependencies.
    */
   void
-  reinit_and_eval(unsigned int cell, const BlockVector *src_solutions);
+  reinit_and_eval(unsigned int cell, const BlockVector<number> *src_solutions);
 
   /**
    * @brief Integrate the residuals.
@@ -368,13 +361,13 @@ public:
    * @brief Distribute the integrated residuals.
    */
   void
-  distribute(BlockVector *dst_solutions);
+  distribute(BlockVector<number> *dst_solutions);
 
   /**
    * @brief Integrate the residuals and distribute from local to global.
    */
   void
-  integrate_and_distribute(BlockVector *dst_solutions);
+  integrate_and_distribute(BlockVector<number> *dst_solutions);
 
   /**
    * @brief Set the current quadtrature point
