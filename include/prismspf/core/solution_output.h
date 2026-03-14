@@ -24,6 +24,7 @@
 
 #include <prismspf/config.h>
 
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <mpi.h>
@@ -112,7 +113,6 @@ public:
     data_out.set_flags(flags);
 
     // Write to file based on the user input.
-    const std::string  directory = "./";
     const unsigned int increment = sim_timer.get_increment();
     const std::string &file_type = output_parameters.file_type;
     if (file_type == "vtu")
@@ -120,14 +120,16 @@ public:
         std::ostringstream increment_stream;
         increment_stream << std::setw(static_cast<int>(n_trailing_digits))
                          << std::setfill('0') << increment;
-        const std::string filename =
-          directory + file_prefix + "_" + increment_stream.str() + ".vtu";
+        const std::string filename = file_prefix + "_" + increment_stream.str() + ".vtu";
         data_out.write_vtu_in_parallel(filename, MPI_COMM_WORLD);
       }
     else if (file_type == "pvtu")
       {
+        std::filesystem::path output_path = file_prefix;
+        std::string           filename    = output_path.filename();
+        std::string           directory   = output_path.remove_filename();
         data_out.write_vtu_with_pvtu_record(directory,
-                                            file_prefix,
+                                            filename,
                                             increment,
                                             MPI_COMM_WORLD,
                                             n_trailing_digits);
@@ -137,9 +139,8 @@ public:
         std::ostringstream increment_stream;
         increment_stream << std::setw(static_cast<int>(n_trailing_digits))
                          << std::setfill('0') << increment;
-        const std::string filename =
-          directory + file_prefix + "_" + increment_stream.str() + ".vtk";
-        std::ofstream vtk_output(filename);
+        const std::string filename = file_prefix + "_" + increment_stream.str() + ".vtk";
+        std::ofstream     vtk_output(filename);
         data_out.write_vtk(vtk_output);
       }
     else
