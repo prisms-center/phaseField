@@ -136,14 +136,13 @@ main(int argc, char *argv[])
       std::vector<FieldAttributes> field_attributes = {
         FieldAttributes("n", TensorRank::Scalar)};
       std::vector<SolveGroup> solve_groups;
-      SolveGroup              exp_group(
-        1,
-        Linear,
-        Primary,
-        {0},
-        make_dependency_set(field_attributes, std::set<std::string> {"old_1(n)"}),
-        make_dependency_set(field_attributes,
-                            std::set<std::string> {"change(n)", "grad(change(n))"}));
+      SolveGroup              exp_group(1,
+                           Linear,
+                           Primary,
+                                        {0},
+                           make_dependency_set(field_attributes, {"old_1(n)"}),
+                           make_dependency_set(field_attributes,
+                                                            {"change(n)", "grad(change(n))"}));
       solve_groups.push_back(exp_group);
 
       UserInputParameters<dim> user_inputs(parameters_filename);
