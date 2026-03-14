@@ -41,6 +41,7 @@ set end time = 15
 subsection output
   set condition = EQUAL_SPACING
   set number = 50
+  set file type = pvtu
 end
 
 subsection boundary conditions: 0
