@@ -168,14 +168,12 @@ main(int argc, char *argv[])
                            Primary,
                                         {0},
                            make_dependency_set(field_attributes,
-                                               std::set<std::string> {"old_1(n)",
-                                                                                   "grad(old_1(n))"}));
+                                                            {"old_1(n)", "grad(old_1(n))"}));
       SolveGroup              pp_group(2,
                           Explicit,
                           PostProcess,
                                        {1, 2},
-                          make_dependency_set(field_attributes,
-                                              std::set<std::string> {"n", "grad(n)"}));
+                          make_dependency_set(field_attributes, {"n", "grad(n)"}));
       solve_groups.push_back(exp_group);
       solve_groups.push_back(pp_group);
 

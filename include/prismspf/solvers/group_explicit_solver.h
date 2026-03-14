@@ -36,7 +36,7 @@ public:
   {}
 
   void
-  init(const std::list<DependencySet> &all_dependeny_sets) override
+  init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
     GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
