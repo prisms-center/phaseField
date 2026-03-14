@@ -54,11 +54,11 @@ make_solvers(const std::vector<SolveGroup>           &solve_groups,
   return solvers;
 }
 
-std::list<DependencySet>
+std::list<DependencyMap>
 get_all_dependency_sets(const std::vector<SolveGroup> &solve_groups)
 {
   // Todo: upgrade to recursive for aux solvers
-  std::list<DependencySet> output;
+  std::list<DependencyMap> output;
   for (const auto &solve_group : solve_groups)
     {
       output.push_back(solve_group.dependencies_lhs);

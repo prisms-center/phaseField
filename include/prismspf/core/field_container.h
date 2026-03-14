@@ -113,7 +113,7 @@ public:
     FEEValuationDeps() = default;
 
     FEEValuationDeps(
-      const Dependencies::Dependency                                    &dependency,
+      const Dependency                                                  &dependency,
       const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
       bool                                                               is_dst)
       : solution_level(mf_id_pair.first)
@@ -297,7 +297,7 @@ public:
   FieldContainer(const std::vector<FieldAttributes> &_field_attributes,
                  const SolutionIndexer<dim, number> &_solution_indexer,
                  unsigned int                        _relative_level,
-                 const DependencySet                &dependency_map,
+                 const DependencyMap                &dependency_map,
                  const SolveGroup                   &_solve_group,
                  const MatrixFree<dim, number>      &matrix_free);
 

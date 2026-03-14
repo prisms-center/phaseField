@@ -10,7 +10,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 inline unsigned int
-oldest(Dependencies::Dependency dependencies)
+oldest(Dependency dependencies)
 {
   for (long int age_index = long(dependencies.old_flags.size()) - 1; age_index >= 0;
        age_index--)
@@ -33,11 +33,11 @@ struct DependencyExtents
   unsigned int max_mg_level = 0;
 
   // TODO: update this to account multigrid levels. Will need more
-  // than std::list<DependencySet>
+  // than std::list<DependencyMap>
   DependencyExtents(const std::set<unsigned int>   &field_indices,
-                    const std::list<DependencySet> &all_dependeny_sets)
+                    const std::list<DependencyMap> &all_dependeny_sets)
   {
-    for (const DependencySet &dependency_set : all_dependeny_sets)
+    for (const DependencyMap &dependency_set : all_dependeny_sets)
       {
         for (unsigned int field_index : field_indices)
           {

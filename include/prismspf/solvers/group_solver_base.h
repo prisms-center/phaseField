@@ -80,7 +80,7 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init(const std::list<DependencySet> &all_dependeny_sets)
+  init(const std::list<DependencyMap> &all_dependeny_sets)
   {
     DependencyExtents extents(solve_group.field_indices, all_dependeny_sets);
     solutions.init(solve_context->get_dof_manager(),

@@ -15,7 +15,7 @@ FieldContainer<dim, degree, number>::FieldContainer(
   const std::vector<FieldAttributes> &_field_attributes,
   const SolutionIndexer<dim, number> &_solution_indexer,
   unsigned int                        _relative_level,
-  const DependencySet                &dependency_map,
+  const DependencyMap                &dependency_map,
   const SolveGroup                   &_solve_group,
   const MatrixFree<dim, number>      &matrix_free)
   : field_attributes_ptr(&_field_attributes)
