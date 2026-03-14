@@ -44,7 +44,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 class SolutionOutput
 {
 public:
-  using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
+  using VectorType = SolutionVector<number>;
 
   /**
    * @brief Outputs all fields in the solution set.
