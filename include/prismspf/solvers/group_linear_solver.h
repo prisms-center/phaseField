@@ -5,9 +5,13 @@
 
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_cg.h>
+#include <deal.II/lac/solver_control.h>
 
 #include <prismspf/core/conditional_ostreams.h>
+#include <prismspf/core/group_solution_handler.h>
+#include <prismspf/core/invm_manager.h>
 #include <prismspf/core/timer.h>
+#include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/group_solver_base.h>
@@ -94,10 +98,11 @@ public:
     Timer::end_section("Zero ghosts");
 
     // Set up linear solver
-    do_linear_solve(rhs_operators[relative_level],
-                    rhs_vector[relative_level],
+    rhs_operators[relative_level].compute_operator(rhs_vector[relative_level]);
+    do_linear_solve(rhs_vector[relative_level],
                     lhs_operators[relative_level],
-                    solutions.get_solution_full_vector(relative_level)); // todo!!!
+                    solutions.get_solution_full_vector(relative_level),
+                    relative_level);
 
     // Apply constraints
     solutions.apply_constraints(relative_level);
@@ -109,13 +114,11 @@ public:
   }
 
   void
-  do_linear_solve(MFOperator<dim, degree, number> &rhs_operator,
-                  BlockVector<number>             &b_vector,
+  do_linear_solve(BlockVector<number>             &b_vector,
                   MFOperator<dim, degree, number> &lhs_operator,
-                  BlockVector<number>             &x_vector)
+                  BlockVector<number>             &x_vector,
+                  unsigned int                     relative_level)
   {
-    // Compute rhs
-    rhs_operator.compute_operator(b_vector);
     // Linear solve
     const auto &params =
       solve_context->get_user_inputs().get_linear_solve_parameters().linear_solvers.at(
@@ -150,6 +153,7 @@ protected:
    * @brief Matrix free operators for each level
    */
   std::vector<MFOperator<dim, degree, number>> rhs_operators;
+
   std::vector<MFOperator<dim, degree, number>> lhs_operators;
   std::vector<BlockVector<number>>             rhs_vector;
 

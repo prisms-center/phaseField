@@ -106,6 +106,28 @@ public:
     }
   }
 
+  /**
+   * @brief Get the integrated jxw vector for a given rank and level.
+   *
+   * @param rank The tensor rank of the field (scalar or vector).
+   * @param relative_level The relative level to get the jxw for.
+   */
+  const SolutionVector<number> &
+  get_jxw(TensorRank rank, unsigned int relative_level) const
+  {
+    Assert((rank == TensorRank::Scalar && calculate_scalar) ||
+             (rank == TensorRank::Vector && calculate_vector),
+           dealii::ExcInternalError("Requested invm that was not calculated"));
+    if (rank == TensorRank::Scalar)
+      {
+        return jxw_scalar[relative_level];
+      }
+    // else
+    {
+      return jxw_vector[relative_level];
+    }
+  }
+
 private:
   /**
    * @brief Initialize.

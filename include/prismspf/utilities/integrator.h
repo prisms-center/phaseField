@@ -24,27 +24,6 @@ class Integrator
 public:
   using VectorType = dealii::LinearAlgebra::distributed::Vector<number>;
 
-  /**
-   * @brief Constructor.
-   */
-  Integrator() = default;
-
-  /**
-   * @brief Compute the integral for a scalar field
-   */
-  void
-  compute_integral(number                        &integral_value,
-                   const dealii::DoFHandler<dim> &dof_handler,
-                   const VectorType              &vector) const;
-
-  /**
-   * @brief Compute the integral for a vector field
-   */
-  void
-  compute_integral(std::vector<number>           &integral_value,
-                   const dealii::DoFHandler<dim> &dof_handler,
-                   const VectorType              &vector) const;
-
   template <int rank>
   static dealii::Vector<number>
   integrate(const dealii::DoFHandler<dim> &dof_handler, const auto &solution_vector)

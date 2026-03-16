@@ -22,10 +22,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// Major TODO: remove 'new_solutions' as prismspf solves for n from n-1 rather than n+1
-// from n. Also remove 'change_solutions' as the vector should be provided by the /solver/
-// rather than in the core solution handler. Propogate these changes to FieldContainer.
-
 /**
  * @brief Typedef for solution block vector.
  */
@@ -168,6 +164,12 @@ public:
    */
   [[nodiscard]] const std::vector<unsigned int> &
   get_global_to_block_index() const;
+
+  /**
+   * @brief Get the global index from the block index.
+   */
+  [[nodiscard]] const std::vector<unsigned int> &
+  get_block_to_global_index() const;
 
   /**
    * @brief Initialize the solution set.
