@@ -67,10 +67,12 @@ public:
         Timer::end_section("Zero ghosts");
 
         // Solve for Newton update.
-        do_linear_solve(rhs_operators[relative_level],
-                        solutions.get_solution_full_vector(relative_level),
+        rhs_operators[relative_level].compute_operator(
+          solutions.get_solution_full_vector(relative_level));
+        do_linear_solve(solutions.get_solution_full_vector(relative_level),
                         lhs_operators[relative_level],
-                        solutions.get_solution_full_vector(relative_level)); // todo!!!
+                        solutions.get_solution_full_vector(relative_level),
+                        relative_level); // todo!!!
 
         // TODO: Apply zero-constraints to 'change' vector
 

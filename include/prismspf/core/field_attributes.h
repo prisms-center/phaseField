@@ -4,7 +4,6 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/matrix_free/evaluation_flags.h>
 
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -16,10 +15,7 @@
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
-using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
-using Rank      = TensorRank;
 
-// NOLINTBEGIN(misc-non-private-member-variables-in-classes)
 /**
  * @brief Structure to hold the attributes of a field. This includes things like
  * the name, rank, and nucleation information..
@@ -31,7 +27,7 @@ struct FieldAttributes
    */
   explicit FieldAttributes(
     std::string               _name                        = "",
-    Rank                      _field_type                  = Rank::Undefined,
+    TensorRank                _field_type                  = TensorRank::Scalar,
     bool                      _is_nucleation_rate_variable = false,
     std::vector<Types::Index> _nucleating_field_indices    = std::vector<Types::Index>())
     : name(std::move(_name))
@@ -48,7 +44,7 @@ struct FieldAttributes
   /**
    * @brief Field type (Scalar/Vector).
    */
-  Rank field_type = Rank::Undefined;
+  TensorRank field_type = TensorRank::Scalar;
 
   /**
    * @brief Is a nucleation rate
@@ -60,10 +56,6 @@ struct FieldAttributes
    */
   std::vector<Types::Index> nucleating_field_indices;
 };
-
-// NOLINTEND(misc-non-private-member-variables-in-classes)
-
-// TODO: Consider making these static members instead of prismspf::
 
 /**
  * @brief Make a map that maps field names to field indices.
@@ -91,14 +83,16 @@ field_map(const std::vector<FieldAttributes> &fields)
   std::map<std::string, FieldAttributes> map;
   for (const FieldAttributes &field : fields)
     {
-      // AssertThrow(map.find(field.name) == map.end(),
-      //             "The names of the fields are not unique. This is not allowed.");
+      AssertThrow(map.find(field.name) == map.end(),
+                  dealii::ExcMessage(
+                    "The names of the fields are not unique. This is not allowed."));
       map[field.name] = field;
     }
   return map;
 }
 
 // TODO: Submit a PR/issue to dealii to make operator| constexpr.
-// constexpr EvalFlags values_and_gradients = EvalFlags::values | EvalFlags::gradients;
+// constexpr EvalFlags values_and_gradients = EvalFlags::values |
+// EvalFlags::gradients;
 
 PRISMS_PF_END_NAMESPACE
