@@ -133,16 +133,15 @@ main(int argc, char *argv[])
       constexpr unsigned int dim    = 2;
       constexpr unsigned int degree = 2;
 
-      std::vector<FieldAttributes> field_attributes = {
-        FieldAttributes("n", TensorRank::Scalar)};
-      std::vector<SolveGroup> solve_groups;
-      SolveGroup              exp_group(1,
+      std::vector<FieldAttributes> field_attributes = {FieldAttributes("n")};
+      std::vector<SolveGroup>      solve_groups;
+      SolveGroup                   exp_group(1,
                            Linear,
                            Primary,
-                                        {0},
+                                             {0},
                            make_dependency_set(field_attributes, {"old_1(n)"}),
                            make_dependency_set(field_attributes,
-                                                            {"change(n)", "grad(change(n))"}));
+                                                                 {"change(n)", "grad(change(n))"}));
       solve_groups.push_back(exp_group);
 
       UserInputParameters<dim> user_inputs(parameters_filename);

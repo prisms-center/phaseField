@@ -3,11 +3,11 @@
 
 #pragma once
 
+#include <deal.II/matrix_free/evaluation_flags.h>
+
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
-
-#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -82,5 +82,7 @@ namespace Defaults
   static const unsigned int eig_cg_n_iterations = 10;
 
 } // namespace Defaults
+
+using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 
 PRISMS_PF_END_NAMESPACE
