@@ -121,7 +121,7 @@ public:
   {
     // Linear solve
     const auto &params =
-      solve_context->get_user_inputs().get_linear_solve_parameters().linear_solvers.at(
+      solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
         solve_group.id);
     try
       {
@@ -130,7 +130,7 @@ public:
 
         dealii::SolverCG<BlockVector<number>> cg_solver(linear_solver_control);
         cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());
-        if (solve_context->get_user_inputs().get_output_parameters().should_output(
+        if (solve_context->get_user_inputs().output_parameters.should_output(
               solve_context->get_simulation_timer().get_increment()))
           {
             ConditionalOStreams::pout_summary()

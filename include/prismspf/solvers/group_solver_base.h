@@ -182,11 +182,10 @@ public:
     for (const auto &global_index : solve_group.field_indices)
       {
         if (solve_context->get_user_inputs()
-              .get_load_initial_condition_parameters()
-              .get_read_initial_conditions_from_file())
+              .load_ic_parameters.get_read_initial_conditions_from_file())
           {
             const auto &initial_condition_parameters =
-              solve_context->get_user_inputs().get_load_initial_condition_parameters();
+              solve_context->get_user_inputs().load_ic_parameters;
             for (const auto &initial_condition_file :
                  initial_condition_parameters.get_initial_condition_files())
               {
@@ -205,7 +204,7 @@ public:
                         *name_it,
                         solve_context->get_field_attributes()[global_index].field_type,
                         initial_condition_file,
-                        solve_context->get_user_inputs().get_spatial_discretization()),
+                        solve_context->get_user_inputs().spatial_discretization),
                       solutions.get_solution_vector(global_index));
                   }
               }
