@@ -98,10 +98,10 @@ Problem<dim, degree, number>::Problem(
   , solve_groups(_solve_groups)
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
-  , triangulation_manager(_user_inputs.get_spatial_discretization(), false)
+  , triangulation_manager(_user_inputs.spatial_discretization, false)
   , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes,
-                       _user_inputs.get_boundary_parameters(),
+                       _user_inputs.boundary_parameters,
                        dof_manager,
                        _pde_operator.get())
   , solve_context(field_attributes,
@@ -137,7 +137,7 @@ Problem<dim, degree, number>::init_system()
   // See *1
   /* ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
-  triangulation_manager.generate_mesh(user_inputs.get_spatial_discretization());
+  triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
   Timer::end_section("Generate mesh"); */
 
   // Create the dof handlers.
@@ -196,9 +196,9 @@ Problem<dim, degree, number>::init_system()
   // Perform the initial grid refinement. For this one, we have to do a loop to sufficient
   // coarsen cells to the minimum level
   ConditionalOStreams::pout_base() << "initializing grid refiner..." << std::flush;
-  grid_refiner.add_refinement_marker(std::make_shared<NucleusRefinementFunction<dim>>(
-    user_inputs.get_nucleation_parameters(),
-    pf_tools->nuclei_list));
+  grid_refiner.add_refinement_marker(
+    std::make_shared<NucleusRefinementFunction<dim>>(user_inputs.nucleation_parameters,
+                                                     pf_tools->nuclei_list));
 
   // InvM
   solve_context.get_invm_manager().compute_invm();
@@ -234,7 +234,7 @@ Problem<dim, degree, number>::solve()
     << std::flush;
 
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
-  const TemporalDiscretization   &time_info   = user_inputs.get_temporal_discretization();
+  const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
   while (sim_timer.get_increment() < time_info.num_increments)
@@ -268,9 +268,9 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 {
   const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
   unsigned int                    increment   = sim_timer.get_increment();
-  bool is_output_increment = user_inputs.get_output_parameters().should_output(increment);
+  bool is_output_increment = user_inputs.output_parameters.should_output(increment);
   bool is_nucleation_increment =
-    user_inputs.get_nucleation_parameters().should_attempt_nucleation(increment);
+    user_inputs.nucleation_parameters.should_attempt_nucleation(increment);
 
   // Update the time-dependent constraints
   Timer::start_section("Update time-dependent constraints");
@@ -304,14 +304,14 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::end_section("Check for nucleation");
 
   // Perform grid refinement if necessary
-  if (user_inputs.get_spatial_discretization().has_adaptivity && increment == 0)
+  if (user_inputs.spatial_discretization.has_adaptivity && increment == 0)
     {
       Timer::start_section("Grid refinement");
       grid_refiner.do_initial_refinement(solvers);
       Timer::end_section("Grid refinement");
     }
-  else if (user_inputs.get_spatial_discretization().has_adaptivity &&
-           (user_inputs.get_spatial_discretization().should_refine_mesh(increment) ||
+  else if (user_inputs.spatial_discretization.has_adaptivity &&
+           (user_inputs.spatial_discretization.should_refine_mesh(increment) ||
             any_nucleation_occurred))
     {
       // Perform grid refinement
@@ -324,7 +324,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 
   // Output results if needed
-  if (user_inputs.get_output_parameters().should_output(increment))
+  if (user_inputs.output_parameters.should_output(increment))
     {
       std::string           output_prefix = "solutions/solution";
       std::filesystem::path output_path   = output_prefix;

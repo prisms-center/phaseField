@@ -37,17 +37,16 @@ public:
     , fe_values_flags()
     , num_quad_points(SystemWide<dim, degree>::quadrature.size())
     , max_refinement(
-        solve_context->get_user_inputs().get_spatial_discretization().max_refinement)
+        solve_context->get_user_inputs().spatial_discretization.max_refinement)
     , min_refinement(
-        solve_context->get_user_inputs().get_spatial_discretization().min_refinement)
+        solve_context->get_user_inputs().spatial_discretization.min_refinement)
     , marker_functions()
   {
     fe_values_flags.fill(dealii::UpdateFlags::update_default);
     std::map<std::string, Types::Index> field_indices =
       field_index_map(solve_context->get_field_attributes());
-    for (const auto &[name, field_criterion] : solve_context->get_user_inputs()
-                                                 .get_spatial_discretization()
-                                                 .refinement_criteria)
+    for (const auto &[name, field_criterion] :
+         solve_context->get_user_inputs().spatial_discretization.refinement_criteria)
       {
         // Grab the index and field type
         const unsigned   field_index = field_indices.at(name);
@@ -111,7 +110,7 @@ public:
     std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     // Return early if adaptive meshing is disabled
-    if (!solve_context->get_user_inputs().get_spatial_discretization().has_adaptivity)
+    if (!solve_context->get_user_inputs().spatial_discretization.has_adaptivity)
       {
         return;
       }
@@ -169,7 +168,7 @@ public:
     std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
   {
     const SpatialDiscretization<dim> &space_parameters =
-      solve_context->get_user_inputs().get_spatial_discretization();
+      solve_context->get_user_inputs().spatial_discretization;
     const DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
 
     dealii::types::global_dof_index old_dofs = dof_manager.get_total_dofs();
@@ -231,9 +230,9 @@ private:
             // cells when coarsening them
             std::map<std::string, Types::Index> field_indices =
               field_index_map(solve_context->get_field_attributes());
-            for (const auto &[name, field_criterion] : solve_context->get_user_inputs()
-                                                         .get_spatial_discretization()
-                                                         .refinement_criteria)
+            for (const auto &[name, field_criterion] :
+                 solve_context->get_user_inputs()
+                   .spatial_discretization.refinement_criteria)
               {
                 // Grab the index
                 const unsigned int index = field_indices.at(name);
@@ -398,10 +397,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                    {
-                      return marker_function->flag(*cell,
-                                                   solve_context->get_simulation_timer());
-                    }))
+                  {
+                    return marker_function->flag(*cell,
+                                                 solve_context->get_simulation_timer());
+                  }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();

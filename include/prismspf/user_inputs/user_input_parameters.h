@@ -30,7 +30,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 // TODO: convert to a simple struct
 
 template <unsigned int dim>
-class UserInputParameters
+struct UserInputParameters
 {
 public:
   /**
@@ -42,204 +42,6 @@ public:
    * member variables.
    */
   explicit UserInputParameters(const std::string &file_name);
-
-  /**
-   * @brief Return the spatial discretization parameters.
-   */
-  [[nodiscard]] const SpatialDiscretization<dim> &
-  get_spatial_discretization() const
-  {
-    return spatial_discretization;
-  }
-
-  /**
-   * @brief Return the spatial discretization parameters.
-   */
-  [[nodiscard]] SpatialDiscretization<dim> &
-  get_spatial_discretization()
-  {
-    return spatial_discretization;
-  }
-
-  /**
-   * @brief Return the temporal discretization parameters.
-   */
-  [[nodiscard]] const TemporalDiscretization &
-  get_temporal_discretization() const
-  {
-    return temporal_discretization;
-  }
-
-  /**
-   * @brief Return the temporal discretization parameters.
-   */
-  [[nodiscard]] TemporalDiscretization &
-  get_temporal_discretization()
-  {
-    return temporal_discretization;
-  }
-
-  /**
-   * @brief Return the linear solve parameters.
-   */
-  [[nodiscard]] const LinearSolveParameters &
-  get_linear_solve_parameters() const
-  {
-    return linear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the linear solve parameters.
-   */
-  [[nodiscard]] LinearSolveParameters &
-  get_linear_solve_parameters()
-  {
-    return linear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the nonlinear solve parameters.
-   */
-  [[nodiscard]] const NonlinearSolveParameterSet &
-  get_nonlinear_solve_parameters() const
-  {
-    return nonlinear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the nonlinear solve parameters.
-   */
-  [[nodiscard]] NonlinearSolveParameterSet &
-  get_nonlinear_solve_parameters()
-  {
-    return nonlinear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the output parameters.
-   */
-  [[nodiscard]] const OutputParameters &
-  get_output_parameters() const
-  {
-    return output_parameters;
-  }
-
-  /**
-   * @brief Return the output parameters.
-   */
-  [[nodiscard]] OutputParameters &
-  get_output_parameters()
-  {
-    return output_parameters;
-  }
-
-  /**
-   * @brief Return the checkpoint parameters.
-   */
-  [[nodiscard]] const CheckpointParameters &
-  get_checkpoint_parameters() const
-  {
-    return checkpoint_parameters;
-  }
-
-  /**
-   * @brief Return the checkpoint parameters.
-   */
-  [[nodiscard]] CheckpointParameters &
-  get_checkpoint_parameters()
-  {
-    return checkpoint_parameters;
-  }
-
-  /**
-   * @brief Return the boundary parameters.
-   */
-  [[nodiscard]] const BoundaryParameters<dim> &
-  get_boundary_parameters() const
-  {
-    return boundary_parameters;
-  }
-
-  /**
-   * @brief Return the boundary parameters.
-   */
-  [[nodiscard]] BoundaryParameters<dim> &
-  get_boundary_parameters()
-  {
-    return boundary_parameters;
-  }
-
-  /**
-   * @brief Return the load IC parameters.
-   */
-  [[nodiscard]] const LoadInitialConditionParameters &
-  get_load_initial_condition_parameters() const
-  {
-    return load_ic_parameters;
-  }
-
-  /**
-   * @brief Return the load IC parameters.
-   */
-  [[nodiscard]] LoadInitialConditionParameters &
-  get_load_initial_condition_parameters()
-  {
-    return load_ic_parameters;
-  }
-
-  /**
-   * @brief Return the nucleation parameters.
-   */
-  [[nodiscard]] const NucleationParameters &
-  get_nucleation_parameters() const
-  {
-    return nucleation_parameters;
-  }
-
-  /**
-   * @brief Return the nucleation parameters.
-   */
-  [[nodiscard]] NucleationParameters &
-  get_nucleation_parameters()
-  {
-    return nucleation_parameters;
-  }
-
-  /**
-   * @brief Return the miscellaneous parameters.
-   */
-  [[nodiscard]] const MiscellaneousParameters &
-  get_miscellaneous_parameters() const
-  {
-    return misc_parameters;
-  }
-
-  /**
-   * @brief Return the miscellaneous parameters.
-   */
-  [[nodiscard]] MiscellaneousParameters &
-  get_miscellaneous_parameters()
-  {
-    return misc_parameters;
-  }
-
-  /**
-   * @brief Return the user constants.
-   */
-  [[nodiscard]] const UserConstants<dim> &
-  get_user_constants() const
-  {
-    return user_constants;
-  }
-
-  /**
-   * @brief Return the user constants.
-   */
-  [[nodiscard]] UserConstants<dim> &
-  get_user_constants()
-  {
-    return user_constants;
-  }
 
   /**
    * @brief Ensure that the parameters are compatible with a set of fields and solvers.
@@ -367,6 +169,7 @@ private:
   load_model_constants(const InputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
 
+public:
   // Spatial discretization parameters
   SpatialDiscretization<dim> spatial_discretization;
 

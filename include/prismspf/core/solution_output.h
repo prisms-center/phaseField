@@ -56,11 +56,10 @@ public:
                  const std::string                  &file_prefix,
                  const UserInputParameters<dim>     &user_inputs)
   {
-    const OutputParameters &output_parameters = user_inputs.get_output_parameters();
+    const OutputParameters &output_parameters = user_inputs.output_parameters;
     // Some stuff to determine the actual name of the output file.
     const auto n_trailing_digits = static_cast<unsigned int>(
-      std::floor(std::log10(user_inputs.get_temporal_discretization().num_increments)) +
-      1);
+      std::floor(std::log10(user_inputs.temporal_discretization.num_increments)) + 1);
 
     // Init data out
     dealii::DataOut<dim> data_out;

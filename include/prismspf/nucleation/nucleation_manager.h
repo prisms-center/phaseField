@@ -99,10 +99,10 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
 {
   // Set up references.
   const UserInputParameters<dim> &user_inputs = solve_context.get_user_inputs();
-  const NucleationParameters     &nuc_params  = user_inputs.get_nucleation_parameters();
+  const NucleationParameters     &nuc_params  = user_inputs.nucleation_parameters;
   const SimulationTimer          &time_info   = solve_context.get_simulation_timer();
   const double delta_t = nuc_params.get_nucleation_period() * time_info.get_timestep();
-  auto        &rng     = user_inputs.get_miscellaneous_parameters().rng;
+  auto        &rng     = user_inputs.misc_parameters.rng;
 
   // Set up FEValues
   unsigned int            num_quad_points = SystemWide<dim, degree>::quadrature.size();
@@ -198,8 +198,8 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
     }
 
   // Set up refs
-  const NucleationParameters &nuc_params = user_inputs.get_nucleation_parameters();
-  RNGEngine                  &rng        = user_inputs.get_miscellaneous_parameters().rng;
+  const NucleationParameters &nuc_params = user_inputs.nucleation_parameters;
+  RNGEngine                  &rng        = user_inputs.misc_parameters.rng;
 
   // Gather new nuclei to root process
   std::vector<Nucleus<dim>> new_nuclei(new_nuclei_list.begin(), new_nuclei_list.end());
@@ -228,7 +228,7 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
                            const double distance = prisms::distance<dim, double>(
                              nuc.location,
                              existing_nucleus.location,
-                             user_inputs.get_spatial_discretization().rectangular_mesh);
+                             user_inputs.spatial_discretization.rectangular_mesh);
                            return nuc_params.check_active(existing_nucleus, time_info) &&
                                   (distance < nuc_params.get_exclusion_distance() ||
                                    (nuc.field_index == existing_nucleus.field_index &&
