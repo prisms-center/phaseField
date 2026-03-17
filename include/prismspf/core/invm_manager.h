@@ -45,8 +45,10 @@ public:
     data.resize(num_levels);
     jxw_scalar.resize(num_levels);
     invm_scalar.resize(num_levels);
+    invm_sqrt_scalar.resize(num_levels);
     jxw_vector.resize(num_levels);
     invm_vector.resize(num_levels);
+    invm_sqrt_vector.resize(num_levels);
     reinit(dof_manager);
   }
 
@@ -128,6 +130,74 @@ public:
     }
   }
 
+  /**
+   * @brief Get the integrated jxw vector for a given rank and level.
+   *
+   * @param rank The tensor rank of the field (scalar or vector).
+   * @param relative_level The relative level to get the jxw for.
+   */
+  const SolutionVector<number> &
+  get_invm_sqrt(TensorRank rank, unsigned int relative_level) const
+  {
+    Assert((rank == TensorRank::Scalar && calculate_scalar) ||
+             (rank == TensorRank::Vector && calculate_vector),
+           dealii::ExcInternalError("Requested invm that was not calculated"));
+    if (rank == TensorRank::Scalar)
+      {
+        return invm_sqrt_scalar[relative_level];
+      }
+    // else
+    {
+      return invm_sqrt_vector[relative_level];
+    }
+  }
+
+  std::vector<const SolutionVector<number> *>
+  get_invm(const std::vector<FieldAttributes> &field_container,
+           const std::set<unsigned int>       &field_indices,
+           unsigned int                        relative_level) const
+  {
+    const unsigned int                          num_blocks = field_indices.size();
+    std::vector<const SolutionVector<number> *> out;
+    out.reserve(num_blocks);
+    for (unsigned int field_index : field_indices)
+      {
+        out.push_back(&get_invm(field_container[field_index].field_type, relative_level));
+      }
+    return out;
+  }
+
+  std::vector<const SolutionVector<number> *>
+  get_jxw(const std::vector<FieldAttributes> &field_container,
+          const std::set<unsigned int>       &field_indices,
+          unsigned int                        relative_level) const
+  {
+    const unsigned int                          num_blocks = field_indices.size();
+    std::vector<const SolutionVector<number> *> out;
+    out.reserve(num_blocks);
+    for (unsigned int field_index : field_indices)
+      {
+        out.push_back(&get_jxw(field_container[field_index].field_type, relative_level));
+      }
+    return out;
+  }
+
+  std::vector<const SolutionVector<number> *>
+  get_invm_sqrt(const std::vector<FieldAttributes> &field_container,
+                const std::set<unsigned int>       &field_indices,
+                unsigned int                        relative_level) const
+  {
+    const unsigned int                          num_blocks = field_indices.size();
+    std::vector<const SolutionVector<number> *> out;
+    out.reserve(num_blocks);
+    for (unsigned int field_index : field_indices)
+      {
+        out.push_back(
+          &get_invm_sqrt(field_container[field_index].field_type, relative_level));
+      }
+    return out;
+  }
+
 private:
   /**
    * @brief Initialize.
@@ -141,11 +211,13 @@ private:
           {
             jxw_scalar[i].reinit(data[i][0].get_vector_partitioner());
             invm_scalar[i].reinit(data[i][0].get_vector_partitioner());
+            invm_sqrt_scalar[i].reinit(data[i][0].get_vector_partitioner());
           }
         if (calculate_vector)
           {
             jxw_vector[i].reinit(data[i][1].get_vector_partitioner());
             invm_vector[i].reinit(data[i][1].get_vector_partitioner());
+            invm_sqrt_vector[i].reinit(data[i][1].get_vector_partitioner());
           }
       }
   }
@@ -160,6 +232,9 @@ private:
       {
         data[i][0].cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar[i], 0);
         invert(invm_scalar[i], jxw_scalar[i]);
+        //
+        sqrt(invm_sqrt_scalar[i], jxw_scalar[i]);
+        invert(invm_sqrt_scalar[i], invm_sqrt_scalar[i]);
       }
   }
 
@@ -170,6 +245,9 @@ private:
       {
         data[i][1].cell_loop(&InvMManager::compute_local_vector, this, jxw_vector[i], 0);
         invert(invm_vector[i], jxw_vector[i]);
+        //
+        sqrt(invm_sqrt_vector[i], jxw_vector[i]);
+        invert(invm_sqrt_vector[i], invm_sqrt_vector[i]);
       }
   }
 
@@ -223,6 +301,19 @@ private:
       }
   }
 
+  void
+  sqrt(SolutionVector<number> &dst, const SolutionVector<number> &src) const
+  {
+    using std::sqrt;
+    src.update_ghost_values();
+    dst.update_ghost_values();
+    Assert(dst.size() == src.size(), dealii::ExcInternalError());
+    for (unsigned int i = 0; i < src.locally_owned_size(); ++i)
+      {
+        dst.local_element(i) = sqrt(src.local_element(i));
+      }
+  }
+
   /**
    * @brief Matrix-free object.
    */
@@ -240,6 +331,8 @@ private:
   std::vector<SolutionVector<number>> jxw_vector;
   std::vector<SolutionVector<number>> invm_scalar;
   std::vector<SolutionVector<number>> invm_vector;
+  std::vector<SolutionVector<number>> invm_sqrt_scalar;
+  std::vector<SolutionVector<number>> invm_sqrt_vector;
 
   inline static const VectorValue one = []()
   {

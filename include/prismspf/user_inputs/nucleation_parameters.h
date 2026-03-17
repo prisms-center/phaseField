@@ -174,15 +174,6 @@ public:
   }
 
   /**
-   * @brief Whether to print timing information with nucleation
-   */
-  void
-  set_print_timing_with_nucleation(const bool &_print_timing_with_nucleation)
-  {
-    print_timing_with_nucleation = _print_timing_with_nucleation;
-  }
-
-  /**
    * @brief Whether a postprocessed nucleation rate exists
    */
   [[nodiscard]] bool
@@ -212,10 +203,6 @@ private:
 
   // Seeding increments
   unsigned int seeding_increments = 1;
-
-  // Whether to print timing information with nucleation
-  // TODO (landinjm): Implement this.
-  bool print_timing_with_nucleation = false;
 };
 
 inline bool
@@ -240,7 +227,6 @@ NucleationParameters::print_parameter_summary() const
     << "  Nucleation Parameters\n"
     << "================================================\n"
     << "Nucleation period: " << nucleation_period << "\n"
-    << "Print nucleation timing info: " << bool_to_string(print_timing_with_nucleation)
     << "\n\n"
     << std::flush;
 }

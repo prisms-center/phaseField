@@ -153,6 +153,9 @@ Problem<dim, degree, number>::init_system()
   constraint_manager.reinit(field_attributes);
   Timer::end_section("Create constraints");
 
+  // InvM
+  solve_context.get_invm_manager().compute_invm();
+
   // Initialize the solvers
   Timer::start_section("Initialize Solvers");
   // See *1
@@ -199,9 +202,6 @@ Problem<dim, degree, number>::init_system()
   grid_refiner.add_refinement_marker(
     std::make_shared<NucleusRefinementFunction<dim>>(user_inputs.nucleation_parameters,
                                                      pf_tools->nuclei_list));
-
-  // InvM
-  solve_context.get_invm_manager().compute_invm();
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -361,10 +361,10 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
             }
           else if (tensor_rank == TensorRank::Scalar)
             {
+              // This is equivalent to integration
               ConditionalOStreams::pout_base()
-                << Integrator<dim, degree, number>::template integrate<0>(
-                     dof_manager.get_field_dof_handler(index),
-                     solution)
+                << solution *
+                     solve_context.get_invm_manager().get_jxw(TensorRank::Scalar, 0)
                 << "\n";
             }
         }

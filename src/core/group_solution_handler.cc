@@ -246,8 +246,6 @@ GroupSolutionHandler<dim, number>::reinit(
     }
 }
 
-// TODO (fractalsbyx): Check if this is necessary to repeat. Check if dof_handler ptrs
-// change.
 template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::init_solution_transfer()

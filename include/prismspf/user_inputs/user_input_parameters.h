@@ -27,8 +27,6 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// TODO: convert to a simple struct
-
 template <unsigned int dim>
 struct UserInputParameters
 {
