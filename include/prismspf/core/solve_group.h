@@ -29,12 +29,14 @@ enum SolveTiming
    * @example Concentration variable
    */
   Primary,
+  Initialized = Primary,
   /**
-   * @brief Secondary fields are only evaluated by the pde solver, not initialized by a
-   * seperate function.
+   * @brief Secondary fields are only evaluated by the pde solver on every increment, not
+   * initialized by a seperate function.
    * @example Chemical potential
    */
   Secondary,
+  Uninitialized = Secondary,
   /**
    * @brief PostProcess fields are only solved on output increments.
    * @example Local free energy density
@@ -104,27 +106,11 @@ public:
    */
   DependencyMap dependencies_lhs;
 
-private:
   /**
-   * @brief A std::vector used to manage dynamic memory for holding an auxiliary solve
-   * group
-   * @remark Privately managed
+   * @brief Solves that occur inside the parent solve. This is only really meant for
+   * implicit solves with higher order spatial derivatives.
    */
   std::vector<SolveGroup> aux_solve_container;
-
-public:
-  void
-  set_auxiliary_solve(const SolveGroup &aux_solve = SolveGroup())
-  {
-    aux_solve_container.clear();
-    aux_solve_container.push_back(aux_solve);
-  }
-
-  void
-  remove_auxiliary_solve() // unset_auxiliary_solve()
-  {
-    aux_solve_container.clear();
-  }
 
   [[nodiscard]] bool
   has_auxiliary_solve() const
@@ -132,27 +118,9 @@ public:
     return !aux_solve_container.empty();
   }
 
-  SolveGroup &
-  auxiliary_solve() // get_auxiliary_solve()
-  {
-    AssertThrow(has_auxiliary_solve(),
-                dealii::ExcMessage("Cannot access auxiliary solve when none is set.\n "
-                                   "Attempted access from solve id: " +
-                                   std::to_string(id)));
-    return aux_solve_container[0];
-  }
-
   bool
   operator<(const SolveGroup &other) const
   {
-    // TODO: Ensure that the pde_type enum is defined in the proper order.
-    // Swap Explicit and ImplicitTimeDependent?
-    // Constant | ExplicitTimeDependent | Explicit | ImplicitTimeDependent | Implicit |
-    // Postprocess
-    if (pde_type < other.pde_type)
-      {
-        return true;
-      }
     return id < other.id;
   }
 };

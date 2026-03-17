@@ -153,6 +153,7 @@ public:
   // public:
   /**
    * @brief Calls cell_loop on function that calls user-defined operator
+   * @note requires dst is not ghosted
    */
   void
   compute_operator(BlockVector<number>       &dst,
@@ -161,6 +162,7 @@ public:
 private:
   /**
    * @brief Calls user-defiend operator
+   * @note requires dst is not ghosted
    */
   void
   compute_local_operator(const MatrixFree<dim, number>               &_data,
@@ -246,6 +248,7 @@ public:
 
   /**
    * @brief Matrix-vector multiplication.
+   * @note requires dst is not ghosted
    */
   void
   vmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
