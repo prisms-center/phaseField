@@ -155,6 +155,13 @@ ConstraintManager<dim, degree, number>::reinit(
           constraint.close();
         }
     }
+  for (auto &constraints_vector : change_constraints)
+    {
+      for (dealii::AffineConstraints<number> &constraint : constraints_vector)
+        {
+          constraint.close();
+        }
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -181,14 +188,6 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
                       tensor_rank,
                       field_index,
                       for_change_term);
-
-  // 3. TODO: Make pinned point constraints
-  // if (boundary_parameters->has_pinned_point(field_index))
-  //  {
-  //    const auto &[value, target_point] =
-  //      boundary_parameters->get_pinned_point(field_index);
-  //    set_pinned_point(constraint, target_point, value, dof_handler, for_change_term);
-  //  }
   constraint.close();
 }
 
@@ -331,16 +330,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-  {
-    std::array<dealii::ComponentMask, dim> masks {};
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        dealii::ComponentMask temp_mask(dim, false);
-        temp_mask.set(i, true);
-        masks.at(i) = temp_mask;
-      }
-    return masks;
-  }();
+{
+  std::array<dealii::ComponentMask, dim> masks {};
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      dealii::ComponentMask temp_mask(dim, false);
+      temp_mask.set(i, true);
+      masks.at(i) = temp_mask;
+    }
+  return masks;
+}();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

@@ -335,6 +335,8 @@ InputFileReader::declare_mesh()
                                         dealii::Patterns::Double(0.0, DBL_MAX),
                                         "The magnitude of the gradient above "
                                         "which the mesh should be refined.");
+        parameter_handler.declare_alias("gradient magnitude lower bound",
+                                        "gradient lower bound");
       }
       parameter_handler.leave_subsection();
     }
@@ -356,6 +358,13 @@ InputFileReader::declare_time_discretization()
     "0.0",
     dealii::Patterns::Double(0.0, DBL_MAX),
     "The value of simulated time where the simulation ends.");
+  parameter_handler.declare_alias("number steps", "steps");
+  parameter_handler.declare_alias("number steps", "iterations");
+  parameter_handler.declare_alias("number steps", "number of steps");
+  parameter_handler.declare_alias("number steps", "num steps");
+  parameter_handler.declare_alias("number steps", "n steps");
+  parameter_handler.declare_alias("time step", "timestep");
+  parameter_handler.declare_alias("time step", "dt");
 }
 
 void
@@ -409,6 +418,7 @@ InputFileReader::declare_solver_parameters()
                                         "0",
                                         dealii::Patterns::Integer(0, INT_MAX),
                                         "The minimum multigrid level.");
+        parameter_handler.declare_alias("tolerance value", "tolerance");
       }
       parameter_handler.leave_subsection();
 
@@ -460,6 +470,7 @@ InputFileReader::declare_solver_parameters()
           dealii::Patterns::Double(0.0, 1.0),
           "The constant damping value to be used if the backtrace "
           "line-search approach isn't used.");
+        parameter_handler.declare_alias("tolerance value", "tolerance");
       }
       parameter_handler.leave_subsection();
     }
