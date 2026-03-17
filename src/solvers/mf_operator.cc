@@ -37,6 +37,13 @@ MFOperator<dim, degree, number>::compute_operator(BlockVector<number>       &dst
                                                   const BlockVector<number> &src) const
 {
   data->cell_loop(&MFOperator::compute_local_operator, this, dst, src, true);
+  if (scale_by_diagonal)
+    {
+      for (unsigned int block_index = 0; block_index < dst.n_blocks(); block_index++)
+        {
+          dst.block(block_index).scale(*(scaling_diagonal[block_index]));
+        }
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

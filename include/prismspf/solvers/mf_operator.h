@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/vectorization.h>
+#include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
@@ -193,6 +194,17 @@ private:
 
 public:
   /**
+   * @brief Set scaling diagonal
+   */
+  void
+  set_scaling_diagonal(bool                                               scale,
+                       const std::vector<const SolutionVector<number> *> &diagonal)
+  {
+    scaling_diagonal  = diagonal;
+    scale_by_diagonal = scale;
+  }
+
+  /**
    * @brief Return the number of DoFs.
    */
   dealii::types::global_dof_index
@@ -286,6 +298,16 @@ private:
    * @brief Simulation timer
    */
   const SimulationTimer *sim_timer;
+
+  /**
+   * @brief Result of operator gets scaled by this (invm for explicits)
+   */
+  std::vector<const SolutionVector<number> *> scaling_diagonal;
+
+  /**
+   * @brief Whether or not to scale after operator result
+   */
+  bool scale_by_diagonal = false;
 
   /**
    * @brief Mapping from field index to block index (only for dst).
