@@ -343,6 +343,7 @@ SpatialDiscretization<dim>::print_parameter_summary() const
       for (const auto &[field_name, criterion] : refinement_criteria)
         {
           ConditionalOStreams::pout_summary()
+            << "  Field name: " << field_name << "\n"
             << "  Criterion type: " << criterion.criterion_string() << "\n"
             << "  Value lower bound: " << criterion.value_lower_bound << "\n"
             << "  Value upper bound: " << criterion.value_upper_bound << "\n"

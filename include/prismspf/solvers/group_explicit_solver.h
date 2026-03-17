@@ -52,6 +52,12 @@ public:
                                    solve_group.dependencies_rhs,
                                    solve_context->get_simulation_timer());
         rhs_operators[relative_level].initialize(solutions);
+        rhs_operators[relative_level].set_scaling_diagonal(
+          true,
+          solve_context->get_invm_manager().get_invm(
+            solve_context->get_field_attributes(),
+            solve_group.field_indices,
+            relative_level));
       }
   }
 
@@ -68,15 +74,6 @@ public:
 
     rhs_operators[relative_level].compute_operator(
       solutions.get_solution_full_vector(relative_level));
-
-    // Scale by invm
-    for (auto field_index : solve_group.field_indices)
-      {
-        solutions.get_solution_vector(field_index, relative_level)
-          .scale(solve_context->get_invm_manager().get_invm(
-            solve_context->get_field_attributes().at(field_index).field_type,
-            relative_level));
-      }
 
     // Apply constraints
     solutions.apply_constraints(relative_level);

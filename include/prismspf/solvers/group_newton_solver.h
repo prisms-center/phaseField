@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include <deal.II/lac/affine_constraints.h>
 #include <deal.II/lac/solver_cg.h>
 
+#include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/group_linear_solver.h>
@@ -31,6 +33,7 @@ protected:
   using LinearSolver<dim, degree, number>::do_linear_solve;
   using LinearSolver<dim, degree, number>::lhs_operators;
   using LinearSolver<dim, degree, number>::rhs_operators;
+  using LinearSolver<dim, degree, number>::rhs_vector;
 
 public:
   /**
@@ -42,6 +45,44 @@ public:
   {}
 
   /**
+   * @brief Initialize the solver.
+   */
+  void
+  init(const std::list<DependencyMap> &all_dependeny_sets) override
+  {
+    LinearSolver<dim, degree, number>::init(all_dependeny_sets);
+    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
+    newton_updates.resize(num_levels);
+    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
+      {
+        newton_updates[relative_level].reinit(
+          solutions.get_solution_full_vector(relative_level));
+      }
+    newton_update_constraints.resize(num_levels);
+    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
+      {
+        newton_update_constraints[relative_level] =
+          solve_context->get_constraint_manager().get_change_constraints(
+            solve_group.field_indices);
+      }
+  }
+
+  /**
+   * @brief Reinitialize the solver.
+   */
+  void
+  reinit() override
+  {
+    LinearSolver<dim, degree, number>::reinit();
+    const unsigned int num_levels = newton_updates.size();
+    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
+      {
+        newton_updates[relative_level].reinit(
+          solutions.get_solution_full_vector(relative_level));
+      }
+  }
+
+  /**
    * @brief Solve for a single update step.
    */
   void
@@ -50,15 +91,19 @@ public:
     number       newton_step_length    = number(1.0); // TODO
     number       newton_tolerance      = number(1.0); // TODO
     unsigned int newton_max_iterations = 1;           // TODO
-    bool         newton_unconverged    = true;
-    unsigned int iter                  = 0;
 
-    // Update the solutions
-    solutions.update(relative_level);
-
-    // TODO: setup initial guess for solution vector. Maybe use old_solution if available.
+    BlockVector<number>             &newton_residual = rhs_vector[relative_level];
+    BlockVector<number>             &newton_update   = newton_updates[relative_level];
+    MFOperator<dim, degree, number> &rhs_op          = rhs_operators[relative_level];
+    MFOperator<dim, degree, number> &lhs_op          = lhs_operators[relative_level];
+    std::vector<const dealii::AffineConstraints<number> *> &change_constraints =
+      newton_update_constraints[relative_level];
+    // TODO: setup initial guess for solution vector. Maybe use old_solution if
+    // available.
 
     // Newton iteration loop.
+    bool         newton_unconverged = true;
+    unsigned int iter               = 0;
     while (newton_unconverged && iter++ < newton_max_iterations)
       {
         // Zero out the ghosts
@@ -66,22 +111,25 @@ public:
         solutions.zero_out_ghosts(relative_level);
         Timer::end_section("Zero ghosts");
 
-        // Solve for Newton update.
-        rhs_operators[relative_level].compute_operator(
-          solutions.get_solution_full_vector(relative_level));
-        do_linear_solve(solutions.get_solution_full_vector(relative_level),
-                        lhs_operators[relative_level],
-                        solutions.get_solution_full_vector(relative_level),
-                        relative_level); // todo!!!
+        // Solve for Newton-residual (r)
+        rhs_op.compute_operator(newton_residual);
+        // Solve for Newton update. (-dr/du|Du)
+        do_linear_solve(newton_residual, lhs_op, newton_update, relative_level);
 
-        // TODO: Apply zero-constraints to 'change' vector
+        // Apply zero-constraints to 'change' vector
+        for (unsigned int block_index = 0; block_index < newton_update.n_blocks();
+             block_index++)
+          {
+            change_constraints[block_index]->distribute(newton_update.block(block_index));
+          }
 
         // Perform Newton update.
         solutions.get_solution_full_vector(relative_level)
-          .add(newton_step_length,
-               solutions.get_solution_full_vector(relative_level)); // todo!!!
+          .add(newton_step_length, solutions.get_solution_full_vector(relative_level));
 
         // Apply constraints to solution vector
+        // This may be redundant to the change-constraints, but we will still do it for
+        // consistency
         solutions.apply_constraints(relative_level);
 
         // Update the ghosts
@@ -90,8 +138,7 @@ public:
         Timer::end_section("Update ghosts");
 
         // Check convergence.
-        number l2_norm =
-          solutions.get_solution_full_vector(relative_level).l2_norm(); // todo!!!
+        number l2_norm     = newton_residual.l2_norm();
         newton_unconverged = l2_norm > newton_tolerance;
       }
     ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
@@ -101,6 +148,13 @@ public:
                                             "converge as per set tolerances.\n\n";
       }
   }
+
+protected:
+  std::vector<BlockVector<number>> newton_updates; //"change" term
+  // TODO: consider giving ConstraintHandler a function to apply change-constraints rather
+  // than keeping them here
+  std::vector<std::vector<const dealii::AffineConstraints<number> *>>
+    newton_update_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

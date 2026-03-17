@@ -70,6 +70,12 @@ public:
                                    solve_group.dependencies_rhs,
                                    solve_context->get_simulation_timer());
         rhs_operators[relative_level].initialize(solutions);
+        rhs_operators[relative_level].set_scaling_diagonal(
+          true,
+          solve_context->get_invm_manager().get_invm_sqrt(
+            solve_context->get_field_attributes(),
+            solve_group.field_indices,
+            relative_level));
       }
     // Initialize lhs_operators
     lhs_operators.reserve(num_levels);
@@ -83,6 +89,27 @@ public:
                                    solve_group.dependencies_lhs,
                                    solve_context->get_simulation_timer());
         lhs_operators[relative_level].initialize(solutions);
+        lhs_operators[relative_level].set_scaling_diagonal(
+          true,
+          solve_context->get_invm_manager().get_invm_sqrt(
+            solve_context->get_field_attributes(),
+            solve_group.field_indices,
+            relative_level));
+      }
+  }
+
+  /**
+   * @brief Reinitialize the solver.
+   */
+  void
+  reinit() override
+  {
+    GroupSolverBase<dim, degree, number>::reinit();
+    const unsigned int num_levels = rhs_vector.size();
+    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
+      {
+        rhs_vector[relative_level].reinit(
+          solutions.get_solution_full_vector(relative_level));
       }
   }
 

@@ -253,8 +253,9 @@ private:
    */
   std::vector<unsigned int> global_to_block_index;
 
-  // TODO (fractalsbyx): Consider switching to dealii::MGLevelObject
-  // Right now, I prefer using the relative level.
+  /**
+   * @brief Solutions and matrix free of each level.
+   */
   std::vector<SolutionLevel<dim, number>> solution_levels;
 
   /**
