@@ -49,8 +49,13 @@ enum ElasticityModel : std::uint8_t
  */
 enum DependencyType : int
 {
-  Normal = -1,
-  Change,
+  DST      = -2,
+  SRC      = -1,
+  LHS      = SRC,
+  Solution = SRC,
+  Trial    = SRC,
+  Change   = SRC,
+  Normal,
   OldOne,
   OldTwo,
   OldThree,
