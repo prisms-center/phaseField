@@ -21,12 +21,13 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// NOLINTBEGIN(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
+// NOLINTBEGIN(misc-non-private-member-variables-in-classes,
+// hicpp-explicit-conversions)
 struct Dependency
 {
-  using EvalFlags       = dealii::EvaluationFlags::EvaluationFlags;
-  EvalFlags flag        = EvalFlags::nothing;
-  EvalFlags change_flag = EvalFlags::nothing;
+  using EvalFlags                = dealii::EvaluationFlags::EvaluationFlags;
+  EvalFlags flag                 = EvalFlags::nothing;
+  EvalFlags linear_solution_flag = EvalFlags::nothing;
 
   std::vector<EvalFlags> old_flags;
 
@@ -34,18 +35,19 @@ struct Dependency
   /**
    * @brief Construct a Dependency with given flags.
    */
-  Dependency(EvalFlags                     _flag        = EvalFlags::nothing,
-             EvalFlags                     _change_flag = EvalFlags::nothing,
-             const std::vector<EvalFlags> &_old_flags   = {})
+  Dependency(EvalFlags                     _flag                 = EvalFlags::nothing,
+             EvalFlags                     _linear_solution_flag = EvalFlags::nothing,
+             const std::vector<EvalFlags> &_old_flags            = {})
     : flag(_flag)
-    , change_flag(_change_flag)
+    , linear_solution_flag(_linear_solution_flag)
     , old_flags(_old_flags)
   {}
 
   Dependency
   operator|(const Dependency &other) const
   {
-    Dependency result(flag | other.flag, change_flag | other.change_flag);
+    Dependency result(flag | other.flag,
+                      linear_solution_flag | other.linear_solution_flag);
     for (unsigned int i = 0; i < std::max(old_flags.size(), other.old_flags.size()); ++i)
       {
         result.old_flags.push_back(
@@ -58,7 +60,8 @@ struct Dependency
   Dependency
   operator&(const Dependency &other) const
   {
-    Dependency result(flag & other.flag, change_flag & other.change_flag);
+    Dependency result(flag & other.flag,
+                      linear_solution_flag & other.linear_solution_flag);
     for (unsigned int i = 0; i < std::min(old_flags.size(), other.old_flags.size()); ++i)
       {
         result.old_flags.push_back(old_flags.at(i) & (other.old_flags.at(i)));
@@ -69,8 +72,8 @@ struct Dependency
   Dependency &
   operator|=(const Dependency &other)
   {
-    flag        = flag | other.flag;
-    change_flag = change_flag | other.change_flag;
+    flag                 = flag | other.flag;
+    linear_solution_flag = linear_solution_flag | other.linear_solution_flag;
     if (other.old_flags.size() > old_flags.size())
       {
         old_flags.resize(other.old_flags.size());
@@ -85,8 +88,8 @@ struct Dependency
   Dependency &
   operator&=(const Dependency &other)
   {
-    flag        = flag & other.flag;
-    change_flag = change_flag & other.change_flag;
+    flag                 = flag & other.flag;
+    linear_solution_flag = linear_solution_flag & other.linear_solution_flag;
     old_flags.resize(std::min(old_flags.size(), other.old_flags.size()));
     for (unsigned int i = 0; i < old_flags.size(); ++i)
       {
@@ -97,7 +100,8 @@ struct Dependency
   }
 };
 
-// NOLINTEND(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
+// NOLINTEND(misc-non-private-member-variables-in-classes,
+// hicpp-explicit-conversions)
 
 using DependencyMap = std::map<Types::Index, Dependency>;
 
@@ -120,6 +124,13 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
       {{"curl(", ")"},     EvalFlags::gradients},
   };
 
+  static const std::set<std::pair<std::string, std::string>> src_delimiters = {
+    {"src(",    ")"},
+    {"change(", ")"},
+    {"trial(",  ")"},
+    {"lhs(",    ")"}
+  };
+
   DependencyMap result;
   for (unsigned int i = 0; i < field_attributes.size(); ++i)
     {
@@ -133,13 +144,16 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
               result[i].flag |= flag;
               dependency_strings.erase(iter);
             }
-          potential_match =
-            delimiter.first + "change(" + attr.name + ")" + delimiter.second;
-          iter = dependency_strings.find(potential_match);
-          if (iter != dependency_strings.end())
+          for (const auto &[src1, src2] : src_delimiters)
             {
-              result[i].change_flag |= flag;
-              dependency_strings.erase(iter);
+              potential_match =
+                delimiter.first + src1 + attr.name + src2 + delimiter.second;
+              iter = dependency_strings.find(potential_match);
+              if (iter != dependency_strings.end())
+                {
+                  result[i].linear_solution_flag |= flag;
+                  dependency_strings.erase(iter);
+                }
             }
           for (unsigned int old_index = 0; old_index < max_checked_age; ++old_index)
             {

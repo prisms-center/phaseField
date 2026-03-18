@@ -16,6 +16,7 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solution_indexer.h>
 #include <prismspf/core/solve_group.h>
+#include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -96,7 +97,8 @@ public:
   template <TensorRank Rank>
   struct FEEValuationDeps
   {
-    using FEEDepPair    = std::pair<FEEval<Rank>, EvalFlags>;
+    using FEEDepPair = std::pair<FEEval<Rank>, EvalFlags>;
+    // Note: it may be better to switch to unique_ptr and use std::move to initialize
     using FEEDepPairPtr = std::shared_ptr<FEEDepPair>;
     FEEDepPairPtr              fe_eval;
     FEEDepPairPtr              fe_eval_src_dst;
@@ -136,12 +138,12 @@ public:
                                              dependency.old_flags.at(age));
             }
         }
-      if (dependency.change_flag || is_dst)
+      if (dependency.linear_solution_flag || is_dst)
         {
           fe_eval_src_dst =
             std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
                                                       block_index),
-                                         dependency.change_flag);
+                                         dependency.linear_solution_flag);
         }
     }
 
@@ -150,7 +152,7 @@ public:
     get() const
     {
       // TODO: Assertions
-      if constexpr (type == DependencyType::Change)
+      if constexpr (type == DependencyType::SRC || type == DependencyType::DST)
         {
           return fe_eval_src_dst->first;
         }
@@ -169,7 +171,7 @@ public:
     get()
     {
       // TODO: Assertions
-      if constexpr (type == DependencyType::Change)
+      if constexpr (type == DependencyType::SRC || type == DependencyType::DST)
         {
           return fe_eval_src_dst->first;
         }
@@ -502,6 +504,16 @@ public:
   }
 
   /**
+   * @brief Return the quadrature point location.
+   */
+  [[nodiscard]] ScalarValue
+  get_element_volume() const
+  {
+    return shared_feeval_scalar.JxW(q_point) /
+           SystemWide<dim, degree>::quadrature.weight(q_point);
+  }
+
+  /**
    * @brief Return the number of quadrature points.
    */
   [[nodiscard]] unsigned int
@@ -519,8 +531,7 @@ public:
   {
     auto &relevant_feeval_vector =
       get_relevant_feeval_vector<RankFromVal<ValType>>()[global_variable_index];
-    relevant_feeval_vector.template get<DependencyType::Change>().submit_value(val,
-                                                                               q_point);
+    relevant_feeval_vector.template get<DependencyType::DST>().submit_value(val, q_point);
     relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::values;
   }
 
@@ -534,8 +545,8 @@ public:
     auto &relevant_feeval_vector =
       get_relevant_feeval_vector<RankFromGrad<GradType>>()[global_variable_index];
 
-    relevant_feeval_vector.template get<DependencyType::Change>()
-      .submit_gradient(val, q_point);
+    relevant_feeval_vector.template get<DependencyType::DST>().submit_gradient(val,
+                                                                               q_point);
     relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::gradients;
   }
 
