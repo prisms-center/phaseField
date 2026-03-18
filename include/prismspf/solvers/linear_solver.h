@@ -14,10 +14,11 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/mf_operator.h>
+#include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
+
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -28,12 +29,12 @@ class SolveContext;
  * @brief This class handles the explicit solves of all explicit fields
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class LinearSolver : public GroupSolverBase<dim, degree, number>
+class LinearSolver : public SolverBase<dim, degree, number>
 {
 protected:
-  using GroupSolverBase<dim, degree, number>::solutions;
-  using GroupSolverBase<dim, degree, number>::solve_context;
-  using GroupSolverBase<dim, degree, number>::solve_group;
+  using SolverBase<dim, degree, number>::solutions;
+  using SolverBase<dim, degree, number>::solve_context;
+  using SolverBase<dim, degree, number>::solve_group;
 
 public:
   /**
@@ -41,7 +42,7 @@ public:
    */
   LinearSolver(SolveGroup                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
-    : GroupSolverBase<dim, degree, number>(_solve_group, _solve_context)
+    : SolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
 
   /**
@@ -50,7 +51,7 @@ public:
   void
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
-    GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
+    SolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     rhs_vector.resize(num_levels);
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
@@ -104,7 +105,7 @@ public:
   void
   reinit() override
   {
-    GroupSolverBase<dim, degree, number>::reinit();
+    SolverBase<dim, degree, number>::reinit();
     const unsigned int num_levels = rhs_vector.size();
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
       {

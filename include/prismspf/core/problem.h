@@ -105,7 +105,7 @@ private:
   /**
    * @brief Solvers.
    */
-  std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
+  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
 
   /**
    * @brief Solution indexer

@@ -10,7 +10,7 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
-#include <prismspf/solvers/group_solver_base.h>
+#include <prismspf/solvers/solver_base.h>
 #include <prismspf/solvers/solvers.h>
 
 #include <prismspf/user_inputs/temporal_discretization.h>
@@ -21,12 +21,12 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>>
+std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
 make_solvers(const std::vector<SolveGroup>           &solve_groups,
              const SolveContext<dim, degree, number> &solve_context)
 {
   // Todo: upgrade to recursive for aux solvers
-  std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> solvers;
+  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
   solvers.reserve(solve_groups.size());
   for (const auto &solve_group : solve_groups)
     {
@@ -70,7 +70,7 @@ get_all_dependency_sets(const std::vector<SolveGroup> &solve_groups)
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<GroupSolutionHandler<dim, number> *>
 get_solution_managers_from_solvers(
-  const std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+  const std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
 {
   // Todo: upgrade to recursive for aux solvers
   std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
@@ -162,7 +162,7 @@ Problem<dim, degree, number>::init_system()
   /*  solvers.reserve(solve_groups.size());
     for (const auto &solve_group : solve_groups)
       {
-        std::shared_ptr<GroupSolverBase<dim, degree, number>> solver;
+        std::shared_ptr<SolverBase<dim, degree, number>> solver;
         switch (solve_group.pde_type)
           {
             case PDEType::Explicit:

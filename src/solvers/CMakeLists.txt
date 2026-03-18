@@ -1,13 +1,13 @@
 # Manually specify files to be included
 set(_src
-    ${CMAKE_CURRENT_SOURCE_DIR}/group_solver_base.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/group_solvers.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/solver_base.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/solvers.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/mf_operator.cc
 )
 
 set(_inst
-    group_solver_base.inst.in
-    group_solvers.inst.in
+    solver_base.inst.in
+    solvers.inst.in
     mf_operator.inst.in
 )
 

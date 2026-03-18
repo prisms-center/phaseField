@@ -138,9 +138,9 @@ private:
         ScalarGrad change_nx =
           variable_list.template get_gradient<TensorRank::Scalar, Change>(0);
 
-        ScalarValue fnnV = 12.0 * n * (n - 1.0) + 2.0;
+        ScalarValue df_well = 12.0 * n * (n - 1.0) + 2.0;
         ScalarValue eq_change_n =
-          change_n * (1.0 + sim_timer.get_timestep() * m_well * fnnV);
+          change_n * (1.0 + sim_timer.get_timestep() * m_well * df_well);
         ScalarGrad eqx_change_n = sim_timer.get_timestep() * kappa * m_well * change_nx;
 
         variable_list.set_value_term(0, eq_change_n);

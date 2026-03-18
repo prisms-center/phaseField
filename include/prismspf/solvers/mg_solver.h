@@ -19,7 +19,7 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/solvers/group_linear_solver.h>
+#include <prismspf/solvers/linear_solver.h>
 #include <prismspf/solvers/mf_operator.h>
 
 #include <prismspf/config.h>
@@ -35,14 +35,14 @@ class SolveContext;
 template <unsigned int dim, unsigned int degree, typename number>
 class MGSolver : public LinearSolver<dim, degree, number>
 {
-  using GroupSolverBase = GroupSolverBase<dim, degree, number>;
-  using LinearSolver    = LinearSolver<dim, degree, number>;
-  using GroupSolverBase::rhs_operators;
-  using GroupSolverBase::solutions;
-  using GroupSolverBase::solve_context;
-  using GroupSolverBase::solve_group;
+  using SolverBase   = SolverBase<dim, degree, number>;
+  using LinearSolver = LinearSolver<dim, degree, number>;
   using LinearSolver::do_linear_solve;
   using LinearSolver::lhs_operators;
+  using SolverBase::rhs_operators;
+  using SolverBase::solutions;
+  using SolverBase::solve_context;
+  using SolverBase::solve_group;
 
 public:
   /**
