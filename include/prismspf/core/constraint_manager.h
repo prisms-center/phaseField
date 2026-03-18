@@ -37,6 +37,9 @@ class PDEOperatorBase;
     AffineConstraints<number> &constraints,
     const ComponentMask       &component_mask = {}); */
 
+// TODO (fractalsbyx): I don't think we actually need 'change' constraints for newton
+// solves at all. Verify this and remove them.
+
 /**
  * @brief The class handles the generation and application of boundary conditions based on
  * the user-inputs.

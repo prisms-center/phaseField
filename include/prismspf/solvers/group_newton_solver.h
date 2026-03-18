@@ -88,9 +88,12 @@ public:
   void
   solve_level(unsigned int relative_level) override
   {
-    number       newton_step_length    = number(1.0); // TODO
-    number       newton_tolerance      = number(1.0); // TODO
-    unsigned int newton_max_iterations = 1;           // TODO
+    const NonlinearSolverParameters &params =
+      solve_context->get_user_inputs().nonlinear_solve_parameters.newton_solvers.at(
+        solve_group.id);
+    number       newton_step_length    = params.step_length;
+    number       newton_tolerance      = params.tolerance_value;
+    unsigned int newton_max_iterations = params.max_iterations;
 
     BlockVector<number>             &newton_residual = rhs_vector[relative_level];
     BlockVector<number>             &newton_update   = newton_updates[relative_level];
@@ -100,6 +103,11 @@ public:
       newton_update_constraints[relative_level];
     // TODO: setup initial guess for solution vector. Maybe use old_solution if
     // available.
+    if (!solutions.get_solution_level(relative_level).old_solutions.empty())
+      {
+        solutions.get_solution_full_vector(relative_level) =
+          solutions.get_old_solution_full_vector(0, relative_level);
+      }
 
     // Newton iteration loop.
     bool         newton_unconverged = true;
@@ -107,29 +115,23 @@ public:
     while (newton_unconverged && iter++ < newton_max_iterations)
       {
         // Zero out the ghosts
-        Timer::start_section("Zero ghosts");
-        solutions.zero_out_ghosts(relative_level);
-        Timer::end_section("Zero ghosts");
 
         // Solve for Newton-residual (r)
+        Timer::start_section("Zero ghosts");
+        newton_residual.zero_out_ghost_values();
+        Timer::end_section("Zero ghosts");
         rhs_op.compute_operator(newton_residual);
+        newton_residual.update_ghost_values(); // needed?
+
         // Solve for Newton update. (-dr/du|Du)
         do_linear_solve(newton_residual, lhs_op, newton_update, relative_level);
-
-        // Apply zero-constraints to 'change' vector
-        for (unsigned int block_index = 0; block_index < newton_update.n_blocks();
-             block_index++)
-          {
-            change_constraints[block_index]->distribute(newton_update.block(block_index));
-          }
+        newton_update.update_ghost_values(); // needed?
 
         // Perform Newton update.
         solutions.get_solution_full_vector(relative_level)
-          .add(newton_step_length, solutions.get_solution_full_vector(relative_level));
+          .add(newton_step_length, newton_update);
 
         // Apply constraints to solution vector
-        // This may be redundant to the change-constraints, but we will still do it for
-        // consistency
         solutions.apply_constraints(relative_level);
 
         // Update the ghosts
@@ -140,6 +142,9 @@ public:
         // Check convergence.
         number l2_norm     = newton_residual.l2_norm();
         newton_unconverged = l2_norm > newton_tolerance;
+
+        // Todo: implement some super simple backtracking. Something like if the residual
+        // increases instead of decreasing, try again with a smaller step length.
       }
     ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
     if (iter >= newton_max_iterations)
