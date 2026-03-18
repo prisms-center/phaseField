@@ -16,8 +16,6 @@
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/element_volume.h>
-
 #include <prismspf/config.h>
 
 #include <memory>
