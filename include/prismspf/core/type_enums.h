@@ -13,7 +13,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Type of PDE that is being solved.
  */
-enum PDEType : std::uint8_t
+enum SolveType : std::uint8_t
 {
   Constant,
   Explicit,
