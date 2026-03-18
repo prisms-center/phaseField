@@ -233,8 +233,10 @@ private:
         data[i][0].cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar[i], 0);
         invert(invm_scalar[i], jxw_scalar[i]);
         //
-        sqrt(invm_sqrt_scalar[i], jxw_scalar[i]);
-        invert(invm_sqrt_scalar[i], invm_sqrt_scalar[i]);
+        sqrt(invm_sqrt_scalar[i], invm_scalar[i]);
+        jxw_scalar[i].update_ghost_values();
+        invm_scalar[i].update_ghost_values();
+        invm_sqrt_scalar[i].update_ghost_values();
       }
   }
 
@@ -246,8 +248,10 @@ private:
         data[i][1].cell_loop(&InvMManager::compute_local_vector, this, jxw_vector[i], 0);
         invert(invm_vector[i], jxw_vector[i]);
         //
-        sqrt(invm_sqrt_vector[i], jxw_vector[i]);
-        invert(invm_sqrt_vector[i], invm_sqrt_vector[i]);
+        sqrt(invm_sqrt_vector[i], invm_vector[i]);
+        jxw_vector[i].update_ghost_values();
+        invm_vector[i].update_ghost_values();
+        invm_sqrt_vector[i].update_ghost_values();
       }
   }
 
@@ -297,7 +301,9 @@ private:
     Assert(dst.size() == src.size(), dealii::ExcInternalError());
     for (unsigned int i = 0; i < src.locally_owned_size(); ++i)
       {
-        dst.local_element(i) = 1.0 / src.local_element(i);
+        number src_el = src.local_element(i);
+        // for some reason, some elements are zero
+        dst.local_element(i) = src_el == 0 ? 0.0 : 1.0 / src_el;
       }
   }
 

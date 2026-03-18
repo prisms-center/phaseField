@@ -179,8 +179,11 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
                     dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
 
   // 1. Make hanging node constraints
-  dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
-
+  if (!for_change_term) // it's not clear why, but hanging node constraints
+                        // break the change term in Newton-solves.
+    {
+      dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
+    }
   // 2. Make boundary constraints
   make_bc_constraints(constraint,
                       dof_handler,
