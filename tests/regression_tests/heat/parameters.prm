@@ -14,11 +14,10 @@ set mesh adaptivity                   = false
 set remeshing period                  = 900
 
 subsection refinement criterion: 0
-  set type                           = value
+  set type                           = gradient
 
-  set value lower bound              = 0.01
-  set value upper bound              = 0.99
-  #set variables                      = n
+  set gradient magnitude lower bound  = 0.01
+  set variables                      = n
 end
 
 subsection linear solver parameters: 0

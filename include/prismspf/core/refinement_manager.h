@@ -14,14 +14,15 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
 
-#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/solve_context.h>
+#include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/config.h>
 
 #include <memory>
+
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -107,7 +108,7 @@ public:
    */
   void
   do_adaptive_refinement(
-    std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+    std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
   {
     // Return early if adaptive meshing is disabled
     if (!solve_context->get_user_inputs().spatial_discretization.has_adaptivity)
@@ -165,7 +166,7 @@ public:
    */
   void
   do_initial_refinement(
-    std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+    std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
   {
     const SpatialDiscretization<dim> &space_parameters =
       solve_context->get_user_inputs().spatial_discretization;
@@ -419,7 +420,7 @@ private:
    * @brief Refine the grid once.
    */
   void
-  refine_grid(std::vector<std::shared_ptr<GroupSolverBase<dim, degree, number>>> &solvers)
+  refine_grid(std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
   {
     TriangulationManager<dim> &triangulation_manager =
       solve_context->get_triangulation_manager();

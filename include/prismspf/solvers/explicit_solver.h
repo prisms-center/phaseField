@@ -6,10 +6,11 @@
 #include <prismspf/core/timer.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/mf_operator.h>
+#include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
+
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -20,11 +21,11 @@ class SolveContext;
  * @brief This class handles the explicit solves of all explicit fields
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class ExplicitSolver : public GroupSolverBase<dim, degree, number>
+class ExplicitSolver : public SolverBase<dim, degree, number>
 {
-  using GroupSolverBase<dim, degree, number>::solutions;
-  using GroupSolverBase<dim, degree, number>::solve_context;
-  using GroupSolverBase<dim, degree, number>::solve_group;
+  using SolverBase<dim, degree, number>::solutions;
+  using SolverBase<dim, degree, number>::solve_context;
+  using SolverBase<dim, degree, number>::solve_group;
 
 public:
   /**
@@ -32,13 +33,13 @@ public:
    */
   ExplicitSolver(SolveGroup                               _solve_group,
                  const SolveContext<dim, degree, number> &_solve_context)
-    : GroupSolverBase<dim, degree, number>(_solve_group, _solve_context)
+    : SolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
 
   void
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
-    GroupSolverBase<dim, degree, number>::init(all_dependeny_sets);
+    SolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
     rhs_operators.reserve(num_levels);
