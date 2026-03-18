@@ -30,22 +30,27 @@ make_solvers(const std::vector<SolveGroup>           &solve_groups,
   solvers.reserve(solve_groups.size());
   for (const auto &solve_group : solve_groups)
     {
-      switch (solve_group.pde_type)
+      switch (solve_group.solve_type)
         {
-          case PDEType::Explicit:
+          case SolveType::Explicit:
             solvers.emplace_back(
               std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
                                                                     solve_context));
             break;
-          case PDEType::Linear:
+          case SolveType::Linear:
             solvers.emplace_back(
               std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
                                                                   solve_context));
             break;
-          case PDEType::Newton:
+          case SolveType::Newton:
             solvers.emplace_back(
               std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
                                                                   solve_context));
+            break;
+          case SolveType::Constant:
+            solvers.emplace_back(
+              std::make_shared<ConstantSolver<dim, degree, number>>(solve_group,
+                                                                    solve_context));
             break;
           default:
             AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
@@ -163,17 +168,17 @@ Problem<dim, degree, number>::init_system()
     for (const auto &solve_group : solve_groups)
       {
         std::shared_ptr<SolverBase<dim, degree, number>> solver;
-        switch (solve_group.pde_type)
+        switch (solve_group.solve_type)
           {
-            case PDEType::Explicit:
+            case SolveType::Explicit:
               solver = std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
                                                                              solve_context);
               break;
-            case PDEType::Linear:
+            case SolveType::Linear:
               solver = std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
                                                                            solve_context);
               break;
-            case PDEType::Newton:
+            case SolveType::Newton:
               solver = std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
                                                                            solve_context);
               break;

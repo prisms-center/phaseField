@@ -177,9 +177,6 @@ main(int argc, char *argv[])
       solve_groups.push_back(exp_group);
       solve_groups.push_back(pp_group);
 
-      InputFileReader prm(parameters_filename);
-      const auto     &param_handler = prm.get_parameter_handler();
-      param_handler.print_parameters("thing.prm", dealii::ParameterHandler::PRM);
       UserInputParameters<dim> user_inputs(parameters_filename);
       PhaseFieldTools<dim>     pf_tools;
       std::shared_ptr<PDEOperatorBase<dim, degree, double>> pde_operator =
