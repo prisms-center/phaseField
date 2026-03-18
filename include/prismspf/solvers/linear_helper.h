@@ -14,8 +14,8 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
-#include <prismspf/solvers/group_solver_base.h>
 #include <prismspf/solvers/mf_operator.h>
+#include <prismspf/solvers/solver_base.h>
 
 #include <prismspf/config.h>
 

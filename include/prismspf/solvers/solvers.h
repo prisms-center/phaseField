@@ -3,6 +3,6 @@
 
 #pragma once
 
-#include <prismspf/solvers/group_explicit_solver.h>
-#include <prismspf/solvers/group_linear_solver.h>
-#include <prismspf/solvers/group_newton_solver.h>
+#include <prismspf/solvers/explicit_solver.h>
+#include <prismspf/solvers/linear_solver.h>
+#include <prismspf/solvers/newton_solver.h>

@@ -28,14 +28,14 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-class GroupSolverBase
+class SolverBase
 {
 public:
   /**
    * @brief Constructor.
    */
-  GroupSolverBase(SolveGroup                               _solve_group,
-                  const SolveContext<dim, degree, number> &_solve_context)
+  SolverBase(SolveGroup                               _solve_group,
+             const SolveContext<dim, degree, number> &_solve_context)
     : solve_group(std::move(_solve_group))
     , solve_context(&_solve_context)
     , solutions(solve_group, solve_context->get_field_attributes())
@@ -44,37 +44,37 @@ public:
   /**
    * @brief Destructor.
    */
-  virtual ~GroupSolverBase() = default;
+  virtual ~SolverBase() = default;
 
   /**
    * @brief Copy constructor.
    *
    * Deleted so solver instances aren't copied.
    */
-  GroupSolverBase(const GroupSolverBase &solver_base) = delete;
+  SolverBase(const SolverBase &solver_base) = delete;
 
   /**
    * @brief Copy assignment.
    *
    * Deleted so solver instances aren't copied.
    */
-  GroupSolverBase &
-  operator=(const GroupSolverBase &solver_base) = delete;
+  SolverBase &
+  operator=(const SolverBase &solver_base) = delete;
 
   /**
    * @brief Move constructor.
    *
    * Deleted so solver instances aren't moved.
    */
-  GroupSolverBase(GroupSolverBase &&solver_base) noexcept = delete;
+  SolverBase(SolverBase &&solver_base) noexcept = delete;
 
   /**
    * @brief Move assignment.
    *
    * Deleted so solver instances aren't moved.
    */
-  GroupSolverBase &
-  operator=(GroupSolverBase &&solver_base) noexcept = delete;
+  SolverBase &
+  operator=(SolverBase &&solver_base) noexcept = delete;
 
   /**
    * @brief Initialize the solver.
@@ -277,7 +277,7 @@ protected:
    */
   GroupSolutionHandler<dim, number> solutions;
 
-  std::vector<GroupSolverBase<dim, degree, number> *> aux_solvers;
+  std::vector<SolverBase<dim, degree, number> *> aux_solvers;
 };
 
 PRISMS_PF_END_NAMESPACE
