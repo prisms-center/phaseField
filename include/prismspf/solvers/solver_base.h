@@ -244,15 +244,6 @@ public:
   }
 
   /**
-   * @brief Get the pde operator.
-   */
-  [[nodiscard]] const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &
-  get_pde_operator() const
-  {
-    return solve_context->get_pde_operator();
-  }
-
-  /**
    * @brief Get the solver context.
    */
   [[nodiscard]] const SolveGroup &

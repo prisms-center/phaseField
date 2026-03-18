@@ -106,13 +106,13 @@ public:
    * @note It might be better to provide a SolveContext object instead of individual
    * components
    */
-  explicit MFOperator(PDEOperatorBase<dim, degree, number> &operator_owner,
-                      Operator                              oper,
-                      const std::vector<FieldAttributes>   &_field_attributes,
-                      const SolutionIndexer<dim, number>   &_solution_indexer,
-                      unsigned int                          _relative_level,
-                      DependencyMap                         _dependency_map,
-                      const SimulationTimer                &_sim_timer)
+  explicit MFOperator(const PDEOperatorBase<dim, degree, number> &operator_owner,
+                      Operator                                    oper,
+                      const std::vector<FieldAttributes>         &_field_attributes,
+                      const SolutionIndexer<dim, number>         &_solution_indexer,
+                      unsigned int                                _relative_level,
+                      DependencyMap                               _dependency_map,
+                      const SimulationTimer                      &_sim_timer)
     : MATRIX_FREE_OPERATOR_BASE()
     , pde_operator(&operator_owner)
     , pde_op(oper)

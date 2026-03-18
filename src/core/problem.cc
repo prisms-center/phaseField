@@ -94,11 +94,11 @@ get_solution_managers_from_solvers(
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
-  const std::vector<FieldAttributes>                          &_field_attributes,
-  const std::vector<SolveGroup>                               &_solve_groups,
-  const UserInputParameters<dim>                              &_user_inputs,
-  PhaseFieldTools<dim>                                        &_pf_tools,
-  const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &_pde_operator)
+  const std::vector<FieldAttributes>         &_field_attributes,
+  const std::vector<SolveGroup>              &_solve_groups,
+  const UserInputParameters<dim>             &_user_inputs,
+  PhaseFieldTools<dim>                       &_pf_tools,
+  const PDEOperatorBase<dim, degree, number> &_pde_operator)
   : field_attributes(_field_attributes)
   , solve_groups(_solve_groups)
   , user_inputs_ptr(&_user_inputs)
@@ -108,7 +108,7 @@ Problem<dim, degree, number>::Problem(
   , constraint_manager(field_attributes,
                        _user_inputs.boundary_parameters,
                        dof_manager,
-                       _pde_operator.get())
+                       _pde_operator)
   , solve_context(field_attributes,
                   _user_inputs,
                   triangulation_manager,
