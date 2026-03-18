@@ -54,7 +54,7 @@ public:
   ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
                     const BoundaryParameters<dim>              &_boundary_parameters,
                     const DoFManager<dim, degree>              &_dof_manager,
-                    const PDEOperatorBase<dim, degree, number> *_pde_operator);
+                    const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
    * @brief Getter function for the constraints.

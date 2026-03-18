@@ -39,10 +39,9 @@ public:
   /**
    * @brief Constructor.
    */
-  InitialCondition(
-    const unsigned int                                                &_index,
-    const TensorRank                                                  &_field_type,
-    const std::shared_ptr<const PDEOperatorBase<dim, degree, number>> &_pde_operator);
+  InitialCondition(const unsigned int                         &_index,
+                   const TensorRank                           &_field_type,
+                   const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   // NOLINTBEGIN(readability-identifier-length)
 
@@ -59,7 +58,7 @@ private:
 
   TensorRank field_type;
 
-  std::shared_ptr<const PDEOperatorBase<dim, degree, number>> pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator;
 };
 
 /**

@@ -34,10 +34,10 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
   const std::vector<FieldAttributes>         &field_attributes,
   const BoundaryParameters<dim>              &_boundary_parameters,
   const DoFManager<dim, degree>              &_dof_manager,
-  const PDEOperatorBase<dim, degree, number> *_pde_operator)
+  const PDEOperatorBase<dim, degree, number> &_pde_operator)
   : boundary_parameters(&_boundary_parameters)
   , dof_manager(&_dof_manager)
-  , pde_operator(_pde_operator)
+  , pde_operator(&_pde_operator)
   , constraints(field_attributes.size())
   , change_constraints(field_attributes.size())
 {

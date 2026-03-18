@@ -144,11 +144,10 @@ main(int argc, char *argv[])
                                                                  {"change(n)", "grad(change(n))"}));
       solve_groups.push_back(exp_group);
 
-      UserInputParameters<dim> user_inputs(parameters_filename);
-      PhaseFieldTools<dim>     pf_tools;
-      std::shared_ptr<PDEOperatorBase<dim, degree, double>> pde_operator =
-        std::make_shared<CustomPDE<dim, degree, double>>(user_inputs, pf_tools);
-      Problem<dim, degree, double> problem(field_attributes,
+      UserInputParameters<dim>       user_inputs(parameters_filename);
+      PhaseFieldTools<dim>           pf_tools;
+      CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
+      Problem<dim, degree, double>   problem(field_attributes,
                                            solve_groups,
                                            user_inputs,
                                            pf_tools,

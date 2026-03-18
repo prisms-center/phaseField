@@ -30,11 +30,11 @@ public:
   /**
    * @brief Constructor.
    */
-  Problem(const std::vector<FieldAttributes>                          &field_attributes,
-          const std::vector<SolveGroup>                               &solve_groups,
-          const UserInputParameters<dim>                              &_user_inputs,
-          PhaseFieldTools<dim>                                        &_pf_tools,
-          const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &_pde_operator);
+  Problem(const std::vector<FieldAttributes>         &field_attributes,
+          const std::vector<SolveGroup>              &solve_groups,
+          const UserInputParameters<dim>             &_user_inputs,
+          PhaseFieldTools<dim>                       &_pf_tools,
+          const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
    * @brief Main time-stepping loop that calls solve_increment, reinit_system,
