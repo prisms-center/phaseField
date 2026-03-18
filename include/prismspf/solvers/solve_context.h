@@ -38,13 +38,13 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(std::vector<FieldAttributes>            _field_attributes,
-               const UserInputParameters<dim>         &_user_inputs,
-               TriangulationManager<dim>              &_triangulation_manager,
-               DoFManager<dim, degree>                &_dof_manager,
-               ConstraintManager<dim, degree, number> &_constraint_manager,
-               SolutionIndexer<dim, number>           &_solution_indexer,
-               std::shared_ptr<PDEOperatorBase<dim, degree, number>> _pde_operator)
+  SolveContext(std::vector<FieldAttributes>                _field_attributes,
+               const UserInputParameters<dim>             &_user_inputs,
+               TriangulationManager<dim>                  &_triangulation_manager,
+               DoFManager<dim, degree>                    &_dof_manager,
+               ConstraintManager<dim, degree, number>     &_constraint_manager,
+               SolutionIndexer<dim, number>               &_solution_indexer,
+               const PDEOperatorBase<dim, degree, number> &_pde_operator)
     : field_attributes(std::move(_field_attributes))
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
@@ -53,7 +53,7 @@ public:
     , solution_indexer(&_solution_indexer)
     , invm_manager(*dof_manager, true, true)
     , sim_timer(user_inputs->temporal_discretization.dt)
-    , pde_operator(_pde_operator) {};
+    , pde_operator(&_pde_operator) {};
 
   /**
    * @brief Get the field attributes.
@@ -183,11 +183,11 @@ public:
   /**
    * @brief Get a shared pointer to the pde operator.
    */
-  [[nodiscard]] const std::shared_ptr<PDEOperatorBase<dim, degree, number>> &
+  [[nodiscard]] const PDEOperatorBase<dim, degree, number> &
   get_pde_operator() const
   {
     Assert(pde_operator != nullptr, dealii::ExcNotInitialized());
-    return pde_operator;
+    return *pde_operator;
   }
 
 private:
@@ -234,7 +234,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  std::shared_ptr<PDEOperatorBase<dim, degree, number>> pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

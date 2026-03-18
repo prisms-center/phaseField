@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/simulation_timer.h>
@@ -91,6 +93,7 @@ public:
   [[nodiscard]] const UserInputParameters<dim> &
   get_user_inputs() const
   {
+    Assert(user_inputs != nullptr, dealii::StandardExceptions::ExcNotInitialized());
     return *user_inputs;
   }
 
@@ -100,6 +103,7 @@ public:
   [[nodiscard]] const PhaseFieldTools<dim> &
   get_pf_tools() const
   {
+    Assert(pf_tools != nullptr, dealii::StandardExceptions::ExcNotInitialized());
     return *pf_tools;
   }
 
@@ -107,12 +111,12 @@ private:
   /**
    * @brief The user-inputs.
    */
-  const UserInputParameters<dim> *user_inputs;
+  const UserInputParameters<dim> *user_inputs = nullptr;
 
   /**
    * @brief Phase field tools.
    */
-  const PhaseFieldTools<dim> *pf_tools;
+  const PhaseFieldTools<dim> *pf_tools = nullptr;
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -11,7 +11,6 @@
 
 #include <prismspf/config.h>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -45,7 +44,7 @@ public:
     rhs_operators.reserve(num_levels);
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
       {
-        rhs_operators.emplace_back(*(solve_context->get_pde_operator()),
+        rhs_operators.emplace_back(solve_context->get_pde_operator(),
                                    &PDEOperatorBase<dim, degree, number>::compute_rhs,
                                    solve_context->get_field_attributes(),
                                    solve_context->get_solution_indexer(),
