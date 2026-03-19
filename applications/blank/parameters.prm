@@ -1,12 +1,33 @@
-set dim = 3
-set global refinement = 4
-set degree = 1
-
 subsection Rectangular mesh
-  set x size = 100
-  set y size = 100
-  set z size = 100
+  set x size = 64.0
+  set y size = 64.0
+  set z size = 64.0
   set x subdivisions = 1
   set y subdivisions = 1
   set z subdivisions = 1
+  set periodic x = false
+  set periodic y = false
+  set periodic z = false
+end
+
+set global refinement = 7
+set max refinement = 7
+set min refinement = 2
+set mesh adaptivity = false
+set remeshing period = 1000
+
+subsection refinement criterion: 0
+  set variables                      =
+  set type                           =
+  set value lower bound              =
+  set value upper bound              =
+end
+
+set time step = 0.0001
+set number steps = 250000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 50
+  set list = 
 end

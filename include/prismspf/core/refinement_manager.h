@@ -23,7 +23,6 @@
 
 #include <memory>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -129,7 +128,8 @@ public:
 
     // Update anything affected by the grid change:
     // Recalculate InvM since the grid has changed
-    solve_context->get_invm_manager().reinit(solve_context->get_dof_manager());
+    solve_context->get_invm_manager().reinit(solve_context->get_dof_manager(),
+                                             solve_context->get_constraint_manager());
     solve_context->get_invm_manager().compute_invm();
     // Update the ghosts
     Timer::start_section("Update ghosts");
