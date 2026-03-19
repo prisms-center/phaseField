@@ -67,6 +67,13 @@ public:
   get_triangulation(unsigned int relative_level) const;
 
   /**
+   * @brief Get the vector of periodic face pairs
+   */
+  [[nodiscard]] const std::vector<dealii::GridTools::PeriodicFacePair<
+    typename dealii::Triangulation<dim>::cell_iterator>> &
+  get_periodic_face_pairs() const;
+
+  /**
    * @brief Generate mesh based on the inputs provided by the user.
    */
   void
@@ -121,6 +128,13 @@ private:
    * @brief Coarsened triangulations for multigrid.
    */
   std::vector<std::shared_ptr<const dealii::Triangulation<dim>>> coarsened_triangulations;
+
+  /**
+   * @brief Periodic face pairs on the coarsest mesh if they exist
+   */
+  std::vector<dealii::GridTools::PeriodicFacePair<
+    typename dealii::Triangulation<dim>::cell_iterator>>
+    periodicity_vector;
 };
 
 PRISMS_PF_END_NAMESPACE
