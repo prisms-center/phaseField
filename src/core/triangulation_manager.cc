@@ -88,6 +88,14 @@ TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 }
 
 template <unsigned int dim>
+const std::vector<dealii::GridTools::PeriodicFacePair<
+  typename dealii::Triangulation<dim>::cell_iterator>> &
+TriangulationManager<dim>::get_periodic_face_pairs() const
+{
+  return periodicity_vector;
+}
+
+template <unsigned int dim>
 void
 TriangulationManager<dim>::generate_mesh(
   const SpatialDiscretization<dim> &discretization_params)
@@ -95,6 +103,8 @@ TriangulationManager<dim>::generate_mesh(
   if (discretization_params.type == TriangulationType::Rectangular)
     {
       discretization_params.rectangular_mesh.generate_mesh(triangulation);
+      discretization_params.rectangular_mesh.collect_periodic_faces(triangulation,
+                                                                    periodicity_vector);
     }
   else if (discretization_params.type == TriangulationType::Spherical)
     {

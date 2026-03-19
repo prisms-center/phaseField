@@ -15,6 +15,7 @@
 #include <prismspf/core/types.h>
 
 #include <prismspf/user_inputs/constraint_parameters.h>
+#include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/config.h>
 
@@ -53,6 +54,7 @@ public:
    */
   ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
                     const BoundaryParameters<dim>              &_boundary_parameters,
+                    const SpatialDiscretization<dim>           &_spatial_discretization,
                     const DoFManager<dim, degree>              &_dof_manager,
                     const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
@@ -72,15 +74,14 @@ public:
   /**
    * @brief Getter function for the constraints.
    */
-  [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
-  get_change_constraints(const std::set<unsigned int> &field_indices,
-                         unsigned int                  relative_level = 0) const;
+  [[nodiscard]] const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
+  get_generic_constraints() const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
    */
   [[nodiscard]] const dealii::AffineConstraints<number> &
-  get_change_constraint(Types::Index index, unsigned int relative_level = 0) const;
+  get_generic_constraint(unsigned int rank, unsigned int relative_level = 0) const;
 
   /**
    * @brief Make constraints based on the inputs of the constructor.
@@ -110,8 +111,7 @@ private:
                                     const dealii::DoFHandler<dim>     &dof_handler,
                                     const FieldConstraints<dim>       &field_constraints,
                                     TensorRank                         tensor_rank,
-                                    Types::Index                       field_index,
-                                    bool                               for_change_term);
+                                    Types::Index                       field_index);
 
   /**
    * @brief Add boundary conditions to a single constraint.
@@ -121,8 +121,7 @@ private:
                       const dealii::DoFHandler<dim>     &dof_handler,
                       const FieldConstraints<dim>       &boundary_condition,
                       TensorRank                         tensor_rank,
-                      Types::Index                       field_index,
-                      bool                               for_change_term = false);
+                      Types::Index                       field_index);
 
   /**
    * @brief Apply constraints for common boundary conditions.
@@ -134,8 +133,7 @@ private:
                                Condition                          boundary_type,
                                const dealii::DoFHandler<dim>     &dof_handler,
                                TensorRank                         tensor_rank,
-                               Types::Index                       field_index,
-                               bool for_change_term = false) const;
+                               Types::Index                       field_index) const;
 
   /**
    * @brief Apply natural constraints.
@@ -152,8 +150,7 @@ private:
                              const unsigned int                &boundary_id,
                              const unsigned int                &field_index,
                              const bool                        &is_vector_field,
-                             const dealii::ComponentMask       &mask,
-                             bool is_change_term = false) const;
+                             const dealii::ComponentMask       &mask) const;
 
   /**
    * @deprecated We apply periodic conditions to the mesh itself
@@ -173,13 +170,17 @@ private:
                    const dealii::Point<dim>          &target_point,
                    const std::array<number, dim>     &value,
                    const dealii::DoFHandler<dim>     &dof_handler,
-                   TensorRank                         tensor_rank,
-                   bool                               is_change_term = false) const;
+                   TensorRank                         tensor_rank) const;
 
   /**
-   * @brief User-inputs.
+   * @brief User-inputs constraint parameters.
    */
   const BoundaryParameters<dim> *boundary_parameters;
+
+  /**
+   * @brief User-inputs discretization.
+   */
+  const SpatialDiscretization<dim> *spatial_discretization;
 
   /**
    * @brief Dof manager pointer.
@@ -198,10 +199,9 @@ private:
   std::vector<std::vector<dealii::AffineConstraints<number>>> constraints;
 
   /**
-   * @brief Constraints for Newton-Change solutions. Outer vector is indexed by field
-   * index. Inner vector is indexed by relative mg level.
+   * @brief Constraints not specific to any field. We need this for invm
    */
-  std::vector<std::vector<dealii::AffineConstraints<number>>> change_constraints;
+  std::vector<std::array<dealii::AffineConstraints<number>, 2>> generic_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

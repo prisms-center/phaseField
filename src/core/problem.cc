@@ -107,6 +107,7 @@ Problem<dim, degree, number>::Problem(
   , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes,
                        _user_inputs.boundary_parameters,
+                       _user_inputs.spatial_discretization,
                        dof_manager,
                        _pde_operator)
   , solve_context(field_attributes,
@@ -163,30 +164,6 @@ Problem<dim, degree, number>::init_system()
 
   // Initialize the solvers
   Timer::start_section("Initialize Solvers");
-  // See *1
-  /*  solvers.reserve(solve_groups.size());
-    for (const auto &solve_group : solve_groups)
-      {
-        std::shared_ptr<SolverBase<dim, degree, number>> solver;
-        switch (solve_group.solve_type)
-          {
-            case SolveType::Explicit:
-              solver = std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
-                                                                             solve_context);
-              break;
-            case SolveType::Linear:
-              solver = std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
-                                                                           solve_context);
-              break;
-            case SolveType::Newton:
-              solver = std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
-                                                                           solve_context);
-              break;
-            default:
-              AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
-          }
-        solvers.push_back(std::move(solver));
-      }*/
   for (auto &solver : solvers)
     {
       solver->init(get_all_dependency_sets(solve_groups));

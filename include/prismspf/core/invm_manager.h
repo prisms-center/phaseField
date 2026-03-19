@@ -11,6 +11,7 @@
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
+#include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/system_wide.h>
@@ -35,9 +36,10 @@ public:
    * @param _calculate_scalar Whether to calculate the scalar invm (element volume).
    * @param _calculate_vector Whether to calculate the vector invm (for vector fields).
    */
-  explicit InvMManager(const DoFManager<dim, degree> &dof_manager,
-                       bool                           _calculate_scalar,
-                       bool                           _calculate_vector)
+  explicit InvMManager(const DoFManager<dim, degree>                &dof_manager,
+                       const ConstraintManager<dim, degree, number> &constraint_manager,
+                       bool                                          _calculate_scalar,
+                       bool                                          _calculate_vector)
     : num_levels(dof_manager.get_dof_handlers().size())
     , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
@@ -49,21 +51,24 @@ public:
     jxw_vector.resize(num_levels);
     invm_vector.resize(num_levels);
     invm_sqrt_vector.resize(num_levels);
-    reinit(dof_manager);
+    reinit(dof_manager, constraint_manager);
   }
 
   void
-  reinit(const DoFManager<dim, degree> &dof_manager)
+  reinit(const DoFManager<dim, degree>                &dof_manager,
+         const ConstraintManager<dim, degree, number> &constraint_manager)
   {
     const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
       dof_manager.get_dof_handlers();
+    const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &constraints =
+      constraint_manager.get_generic_constraints();
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         for (unsigned int rank = 0; rank < 2; ++rank)
           {
             data[i][rank].reinit(SystemWide<dim, degree>::mapping,
                                  dof_handlers[i][rank],
-                                 dealii::AffineConstraints<number>(), // make member?
+                                 constraints[i][rank],
                                  SystemWide<dim, degree>::quadrature);
           }
       }

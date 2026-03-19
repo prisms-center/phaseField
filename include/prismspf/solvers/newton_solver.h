@@ -58,13 +58,6 @@ public:
         newton_updates[relative_level].reinit(
           solutions.get_solution_full_vector(relative_level));
       }
-    newton_update_constraints.resize(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        newton_update_constraints[relative_level] =
-          solve_context->get_constraint_manager().get_change_constraints(
-            solve_group.field_indices);
-      }
   }
 
   /**
@@ -99,8 +92,6 @@ public:
     BlockVector<number>             &newton_update   = newton_updates[relative_level];
     MFOperator<dim, degree, number> &rhs_op          = rhs_operators[relative_level];
     MFOperator<dim, degree, number> &lhs_op          = lhs_operators[relative_level];
-    std::vector<const dealii::AffineConstraints<number> *> &change_constraints =
-      newton_update_constraints[relative_level];
     // TODO: setup initial guess for solution vector. Maybe use old_solution if
     // available.
     if (!solutions.get_solution_level(relative_level).old_solutions.empty())
@@ -156,10 +147,6 @@ public:
 
 protected:
   std::vector<BlockVector<number>> newton_updates; //"change" term
-  // TODO: consider giving ConstraintHandler a function to apply change-constraints rather
-  // than keeping them here
-  std::vector<std::vector<const dealii::AffineConstraints<number> *>>
-    newton_update_constraints;
 };
 
 PRISMS_PF_END_NAMESPACE

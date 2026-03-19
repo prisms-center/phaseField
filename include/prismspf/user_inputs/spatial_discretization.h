@@ -98,7 +98,6 @@ struct RectangularMesh
    */
   std::set<unsigned int> periodic_directions;
 
-private:
   /**
    * @brief Mark the boundaries of the mesh.
    */
@@ -126,7 +125,7 @@ private:
               }
           }
       }
-  };
+  }
 
   /**
    * @brief Mark the periodic faces of the mesh.
@@ -139,24 +138,33 @@ private:
     std::vector<
       dealii::GridTools::PeriodicFacePair<typename Triangulation<dim>::cell_iterator>>
       periodicity_vector;
+    collect_periodic_faces(triangulation, periodicity_vector);
+
+    // Add periodicity
+    triangulation.add_periodicity(periodicity_vector);
+  }
+
+  /**
+   * @brief Get the periodic face pairs
+   */
+  template <typename MeshType> // triangulation or dofhandler
+  void
+  collect_periodic_faces(
+    const MeshType &triangulation,
+    std::vector<dealii::GridTools::PeriodicFacePair<typename MeshType::cell_iterator>>
+      &periodicity_vector) const
+  {
     for (unsigned int direction : periodic_directions)
       {
-        // Grab the offset vector from one vertex to another
-        dealii::Tensor<1, dim> offset;
-        offset[direction] = size[direction];
-
         // Collect the matched pairs on the coarsest level of the mesh
         unsigned int boundary_id = direction * 2;
         dealii::GridTools::collect_periodic_faces(triangulation,
                                                   boundary_id,
                                                   boundary_id + 1,
                                                   direction,
-                                                  periodicity_vector,
-                                                  offset);
+                                                  periodicity_vector);
       }
-    // Add periodicity
-    triangulation.add_periodicity(periodicity_vector);
-  };
+  }
 };
 
 /**
