@@ -140,8 +140,9 @@ public:
     ConditionalOStreams::pout_verbose() << iter << " Newton iterations to converge.\n\n";
     if (iter >= newton_max_iterations)
       {
-        ConditionalOStreams::pout_base() << "Warning: nonlinear solver did not "
-                                            "converge as per set tolerances.\n\n";
+        ConditionalOStreams::pout_base() << "Warning: Newton solver did not "
+                                            "converge before "
+                                         << newton_max_iterations << " iterations.\n\n";
       }
   }
 
