@@ -161,7 +161,7 @@ public:
               solve_context->get_simulation_timer().get_increment()))
           {
             ConditionalOStreams::pout_summary()
-              << " Final residual: " << linear_solver_control.last_value()
+              << " Final residual (linear solve): " << linear_solver_control.last_value()
               << " Steps: " << linear_solver_control.last_step() << "\n"
               << std::flush;
           }
