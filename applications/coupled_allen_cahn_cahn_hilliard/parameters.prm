@@ -1,16 +1,3 @@
-# The dimension in the problem
-set dim = 2
-
-# The initial global refinement
-set global refinement = 6
-
-# The element degree
-set degree = 1
-
-# The type of mesh, its size, and other information. For example, a rectangular mesh
-# will have parameters for each of the three cartesians directions and the number of
-# subdivisions to apply to each of those. This is useful when dealing with a domain
-# that is not square.
 subsection Rectangular mesh
   set x size = 100.0
   set y size = 100.0
@@ -20,48 +7,34 @@ subsection Rectangular mesh
   set z subdivisions = 3
 end
 
-# Mesh adaptivity parameters
-set mesh adaptivity = false
+set global refinement = 6
 set max refinement = 6
 set min refinement = 3
+set mesh adaptivity = true
 set remeshing period = 5000
 
-subsection refinement criterion: n
-  set type = value
-  set value lower bound = 0.01
-  set value upper bound = 0.99
-end
-subsection refinement criterion: c
-  set type = value
+subsection refinement criterion: 0
+  set variables         = c
+  set type              = value
   set value lower bound = 0.02
   set value upper bound = 0.1
 end
 
-# The timestep
-set time step = 8.0e-4
-
-# The total number of timesteps to take
-set number steps = 150000
-
-# The number of outputs and the frequency at which they output. The potential options
-# for the type of output are: EQUAL_SPACING, LOG_SPACING, and N_PER_DECADE.
-subsection output
-  set condition = EQUAL_SPACING
-  set number = 10
+subsection refinement criterion: 1
+  set variables         = n
+  set type              = value
+  set value lower bound = 0.01
+  set value upper bound = 0.99
 end
 
-# The boundary conditions for the variables. The available boundary conditions are
-# Natural, Dirichlet: value, Periodic, NonuniformDirichlet, and
-# TimeDependentNonuniformDirichlet. Natural boundary conditions are zero-neumann
-# boundary conditions. For homogeneous Dirichlet boundary conditions, the value is
-# specified following the colon in Dirichet: 1.0. NonuniformDirichlet and
-# TimeDependentNonuniformDirichlet boundary conditions are specified in the ICs_and_BCs.cc
-# files.
-set boundary condition for c = Natural
-set boundary condition for n = Natural
+set time step = 8.0e-4
+set number steps = 150000
 
-# Model constants that are defined and accessed through CustomPDE. These constants
-# are particular useful when defining system parameters that you may sweep over.
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 30
+end
+
 set Model constant Mc = 1.0, DOUBLE
 set Model constant Mn = 150.0, DOUBLE
 set Model constant Kn = 0.3, DOUBLE
