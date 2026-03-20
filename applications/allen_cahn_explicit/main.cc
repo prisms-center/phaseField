@@ -152,7 +152,7 @@ main(int argc, char *argv[])
     FieldAttributes("mg_n", TensorRank::Scalar),
     FieldAttributes("f_tot", TensorRank::Scalar),
   };
-  std::vector<SolveGroup> solve_groups;
+
   SolveGroup              exp_group(1,
                        Explicit,
                        Primary,
@@ -164,8 +164,7 @@ main(int argc, char *argv[])
                       PostProcess,
                                    {1, 2},
                       make_dependency_set(field_attributes, {"n", "grad(n)"}));
-  solve_groups.push_back(exp_group);
-  solve_groups.push_back(pp_group);
+  std::vector<SolveGroup> solve_groups({exp_group, pp_group});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
