@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <deal.II/base/exceptions.h>
+
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 
@@ -57,12 +59,14 @@ struct OutputParameters
   void
   add_equal_spacing_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
+    AssertThrow(num_increments > 0,
+                dealii::ExcMessage("num_increments must be greater than 0.\n"));
     if (!num_outputs)
       {
         return;
       }
-    for (unsigned int output = 0; output <= num_increments;
-         output += num_increments / num_outputs)
+    unsigned int period = std::max(1U, num_increments / num_outputs);
+    for (unsigned int output = 0; output <= num_increments; output += period)
       {
         output_list.insert(output);
       }

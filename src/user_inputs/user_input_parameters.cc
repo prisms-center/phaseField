@@ -253,8 +253,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
               }
           }
         parameter_handler.enter_subsection("pinning point");
-        {
-        }
+        {}
         parameter_handler.leave_subsection();
 
         // Attatch conditions to fields
@@ -289,8 +288,11 @@ UserInputParameters<dim>::assign_boundary_parameters(
               }
             for (unsigned int component : comps)
               {
-                boundary_parameters.boundary_condition_list[field_name]
-                  .component_constraints.at(component) = component_conditions;
+                if (component < dim)
+                  {
+                    boundary_parameters.boundary_condition_list[field_name]
+                      .component_constraints.at(component) = component_conditions;
+                  }
               }
           }
       }
