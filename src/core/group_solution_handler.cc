@@ -212,12 +212,21 @@ GroupSolutionHandler<dim, number>::reinit(
   for (unsigned int relative_level = 0; relative_level < solution_levels.size();
        ++relative_level)
     {
+      using AdditionalData = typename MatrixFree<dim, number>::AdditionalData;
+      // TODO: maybe make the flags determined by user dependencies. (Though I doubt this
+      // is a significant source of runtime)
+      static const AdditionalData additional_data(
+        AdditionalData::TasksParallelScheme::partition_partition,
+        0,
+        dealii::update_values | dealii::update_gradients | dealii::update_hessians |
+          dealii::update_JxW_values | dealii::update_quadrature_points);
+
       solution_levels[relative_level].matrix_free.reinit(
         SystemWide<dim, degree>::mapping,
         dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
         constraint_manager.get_constraints(solve_group.field_indices, relative_level),
-        dealii::QGaussLobatto<1>(degree + 1) // should dim really be 1?
-      );
+        dealii::QGaussLobatto<1>(degree + 1), // should dim really be 1?
+        additional_data);
     }
   for (auto &solution_level : solution_levels)
     {

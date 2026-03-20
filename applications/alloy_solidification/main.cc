@@ -1,263 +1,304 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include "custom_pde.h"
+#include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/core/dof_handler.h>
-#include <prismspf/core/grid_refiner.h>
-#include <prismspf/core/invm_handler.h>
-#include <prismspf/core/matrix_free_handler.h>
-#include <prismspf/core/matrix_free_operator.h>
-#include <prismspf/core/multigrid_info.h>
+#include <prismspf/core/dependencies.h>
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/parse_cmd_options.h>
-#include <prismspf/core/pde_problem.h>
 #include <prismspf/core/phase_field_tools.h>
-#include <prismspf/core/solution_handler.h>
-#include <prismspf/core/solver_handler.h>
-#include <prismspf/core/variable_attribute_loader.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/solvers/linear_solver_gmg.h>
-#include <prismspf/solvers/linear_solver_identity.h>
-#include <prismspf/solvers/solver_context.h>
+#include <prismspf/core/problem.h>
+#include <prismspf/core/simulation_timer.h>
+#include <prismspf/core/solve_group.h>
+#include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
-#include <prismspf/utilities/element_volume.h>
-#include <prismspf/utilities/integrator.h>
-
 #include <prismspf/config.h>
 
-#ifdef PRISMS_PF_WITH_CALIPER
-#  include <caliper/cali-manager.h>
-#  include <caliper/cali.h>
-#endif
+using namespace prisms;
+
+template <unsigned int dim, unsigned int degree, typename number>
+class CustomPDE : public PDEOperatorBase<dim, degree, number>
+{
+public:
+  using ScalarValue = dealii::VectorizedArray<number>;
+  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
+  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
+  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using PDEOperatorBase<dim, degree, number>::get_user_inputs;
+  using PDEOperatorBase<dim, degree, number>::get_pf_tools;
+
+  /**
+   * @brief Constructor.
+   */
+  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
+                     PhaseFieldTools<dim>           &_pf_tools)
+    : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
+    , c0(get_user_inputs().user_constants.get_model_constant_double("c0"))
+    , U0(get_user_inputs().user_constants.get_model_constant_double("U0"))
+    , U_off(get_user_inputs().user_constants.get_model_constant_double("U_off"))
+    , y0(get_user_inputs().user_constants.get_model_constant_double("y0"))
+    , epsilon(get_user_inputs().user_constants.get_model_constant_double("epsilon"))
+    , k(get_user_inputs().user_constants.get_model_constant_double("k"))
+    , lambda(get_user_inputs().user_constants.get_model_constant_double("lambda"))
+    , Dtilde(get_user_inputs().user_constants.get_model_constant_double("Dtilde"))
+    , Vtilde(get_user_inputs().user_constants.get_model_constant_double("Vtilde"))
+    , ltilde(get_user_inputs().user_constants.get_model_constant_double("ltilde"))
+    , regval(get_user_inputs().user_constants.get_model_constant_double("regval"))
+  {}
+
+private:
+  void
+  set_initial_condition([[maybe_unused]] const unsigned int       &index,
+                        [[maybe_unused]] const unsigned int       &component,
+                        [[maybe_unused]] const dealii::Point<dim> &point,
+                        [[maybe_unused]] number                   &scalar_value,
+                        [[maybe_unused]] number &vector_component_value) const override
+  {
+    const dealii::Tensor<1, dim> &mesh_size =
+      get_user_inputs().spatial_discretization.rectangular_mesh.size;
+
+    if (index == 0)
+      {
+        // For the concentration field, we just set the initial condition
+        // to have uniform undercooling everywhere.
+        scalar_value = U0;
+      }
+    else if (index == 1)
+      {
+        const std::array<double, 3> center = {
+          {0.0, 0.0, 0.0}
+        };
+        const double rad = 5.0;
+        // For the order parameter, we just place a small seed. Note that
+        // the order parameter ranges from -1 to 1 in this model.
+        double dist = 0.0;
+        for (unsigned int dir = 0; dir < dim; dir++)
+          {
+            const number comp_diff = point[dir] - center[dir] * mesh_size[dir];
+            dist += comp_diff * comp_diff;
+          }
+        dist = std::sqrt(dist);
+
+        scalar_value = -std::tanh((dist - rad) / std::sqrt(2));
+      }
+  }
+
+  void
+  compute_rhs(FieldContainer<dim, degree, number> &variable_list,
+              const SimulationTimer               &sim_timer,
+              unsigned int                         solve_group_id) const override
+  {
+    const double dt = sim_timer.get_timestep();
+    if (solve_group_id == 0) // explicit U and phi
+      {
+        // The dimensionless solute supersaturation and its derivatives
+        ScalarValue U =
+          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
+        ScalarGrad Ux =
+          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
+            0);
+
+        // The order parameter and its derivatives
+        ScalarValue phi =
+          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(1);
+        ScalarGrad phix =
+          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
+            1);
+
+        // The auxiliary parameter and its derivatives
+        ScalarValue xi =
+          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(2);
+
+        // --- Setting the expressions for the terms in the governing equations ---
+
+        // Calculation of interface normal vector
+        ScalarValue normgradn = std::sqrt(phix.norm_square());
+        ScalarGrad  normal    = phix / (normgradn + regval);
+
+        // The cosine of theta
+        ScalarValue cth = normal[0];
+        // The sine of theta
+        ScalarValue sth = normal[1];
+        // The cosine of 4 theta
+        ScalarValue c4th = (sth * sth * sth * sth) + (cth * cth * cth * cth) -
+                           (6.0 * sth * sth * cth * cth);
+
+        // Anisotropic term
+        ScalarValue a_n = 1.0 + (epsilon * c4th);
+
+        // coefficient before phi
+        ScalarValue tau_phi = (1.0 + (1.0 - k) * U) * a_n * a_n;
+
+        // coefficient before U
+        ScalarValue tau_U = (((1.0 + k) / 2.0) - ((1.0 - k) * phi / 2.0));
+
+        // Antitrapping term
+        ScalarGrad j_at;
+        j_at = (1.0 / (2.0 * std::sqrt(2.0))) * (1.0 + (1.0 - k) * U) * (xi / tau_phi) *
+               normal;
+
+        // grad_phi and grad_U dot product term
+        ScalarValue val_term1 = dt * (1.0 + (1.0 - k) * U) * xi / (2.0 * tau_phi * tau_U);
+        ScalarValue val_term2 =
+          dt * ((1.0 - k) / 2.0) / (tau_U * tau_U) *
+          (phix[0] * (Dtilde * ((1.0 - phi) / 2.0) * Ux[0] + j_at[0]) +
+           phix[1] * (Dtilde * ((1.0 - phi) / 2.0) * Ux[1] + j_at[1]));
+
+        // Define required equations
+        ScalarValue eq_U = (U + val_term1 - val_term2);
+
+        ScalarGrad eqx_U =
+          (-1.0 * dt * (Dtilde * ((1.0 - phi) / 2.0) * Ux + j_at) / tau_U);
+
+        ScalarValue eq_phi = phi + (dt * xi / tau_phi);
+
+        // --- Submitting the terms for the governing equations ---
+
+        // Terms for the equation to evolve the concentration
+        variable_list.set_value_term(0, eq_U);
+        variable_list.set_gradient_term(0, eqx_U);
+
+        // Terms for the equation to evolve the order parameter
+        variable_list.set_value_term(1, eq_phi);
+      }
+    else if (solve_group_id == 1) // xi
+      {
+        // --- Getting the values and derivatives of the model variables ---
+
+        ScalarValue U = variable_list.template get_value<TensorRank::Scalar, Current>(0);
+        ScalarValue phi =
+          variable_list.template get_value<TensorRank::Scalar, Current>(1);
+        ScalarGrad phix =
+          variable_list.template get_gradient<TensorRank::Scalar, Current>(1);
+
+        // --- Setting the expressions for the terms in the governing equations ---
+
+        // Calculation of interface normal vector
+        ScalarValue normgradn = std::sqrt(phix.norm_square());
+        ScalarGrad  normal    = phix / (normgradn + regval);
+
+        // The cosine of theta
+        ScalarValue cth = normal[0];
+        // The sine of theta
+        ScalarValue sth = normal[1];
+
+        // The cosine of 4 theta
+        ScalarValue c4th = (sth * sth * sth * sth) + (cth * cth * cth * cth) -
+                           (6.0 * sth * sth * cth * cth);
+        // The sine of 4 theta
+        ScalarValue s4th = (4.0 * sth * cth * cth * cth) - (4.0 * sth * sth * sth * cth);
+
+        // Anisotropic term
+        ScalarValue a_n = 1.0 + (epsilon * c4th);
+
+        // gradient energy coefficient, its derivative and square
+        ScalarValue a_d = -4.0 * epsilon * s4th;
+
+        // dimensionless temperature changes
+        ScalarValue y   = variable_list.get_q_point_location()[1]; // The y-component
+        ScalarValue t_n = sim_timer.get_time();                    // The time
+        ScalarValue tep = ((y - y0 - Vtilde * t_n) / ltilde);
+
+        // The anisotropy term that enters in to the equation for xi
+        ScalarGrad aniso;
+        aniso[0] = a_n * a_n * phix[0] - a_n * a_d * phix[1];
+        aniso[1] = a_n * a_n * phix[1] + a_n * a_d * phix[0];
+
+        // Define the terms in the equations
+        ScalarValue eq_xi =
+          phi - (phi * phi * phi) -
+          (lambda * (1.0 - phi * phi) * (1.0 - phi * phi) * (U + tep + U_off));
+
+        ScalarGrad eqx_xi = -aniso;
+
+        // --- Submitting the terms for the governing equations ---
+
+        variable_list.set_value_term(2, eq_xi);
+        variable_list.set_gradient_term(2, eqx_xi);
+      }
+    else if (solve_group_id == 2) // c postprocess
+      {
+        ScalarValue U = variable_list.template get_value<TensorRank::Scalar, Current>(0);
+        ScalarValue phi =
+          variable_list.template get_value<TensorRank::Scalar, Current>(1);
+
+        ScalarValue c = (c0 / 2.0 / (1 + U0 - U0 * k)) * ((1.0 + k) - (1.0 - k) * phi) *
+                        ((1.0) + (1.0 - k) * U);
+
+        variable_list.set_value_term(3, c);
+      }
+  }
+
+  number c0;
+  number U0;
+  number U_off;
+  number y0;
+  number epsilon;
+  number k;
+  number lambda;
+  number Dtilde;
+  number Vtilde;
+  number ltilde;
+  number regval;
+};
 
 int
 main(int argc, char *argv[])
 {
-  try
-    {
-      // Initialize MPI
-      dealii::Utilities::MPI::MPI_InitFinalize
-        mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
+  // Initialize MPI
+  dealii::Utilities::MPI::MPI_InitFinalize
+    mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
 
-      // Parse the command line options (if there are any) to get the name of the input
-      // file
-      prisms::ParseCMDOptions cli_options(argc, argv);
-      std::string             parameters_filename = cli_options.get_parameters_filename();
+  // Restrict deal.II console printing
+  dealii::deallog.depth_console(0);
 
-      // Caliper config manager initialization
-#ifdef PRISMS_PF_WITH_CALIPER
-      cali::ConfigManager mgr;
-      mgr.add(cli_options.get_caliper_configuration().c_str());
+  // Parse the command line options (if there are any) to get the name of the input
+  // file
+  ParseCMDOptions cli_options(argc, argv);
 
-      // Check for configuration errors
-      if (mgr.error())
-        {
-          std::cerr << "Caliper error: " << mgr.error_msg() << std::endl;
-        }
+  constexpr unsigned int dim    = 2;
+  constexpr unsigned int degree = 2;
 
-      // Start configured performance measurements, if any
-      mgr.start();
-#endif
+  std::vector<FieldAttributes> fields = {FieldAttributes("U"),
+                                         FieldAttributes("phi"),
+                                         FieldAttributes("xi"),
+                                         FieldAttributes("c")};
 
-      // Restrict deal.II console printing
-      dealii::deallog.depth_console(0);
+  SolveGroup explicits(
+    0,
+    Explicit,
+    Initialized,
+    {0, 1},
+    make_dependency_set(
+      fields,
+      {"old_1(U)", "grad(old_1(U))", "old_1(phi)", "grad(old_1(phi))", "old_1(xi)"}));
+  SolveGroup xi_solve(1,
+                      Explicit,
+                      Uninitialized,
+                      {2},
+                      make_dependency_set(fields, {"U", "phi", "grad(phi)"}));
 
-      // Before fully parsing the parameter file, we need to know how many field
-      // variables there are and whether they are scalars or vectors, how many
-      // postprocessing variables there are, how many sets of elastic constants
-      // there are, and how many user-defined constants there are.
-      //
-      // This is done with the derived class of `VariableAttributeLoader`,
-      // `CustomAttributeLoader`.
-      prisms::CustomAttributeLoader attribute_loader;
-      attribute_loader.init_variable_attributes();
-      std::map<unsigned int, prisms::VariableAttributes> var_attributes =
-        attribute_loader.get_var_attributes();
+  SolveGroup pp_solve(2,
+                      Explicit,
+                      PostProcess,
+                      {3},
+                      make_dependency_set(fields, {"U", "phi"}));
 
-      // Load in parameters
-      prisms::InputFileReader input_file_reader(parameters_filename, var_attributes);
-
-      // Run problem based on the number of dimensions and element degree
-      switch (input_file_reader.get_dim())
-        {
-          case 1:
-            {
-              prisms::UserInputParameters<1> user_inputs(
-                input_file_reader,
-                input_file_reader.get_parameter_handler());
-              prisms::PhaseFieldTools<1> pf_tools;
-              switch (user_inputs.get_spatial_discretization().get_degree())
-                {
-                  case 1:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<1, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<1, 1, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<1, 1, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<1, 1, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<1, 1, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  case 2:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<1, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<1, 2, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<1, 2, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<1, 2, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<1, 2, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  default:
-                    throw std::runtime_error("Invalid element degree");
-                }
-              break;
-            }
-          case 2:
-            {
-              prisms::UserInputParameters<2> user_inputs(
-                input_file_reader,
-                input_file_reader.get_parameter_handler());
-              prisms::PhaseFieldTools<2> pf_tools;
-              switch (user_inputs.get_spatial_discretization().get_degree())
-                {
-                  case 1:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<2, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<2, 1, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<2, 1, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<2, 1, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<2, 1, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  case 2:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<2, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<2, 2, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<2, 2, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<2, 2, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<2, 2, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  default:
-                    throw std::runtime_error("Invalid element degree");
-                }
-              break;
-            }
-          case 3:
-            {
-              prisms::UserInputParameters<3> user_inputs(
-                input_file_reader,
-                input_file_reader.get_parameter_handler());
-              prisms::PhaseFieldTools<3> pf_tools;
-              switch (user_inputs.get_spatial_discretization().get_degree())
-                {
-                  case 1:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<3, 1, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<3, 1, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<3, 1, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<3, 1, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<3, 1, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  case 2:
-                    {
-                      std::shared_ptr<prisms::PDEOperator<3, 2, double>> pde_operator =
-                        std::make_shared<prisms::CustomPDE<3, 2, double>>(user_inputs,
-                                                                          pf_tools);
-                      std::shared_ptr<prisms::PDEOperator<3, 2, float>>
-                        pde_operator_float =
-                          std::make_shared<prisms::CustomPDE<3, 2, float>>(user_inputs,
-                                                                           pf_tools);
-
-                      prisms::PDEProblem<3, 2, double> problem(user_inputs,
-                                                               pf_tools,
-                                                               pde_operator,
-                                                               pde_operator_float);
-                      problem.run();
-                      break;
-                    }
-                  default:
-                    throw std::runtime_error("Invalid element degree");
-                }
-              break;
-            }
-          default:
-            throw std::runtime_error("Invalid number of dimensions");
-        }
-
-          // Caliper config manager closure
-#ifdef PRISMS_PF_WITH_CALIPER
-      // Flush output before finalizing MPI
-      mgr.flush();
-#endif
-    }
-
-  catch (std::exception &exc)
-    {
-      std::cerr << '\n'
-                << '\n'
-                << "----------------------------------------------------" << '\n';
-      std::cerr << "Exception on processing: " << '\n'
-                << exc.what() << '\n'
-                << "Aborting!" << '\n'
-                << "----------------------------------------------------" << '\n';
-      return 1;
-    }
-
-  catch (...)
-    {
-      std::cerr << '\n'
-                << '\n'
-                << "----------------------------------------------------" << '\n';
-      std::cerr << "Unknown exception!" << '\n'
-                << "Aborting!" << '\n'
-                << "----------------------------------------------------" << '\n';
-      return 1;
-    }
+  std::vector<SolveGroup>        solves({explicits, xi_solve, pp_solve});
+  UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
+  PhaseFieldTools<dim>           pf_tools;
+  CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
+  Problem<dim, degree, double>   problem(fields,
+                                       solves,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
+  problem.solve();
 
   return 0;
 }
