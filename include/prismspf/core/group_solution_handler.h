@@ -207,6 +207,12 @@ public:
   apply_constraints(unsigned int relative_level = 0);
 
   /**
+   * @brief Apply the given constraints to all the solution vectors, including old.
+   */
+  void
+  apply_constraints_to_all(unsigned int relative_level);
+
+  /**
    * @brief Apply intial condition to the old fields. For now, this simply copies the
    * values in the normal field to the old.
    */
