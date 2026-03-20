@@ -308,7 +308,7 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
       block_solution_transfer[block_index].interpolate(fields_at_ages);
     }
   update_ghosts(0);
-  apply_constraints(0);
+  apply_constraints_to_all(0);
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
@@ -329,6 +329,25 @@ void
 GroupSolutionHandler<dim, number>::zero_out_ghosts(unsigned int relative_level) const
 {
   solution_levels[relative_level].solutions.zero_out_ghost_values();
+}
+
+template <unsigned int dim, typename number>
+void
+GroupSolutionHandler<dim, number>::apply_constraints_to_all(unsigned int relative_level)
+{
+  apply_constraints(0);
+  std::vector<BlockVector<number>> &old_solutions =
+    solution_levels[relative_level].old_solutions;
+  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
+  for (BlockVector<number> &solutions : old_solutions)
+    {
+      unsigned int num_blocks = solve_group.field_indices.size();
+      for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
+        {
+          matrix_free.get_affine_constraints(block_index)
+            .distribute(solutions.block(block_index));
+        }
+    }
 }
 
 template <unsigned int dim, typename number>
