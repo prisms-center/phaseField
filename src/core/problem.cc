@@ -219,7 +219,7 @@ Problem<dim, degree, number>::solve()
   const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
-  while (sim_timer.get_increment() < time_info.num_increments)
+  while (sim_timer.get_increment() <= time_info.num_increments)
     {
       // Solve a single increment
       // Includes nucleation, refinement, constraints, solve, output, and update
