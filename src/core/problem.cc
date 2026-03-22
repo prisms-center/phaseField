@@ -278,12 +278,15 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 
   // Check for stochastic nucleation. TODO: this is taking up a ton of time, even when
   // nucleation is completely off. Diagnose and fix.
-  Timer::start_section("Check for nucleation");
-  bool any_nucleation_occurred =
-    is_nucleation_increment &&
-    NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
-                                                               pf_tools->nuclei_list);
-  Timer::end_section("Check for nucleation");
+  bool any_nucleation_occurred = false;
+  if (is_nucleation_increment)
+    {
+      Timer::start_section("Check for nucleation");
+      any_nucleation_occurred =
+        NucleationManager<dim, degree, number>::attempt_nucleation(solve_context,
+                                                                   pf_tools->nuclei_list);
+      Timer::end_section("Check for nucleation");
+    }
 
   // Perform grid refinement if necessary
   if (user_inputs.spatial_discretization.has_adaptivity && increment == 0)

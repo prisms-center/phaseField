@@ -684,7 +684,7 @@ InputFileReader::declare_nucleation_parameters()
                                     "The minimum distance between nuclei.");
     parameter_handler.declare_entry(
       "nucleation period",
-      "1",
+      "2147483647",
       dealii::Patterns::Integer(1),
       "The number of increments between nucleation attempts.");
     parameter_handler.declare_entry(
