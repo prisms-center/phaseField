@@ -105,12 +105,13 @@ NucleationManager<dim, degree, number>::attempt_nucleation(
   auto        &rng     = user_inputs.misc_parameters.rng;
 
   // Set up FEValues
-  unsigned int            num_quad_points = SystemWide<dim, degree>::quadrature.size();
-  dealii::FEValues<dim>   fe_values(SystemWide<dim, degree>::fe_systems[0],
-                                  SystemWide<dim, degree>::quadrature,
-                                  dealii::UpdateFlags::update_values |
-                                    dealii::UpdateFlags::update_JxW_values);
-  std::list<Nucleus<dim>> new_nuclei_list;
+  unsigned int num_quad_points = SystemWide<dim, degree>::quadrature.size();
+  // Made static because initialization was taking a LOT of time
+  static dealii::FEValues<dim> fe_values(SystemWide<dim, degree>::fe_systems[0],
+                                         SystemWide<dim, degree>::quadrature,
+                                         dealii::UpdateFlags::update_values |
+                                           dealii::UpdateFlags::update_JxW_values);
+  std::list<Nucleus<dim>>      new_nuclei_list;
   // Loop over nucleation rate variables and attempt seeding at each cell
   for (unsigned int index = 0; index < solve_context.get_field_attributes().size();
        ++index)
