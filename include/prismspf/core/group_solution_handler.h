@@ -57,7 +57,7 @@ class GroupSolutionHandler
 {
 public:
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-  using SolutionTransfer = dealii::SolutionTransfer<dim, BlockVector<number>>;
+  using SolutionTransfer = dealii::SolutionTransfer<dim, SolutionVector<number>>;
 #else
   using SolutionTransfer =
     dealii::parallel::distributed::SolutionTransfer<dim, SolutionVector<number>>;
