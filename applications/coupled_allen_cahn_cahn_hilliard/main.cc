@@ -85,17 +85,11 @@ private:
       {
         // --- Getting the values and derivatives of the model variables ---
 
-        const ScalarValue c =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
-        const ScalarGrad cx =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            0);
+        const ScalarValue c  = variable_list.template get_value<Scalar, OldOne>(0);
+        const ScalarGrad  cx = variable_list.template get_gradient<Scalar, OldOne>(0);
 
-        const ScalarValue n =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(1);
-        const ScalarGrad nx =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            1);
+        const ScalarValue n  = variable_list.template get_value<Scalar, OldOne>(1);
+        const ScalarGrad  nx = variable_list.template get_gradient<Scalar, OldOne>(1);
 
         // --- Setting the expressions for the terms in the governing equations ---
 
@@ -142,16 +136,12 @@ private:
         // --- Getting the values and derivatives of the model variables ---
 
         // c
-        const ScalarValue c =
-          variable_list.template get_value<TensorRank::Scalar, Current>(0);
-        const ScalarGrad cx =
-          variable_list.template get_gradient<TensorRank::Scalar, Current>(0);
+        const ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
+        const ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
         // n
-        const ScalarValue n =
-          variable_list.template get_value<TensorRank::Scalar, Current>(1);
-        const ScalarGrad nx =
-          variable_list.template get_gradient<TensorRank::Scalar, Current>(1);
+        const ScalarValue n  = variable_list.template get_value<Scalar, Current>(1);
+        const ScalarGrad  nx = variable_list.template get_gradient<Scalar, Current>(1);
 
         // --- Setting the expressions for the terms in the postprocessing expressions
         // ---
@@ -218,10 +208,10 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 1;
 
   std::vector<FieldAttributes> fields = {
-    FieldAttributes("c", TensorRank::Scalar),
-    FieldAttributes("n", TensorRank::Scalar),
-    FieldAttributes("f_tot", TensorRank::Scalar),
-    FieldAttributes("mag_grad_c", TensorRank::Scalar),
+    FieldAttributes("c", Scalar),
+    FieldAttributes("n", Scalar),
+    FieldAttributes("f_tot", Scalar),
+    FieldAttributes("mag_grad_c", Scalar),
 
   };
 

@@ -97,9 +97,8 @@ private:
   {
     if (solve_group_id == 0) // c
       {
-        ScalarValue c = variable_list.template get_value<TensorRank::Scalar, OldOne>(0);
-        ScalarGrad  mux =
-          variable_list.template get_gradient<TensorRank::Scalar, OldOne>(1);
+        ScalarValue c   = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  mux = variable_list.template get_gradient<Scalar, OldOne>(1);
 
         ScalarValue eq_c  = c;
         ScalarGrad  eqx_c = -McV * sim_timer.get_timestep() * mux;
@@ -109,9 +108,8 @@ private:
       }
     else if (solve_group_id == 1) // mu
       {
-        ScalarValue c = variable_list.template get_value<TensorRank::Scalar, Normal>(0);
-        ScalarGrad  cx =
-          variable_list.template get_gradient<TensorRank::Scalar, Normal>(0);
+        ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
         ScalarValue fcV = WcV * c * (c - 1.0) * (c - 0.5);
 
@@ -123,9 +121,8 @@ private:
       }
     else if (solve_group_id == 2) // pp
       {
-        ScalarValue c = variable_list.template get_value<TensorRank::Scalar, Normal>(0);
-        ScalarGrad  cx =
-          variable_list.template get_gradient<TensorRank::Scalar, Normal>(0);
+        ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;

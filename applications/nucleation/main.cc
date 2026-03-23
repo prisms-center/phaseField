@@ -109,14 +109,12 @@ public:
         // --- Getting the values and derivatives of the model variables ---
 
         // The concentration and its derivatives
-        ScalarValue c = variable_list.template get_value<TensorRank::Scalar, OldOne>(0);
-        ScalarGrad  cx =
-          variable_list.template get_gradient<TensorRank::Scalar, OldOne>(0);
+        ScalarValue c  = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  cx = variable_list.template get_gradient<Scalar, OldOne>(0);
 
         // The order parameter and its derivatives
-        ScalarValue n = variable_list.template get_value<TensorRank::Scalar, OldOne>(1);
-        ScalarGrad  nx =
-          variable_list.template get_gradient<TensorRank::Scalar, OldOne>(1);
+        ScalarValue n  = variable_list.template get_value<Scalar, OldOne>(1);
+        ScalarGrad  nx = variable_list.template get_gradient<Scalar, OldOne>(1);
 
         // --- Setting the expressions for the terms in the governing equations ---
 
@@ -173,8 +171,8 @@ public:
       }
     else if (solve_group_id == 1) // nucleation rate
       {
-        ScalarValue c = variable_list.template get_value<TensorRank::Scalar, Current>(0);
-        ScalarValue n = variable_list.template get_value<TensorRank::Scalar, Current>(1);
+        ScalarValue c = variable_list.template get_value<Scalar, Current>(0);
+        ScalarValue n = variable_list.template get_value<Scalar, Current>(1);
         // Supersaturation factor
         const ScalarValue ssf1 = c - calmin;
         ScalarValue       ssf(1.0);
@@ -268,7 +266,7 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> fields = {
     FieldAttributes("c"),
     FieldAttributes("n"),
-    FieldAttributes("nucleation_rate", TensorRank::Scalar, true, {1}),
+    FieldAttributes("nucleation_rate", Scalar, true, {1}),
   };
 
   SolveGroup explicits(
