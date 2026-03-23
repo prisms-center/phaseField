@@ -560,7 +560,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_divergence(Types::Index global_variable_index) const
@@ -578,7 +579,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank>
   [[nodiscard]] auto
   get_divergence(Types::Index global_variable_index, DependencyType type) const
@@ -597,7 +599,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_symmetric_gradient(Types::Index global_variable_index) const
@@ -616,7 +619,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank>
   [[nodiscard]] auto
   get_symmetric_gradient(Types::Index global_variable_index, DependencyType type) const
@@ -638,7 +642,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_curl(Types::Index global_variable_index) const
@@ -660,7 +665,8 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: Figure out the assertion here. Dealii probly will have one, but we should too.
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
   template <TensorRank Rank>
   [[nodiscard]] auto
   get_curl(Types::Index global_variable_index, DependencyType type) const

@@ -161,7 +161,7 @@ public:
 
 private:
   /**
-   * @brief Calls user-defiend operator
+   * @brief Calls user-defined operator
    * @note requires dst is not ghosted
    */
   void
@@ -303,7 +303,7 @@ private:
   const SimulationTimer *sim_timer;
 
   /**
-   * @brief Result of operator gets scaled by this (invm for explicits)
+   * @brief Result of operator gets scaled by this (invm for explicit fields)
    */
   std::vector<const SolutionVector<number> *> scaling_diagonal;
 

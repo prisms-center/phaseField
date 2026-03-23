@@ -213,7 +213,7 @@ public:
   apply_constraints_to_all(unsigned int relative_level);
 
   /**
-   * @brief Apply intial condition to the old fields. For now, this simply copies the
+   * @brief Apply initial condition to the old fields. For now, this simply copies the
    * values in the normal field to the old.
    */
   void

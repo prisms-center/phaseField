@@ -17,10 +17,10 @@ set mesh adaptivity = false
 set remeshing period = 1000
 
 subsection refinement criterion: 0
-  set variables                      =
-  set type                           =
-  set value lower bound              =
-  set value upper bound              =
+  set variables         =
+  set type              =
+  set value lower bound =
+  set value upper bound =
 end
 
 set time step = 0.0001
@@ -29,5 +29,5 @@ set number steps = 250000
 subsection output
   set condition = EQUAL_SPACING
   set number = 50
-  set list = 
+  set list =
 end
