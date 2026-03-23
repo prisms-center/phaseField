@@ -205,15 +205,13 @@ private:
         ScalarValue                        sum_n_sq;
         for (unsigned int op_id = 0; op_id < num_ops; op_id++)
           {
-            const ScalarValue n =
-              variable_list.template get_value<TensorRank::Scalar, OldOne>(op_id);
+            const ScalarValue n = variable_list.template get_value<Scalar, OldOne>(op_id);
             const ScalarValue nsq = n * n;
             n_val[op_id]          = n;
             sum_n_sq += nsq;
             dfdn_val[op_id] = nsq * n - n;
             dfdn_vec[op_id] =
-              -kappa *
-              variable_list.template get_gradient<TensorRank::Scalar, OldOne>(op_id);
+              -kappa * variable_list.template get_gradient<Scalar, OldOne>(op_id);
           }
         for (unsigned int op_id = 0; op_id < num_ops; op_id++)
           {
@@ -233,7 +231,7 @@ private:
         for (unsigned int op_id = 0; op_id < num_ops; op_id++)
           {
             const ScalarValue n =
-              variable_list.template get_value<TensorRank::Scalar, Normal>(op_id);
+              variable_list.template get_value<Scalar, Current>(op_id);
             sum_n_sq += n * n;
           }
         variable_list.set_value_term(num_ops, 1.0 * (1.0 - sum_n_sq));

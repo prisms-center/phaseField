@@ -94,9 +94,7 @@ private:
   {
     if (solve_group_id == 1) // linear lhs
       {
-        VectorGrad ux =
-          variable_list
-            .template get_symmetric_gradient<TensorRank::Vector, DependencyType::LHS>(0);
+        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
         compute_stress<dim, ScalarValue>(compliance, ux, stress);
         variable_list.set_gradient_term(0, stress);
@@ -125,7 +123,7 @@ main(int argc, char *argv[])
   constexpr unsigned int dim    = 3;
   constexpr unsigned int degree = 1;
 
-  std::vector<FieldAttributes> fields = {FieldAttributes("u", TensorRank::Vector)};
+  std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector)};
 
   SolveGroup linear_solve(1,
                           Linear,

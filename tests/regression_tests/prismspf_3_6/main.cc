@@ -81,15 +81,6 @@ private:
     scalar_value = std::min(scalar_value, static_cast<number>(1.0));
   }
 
-  /* void
-  set_nonuniform_dirichlet([[maybe_unused]] const unsigned int       &index,
-                           [[maybe_unused]] const unsigned int       &boundary_id,
-                           [[maybe_unused]] const unsigned int       &component,
-                           [[maybe_unused]] const dealii::Point<dim> &point,
-                           [[maybe_unused]] number                   &scalar_value,
-                           [[maybe_unused]] number &vector_component_value) const override
-  {} */
-
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
@@ -97,11 +88,8 @@ private:
   {
     if (solve_group_id == 1) // explicit
       {
-        ScalarValue n_val =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
-        ScalarGrad n_grad =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            0);
+        ScalarValue n_val  = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, OldOne>(0);
         ScalarValue f_well = 4.0 * n_val * (n_val - 1.0) * (n_val - 0.5);
         ScalarValue eq_n   = n_val - sim_timer.get_timestep() * m_well * f_well;
         ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * n_grad;
@@ -111,12 +99,9 @@ private:
       }
     else if (solve_group_id == 2) // postprocess
       {
-        ScalarValue n_val =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::Normal>(0);
-        ScalarGrad n_grad =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::Normal>(
-            0);
-        ScalarValue f_tot = 0.0;
+        ScalarValue n_val  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue f_tot  = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
         ScalarValue f_grad = 0.0;
@@ -140,76 +125,50 @@ private:
 int
 main(int argc, char *argv[])
 {
-  try
-    {
-      // Initialize MPI
-      dealii::Utilities::MPI::MPI_InitFinalize
-        mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
+  // Initialize MPI
+  dealii::Utilities::MPI::MPI_InitFinalize
+    mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
 
-      // Restrict deal.II console printing
-      dealii::deallog.depth_console(0);
+  // Restrict deal.II console printing
+  dealii::deallog.depth_console(0);
 
-      // Parse the command line options (if there are any) to get the name of the input
-      // file
-      ParseCMDOptions cli_options(argc, argv);
-      std::string     parameters_filename = cli_options.get_parameters_filename();
+  // Parse the command line options (if there are any) to get the name of the input
+  // file
+  ParseCMDOptions cli_options(argc, argv);
+  std::string     parameters_filename = cli_options.get_parameters_filename();
 
-      constexpr unsigned int dim    = 2;
-      constexpr unsigned int degree = 2;
+  constexpr unsigned int dim    = 2;
+  constexpr unsigned int degree = 2;
 
-      std::vector<FieldAttributes> field_attributes = {
-        FieldAttributes("n", TensorRank::Scalar),
-        FieldAttributes("mg_n", TensorRank::Scalar),
-        FieldAttributes("f_tot", TensorRank::Scalar),
-      };
-      std::vector<SolveGroup> solve_groups;
-      SolveGroup              exp_group(1,
-                           Explicit,
-                           Primary,
-                                        {0},
-                           make_dependency_set(field_attributes,
-                                                            {"old_1(n)", "grad(old_1(n))"}));
-      SolveGroup              pp_group(2,
-                          Explicit,
-                          PostProcess,
-                                       {1, 2},
-                          make_dependency_set(field_attributes, {"n", "grad(n)"}));
-      solve_groups.push_back(exp_group);
-      solve_groups.push_back(pp_group);
+  std::vector<FieldAttributes> field_attributes = {
+    FieldAttributes("n", Scalar),
+    FieldAttributes("mg_n", Scalar),
+    FieldAttributes("f_tot", Scalar),
+  };
+  std::vector<SolveGroup> solve_groups;
+  SolveGroup              exp_group(1,
+                       Explicit,
+                       Primary,
+                                    {0},
+                       make_dependency_set(field_attributes,
+                                                        {"old_1(n)", "grad(old_1(n))"}));
+  SolveGroup              pp_group(2,
+                      Explicit,
+                      PostProcess,
+                                   {1, 2},
+                      make_dependency_set(field_attributes, {"n", "grad(n)"}));
+  solve_groups.push_back(exp_group);
+  solve_groups.push_back(pp_group);
 
-      UserInputParameters<dim>       user_inputs(parameters_filename);
-      PhaseFieldTools<dim>           pf_tools;
-      CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
-      Problem<dim, degree, double>   problem(field_attributes,
-                                           solve_groups,
-                                           user_inputs,
-                                           pf_tools,
-                                           pde_operator);
-      problem.solve();
-    }
-
-  catch (std::exception &exc)
-    {
-      std::cerr << '\n'
-                << '\n'
-                << "----------------------------------------------------" << '\n';
-      std::cerr << "Exception on: " << '\n'
-                << exc.what() << '\n'
-                << "Aborting!" << '\n'
-                << "----------------------------------------------------" << '\n';
-      return 1;
-    }
-
-  catch (...)
-    {
-      std::cerr << '\n'
-                << '\n'
-                << "----------------------------------------------------" << '\n';
-      std::cerr << "Unknown exception!" << '\n'
-                << "Aborting!" << '\n'
-                << "----------------------------------------------------" << '\n';
-      return 1;
-    }
+  UserInputParameters<dim>       user_inputs(parameters_filename);
+  PhaseFieldTools<dim>           pf_tools;
+  CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
+  Problem<dim, degree, double>   problem(field_attributes,
+                                       solve_groups,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
+  problem.solve();
 
   return 0;
 }

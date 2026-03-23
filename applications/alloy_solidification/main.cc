@@ -97,22 +97,15 @@ private:
     if (solve_group_id == 0) // explicit U and phi
       {
         // The dimensionless solute supersaturation and its derivatives
-        ScalarValue U =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
-        ScalarGrad Ux =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            0);
+        ScalarValue U  = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  Ux = variable_list.template get_gradient<Scalar, OldOne>(0);
 
         // The order parameter and its derivatives
-        ScalarValue phi =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(1);
-        ScalarGrad phix =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            1);
+        ScalarValue phi  = variable_list.template get_value<Scalar, OldOne>(1);
+        ScalarGrad  phix = variable_list.template get_gradient<Scalar, OldOne>(1);
 
         // The auxiliary parameter and its derivatives
-        ScalarValue xi =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(2);
+        ScalarValue xi = variable_list.template get_value<Scalar, OldOne>(2);
 
         // --- Setting the expressions for the terms in the governing equations ---
 
@@ -170,11 +163,9 @@ private:
       {
         // --- Getting the values and derivatives of the model variables ---
 
-        ScalarValue U = variable_list.template get_value<TensorRank::Scalar, Current>(0);
-        ScalarValue phi =
-          variable_list.template get_value<TensorRank::Scalar, Current>(1);
-        ScalarGrad phix =
-          variable_list.template get_gradient<TensorRank::Scalar, Current>(1);
+        ScalarValue U    = variable_list.template get_value<Scalar, Current>(0);
+        ScalarValue phi  = variable_list.template get_value<Scalar, Current>(1);
+        ScalarGrad  phix = variable_list.template get_gradient<Scalar, Current>(1);
 
         // --- Setting the expressions for the terms in the governing equations ---
 
@@ -223,9 +214,8 @@ private:
       }
     else if (solve_group_id == 2) // c postprocess
       {
-        ScalarValue U = variable_list.template get_value<TensorRank::Scalar, Current>(0);
-        ScalarValue phi =
-          variable_list.template get_value<TensorRank::Scalar, Current>(1);
+        ScalarValue U   = variable_list.template get_value<Scalar, Current>(0);
+        ScalarValue phi = variable_list.template get_value<Scalar, Current>(1);
 
         ScalarValue c = (c0 / 2.0 / (1 + U0 - U0 * k)) * ((1.0 + k) - (1.0 - k) * phi) *
                         ((1.0) + (1.0 - k) * U);

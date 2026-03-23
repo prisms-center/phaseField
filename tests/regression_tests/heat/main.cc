@@ -86,10 +86,8 @@ private:
   {
     if (solve_group_id == 1) // rhs
       {
-        variable_list.set_value_term(
-          0,
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(
-            0));
+        variable_list.set_value_term(0,
+                                     variable_list.template get_value<Scalar, OldOne>(0));
       }
   }
 
@@ -100,15 +98,12 @@ private:
   {
     if (solve_group_id == 1) // lhs
       {
-        variable_list.set_value_term(
-          0,
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::Change>(
-            0));
+        variable_list.set_value_term(0,
+                                     variable_list.template get_value<Scalar, Trial>(0));
         variable_list.set_gradient_term(
           0,
           sim_timer.get_timestep() *
-            variable_list
-              .template get_gradient<TensorRank::Scalar, DependencyType::Change>(0));
+            variable_list.template get_gradient<Scalar, Trial>(0));
       }
   }
 };

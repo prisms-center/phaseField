@@ -90,11 +90,8 @@ private:
   {
     if (solve_group_id == 1) // explicit
       {
-        ScalarValue n_val =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::OldOne>(0);
-        ScalarGrad n_grad =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::OldOne>(
-            0);
+        ScalarValue n_val  = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, OldOne>(0);
         ScalarValue f_well = 4.0 * n_val * (n_val - 1.0) * (n_val - 0.5);
         ScalarValue eq_n   = n_val - sim_timer.get_timestep() * m_well * f_well;
         ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * n_grad;
@@ -104,12 +101,9 @@ private:
       }
     else if (solve_group_id == 2) // postprocess
       {
-        ScalarValue n_val =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::Normal>(0);
-        ScalarGrad n_grad =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::Normal>(
-            0);
-        ScalarValue f_tot = 0.0;
+        ScalarValue n_val  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue f_tot  = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
         ScalarValue f_grad = 0.0;
@@ -148,9 +142,9 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 1;
 
   std::vector<FieldAttributes> field_attributes = {
-    FieldAttributes("n", TensorRank::Scalar),
-    FieldAttributes("mg_n", TensorRank::Scalar),
-    FieldAttributes("f_tot", TensorRank::Scalar),
+    FieldAttributes("n", Scalar),
+    FieldAttributes("mg_n", Scalar),
+    FieldAttributes("f_tot", Scalar),
   };
 
   SolveGroup              exp_group(1,

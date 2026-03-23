@@ -88,11 +88,9 @@ private:
   {
     if (solve_group_id == 1) // n
       {
-        ScalarValue n = variable_list.template get_value<TensorRank::Scalar, Normal>(0);
-        ScalarGrad  nx =
-          variable_list.template get_gradient<TensorRank::Scalar, Normal>(0);
-        ScalarValue old_n =
-          variable_list.template get_value<TensorRank::Scalar, OldOne>(0);
+        ScalarValue n     = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  nx    = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue old_n = variable_list.template get_value<Scalar, OldOne>(0);
 
         ScalarValue f_well = 4.0 * n * (n - 1.0) * (n - 0.5);
         ScalarValue eq_n   = old_n - n - sim_timer.get_timestep() * m_well * f_well;
@@ -103,12 +101,9 @@ private:
       }
     else if (solve_group_id == 2) // postprocess
       {
-        ScalarValue n_val =
-          variable_list.template get_value<TensorRank::Scalar, DependencyType::Normal>(0);
-        ScalarGrad n_grad =
-          variable_list.template get_gradient<TensorRank::Scalar, DependencyType::Normal>(
-            0);
-        ScalarValue f_tot = 0.0;
+        ScalarValue n_val  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue f_tot  = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
         ScalarValue f_grad = 0.0;
@@ -132,11 +127,9 @@ private:
   {
     if (solve_group_id == 1) // n
       {
-        ScalarValue n = variable_list.template get_value<TensorRank::Scalar, Normal>(0);
-        ScalarValue change_n =
-          variable_list.template get_value<TensorRank::Scalar, Change>(0);
-        ScalarGrad change_nx =
-          variable_list.template get_gradient<TensorRank::Scalar, Change>(0);
+        ScalarValue n         = variable_list.template get_value<Scalar, Current>(0);
+        ScalarValue change_n  = variable_list.template get_value<Scalar, Change>(0);
+        ScalarGrad  change_nx = variable_list.template get_gradient<Scalar, Change>(0);
 
         ScalarValue df_well = 12.0 * n * (n - 1.0) + 2.0;
         ScalarValue eq_change_n =
@@ -173,9 +166,9 @@ main(int argc, char *argv[])
       constexpr unsigned int degree = 2;
 
       std::vector<FieldAttributes> field_attributes = {
-        FieldAttributes("n", TensorRank::Scalar),
-        FieldAttributes("mg_n", TensorRank::Scalar),
-        FieldAttributes("f_tot", TensorRank::Scalar),
+        FieldAttributes("n", Scalar),
+        FieldAttributes("mg_n", Scalar),
+        FieldAttributes("f_tot", Scalar),
       };
       std::vector<SolveGroup> solve_groups;
       SolveGroup              newton_group(

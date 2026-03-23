@@ -190,6 +190,7 @@ template <unsigned int dim, unsigned int degree, typename number>
 void
 Problem<dim, degree, number>::solve()
 {
+  Timer::start_section("Problem Solve");
   // Print a warning if running in DEBUG mode
   ConditionalOStreams::pout_verbose()
     << "\n\n"
@@ -240,6 +241,7 @@ Problem<dim, degree, number>::solve()
     }
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 
+  Timer::end_section("Problem Solve");
   // Print timer summary
   Timer::print_summary();
 }
