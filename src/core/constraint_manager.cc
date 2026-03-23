@@ -180,7 +180,7 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   // 1. Make periodicity constraints. Note, this *does* have to be done to both the
   // triangulation and the constraints. Adding periodicity to the triangulation alone
   // doesn't actually affect the DoF numbering, but does tell the DofHandler to make the
-  // right ghosts. The constraints have to be applied seperately.
+  // right ghosts. The constraints have to be applied separately.
   if (spatial_discretization->type == TriangulationType::Rectangular)
     {
       std::vector<dealii::GridTools::PeriodicFacePair<
@@ -385,7 +385,7 @@ ConstraintManager<dim, degree, number>::make_periodic_constraints(
   const dealii::ComponentMask       &mask) const
 {
   // Create a vector of matched pairs that we fill and enforce upon the
-  // constaints
+  // constraints
   std::vector<
     dealii::GridTools::PeriodicFacePair<typename dealii::DoFHandler<dim>::cell_iterator>>
     periodicity_vector;

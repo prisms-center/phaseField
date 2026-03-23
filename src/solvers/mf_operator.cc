@@ -66,7 +66,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
   // Initialize, evaluate, and submit based on user function.
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       variable_list.reinit_and_eval(cell, &src);
 
       // Evaluate the user-defined pde at each quadrature point
@@ -135,7 +135,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
 //       // vector (the diagonal).
 //       // First (i=1) x vector: I 0 0 0
 //       // Second(i=2) x vector: 0 I 0 0 ...
-//       // Submit zeros for everyting except the diagonals
+//       // Submit zeros for everything except the diagonals
 //       for (unsigned int field_index : solve_group.field_indices)
 //         {
 //           if (/* Scalar */)

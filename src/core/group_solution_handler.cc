@@ -386,7 +386,7 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
 {
-  // 1. TODO: propogate solutions to coarser levels (relative level needn't be an arg)
+  // 1. TODO: propagate solutions to coarser levels (relative level needn't be an arg)
 
   // 3. bubble-swap method. bubble the discarded solution up to 'solution'
   SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];

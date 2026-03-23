@@ -134,7 +134,7 @@ struct RectangularMesh
   mark_periodic(Triangulation<dim> &triangulation) const
   {
     // Create a vector of matched pairs that we fill and enforce upon the
-    // constaints
+    // constraints
     std::vector<
       dealii::GridTools::PeriodicFacePair<typename Triangulation<dim>::cell_iterator>>
       periodicity_vector;
