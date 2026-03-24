@@ -2,30 +2,13 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/base/point.h>
 #include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
-#include <deal.II/lac/diagonal_matrix.h>
-#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
-#include <prismspf/core/group_solution_handler.h>
 
 #include <prismspf/solvers/mf_operator.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/config.h>
-
-#include <memory>
-#include <utility>
-
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-#  include <deal.II/base/enable_observer_pointer.h>
-#else
-#  include <deal.II/base/subscriptor.h>
-#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
