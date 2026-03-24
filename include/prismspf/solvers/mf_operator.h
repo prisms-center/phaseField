@@ -4,8 +4,6 @@
 #pragma once
 
 #include <deal.II/base/vectorization.h>
-#include <deal.II/lac/affine_constraints.h>
-#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
@@ -161,7 +159,7 @@ public:
 
 private:
   /**
-   * @brief Calls user-defiend operator
+   * @brief Calls user-defined operator
    * @note requires dst is not ghosted
    */
   void
@@ -303,7 +301,7 @@ private:
   const SimulationTimer *sim_timer;
 
   /**
-   * @brief Result of operator gets scaled by this (invm for explicits)
+   * @brief Result of operator gets scaled by this (invm for explicit fields)
    */
   std::vector<const SolutionVector<number> *> scaling_diagonal;
 

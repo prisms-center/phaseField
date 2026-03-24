@@ -1,32 +1,34 @@
 # Manually specify files to be included
-set(_src
-    ${CMAKE_CURRENT_SOURCE_DIR}/conditional_ostreams.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/constraint_manager.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/dof_manager.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/field_container.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/initial_conditions.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/problem.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/phase_field_tools.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/group_solution_handler.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/solution_indexer.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/triangulation_manager.cc
+set(
+  _src
+  ${CMAKE_CURRENT_SOURCE_DIR}/conditional_ostreams.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/constraint_manager.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/dof_manager.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/field_container.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/initial_conditions.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/nonuniform_dirichlet.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/problem.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/phase_field_tools.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/group_solution_handler.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/solution_indexer.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/solution_output.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/timer.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/triangulation_manager.cc
 )
 
-set(_inst
-    constraint_manager.inst.in
-    dof_manager.inst.in
-    field_container.inst.in
-    initial_conditions.inst.in
-    nonuniform_dirichlet.inst.in
-    problem.inst.in
-    phase_field_tools.inst.in
-    group_solution_handler.inst.in
-    solution_indexer.inst.in
-    solution_output.inst.in
-    triangulation_manager.inst.in
+set(
+  _inst
+  constraint_manager.inst.in
+  dof_manager.inst.in
+  field_container.inst.in
+  initial_conditions.inst.in
+  nonuniform_dirichlet.inst.in
+  problem.inst.in
+  phase_field_tools.inst.in
+  group_solution_handler.inst.in
+  solution_indexer.inst.in
+  solution_output.inst.in
+  triangulation_manager.inst.in
 )
 
 file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/core/*.h)

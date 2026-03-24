@@ -1,14 +1,16 @@
 # Manually specify files to be included
-set(_src
-    ${CMAKE_CURRENT_SOURCE_DIR}/solver_base.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/solvers.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/mf_operator.cc
+set(
+  _src
+  ${CMAKE_CURRENT_SOURCE_DIR}/solver_base.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/solvers.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/mf_operator.cc
 )
 
-set(_inst
-    solver_base.inst.in
-    solvers.inst.in
-    mf_operator.inst.in
+set(
+  _inst
+  solver_base.inst.in
+  solvers.inst.in
+  mf_operator.inst.in
 )
 
 file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/solvers/*.h)

@@ -2,30 +2,13 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/base/point.h>
 #include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
-#include <deal.II/lac/diagonal_matrix.h>
-#include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
-#include <prismspf/core/group_solution_handler.h>
 
 #include <prismspf/solvers/mf_operator.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/config.h>
-
-#include <memory>
-#include <utility>
-
-#if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
-#  include <deal.II/base/enable_observer_pointer.h>
-#else
-#  include <deal.II/base/subscriptor.h>
-#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -66,7 +49,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
   // Initialize, evaluate, and submit based on user function.
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
-      // Initialize, read DOFs, and set evaulation flags for each variable
+      // Initialize, read DOFs, and set evaluation flags for each variable
       variable_list.reinit_and_eval(cell, &src);
 
       // Evaluate the user-defined pde at each quadrature point
@@ -135,7 +118,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
 //       // vector (the diagonal).
 //       // First (i=1) x vector: I 0 0 0
 //       // Second(i=2) x vector: 0 I 0 0 ...
-//       // Submit zeros for everyting except the diagonals
+//       // Submit zeros for everything except the diagonals
 //       for (unsigned int field_index : solve_group.field_indices)
 //         {
 //           if (/* Scalar */)

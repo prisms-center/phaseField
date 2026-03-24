@@ -32,7 +32,7 @@ enum SolveTiming
   Initialized = Primary,
   /**
    * @brief Secondary fields are only evaluated by the pde solver on every increment, not
-   * initialized by a seperate function.
+   * initialized by a separate function.
    * @example Chemical potential
    */
   Secondary,

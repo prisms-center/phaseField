@@ -1,15 +1,9 @@
 # Manually specify files to be included
-set(_src
-    ${CMAKE_CURRENT_SOURCE_DIR}/integrator.cc
-)
+set(_src ${CMAKE_CURRENT_SOURCE_DIR}/integrator.cc)
 
 set(_inst integrator.inst.in)
 
-file(
-    GLOB _header
-    CONFIGURE_DEPENDS
-    ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h
-)
+file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h)
 
 file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h)
 

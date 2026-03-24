@@ -26,7 +26,7 @@ enum SolveType : std::uint8_t
  *
  * Currently, only scalar and vectors are supported.
  */
-enum class TensorRank : unsigned int
+enum TensorRank : unsigned int
 {
   Undefined = static_cast<unsigned int>(-1),
   Scalar    = 0,
@@ -56,7 +56,6 @@ enum DependencyType : int
   Trial    = SRC,
   Change   = SRC,
   Current  = 0,
-  Normal   = Current,
   OldOne,
   OldTwo,
   OldThree,
@@ -121,8 +120,8 @@ to_string(DependencyType type)
 {
   switch (type)
     {
-      case DependencyType::Normal:
-        return "Normal";
+      case DependencyType::Current:
+        return "Current";
       case DependencyType::Change:
         return "Change";
       case DependencyType::OldOne:

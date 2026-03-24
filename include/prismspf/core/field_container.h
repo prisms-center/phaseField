@@ -156,7 +156,7 @@ public:
         {
           return fe_eval_src_dst->first;
         }
-      else if constexpr (type == DependencyType::Normal)
+      else if constexpr (type == DependencyType::Current)
         {
           return fe_eval->first;
         }
@@ -175,7 +175,7 @@ public:
         {
           return fe_eval_src_dst->first;
         }
-      else if constexpr (type == DependencyType::Normal)
+      else if constexpr (type == DependencyType::Current)
         {
           return fe_eval->first;
         }
@@ -183,6 +183,40 @@ public:
         {
           return fe_eval_old[int(type) - 1]->first;
         }
+    }
+
+    const FEEval<Rank> &
+    get(DependencyType type) const
+    {
+      // TODO: Assertions
+      if (type == DependencyType::SRC || type == DependencyType::DST)
+        {
+          return fe_eval_src_dst->first;
+        }
+      if (type == DependencyType::Current)
+        {
+          return fe_eval->first;
+        }
+      {
+        return fe_eval_old[type - 1]->first;
+      }
+    }
+
+    FEEval<Rank> &
+    get(DependencyType type)
+    {
+      // TODO: Assertions
+      if (type == DependencyType::SRC || type == DependencyType::DST)
+        {
+          return fe_eval_src_dst->first;
+        }
+      if (type == DependencyType::Current)
+        {
+          return fe_eval->first;
+        }
+      {
+        return fe_eval_old[type - 1]->first;
+      }
     }
 
     void
@@ -358,13 +392,29 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Value<Rank>
   get_value(Types::Index global_variable_index) const
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
       .get_value(q_point);
+  }
+
+  /**
+   * @brief Return the value of the specified field.
+   *
+   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
+   * ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank>
+  [[nodiscard]] Value<Rank>
+  get_value(Types::Index global_variable_index, DependencyType type) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_value(
+      q_point);
   }
 
   /**
@@ -375,12 +425,29 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Gradient<Rank>
   get_gradient(Types::Index global_variable_index) const
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_gradient(q_point);
+  }
+
+  /**
+   * @brief Return the gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank>
+  [[nodiscard]] Gradient<Rank>
+  get_gradient(Types::Index global_variable_index, DependencyType type) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_gradient(q_point);
   }
 
@@ -392,12 +459,29 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Hessian<Rank>
   get_hessian(Types::Index global_variable_index) const
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_hessian(q_point);
+  }
+
+  /**
+   * @brief Return the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * ScalarValue>` or `dealii::Tensor<3, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank>
+  [[nodiscard]] Hessian<Rank>
+  get_hessian(Types::Index global_variable_index, DependencyType type) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_hessian(q_point);
   }
 
@@ -409,12 +493,29 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Gradient<Rank>
   get_hessian_diagonal(Types::Index global_variable_index) const
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_hessian_diagonal(q_point);
+  }
+
+  /**
+   * @brief Return the diagonal of the hessian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, dim,
+   * ScalarValue>` or `dealii::Tensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank>
+  [[nodiscard]] Gradient<Rank>
+  get_hessian_diagonal(Types::Index global_variable_index, DependencyType type) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_hessian_diagonal(q_point);
   }
 
@@ -426,12 +527,29 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Value<Rank>
   get_laplacian(Types::Index global_variable_index) const
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_laplacian(q_point);
+  }
+
+  /**
+   * @brief Return the laplacian of the specified field.
+   *
+   * @tparam T the return type. Must be either a `ScalarValue` or `dealii::Tensor<1, dim,
+   * ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  template <TensorRank Rank>
+  [[nodiscard]] Value<Rank>
+  get_laplacian(Types::Index global_variable_index, DependencyType type) const
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_laplacian(q_point);
   }
 
@@ -442,14 +560,35 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_divergence(Types::Index global_variable_index) const
-    -> ScalarValue /* Value<Rank>::value_type */
+    -> ScalarValue /* Value<Rank>::value_type
+                    */
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_divergence(q_point);
+  }
+
+  /**
+   * @brief Return the divergence of the specified field.
+   *
+   * @tparam T the return type. Must be `ScalarValue`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank>
+  [[nodiscard]] auto
+  get_divergence(Types::Index   global_variable_index,
+                 DependencyType type) const -> ScalarValue /* Value<Rank>::value_type */
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_divergence(q_point);
   }
 
@@ -461,14 +600,35 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_symmetric_gradient(Types::Index global_variable_index) const
     -> dealii::SymmetricTensor<2, dim, ScalarValue>
   {
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
+      .get_symmetric_gradient(q_point);
+  }
+
+  /**
+   * @brief Return the symmetric gradient of the specified field.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<2, dim,
+   * ScalarValue>` or `dealii::SymmetricTensor<2, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank>
+  [[nodiscard]] auto
+  get_symmetric_gradient(Types::Index global_variable_index, DependencyType type) const
+    -> dealii::SymmetricTensor<2, dim, ScalarValue>
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index]
+      .get(type)
       .get_symmetric_gradient(q_point);
   }
 
@@ -483,8 +643,9 @@ public:
    * @param global_variable_index The global index of the variable to access.
    * @param dependency_type The dependency type of the variable to access.
    */
-  // TODO: FIgure out the assertion here. Dealii probly will have one, but we should too.
-  template <TensorRank Rank, DependencyType type = DependencyType::Normal>
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank, DependencyType type>
   [[nodiscard]] auto
   get_curl(Types::Index global_variable_index) const
     -> dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>
@@ -492,6 +653,28 @@ public:
     return get_relevant_feeval_vector<Rank>()[global_variable_index]
       .template get<type>()
       .get_curl(q_point);
+  }
+
+  /**
+   * @brief Return the curl of the specified field.
+   *
+   * Note that this is dealii::VectorizedArray<number> type for 2D and dealii::Tensor<1,
+   * dim, dealii::VectorizedArray<number>> type for 3D.
+   *
+   * @tparam T the return type. Must be either a `dealii::Tensor<1, 1,
+   * ScalarValue>` or `dealii::Tensor<1, dim, ScalarValue>`.
+   * @param global_variable_index The global index of the variable to access.
+   * @param dependency_type The dependency type of the variable to access.
+   */
+  // TODO: Figure out the assertion here. Dealii probably will have one, but we should
+  // too.
+  template <TensorRank Rank>
+  [[nodiscard]] auto
+  get_curl(Types::Index global_variable_index, DependencyType type) const
+    -> dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>
+  {
+    return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_curl(
+      q_point);
   }
 
   /**

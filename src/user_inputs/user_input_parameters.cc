@@ -256,7 +256,7 @@ UserInputParameters<dim>::assign_boundary_parameters(
         {}
         parameter_handler.leave_subsection();
 
-        // Attatch conditions to fields
+        // Attach conditions to fields
         for (const auto &field_comp_name : field_names)
           {
             int                    pos = field_comp_name.length() - 2;
