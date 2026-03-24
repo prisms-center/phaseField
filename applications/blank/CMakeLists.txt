@@ -24,13 +24,10 @@ if(PRISMS_PF_FOUND)
   include(${PRISMS_PF_CMAKE_DIR}/setup_application.cmake)
 
   # Set up the application
-   # Enable compile commands export
+  # Enable compile commands export
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-  set(
-    TARGET_SRC
-    "${CMAKE_CURRENT_SOURCE_DIR}/main.cc"
-  )
+  set(TARGET_SRC "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
 
   # Create the executables
   foreach(_build ${APPLICATION_BUILD_TYPES})
@@ -85,7 +82,6 @@ if(PRISMS_PF_FOUND)
 
     set(BUILD_OVERRIDE "")
   endforeach()
-
 else()
   message(FATAL_ERROR "PRISMS-PF package not found. Please make sure it is in path.")
 endif()

@@ -100,7 +100,7 @@ following open source applications:
 
 ## Version information:
 
-This version of the code, v3.0, is still under development. See [version_changes.md](version_changes.md) for details of previous releases.
+This version of the code, v4.0, is still under development. See [version_changes.md](version_changes.md) for details of previous releases.
 
 ## Contributors
 Thanks to everyone who has contributed to the project!
