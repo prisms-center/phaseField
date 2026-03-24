@@ -56,7 +56,6 @@ enum DependencyType : int
   Trial    = SRC,
   Change   = SRC,
   Current  = 0,
-  Normal   = Current,
   OldOne,
   OldTwo,
   OldThree,
@@ -122,7 +121,7 @@ to_string(DependencyType type)
   switch (type)
     {
       case DependencyType::Current:
-        return "Normal";
+        return "Current";
       case DependencyType::Change:
         return "Change";
       case DependencyType::OldOne:

@@ -4,8 +4,6 @@
 #pragma once
 
 #include <deal.II/base/vectorization.h>
-#include <deal.II/lac/affine_constraints.h>
-#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/operators.h>
 
