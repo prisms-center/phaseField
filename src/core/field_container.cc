@@ -25,12 +25,14 @@ FieldContainer<dim, degree, number>::FieldContainer(
   , relative_level(_relative_level)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
+
   // Initialize the feeval vectors
   feeval_deps_scalar.clear();
   feeval_deps_vector.clear();
   feeval_deps_scalar.resize(field_attributes.size());
   feeval_deps_vector.resize(field_attributes.size());
 
+  // Loop over the dependency map
   for (const auto &[field_index, dependency] : dependency_map)
     {
       const auto mf_id_pair =
@@ -49,148 +51,11 @@ FieldContainer<dim, degree, number>::FieldContainer(
             mf_id_pair,
             solve_group->id == solution_indexer->get_solve_group(field_index).id);
         }
-      // else Assert unreachable
-    }
-  //================================================================================
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::reinit(unsigned int cell)
-{
-  for (auto &fe_eval : feeval_deps_scalar)
-    {
-      fe_eval.reinit(cell);
-    }
-  for (auto &fe_eval : feeval_deps_vector)
-    {
-      fe_eval.reinit(cell);
-    }
-  //================================================================================
-  shared_feeval_scalar.reinit(cell);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::eval(const BlockVector<number> *src_solutions)
-{
-  for (auto &fe_eval : feeval_deps_scalar)
-    {
-      fe_eval.eval(src_solutions);
-    }
-  for (auto &fe_eval : feeval_deps_vector)
-    {
-      fe_eval.eval(src_solutions);
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::reinit_and_eval(
-  unsigned int               cell,
-  const BlockVector<number> *src_solutions)
-{
-  for (auto &fe_eval : feeval_deps_scalar)
-    {
-      fe_eval.reinit_and_eval(cell, src_solutions);
-    }
-  for (auto &fe_eval : feeval_deps_vector)
-    {
-      fe_eval.reinit_and_eval(cell, src_solutions);
-    }
-  //================================================================================
-  shared_feeval_scalar.reinit(cell);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::integrate()
-{
-  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
-    {
-      if (field_attributes[field_index].field_type == TensorRank::Scalar)
+      else
         {
-          feeval_deps_scalar[field_index].integrate();
-        }
-      else /* vector */
-        {
-          feeval_deps_vector[field_index].integrate();
+          Assert(false, UnreachableCode());
         }
     }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::distribute(BlockVector<number> *dst_solutions)
-{
-  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
-    {
-      if (field_attributes[field_index].field_type == TensorRank::Scalar)
-        {
-          feeval_deps_scalar[field_index].distribute(dst_solutions);
-        }
-      else /* vector */
-        {
-          feeval_deps_vector[field_index].distribute(dst_solutions);
-        }
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::integrate_and_distribute(
-  BlockVector<number> *dst_solutions)
-{
-  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
-    {
-      if (field_attributes[field_index].field_type == TensorRank::Scalar)
-        {
-          feeval_deps_scalar[field_index].integrate_and_distribute(dst_solutions);
-        }
-      else /* vector */
-        {
-          feeval_deps_vector[field_index].integrate_and_distribute(dst_solutions);
-        }
-    }
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::feevaluation_size_valid(
-  [[maybe_unused]] Types::Index field_index) const
-{
-  // TODO
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::feevaluation_exists(
-  [[maybe_unused]] Types::Index field_index,
-  [[maybe_unused]] Types::Index dependency_index) const
-{
-  // TODO
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::access_valid(
-  [[maybe_unused]] Types::Index                             field_index,
-  [[maybe_unused]] DependencyType                           dependency_type,
-  [[maybe_unused]] dealii::EvaluationFlags::EvaluationFlags flag) const
-{
-  // TODO
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-void
-FieldContainer<dim, degree, number>::submission_valid(
-  [[maybe_unused]] Types::Index   field_index,
-  [[maybe_unused]] DependencyType dependency_type) const
-{
-  // TODO
 }
 
 #include "core/field_container.inst"
