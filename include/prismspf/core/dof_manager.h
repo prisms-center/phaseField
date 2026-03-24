@@ -93,6 +93,14 @@ public:
   get_field_dof_handler(Types::Index field_index, unsigned int relative_level = 0) const;
 
   /**
+   * @brief Getter the DoFHandlers for a block of fields.
+   * @pre reinit_mapping() must have been called.
+   */
+  [[nodiscard]] std::vector<const dealii::DoFHandler<dim> *>
+  get_block_dof_handlers(const std::set<unsigned int> &field_indices,
+                         unsigned int                  relative_level = 0) const;
+
+  /**
    * @brief Getter function for the scalar and vector DoFHandlers.
    */
   [[nodiscard]] const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &

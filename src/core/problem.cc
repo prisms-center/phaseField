@@ -25,57 +25,72 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-template <unsigned int dim, unsigned int degree, typename number>
-std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
-make_solvers(const std::vector<SolveBlock>           &solve_blocks,
-             const SolveContext<dim, degree, number> &solve_context)
+namespace
 {
-  // Todo: upgrade to recursive for aux solvers
-  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
-  solvers.reserve(solve_blocks.size());
-  for (const auto &solve_block : solve_blocks)
-    {
-      switch (solve_block.solve_type)
-        {
-          case SolveType::Explicit:
-            solvers.emplace_back(
-              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_block,
+  template <unsigned int dim, unsigned int degree, typename number>
+  std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
+  make_solvers(const std::vector<SolveBlock>           &solve_blocks,
+               const SolveContext<dim, degree, number> &solve_context)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
+    solvers.reserve(solve_blocks.size());
+    for (const auto &solve_block : solve_blocks)
+      {
+        switch (solve_block.solve_type)
+          {
+            case SolveType::Explicit:
+              solvers.emplace_back(
+                std::make_shared<ExplicitSolver<dim, degree, number>>(solve_block,
+                                                                      solve_context));
+              break;
+            case SolveType::Linear:
+              solvers.emplace_back(
+                std::make_shared<LinearSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
-            break;
-          case SolveType::Linear:
-            solvers.emplace_back(
-              std::make_shared<LinearSolver<dim, degree, number>>(solve_block,
-                                                                  solve_context));
-            break;
-          case SolveType::Newton:
-            solvers.emplace_back(
-              std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
-                                                                  solve_context));
-            break;
-          case SolveType::Constant:
-            solvers.emplace_back(
-              std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
+              break;
+            case SolveType::Newton:
+              solvers.emplace_back(
+                std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
-            break;
-          default:
-            AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
-        }
-    }
-  return solvers;
-}
+              break;
+            case SolveType::Constant:
+              solvers.emplace_back(
+                std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
+                                                                      solve_context));
+              break;
+            default:
+              AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
+          }
+      }
+    return solvers;
+  }
 
-std::list<DependencyMap>
-get_all_dependency_sets(const std::vector<SolveBlock> &solve_blocks)
-{
-  // Todo: upgrade to recursive for aux solvers
-  std::list<DependencyMap> output;
-  for (const auto &solve_block : solve_blocks)
-    {
-      output.push_back(solve_block.dependencies_lhs);
-      output.push_back(solve_block.dependencies_rhs);
-    }
-  return output;
-}
+  std::list<DependencyMap>
+  get_all_dependency_sets(const std::vector<SolveBlock> &solve_blocks)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::list<DependencyMap> output;
+    for (const auto &solve_block : solve_blocks)
+      {
+        output.push_back(solve_block.dependencies_lhs);
+        output.push_back(solve_block.dependencies_rhs);
+      }
+    return output;
+  }
+
+  std::list<SolveBlock>
+  get_all_solve_blocks(const std::vector<SolveBlock> &solve_blocks)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::list<SolveBlock> output;
+    for (const auto &solve_block : solve_blocks)
+      {
+        output.push_back(solve_block);
+      }
+    return output;
+  }
+} // namespace
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<GroupSolutionHandler<dim, number> *>
@@ -219,7 +234,7 @@ Problem<dim, degree, number>::init_system()
                         get_solution_managers_from_solvers(solvers));
   for (auto &solver : solvers)
     {
-      solver->init(get_all_dependency_sets(solve_blocks));
+      solver->init(get_all_solve_blocks(solve_blocks));
     }
   Timer::end_section("Initialize Solvers");
 

@@ -44,11 +44,10 @@ public:
   {}
 
   void
-  init(const std::list<DependencyMap> &all_dependeny_sets) override
+  init(const std::list<SolveBlock> &all_solve_blocks) override
   {
-    SolverBase<dim, degree, number>::init(all_dependeny_sets);
-    unsigned int num_levels =
-      solve_context->get_dof_manager().get_dof_handlers_levels().size();
+    SolverBase<dim, degree, number>::init(all_solve_blocks);
+    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
     rhs_operator.initialize(solutions);
     rhs_operator.set_scaling_diagonal(

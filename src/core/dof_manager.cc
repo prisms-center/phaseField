@@ -89,6 +89,21 @@ DoFManager<dim, degree>::get_field_dof_handler(Types::Index field_index,
 }
 
 template <unsigned int dim, unsigned int degree>
+std::vector<const dealii::DoFHandler<dim> *>
+DoFManager<dim, degree>::get_block_dof_handlers(
+  const std::set<unsigned int> &field_indices,
+  unsigned int                  relative_level) const
+{
+  std::vector<const dealii::DoFHandler<dim> *> block_dof_handlers;
+  block_dof_handlers.reserve(field_indices.size());
+  for (const auto &field_index : field_indices)
+    {
+      block_dof_handlers.push_back(field_dof_handlers[relative_level][field_index]);
+    }
+  return block_dof_handlers;
+}
+
+template <unsigned int dim, unsigned int degree>
 const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &
 DoFManager<dim, degree>::get_dof_handlers_levels() const
 {

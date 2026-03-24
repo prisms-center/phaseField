@@ -7,6 +7,7 @@
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/fe/mapping.h>
 #include <deal.II/lac/affine_constraints.h>
+#include <deal.II/multigrid/mg_constrained_dofs.h>
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
@@ -75,6 +76,18 @@ public:
    */
   [[nodiscard]] const dealii::AffineConstraints<number> &
   get_constraint(Types::Index index, unsigned int relative_level = 0) const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] std::vector<const dealii::MGConstrainedDoFs *>
+  get_mg_constraints(const std::set<unsigned int> &field_indices) const;
+
+  /**
+   * @brief Getter function for the constraint of an index (constant reference).
+   */
+  [[nodiscard]] const dealii::MGConstrainedDoFs &
+  get_mg_constraint(Types::Index index) const;
 
   /**
    * @brief Getter function for the constraints.
@@ -198,6 +211,12 @@ private:
    * by relative mg level.
    */
   std::vector<std::vector<dealii::AffineConstraints<number>>> field_constraints;
+
+  /**
+   * @brief Multigrid constraints. Outer vector is indexed by field index.
+   * @todo We should probably just use MGConstrainedDoFs to store all constraints.
+   */
+  std::vector<dealii::MGConstrainedDoFs> mg_constraints;
 
   /**
    * @brief Constraints not specific to any field. We need this for invm

@@ -40,6 +40,7 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
   , spatial_discretization(&_spatial_discretization)
   , dof_manager(&_dof_manager)
   , pde_operator(&_pde_operator)
+  , field_constraints()
   , generic_constraints()
 {
   /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
@@ -81,6 +82,27 @@ ConstraintManager<dim, degree, number>::get_constraint(Types::Index index,
                                                        unsigned int relative_level) const
 {
   return field_constraints[relative_level][index];
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+std::vector<const dealii::MGConstrainedDoFs *>
+ConstraintManager<dim, degree, number>::get_mg_constraints(
+  const std::set<Types::Index> &field_indices) const
+{
+  std::vector<const dealii::MGConstrainedDoFs *> selected_constraints;
+  selected_constraints.reserve(field_indices.size());
+  for (const unsigned int index : field_indices)
+    {
+      selected_constraints.push_back(&(mg_constraints[index]));
+    }
+  return selected_constraints;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const dealii::MGConstrainedDoFs &
+ConstraintManager<dim, degree, number>::get_mg_constraint(Types::Index index) const
+{
+  return mg_constraints[index];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -175,6 +197,29 @@ ConstraintManager<dim, degree, number>::reinit(
       for (dealii::AffineConstraints<number> &constraint : constraints_vector)
         {
           constraint.close();
+        }
+    }
+  for (unsigned int relative_level = 0; relative_level < generic_constraints.size();
+       ++relative_level)
+    {
+      unsigned int level = 0; // TODO mg top - relative_level
+      for (unsigned int field_index = 0; field_index < field_attributes.size();
+           field_index++)
+        {
+          if constexpr (std::is_same_v<number, double>)
+            {
+              mg_constraints[field_index].add_user_constraints(
+                level,
+                field_constraints[relative_level][field_index]);
+            }
+          else
+            {
+              dealii::AffineConstraints<double> double_precision_constraint;
+              double_precision_constraint.copy_from(
+                field_constraints[relative_level][field_index]);
+              mg_constraints[field_index]
+                .add_user_constraints(level, double_precision_constraint);
+            }
         }
     }
 }
@@ -345,16 +390,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

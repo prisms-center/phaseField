@@ -81,10 +81,10 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init(const std::list<DependencyMap> &all_dependeny_sets)
+  init(const std::list<SolveBlock> &all_solve_blocks)
   {
-    DependencyExtents extents(solve_block.field_indices, all_dependeny_sets);
-    solutions.init(extents.oldest_age);
+    NewDependencyExtents extents(solve_block.field_indices, all_solve_blocks);
+    solutions.init(extents.max_age_per_level);
 
     // Apply constraints.
     solutions.apply_constraints();

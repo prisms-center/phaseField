@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/mg_level_object.h>
 #include <deal.II/matrix_free/matrix_free.h>
 
 #include <prismspf/core/dof_manager.h>
@@ -24,6 +25,7 @@ GroupSolutionHandler<dim, number>::GroupSolutionHandler(
   const std::vector<MatrixFree<dim, number>> &_matrix_free_levels)
   : solve_block(std::move(_solve_block))
   , matrix_free_levels(&_matrix_free_levels)
+  , mg_transfer(dealii::MGTransferMF<dim, number>())
 {
   block_to_global_index.assign(solve_block.field_indices.begin(),
                                solve_block.field_indices.end());
@@ -161,19 +163,18 @@ GroupSolutionHandler<dim, number>::get_block_to_global_index() const
   return block_to_global_index;
 }
 
-// TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
-// constraint ptrs change.
 template <unsigned int dim, typename number>
 void
-GroupSolutionHandler<dim, number>::init(unsigned int num_old_saved)
+GroupSolutionHandler<dim, number>::init(
+  const std::vector<unsigned int> &max_age_per_level)
 {
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_block.id << "...\n"
     << std::flush;
   Timer::start_section("Initialize solution set");
 
-  // TODO: figure out more consistent way of passing num_levels
-  const unsigned int num_levels = get_matrix_free_levels().size();
+  // Create solution levels
+  const unsigned int num_levels = max_age_per_level.size();
   solution_levels.resize(num_levels);
 
   // Make the correct number of old solution vectors
@@ -181,7 +182,7 @@ GroupSolutionHandler<dim, number>::init(unsigned int num_old_saved)
        ++relative_level)
     {
       SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
-      solution_level.old_solutions.resize(num_old_saved);
+      solution_level.old_solutions.resize(max_age_per_level[relative_level]);
     }
 
   // Initialize solution vectors
@@ -223,6 +224,8 @@ GroupSolutionHandler<dim, number>::reinit()
           old_solution.collect_sizes();
         }
     }
+  // mg_transfer.build(dof_manager.get_field_dof_handlers(solve_block.field_indices, 0));
+  // todo
 }
 
 template <unsigned int dim, typename number>
@@ -279,6 +282,54 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
     }
   update_ghosts(0);
   apply_constraints_to_all(0);
+}
+
+template <unsigned int dim, typename number>
+template <unsigned int degree>
+void
+GroupSolutionHandler<dim, number>::mg_transfer_down(
+  const DoFManager<dim, degree> &dof_manager,
+  unsigned int                   finest_level,
+  bool                           transfer_old_solutions)
+{
+  dealii::MGLevelObject<BlockVector<number>> temp_mg_solutions(1 + finest_level -
+                                                                 solution_levels.size(),
+                                                               finest_level);
+
+  const auto dof_handlers =
+    dof_manager.get_block_dof_handlers(solve_block.field_indices, 0);
+
+  // transfer regular solutions to mg levels
+  mg_transfer.copy_to_mg(dof_handlers, temp_mg_solutions, solution_levels[0].solutions);
+  // swap to actual mg solution vectors
+  for (unsigned int relative_level = 0; relative_level < solution_levels.size();
+       ++relative_level)
+    {
+      unsigned int level = finest_level - relative_level;
+      solution_levels[relative_level].solutions.swap(temp_mg_solutions[level]);
+    }
+  if (!transfer_old_solutions)
+    {
+      return;
+    }
+  // transfer old solutions
+  for (unsigned int age_index = 0; age_index < solution_levels[0].old_solutions.size();
+       ++age_index)
+    {
+      mg_transfer.copy_to_mg(dof_handlers,
+                             temp_mg_solutions,
+                             solution_levels[0].old_solutions[age_index]);
+      for (unsigned int relative_level = 0; relative_level < solution_levels.size();
+           ++relative_level)
+        {
+          unsigned int level = finest_level - relative_level;
+          if (age_index < solution_levels[relative_level].old_solutions.size())
+            {
+              solution_levels[relative_level].old_solutions[age_index].swap(
+                temp_mg_solutions[level]);
+            }
+        }
+    }
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions

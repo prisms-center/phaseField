@@ -10,6 +10,7 @@
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/field_container.h>
 #include <prismspf/core/group_solution_handler.h>
+#include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
@@ -21,8 +22,6 @@
 #include <prismspf/utilities/utilities.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/matrix_free_manager.h"
 
 #include <memory>
 #include <vector>
@@ -79,14 +78,14 @@ public:
     else
       {
         static Value<Rank> ident = []()
-        {
-          Value<Rank> obj;
-          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-            {
-              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-            }
-          return obj;
-        }();
+          {
+            Value<Rank> obj;
+            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+              {
+                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+              }
+            return obj;
+          }();
         return ident;
       }
   }
