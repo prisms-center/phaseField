@@ -29,63 +29,11 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Compile PRISMS-PF
         run: |
           cmake -G Ninja \
-          -D UNIT_TESTS=ON \
-          -D REGRESSION_TESTS=ON \
-          -D CMAKE_INSTALL_PREFIX=/usr/local \
-          .
-          ninja -j $(nproc)
-
-      - name: Run PRISMS-PF unit tests
-        run: |
-          export OMPI_ALLOW_RUN_AS_ROOT=1
-          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-
-          ninja run_tests
-
-      - name: Run PRISMS-PF automatic tests in serial
-        timeout-minutes: 30
-        run: |
-          export OMPI_ALLOW_RUN_AS_ROOT=1
-          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-
-          ninja install
-
-      - name: Run PRISMS-PF automatic tests in parallel
-        timeout-minutes: 30
-        run: |
-          export OMPI_ALLOW_RUN_AS_ROOT=1
-          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-
-          cmake -G Ninja \
-          -D UNIT_TESTS=ON \
-          -D REGRESSION_TESTS=ON \
-          -D N_THREADS=2 \
-          -D CMAKE_INSTALL_PREFIX=/usr/local \
-          .
-          ninja install
-
-  linux-optimizations:
-    if: github.event_name == 'merge_group'
-    runs-on: [ubuntu-22.04]
-    timeout-minutes: 120
-
-    container:
-      image: dealii/dealii:v9.6.0-jammy
-      options: --user root
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Compile PRISMS-PF
-        run: |
-          cmake -G Ninja \
-          -D ADDITIONAL_OPTIMIZATIONS=ON \
           -D UNIT_TESTS=ON \
           -D REGRESSION_TESTS=ON \
           -D CMAKE_INSTALL_PREFIX=/usr/local \
