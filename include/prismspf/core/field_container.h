@@ -84,32 +84,32 @@ public:
    */
   template <typename ValType>
   static constexpr TensorRank RankFromVal = []() constexpr
-    {
-      if constexpr (std::is_same_v<ValType, ScalarValue>)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(ValType::rank);
-        }
-    }();
+  {
+    if constexpr (std::is_same_v<ValType, ScalarValue>)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(ValType::rank);
+      }
+  }();
 
   /**
    * @brief Return the tensor rank from the specified template gradient.
    */
   template <typename GradType>
   static constexpr TensorRank RankFromGrad = []() constexpr
-    {
-      if constexpr (std::is_same_v<GradType, ScalarValue>)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(GradType::rank - 1);
-        }
-    }();
+  {
+    if constexpr (std::is_same_v<GradType, ScalarValue>)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(GradType::rank - 1);
+      }
+  }();
 
   /**
    * @brief Struct to hold the relevant dealii::FEEvaluation for a given solution block
@@ -218,7 +218,7 @@ public:
    * `solution_indexer` is the solution indexer object, which allows us to get access to
    * solution vectors from in and outside the current solve group.
    * `relative_level` is the multigrid level.
-   * `dependency_map` is the map of field indicies and their dependency flags.
+   * `dependency_map` is the map of field indices and their dependency flags.
    * `solve_group` is the object that contains attributes about the current solve group.
    * `matrix_free` is the dealii::MatrixFree object.
    */
