@@ -150,7 +150,7 @@ public:
                         dealii::ExcMessage(
                           "Every field in a newton solve should appear as a Delta term"
                           "in the residual Jacobian (LHS) expression.\n"));
-            AssertThrow(dep_it_lhs->second.linear_solution_flag != EvalFlags::nothing,
+            AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
                         dealii::ExcMessage(
                           "Every field in a newton solve should appear as a Delta term"
                           "in the residual Jacobian (LHS) expression.\n"));
@@ -161,16 +161,14 @@ public:
         for (unsigned int field_index : field_indices)
           {
             const auto &dep_it_lhs = dependencies_lhs.find(field_index);
-            AssertThrow(
-              dep_it_lhs != dependencies_lhs.end(),
-              dealii::ExcMessage(
-                "Every field in a linear solve should appear "
-                "in the (LHS) expression. Be sure to use the linear_solution_flag.\n"));
-            AssertThrow(
-              dep_it_lhs->second.linear_solution_flag != EvalFlags::nothing,
-              dealii::ExcMessage(
-                "Every field in a linear solve should appear "
-                "in the (LHS) expression. Be sure to use the linear_solution_flag.\n"));
+            AssertThrow(dep_it_lhs != dependencies_lhs.end(),
+                        dealii::ExcMessage(
+                          "Every field in a linear solve should appear "
+                          "in the (LHS) expression. Be sure to use the src_flag.\n"));
+            AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
+                        dealii::ExcMessage(
+                          "Every field in a linear solve should appear "
+                          "in the (LHS) expression. Be sure to use the src_flag.\n"));
           }
       }
     else if (solve_type == SolveType::Explicit)
@@ -187,7 +185,7 @@ public:
       }
     for (const auto &[field_index, dependency] : dependencies_rhs)
       {
-        AssertThrow(dependency.linear_solution_flag == EvalFlags::nothing,
+        AssertThrow(dependency.src_flag == EvalFlags::nothing,
                     dealii::ExcMessage(
                       "Trial/Change terms should not appear in RHS expressions.\n"));
       }
