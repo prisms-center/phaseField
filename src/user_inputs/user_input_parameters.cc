@@ -253,7 +253,8 @@ UserInputParameters<dim>::assign_boundary_parameters(
               }
           }
         parameter_handler.enter_subsection("pinning point");
-        {}
+        {
+        }
         parameter_handler.leave_subsection();
 
         // Attach conditions to fields
@@ -318,16 +319,19 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
 
         LinearSolverParameters linear_solver_parameters;
         // Set the tolerance type
+        static const std::map<std::string, SolverToleranceType> tolerance_types = {
+          {"AbsoluteResidual",       AbsoluteResidual      },
+          {"RelativeResidualChange", RelativeResidualChange},
+          {"RMSEPerField",           RMSEPerField          },
+          {"IntegratedPerField",     IntegratedPerField    },
+          {"RMSETotal",              RMSETotal             },
+          {"IntegratedTotal",        IntegratedTotal       },
+        };
         const std::string type_string = parameter_handler.get("tolerance type");
-        if (boost::iequals(type_string, "AbsoluteResidual"))
+        const auto       &iter        = tolerance_types.find(type_string);
+        if (iter != tolerance_types.end())
           {
-            linear_solver_parameters.tolerance_type =
-              SolverToleranceType::AbsoluteResidual;
-          }
-        else if (boost::iequals(type_string, "RelativeResidualChange"))
-          {
-            linear_solver_parameters.tolerance_type =
-              SolverToleranceType::RelativeResidualChange;
+            linear_solver_parameters.tolerance_type = iter->second;
           }
         else
           {

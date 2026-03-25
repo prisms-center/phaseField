@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/distributed/tria.h>
+#include <deal.II/grid/grid_tools_geometry.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
 
@@ -74,6 +75,12 @@ public:
   get_periodic_face_pairs() const;
 
   /**
+   * @brief Get the vector of periodic face pairs
+   */
+  [[nodiscard]] double
+  get_volume() const;
+
+  /**
    * @brief Generate mesh based on the inputs provided by the user.
    */
   void
@@ -135,6 +142,11 @@ private:
   std::vector<dealii::GridTools::PeriodicFacePair<
     typename dealii::Triangulation<dim>::cell_iterator>>
     periodicity_vector;
+
+  /**
+   * @brief Periodic face pairs on the coarsest mesh if they exist
+   */
+  double volume = 0;
 };
 
 PRISMS_PF_END_NAMESPACE

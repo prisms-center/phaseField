@@ -152,8 +152,20 @@ public:
         solve_group.id);
     try
       {
+        double actual_tolerance = params.tolerance;
+        using std::sqrt;
+        if (params.tolerance_type == RMSEPerField || params.tolerance_type == RMSETotal)
+          {
+            actual_tolerance /=
+              sqrt(solve_context->get_triangulation_manager().get_volume());
+          }
+        if (params.tolerance_type == RMSEPerField ||
+            params.tolerance_type == IntegratedPerField)
+          {
+            actual_tolerance /= sqrt(double(solve_group.field_indices.size()));
+          }
         linear_solver_control.set_max_steps(params.max_iterations);
-        linear_solver_control.set_tolerance(params.tolerance);
+        linear_solver_control.set_tolerance(actual_tolerance);
 
         dealii::SolverCG<BlockVector<number>> cg_solver(linear_solver_control);
         cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());

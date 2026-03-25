@@ -67,8 +67,33 @@ enum DependencyType : int
  */
 enum SolverToleranceType : std::uint8_t
 {
+  /**
+   * @brief Legacy
+   */
   AbsoluteResidual,
-  RelativeResidualChange
+  /**
+   * @brief Legacy
+   */
+  RelativeResidualChange,
+  // TODO: these names and descriptions are not great. The point is to determine whether
+  // to average over the doman and whether to average over components.
+  // TODO: this could also be bitwise
+  /**
+   * @brief The mean local error averaged over each field is lower than the tolerance.
+   */
+  RMSEPerField,
+  /**
+   * @brief The integrated error averaged over each field is lower than the tolerance.
+   */
+  IntegratedPerField,
+  /**
+   * @brief The sum of the average local errors of each field is lower than the tolerance.
+   */
+  RMSETotal,
+  /**
+   * @brief The sum of the integrated errors of each field is lower than the tolerance.
+   */
+  IntegratedTotal
 };
 
 /**
