@@ -42,9 +42,9 @@ Moderate update from 2.2, released in July 2021. The main changes are new applic
 ## Added Features:
 
 - New applications:
-  - [corrosion_microgalvanic](https://github.com/prisms-center/phaseField/tree/master/applications/corrosion_microgalvanic): Simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between anodic and cathodic metals.
-  - [alloySolidification_uniform](https://github.com/prisms-center/phaseField/tree/master/applications/alloySolidification_uniform): Simulates solidification of a binary alloy at uniform temperature.
-  - [allenCahn_conserved](https://github.com/prisms-center/phaseField/tree/master/applications/allenCahn_conserved): Simulates a system undergoing Allen-Cahn dynamics subject to global (as opposed to local) conservation.
+  - `corrosion_microgalvanic`: Simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between anodic and cathodic metals.
+  - `alloySolidification_uniform`: Simulates solidification of a binary alloy at uniform temperature.
+  - `allenCahn_conserved`: Simulates a system undergoing Allen-Cahn dynamics subject to global (as opposed to local) conservation.
 - New postprocessing scripts. The following Python scripts for suite post-processing suite were added:
   - plot_and_save.py - This script creates a pseudocolor (in 2D) or contour (in 3D) plot for each outputted time states and saves the serieas of plots as png images.
   - domain_stats.py - This script calculates the following quantities for each of the time states:
@@ -147,7 +147,7 @@ Bug fixes:
 - A typo has been fixed in the expression for 'faccV' in the precipitateEvolution app
 
 Other changes:
-- The pdf user guide has been removed as well as the Doxygen files. A Doxygen-based user guide is now hosted on [a separate site](https://prisms-center.github.io/phaseField/doxygen_files/manual.html) to provide a more interactive experience. The repo for the new user guide can be found [here](https://github.com/prisms-center/prismspf-manual).
+- The pdf user guide has been removed as well as the Doxygen files. A Doxygen-based user guide is now hosted on a separate site to provide a more interactive experience.
 - Changed how the equation dependencies are input, making them more specific and more intuitive.
 - Previously, there were separate initial condition functions and non-uniform Dirichlet BC functions for scalar fields and vector fields. These have been merged so that there is one initial condition function and one non-uniform Dirichlet BC function. These functions are now part of customPDE and have direct access to the model parameters declared in customPDE.h.
 - Renamed the functions in the equation file, removing references to 'residuals'. Instead, everything is referred to as a term in the governing equation.

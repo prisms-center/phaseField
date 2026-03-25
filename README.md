@@ -10,7 +10,6 @@
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
 [User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/) <br>
-[User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8) <br>
 [PFHub phase-field community](https://pages.nist.gov/pfhub/)
@@ -95,8 +94,8 @@ Output of the primal fields is in standard vtk
 format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
 following open source applications:
 
-1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
-2. Paraview (http://www.paraview.org/download/)
+1. VisIt (https://visit-dav.github.io/visit-website/)
+2. Paraview (https://www.paraview.org/download/)
 
 ## Version information:
 
