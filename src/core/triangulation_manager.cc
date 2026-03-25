@@ -96,6 +96,13 @@ TriangulationManager<dim>::get_periodic_face_pairs() const
 }
 
 template <unsigned int dim>
+double
+TriangulationManager<dim>::get_volume() const
+{
+  return volume;
+}
+
+template <unsigned int dim>
 void
 TriangulationManager<dim>::generate_mesh(
   const SpatialDiscretization<dim> &discretization_params)
@@ -123,6 +130,8 @@ TriangulationManager<dim>::generate_mesh(
 
   // Global refinement
   triangulation.refine_global(discretization_params.global_refinement);
+
+  volume = dealii::GridTools::volume(triangulation);
 
   // Create the triangulations for the coarser levels if we have multigrid for any of the
   // fields
