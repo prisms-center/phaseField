@@ -112,7 +112,8 @@ public:
     }();
 
   /**
-   * @brief Struct to hold the relevant dealii::FEEvaluation for this solve.
+   * @brief Struct to hold the relevant dealii::FEEvaluation for a given solution block
+   * index.
    */
   template <TensorRank Rank>
   struct FEEValuationDeps
@@ -158,7 +159,11 @@ public:
     const SolutionLevel<dim, number> *solution_level = nullptr;
 
     /**
-     * @brief The block index.
+     * @brief The solution block index.
+     *
+     * This is the index that tells dealii::FEEvaluation the corresponding
+     * dealii::DoFHandler, dealii::AffineConstraints, and dealii::Quadrature to use from
+     * the dealii::MatrixFree.
      */
     unsigned int block_index = -1;
 
@@ -167,225 +172,42 @@ public:
      */
     FEEValuationDeps() = default;
 
-    /**
-     * @brief Main constructor for a field.
-     *
-     * `dependency` is the set of dependency flags for the solve block.
-     * `mf_id_pair` is the solution level and block index of the vector.
-     * `is_dst` is a bool that let's us know whether the field is a dst field.
-     */
     FEEValuationDeps(
       const Dependency                                                  &dependency,
       const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
-      bool                                                               is_dst)
-      : solution_level(mf_id_pair.first)
-      , block_index(mf_id_pair.second)
-    {
-      // Make an FEEvaluation if the current solution needs to be evaluated.
-      if (dependency.flag)
-        {
-          fe_eval = std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                              block_index),
-                                                 dependency.flag);
-        }
-      fe_eval_old.resize(dependency.old_flags.size(), nullptr);
-      for (unsigned int age = 0; age < dependency.old_flags.size(); ++age)
-        {
-          if (dependency.old_flags.at(age)) // kinda redundant... maybe remove?
-            {
-              fe_eval_old[age] =
-                std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                          block_index),
-                                             dependency.old_flags.at(age));
-            }
-        }
-      if (dependency.src_flag || is_dst)
-        {
-          fe_eval_src_dst =
-            std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                      block_index),
-                                         dependency.src_flag);
-        }
-    }
+      bool                                                               is_dst);
 
     template <DependencyType type>
     const FEEval<Rank> &
-    get() const
-    {
-      // TODO: Assertions
-      if constexpr (type == DependencyType::SRC || type == DependencyType::DST)
-        {
-          return fe_eval_src_dst->first;
-        }
-      else if constexpr (type == DependencyType::Current)
-        {
-          return fe_eval->first;
-        }
-      else
-        {
-          return fe_eval_old[int(type) - 1]->first;
-        }
-    }
+    get() const;
 
     template <DependencyType type>
     FEEval<Rank> &
-    get()
-    {
-      // TODO: Assertions
-      if constexpr (type == DependencyType::SRC || type == DependencyType::DST)
-        {
-          return fe_eval_src_dst->first;
-        }
-      else if constexpr (type == DependencyType::Current)
-        {
-          return fe_eval->first;
-        }
-      else
-        {
-          return fe_eval_old[int(type) - 1]->first;
-        }
-    }
+    get();
 
     const FEEval<Rank> &
-    get(DependencyType type) const
-    {
-      // TODO: Assertions
-      if (type == DependencyType::SRC || type == DependencyType::DST)
-        {
-          return fe_eval_src_dst->first;
-        }
-      if (type == DependencyType::Current)
-        {
-          return fe_eval->first;
-        }
-      {
-        return fe_eval_old[type - 1]->first;
-      }
-    }
+    get(DependencyType type) const;
 
     FEEval<Rank> &
-    get(DependencyType type)
-    {
-      // TODO: Assertions
-      if (type == DependencyType::SRC || type == DependencyType::DST)
-        {
-          return fe_eval_src_dst->first;
-        }
-      if (type == DependencyType::Current)
-        {
-          return fe_eval->first;
-        }
-      {
-        return fe_eval_old[type - 1]->first;
-      }
-    }
+    get(DependencyType type);
 
     void
-    reinit(unsigned int cell)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-        }
-      for (auto &old_fe_eval : fe_eval_old)
-        {
-          if (old_fe_eval)
-            {
-              old_fe_eval->first.reinit(cell);
-            }
-        }
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.reinit(cell);
-        }
-    }
+    reinit(unsigned int cell);
 
     void
-    eval(const BlockVector<number> *_src_solutions)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-      if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
-        {
-          fe_eval_src_dst->first.read_dof_values_plain(
-            _src_solutions->block(block_index));
-          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
-        }
-    }
+    eval(const BlockVector<number> *_src_solutions);
 
     void
-    reinit_and_eval(unsigned int cell, const BlockVector<number> *_src_solutions)
-    {
-      if (fe_eval)
-        {
-          fe_eval->first.reinit(cell);
-          fe_eval->first.read_dof_values_plain(
-            solution_level->solutions.block(block_index));
-          fe_eval->first.evaluate(fe_eval->second);
-        }
-      for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
-        {
-          if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
-            {
-              old_fe_eval->first.reinit(cell);
-              old_fe_eval->first.read_dof_values_plain(
-                solution_level->old_solutions[age].block(block_index));
-              old_fe_eval->first.evaluate(old_fe_eval->second);
-            }
-        }
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.reinit(cell);
-          if (fe_eval_src_dst->second != EvalFlags::nothing)
-            {
-              fe_eval_src_dst->first.read_dof_values_plain(
-                _src_solutions->block(block_index));
-              fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
-            }
-        }
-    }
+    reinit_and_eval(unsigned int cell, const BlockVector<number> *_src_solutions);
 
     void
-    integrate()
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.integrate(integration_flags);
-        }
-    }
+    integrate();
 
     void
-    integrate_and_distribute(BlockVector<number> *dst_solutions)
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.integrate_scatter(integration_flags,
-                                                   dst_solutions->block(block_index));
-        }
-    }
+    distribute(BlockVector<number> *dst_solutions);
 
     void
-    distribute(BlockVector<number> *dst_solutions)
-    {
-      if (fe_eval_src_dst)
-        {
-          fe_eval_src_dst->first.distribute_local_to_global(
-            dst_solutions->block(block_index));
-        }
-    }
+    integrate_and_distribute(BlockVector<number> *dst_solutions);
   };
 
   /**
@@ -668,8 +490,8 @@ private:
    * This is what we use when we call `get_q_point_location`, `get_element_volume`, and
    * `get_n_q_points()`.
    *
-   * @note This is constructed with the 0th index of the MatrixFree object. If that is not
-   * a scalar you'll run into issues.
+   * @note This is constructed with the 0th index of the MatrixFree object. If that is
+   * not a scalar you'll run into issues.
    */
   FEEval<TensorRank::Scalar> shared_feeval_scalar;
 
@@ -683,6 +505,253 @@ private:
    */
   unsigned int q_point = 0;
 };
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
+  const Dependency                                                  &dependency,
+  const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
+  bool                                                               is_dst)
+  : solution_level(mf_id_pair.first)
+  , block_index(mf_id_pair.second)
+{
+  // Make an FEEvaluation if the current solution needs to be evaluated
+  if (dependency.flag)
+    {
+      fe_eval = std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                          block_index),
+                                             dependency.flag);
+    }
+  // Make FEEvaluations for the the old solutions
+  fe_eval_old.resize(dependency.old_flags.size(), nullptr);
+  for (unsigned int age = 0; age < dependency.old_flags.size(); ++age)
+    {
+      if (dependency.old_flags.at(age)) // kinda redundant... maybe remove?
+        {
+          fe_eval_old[age] =
+            std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                      block_index),
+                                         dependency.old_flags.at(age));
+        }
+    }
+  if (dependency.src_flag || is_dst)
+    {
+      fe_eval_src_dst =
+        std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
+                                                  block_index),
+                                     dependency.src_flag);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+template <DependencyType Type>
+inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>::
+  template FEEval<Rank> &
+  FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get() const
+{
+  // TODO: Assertions
+  if constexpr (Type == DependencyType::SRC || Type == DependencyType::DST)
+    {
+      return fe_eval_src_dst->first;
+    }
+  else if constexpr (Type == DependencyType::Current)
+    {
+      return fe_eval->first;
+    }
+  else
+    {
+      return fe_eval_old[int(Type) - 1]->first;
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+template <DependencyType Type>
+inline DEAL_II_ALWAYS_INLINE
+  typename FieldContainer<dim, degree, number>::template FEEval<Rank> &
+  FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get()
+{
+  // TODO: Assertions
+  if constexpr (Type == DependencyType::SRC || Type == DependencyType::DST)
+    {
+      return fe_eval_src_dst->first;
+    }
+  else if constexpr (Type == DependencyType::Current)
+    {
+      return fe_eval->first;
+    }
+  else
+    {
+      return fe_eval_old[int(Type) - 1]->first;
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>::
+  template FEEval<Rank> &
+  FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get(
+    DependencyType type) const
+{
+  // TODO: Assertions
+  if (type == DependencyType::SRC || type == DependencyType::DST)
+    {
+      return fe_eval_src_dst->first;
+    }
+  if (type == DependencyType::Current)
+    {
+      return fe_eval->first;
+    }
+  {
+    return fe_eval_old[type - 1]->first;
+  }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline DEAL_II_ALWAYS_INLINE
+  typename FieldContainer<dim, degree, number>::template FEEval<Rank> &
+  FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get(DependencyType type)
+{
+  // TODO: Assertions
+  if (type == DependencyType::SRC || type == DependencyType::DST)
+    {
+      return fe_eval_src_dst->first;
+    }
+  if (type == DependencyType::Current)
+    {
+      return fe_eval->first;
+    }
+  {
+    return fe_eval_old[type - 1]->first;
+  }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::reinit(unsigned int cell)
+{
+  if (fe_eval)
+    {
+      fe_eval->first.reinit(cell);
+    }
+  for (auto &old_fe_eval : fe_eval_old)
+    {
+      if (old_fe_eval)
+        {
+          old_fe_eval->first.reinit(cell);
+        }
+    }
+  if (fe_eval_src_dst)
+    {
+      fe_eval_src_dst->first.reinit(cell);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::eval(
+  const BlockVector<number> *_src_solutions)
+{
+  // NOTE: `read_dof_values_plain` must be called here so that constraints aren't
+  // implicitly applied. This allows us to have inhomogeneous constraints.
+  if (fe_eval)
+    {
+      fe_eval->first.read_dof_values_plain(solution_level->solutions.block(block_index));
+      fe_eval->first.evaluate(fe_eval->second);
+    }
+  for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
+    {
+      if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
+        {
+          old_fe_eval->first.read_dof_values_plain(
+            solution_level->old_solutions[age].block(block_index));
+          old_fe_eval->first.evaluate(old_fe_eval->second);
+        }
+    }
+  if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
+    {
+      fe_eval_src_dst->first.read_dof_values_plain(_src_solutions->block(block_index));
+      fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::reinit_and_eval(
+  unsigned int               cell,
+  const BlockVector<number> *_src_solutions)
+{
+  // NOTE: `read_dof_values_plain` must be called here so that constraints aren't
+  // implicitly applied. This allows us to have inhomogeneous constraints.
+  if (fe_eval)
+    {
+      fe_eval->first.reinit(cell);
+      fe_eval->first.read_dof_values_plain(solution_level->solutions.block(block_index));
+      fe_eval->first.evaluate(fe_eval->second);
+    }
+  for (unsigned int age = 0; age < fe_eval_old.size(); ++age)
+    {
+      if (FEEDepPairPtr &old_fe_eval = fe_eval_old[age])
+        {
+          old_fe_eval->first.reinit(cell);
+          old_fe_eval->first.read_dof_values_plain(
+            solution_level->old_solutions[age].block(block_index));
+          old_fe_eval->first.evaluate(old_fe_eval->second);
+        }
+    }
+  if (fe_eval_src_dst)
+    {
+      fe_eval_src_dst->first.reinit(cell);
+      if (fe_eval_src_dst->second != EvalFlags::nothing)
+        {
+          fe_eval_src_dst->first.read_dof_values_plain(
+            _src_solutions->block(block_index));
+          fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+        }
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::integrate()
+{
+  if (fe_eval_src_dst)
+    {
+      fe_eval_src_dst->first.integrate(integration_flags);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::distribute(
+  BlockVector<number> *dst_solutions)
+{
+  if (fe_eval_src_dst)
+    {
+      fe_eval_src_dst->first.distribute_local_to_global(
+        dst_solutions->block(block_index));
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::integrate_and_distribute(
+  BlockVector<number> *dst_solutions)
+{
+  if (fe_eval_src_dst)
+    {
+      fe_eval_src_dst->first.integrate_scatter(integration_flags,
+                                               dst_solutions->block(block_index));
+    }
+}
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
