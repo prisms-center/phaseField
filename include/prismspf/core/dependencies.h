@@ -21,33 +21,49 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-// NOLINTBEGIN(misc-non-private-member-variables-in-classes,
-// hicpp-explicit-conversions)
+// NOLINTBEGIN(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
+
+/**
+ * @brief Dependency struct containing evaluation flags for each field.
+ */
 struct Dependency
 {
-  using EvalFlags                = dealii::EvaluationFlags::EvaluationFlags;
-  EvalFlags flag                 = EvalFlags::nothing;
-  EvalFlags linear_solution_flag = EvalFlags::nothing;
+  using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 
+  /**
+   * @brief Evaluation flags for the current solution.
+   */
+  EvalFlags flag = EvalFlags::nothing;
+
+  /**
+   * @brief Evaluation flags for the DependencyType::SRC solution.
+   * @note This is only ever used in the LHS side of evaluations.
+   */
+  EvalFlags src_flag = EvalFlags::nothing;
+
+  /**
+   * @brief Collection of evaluation flags for the old solutions.
+   */
   std::vector<EvalFlags> old_flags;
 
-  // Intentional implicit conversions
   /**
-   * @brief Construct a Dependency with given flags.
+   * @brief Construct with given flags.
    */
-  Dependency(EvalFlags                     _flag                 = EvalFlags::nothing,
-             EvalFlags                     _linear_solution_flag = EvalFlags::nothing,
-             const std::vector<EvalFlags> &_old_flags            = {})
+  Dependency(EvalFlags                     _flag      = EvalFlags::nothing,
+             EvalFlags                     _src_flag  = EvalFlags::nothing,
+             const std::vector<EvalFlags> &_old_flags = {})
     : flag(_flag)
-    , linear_solution_flag(_linear_solution_flag)
+    , src_flag(_src_flag)
     , old_flags(_old_flags)
   {}
 
+  /**
+   * @brief Bitwise or construction operator.
+   */
   Dependency
   operator|(const Dependency &other) const
   {
-    Dependency result(flag | other.flag,
-                      linear_solution_flag | other.linear_solution_flag);
+    Dependency result(flag | other.flag, src_flag | other.src_flag);
     for (unsigned int i = 0; i < std::max(old_flags.size(), other.old_flags.size()); ++i)
       {
         result.old_flags.push_back(
@@ -57,11 +73,13 @@ struct Dependency
     return result;
   }
 
+  /**
+   * @brief Bitwise and construction operator.
+   */
   Dependency
   operator&(const Dependency &other) const
   {
-    Dependency result(flag & other.flag,
-                      linear_solution_flag & other.linear_solution_flag);
+    Dependency result(flag & other.flag, src_flag & other.src_flag);
     for (unsigned int i = 0; i < std::min(old_flags.size(), other.old_flags.size()); ++i)
       {
         result.old_flags.push_back(old_flags.at(i) & (other.old_flags.at(i)));
@@ -69,11 +87,14 @@ struct Dependency
     return result;
   }
 
+  /**
+   * @brief Bitwise or assignment operator.
+   */
   Dependency &
   operator|=(const Dependency &other)
   {
-    flag                 = flag | other.flag;
-    linear_solution_flag = linear_solution_flag | other.linear_solution_flag;
+    flag     = flag | other.flag;
+    src_flag = src_flag | other.src_flag;
     if (other.old_flags.size() > old_flags.size())
       {
         old_flags.resize(other.old_flags.size());
@@ -85,11 +106,14 @@ struct Dependency
     return *this;
   }
 
+  /**
+   * @brief Bitwise and assignment operator.
+   */
   Dependency &
   operator&=(const Dependency &other)
   {
-    flag                 = flag & other.flag;
-    linear_solution_flag = linear_solution_flag & other.linear_solution_flag;
+    flag     = flag & other.flag;
+    src_flag = src_flag & other.src_flag;
     old_flags.resize(std::min(old_flags.size(), other.old_flags.size()));
     for (unsigned int i = 0; i < old_flags.size(); ++i)
       {
@@ -100,8 +124,7 @@ struct Dependency
   }
 };
 
-// NOLINTEND(misc-non-private-member-variables-in-classes,
-// hicpp-explicit-conversions)
+// NOLINTEND(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
 
 using DependencyMap = std::map<Types::Index, Dependency>;
 
@@ -151,7 +174,7 @@ make_dependency_set(const std::vector<FieldAttributes> &field_attributes,
               iter = dependency_strings.find(potential_match);
               if (iter != dependency_strings.end())
                 {
-                  result[i].linear_solution_flag |= flag;
+                  result[i].src_flag |= flag;
                   dependency_strings.erase(iter);
                 }
             }

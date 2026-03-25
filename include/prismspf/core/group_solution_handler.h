@@ -27,6 +27,7 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 template <typename number>
 using BlockVector = dealii::LinearAlgebra::distributed::BlockVector<number>;
+
 /**
  * @brief Typedef for solution vector.
  */
@@ -34,12 +35,26 @@ template <typename number>
 using SolutionVector = BlockVector<number>::BlockType;
 
 /**
- * @brief Typedef for matrix_free.
+ * @brief Typedef for dealii::MatrixFree.
  */
 using dealii::MatrixFree;
 
 /**
- * @brief The solution vectors.
+ * @brief The solution vectors and their corresponding matrix free object with respect to
+ * some multigrid level.
+ *
+ * `solutions` is a block vector of all the fields that we keep track of at this level.
+ * `old_solutions` is a vector of with length equal to the number of old states we keep
+ * track old. Importantly, for each std::vector entry the block vector has the same shape
+ * as `solutions`.
+ * `matrix_free` is the dealii::MatrixFree object that belongs to the `solutions` and
+ * `old_solutions` for this level.
+ *
+ * @remark There is a [minor] optimization we could make regarding the old solutions. If a
+ * user wants to store up the 2nd old state, we allocate up to the 2nd old state for all
+ * fields. This behavior is indiscriminate on whether the user actually needs those
+ * vectors, so we could not do that. However, it's painful to deal with and will likely
+ * only show minor performance improvements.
  */
 template <unsigned int dim, typename number>
 struct SolutionLevel
