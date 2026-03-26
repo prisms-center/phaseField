@@ -72,7 +72,7 @@ enum SolverToleranceType : std::uint8_t
    */
   AbsoluteResidual,
   // TODO: these names and descriptions are not great. The point is to determine whether
-  // to average over the doman and whether to average over components.
+  // to average over the domain and whether to average over components.
   // TODO: this could also be bitwise
   // TODO: consider returning relative residual change
   /**
