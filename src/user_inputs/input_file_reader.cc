@@ -437,38 +437,39 @@ InputFileReader::declare_solver_parameters()
                                         dealii::Patterns::Integer(1, INT_MAX),
                                         "The maximum number of nonlinear solver "
                                         "iterations before the loop is stopped.");
-        parameter_handler.declare_entry("tolerance type",
-                                        "AbsoluteResidual",
-                                        dealii::Patterns::Selection(
-                                          "AbsoluteResidual|RelativeResidualChange"),
-                                        "The tolerance type for the nonlinear solver.");
+        /*         parameter_handler.declare_entry(
+                  "tolerance type",
+                  "AbsoluteResidual",
+                  dealii::Patterns::Selection("AbsoluteResidual|RMSEPerField|IntegratedPerField|"
+                                              "RMSETotal|IntegratedTotal"),
+                  "The tolerance type for the nonlinear solver."); */
         parameter_handler.declare_entry(
           "tolerance value",
           "1.0e-10",
           dealii::Patterns::Double(DBL_MIN, DBL_MAX),
           "The value of for the nonlinear solver tolerance.");
-        parameter_handler.declare_entry(
-          "use backtracking line search",
-          "true",
-          dealii::Patterns::Bool(),
-          "Whether to use a backtracking line-search to find the best "
-          "choice of the damping coefficient.");
-        parameter_handler.declare_entry(
-          "step size modifier",
-          "0.5",
-          dealii::Patterns::Double(0.0, 1.0),
-          "The constant that determines how much the step size decreases "
-          "per backtrack. The 'tau' parameter.");
-        parameter_handler.declare_entry(
-          "residual decrease coefficient",
-          "0.5",
-          dealii::Patterns::Double(0.0, 1.0),
-          "The constant that determines how much the residual must "
-          "decrease to be accepted as sufficient. The 'c' parameter.");
+        /*         parameter_handler.declare_entry(
+                  "use backtracking line search",
+                  "true",
+                  dealii::Patterns::Bool(),
+                  "Whether to use a backtracking line-search to find the best "
+                  "choice of the damping coefficient.");
+                parameter_handler.declare_entry(
+                  "step size modifier",
+                  "0.5",
+                  dealii::Patterns::Double(0.0, 1.0),
+                  "The constant that determines how much the step size decreases "
+                  "per backtrack. The 'tau' parameter.");
+                parameter_handler.declare_entry(
+                  "residual decrease coefficient",
+                  "0.5",
+                  dealii::Patterns::Double(0.0, 1.0),
+                  "The constant that determines how much the residual must "
+                  "decrease to be accepted as sufficient. The 'c' parameter."); */
         parameter_handler.declare_entry(
           "step size",
           "1.0",
-          dealii::Patterns::Double(0.0, 1.0),
+          dealii::Patterns::Double(0.0),
           "The constant damping value to be used if the backtrace "
           "line-search approach isn't used.");
         parameter_handler.declare_alias("tolerance value", "tolerance");

@@ -391,6 +391,8 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
           static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
         nonlinear_solver_parameters.step_length =
           parameter_handler.get_double("step size");
+        nonlinear_solver_parameters.tolerance_value =
+          parameter_handler.get_double("tolerance value");
         for (auto solver_id : solver_ids)
           {
             nonlinear_solve_parameters

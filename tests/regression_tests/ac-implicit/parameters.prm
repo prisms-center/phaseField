@@ -11,7 +11,7 @@ set global refinement = 7
 set max refinement                    = 7
 set min refinement                    = 3
 set mesh adaptivity                   = true
-set remeshing period                  = 900
+set remeshing period                  = 90
 
 subsection refinement criterion: 0
   set type                           = value
@@ -21,33 +21,23 @@ subsection refinement criterion: 0
   set variables                      = n
 end
 
-set time step = 1.0e-3
+set time step = 1.0e-2
 set end time = 15
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 50
-  set list = 0
 end
 
 set Model constant MnV = 1.0, DOUBLE
 set Model constant KnV = 2.0, DOUBLE
 
-subsection boundary conditions: 0
-  # List of conditions.
-  #set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet
-
-  # The names of the fields that will use these constraints.
-  set variables = n
-
-end
-
 subsection linear solver parameters: 0
   set solver_ids               = 1
 
   set max iterations           = 1000
-  #set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1.0e-10
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1.0e-6
 
   #set min mg level             = 0
   #set preconditioner type      = GMG
@@ -60,6 +50,6 @@ subsection newton solver parameters: 0
   set solver_ids               = 1
 
   set max iterations           = 100
-  #set tolerance type           = AbsoluteResidual
-  #set tolerance value          = 1.0e-10
+  set step size = 0.99
+  set tolerance value          = 1.0e-6
 end
