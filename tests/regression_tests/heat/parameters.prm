@@ -24,7 +24,7 @@ subsection linear solver parameters: 0
   set solver_ids               = 1
 
   set max iterations           = 100
-  #set tolerance type           = AbsoluteResidual
+  set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-10
 
   #set min mg level             = 0
