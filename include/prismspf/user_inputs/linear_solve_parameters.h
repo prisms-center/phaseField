@@ -24,7 +24,7 @@ struct LinearSolverParameters
   double tolerance = Defaults::tolerance;
 
   // Solver tolerance type
-  SolverToleranceType tolerance_type = SolverToleranceType::RelativeResidualChange;
+  SolverToleranceType tolerance_type = SolverToleranceType::RMSEPerField;
 
   // Max number of iterations for the linear solve
   unsigned int max_iterations = Defaults::iterations;

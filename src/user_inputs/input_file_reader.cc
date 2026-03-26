@@ -385,9 +385,8 @@ InputFileReader::declare_solver_parameters()
         parameter_handler.declare_entry(
           "tolerance type",
           "AbsoluteResidual",
-          dealii::Patterns::Selection(
-            "AbsoluteResidual|RelativeResidualChange|RMSEPerField|IntegratedPerField|"
-            "RMSETotal|IntegratedTotal"),
+          dealii::Patterns::Selection("AbsoluteResidual|RMSEPerField|IntegratedPerField|"
+                                      "RMSETotal|IntegratedTotal"),
           "The tolerance type for the linear solver.");
         parameter_handler.declare_entry("tolerance value",
                                         "1.0e-10",
