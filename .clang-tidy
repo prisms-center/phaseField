@@ -22,6 +22,16 @@ CheckOptions:
   - key: readability-function-cognitive-complexity.IgnoreMacros
     value: 'true'
 
+# Ignore bool conversion
+  - key: readability-implicit-bool-conversion.AllowIntegerConditions
+    value: 'true'
+  - key: readability-implicit-bool-conversion.AllowPointerConditions
+    value: 'true'
+
+# Structs are meant to be public
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: 'true'
+
 # Naming conventions
   - key:             readability-identifier-naming.ClassCase
     value:           CamelCase

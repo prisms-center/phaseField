@@ -1,51 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#pragma once
-
-#include <prismspf/core/pde_operator.h>
-#include <prismspf/core/variable_attribute_loader.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/utilities/utilities.h>
-
-#include <prismspf/config.h>
+#include <prismspf/core/pde_operator_base.h>
 
 #include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-/**
- * @brief This is a derived class of `VariableAttributeLoader` where the user implements
- * their variable attributes and field declarations.
- */
-class CustomAttributeLoader : public VariableAttributeLoader
-{
-public:
-  /**
-   * @brief Destructor.
-   */
-  ~CustomAttributeLoader() override = default;
-
-  /**
-   * @brief User-implemented method where the variable attributes are set for all fields.
-   */
-  void
-  load_variable_attributes() override;
-};
-
-/**
- * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
- * PDEs.
- *
- * @tparam dim The number of dimensions in the problem.
- * @tparam degree The polynomial degree of the shape functions.
- * @tparam number Datatype to use. Either double or float.
- */
 template <unsigned int dim, unsigned int degree, typename number>
-class CustomPDE : public PDEOperator<dim, degree, number>
+class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
@@ -54,92 +17,94 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
-  using PDEOperator<dim, degree, number>::get_user_inputs;
-  using PDEOperator<dim, degree, number>::get_pf_tools;
-  using PDEOperator<dim, degree, number>::get_timestep;
+  using PDEOperatorBase<dim, degree, number>::get_user_inputs;
+  using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
   /**
    * @brief Constructor.
    */
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
-    : PDEOperator<dim, degree, number>(_user_inputs, _pf_tools)
+    : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
+    , McV(get_user_inputs().user_constants.get_model_constant_double("McV"))
+    , KcV(get_user_inputs().user_constants.get_model_constant_double("KcV"))
+    , WcV(get_user_inputs().user_constants.get_model_constant_double("WcV"))
+    , c0(get_user_inputs().user_constants.get_model_constant_double("c0"))
+    , icamplitude(
+        get_user_inputs().user_constants.get_model_constant_double("icamplitude"))
+    , dist(-1.0, 1.0)
   {}
 
 private:
-  /**
-   * @brief User-implemented class for the initial conditions.
-   */
   void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        number                   &scalar_value,
-                        number                   &vector_component_value) const override;
+  set_initial_condition([[maybe_unused]] const unsigned int       &index,
+                        [[maybe_unused]] const unsigned int       &component,
+                        [[maybe_unused]] const dealii::Point<dim> &point,
+                        [[maybe_unused]] number                   &scalar_value,
+                        [[maybe_unused]] number &vector_component_value) const override
+  {
+    if (index == 0) // redundant
+      {
+        // Random number generator (Type std::mt19937_64)
+        RNGEngine &rng = get_user_inputs().misc_parameters.rng;
+        // noise around c0 with amplitude icamplitude
+        scalar_value = c0 + icamplitude * dist(rng);
+      }
+  }
 
-  /**
-   * @brief User-implemented class for nonuniform boundary conditions.
-   */
   void
-  set_nonuniform_dirichlet(const unsigned int       &index,
-                           const unsigned int       &boundary_id,
-                           const unsigned int       &component,
-                           const dealii::Point<dim> &point,
-                           number                   &scalar_value,
-                           number &vector_component_value) const override;
+  compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
+              [[maybe_unused]] const SimulationTimer               &sim_timer,
+              [[maybe_unused]] unsigned int solve_group_id) const override
+  {
+    if (solve_group_id == 0) // c
+      {
+        ScalarValue c   = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  mux = variable_list.template get_gradient<Scalar, OldOne>(1);
 
-  /**
-   * @brief User-implemented class for the RHS of explicit equations.
-   */
-  void
-  compute_explicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index solve_block) const override;
+        ScalarValue eq_c  = c;
+        ScalarGrad  eqx_c = -McV * sim_timer.get_timestep() * mux;
 
-  /**
-   * @brief User-implemented class for the RHS of nonexplicit equations.
-   */
-  void
-  compute_nonexplicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index                                               solve_block,
-    Types::Index index = Numbers::invalid_index) const override;
+        variable_list.set_value_term(0, eq_c);
+        variable_list.set_gradient_term(0, eqx_c);
+      }
+    else if (solve_group_id == 1) // mu
+      {
+        ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
-  /**
-   * @brief User-implemented class for the LHS of nonexplicit equations.
-   */
-  void
-  compute_nonexplicit_lhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index                                               solve_block,
-    Types::Index index = Numbers::invalid_index) const override;
+        ScalarValue fcV = WcV * c * (c - 1.0) * (c - 0.5);
 
-  /**
-   * @brief User-implemented class for the RHS of postprocessed explicit equations.
-   */
-  void
-  compute_postprocess_explicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index solve_block) const override;
+        ScalarValue eq_mu  = fcV;
+        ScalarGrad  eqx_mu = KcV * cx;
 
-  ScalarValue McV =
-    get_user_inputs().get_user_constants().get_model_constant_double("McV");
-  ScalarValue KcV =
-    get_user_inputs().get_user_constants().get_model_constant_double("KcV");
-  ScalarValue WcV =
-    get_user_inputs().get_user_constants().get_model_constant_double("WcV");
+        variable_list.set_value_term(1, eq_mu);
+        variable_list.set_gradient_term(1, eqx_mu);
+      }
+    else if (solve_group_id == 2) // pp
+      {
+        ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
 
-  number c0 = get_user_inputs().get_user_constants().get_model_constant_double("c0");
-  number icamplitude =
-    get_user_inputs().get_user_constants().get_model_constant_double("icamplitude");
+        ScalarValue f_tot  = 0.0;
+        ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
+        ScalarValue f_grad = 0.0;
+
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            f_grad += 0.5 * KcV * cx[i] * cx[i];
+          }
+        f_tot = f_chem + f_grad;
+        variable_list.set_value_term(2, f_tot);
+      }
+  }
+
+  ScalarValue                                    McV;
+  ScalarValue                                    KcV;
+  ScalarValue                                    WcV;
+  number                                         c0;
+  number                                         icamplitude;
+  mutable std::uniform_real_distribution<number> dist;
 };
 
 PRISMS_PF_END_NAMESPACE

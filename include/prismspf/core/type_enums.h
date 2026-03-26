@@ -13,24 +13,24 @@ PRISMS_PF_BEGIN_NAMESPACE
 /**
  * @brief Type of PDE that is being solved.
  */
-enum PDEType : std::uint8_t
+enum SolveType : std::uint8_t
 {
-  ExplicitTimeDependent,
-  ImplicitTimeDependent,
-  TimeIndependent,
-  Auxiliary,
-  Constant
+  Constant,
+  Explicit,
+  Linear,
+  Newton
 };
 
 /**
- * @brief Type of solve.
+ * @brief Tensor rank of the field.
+ *
+ * Currently, only scalar and vectors are supported.
  */
-enum SolveType : std::uint8_t
+enum TensorRank : unsigned int
 {
-  ExplicitRHS,
-  NonexplicitRHS,
-  NonexplicitLHS,
-  Postprocess
+  Undefined = static_cast<unsigned int>(-1),
+  Scalar    = 0,
+  Vector    = 1
 };
 
 /**
@@ -45,34 +45,17 @@ enum ElasticityModel : std::uint8_t
 };
 
 /**
- * @brief Internal classification of combined field and solve types. There are six
- * different types of solve that are possible. For Explicit solves, all fields of that
- * type can be solved concurrently. For NonexplicitLinear, NonexplicitSelfnonlinear,
- * and NonexplicitAuxiliary, these must be solved sequentially and wrapped in
- * conditionals in the user implementation. For NonexplicitCononlinear, there are at
- * least 2 fields that are nonlinear together, as opposed to NonexplicitSelfnonlinear,
- * which must be solved at the same time. A simply case for this is the steady-state
- * Cahn-Hilliard equation. Finally, for ExplicitPostprocess and ExplicitConstant, they
- * are more or less the same as Explicit.
- */
-enum FieldSolveType : std::uint8_t
-{
-  ExplicitConstant,
-  Explicit,
-  NonexplicitLinear,
-  NonexplicitSelfnonlinear,
-  NonexplicitAuxiliary,
-  NonexplicitCononlinear,
-  ExplicitPostprocess,
-};
-
-/**
  * @brief Internal classification for types of variable dependencies.
  */
-enum DependencyType : std::uint8_t
+enum DependencyType : int
 {
-  Normal,
-  Change,
+  DST      = -2,
+  SRC      = -1,
+  LHS      = SRC,
+  Solution = SRC,
+  Trial    = SRC,
+  Change   = SRC,
+  Current  = 0,
   OldOne,
   OldTwo,
   OldThree,
@@ -84,8 +67,30 @@ enum DependencyType : std::uint8_t
  */
 enum SolverToleranceType : std::uint8_t
 {
+  /**
+   * @brief Legacy
+   */
   AbsoluteResidual,
-  RelativeResidualChange
+  // TODO: these names and descriptions are not great. The point is to determine whether
+  // to average over the domain and whether to average over components.
+  // TODO: this could also be bitwise
+  // TODO: consider returning relative residual change
+  /**
+   * @brief The mean local error averaged over each field is lower than the tolerance.
+   */
+  RMSEPerField,
+  /**
+   * @brief The integrated error averaged over each field is lower than the tolerance.
+   */
+  IntegratedPerField,
+  /**
+   * @brief The sum of the average local errors of each field is lower than the tolerance.
+   */
+  RMSETotal,
+  /**
+   * @brief The sum of the integrated errors of each field is lower than the tolerance.
+   */
+  IntegratedTotal
 };
 
 /**
@@ -109,50 +114,6 @@ enum DataFormatType : std::uint8_t
 };
 
 /**
- * @brief Enum to string for PDEType
- */
-inline std::string
-to_string(PDEType type)
-{
-  switch (type)
-    {
-      case PDEType::ExplicitTimeDependent:
-        return "ExplicitTimeDependent";
-      case PDEType::ImplicitTimeDependent:
-        return "ImplicitTimeDependent";
-      case PDEType::TimeIndependent:
-        return "TimeIndependent";
-      case PDEType::Auxiliary:
-        return "Auxiliary";
-      case PDEType::Constant:
-        return "Constant";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
- * @brief Enum to string for SolveType
- */
-inline std::string
-to_string(SolveType type)
-{
-  switch (type)
-    {
-      case SolveType::ExplicitRHS:
-        return "ExplicitRHS";
-      case SolveType::NonexplicitRHS:
-        return "NonexplicitRHS";
-      case SolveType::NonexplicitLHS:
-        return "NonexplicitLHS";
-      case SolveType::Postprocess:
-        return "Postprocess";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
  * @brief Enum to string for ElasticityModel
  */
 inline std::string
@@ -174,33 +135,6 @@ to_string(ElasticityModel type)
 }
 
 /**
- * @brief Enum to string for FieldSolveType
- */
-inline std::string
-to_string(FieldSolveType type)
-{
-  switch (type)
-    {
-      case FieldSolveType::Explicit:
-        return "Explicit";
-      case FieldSolveType::NonexplicitLinear:
-        return "NonexplicitLinear";
-      case FieldSolveType::NonexplicitSelfnonlinear:
-        return "NonexplicitSelfnonlinear";
-      case FieldSolveType::NonexplicitAuxiliary:
-        return "NonexplicitAuxiliary";
-      case FieldSolveType::NonexplicitCononlinear:
-        return "NonexplicitCononlinear";
-      case FieldSolveType::ExplicitPostprocess:
-        return "ExplicitPostprocess";
-      case FieldSolveType::ExplicitConstant:
-        return "ExplicitConstant";
-      default:
-        return "UNKNOWN";
-    }
-}
-
-/**
  * @brief Enum to string for DependencyType
  */
 inline std::string
@@ -208,8 +142,8 @@ to_string(DependencyType type)
 {
   switch (type)
     {
-      case DependencyType::Normal:
-        return "Normal";
+      case DependencyType::Current:
+        return "Current";
       case DependencyType::Change:
         return "Change";
       case DependencyType::OldOne:
@@ -235,8 +169,14 @@ to_string(SolverToleranceType type)
     {
       case SolverToleranceType::AbsoluteResidual:
         return "AbsoluteResidual";
-      case SolverToleranceType::RelativeResidualChange:
-        return "RelativeResidualChange";
+      case SolverToleranceType::RMSEPerField:
+        return "RMSEPerField";
+      case SolverToleranceType::RMSETotal:
+        return "RMSETotal";
+      case SolverToleranceType::IntegratedPerField:
+        return "IntegratedPerField";
+      case SolverToleranceType::IntegratedTotal:
+        return "IntegratedTotal";
       default:
         return "UNKNOWN";
     }

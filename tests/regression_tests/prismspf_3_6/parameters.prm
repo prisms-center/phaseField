@@ -1,0 +1,33 @@
+subsection Rectangular mesh
+  set x size = 50
+  set y size = 50
+  set z size = 50
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 7
+set max refinement                    = 7
+set min refinement                    = 3
+set mesh adaptivity                   = true
+set remeshing period                  = 900
+
+subsection refinement criterion: 0
+  set type                           = value
+
+  set value lower bound              = 0.01
+  set value upper bound              = 0.99
+  set variables                      = n
+end
+
+set time step = 1.0e-3
+set end time = 15
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 5
+end
+
+set Model constant MnV = 1.0, DOUBLE
+set Model constant KnV = 2.0, DOUBLE

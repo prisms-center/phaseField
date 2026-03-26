@@ -5,8 +5,12 @@
 
 #include <deal.II/base/parameter_handler.h>
 
-#include <prismspf/user_inputs/boundary_parameters.h>
+#include <prismspf/core/field_attributes.h>
+#include <prismspf/core/solve_group.h>
+
 #include <prismspf/user_inputs/checkpoint_parameters.h>
+#include <prismspf/user_inputs/constraint_parameters.h>
+#include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
@@ -19,129 +23,63 @@
 
 #include <prismspf/config.h>
 
+#include <vector>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-struct VariableAttributes;
-
-class InputFileReader;
-
 template <unsigned int dim>
-class UserInputParameters
+struct UserInputParameters
 {
 public:
+  /**
+   * @brief Default Constructor.
+   */
+  UserInputParameters() = default;
   /**
    * @brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
-  UserInputParameters(InputFileReader          &input_file_reader,
-                      dealii::ParameterHandler &parameter_handler);
+  explicit UserInputParameters(const std::string &file_name);
 
   /**
-   * @brief Return the variable attributes.
+   * @brief Ensure that the parameters are compatible with a set of fields and solvers.
    */
-  [[nodiscard]] const std::map<unsigned int, VariableAttributes> &
-  get_variable_attributes() const
+  void
+  validate(const std::vector<FieldAttributes> &field_attributes,
+           const std::vector<SolveGroup>      &solve_groups)
   {
-    return var_attributes;
+    // Perform and postprocessing of user inputs and run checks
+    spatial_discretization.validate();
+    temporal_discretization.validate();
+    linear_solve_parameters.validate();
+    nonlinear_solve_parameters.validate();
+    output_parameters.validate();
+    checkpoint_parameters.validate();
+    boundary_parameters.validate();
+    nucleation_parameters.validate();
+    misc_parameters.postprocess_and_validate();
+    load_ic_parameters.postprocess_and_validate();
   }
 
   /**
-   * @brief Return the spatial discretization parameters.
+   * @brief Ensure that the parameters are compatible with a set of fields and solvers.
    */
-  [[nodiscard]] const SpatialDiscretization<dim> &
-  get_spatial_discretization() const
+  std::string
+  parameter_summary()
   {
-    return spatial_discretization;
-  }
-
-  /**
-   * @brief Return the temporal discretization parameters.
-   */
-  [[nodiscard]] const TemporalDiscretization &
-  get_temporal_discretization() const
-  {
-    return temporal_discretization;
-  }
-
-  /**
-   * @brief Return the linear solve parameters.
-   */
-  [[nodiscard]] const LinearSolveParameters &
-  get_linear_solve_parameters() const
-  {
-    return linear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the nonlinear solve parameters.
-   */
-  [[nodiscard]] const NonlinearSolveParameterSet &
-  get_nonlinear_solve_parameters() const
-  {
-    return nonlinear_solve_parameters;
-  }
-
-  /**
-   * @brief Return the output parameters.
-   */
-  [[nodiscard]] const OutputParameters &
-  get_output_parameters() const
-  {
-    return output_parameters;
-  }
-
-  /**
-   * @brief Return the checkpoint parameters.
-   */
-  [[nodiscard]] const CheckpointParameters &
-  get_checkpoint_parameters() const
-  {
-    return checkpoint_parameters;
-  }
-
-  /**
-   * @brief Return the boundary parameters.
-   */
-  [[nodiscard]] const BoundaryParameters<dim> &
-  get_boundary_parameters() const
-  {
-    return boundary_parameters;
-  }
-
-  /**
-   * @brief Return the load IC parameters.
-   */
-  [[nodiscard]] const LoadInitialConditionParameters &
-  get_load_initial_condition_parameters() const
-  {
-    return load_ic_parameters;
-  }
-
-  /**
-   * @brief Return the nucleation parameters.
-   */
-  [[nodiscard]] const NucleationParameters &
-  get_nucleation_parameters() const
-  {
-    return nucleation_parameters;
-  }
-
-  /**
-   * @brief Return the miscellaneous parameters.
-   */
-  [[nodiscard]] const MiscellaneousParameters &
-  get_miscellaneous_parameters() const
-  {
-    return misc_parameters;
-  }
-
-  /**
-   * @brief Return the user constants.
-   */
-  [[nodiscard]] const UserConstants<dim> &
-  get_user_constants() const
-  {
-    return user_constants;
+    // Print all the parameters to summary.log
+    spatial_discretization.print_parameter_summary();
+    temporal_discretization.print_parameter_summary();
+    linear_solve_parameters.print_parameter_summary();
+    nonlinear_solve_parameters.print_parameter_summary();
+    output_parameters.print_parameter_summary();
+    checkpoint_parameters.print_parameter_summary();
+    boundary_parameters.print_parameter_summary();
+    load_ic_parameters.print_parameter_summary();
+    nucleation_parameters.print_parameter_summary();
+    misc_parameters.print_parameter_summary();
+    user_constants.print();
+    return "";
   }
 
 private:
@@ -229,9 +167,7 @@ private:
   load_model_constants(const InputFileReader    &input_file_reader,
                        dealii::ParameterHandler &parameter_handler);
 
-  // Variable attributes
-  std::map<unsigned int, VariableAttributes> var_attributes;
-
+public:
   // Spatial discretization parameters
   SpatialDiscretization<dim> spatial_discretization;
 

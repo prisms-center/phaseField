@@ -1,4 +1,4 @@
-for ( dimension : SPACE_DIMENSIONS; number : REAL_SCALARS)
+for ( dimension : SPACE_DIMENSIONS; degree : ELEMENT_DEGREE; number : REAL_SCALARS)
   {
-    template class SolutionOutput<dimension, number>;
+    template class SolutionOutput<dimension, degree, number>;
   }

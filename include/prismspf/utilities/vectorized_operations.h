@@ -7,37 +7,61 @@
 
 #include <prismspf/config.h>
 
+#include <cmath>
+
 /**
  * This file provides some operations on dealii::VectorizedArray that are not provided by
- * dealii
+ * dealii. Use the std namespace so we can call them with std::function
  */
-namespace dealii
+namespace std
 {
+  // NOLINTBEGIN(cert-dcl58-cpp, readability-identifier-naming,
+  // readability-identifier-length)
+  // clang-format off
 
-  template <typename number, typename other_number>
-  dealii::VectorizedArray<number>
-  fmod(const dealii::VectorizedArray<number> &value, const other_number &modulus)
+  template <typename Number, std::size_t width>
+  inline ::dealii::VectorizedArray<Number, width>
+  erf(const ::dealii::VectorizedArray<Number, width> &x)
   {
-    using std::fmod;
-    dealii::VectorizedArray<number> out;
-    for (unsigned int index = 0; index < dealii::VectorizedArray<number>::size(); ++index)
-      {
-        out[index] = fmod(value[index], modulus);
-      }
+    ::dealii::VectorizedArray<Number, width> out;
+    for (unsigned int i = 0; i < dealii::VectorizedArray<Number, width>::size(); ++i)
+      out[i] = std::erf(x[i]);
     return out;
   }
 
-  template <typename number, typename other_number>
-  dealii::VectorizedArray<number>
-  fmod(const dealii::VectorizedArray<number>       &value,
-       const dealii::VectorizedArray<other_number> &modulus)
+  template <typename Number, std::size_t width>
+  inline ::dealii::VectorizedArray<Number, width>
+  erfc(const ::dealii::VectorizedArray<Number, width> &x)
   {
-    using std::fmod;
-    dealii::VectorizedArray<number> out;
-    for (unsigned int index = 0; index < dealii::VectorizedArray<number>::size(); ++index)
-      {
-        out[index] = fmod(value[index], modulus[index]);
-      }
+    ::dealii::VectorizedArray<Number, width> out;
+    for (unsigned int i = 0; i < dealii::VectorizedArray<Number, width>::size(); ++i)
+      out[i] = std::erfc(x[i]);
     return out;
   }
-} // namespace dealii
+
+  template <typename Number, std::size_t width>
+  inline ::dealii::VectorizedArray<Number, width>
+  fmod(const ::dealii::VectorizedArray<Number, width> &numer, const Number denom)
+  {
+    ::dealii::VectorizedArray<Number, width> out;
+    for (unsigned int i = 0; i < dealii::VectorizedArray<Number, width>::size(); ++i)
+      out[i] = std::fmod(numer[i], denom);
+    return out;
+  }
+
+  template <typename Number, std::size_t width>
+  inline ::dealii::VectorizedArray<Number, width>
+  fmod(const ::dealii::VectorizedArray<Number, width> &numer,
+       const ::dealii::VectorizedArray<Number, width> &denom)
+  {
+    ::dealii::VectorizedArray<Number, width> out;
+    for (unsigned int i = 0; i < dealii::VectorizedArray<Number, width>::size(); ++i)
+      out[i] = std::fmod(numer[i], denom[i]);
+    return out;
+  }
+
+  // clang-format on
+  // NOLINTEND(cert-dcl58-cpp, readability-identifier-naming,
+  // readability-identifier-length)
+
+} // namespace std

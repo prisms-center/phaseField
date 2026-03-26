@@ -1,22 +1,23 @@
-set dim = 2
 subsection Rectangular mesh
   set x size = 800.0
   set y size = 800.0
   set z size = 800.0
+  set periodic x = true
+  set periodic y = true
+  set periodic z = true
 end
 
 set global refinement = 2
-set degree = 2
-
-set mesh adaptivity = true
-set remeshing period = 1000
 set max refinement = 10
 set min refinement = 2
+set mesh adaptivity = true
+set remeshing period = 1000
 
-subsection refinement criterion: n
-  set type = value
-  set value lower bound = 0.01
-  set value upper bound = 0.99
+subsection refinement criterion: 0
+  set type                           = value
+  set value lower bound              = 0.01
+  set value upper bound              = 0.99
+  set variables                      = n
 end
 
 set time step = 0.011
@@ -27,10 +28,6 @@ subsection output
   set number = 80
   set file type = pvtu
 end
-
-set boundary condition for c = Periodic
-set boundary condition for n = Periodic
-set boundary condition for nucleation_rate = Periodic
 
 subsection nucleation
   set nucleus exclusion distance = 20.0

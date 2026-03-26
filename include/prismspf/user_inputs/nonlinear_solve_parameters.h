@@ -16,7 +16,6 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct NonlinearSolverParameters
 {
-public:
   // Nonlinear step length
   mutable double step_length = 1.0;
 
@@ -32,12 +31,11 @@ public:
  */
 struct NonlinearSolveParameterSet
 {
-public:
   /**
-   * @brief Postprocess and validate parameters.
+   * @brief Validate parameters.
    */
   void
-  postprocess_and_validate();
+  validate();
 
   /**
    * @brief Print parameters to summary.log
@@ -45,43 +43,14 @@ public:
   void
   print_parameter_summary() const;
 
-  /**
-   * @brief Clear the nonlinear solve parameters.
-   */
-  void
-  clear()
-  {
-    nonlinear_solve.clear();
-  }
-
-  /**
-   * @brief Set the nonlinear solve parameters for a field index.
-   */
-  void
-  set_nonlinear_solve_parameters(Types::Index                     index,
-                                 const NonlinearSolverParameters &parameters)
-  {
-    nonlinear_solve[index] = parameters;
-  }
-
-  /**
-   * @brief Get the nonlinear solve parameters for a field index.
-   */
-  [[nodiscard]] const NonlinearSolverParameters &
-  get_nonlinear_solve_parameters(Types::Index index) const
-  {
-    return nonlinear_solve.at(index);
-  }
-
-private:
   // Map of nonlinear solve parameters for fields that require them
-  std::map<Types::Index, NonlinearSolverParameters> nonlinear_solve;
+  std::map<Types::Index, NonlinearSolverParameters> newton_solvers;
 };
 
 inline void
-NonlinearSolveParameterSet::postprocess_and_validate()
+NonlinearSolveParameterSet::validate()
 {
-  for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
+  for (const auto &[index, nonlinear_solver_parameters] : newton_solvers)
     {
       AssertThrow(
         nonlinear_solver_parameters.step_length > 0.0 &&
@@ -97,14 +66,14 @@ NonlinearSolveParameterSet::postprocess_and_validate()
 inline void
 NonlinearSolveParameterSet::print_parameter_summary() const
 {
-  if (!nonlinear_solve.empty())
+  if (!newton_solvers.empty())
     {
       ConditionalOStreams::pout_summary()
         << "================================================\n"
         << "  Nonlinear Solve Parameters\n"
         << "================================================\n";
 
-      for (const auto &[index, nonlinear_solver_parameters] : nonlinear_solve)
+      for (const auto &[index, nonlinear_solver_parameters] : newton_solvers)
         {
           ConditionalOStreams::pout_summary()
             << "Index: " << index << "\n"

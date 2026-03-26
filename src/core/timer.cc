@@ -134,8 +134,8 @@ Timer::end_section(const char *name)
   AssertThrow(
     !active_section.empty() &&
       (active_section == name ||
-       active_section.size() > std::string(name).size() &&
-         active_section.substr(active_section.size() - std::string(name).size()) == name),
+       (active_section.size() > std::string(name).size() &&
+        active_section.substr(active_section.size() - std::string(name).size()) == name)),
     dealii::ExcMessage(std::string("Timer::end_section mismatch: expected segment '") +
                        name + "' but top of stack is '" + active_section + "'."));
   serial_timer().leave_subsection();

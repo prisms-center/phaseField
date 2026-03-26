@@ -1,50 +1,14 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#pragma once
+#include <prismspf/core/pde_operator_base.h>
 
-#include <prismspf/core/pde_operator.h>
-#include <prismspf/core/phase_field_tools.h>
-#include <prismspf/core/variable_attribute_loader.h>
-#include <prismspf/core/variable_attributes.h>
-
-#include <prismspf/user_inputs/user_input_parameters.h>
-
-#include <prismspf/utilities/utilities.h>
-
-#include <prismspf/config.h>
+#include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-/**
- * @brief This is a derived class of `VariableAttributeLoader` where the user implements
- * their variable attributes and field declarations.
- */
-class CustomAttributeLoader : public VariableAttributeLoader
-{
-public:
-  /**
-   * @brief Destructor.
-   */
-  ~CustomAttributeLoader() override = default;
-
-  /**
-   * @brief User-implemented method where the variable attributes are set for all fields.
-   */
-  void
-  load_variable_attributes() override;
-};
-
-/**
- * @brief This is a derived class of `MatrixFreeOperator` where the user implements their
- * PDEs.
- *
- * @tparam dim The number of dimensions in the problem.
- * @tparam degree The polynomial degree of the shape functions.
- * @tparam number Datatype to use. Either double or float.
- */
 template <unsigned int dim, unsigned int degree, typename number>
-class CustomPDE : public PDEOperator<dim, degree, number>
+class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
@@ -53,84 +17,99 @@ public:
   using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
   using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
   using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
-  using PDEOperator<dim, degree, number>::get_user_inputs;
-  using PDEOperator<dim, degree, number>::get_pf_tools;
-  using PDEOperator<dim, degree, number>::get_timestep;
+  using PDEOperatorBase<dim, degree, number>::get_user_inputs;
+  using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
   /**
    * @brief Constructor.
    */
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
-    : PDEOperator<dim, degree, number>(_user_inputs, _pf_tools)
+    : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
+    , m_well(get_user_inputs().user_constants.get_model_constant_double("m_well"))
+    , kappa(get_user_inputs().user_constants.get_model_constant_double("kappa"))
   {}
 
 private:
-  /**
-   * @brief User-implemented class for the initial conditions.
-   */
   void
-  set_initial_condition(const unsigned int       &index,
-                        const unsigned int       &component,
-                        const dealii::Point<dim> &point,
-                        number                   &scalar_value,
-                        number                   &vector_component_value) const override;
+  set_initial_condition([[maybe_unused]] const unsigned int       &index,
+                        [[maybe_unused]] const unsigned int       &component,
+                        [[maybe_unused]] const dealii::Point<dim> &point,
+                        [[maybe_unused]] number                   &scalar_value,
+                        [[maybe_unused]] number &vector_component_value) const override
+  {
+    const dealii::Tensor<1, dim> &mesh_size =
+      get_user_inputs().spatial_discretization.rectangular_mesh.size;
+    constexpr number center[12][3] = {
+      {0.1, 0.3,  0},
+      {0.8, 0.7,  0},
+      {0.5, 0.2,  0},
+      {0.4, 0.4,  0},
+      {0.3, 0.9,  0},
+      {0.8, 0.1,  0},
+      {0.9, 0.5,  0},
+      {0.0, 0.1,  0},
+      {0.1, 0.6,  0},
+      {0.5, 0.6,  0},
+      {1,   1,    0},
+      {0.7, 0.95, 0}
+    };
+    constexpr number rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+    number           dist    = 0.0;
+    for (unsigned int i = 0; i < 12; i++)
+      {
+        dist = 0.0;
+        for (unsigned int dir = 0; dir < dim; dir++)
+          {
+            const number comp_diff = point[dir] - center[i][dir] * mesh_size[dir];
+            dist += comp_diff * comp_diff;
+          }
+        dist = std::sqrt(dist);
 
-  /**
-   * @brief User-implemented class for nonuniform boundary conditions.
-   */
+        scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
+      }
+    scalar_value = std::min(scalar_value, static_cast<number>(1.0));
+  }
+
   void
-  set_nonuniform_dirichlet(const unsigned int       &index,
-                           const unsigned int       &boundary_id,
-                           const unsigned int       &component,
-                           const dealii::Point<dim> &point,
-                           number                   &scalar_value,
-                           number &vector_component_value) const override;
+  compute_rhs(FieldContainer<dim, degree, number> &variable_list,
+              const SimulationTimer               &sim_timer,
+              unsigned int                         solve_group_id) const override
+  {
+    if (solve_group_id == 1) // explicit
+      {
+        ScalarValue n_val  = variable_list.template get_value<Scalar, OldOne>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, OldOne>(0);
+        ScalarValue f_well = 4.0 * n_val * (n_val - 1.0) * (n_val - 0.5);
+        ScalarValue eq_n   = n_val - sim_timer.get_timestep() * m_well * f_well;
+        ScalarGrad  eqx_n  = -sim_timer.get_timestep() * kappa * m_well * n_grad;
 
-  /**
-   * @brief User-implemented class for the RHS of explicit equations.
-   */
-  void
-  compute_explicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index solve_block) const override;
+        variable_list.set_value_term(0, eq_n);
+        variable_list.set_gradient_term(0, eqx_n);
+      }
+    else if (solve_group_id == 2) // postprocess
+      {
+        ScalarValue n_val  = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue f_tot  = 0.0;
+        ScalarValue f_chem =
+          n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
+        ScalarValue f_grad = 0.0;
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            f_grad += 0.5 * kappa * n_grad[i] * n_grad[i];
+          }
+        f_tot = f_chem + f_grad;
 
-  /**
-   * @brief User-implemented class for the RHS of nonexplicit equations.
-   */
-  void
-  compute_nonexplicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index                                               solve_block,
-    Types::Index current_index = Numbers::invalid_index) const override;
+        variable_list.set_value_term(1,
+                                     std::sqrt(n_grad[0] * n_grad[0] +
+                                               n_grad[1] * n_grad[1]));
+        variable_list.set_value_term(2, f_tot);
+      }
+  }
 
-  /**
-   * @brief User-implemented class for the LHS of nonexplicit equations.
-   */
-  void
-  compute_nonexplicit_lhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index                                               solve_block,
-    Types::Index current_index = Numbers::invalid_index) const override;
-
-  /**
-   * @brief User-implemented class for the RHS of postprocessed explicit equations.
-   */
-  void
-  compute_postprocess_explicit_rhs(
-    VariableContainer<dim, degree, number>                    &variable_list,
-    const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
-    const dealii::VectorizedArray<number>                     &element_volume,
-    Types::Index solve_block) const override;
-
-  number MnV = get_user_inputs().get_user_constants().get_model_constant_double("MnV");
-  number KnV = get_user_inputs().get_user_constants().get_model_constant_double("KnV");
+  number m_well;
+  number kappa;
 };
 
 PRISMS_PF_END_NAMESPACE

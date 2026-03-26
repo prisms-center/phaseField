@@ -3,11 +3,11 @@
 
 #pragma once
 
+#include <deal.II/matrix_free/evaluation_flags.h>
+
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/config.h>
-
-#include <utility>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -30,27 +30,17 @@ namespace Numbers
   /**
    * @brief Max element degree.
    */
-  static const unsigned int max_element_degree = 6;
+  static constexpr unsigned int max_element_degree = 6;
 
   /**
    * @brief Max number of subsections.
    */
-  static const unsigned int max_subsections = 16;
+  static constexpr unsigned int max_subsections = 16;
 
   /**
    * @brief Max number of saved solutions.
    */
   static constexpr unsigned int max_saved_solutions = 4;
-
-  /**
-   * @brief Invalid PDE type.
-   */
-  static const PDEType invalid_pde_type = static_cast<PDEType>(-1);
-
-  /**
-   * @brief Invalid field solve type.
-   */
-  static const FieldSolveType invalid_field_solve_type = static_cast<FieldSolveType>(-1);
 
 } // namespace Numbers
 
@@ -92,5 +82,7 @@ namespace Defaults
   static const unsigned int eig_cg_n_iterations = 10;
 
 } // namespace Defaults
+
+using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
 
 PRISMS_PF_END_NAMESPACE
