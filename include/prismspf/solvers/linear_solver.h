@@ -44,8 +44,9 @@ public:
   LinearSolver(SolveGroup                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_group, _solve_context)
-    , params(solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
-        solve_group.id))
+    , lin_params(
+        solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
+          solve_group.id))
   {}
 
   /**
@@ -75,7 +76,7 @@ public:
                                    solve_context->get_simulation_timer());
         rhs_operators[relative_level].initialize(solutions);
         rhs_operators[relative_level].set_scaling_diagonal(
-          params.tolerance_type != AbsoluteResidual,
+          lin_params.tolerance_type != AbsoluteResidual,
           solve_context->get_invm_manager().get_invm_sqrt(
             solve_context->get_field_attributes(),
             solve_group.field_indices,
@@ -94,15 +95,14 @@ public:
                                    solve_context->get_simulation_timer());
         lhs_operators[relative_level].initialize(solutions);
         lhs_operators[relative_level].set_scaling_diagonal(
-          params.tolerance_type != AbsoluteResidual,
+          lin_params.tolerance_type != AbsoluteResidual,
           solve_context->get_invm_manager().get_invm_sqrt(
             solve_context->get_field_attributes(),
             solve_group.field_indices,
             relative_level));
       }
-    linear_solver_control.set_max_steps(params.max_iterations);
-    linear_solver_control.set_tolerance(params.tolerance *
-                                        normalization_value(params.tolerance_type));
+    linear_solver_control.set_max_steps(lin_params.max_iterations);
+    linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
   }
 
   /**
@@ -135,8 +135,7 @@ public:
     rhs_operators[relative_level].compute_operator(rhs_vector[relative_level]);
     do_linear_solve(rhs_vector[relative_level],
                     lhs_operators[relative_level],
-                    solutions.get_solution_full_vector(relative_level),
-                    relative_level);
+                    solutions.get_solution_full_vector(relative_level));
 
     // Apply constraints
     solutions.apply_constraints(relative_level);
@@ -147,11 +146,10 @@ public:
     Timer::end_section("Update ghosts");
   }
 
-  void
+  int
   do_linear_solve(BlockVector<number>             &b_vector,
                   MFOperator<dim, degree, number> &lhs_operator,
-                  BlockVector<number>             &x_vector,
-                  unsigned int                     relative_level)
+                  BlockVector<number>             &x_vector)
   {
     // Linear solve
     try
@@ -162,20 +160,21 @@ public:
               solve_context->get_simulation_timer().get_increment()))
           {
             ConditionalOStreams::pout_summary()
-              << " Final residual (linear solve): "
-              << linear_solver_control.last_value() /
-                   normalization_value(params.tolerance_type)
-              << " Steps: " << linear_solver_control.last_step() << "\n"
+              << " Linear solve final residual : "
+              << linear_solver_control.last_value() / normalization_value()
+              << " Linear steps: " << linear_solver_control.last_step() << "\n"
               << std::flush;
           }
       }
     catch (...) // TODO: more specific catch
       {
         ConditionalOStreams::pout_base()
-          << "[Increment " << solve_context->get_simulation_timer().get_increment() << "]"
+          << "[Increment " << solve_context->get_simulation_timer().get_increment()
+          << "] "
           << "Warning: linear solver did not converge as per set tolerances before "
-          << params.max_iterations << " iterations.\n";
+          << lin_params.max_iterations << " iterations.\n";
       }
+    return linear_solver_control.last_step();
   }
 
 protected:
@@ -187,20 +186,10 @@ protected:
   std::vector<MFOperator<dim, degree, number>> lhs_operators;
   std::vector<BlockVector<number>>             rhs_vector;
 
-private:
-  /**
-   * @brief Linear solver parameters
-   */
-  LinearSolverParameters params;
-
-  /**
-   * @brief Solver control. Contains max iterations and tolerance.
-   */
-  dealii::SolverControl linear_solver_control;
-
   double
-  normalization_value(SolverToleranceType type)
+  normalization_value()
   {
+    SolverToleranceType type = lin_params.tolerance_type;
     using std::sqrt;
     double value = 1.0;
     if (type == RMSEPerField || type == RMSETotal)
@@ -213,6 +202,17 @@ private:
       }
     return value;
   }
+
+private:
+  /**
+   * @brief Linear solver parameters
+   */
+  LinearSolverParameters lin_params;
+
+  /**
+   * @brief Solver control. Contains max iterations and tolerance.
+   */
+  dealii::SolverControl linear_solver_control;
 };
 
 PRISMS_PF_END_NAMESPACE
