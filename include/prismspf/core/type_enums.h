@@ -67,8 +67,30 @@ enum DependencyType : int
  */
 enum SolverToleranceType : std::uint8_t
 {
+  /**
+   * @brief Legacy
+   */
   AbsoluteResidual,
-  RelativeResidualChange
+  // TODO: these names and descriptions are not great. The point is to determine whether
+  // to average over the domain and whether to average over components.
+  // TODO: this could also be bitwise
+  // TODO: consider returning relative residual change
+  /**
+   * @brief The mean local error averaged over each field is lower than the tolerance.
+   */
+  RMSEPerField,
+  /**
+   * @brief The integrated error averaged over each field is lower than the tolerance.
+   */
+  IntegratedPerField,
+  /**
+   * @brief The sum of the average local errors of each field is lower than the tolerance.
+   */
+  RMSETotal,
+  /**
+   * @brief The sum of the integrated errors of each field is lower than the tolerance.
+   */
+  IntegratedTotal
 };
 
 /**
@@ -147,8 +169,14 @@ to_string(SolverToleranceType type)
     {
       case SolverToleranceType::AbsoluteResidual:
         return "AbsoluteResidual";
-      case SolverToleranceType::RelativeResidualChange:
-        return "RelativeResidualChange";
+      case SolverToleranceType::RMSEPerField:
+        return "RMSEPerField";
+      case SolverToleranceType::RMSETotal:
+        return "RMSETotal";
+      case SolverToleranceType::IntegratedPerField:
+        return "IntegratedPerField";
+      case SolverToleranceType::IntegratedTotal:
+        return "IntegratedTotal";
       default:
         return "UNKNOWN";
     }

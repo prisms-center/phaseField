@@ -318,16 +318,18 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
 
         LinearSolverParameters linear_solver_parameters;
         // Set the tolerance type
+        static const std::map<std::string, SolverToleranceType> tolerance_types = {
+          {"AbsoluteResidual",   AbsoluteResidual  },
+          {"RMSEPerField",       RMSEPerField      },
+          {"IntegratedPerField", IntegratedPerField},
+          {"RMSETotal",          RMSETotal         },
+          {"IntegratedTotal",    IntegratedTotal   },
+        };
         const std::string type_string = parameter_handler.get("tolerance type");
-        if (boost::iequals(type_string, "AbsoluteResidual"))
+        const auto       &iter        = tolerance_types.find(type_string);
+        if (iter != tolerance_types.end())
           {
-            linear_solver_parameters.tolerance_type =
-              SolverToleranceType::AbsoluteResidual;
-          }
-        else if (boost::iequals(type_string, "RelativeResidualChange"))
-          {
-            linear_solver_parameters.tolerance_type =
-              SolverToleranceType::RelativeResidualChange;
+            linear_solver_parameters.tolerance_type = iter->second;
           }
         else
           {
@@ -389,6 +391,8 @@ UserInputParameters<dim>::assign_nonlinear_solve_parameters(
           static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
         nonlinear_solver_parameters.step_length =
           parameter_handler.get_double("step size");
+        nonlinear_solver_parameters.tolerance_value =
+          parameter_handler.get_double("tolerance value");
         for (auto solver_id : solver_ids)
           {
             nonlinear_solve_parameters
