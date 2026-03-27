@@ -89,6 +89,10 @@ public:
       {
         return TensorRank::Scalar;
       }
+    else if constexpr (std::is_same_v<ValType, ScalarValue::value_type>)
+      {
+        return TensorRank::Scalar;
+      }
     else
       {
         return TensorRank(ValType::rank);
