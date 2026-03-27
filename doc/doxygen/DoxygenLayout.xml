@@ -9,7 +9,10 @@
 	    <tab type="user" url="\ref docker" title="Docker"/>
 	    <tab type="user" url="\ref source" title="Source"/>
     </tab>
-    <tab type="user" url="tutorial.html" title="Tutorial"/>
+    <tab	type="usergroup" url="\ref tutorial" title="Tutorial">
+      <tab type="user" url="tutorial.html" title="Tutorial"/>
+      <tab type="user" url="structure.html" title="Structure"/>
+    </tab>
     <tab type="user" url="applications.html" title="Applications"/>
     <tab type="user" url="contact.html" title="Contact"/>
     <tab type="topics" visible="yes" title="" intro=""/>
