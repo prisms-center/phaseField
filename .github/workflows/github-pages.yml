@@ -1,12 +1,10 @@
-name: Publish doc to GitHub pages
+name: Publish Doc to GitHub Pages
 
 on:
   push:
     branches:
       - master
-
-permissions:
-  contents: write
+      - 4.0-dev
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
@@ -14,14 +12,15 @@ concurrency:
 
 jobs:
   docs:
-
     runs-on: ubuntu-latest
-
+    permissions:
+      # Write perms to we can copy-paste doxygen docs
+      contents: write
     steps:
     - name: Checkout repo
       uses: actions/checkout@v6
       with:
-        submodules: true # Check out submodules so we get doxygne awesome
+        submodules: true # Check out submodules so we get doxygen awesome
 
     - name: Setup doxygen
       run: |
