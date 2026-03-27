@@ -1,5 +1,0 @@
-# Some ignores for the unit test executables
-test_core
-test_field_input
-test_user_inputs
-test_utilities

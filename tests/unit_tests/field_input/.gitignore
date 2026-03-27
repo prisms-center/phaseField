@@ -1,3 +1,0 @@
-# Exlcude vtk files here
-!*.vtk
-!*.vtu
