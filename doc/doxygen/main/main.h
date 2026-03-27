@@ -1,5 +1,8 @@
 /** \mainpage PRISMS-PF
 
+\warning This is the documentation for v4.0.0, which is still actively under development.
+Use the version selector to switch to v3.0.0 for a stable version.
+
 \subsection welcome Welcome
 Welcome to the PRISMS-PF documentation! Click on any of the links in the sidebar and
 header to navigate the site. New users can start with the \ref installation and
