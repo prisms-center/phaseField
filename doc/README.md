@@ -3,6 +3,12 @@ The prebuilt documentation can be found here:
 
 https://prisms-center.github.io/phaseField/doxygen/3.0.0-pre/index.html
 
+## Pull Git Submodules
+Make sure Doxygen Awesome has been pulled.
+```
+git submodule update --init --recursive
+```
+
 ## Install Doxygen
 Doxygen can be installed from https://www.doxygen.nl/
 
@@ -13,6 +19,12 @@ cmake .
 ```
 ```
 make
+```
+
+## Visualize
+Launch a local web server using Python
+```
+python -m http.server
 ```
 
 ## Licensing
