@@ -1,0 +1,14 @@
+<map id="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/linear_solver.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/solvers/linear_solver.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="248,5,467,60"/>
+<area shape="rect" id="Node000002" href="$mg__solver_8h.html" title=" " alt="" coords="5,108,224,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="283,68,179,110,177,105,281,63"/>
+<area shape="rect" id="Node000003" href="$newton__solver_8h.html" title=" " alt="" coords="248,108,467,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="360,74,360,108,355,108,355,74"/>
+<area shape="rect" id="Node000004" href="$solvers_8h.html" title=" " alt="" coords="321,211,540,265"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="439,65,463,83,481,107,488,134,483,163,471,189,456,212,451,209,466,187,478,161,483,134,476,109,459,87,436,69"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="387,172,414,209,409,212,382,175"/>
+<area shape="rect" id="Node000005" href="$problem_8cc.html" title=" " alt="" coords="189,313,416,353"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="385,276,330,315,327,311,382,271"/>
+<area shape="rect" id="Node000006" href="$solvers_8cc.html" title=" " alt="" coords="441,313,679,353"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="480,271,535,311,532,315,477,276"/>
+</map>

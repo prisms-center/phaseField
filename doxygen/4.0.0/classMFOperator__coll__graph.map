@@ -1,0 +1,11 @@
+<map id="MFOperator&lt; dim, degree, number &gt;" name="MFOperator&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="This class exists to evaluate a single user&#45;defined operator for the matrix&#45;free implementation of so..." alt="" coords="280,108,476,148"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,236,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,34,334,105,332,110,160,39"/>
+<area shape="rect" id="Node000003" href="$classSolveGroup.html" title="Structure to hold the attributes of a solve&#45;group." alt="" coords="260,5,357,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="318,43,336,83,357,106,353,110,332,85,313,45"/>
+<area shape="rect" id="Node000004" href="$classSimulationTimer.html" title=" " alt="" coords="382,5,513,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="441,45,420,85,400,110,396,106,416,83,436,42"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="537,5,742,31"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="607,39,506,86,439,110,438,105,504,82,604,35"/>
+</map>
