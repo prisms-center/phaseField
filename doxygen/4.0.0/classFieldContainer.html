@@ -2497,6 +2497,10 @@ template&lt;<a class="el" href="classFieldContainer.html#ae7e787b1a0892248d392bd
 <div class="line">      {</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a>;</div>
 <div class="line">      }</div>
+<div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;ValType, ScalarValue::value_type&gt;)</div>
+<div class="line">      {</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a>;</div>
+<div class="line">      }</div>
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">      {</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code hl_enumeration" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a>(ValType::rank);</div>
