@@ -16,8 +16,10 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.")
 endif()
 
-project(prisms_pf CXX)
+# Project declaration, language, and version
+project(prisms_pf LANGUAGES CXX VERSION 4.0.0)
 
+# Export compile command for IDE lsp support
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Set the location of additional CMake modules
@@ -34,8 +36,7 @@ include(prisms_pf_cmake_functions)
 # Configuration setup
 # =========================================================
 
-file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
-
+set(PRISMS_PF_VERSION ${PROJECT_VERSION})
 version_decomposition(${PRISMS_PF_VERSION})
 
 print_subsection("Configuring PRISMS-PF v${PRISMS_PF_VERSION}")
@@ -104,6 +105,7 @@ print_variables(
 
 print_subsection("Configuring external libraries")
 
+# First, vendored dependencies
 include(FetchContent)
 
 FetchContent_Declare(
@@ -120,7 +122,9 @@ FetchContent_Declare(
 )
 endif()
 
+# TODO: Refactor this
 # Find MPI
+# TODO: We should see if there's a minimum version we need to specify
 find_package(MPI REQUIRED COMPONENTS CXX)
 
 if(NOT MPI_CXX_FOUND)
@@ -142,6 +146,8 @@ if(NOT MPI_CXX_VERSION)
 
   set(MPI_CXX_VERSION "${_mpi_major}.${_mpi_minor}")
 endif()
+
+# TODO: Refactor this
 
 # Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
 # a little differently, provide some directory hints.
