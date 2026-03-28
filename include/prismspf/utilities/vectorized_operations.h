@@ -17,7 +17,6 @@ namespace std
 {
   // NOLINTBEGIN(cert-dcl58-cpp, readability-identifier-naming,
   // readability-identifier-length)
-  // clang-format off
 
   template <typename Number, std::size_t width>
   inline ::dealii::VectorizedArray<Number, width>
@@ -60,7 +59,6 @@ namespace std
     return out;
   }
 
-  // clang-format on
   // NOLINTEND(cert-dcl58-cpp, readability-identifier-naming,
   // readability-identifier-length)
 

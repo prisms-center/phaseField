@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
@@ -290,6 +291,42 @@ dealii_point_to_vector(const dealii::Point<dim, number> &point)
 
   return vec;
 }
+
+namespace Symmetries
+{
+  /**
+   * @brief Compute cos(N * arctan(x)).
+   *
+   * This function provides an efficient way to calculate symmetries like $cos(N
+   * arctan(\theta))$, where `N` is a known number at compile time. The function computes
+   * the value via recursive three-term recurrence. For example,
+   * $$
+   *   T_0 = 1, \quad T_1 = \frac{1}{\sqrt{1+x^2}}, \quad
+   *   T_N = 2 T_1 T_{N-1} - T_{N-2}
+   * $$
+   *
+   * Importantly, this function avoids having to evaluate transcendental functions.
+   */
+  template <unsigned int N, typename T>
+  [[nodiscard]] inline DEAL_II_ALWAYS_INLINE T
+  cos_arctan(const T x, const T t1) noexcept
+  {
+    if constexpr (N == 0)
+      return T {1};
+    else if constexpr (N == 1)
+      return t1;
+    else
+      return T {2} * t1 * cos_arctan<N - 1>(x, t1) - cos_arctan<N - 2>(x, t1);
+  }
+
+  template <unsigned int N, typename T>
+  [[nodiscard]] inline DEAL_II_ALWAYS_INLINE T
+  cos_arctan(const T x) noexcept
+  {
+    return cos_arctan<N>(x, T {1} / std::sqrt(T {1} + x * x));
+  }
+
+} // namespace Symmetries
 
 PRISMS_PF_END_NAMESPACE
 
