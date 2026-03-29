@@ -5,6 +5,10 @@
       "name": "default"
     },
     {
+      "configurePreset": "dev",
+      "name": "dev"
+    },
+    {
       "configuration": "Release",
       "configurePreset": "ninja-multi",
       "name": "ninja-multi-release"
@@ -13,6 +17,16 @@
       "configuration": "Debug",
       "configurePreset": "ninja-multi",
       "name": "ninja-multi-debug"
+    },
+    {
+      "configuration": "Release",
+      "configurePreset": "ninja-multi-dev",
+      "name": "ninja-multi-dev-release"
+    },
+    {
+      "configuration": "Debug",
+      "configurePreset": "ninja-multi-dev",
+      "name": "ninja-multi-dev-debug"
     }
   ],
   "cmakeMinimumRequired": {
@@ -60,6 +74,14 @@
       "generator": "Ninja Multi-Config",
       "inherits": "default",
       "name": "ninja-multi"
+    },
+    {
+      "binaryDir": "${sourceDir}/build/ninja-multi-dev",
+      "description": "Developer build using Ninja Multi-Config generator",
+      "displayName": "Ninja Multi-Config Developer",
+      "generator": "Ninja Multi-Config",
+      "inherits": "dev",
+      "name": "ninja-multi-dev"
     }
   ],
   "packagePresets": [
@@ -79,6 +101,17 @@
         "stopOnFailure": true
       },
       "name": "default",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "configurePreset": "ninja-multi-dev",
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      },
+      "name": "ninja-multi-dev",
       "output": {
         "outputOnFailure": true
       }
@@ -104,6 +137,40 @@
         {
           "name": "default",
           "type": "package"
+        }
+      ]
+    },
+    {
+      "name": "dev-release",
+      "steps": [
+        {
+          "name": "ninja-multi-dev",
+          "type": "configure"
+        },
+        {
+          "name": "ninja-multi-dev-release",
+          "type": "build"
+        },
+        {
+          "name": "ninja-multi-dev",
+          "type": "test"
+        }
+      ]
+    },
+    {
+      "name": "dev-debug",
+      "steps": [
+        {
+          "name": "ninja-multi-dev",
+          "type": "configure"
+        },
+        {
+          "name": "ninja-multi-dev-debug",
+          "type": "build"
+        },
+        {
+          "name": "ninja-multi-dev",
+          "type": "test"
         }
       ]
     }

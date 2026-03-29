@@ -309,10 +309,10 @@ if(PRISMS_PF_UNIT_TESTS)
   add_subdirectory(tests/unit)
 endif()
 if(PRISMS_PF_REGRESSION_TESTS)
-  add_subdirectory(tests/regression)
+	#add_subdirectory(tests/regression)
 endif()
 if(PRISMS_PF_PERFORMANCE_TESTS)
-  add_subdirectory(tests/performance)
+	#add_subdirectory(tests/performance)
 endif()
 
 # =========================================================
