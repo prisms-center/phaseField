@@ -111,15 +111,15 @@ include(FetchContent)
 FetchContent_Declare(
   libassert
   GIT_REPOSITORY https://github.com/jeremy-rifkin/libassert.git
-  GIT_TAG        v2.2.1
+  GIT_TAG v2.2.1
 )
 
 if(PRISMS_PF_UNIT_TESTS)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.13.0
-)
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.13.0
+  )
 endif()
 
 # TODO: Refactor this
@@ -128,10 +128,16 @@ endif()
 find_package(MPI REQUIRED COMPONENTS CXX)
 
 if(NOT MPI_CXX_FOUND)
-  message(FATAL_ERROR "MPI CXX component not found. Please make sure your MPI installation includes C++ support.")
+  message(
+    FATAL_ERROR
+    "MPI CXX component not found. Please make sure your MPI installation includes C++ support."
+  )
 endif()
 if(NOT MPI_CXX_COMPILER)
-	message(FATAL_ERROR "MPI CXX compiler wrapper not found. Please make sure you have `mpicxx`")
+  message(
+    FATAL_ERROR
+    "MPI CXX compiler wrapper not found. Please make sure you have `mpicxx`"
+  )
 endif()
 
 # Find the MPI CXX version if not already populated
@@ -151,7 +157,7 @@ endif()
 
 # Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
 # a little differently, provide some directory hints.
-# find_package(deal.II 9.6.0 REQUIRED HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
+find_package(deal.II 9.6.0 REQUIRED HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
 
 # Again we run into some more of the uniqueness of deal.II with the way they set
 # up build types. Their default build type is `DebugRelease`, which builds both
@@ -159,7 +165,7 @@ endif()
 # to link to when the user compiles with Debug and Release.
 #
 # When deal.II is built with only Debug or only Release, we link against for all
-# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in 
+# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
 # Debug will only contain assertions and debugging for our library. In most cases,
 # this is sufficient to catch most issues.
 #
@@ -168,10 +174,9 @@ endif()
 
 # print_variable(DEAL_II_BUILD_TYPE)
 
-
 set(PRISMS_PF_VENDORED_PACKAGES libassert)
 if(PRISMS_PF_UNIT_TESTS)
-	list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
+  list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
 endif()
 
 FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
@@ -182,7 +187,55 @@ FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
 
 print_subsection("Configuring build targets")
 
+# Configure the config file
 configure_file(include/prismspf/config.h.in include/prismspf/config.h @ONLY)
+
+# Configure the template inst file and add the code generator script
+add_subdirectory(cmake/scripts)
+if(PRISMS_PF_ADDITIONAL_DEGREES)
+  set(_additional_degrees "; 3; 4; 5; 6")
+else()
+  set(_additional_degrees "")
+endif()
+configure_file(
+  cmake/templates.in
+  cmake/templates
+  @ONLY
+)
+
+# Declare the library
+add_library(prisms_pf)
+
+# Set the minimum C++ standard. This must be public so 
+# our applications also obey this.
+target_compile_features(prisms_pf
+  PUBLIC
+    cxx_std_20
+)
+set_target_properties(prisms_pf
+  PROPERTIES
+    CXX_EXTENSIONS OFF
+)
+
+# Add each modules in the src folder
+add_subdirectory(src)
+
+# Include the config to the library
+target_include_directories(
+  prisms_pf
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+# Link dependencies
+target_link_libraries(
+  prisms_pf
+  PUBLIC
+    MPI::MPI_CXX
+    libassert::assert
+		dealii::dealii
+)
 
 # =========================================================
 # Installation

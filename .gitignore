@@ -8,6 +8,7 @@ CMakeUserPresets.json
 **/.clangd
 **/.vscode
 **/.venv
+**/venv
 compile_commands.json
 
 # Mac
