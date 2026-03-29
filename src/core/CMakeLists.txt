@@ -54,7 +54,8 @@ target_sources(
 # that #include them need to find CMAKE_CURRENT_BINARY_DIR
 target_include_directories(prisms_pf PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/..)
 
-set(_inst_bases
+set(
+  _inst_bases
   constraint_manager
   dof_manager
   field_container
@@ -78,8 +79,10 @@ expand_template_instantiations(prisms_pf "${_inst}")
 # Let CMake know that .cc files can't compile until the .inst
 # files exist
 foreach(_base ${_inst_bases})
-  set_source_files_properties(${_base}.cc
+  set_source_files_properties(
+    ${_base}.cc
     PROPERTIES
-      OBJECT_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${_base}.inst"
+      OBJECT_DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/${_base}.inst"
   )
 endforeach()

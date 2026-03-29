@@ -1,20 +1,38 @@
 # Manually specify files to be included
-set(_src ${CMAKE_CURRENT_SOURCE_DIR}/integrator.cc)
-
-set(_inst integrator.inst.in)
-
-file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h)
-
-file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/utilities/*.h)
-
-define_library(
-  prisms_pf_utilities
-  OBJECT
-  ${_src}
-  ${_header}
-  ${_inst}
+target_sources(
+  prisms_pf
+  PRIVATE
+    integrator.cc
+  PUBLIC
+    FILE_SET HEADERS
+      BASE_DIRS ${PROJECT_SOURCE_DIR}/include
+      FILES
+        ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/integrator.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/periodic_distance.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/utilities.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/vectorized_operations.h
 )
 
-expand_template_instantiations(prisms_pf_utilities "${_inst}")
+# Generated .inst files land in the build tree so .cc files
+# that #include them need to find CMAKE_CURRENT_BINARY_DIR
+target_include_directories(prisms_pf PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/..)
 
-collect_header_and_src_files("${_src}" "${_header}")
+set(_inst_bases integrator)
+
+# Derive the .inst.in list from the base names
+foreach(_base ${_inst_bases})
+  list(APPEND _inst "${_base}.inst.in")
+endforeach()
+
+expand_template_instantiations(prisms_pf "${_inst}")
+
+# Let CMake know that .cc files can't compile until the .inst
+# files exist
+foreach(_base ${_inst_bases})
+  set_source_files_properties(
+    ${_base}.cc
+    PROPERTIES
+      OBJECT_DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/${_base}.inst"
+  )
+endforeach()

@@ -3,8 +3,9 @@
 # is necessary so that we don't try and compile with incomplete
 # instantiations.
 execute_process(
-  COMMAND ${EXE} ${TEMPLATES}
-  INPUT_FILE  ${INPUT}
+  COMMAND
+    ${EXE} ${TEMPLATES}
+  INPUT_FILE ${INPUT}
   OUTPUT_FILE ${OUTPUT_TMP}
   RESULT_VARIABLE _result
 )
