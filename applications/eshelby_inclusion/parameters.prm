@@ -50,4 +50,4 @@ subsection boundary conditions: 3
   set conditions = Natural, Dirichlet, Natural, Dirichlet, Dirichlet, Dirichlet
 end
 
-set Model constant compliance = (22.5,0.3), isotropic elastic constants
+set Model constant stiffness = (22.5,0.3), isotropic elastic constants
