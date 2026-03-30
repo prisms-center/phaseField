@@ -210,6 +210,36 @@ print_variables(
   ""
 )
 
+# TODO: Don't rely on deal.II do stuff ourselves
+
+function(strip_dealii_flags input output)
+  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(STRIP "${stripped}" stripped)
+  set(${output} "${stripped}" PARENT_SCOPE)
+endfunction()
+
+strip_dealii_flags("${DEAL_II_CXX_FLAGS}" DEAL_II_CXX_FLAGS)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_DEBUG}" DEAL_II_CXX_FLAGS_DEBUG)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_RELEASE}" DEAL_II_CXX_FLAGS_RELEASE)
+
+# TODO: Fix this so it prints with  meaningful variable names
+print_variables(
+  DEAL_II_CXX_FLAGS
+  DEAL_II_CXX_FLAGS_DEBUG
+  DEAL_II_CXX_FLAGS_RELEASE
+  CMAKE_CXX_FLAGS
+  CMAKE_CXX_FLAGS_DEBUG
+  CMAKE_CXX_FLAGS_RELEASE
+)
+
+separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
+separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
+separate_arguments(
+  DEAL_II_CXX_FLAGS_RELEASE_LIST
+  UNIX_COMMAND
+  "${DEAL_II_CXX_FLAGS_RELEASE}"
+)
+
 # Check the deal.II was built with the right dependencies
 if(NOT DEAL_II_WITH_MPI)
   message(FATAL_ERROR "deal.II was not built with MPI support!")
@@ -255,8 +285,68 @@ set(PRISMS_PF_VENDORED_PACKAGES libassert)
 if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
   list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
 endif()
+if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
+  # If we have DebugRelease as the build type, we want to build
+  # libassert with Debug and Release targets to link to later
+  include(ExternalProject)
 
-FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
+  # Populate libassert so we can get the source directory
+  FetchContent_Populate(libassert)
+
+  # External projects for the debug and release libassert targets
+  ExternalProject_Add(
+    libassert_debug
+    SOURCE_DIR ${libassert_SOURCE_DIR}
+    PREFIX ${CMAKE_BINARY_DIR}/_deps/libassert-debug
+    CMAKE_ARGS
+      -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+    INSTALL_DIR ${CMAKE_BINARY_DIR}/_deps/libassert-debug/install
+  )
+
+  ExternalProject_Add(
+    libassert_release
+    SOURCE_DIR ${libassert_SOURCE_DIR}
+    PREFIX ${CMAKE_BINARY_DIR}/_deps/libassert-release
+    CMAKE_ARGS
+      -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+    INSTALL_DIR ${CMAKE_BINARY_DIR}/_deps/libassert-release/install
+  )
+
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/_deps/libassert-debug/install/include)
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/_deps/libassert-release/install/include)
+
+  add_library(libassert_imported INTERFACE IMPORTED GLOBAL)
+  add_dependencies(
+    libassert_imported
+    libassert_debug
+    libassert_release
+  )
+
+  set_property(
+    TARGET
+      libassert_imported
+    PROPERTY
+      INTERFACE_LINK_LIBRARIES
+        "$<$<CONFIG:Debug>:${CMAKE_BINARY_DIR}/_deps/libassert-debug/install/lib/libassert.a>"
+        "$<$<CONFIG:Release>:${CMAKE_BINARY_DIR}/_deps/libassert-release/install/lib/libassert.a>"
+  )
+  set_property(
+    TARGET
+      libassert_imported
+    PROPERTY
+      INTERFACE_INCLUDE_DIRECTORIES
+        "${CMAKE_BINARY_DIR}/_deps/libassert-debug/install/include"
+        "${CMAKE_BINARY_DIR}/_deps/libassert-release/install/include"
+  )
+
+  add_library(libassert::assert ALIAS libassert_imported)
+
+  # Still make available other vendored packages (e.g. Catch2)
+  list(REMOVE_ITEM PRISMS_PF_VENDORED_PACKAGES libassert)
+  FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
+else()
+  FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
+endif()
 
 # =========================================================
 # Configure targets
@@ -277,115 +367,36 @@ else()
 endif()
 configure_file(cmake/templates.in cmake/templates @ONLY)
 
-# Declare the library
-add_library(prisms_pf)
+if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
+  add_library(prisms_pf_debug)
+  add_library(prisms_pf_release)
 
-# Set the minimum C++ standard. This must be public so
-# our applications also obey this.
-target_compile_features(prisms_pf PUBLIC cxx_std_20)
-set_target_properties(
-  prisms_pf
-  PROPERTIES
-    CXX_EXTENSIONS
-      OFF
-)
+  prisms_pf_configure_target(prisms_pf_debug "Debug")
+  prisms_pf_configure_target(prisms_pf_release "Release")
 
-# Add the deal.II compiler and linker flags. These
-# must be public so our application also get these.
-# However, we need to strip a few arguments from them
-# first.
-# TODO: Don't rely on deal.II do stuff ourselves
+  add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf_debug)
+  add_library(prisms_pf::prisms_pf_release ALIAS prisms_pf_release)
 
-function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
-  string(STRIP "${stripped}" stripped)
-  set(${output} "${stripped}" PARENT_SCOPE)
-endfunction()
-
-strip_dealii_flags("${DEAL_II_CXX_FLAGS}" DEAL_II_CXX_FLAGS)
-strip_dealii_flags("${DEAL_II_CXX_FLAGS_DEBUG}" DEAL_II_CXX_FLAGS_DEBUG)
-strip_dealii_flags("${DEAL_II_CXX_FLAGS_RELEASE}" DEAL_II_CXX_FLAGS_RELEASE)
-
-# TODO: Fix this so it prints with  meaningful variable names
-print_variables(
-  DEAL_II_CXX_FLAGS
-  DEAL_II_CXX_FLAGS_DEBUG
-  DEAL_II_CXX_FLAGS_RELEASE
-)
-
-separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
-separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
-separate_arguments(
-  DEAL_II_CXX_FLAGS_RELEASE_LIST
-  UNIX_COMMAND
-  "${DEAL_II_CXX_FLAGS_RELEASE}"
-)
-
-target_compile_options(
-  prisms_pf
-  PUBLIC
-    ${DEAL_II_CXX_FLAGS_LIST}
-    $<$<CONFIG:Debug>:${DEAL_II_CXX_FLAGS_DEBUG_LIST}>
-    $<$<CONFIG:Release>:${DEAL_II_CXX_FLAGS_RELEASE_LIST}>
-)
-
-target_link_options(
-  prisms_pf
-  PUBLIC
-    SHELL:${DEAL_II_LINKER_FLAGS}
-    $<$<CONFIG:Debug>:SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}>
-    $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
-)
-
-# Add each modules in the src folder
-add_subdirectory(src)
-
-# Include the config to the library
-target_include_directories(
-  prisms_pf
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
-
-# Again we run into some more of the uniqueness of deal.II with the way they set
-# up build types. Their default build type is `DebugRelease`, which builds both
-# Debug and Release targets. As such, our project much choose what deal.II target
-# to link to when the user compiles with Debug and Release.
-#
-# When deal.II is built with only Debug or only Release, we link against for all
-# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
-# Debug will only contain assertions and debugging for our library. In most cases,
-# this is sufficient to catch most issues.
-#
-# When deal.II is build with DebugRelease, we link to the target that corresponds
-# to the PRISMS-PF build type. This is recommended for developers.
-
-if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
-  target_link_libraries(
-    prisms_pf
-    PUBLIC
-      $<$<CONFIG:Debug>:dealii::dealii_debug>
-      $<$<CONFIG:Release>:dealii::dealii_release>
+  set(
+    PRISMS_PF_TARGETS
+    prisms_pf_debug
+    prisms_pf_release
   )
-elseif(DEAL_II_BUILD_TYPE STREQUAL "Debug")
-  target_link_libraries(prisms_pf PUBLIC dealii::dealii_debug)
-elseif(DEAL_II_BUILD_TYPE STREQUAL "Release")
-  target_link_libraries(prisms_pf PUBLIC dealii::dealii_release)
-else()
-  message(FATAL_ERROR "Unknown DEAL_II_BUILD_TYPE: ${DEAL_II_BUILD_TYPE}")
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_library(prisms_pf)
+  prisms_pf_configure_target(prisms_pf "Debug")
+  add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
+  add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf)
+  set(PRISMS_PF_TARGETS prisms_pf)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  add_library(prisms_pf)
+  prisms_pf_configure_target(prisms_pf "Release")
+  add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
+  add_library(prisms_pf::prisms_pf_release ALIAS prisms_pf)
+  set(PRISMS_PF_TARGETS prisms_pf)
 endif()
 
-# Link dependencies
-# TODO: We don't need to set everything as public, and we shouldn't.
-# Ideally, the only public bits need to be MPI and deal.II
-target_link_libraries(
-  prisms_pf
-  PUBLIC
-    MPI::MPI_CXX
-  PRIVATE
-    $<BUILD_LOCAL_INTERFACE:libassert::assert>
-)
+add_subdirectory(src)
 
 # =========================================================
 # Installation
@@ -396,19 +407,36 @@ print_subsection("Configuring installation targets")
 
 include(GNUInstallDirs)
 
-install(
-  TARGETS
-    prisms_pf
-  EXPORT prisms_pf_targets
-  ARCHIVE
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
-  FILE_SET HEADERS
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
+  install(
+    TARGETS
+      prisms_pf_debug
+      prisms_pf_release
+    EXPORT prisms_pf_targets
+    ARCHIVE
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME
+      DESTINATION ${CMAKE_INSTALL_BINDIR}
+    FILE_SET HEADERS
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+else()
+  install(
+    TARGETS
+      prisms_pf
+    EXPORT prisms_pf_targets
+    ARCHIVE
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME
+      DESTINATION ${CMAKE_INSTALL_BINDIR}
+    FILE_SET HEADERS
+      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+endif()
 
 # Install the generated config.h separately since it's in the build tree
 install(

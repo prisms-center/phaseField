@@ -1,13 +1,10 @@
-# Build files & folders
-**/build*
-**/CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
+# Build & Install files
+**/build
+**/install
+**/CMakeFiles
 Makefile
-*.ninja*
-CTest*
-**expand_template_instantiations_exe
-**.inst
+cmake_install.cmake
+CMakeUserPresets.json
 
 # The default install folder & files
 install/

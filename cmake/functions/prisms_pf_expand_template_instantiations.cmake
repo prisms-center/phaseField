@@ -46,9 +46,13 @@ function(expand_template_instantiations TARGET INST_IN_FILES)
     list(APPEND _inst_outputs "${_output}")
   endforeach()
 
-  # Named target so the main library can depend on it cleanly
-  add_custom_target(${_inst_target} ALL DEPENDS ${_inst_outputs})
-  add_dependencies(${TARGET} ${_inst_target})
+  # Only add target and dependencies if the _inst_outputs is
+  # not empty
+  if(_inst_outputs)
+    # Named target so the main library can depend on it cleanly
+    add_custom_target(${_inst_target} ALL DEPENDS ${_inst_outputs})
+    add_dependencies(${TARGET} ${_inst_target})
+  endif()
 
   # Return outputs to parent scope
   set(INST_OUTPUTS ${_inst_outputs} PARENT_SCOPE)

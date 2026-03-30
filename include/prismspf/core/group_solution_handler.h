@@ -32,7 +32,7 @@ using BlockVector = dealii::LinearAlgebra::distributed::BlockVector<number>;
  * @brief Typedef for solution vector.
  */
 template <typename number>
-using SolutionVector = BlockVector<number>::BlockType;
+using SolutionVector = typename BlockVector<number>::BlockType;
 
 /**
  * @brief Typedef for dealii::MatrixFree.
