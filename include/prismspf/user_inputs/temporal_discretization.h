@@ -4,7 +4,7 @@
 #pragma once
 
 #include <prismspf/core/conditional_ostreams.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 
 #include <prismspf/config.h>
 

@@ -12,7 +12,7 @@
 #include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/initial_conditions.h>
 #include <prismspf/core/pde_operator_base.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -34,11 +34,11 @@ public:
   /**
    * @brief Constructor.
    */
-  SolverBase(SolveGroup                               _solve_group,
+  SolverBase(SolveBlock                               _solve_group,
              const SolveContext<dim, degree, number> &_solve_context)
-    : solve_group(std::move(_solve_group))
+    : solve_block(std::move(_solve_group))
     , solve_context(&_solve_context)
-    , solutions(solve_group, solve_context->get_field_attributes())
+    , solutions(solve_block, solve_context->get_field_attributes())
   {}
 
   /**
@@ -82,7 +82,7 @@ public:
   virtual void
   init(const std::list<DependencyMap> &all_dependeny_sets)
   {
-    DependencyExtents extents(solve_group.field_indices, all_dependeny_sets);
+    DependencyExtents extents(solve_block.field_indices, all_dependeny_sets);
     solutions.init(solve_context->get_dof_manager(),
                    solve_context->get_constraint_manager(),
                    extents.oldest_age);
@@ -117,7 +117,7 @@ public:
   solve()
   {
     if (solve_context->get_simulation_timer().get_increment() == 0 &&
-        solve_group.solve_timing == SolveTiming::Primary)
+        solve_block.solve_timing == SolveTiming::Primary)
       {
         // Set the initial condition
         set_initial_condition();
@@ -179,7 +179,7 @@ public:
   void
   set_initial_condition()
   {
-    for (const auto &global_index : solve_group.field_indices)
+    for (const auto &global_index : solve_block.field_indices)
       {
         if (solve_context->get_user_inputs()
               .load_ic_parameters.get_read_initial_conditions_from_file())
@@ -246,17 +246,17 @@ public:
   /**
    * @brief Get the solver context.
    */
-  [[nodiscard]] const SolveGroup &
+  [[nodiscard]] const SolveBlock &
   get_solve_group() const
   {
-    return solve_group;
+    return solve_block;
   }
 
 protected:
   /**
-   * @brief Information about the solve group this handler is responsible for.
+   * @brief Information about the solve block this handler is responsible for.
    */
-  SolveGroup solve_group;
+  SolveBlock solve_block;
 
   /**
    * @brief Solver context provides access to external information.

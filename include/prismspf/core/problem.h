@@ -31,7 +31,7 @@ public:
    * @brief Constructor.
    */
   Problem(const std::vector<FieldAttributes>         &field_attributes,
-          const std::vector<SolveGroup>              &solve_groups,
+          const std::vector<SolveBlock>              &solve_groups,
           const UserInputParameters<dim>             &_user_inputs,
           PhaseFieldTools<dim>                       &_pf_tools,
           const PDEOperatorBase<dim, degree, number> &_pde_operator);
@@ -70,7 +70,7 @@ private:
   /**
    * @brief Solve groups.
    */
-  std::vector<SolveGroup> solve_groups;
+  std::vector<SolveBlock> solve_groups;
 
   /**
    * @brief User-inputs.

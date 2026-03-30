@@ -27,8 +27,8 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 2;
 
   std::vector<FieldAttributes> field_attributes = {FieldAttributes("n")};
-  std::vector<SolveGroup>      solve_groups;
-  SolveGroup                   exp_group(1,
+  std::vector<SolveBlock>      solve_groups;
+  SolveBlock                   exp_group(1,
                        Linear,
                        Primary,
                                          {0},

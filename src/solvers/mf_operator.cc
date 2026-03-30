@@ -43,7 +43,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
                                                     *solution_indexer,
                                                     relative_level,
                                                     dependency_map,
-                                                    solve_group,
+                                                    solve_block,
                                                     _data);
 
   // Initialize, evaluate, and submit based on user function.
@@ -57,7 +57,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
         {
           variable_list.set_q_point(quad);
           // Evaluate the function pointer (the user-defined pde)
-          (pde_operator->*pde_op)(variable_list, *sim_timer, solve_group.id);
+          (pde_operator->*pde_op)(variable_list, *sim_timer, solve_block.id);
         }
 
       // Integrate and add to global vector dst
@@ -101,7 +101,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
 //   // compute_local_rhs is called by cell_loop, which multithreads. There would be data
 //   // races.
 //   FieldContainer<dim, degree, number> variable_list(1 /*args*/);
-//   DSTContainer<dim, degree, number>   dst_fields(solve_group.field_indices,
+//   DSTContainer<dim, degree, number>   dst_fields(solve_block.field_indices,
 //                                                field_attributes,
 //                                                *data,
 //                                                field_to_block_index);
@@ -119,7 +119,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
 //       // First (i=1) x vector: I 0 0 0
 //       // Second(i=2) x vector: 0 I 0 0 ...
 //       // Submit zeros for everything except the diagonals
-//       for (unsigned int field_index : solve_group.field_indices)
+//       for (unsigned int field_index : solve_block.field_indices)
 //         {
 //           if (/* Scalar */)
 //             {

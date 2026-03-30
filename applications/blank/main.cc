@@ -9,7 +9,7 @@
 #include <prismspf/core/phase_field_tools.h>
 #include <prismspf/core/problem.h>
 #include <prismspf/core/simulation_timer.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 
 #include <prismspf/user_inputs/input_file_reader.h>
@@ -91,9 +91,9 @@ main(int argc, char *argv[])
       constexpr unsigned int degree = 2;
 
       std::vector<FieldAttributes> fields = {FieldAttributes("n")};
-      std::vector<SolveGroup>      solve_groups;
-      SolveGroup                   exp_group;
-      SolveGroup                   pp_group;
+      std::vector<SolveBlock>      solve_groups;
+      SolveBlock                   exp_group;
+      SolveBlock                   pp_group;
       solve_groups.push_back(exp_group);
       solve_groups.push_back(pp_group);
 

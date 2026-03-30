@@ -29,7 +29,7 @@ std::vector<FieldAttrubutes> fields
 \subsection solvers Solvers
 The next step is to declare how you wish to solve each field and in what order groups
 of fields are solved. This is done by constructing an array (a C++ std::vector) containing
-SolveGroup objects. Each SolveGroup object has six important attributes:
+SolveBlock objects. Each SolveBlock object has six important attributes:
 
 - `id`: A unique integer to identify this solver in equations.
 - `solve_type`: One of the following solve methods: `Explicit`, `Linear`, `Newton`, or
@@ -81,7 +81,7 @@ functions of PRISMS-PF. Lastly, call problem.run() to execute the simulation.
 
 ```c++
 std::vector<FieldAttributes> fields({...}); // Fill in
-std::vector<SolveGroup> solvers({...}); // Fill in
+std::vector<SolveBlock> solvers({...}); // Fill in
 CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
 UserInputParameters<dim>       user_inputs(parameters_filename);
 PhaseFieldTools<dim>           pf_tools;

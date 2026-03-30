@@ -19,7 +19,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Enum describing when each group of fields gets solved.
+ * @brief Enum describing when each block of fields gets solved.
  */
 enum SolveTiming
 {
@@ -53,15 +53,15 @@ enum SolveTiming
 // readability-simplify-boolean-expr
 
 /**
- * @brief Structure to hold the attributes of a solve-group.
+ * @brief Structure to hold the attributes of a solve-block.
  */
-class SolveGroup
+class SolveBlock
 {
 public:
   using EvalFlags = dealii::EvaluationFlags::EvaluationFlags;
   using FieldType = TensorRank;
 
-  explicit SolveGroup(int                    _id               = -1,
+  explicit SolveBlock(int                    _id               = -1,
                       SolveType              _solve_type       = Explicit,
                       SolveTiming            _solve_timing     = Primary,
                       std::set<Types::Index> _field_indices    = {},
@@ -93,7 +93,7 @@ public:
   SolveTiming solve_timing;
 
   /**
-   * @brief Indices of the fields to be solved in this group.
+   * @brief Indices of the fields to be solved in this block.
    */
   std::set<Types::Index> field_indices;
 
@@ -110,7 +110,7 @@ public:
    * @brief Solves that occur inside the parent solve. This is only really meant for
    * implicit solves with higher order spatial derivatives.
    */
-  std::vector<SolveGroup> aux_solve_container;
+  std::vector<SolveBlock> aux_solve_container;
 
   [[nodiscard]] bool
   has_auxiliary_solve() const
@@ -119,7 +119,7 @@ public:
   }
 
   bool
-  operator<(const SolveGroup &other) const
+  operator<(const SolveBlock &other) const
   {
     return id < other.id;
   }
@@ -133,7 +133,7 @@ public:
       dealii::ExcMessage(
         "A valid solve type must be selected (Constant | Explicit | Linear | Newton)\n"));
     AssertThrow(!field_indices.empty(),
-                dealii::ExcMessage("This solve group must manage at least 1 field.\n"));
+                dealii::ExcMessage("This solve block must manage at least 1 field.\n"));
     if (solve_type == SolveType::Newton)
       {
         for (unsigned int field_index : field_indices)
@@ -189,12 +189,14 @@ public:
                     dealii::ExcMessage(
                       "Trial/Change terms should not appear in RHS expressions.\n"));
       }
-    for (const SolveGroup &aux : aux_solve_container)
+    for (const SolveBlock &aux : aux_solve_container)
       {
         aux.validate();
       }
   }
 };
+
+using SolveGroup = SolveBlock;
 
 // NOLINTEND(misc-non-private-member-variables-in-classes, hicpp-explicit-conversions)
 

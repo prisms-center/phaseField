@@ -65,7 +65,7 @@ public:
   /**
    * @brief Get the solve group of a given field index.
    */
-  [[nodiscard]] const SolveGroup &
+  [[nodiscard]] const SolveBlock &
   get_solve_group(unsigned int index) const;
 
   /**

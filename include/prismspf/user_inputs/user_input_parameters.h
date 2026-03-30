@@ -6,7 +6,7 @@
 #include <deal.II/base/parameter_handler.h>
 
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/constraint_parameters.h>
@@ -46,7 +46,7 @@ public:
    */
   void
   validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveGroup>      &solve_groups)
+           const std::vector<SolveBlock>      &solve_groups)
   {
     // Perform and postprocessing of user inputs and run checks
     spatial_discretization.validate();

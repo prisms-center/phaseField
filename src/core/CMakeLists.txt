@@ -38,7 +38,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/group_solution_handler.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/parse_cmd_options.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/refinement_manager.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/core/solve_group.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/core/solve_block.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/triangulation_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/dependencies.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/field_attributes.h

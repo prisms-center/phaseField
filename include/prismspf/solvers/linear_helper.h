@@ -149,7 +149,7 @@ rmse(const BlockVector<number>              &residual,
 {
   const auto &field_to_block = solutions.get_global_to_block_index();
   number      sum            = 0.0;
-  for (unsigned int field_index : solve_group.field_indices)
+  for (unsigned int field_index : solve_block.field_indices)
     {
       const unsigned int block_index = field_to_block[field_index];
       TensorRank rank = solve_context->get_field_attributes()[field_index].field_type;
