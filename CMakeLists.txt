@@ -2,471 +2,458 @@
 #  CMake for the PRISMS-PF core library
 ##
 
-# cmake config
+# =========================================================
+# CMake setup & loading functions
+# =========================================================
+
+# CMake config
 message(STATUS "Using CMake ${CMAKE_VERSION}")
-message(STATUS "")
-cmake_minimum_required(VERSION 3.18)
-cmake_policy(VERSION 3.18)
+cmake_minimum_required(VERSION 3.28)
+cmake_policy(VERSION 3.28)
 
-# Grab modules
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules/)
+# Prohibit in-source build
+if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+  message(FATAL_ERROR "In-source build prohibited.")
+endif()
 
-# Load macros
-file(GLOB macro_files "${CMAKE_SOURCE_DIR}/cmake/macros/*.cmake")
-foreach(file ${macro_files})
-  message(STATUS "Include ${file}")
-  include(${file})
-endforeach()
+# Project declaration, language, and version
+project(prisms_pf LANGUAGES CXX VERSION 4.0.0)
 
-# Grab the version of PRISMS-PF
-file(STRINGS "${CMAKE_SOURCE_DIR}/VERSION" PRISMS_PF_VERSION LIMIT_COUNT 1)
+# Export compile command for IDE lsp support
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-message(STATUS "")
-message(STATUS "=========================================================")
-message(STATUS "Configuring PRISMS-PF v${PRISMS_PF_VERSION}")
-message(STATUS "=========================================================")
-message(STATUS "")
+# Set the location of additional CMake modules
+set(
+  CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  ${PROJECT_SOURCE_DIR}/cmake
+  ${PROJECT_SOURCE_DIR}/cmake/functions
+)
+
+include(prisms_pf_cmake_functions)
 
 # =========================================================
-# Some basic bookkeeping
+# Configuration setup
 # =========================================================
 
-# Grab git information
+set(PRISMS_PF_VERSION ${PROJECT_VERSION})
+version_decomposition(${PRISMS_PF_VERSION})
+
+print_subsection("Configuring PRISMS-PF v${PRISMS_PF_VERSION}")
+
 prisms_pf_git_version()
 
-# Include configuration options
-include(${CMAKE_SOURCE_DIR}/cmake/setup_cached_variables.cmake)
+print_variables(
+  ""
+  PRISMS_PF_GIT_BRANCH
+  PRISMS_PF_GIT_TAG
+  PRISMS_PF_GIT_REVISION
+  PRISMS_PF_GIT_SHORTREV
+  PRISMS_PF_GIT_TIMESTAMP
+  ""
+)
 
-# Declare the project
-project(prisms_pf CXX)
+# TODO: Refactor this somewhere else
+# Configuration options
+option(PRISMS_PF_AUTODETECTION "Autodetection of PRISMS-PF dependencies." ON)
 
-# Set the default install prefix if it was not set by the user
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(
-    CMAKE_INSTALL_PREFIX
-    "${CMAKE_BINARY_DIR}/install"
-    CACHE PATH
-    "Installation prefix"
-    FORCE
+option(PRISMS_PF_UNIT_TESTS "Whether to build the unit tests or not." OFF)
+option(PRISMS_PF_REGRESSION_TESTS "Whether to build the regression tests or not." OFF)
+option(PRISMS_PF_PERFORMANCE_TESTS "Whether to build the performance tests or not." OFF)
+option(PRISMS_PF_EXAMPLES "Whether to build examples or not." OFF)
+
+# NOTE: This relies on the fact that deal.II is also compiled with 64-bit indices
+option(PRISMS_PF_64BIT_INDICES "Whether to use 64-bit indices for large simulations" OFF)
+# NOTE: This can only go higher than 6 if deal.II is compiled with >6 for the element degree.
+option(PRISMS_PF_ADDITIONAL_DEGREES "Whether to compile with element degrees of 3+." OFF)
+# NOTE: When on deal.II will try to use the max number of threads with respect to the number
+# of MPI processes.
+option(PRISMS_PF_THREADS "Whether to use threading." ON)
+
+option(
+  PRISMS_PF_WITH_VTK
+  "Whether the user wants to compile PRISMS-PF with vtk, or not"
+  OFF
+)
+option(
+  PRISMS_PF_WITH_CALIPER
+  "Whether the user wants to compile PRISMS-PF with the profiling code Caliper, or not."
+  OFF
+)
+
+print_variables(
+  ""
+  PRISMS_PF_AUTODETECTION
+  ""
+  PRISMS_PF_UNIT_TESTS
+  PRISMS_PF_REGRESSION_TESTS
+  PRISMS_PF_PERFORMANCE_TESTS
+  PRISMS_PF_EXAMPLES
+  ""
+  PRISMS_PF_64BIT_INDICES
+  PRISMS_PF_ADDITIONAL_DEGREES
+  PRISMS_PF_THREADS
+  ""
+  PRISMS_PF_WITH_VTK
+  PRISMS_PF_WITH_CALIPER
+  ""
+)
+
+# =========================================================
+# Find dependencies
+# =========================================================
+
+print_subsection("Configuring external libraries")
+
+# First, vendored dependencies
+include(FetchContent)
+
+FetchContent_Declare(
+  libassert
+  GIT_REPOSITORY https://github.com/jeremy-rifkin/libassert.git
+  GIT_TAG v2.2.1
+  EXCLUDE_FROM_ALL
+)
+
+if(PRISMS_PF_UNIT_TESTS)
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.13.0
   )
 endif()
 
-# Include the PRISMS-PF setup
-include(${CMAKE_SOURCE_DIR}/cmake/setup_prisms_pf.cmake)
+# TODO: Refactor this
+# Find MPI
+# TODO: We should see if there's a minimum version we need to specify
+find_package(MPI REQUIRED COMPONENTS CXX)
 
-# =========================================================
-# External libraries
-# =========================================================
-
-message(STATUS "")
-message(STATUS "=========================================================")
-message(STATUS "Configuring external libraries")
-message(STATUS "=========================================================")
-message(STATUS "")
-
-# Process each of the modules
-set(
-  PRISMS_PF_MODULES
-  DEAL_II
-  VTK
-  CALIPER
-)
-foreach(_module ${PRISMS_PF_MODULES})
-  include(${CMAKE_SOURCE_DIR}/cmake/modules/FindPRISMS_PF_${_module}.cmake)
-endforeach()
-
-message(STATUS "Using PRISMS_PF_WITH_ZLIB = '${PRISMS_PF_WITH_ZLIB}'")
-message(STATUS "Using PRISMS_PF_WITH_VTK = '${PRISMS_PF_WITH_VTK}'")
-message(STATUS "Using PRISMS_PF_WITH_CALIPER = '${PRISMS_PF_WITH_CALIPER}'")
-
-# =========================================================
-# Configure PRISMS-PF Targets
-# =========================================================
-
-message(STATUS "")
-message(STATUS "=========================================================")
-message(STATUS "Configuring PRISMS-PF build targets")
-message(STATUS "=========================================================")
-message(STATUS "")
-
-# Generate config.h to enable and disable certain features within the source code.
-set(PRISMS_PF_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-
-if(ADDITIONAL_DEGREES)
-  set(EXPAND_DEGREES "; 3; 4; 5; 6")
+if(NOT MPI_CXX_FOUND)
+  message(
+    FATAL_ERROR
+    "MPI CXX component not found. Please make sure your MPI installation includes C++ support."
+  )
+endif()
+if(NOT MPI_CXX_COMPILER)
+  message(
+    FATAL_ERROR
+    "MPI CXX compiler wrapper not found. Please make sure you have `mpicxx`"
+  )
 endif()
 
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/prismspf/config.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
+# Find the MPI CXX version if not already populated
+if(NOT MPI_CXX_VERSION)
+  file(READ "${MPI_CXX_INCLUDE_DIRS}/mpi.h" _mpi_header_content)
+
+  string(REGEX MATCH "#define MPI_MAJOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
+  set(_mpi_major ${CMAKE_MATCH_1})
+
+  string(REGEX MATCH "#define MPI_MINOR_VERSION ([0-9]+)" _ "${_mpi_header_content}")
+  set(_mpi_major ${CMAKE_MATCH_1})
+
+  set(MPI_CXX_VERSION "${_mpi_major}.${_mpi_minor}")
+endif()
+
+# TODO: Refactor this
+
+# Once we've found MPI, we need to find deal.II. Since deal.II likes to do things
+# a little differently, provide some directory hints.
+find_package(
+  deal.II
+  9.6.0
+  REQUIRED
+  HINTS
+    ${DEAL_II_DIR}
+    $ENV{DEAL_II_DIR}
 )
 
-# Configure the template arguments file
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/templates
+# Print some information about deal.II configuration
+print_variables(
+  ""
+  DEAL_II_VERSION
+  DEAL_II_BUILD_TYPE
+  DEAL_II_CXX_COMPILER
+  DEAL_II_C_COMPILER
+  ""
+  DEAL_II_WITH_THREADS
+  DEAL_II_WITH_64BIT_INDICES
+  DEAL_II_WITH_BOOST
+  DEAL_II_BOOST_VERSION
+  DEAL_II_WITH_KOKKOS
+  DEAL_II_KOKKOS_VERSION
+  DEAL_II_FEATURE_KOKKOS_BUNDLED_CONFIGURED
+  DEAL_II_WITH_LAPACK
+  DEAL_II_LAPACK_WITH_MKL
+  DEAL_II_WITH_MPI
+  DEAL_II_MPI_VERSION
+  DEAL_II_WITH_P4EST
+  DEAL_II_P4EST_VERSION
+  DEAL_II_P4EST_WITH_VTK_BINARY
+  DEAL_II_WITH_TASKFLOW
+  DEAL_II_TASKFLOW_VERSION
+  DEAL_II_FEATURE_TASKFLOW_BUNDLED_CONFIGURED
+  DEAL_II_WITH_TBB
+  DEAL_II_WITH_VTK
+  DEAL_II_WITH_ZLIB
+  DEAL_II_ZLIB_VERSION
+  ""
+  DEAL_II_CXX_FLAGS
+  DEAL_II_CXX_FLAGS_DEBUG
+  DEAL_II_CXX_FLAGS_RELEASE
+  ""
+  DEAL_II_WARNING_FLAGS
+  ""
+  DEAL_II_LINKER_FLAGS
+  DEAL_II_LINKER_FLAGS_DEBUG
+  DEAL_II_LINKER_FLAGS_RELEASE
+  ""
 )
 
-# Add the script files
-add_subdirectory("${CMAKE_SOURCE_DIR}/cmake/scripts")
+# Check the deal.II was built with the right dependencies
+if(NOT DEAL_II_WITH_MPI)
+  message(FATAL_ERROR "deal.II was not built with MPI support!")
+endif()
+if(NOT DEAL_II_WITH_LAPACK)
+  message(FATAL_ERROR "deal.II was not built with LAPACK support!")
+endif()
+if(NOT DEAL_II_WITH_ZLIB)
+  message(FATAL_ERROR "deal.II was not built with zlib support!")
+endif()
+if(NOT DEAL_II_WITH_P4EST)
+  message(FATAL_ERROR "deal.II was not built with p4est support!")
+endif()
 
-# Collect source files
+# Check that deal.II links against the same MPI that we find earlier.
+get_target_property(DEAL_II_MPI_LIBS dealii::interface_mpi INTERFACE_LINK_LIBRARIES)
+get_target_property(PRISMS_PF_MPI_LIBS MPI::MPI_CXX INTERFACE_LINK_LIBRARIES)
+
+if(NOT DEAL_II_MPI_LIBS STREQUAL PRISMS_PF_MPI_LIBS)
+  message(
+    WARNING
+    "deal.II MPI libraries: ${DEAL_II_MPI_LIBS}\n"
+    "Found MPI libraries:   ${PRISMS_PF_MPI_LIBS}\n"
+    "These do not match! This may cause runtime issues."
+  )
+endif()
+
+# TODO: Add caliper
+# TODO: Add VTK
+
+# FetchCotent MakeAvailable for the other vendored dependencies
+set(PRISMS_PF_VENDORED_PACKAGES libassert)
+if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
+  list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
+endif()
+
+FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
+
+# =========================================================
+# Configure targets
+# =========================================================
+
+print_subsection("Configuring build targets")
+# TODO: Add status messages here
+
+# Configure the config file
+configure_file(include/prismspf/config.h.in include/prismspf/config.h @ONLY)
+
+# Configure the template inst file and add the code generator script
+add_subdirectory(cmake/scripts)
+if(PRISMS_PF_ADDITIONAL_DEGREES)
+  set(_additional_degrees "; 3; 4; 5; 6")
+else()
+  set(_additional_degrees "")
+endif()
+configure_file(cmake/templates.in cmake/templates @ONLY)
+
+# Declare the library
+add_library(prisms_pf)
+
+# Set the minimum C++ standard. This must be public so
+# our applications also obey this.
+target_compile_features(prisms_pf PUBLIC cxx_std_20)
+set_target_properties(
+  prisms_pf
+  PROPERTIES
+    CXX_EXTENSIONS
+      OFF
+)
+
+# Add the deal.II compiler and linker flags. These
+# must be public so our application also get these.
+# However, we need to strip a few arguments from them
+# first.
+# TODO: Don't rely on deal.II do stuff ourselves
+
+function(strip_dealii_flags input output)
+  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(STRIP "${stripped}" stripped)
+  set(${output} "${stripped}" PARENT_SCOPE)
+endfunction()
+
+strip_dealii_flags("${DEAL_II_CXX_FLAGS}" DEAL_II_CXX_FLAGS)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_DEBUG}" DEAL_II_CXX_FLAGS_DEBUG)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_RELEASE}" DEAL_II_CXX_FLAGS_RELEASE)
+
+# TODO: Fix this so it prints with  meaningful variable names
+print_variables(
+  DEAL_II_CXX_FLAGS
+  DEAL_II_CXX_FLAGS_DEBUG
+  DEAL_II_CXX_FLAGS_RELEASE
+)
+
+separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
+separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
+separate_arguments(
+  DEAL_II_CXX_FLAGS_RELEASE_LIST
+  UNIX_COMMAND
+  "${DEAL_II_CXX_FLAGS_RELEASE}"
+)
+
+target_compile_options(
+  prisms_pf
+  PUBLIC
+    ${DEAL_II_CXX_FLAGS_LIST}
+    $<$<CONFIG:Debug>:${DEAL_II_CXX_FLAGS_DEBUG_LIST}>
+    $<$<CONFIG:Release>:${DEAL_II_CXX_FLAGS_RELEASE_LIST}>
+)
+
+target_link_options(
+  prisms_pf
+  PUBLIC
+    SHELL:${DEAL_II_LINKER_FLAGS}
+    $<$<CONFIG:Debug>:SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}>
+    $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
+)
+
+# Add each modules in the src folder
 add_subdirectory(src)
 
-# Grab the source and include files
-get_property(PRISMS_PF_SOURCE_FILES GLOBAL PROPERTY PRISMS_PF_SOURCE_FILES)
-get_property(PRISMS_PF_HEADER_FILES GLOBAL PROPERTY PRISMS_PF_HEADER_FILES)
-
-# Make and ninja build options
-if(CMAKE_GENERATOR MATCHES "Ninja")
-  set(_make_command "$ ninja")
-else()
-  set(_make_command "$ make")
-endif()
-
-# Debug and release targets
-if(${DEAL_II_BUILD_TYPE} MATCHES "DebugRelease")
-  add_custom_target(
-    release
-    COMMAND
-      ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Release .
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo
-      "*** Switched to Release mode. Now recompile with: ${_make_command}"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-    COMMENT "switching to RELEASE mode..."
-  )
-
-  add_custom_target(
-    debug
-    COMMAND
-      ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=Debug .
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo
-      "*** Switched to Debug mode. Now recompile with: ${_make_command}"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-    COMMENT "switching to DEBUG mode..."
-  )
-
-  add_custom_target(
-    debugrelease
-    COMMAND
-      ${CMAKE_COMMAND} -D CMAKE_BUILD_TYPE=DebugRelease .
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo
-      "*** Switched to Debug and Release mode. Now recompile with: ${_make_command}"
-    COMMAND
-      ${CMAKE_COMMAND} -E echo "***"
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-    COMMENT "switching to DEBUG/RELEASE mode..."
-  )
-endif()
-
-# Add distclean target to clean build
-add_custom_target(
-  distclean
-  COMMAND
-    ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target clean
-  COMMAND
-    ${CMAKE_COMMAND} -E remove_directory CMakeFiles
-  COMMAND
-    ${CMAKE_COMMAND} -E remove CMakeCache.txt cmake_install.cmake Makefile build.ninja
-    rules.ninja .ninja_deps .ninja_log clang-tidy.log cppcheck.log cppcheck_unused.log
-    output.txt error.txt summary.log detailed.log
-  COMMENT "distclean invoked"
+# Include the config to the library
+target_include_directories(
+  prisms_pf
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 
-file(
-  WRITE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_usage.cmake
-  "message(
-\"###
+# Again we run into some more of the uniqueness of deal.II with the way they set
+# up build types. Their default build type is `DebugRelease`, which builds both
+# Debug and Release targets. As such, our project much choose what deal.II target
+# to link to when the user compiles with Debug and Release.
 #
-#  PRISMS-PF set up with ${DEAL_II_PACKAGE_NAME}-${DEAL_II_PACKAGE_VERSION} found at
-#      ${DEAL_II_PATH}
+# When deal.II is built with only Debug or only Release, we link against for all
+# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
+# Debug will only contain assertions and debugging for our library. In most cases,
+# this is sufficient to catch most issues.
 #
-#  CMAKE_BUILD_TYPE:          ${CMAKE_BUILD_TYPE}
-#
-#  You can now run
-#      ${_make_command}                - to compile and link
-#      ${_make_command} debug          - to switch the build type to 'Debug'
-#      ${_make_command} release        - to switch the build type to 'Release'
-#      ${_make_command} debugrelease   - to switch the build type to compile both
-#      ${_make_command} clean          - to remove the generated executable as well as
-#                               all intermediate compilation files
-#      ${_make_command} distclean      - to clean the directory from all generated
-#                               files (includes clean, runclean and the removal
-#                               of the generated build system)
-#      ${_make_command} info           - to view this message again
-\")"
-)
+# When deal.II is build with DebugRelease, we link to the target that corresponds
+# to the PRISMS-PF build type. This is recommended for developers.
 
-add_custom_target(
-  info
-  COMMAND
-    ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/print_usage.cmake
-)
-
-# Set additional compiler flags
-set(
-  PRISMS_PF_ADDITIONAL_CXX_FLAGS
-  ""
-  CACHE STRING
-  "Additional CMAKE_CXX_FLAGS applied after the deal.II options."
-)
-
-if(NOT PRISMS_PF_ADDITIONAL_CXX_FLAGS STREQUAL "")
-  message(
-    STATUS
-    "Appending PRISMS_PF_ADDITIONAL_CXX_FLAGS: '${PRISMS_PF_ADDITIONAL_CXX_FLAGS}':"
-  )
-  append_flags(PRISMS_PF_ADDITIONAL_CXX_FLAGS PRISMS_PF_CXX_FLAGS)
-  message(STATUS "  PRISMS_PF_WARNING_FLAGS: ${PRISMS_PF_WARNING_FLAGS}")
-  message(STATUS "  PRISMS_PF_CXX_FLAGS: ${PRISMS_PF_CXX_FLAGS}")
-  message(STATUS "  PRISMS_PF_CXX_FLAGS_DEBUG: ${PRISMS_PF_CXX_FLAGS_DEBUG}")
-  message(STATUS "  PRISMS_PF_CXX_FLAGS_RELEASE: ${PRISMS_PF_CXX_FLAGS_RELEASE}")
-endif()
-
-foreach(_build ${PRISMS_PF_BUILD_TYPES})
-  # Create a target for each build type. Note that the build types are
-  # mixed case (e.g., Debug) so we need to convert them to lowercase and
-  # uppercase for various uses.
-  string(TOLOWER ${_build} _build_lowercase)
-  string(TOUPPER ${_build} _build_uppercase)
-  set(_library "prisms_pf_${_build_lowercase}")
-  list(APPEND PRISMS_PF_TARGETS ${_library})
-
-  # Add the library and set some properties
-  add_library(${_library} STATIC)
-  set_target_properties(
-    ${_target}
-    PROPERTIES
-      LINKER_LANGUAGE
-        CXX
-      OUTPUT_NAME
-        "prisms-pf-${_build_lowercase}"
-  )
-  target_sources(${_library} PRIVATE ${PRISMS_PF_SOURCE_FILES})
-
-  # Collect the libraries to link against and the include directories
-  set(
-    _library_dependencies
-    prisms_pf_core_${_build_lowercase}
-    prisms_pf_solvers_${_build_lowercase}
-    prisms_pf_user_inputs_${_build_lowercase}
-    prisms_pf_utilities_${_build_lowercase}
-  )
-  list(APPEND PRISMS_PF_TARGETS ${_library_dependencies})
-
-  # Link the PRISMS-PF libraries
-  target_link_libraries(${_library} PUBLIC ${_library_dependencies})
-  # Add explicit dependencies to ensure proper build order with Ninja
-  add_dependencies(${_library} ${_library_dependencies})
-
-  # Set the include directories
-  target_include_directories(
-    ${_library}
+if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
+  target_link_libraries(
+    prisms_pf
     PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include>
-    PRIVATE
-      ${CMAKE_SOURCE_DIR}/src
+      $<$<CONFIG:Debug>:dealii::dealii_debug>
+      $<$<CONFIG:Release>:dealii::dealii_release>
   )
+elseif(DEAL_II_BUILD_TYPE STREQUAL "Debug")
+  target_link_libraries(prisms_pf PUBLIC dealii::dealii_debug)
+elseif(DEAL_II_BUILD_TYPE STREQUAL "Release")
+  target_link_libraries(prisms_pf PUBLIC dealii::dealii_release)
+else()
+  message(FATAL_ERROR "Unknown DEAL_II_BUILD_TYPE: ${DEAL_II_BUILD_TYPE}")
+endif()
 
-  target_compile_options(
-    ${_library}
-    PRIVATE
-      $<$<COMPILE_LANGUAGE:CXX>:
-      ${PRISMS_PF_WARNING_FLAGS}
-      ${PRISMS_PF_CXX_FLAGS}
-      ${PRISMS_PF_CXX_FLAGS_${_build_uppercase}}>
-  )
-  target_link_options(
-    ${_library}
-    PRIVATE
-      $<$<LINK_LANGUAGE:CXX>:
-      ${PRISMS_PF_LINKER_FLAGS}
-      ${PRISMS_PF_LINKER_FLAGS_${_build_uppercase}}>
-  )
-
-  # Add other dependencies, making sure they are public so that they
-  # propagate to targets that link against this library
-
-  # VTK
-  if(${VTK_BUILT_SEPARATELY})
-    target_include_directories(${_library} SYSTEM PUBLIC ${VTK_INCLUDE_DIR})
-    target_link_libraries(${_library} PUBLIC ${VTK_NEW_LIBRARIES})
-  endif()
-
-  # caliper
-  if(${PRISMS_PF_WITH_CALIPER})
-    target_link_libraries(${_library} PUBLIC caliper)
-  endif()
-
-  # deal.II
-  target_link_libraries(${_library} PUBLIC ${DEAL_II_TARGET_${_build_uppercase}})
-endforeach()
+# Link dependencies
+# TODO: We don't need to set everything as public, and we shouldn't.
+# Ideally, the only public bits need to be MPI and deal.II
+target_link_libraries(
+  prisms_pf
+  PUBLIC
+    MPI::MPI_CXX
+  PRIVATE
+    $<BUILD_LOCAL_INTERFACE:libassert::assert>
+)
 
 # =========================================================
 # Installation
 # =========================================================
+
+print_subsection("Configuring installation targets")
+# TODO: Add status messages here
+
 include(GNUInstallDirs)
 
-# Install the libraries
 install(
   TARGETS
-    ${PRISMS_PF_TARGETS}
-  EXPORT prisms_pf-targets
-  LIBRARY
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    prisms_pf
+  EXPORT prisms_pf_targets
   ARCHIVE
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILE_SET HEADERS
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-# Install the headers
-install(
-  DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/
-  DESTINATION include
-  FILES_MATCHING
-  PATTERN "*.h"
-  PATTERN "*.hpp"
-)
-
-# Install the generated config.h
+# Install the generated config.h separately since it's in the build tree
 install(
   FILES
     ${CMAKE_CURRENT_BINARY_DIR}/include/prismspf/config.h
-  DESTINATION include/prismspf
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prismspf
 )
 
-# Install the cmake folder
+# Export the targets file so downstream can use find_package(prisms_pf)
 install(
-  DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
-  FILES_MATCHING
-  PATTERN "*.cmake"
-  PATTERN "*.cc"
-  PATTERN "CMakeLists.txt"
-  PATTERN "*.cmake.in"
-    EXCLUDE
+  EXPORT prisms_pf_targets
+  FILE prisms_pf_targets.cmake
+  NAMESPACE PRISMS-PF::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
 
-# Install the generated Config file
-install(
-  FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+# Generate and install the config file for find_package support
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  cmake/PRISMS-PFConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
-
-# Install the CMake config files
-install(
-  EXPORT prisms_pf-targets
-  FILE prisms_pf-targets.cmake
-  NAMESPACE prisms_pf::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
+  VERSION ${PRISMS_PF_VERSION}
+  COMPATIBILITY SameMinorVersion
 )
-
-# Install the VERSION file
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/VERSION DESTINATION .)
-
-# Install the LICENSE file
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE DESTINATION .)
-
-# Install the cmake/template file
 install(
   FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake/templates"
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
 
 # =========================================================
 # Testing
 # =========================================================
 
-# Unit tests
-if(UNIT_TESTS)
+print_subsection("Configuring PRISMS-PF tests")
+# TODO: Add status messages here
+
+if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
   enable_testing()
-  add_subdirectory(tests/unit_tests)
-
-  add_custom_target(
-    run_tests
-    COMMAND
-      ${CMAKE_CTEST_COMMAND} --output-on-failure
-    DEPENDS
-      test_core
-      test_field_input
-      test_user_inputs
-      test_utilities
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "Run all tests"
-  )
 endif()
 
-# Regression tests
-if(REGRESSION_TESTS)
-  # Compile each of the regression tests and run the python script
-  add_subdirectory(tests/regression_tests)
+if(PRISMS_PF_UNIT_TESTS)
+  add_subdirectory(tests/unit)
 endif()
-
-# Applications
-if(BUILD_APPLICATIONS)
-  # Compile each of the applications
-  add_subdirectory(applications)
+if(PRISMS_PF_REGRESSION_TESTS)
+  #add_subdirectory(tests/regression)
+endif()
+if(PRISMS_PF_PERFORMANCE_TESTS)
+  #add_subdirectory(tests/performance)
 endif()
 
 # =========================================================
-# Final steps
+# Final steps to print some nice messages
 # =========================================================
-
-# Write config to file
-include(${CMAKE_SOURCE_DIR}/cmake/write_config.cmake)
-
-# Generate configuration file for applications
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/prisms_pf-config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf-config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
-)
-
-# Unwrap the compiler compile_commands.json after the build
-if(${UNWRAP_COMPILER} STREQUAL "ON")
-  add_custom_command(
-    TARGET prisms_pf_debug
-    POST_BUILD
-    COMMAND
-      /bin/bash ${CMAKE_SOURCE_DIR}/contrib/utilities/unwrap_compile_commands.sh
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "Unwrapping compiler for compile_commands.json"
-  )
-endif()
-
-# Export targets
-list(REMOVE_DUPLICATES PRISMS_PF_TARGETS)
-export(
-  TARGETS
-    ${PRISMS_PF_TARGETS}
-  FILE "${CMAKE_BINARY_DIR}/cmake/prisms_pf-targets.cmake"
-  NAMESPACE prisms_pf::
-)
-
-# Print the config
-file(READ ${CMAKE_SOURCE_DIR}/summary.log PRISMS_PF_SUMMARY)
-message("${PRISMS_PF_SUMMARY}")

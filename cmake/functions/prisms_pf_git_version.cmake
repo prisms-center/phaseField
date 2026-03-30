@@ -2,7 +2,7 @@
 # Get the git information
 #
 
-macro(prisms_pf_git_version)
+function(prisms_pf_git_version)
   message(STATUS "Querying git information")
 
   find_package(Git QUIET)
@@ -79,8 +79,10 @@ macro(prisms_pf_git_version)
     message(WARNING "git repo not found")
   endif()
 
-  set(PRISMS_PF_GIT_TAG "${tmp}" CACHE INTERNAL "")
-  unset(tmp)
-  unset(tmp1)
-  unset(tmp2)
-endmacro()
+  # Return all PRISMS_PF_GIT_* variables to the parent scope
+  set(PRISMS_PF_GIT_TAG "${tmp}" PARENT_SCOPE)
+  set(PRISMS_PF_GIT_BRANCH "${PRISMS_PF_GIT_BRANCH}" PARENT_SCOPE)
+  set(PRISMS_PF_GIT_REVISION "${PRISMS_PF_GIT_REVISION}" PARENT_SCOPE)
+  set(PRISMS_PF_GIT_SHORTREV "${PRISMS_PF_GIT_SHORTREV}" PARENT_SCOPE)
+  set(PRISMS_PF_GIT_TIMESTAMP "${PRISMS_PF_GIT_TIMESTAMP}" PARENT_SCOPE)
+endfunction()

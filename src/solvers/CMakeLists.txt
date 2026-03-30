@@ -1,28 +1,51 @@
 # Manually specify files to be included
+target_sources(
+  prisms_pf
+  PRIVATE
+    mf_operator.cc
+    solver_base.cc
+    solvers.cc
+  PUBLIC
+    FILE_SET HEADERS
+      BASE_DIRS ${PROJECT_SOURCE_DIR}/include
+      FILES
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/constant_solver.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/explicit_solver.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/linear_helper.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/linear_solver.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/mf_operator.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/mg_solver.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/newton_solver.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solve_context.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solver_base.h
+        ${PROJECT_SOURCE_DIR}/include/prismspf/solvers/solvers.h
+)
+
+# Generated .inst files land in the build tree so .cc files
+# that #include them need to find CMAKE_CURRENT_BINARY_DIR
+target_include_directories(prisms_pf PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/..)
+
 set(
-  _src
-  ${CMAKE_CURRENT_SOURCE_DIR}/solver_base.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/solvers.cc
-  ${CMAKE_CURRENT_SOURCE_DIR}/mf_operator.cc
+  _inst_bases
+  mf_operator
+  solver_base
+  solvers
 )
 
-set(
-  _inst
-  solver_base.inst.in
-  solvers.inst.in
-  mf_operator.inst.in
-)
+# Derive the .inst.in list from the base names
+foreach(_base ${_inst_bases})
+  list(APPEND _inst "${_base}.inst.in")
+endforeach()
 
-file(GLOB _header CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/include/prismspf/solvers/*.h)
+expand_template_instantiations(prisms_pf "${_inst}")
 
-define_library(
-  prisms_pf_solvers
-  OBJECT
-  ${_src}
-  ${_header}
-  ${_inst}
-)
-
-expand_template_instantiations(prisms_pf_solvers "${_inst}")
-
-collect_header_and_src_files("${_src}" "${_header}")
+# Let CMake know that .cc files can't compile until the .inst
+# files exist
+foreach(_base ${_inst_bases})
+  set_source_files_properties(
+    ${_base}.cc
+    PROPERTIES
+      OBJECT_DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/${_base}.inst"
+  )
+endforeach()
