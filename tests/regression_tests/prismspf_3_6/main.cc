@@ -31,14 +31,14 @@ main(int argc, char *argv[])
     FieldAttributes("mg_n", Scalar),
     FieldAttributes("f_tot", Scalar),
   };
-  std::vector<SolveGroup> solve_groups;
-  SolveGroup              exp_group(1,
+  std::vector<SolveBlock> solve_groups;
+  SolveBlock              exp_group(1,
                        Explicit,
                        Primary,
                                     {0},
                        make_dependency_set(field_attributes,
                                                         {"old_1(n)", "grad(old_1(n))"}));
-  SolveGroup              pp_group(2,
+  SolveBlock              pp_group(2,
                       Explicit,
                       PostProcess,
                                    {1, 2},

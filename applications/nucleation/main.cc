@@ -31,7 +31,7 @@ main(int argc, char *argv[])
     FieldAttributes("nucleation_rate", Scalar, true, {1}),
   };
 
-  SolveGroup explicits(
+  SolveBlock explicits(
     0,
     Explicit,
     Primary,
@@ -39,13 +39,13 @@ main(int argc, char *argv[])
     make_dependency_set(fields,
                         {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"}));
 
-  SolveGroup nucleation(1,
+  SolveBlock nucleation(1,
                         Explicit,
                         NucleationRate,
                         {2},
                         make_dependency_set(fields, {"n", "c"}));
 
-  std::vector<SolveGroup> solve_groups({explicits, nucleation});
+  std::vector<SolveBlock> solve_groups({explicits, nucleation});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;

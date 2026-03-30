@@ -29,22 +29,22 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> fields = {FieldAttributes("c"),
                                          FieldAttributes("mu"),
                                          FieldAttributes("f_tot")};
-  std::vector<SolveGroup>      solve_groups;
-  SolveGroup                   c_group;
+  std::vector<SolveBlock>      solve_groups;
+  SolveBlock                   c_group;
   c_group.id               = 0;
   c_group.solve_type       = Explicit;
   c_group.solve_timing     = Initialized;
   c_group.field_indices    = {0};
   c_group.dependencies_rhs = make_dependency_set(fields, {"old_1(c)", "grad(old_1(mu))"});
 
-  SolveGroup mu_group;
+  SolveBlock mu_group;
   mu_group.id               = 1;
   mu_group.solve_type       = Explicit;
   mu_group.solve_timing     = Uninitialized;
   mu_group.field_indices    = {1};
   mu_group.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
 
-  SolveGroup pp_group;
+  SolveBlock pp_group;
   pp_group.id               = 2;
   pp_group.solve_type       = Explicit;
   pp_group.solve_timing     = PostProcess;

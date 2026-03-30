@@ -23,6 +23,8 @@ compile_commands.json
 
 # Executables
 main
+main-release
+main-debug
 
 # Mac
 .DS_Store

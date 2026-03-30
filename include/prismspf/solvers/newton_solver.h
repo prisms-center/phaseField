@@ -29,7 +29,7 @@ class NewtonSolver : public LinearSolver<dim, degree, number>
 protected:
   using SolverBase<dim, degree, number>::solutions;
   using SolverBase<dim, degree, number>::solve_context;
-  using SolverBase<dim, degree, number>::solve_group;
+  using SolverBase<dim, degree, number>::solve_block;
   using LinearSolver<dim, degree, number>::do_linear_solve;
   using LinearSolver<dim, degree, number>::normalization_value;
   using LinearSolver<dim, degree, number>::lhs_operators;
@@ -40,12 +40,12 @@ public:
   /**
    * @brief Constructor.
    */
-  NewtonSolver(SolveGroup                               _solve_group,
+  NewtonSolver(SolveBlock                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
     : LinearSolver<dim, degree, number>(_solve_group, _solve_context)
     , newton_params(
         solve_context->get_user_inputs().nonlinear_solve_parameters.newton_solvers.at(
-          solve_group.id))
+          solve_block.id))
   {}
 
   /**

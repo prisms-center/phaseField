@@ -27,14 +27,14 @@ main(int argc, char *argv[])
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector)};
 
-  SolveGroup linear_solve(1,
+  SolveBlock linear_solve(1,
                           Linear,
                           Uninitialized,
                           {0},
                           {},
                           make_dependency_set(fields, {"grad(lhs(u))"}));
 
-  std::vector<SolveGroup> solve_groups({linear_solve});
+  std::vector<SolveBlock> solve_groups({linear_solve});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;

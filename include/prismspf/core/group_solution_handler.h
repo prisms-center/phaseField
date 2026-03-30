@@ -12,7 +12,7 @@
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
@@ -81,7 +81,7 @@ public:
   /**
    * @brief Constructor.
    */
-  GroupSolutionHandler(SolveGroup                          _solve_group,
+  GroupSolutionHandler(SolveBlock                          _solve_group,
                        const std::vector<FieldAttributes> &_attributes_list);
 
   /**
@@ -169,9 +169,9 @@ public:
   get_block_index(unsigned int global_index) const;
 
   /**
-   * @brief Get the underlying solve group object.
+   * @brief Get the underlying solve block object.
    */
-  [[nodiscard]] const SolveGroup &
+  [[nodiscard]] const SolveBlock &
   get_solve_group() const;
 
   /**
@@ -260,9 +260,9 @@ public:
 
 private:
   /**
-   * @brief Information about the solve group this handler is responsible for.
+   * @brief Information about the solve block this handler is responsible for.
    */
-  SolveGroup solve_group;
+  SolveBlock solve_block;
 
   /**
    * @brief Mapping from block index to global field index.

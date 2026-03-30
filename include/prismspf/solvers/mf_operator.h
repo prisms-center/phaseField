@@ -13,7 +13,7 @@
 #include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/types.h>
 
 #include <prismspf/solvers/solver_base.h>
@@ -74,13 +74,13 @@ public:
     else
       {
         static Value<Rank> ident = []()
-        {
-          Value<Rank> obj;
-          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-            {
-              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-            }
-        }();
+          {
+            Value<Rank> obj;
+            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+              {
+                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+              }
+          }();
         return ident;
       }
   }
@@ -139,10 +139,10 @@ public:
   void
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
   {
-    solve_group          = dst_solution.get_solve_group();
+    solve_block          = dst_solution.get_solve_group();
     data                 = &(dst_solution.get_matrix_free(relative_level));
     field_to_block_index = dst_solution.get_global_to_block_index();
-    for (unsigned int field_index : solve_group.field_indices)
+    for (unsigned int field_index : solve_block.field_indices)
       {
         dependency_map[field_index]; // creates entry if not already present
       }
@@ -268,9 +268,9 @@ private:
   std::vector<FieldAttributes> field_attributes;
 
   /**
-   * @brief The group being solved
+   * @brief The block being solved
    */
-  SolveGroup solve_group;
+  SolveBlock solve_block;
 
   /**
    * @brief PDE operator object (owning class instance of pde_op) for user defined PDEs.
