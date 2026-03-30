@@ -15,9 +15,31 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 enum SolveType : std::uint8_t
 {
+  /**
+   * Fields remain constant in time. Be sure to set the solve_timing to `Initialized`.
+   */
   Constant,
+  /** Each increment, variables are set to the evaluation of the submission in
+   * `equations_rhs`. This is often used for forward-Euler time integration and
+   * postprocessed fields.
+   */
   Explicit,
+  /**
+   * Linear solver for implicit equations of the form Ax=b, solving for x, where A is a
+   * matrix of linear operators, and x1, x2, ..., xn are the fields being solved for. This
+   * is sometimes used for backward-Euler time integration.
+   * Evaluate Ax in equations_lhs using trial fields x. Evaluate b in equations_rhs.
+   */
   Linear,
+  /**
+   * Nonlinear solver for implicit equations of the form R(x)=0, solving for x, where R is
+   * a generic function of x1, x2, ..., xn. This is sometimes used for backward-Euler
+   * time integration.
+   * The solver performs Newton's method by iteravely solving for a change term Deltax
+   * using a linear solve of the form -[dR/dx](Deltax) = R(x) and then performing
+   * x -> x + damping * Deltax.
+   * See [Newton's Method](https://en.wikipedia.org/wiki/Newton%27s_method)
+   */
   Newton
 };
 

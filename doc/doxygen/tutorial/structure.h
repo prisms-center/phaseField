@@ -1,6 +1,11 @@
 /** \page structure Structure of a PRISMS-PF application
 
-TODO: Summary
+Welcome to the PRISMS-PF application structure tutorial. This page explains the four main
+components you need to set up a simulation using PRISMS-PF and how to put them together.
+It will cover how to declare [fields](#fields), how to set up [solvers](#solvers) for
+those fields, where to write your [equations](#equations), and where to set PRISMS-PF
+[settings](#user_inputs). It will then cover how to put these together to solve a PDE
+[problem](#problem).
 
 \subsection fields Fields
 The first step to setting up a simulation in PRISMS-PF is declaring all the fields you
@@ -21,6 +26,7 @@ std::vector<FieldAttrubutes> fields
   };
 ```
 
+\subsection solvers Solvers
 The next step is to declare how you wish to solve each field and in what order groups
 of fields are solved. This is done by constructing an array (a C++ std::vector) containing
 SolveGroup objects. Each SolveGroup object has six important attributes:
@@ -44,7 +50,7 @@ the equations on the rhs or lhs side of the solve with the types of dependency
 \subsection equations Equations
 To write PDE equations in PRISMS-PF, one must implement methods of a derived class of
 `PDEOperatorBase`. In the provided examples, this class is known as `CustomPDE`.
-`CustomPDE` is also where you should declare your model constants and settings.
+This is also where you should declare your model constants and settings.
 There are four virtual functions that you may override to implement your equations:
 
 - `equations_rhs`: Equations for the rhs of explicit and implicit solves. See \ref
@@ -57,12 +63,34 @@ There are four virtual functions that you may override to implement your equatio
 that need them.
 
 \subsection user_inputs PRISMS-PF Settings
-TODO
+PRISMS-PF simulation settings are set up by constructing a `UserInputParameters` object.
+This contains settings for your triangulation, time-stepping, adaptive meshing, simulation
+outputs, and more. You can set these settings manually in your code, or by reading in a
+parameters file. Detailed documentation of options in `UserInputParameters`.
+```c++
+// Reading in settings from a parameter file.
+UserInputParameters<dim> user_inputs("parameters.prm");
+```
 
-*/
+\subsection problem Run a simulation
 
-/** \page running Connecting the Pieces
+To run a simulation with PRISMS-PF, create a `Problem` object from your fields, solve
+groups, and, custom PDE operator. You will also need to provide another object called
+PFTools, though you can leave this empty unless you are using the /ref nucleation
+functions of PRISMS-PF. Lastly, call problem.run() to execute the simulation.
 
-\subsection problem Problem
-TODO
+```c++
+std::vector<FieldAttributes> fields({...}); // Fill in
+std::vector<SolveGroup> solvers({...}); // Fill in
+CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
+UserInputParameters<dim>       user_inputs(parameters_filename);
+PhaseFieldTools<dim>           pf_tools;
+
+Problem<dim, degree, double>   problem(fields,
+                                       solvers,
+                                       user_inputs,
+                                       pf_tools,
+                                       pde_operator);
+problem.run();
+```
 */
