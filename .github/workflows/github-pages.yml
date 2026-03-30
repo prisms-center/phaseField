@@ -29,29 +29,28 @@ jobs:
 
     - name: Build doxygen files
       run: |
-        cd doc/doxygen
-        cmake .
-        make
+        cmake --workflow --preset docs
+        rm -rf build/docs/doc/doxygen
 
     - name: Update version selector
       run: |
-        ./contrib/utilities/update_doc_version_selector.sh doc/doxygen/docs/
+        ./contrib/utilities/update_doc_version_selector.sh build/docs/doc/
 
     - name: Update default version
       run: |
-        ./contrib/utilities/update_doc_default_version.sh doc/doxygen/docs/
+        ./contrib/utilities/update_doc_default_version.sh build/docs/doc/
 
     - name: Upload folders
       uses: actions/upload-artifact@v7
       with:
         name: html-doc
-        path: doc/doxygen/docs/
+        path: build/docs/doc
 
     - name: Deploy to GitHub pages
       uses: JamesIves/github-pages-deploy-action@v4
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/4.0-dev'
       with:
         branch: gh-pages
-        folder: doc/doxygen/docs/
+        folder: build/docs/doc
         target-folder: doxygen/
         clean: false # This must be false to keep prior versions of the docs
