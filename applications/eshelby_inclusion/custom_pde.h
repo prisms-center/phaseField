@@ -26,8 +26,8 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , compliance(get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
-        "compliance"))
+    , stiffness(get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
+        "stiffness"))
   {}
 
 private:
@@ -70,7 +70,7 @@ private:
             transformation_strain[i][i] = strain_value;
           }
         VectorGrad stress;
-        compute_stress<dim, ScalarValue>(compliance, transformation_strain, stress);
+        compute_stress<dim, ScalarValue>(stiffness, transformation_strain, stress);
         variable_list.set_gradient_term(0, -stress);
       }
   }
@@ -84,14 +84,14 @@ private:
       {
         VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
-        compute_stress<dim, ScalarValue>(compliance, ux, stress);
+        compute_stress<dim, ScalarValue>(stiffness, ux, stress);
         variable_list.set_gradient_term(0, stress);
       }
   }
 
   constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
 
-  dealii::Tensor<2, CIJ_tensor_size, number> compliance;
+  dealii::Tensor<2, CIJ_tensor_size, number> stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE
