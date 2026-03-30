@@ -124,6 +124,7 @@ if(PRISMS_PF_UNIT_TESTS)
 endif()
 
 # TODO: Refactor this
+
 # Find MPI
 # TODO: We should see if there's a minimum version we need to specify
 find_package(MPI REQUIRED COMPONENTS CXX)
@@ -233,6 +234,16 @@ if(NOT DEAL_II_MPI_LIBS STREQUAL PRISMS_PF_MPI_LIBS)
     "deal.II MPI libraries: ${DEAL_II_MPI_LIBS}\n"
     "Found MPI libraries:   ${PRISMS_PF_MPI_LIBS}\n"
     "These do not match! This may cause runtime issues."
+  )
+endif()
+
+# Check that deal.II has the same width indices as PRISMS-PF
+if(NOT DEAL_II_WITH_64BIT_INDICES STREQUAL PRISMS_PF_64BIT_INDICES)
+  message(
+    FATAL_ERROR
+    "PRISMS-PF and deal.II must both use the same index width. You have:\n"
+    "  PRISMS_PF_64BIT_INDICES = ${PRISMS_PF_64BIT_INDICES}\n"
+    "  DEAL_II_WITH_64BIT_INDICES = ${DEAL_II_WITH_64BIT_INDICES}\n"
   )
 endif()
 
