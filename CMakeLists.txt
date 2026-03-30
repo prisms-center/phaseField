@@ -61,6 +61,7 @@ option(PRISMS_PF_UNIT_TESTS "Whether to build the unit tests or not." OFF)
 option(PRISMS_PF_REGRESSION_TESTS "Whether to build the regression tests or not." OFF)
 option(PRISMS_PF_PERFORMANCE_TESTS "Whether to build the performance tests or not." OFF)
 option(PRISMS_PF_EXAMPLES "Whether to build examples or not." OFF)
+option(PRISMS_PF_DOCS "Whether to build documentation or not." OFF)
 
 # NOTE: This relies on the fact that deal.II is also compiled with 64-bit indices
 option(PRISMS_PF_64BIT_INDICES "Whether to use 64-bit indices for large simulations" OFF)
@@ -491,6 +492,45 @@ if(PRISMS_PF_REGRESSION_TESTS)
 endif()
 if(PRISMS_PF_PERFORMANCE_TESTS)
   #add_subdirectory(tests/performance)
+endif()
+
+# =========================================================
+# Documentation
+# =========================================================
+
+if(PRISMS_PF_DOCS)
+  print_subsection("Configuring PRISMS-PF documentation")
+
+  find_package(Doxygen REQUIRED)
+
+  # Path of Doxyfile and its output
+  set(DOXYGEN_INPUT ${CMAKE_SOURCE_DIR}/doc/doxygen/Doxyfile)
+  set(DOXYGEN_OUTPUT ${CMAKE_BINARY_DIR}/doc/doxygen/Doxyfile.out)
+
+  # The directory where the documentation will be generated
+  set(DOXYGEN_HTML_OUTPUT "${PRISMS_PF_VERSION}")
+  set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
+
+  # Copy input to output
+  configure_file(${DOXYGEN_INPUT} ${DOXYGEN_OUTPUT} @ONLY)
+
+  # Add target to generate documentation
+  doxygen_add_docs(
+    doc
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/include
+    COMMENT "Generating Doxygen documentation"
+    CONFIG_FILE ${DOXYGEN_OUTPUT}
+    ALL
+  )
+
+  message(
+    STATUS
+    "Doxygen documentation will be generated using:\n"
+    "     ${DOXYGEN_INPUT}\n"
+    "   and output to:\n"
+    "     ${DOXYGEN_OUTPUT_DIRECTORY}/${DOXYGEN_HTML_OUTPUT}\n"
+  )
 endif()
 
 # =========================================================

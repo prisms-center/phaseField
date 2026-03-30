@@ -7,6 +7,17 @@
     {
       "configurePreset": "release",
       "name": "release"
+    },
+    {
+      "configurePreset": "debugrelease",
+      "name": "debugrelease"
+    },
+    {
+      "configurePreset": "docs",
+      "name": "docs",
+      "targets": [
+        "doc"
+      ]
     }
   ],
   "cmakeMinimumRequired": {
@@ -20,6 +31,7 @@
         "PRISMS_PF_64BIT_INDICES": "OFF",
         "PRISMS_PF_ADDITIONAL_DEGREES": "OFF",
         "PRISMS_PF_AUTODETECTION": "ON",
+        "PRISMS_PF_DOCS": "OFF",
         "PRISMS_PF_EXAMPLES": "ON",
         "PRISMS_PF_PERFORMANCE_TESTS": "OFF",
         "PRISMS_PF_REGRESSION_TESTS": "OFF",
@@ -32,11 +44,28 @@
       "name": "default"
     },
     {
+      "cacheVariables": {
+        "PRISMS_PF_64BIT_INDICES": "OFF",
+        "PRISMS_PF_ADDITIONAL_DEGREES": "ON",
+        "PRISMS_PF_AUTODETECTION": "OFF",
+        "PRISMS_PF_DOCS": "OFF",
+        "PRISMS_PF_EXAMPLES": "ON",
+        "PRISMS_PF_PERFORMANCE_TESTS": "ON",
+        "PRISMS_PF_REGRESSION_TESTS": "ON",
+        "PRISMS_PF_UNIT_TESTS": "ON",
+        "PRISMS_PF_WITH_CALIPER": "ON",
+        "PRISMS_PF_WITH_VTK": "ON"
+      },
+      "generator": "Ninja",
+      "hidden": true,
+      "name": "dev"
+    },
+    {
       "binaryDir": "${sourceDir}/build/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
-      "description": "Default debug build using Ninja generator",
+      "description": "Default Debug build using Ninja generator",
       "displayName": "Default Debug Config",
       "inherits": "default",
       "name": "debug"
@@ -46,10 +75,31 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
-      "description": "Default release build using Ninja generator",
+      "description": "Default Release build using Ninja generator",
       "displayName": "Default Release Config",
       "inherits": "default",
       "name": "release"
+    },
+    {
+      "binaryDir": "${sourceDir}/build/debugrelease",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "DebugRelease"
+      },
+      "description": "Default DebugRelease build using Ninja generator",
+      "displayName": "Default DebugRelease Config",
+      "inherits": "default",
+      "name": "debugrelease"
+    },
+    {
+      "binaryDir": "${sourceDir}/build/docs",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PRISMS_PF_DOCS": "ON"
+      },
+      "description": "Documentation build",
+      "displayName": "Docs Config",
+      "inherits": "dev",
+      "name": "docs"
     }
   ],
   "version": 6,
@@ -76,6 +126,32 @@
         },
         {
           "name": "release",
+          "type": "build"
+        }
+      ]
+    },
+    {
+      "name": "debugrelease",
+      "steps": [
+        {
+          "name": "debugrelease",
+          "type": "configure"
+        },
+        {
+          "name": "debugrelease",
+          "type": "build"
+        }
+      ]
+    },
+    {
+      "name": "docs",
+      "steps": [
+        {
+          "name": "docs",
+          "type": "configure"
+        },
+        {
+          "name": "docs",
           "type": "build"
         }
       ]
