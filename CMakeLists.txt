@@ -8,8 +8,8 @@
 
 # CMake config
 message(STATUS "Using CMake ${CMAKE_VERSION}")
-cmake_minimum_required(VERSION 3.23)
-cmake_policy(VERSION 3.23)
+cmake_minimum_required(VERSION 3.28)
+cmake_policy(VERSION 3.28)
 
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
@@ -112,6 +112,7 @@ FetchContent_Declare(
   libassert
   GIT_REPOSITORY https://github.com/jeremy-rifkin/libassert.git
   GIT_TAG v2.2.1
+  EXCLUDE_FROM_ALL
 )
 
 if(PRISMS_PF_UNIT_TESTS)
@@ -166,21 +167,79 @@ find_package(
     $ENV{DEAL_II_DIR}
 )
 
-# Again we run into some more of the uniqueness of deal.II with the way they set
-# up build types. Their default build type is `DebugRelease`, which builds both
-# Debug and Release targets. As such, our project much choose what deal.II target
-# to link to when the user compiles with Debug and Release.
-#
-# When deal.II is built with only Debug or only Release, we link against for all
-# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
-# Debug will only contain assertions and debugging for our library. In most cases,
-# this is sufficient to catch most issues.
-#
-# When deal.II is build with DebugRelease, we link to the target that corresponds
-# to the PRISMS-PF build type. This is recommended for developers.
+# Print some information about deal.II configuration
+print_variables(
+  ""
+  DEAL_II_VERSION
+  DEAL_II_BUILD_TYPE
+  DEAL_II_CXX_COMPILER
+  DEAL_II_C_COMPILER
+  ""
+  DEAL_II_WITH_THREADS
+  DEAL_II_WITH_64BIT_INDICES
+  DEAL_II_WITH_BOOST
+  DEAL_II_BOOST_VERSION
+  DEAL_II_WITH_KOKKOS
+  DEAL_II_KOKKOS_VERSION
+  DEAL_II_FEATURE_KOKKOS_BUNDLED_CONFIGURED
+  DEAL_II_WITH_LAPACK
+  DEAL_II_LAPACK_WITH_MKL
+  DEAL_II_WITH_MPI
+  DEAL_II_MPI_VERSION
+  DEAL_II_WITH_P4EST
+  DEAL_II_P4EST_VERSION
+  DEAL_II_P4EST_WITH_VTK_BINARY
+  DEAL_II_WITH_TASKFLOW
+  DEAL_II_TASKFLOW_VERSION
+  DEAL_II_FEATURE_TASKFLOW_BUNDLED_CONFIGURED
+  DEAL_II_WITH_TBB
+  DEAL_II_WITH_VTK
+  DEAL_II_WITH_ZLIB
+  DEAL_II_ZLIB_VERSION
+  ""
+  DEAL_II_CXX_FLAGS
+  DEAL_II_CXX_FLAGS_DEBUG
+  DEAL_II_CXX_FLAGS_RELEASE
+  ""
+  DEAL_II_WARNING_FLAGS
+  ""
+  DEAL_II_LINKER_FLAGS
+  DEAL_II_LINKER_FLAGS_DEBUG
+  DEAL_II_LINKER_FLAGS_RELEASE
+  ""
+)
 
-# print_variable(DEAL_II_BUILD_TYPE)
+# Check the deal.II was built with the right dependencies
+if(NOT DEAL_II_WITH_MPI)
+  message(FATAL_ERROR "deal.II was not built with MPI support!")
+endif()
+if(NOT DEAL_II_WITH_LAPACK)
+  message(FATAL_ERROR "deal.II was not built with LAPACK support!")
+endif()
+if(NOT DEAL_II_WITH_ZLIB)
+  message(FATAL_ERROR "deal.II was not built with zlib support!")
+endif()
+if(NOT DEAL_II_WITH_P4EST)
+  message(FATAL_ERROR "deal.II was not built with p4est support!")
+endif()
 
+# Check that deal.II links against the same MPI that we find earlier.
+get_target_property(DEAL_II_MPI_LIBS dealii::interface_mpi INTERFACE_LINK_LIBRARIES)
+get_target_property(PRISMS_PF_MPI_LIBS MPI::MPI_CXX INTERFACE_LINK_LIBRARIES)
+
+if(NOT DEAL_II_MPI_LIBS STREQUAL PRISMS_PF_MPI_LIBS)
+  message(
+    WARNING
+    "deal.II MPI libraries: ${DEAL_II_MPI_LIBS}\n"
+    "Found MPI libraries:   ${PRISMS_PF_MPI_LIBS}\n"
+    "These do not match! This may cause runtime issues."
+  )
+endif()
+
+# TODO: Add caliper
+# TODO: Add VTK
+
+# FetchCotent MakeAvailable for the other vendored dependencies
 set(PRISMS_PF_VENDORED_PACKAGES libassert)
 if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
   list(APPEND PRISMS_PF_VENDORED_PACKAGES Catch2)
@@ -193,6 +252,7 @@ FetchContent_MakeAvailable(${PRISMS_PF_VENDORED_PACKAGES})
 # =========================================================
 
 print_subsection("Configuring build targets")
+# TODO: Add status messages here
 
 # Configure the config file
 configure_file(include/prismspf/config.h.in include/prismspf/config.h @ONLY)
@@ -219,6 +279,53 @@ set_target_properties(
       OFF
 )
 
+# Add the deal.II compiler and linker flags. These
+# must be public so our application also get these.
+# However, we need to strip a few arguments from them
+# first.
+# TODO: Don't rely on deal.II do stuff ourselves
+
+function(strip_dealii_flags input output)
+  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(STRIP "${stripped}" stripped)
+  set(${output} "${stripped}" PARENT_SCOPE)
+endfunction()
+
+strip_dealii_flags("${DEAL_II_CXX_FLAGS}" DEAL_II_CXX_FLAGS)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_DEBUG}" DEAL_II_CXX_FLAGS_DEBUG)
+strip_dealii_flags("${DEAL_II_CXX_FLAGS_RELEASE}" DEAL_II_CXX_FLAGS_RELEASE)
+
+# TODO: Fix this so it prints with  meaningful variable names
+print_variables(
+  DEAL_II_CXX_FLAGS
+  DEAL_II_CXX_FLAGS_DEBUG
+  DEAL_II_CXX_FLAGS_RELEASE
+)
+
+separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
+separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
+separate_arguments(
+  DEAL_II_CXX_FLAGS_RELEASE_LIST
+  UNIX_COMMAND
+  "${DEAL_II_CXX_FLAGS_RELEASE}"
+)
+
+target_compile_options(
+  prisms_pf
+  PUBLIC
+    ${DEAL_II_CXX_FLAGS_LIST}
+    $<$<CONFIG:Debug>:${DEAL_II_CXX_FLAGS_DEBUG_LIST}>
+    $<$<CONFIG:Release>:${DEAL_II_CXX_FLAGS_RELEASE_LIST}>
+)
+
+target_link_options(
+  prisms_pf
+  PUBLIC
+    SHELL:${DEAL_II_LINKER_FLAGS}
+    $<$<CONFIG:Debug>:SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}>
+    $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
+)
+
 # Add each modules in the src folder
 add_subdirectory(src)
 
@@ -230,13 +337,43 @@ target_include_directories(
     $<INSTALL_INTERFACE:include>
 )
 
+# Again we run into some more of the uniqueness of deal.II with the way they set
+# up build types. Their default build type is `DebugRelease`, which builds both
+# Debug and Release targets. As such, our project much choose what deal.II target
+# to link to when the user compiles with Debug and Release.
+#
+# When deal.II is built with only Debug or only Release, we link against for all
+# PRISMS-PF builds. For example, if deal.II is built in Release, PRISMS-PF in
+# Debug will only contain assertions and debugging for our library. In most cases,
+# this is sufficient to catch most issues.
+#
+# When deal.II is build with DebugRelease, we link to the target that corresponds
+# to the PRISMS-PF build type. This is recommended for developers.
+
+if(DEAL_II_BUILD_TYPE STREQUAL "DebugRelease")
+  target_link_libraries(
+    prisms_pf
+    PUBLIC
+      $<$<CONFIG:Debug>:dealii::dealii_debug>
+      $<$<CONFIG:Release>:dealii::dealii_release>
+  )
+elseif(DEAL_II_BUILD_TYPE STREQUAL "Debug")
+  target_link_libraries(prisms_pf PUBLIC dealii::dealii_debug)
+elseif(DEAL_II_BUILD_TYPE STREQUAL "Release")
+  target_link_libraries(prisms_pf PUBLIC dealii::dealii_release)
+else()
+  message(FATAL_ERROR "Unknown DEAL_II_BUILD_TYPE: ${DEAL_II_BUILD_TYPE}")
+endif()
+
 # Link dependencies
+# TODO: We don't need to set everything as public, and we shouldn't.
+# Ideally, the only public bits need to be MPI and deal.II
 target_link_libraries(
   prisms_pf
   PUBLIC
     MPI::MPI_CXX
-    libassert::assert
-    dealii::dealii
+  PRIVATE
+    $<BUILD_LOCAL_INTERFACE:libassert::assert>
 )
 
 # =========================================================
@@ -244,6 +381,7 @@ target_link_libraries(
 # =========================================================
 
 print_subsection("Configuring installation targets")
+# TODO: Add status messages here
 
 include(GNUInstallDirs)
 
@@ -272,27 +410,27 @@ install(
 install(
   EXPORT prisms_pf_targets
   FILE prisms_pf_targets.cmake
-  NAMESPACE prisms_pf::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+  NAMESPACE PRISMS-PF::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
 
 # Generate and install the config file for find_package support
 include(CMakePackageConfigHelpers)
 configure_package_config_file(
-  cmake/prisms_pf_config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf_config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+  cmake/PRISMS-PFConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
 write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf_config_version.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
   VERSION ${PRISMS_PF_VERSION}
   COMPATIBILITY SameMinorVersion
 )
 install(
   FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf_config.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf_config_version.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/prisms_pf
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
 
 # =========================================================
@@ -300,6 +438,7 @@ install(
 # =========================================================
 
 print_subsection("Configuring PRISMS-PF tests")
+# TODO: Add status messages here
 
 if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
   enable_testing()
@@ -309,10 +448,10 @@ if(PRISMS_PF_UNIT_TESTS)
   add_subdirectory(tests/unit)
 endif()
 if(PRISMS_PF_REGRESSION_TESTS)
-	#add_subdirectory(tests/regression)
+  #add_subdirectory(tests/regression)
 endif()
 if(PRISMS_PF_PERFORMANCE_TESTS)
-	#add_subdirectory(tests/performance)
+  #add_subdirectory(tests/performance)
 endif()
 
 # =========================================================

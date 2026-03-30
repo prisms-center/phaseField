@@ -1,4 +1,7 @@
 add_subdirectory(core)
+add_subdirectory(field_input)
+add_subdirectory(grains)
+add_subdirectory(nucleation)
 add_subdirectory(solvers)
 add_subdirectory(user_inputs)
 add_subdirectory(utilities)
