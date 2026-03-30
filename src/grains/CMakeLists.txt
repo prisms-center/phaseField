@@ -1,9 +1,13 @@
 # Manually specify files to be included
-target_sources(
-  prisms_pf
-  PRIVATE
-  PUBLIC
-    FILE_SET HEADERS
-      BASE_DIRS ${PROJECT_SOURCE_DIR}/include
-      FILES ${PROJECT_SOURCE_DIR}/include/prismspf/grains/grains.h
+set(_sources)
+
+set(_headers ${PROJECT_SOURCE_DIR}/include/prismspf/grains/grains.h)
+
+set(_inst_bases)
+
+prisms_pf_target_sources(
+  "${PRISMS_PF_TARGETS}"
+  "${_headers}"
+  "${_sources}"
+  "${_inst_bases}"
 )
