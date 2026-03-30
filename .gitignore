@@ -11,5 +11,15 @@ CMakeUserPresets.json
 **/venv
 compile_commands.json
 
+# Output files
+*.log
+*.vtu
+*.pvtu
+*.vtk
+*.txt
+
+# Executables
+main
+
 # Mac
 .DS_Store
