@@ -1,0 +1,178 @@
+{
+  "buildPresets": [
+    {
+      "configurePreset": "default",
+      "name": "default"
+    },
+    {
+      "configurePreset": "dev",
+      "name": "dev"
+    },
+    {
+      "configuration": "Release",
+      "configurePreset": "ninja-multi",
+      "name": "ninja-multi-release"
+    },
+    {
+      "configuration": "Debug",
+      "configurePreset": "ninja-multi",
+      "name": "ninja-multi-debug"
+    },
+    {
+      "configuration": "Release",
+      "configurePreset": "ninja-multi-dev",
+      "name": "ninja-multi-dev-release"
+    },
+    {
+      "configuration": "Debug",
+      "configurePreset": "ninja-multi-dev",
+      "name": "ninja-multi-dev-debug"
+    }
+  ],
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "binaryDir": "${sourceDir}/build/default",
+      "cacheVariables": {
+        "PRISMS_PF_64BIT_INDICES": "OFF",
+        "PRISMS_PF_ADDITIONAL_DEGREES": "OFF",
+        "PRISMS_PF_AUTODETECTION": "ON",
+        "PRISMS_PF_EXAMPLES": "ON",
+        "PRISMS_PF_PERFORMANCE_TESTS": "OFF",
+        "PRISMS_PF_REGRESSION_TESTS": "OFF",
+        "PRISMS_PF_UNIT_TESTS": "OFF",
+        "PRISMS_PF_WITH_CALIPER": "OFF",
+        "PRISMS_PF_WITH_VTK": "OFF"
+      },
+      "description": "Default build using Ninja generator",
+      "displayName": "Default Config",
+      "generator": "Ninja",
+      "name": "default"
+    },
+    {
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "PRISMS_PF_ADDITIONAL_DEGREES": "ON",
+        "PRISMS_PF_AUTODETECTION": "OFF",
+        "PRISMS_PF_EXAMPLES": "ON",
+        "PRISMS_PF_PERFORMANCE_TESTS": "ON",
+        "PRISMS_PF_REGRESSION_TESTS": "ON",
+        "PRISMS_PF_UNIT_TESTS": "ON"
+      },
+      "description": "Developer build using Ninja generator",
+      "displayName": "Developer Config",
+      "inherits": "default",
+      "name": "dev"
+    },
+    {
+      "description": "Default build using Ninja Multi-Config generator",
+      "displayName": "Ninja Multi-Config",
+      "generator": "Ninja Multi-Config",
+      "inherits": "default",
+      "name": "ninja-multi"
+    },
+    {
+      "binaryDir": "${sourceDir}/build/ninja-multi-dev",
+      "description": "Developer build using Ninja Multi-Config generator",
+      "displayName": "Ninja Multi-Config Developer",
+      "generator": "Ninja Multi-Config",
+      "inherits": "dev",
+      "name": "ninja-multi-dev"
+    }
+  ],
+  "packagePresets": [
+    {
+      "configurePreset": "default",
+      "generators": [
+        "TGZ"
+      ],
+      "name": "default"
+    }
+  ],
+  "testPresets": [
+    {
+      "configurePreset": "default",
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      },
+      "name": "default",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "configurePreset": "ninja-multi-dev",
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      },
+      "name": "ninja-multi-dev",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ],
+  "version": 6,
+  "workflowPresets": [
+    {
+      "name": "default",
+      "steps": [
+        {
+          "name": "default",
+          "type": "configure"
+        },
+        {
+          "name": "default",
+          "type": "build"
+        },
+        {
+          "name": "default",
+          "type": "test"
+        },
+        {
+          "name": "default",
+          "type": "package"
+        }
+      ]
+    },
+    {
+      "name": "dev-release",
+      "steps": [
+        {
+          "name": "ninja-multi-dev",
+          "type": "configure"
+        },
+        {
+          "name": "ninja-multi-dev-release",
+          "type": "build"
+        },
+        {
+          "name": "ninja-multi-dev",
+          "type": "test"
+        }
+      ]
+    },
+    {
+      "name": "dev-debug",
+      "steps": [
+        {
+          "name": "ninja-multi-dev",
+          "type": "configure"
+        },
+        {
+          "name": "ninja-multi-dev-debug",
+          "type": "build"
+        },
+        {
+          "name": "ninja-multi-dev",
+          "type": "test"
+        }
+      ]
+    }
+  ]
+}
