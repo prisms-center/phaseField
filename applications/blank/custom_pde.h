@@ -77,15 +77,15 @@ private:
                         number                   &vector_component_value) const override;
 
   /**
-   * @brief User-implemented class for nonuniform boundary conditions.
+   * @brief User-implemented function for Dirichlet boundary conditions.
    */
   void
-  set_nonuniform_dirichlet(const unsigned int       &index,
-                           const unsigned int       &boundary_id,
-                           const unsigned int       &component,
-                           const dealii::Point<dim> &point,
-                           number                   &scalar_value,
-                           number &vector_component_value) const override;
+  set_dirichlet(const unsigned int       &index,
+                const unsigned int       &boundary_id,
+                const unsigned int       &component,
+                const dealii::Point<dim> &point,
+                number                   &scalar_value,
+                number                   &vector_component_value) const override;
 
   /**
    * @brief User-implemented class for the RHS of explicit equations.

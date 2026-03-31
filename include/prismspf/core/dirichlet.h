@@ -20,16 +20,16 @@ template <unsigned int dim, unsigned int degree, typename number>
 class PDEOperatorBase;
 
 /**
- * @brief Function for user-implemented nonuniform dirichlet boundary condition.
+ * @brief Function for user-implemented Dirichlet boundary condition.
  */
 template <unsigned int dim, unsigned int degree, typename number>
-class NonuniformDirichlet : public dealii::Function<dim, number>
+class DirichletConditions : public dealii::Function<dim, number>
 {
 public:
   /**
    * @brief Constructor.
    */
-  NonuniformDirichlet(unsigned int                                _index,
+  DirichletConditions(unsigned int                                _index,
                       unsigned int                                _boundary_id,
                       const PDEOperatorBase<dim, degree, number> &_pde_operator,
                       unsigned int                                spacedim);

@@ -51,16 +51,16 @@ public:
   {}
 
   /**
-   * @brief User-implemented class for the setting nonuniform boundary conditions. Default
+   * @brief User-implemented function for setting Dirichlet boundary conditions. Default
    * behavior is to call initial conditions.
    */
   virtual void
-  set_nonuniform_dirichlet([[maybe_unused]] const unsigned int       &index,
-                           [[maybe_unused]] const unsigned int       &boundary_id,
-                           [[maybe_unused]] const unsigned int       &component,
-                           [[maybe_unused]] const dealii::Point<dim> &point,
-                           [[maybe_unused]] number                   &scalar_value,
-                           [[maybe_unused]] number &vector_component_value) const
+  set_dirichlet([[maybe_unused]] const unsigned int       &index,
+                [[maybe_unused]] const unsigned int       &boundary_id,
+                [[maybe_unused]] const unsigned int       &component,
+                [[maybe_unused]] const dealii::Point<dim> &point,
+                [[maybe_unused]] number                   &scalar_value,
+                [[maybe_unused]] number                   &vector_component_value) const
   {
     this->set_initial_condition(index,
                                 component,

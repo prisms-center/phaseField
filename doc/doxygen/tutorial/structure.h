@@ -59,7 +59,7 @@ There are four virtual functions that you may override to implement your equatio
   details.
 - `set_initial_condition`: Function to set initial conditions by equations for fields that
   need them.
-- `set_nonuniform_dirichlet`: Function to set Dirichlet boundary conditions for fields
+- `set_dirichlet`: Function to set Dirichlet boundary conditions for fields
 that need them.
 
 \subsection user_inputs PRISMS-PF Settings

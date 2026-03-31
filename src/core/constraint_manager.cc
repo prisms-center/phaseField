@@ -12,10 +12,10 @@
 #include <deal.II/numerics/vector_tools_boundary.h>
 
 #include <prismspf/core/constraint_manager.h>
+#include <prismspf/core/dirichlet.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/nonuniform_dirichlet.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 
@@ -368,7 +368,7 @@ ConstraintManager<dim, degree, number>::make_dirichlet_constraints(
     SystemWide<dim, degree>::mapping,
     dof_handler,
     boundary_id,
-    NonuniformDirichlet<dim, degree, number>(field_index,
+    DirichletConditions<dim, degree, number>(field_index,
                                              boundary_id,
                                              *pde_operator,
                                              is_vector_field ? dim : 1),

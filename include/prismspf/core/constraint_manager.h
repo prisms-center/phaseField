@@ -91,7 +91,7 @@ public:
 
   /**
    * @brief Update time-dependent constraints.
-   * For now this only updates the non-uniform dirichlet constraints.
+   * For now this only updates the Dirichlet constraints.
    */
   void
   update_time_dependent_constraints(const std::vector<FieldAttributes> &field_attributes);
