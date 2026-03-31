@@ -19,9 +19,9 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
-  SolveBlock                          _solve_group,
+  SolveBlock                          _solve_block,
   const std::vector<FieldAttributes> &_attributes_list)
-  : solve_block(std::move(_solve_group))
+  : solve_block(std::move(_solve_block))
 {
   block_to_global_index.assign(solve_block.field_indices.begin(),
                                solve_block.field_indices.end());
@@ -148,7 +148,7 @@ GroupSolutionHandler<dim, number>::get_block_index(unsigned int global_index) co
 
 template <unsigned int dim, typename number>
 auto
-GroupSolutionHandler<dim, number>::get_solve_group() const -> const SolveBlock &
+GroupSolutionHandler<dim, number>::get_solve_block() const -> const SolveBlock &
 {
   return solve_block;
 }

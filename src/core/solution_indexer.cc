@@ -19,7 +19,7 @@ SolutionIndexer<dim, number>::SolutionIndexer(
   solutions.resize(num_fields, nullptr);
   for (GroupSolutionHandler<dim, number> *solution_handler : solution_handlers)
     {
-      for (unsigned int field_index : solution_handler->get_solve_group().field_indices)
+      for (unsigned int field_index : solution_handler->get_solve_block().field_indices)
         {
           solutions[field_index] = solution_handler;
         }
@@ -88,9 +88,9 @@ SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
 
 template <unsigned int dim, typename number>
 const SolveBlock &
-SolutionIndexer<dim, number>::get_solve_group(unsigned int index) const
+SolutionIndexer<dim, number>::get_solve_block(unsigned int index) const
 {
-  return solutions[index]->get_solve_group();
+  return solutions[index]->get_solve_block();
 }
 
 template <unsigned int dim, typename number>

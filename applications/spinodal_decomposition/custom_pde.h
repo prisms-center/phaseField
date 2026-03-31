@@ -55,9 +55,9 @@ private:
   void
   compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_group_id) const override
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_group_id == 0) // c
+    if (solve_block_id == 0) // c
       {
         ScalarValue c   = variable_list.template get_value<Scalar, OldOne>(0);
         ScalarGrad  mux = variable_list.template get_gradient<Scalar, OldOne>(1);
@@ -68,7 +68,7 @@ private:
         variable_list.set_value_term(0, eq_c);
         variable_list.set_gradient_term(0, eqx_c);
       }
-    else if (solve_group_id == 1) // mu
+    else if (solve_block_id == 1) // mu
       {
         ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
         ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
@@ -81,7 +81,7 @@ private:
         variable_list.set_value_term(1, eq_mu);
         variable_list.set_gradient_term(1, eqx_mu);
       }
-    else if (solve_group_id == 2) // pp
+    else if (solve_block_id == 2) // pp
       {
         ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
         ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);

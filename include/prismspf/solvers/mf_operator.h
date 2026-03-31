@@ -55,7 +55,7 @@ public:
   using Operator = void (PDEOperatorBase<dim, degree, number>::*)(
     FieldContainer<dim, degree, number> &, /* variable_list */
     const SimulationTimer &,               /* sim_timer */
-    unsigned int                           /* solve_group_id */
+    unsigned int                           /* solve_block_id */
   ) const;
 
   template <TensorRank Rank>
@@ -139,7 +139,7 @@ public:
   void
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
   {
-    solve_block          = dst_solution.get_solve_group();
+    solve_block          = dst_solution.get_solve_block();
     data                 = &(dst_solution.get_matrix_free(relative_level));
     field_to_block_index = dst_solution.get_global_to_block_index();
     for (unsigned int field_index : solve_block.field_indices)

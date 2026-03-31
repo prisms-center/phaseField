@@ -27,21 +27,21 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 2;
 
   std::vector<FieldAttributes> field_attributes = {FieldAttributes("n")};
-  std::vector<SolveBlock>      solve_groups;
-  SolveBlock                   exp_group(1,
+  std::vector<SolveBlock>      solve_blocks;
+  SolveBlock                   exp_block(1,
                        Linear,
                        Primary,
                                          {0},
                        make_dependency_set(field_attributes, {"old_1(n)"}),
                        make_dependency_set(field_attributes,
                                                              {"change(n)", "grad(change(n))"}));
-  solve_groups.push_back(exp_group);
+  solve_blocks.push_back(exp_block);
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(field_attributes,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);

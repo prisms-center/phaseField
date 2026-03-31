@@ -41,9 +41,9 @@ public:
   /**
    * @brief Constructor.
    */
-  LinearSolver(SolveBlock                               _solve_group,
+  LinearSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
-    : SolverBase<dim, degree, number>(_solve_group, _solve_context)
+    : SolverBase<dim, degree, number>(_solve_block, _solve_context)
     , lin_params(
         solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
           solve_block.id))

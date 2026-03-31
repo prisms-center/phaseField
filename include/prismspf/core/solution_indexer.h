@@ -66,7 +66,7 @@ public:
    * @brief Get the solve group of a given field index.
    */
   [[nodiscard]] const SolveBlock &
-  get_solve_group(unsigned int index) const;
+  get_solve_block(unsigned int index) const;
 
   /**
    * @brief Get the matrixfree object of the group a given field index.
