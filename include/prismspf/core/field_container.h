@@ -227,7 +227,7 @@ public:
                  const SolutionIndexer<dim, number> &_solution_indexer,
                  unsigned int                        _relative_level,
                  const DependencyMap                &dependency_map,
-                 const SolveBlock                   &_solve_group,
+                 const SolveBlock                   &_solve_block,
                  const MatrixFree<dim, number>      &matrix_free);
 
   /**

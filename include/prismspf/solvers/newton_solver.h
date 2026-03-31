@@ -40,9 +40,9 @@ public:
   /**
    * @brief Constructor.
    */
-  NewtonSolver(SolveBlock                               _solve_group,
+  NewtonSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
-    : LinearSolver<dim, degree, number>(_solve_group, _solve_context)
+    : LinearSolver<dim, degree, number>(_solve_block, _solve_context)
     , newton_params(
         solve_context->get_user_inputs().nonlinear_solve_parameters.newton_solvers.at(
           solve_block.id))

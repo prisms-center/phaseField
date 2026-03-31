@@ -66,10 +66,10 @@ private:
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
     const double dt = sim_timer.get_timestep();
-    if (solve_group_id == 0) // explicit
+    if (solve_block_id == 0) // explicit
       {
         // --- Getting the values and derivatives of the model variables ---
 
@@ -119,7 +119,7 @@ private:
         variable_list.set_value_term(1, eq_n);
         variable_list.set_gradient_term(1, eqx_n);
       }
-    else if (solve_group_id == 1) // postprocess
+    else if (solve_block_id == 1) // postprocess
       {
         // --- Getting the values and derivatives of the model variables ---
 

@@ -90,9 +90,9 @@ public:
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
-    if (solve_group_id == 0) // explicit
+    if (solve_block_id == 0) // explicit
       {
         // --- Getting the values and derivatives of the model variables ---
 
@@ -157,7 +157,7 @@ public:
         variable_list.set_value_term(1, eq_n + source_term);
         variable_list.set_gradient_term(1, eqx_n);
       }
-    else if (solve_group_id == 1) // nucleation rate
+    else if (solve_block_id == 1) // nucleation rate
       {
         ScalarValue c = variable_list.template get_value<Scalar, Current>(0);
         ScalarValue n = variable_list.template get_value<Scalar, Current>(1);
@@ -170,14 +170,14 @@ public:
           }
         // Terms for the nucleation rate
         auto max = [](const ScalarValue &arr, number val)
-        {
-          ScalarValue result;
-          for (unsigned int i = 0; i < arr.size(); ++i)
-            {
-              result[i] = std::max(arr[i], val);
-            }
-          return result;
-        };
+          {
+            ScalarValue result;
+            for (unsigned int i = 0; i < arr.size(); ++i)
+              {
+                result[i] = std::max(arr[i], val);
+              }
+            return result;
+          };
         // Calculate the nucleation rate
         double current_time = sim_timer.get_time();
         using std::exp;
@@ -207,15 +207,15 @@ public:
       {
         // Calculate the distance function to the nucleus center
         const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
-        {
-          dealii::Point<dim, ScalarValue> result;
-          const dealii::Point<dim>       &point = nucleus.location;
-          for (unsigned int d = 0; d < dim; ++d)
-            {
-              result[d] = ScalarValue(point[d]);
-            }
-          return result;
-        }();
+          {
+            dealii::Point<dim, ScalarValue> result;
+            const dealii::Point<dim>       &point = nucleus.location;
+            for (unsigned int d = 0; d < dim; ++d)
+              {
+                result[d] = ScalarValue(point[d]);
+              }
+            return result;
+          }();
 
         ScalarValue dist = distance<dim, ScalarValue>(
           q_point_loc,

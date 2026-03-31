@@ -52,9 +52,9 @@ private:
   void
   compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_group_id) const override
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_group_id == 1) // lhs
+    if (solve_block_id == 1) // lhs
       {
       }
   }
@@ -62,9 +62,9 @@ private:
   void
   compute_lhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
-    if (solve_group_id == 1) // lhs
+    if (solve_block_id == 1) // lhs
       {
       }
   }
@@ -91,17 +91,17 @@ main(int argc, char *argv[])
       constexpr unsigned int degree = 2;
 
       std::vector<FieldAttributes> fields = {FieldAttributes("n")};
-      std::vector<SolveBlock>      solve_groups;
-      SolveBlock                   exp_group;
-      SolveBlock                   pp_group;
-      solve_groups.push_back(exp_group);
-      solve_groups.push_back(pp_group);
+      std::vector<SolveBlock>      solve_blocks;
+      SolveBlock                   exp_block;
+      SolveBlock                   pp_block;
+      solve_blocks.push_back(exp_block);
+      solve_blocks.push_back(pp_block);
 
       UserInputParameters<dim>       user_inputs(parameters_filename);
       PhaseFieldTools<dim>           pf_tools;
       CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
       Problem<dim, degree, double>   problem(fields,
-                                           solve_groups,
+                                           solve_blocks,
                                            user_inputs,
                                            pf_tools,
                                            pde_operator);

@@ -16,11 +16,11 @@ FieldContainer<dim, degree, number>::FieldContainer(
   const SolutionIndexer<dim, number> &_solution_indexer,
   unsigned int                        _relative_level,
   const DependencyMap                &dependency_map,
-  const SolveBlock                   &_solve_group,
+  const SolveBlock                   &_solve_block,
   const MatrixFree<dim, number>      &matrix_free)
   : field_attributes_ptr(&_field_attributes)
   , solution_indexer(&_solution_indexer)
-  , solve_block(&_solve_group)
+  , solve_block(&_solve_block)
   , shared_feeval_scalar(matrix_free)
   , relative_level(_relative_level)
 {
@@ -42,14 +42,14 @@ FieldContainer<dim, degree, number>::FieldContainer(
           feeval_deps_scalar[field_index] = FEEValuationDeps<TensorRank::Scalar>(
             dependency,
             mf_id_pair,
-            solve_block->id == solution_indexer->get_solve_group(field_index).id);
+            solve_block->id == solution_indexer->get_solve_block(field_index).id);
         }
       else if (field_attributes[field_index].field_type == TensorRank::Vector)
         {
           feeval_deps_vector[field_index] = FEEValuationDeps<TensorRank::Vector>(
             dependency,
             mf_id_pair,
-            solve_block->id == solution_indexer->get_solve_group(field_index).id);
+            solve_block->id == solution_indexer->get_solve_block(field_index).id);
         }
       else
         {

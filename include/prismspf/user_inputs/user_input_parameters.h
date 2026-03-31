@@ -46,7 +46,7 @@ public:
    */
   void
   validate(const std::vector<FieldAttributes> &field_attributes,
-           const std::vector<SolveBlock>      &solve_groups)
+           const std::vector<SolveBlock>      &solve_blocks)
   {
     // Perform and postprocessing of user inputs and run checks
     spatial_discretization.validate();

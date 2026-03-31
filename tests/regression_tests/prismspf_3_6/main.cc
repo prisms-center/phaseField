@@ -31,26 +31,26 @@ main(int argc, char *argv[])
     FieldAttributes("mg_n", Scalar),
     FieldAttributes("f_tot", Scalar),
   };
-  std::vector<SolveBlock> solve_groups;
-  SolveBlock              exp_group(1,
+  std::vector<SolveBlock> solve_blocks;
+  SolveBlock              exp_block(1,
                        Explicit,
                        Primary,
                                     {0},
                        make_dependency_set(field_attributes,
                                                         {"old_1(n)", "grad(old_1(n))"}));
-  SolveBlock              pp_group(2,
+  SolveBlock              pp_block(2,
                       Explicit,
                       PostProcess,
                                    {1, 2},
                       make_dependency_set(field_attributes, {"n", "grad(n)"}));
-  solve_groups.push_back(exp_group);
-  solve_groups.push_back(pp_group);
+  solve_blocks.push_back(exp_block);
+  solve_blocks.push_back(pp_block);
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(field_attributes,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);

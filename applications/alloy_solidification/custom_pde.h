@@ -79,10 +79,10 @@ private:
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
     const double dt = sim_timer.get_timestep();
-    if (solve_group_id == 0) // explicit U and phi
+    if (solve_block_id == 0) // explicit U and phi
       {
         // The dimensionless solute supersaturation and its derivatives
         ScalarValue U  = variable_list.template get_value<Scalar, OldOne>(0);
@@ -147,7 +147,7 @@ private:
         // Terms for the equation to evolve the order parameter
         variable_list.set_value_term(1, eq_phi);
       }
-    else if (solve_group_id == 1) // xi
+    else if (solve_block_id == 1) // xi
       {
         // --- Getting the values and derivatives of the model variables ---
 
@@ -200,7 +200,7 @@ private:
         variable_list.set_value_term(2, eq_xi);
         variable_list.set_gradient_term(2, eqx_xi);
       }
-    else if (solve_group_id == 2) // c postprocess
+    else if (solve_block_id == 2) // c postprocess
       {
         ScalarValue U   = variable_list.template get_value<Scalar, Current>(0);
         ScalarValue phi = variable_list.template get_value<Scalar, Current>(1);

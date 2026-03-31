@@ -34,13 +34,13 @@ main(int argc, char *argv[])
                           {},
                           make_dependency_set(fields, {"grad(lhs(u))"}));
 
-  std::vector<SolveBlock> solve_groups({linear_solve});
+  std::vector<SolveBlock> solve_blocks({linear_solve});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);

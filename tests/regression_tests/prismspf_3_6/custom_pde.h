@@ -70,9 +70,9 @@ private:
   void
   compute_rhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
-    if (solve_group_id == 1) // explicit
+    if (solve_block_id == 1) // explicit
       {
         ScalarValue n_val  = variable_list.template get_value<Scalar, OldOne>(0);
         ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, OldOne>(0);
@@ -83,7 +83,7 @@ private:
         variable_list.set_value_term(0, eq_n);
         variable_list.set_gradient_term(0, eqx_n);
       }
-    else if (solve_group_id == 2) // postprocess
+    else if (solve_block_id == 2) // postprocess
       {
         ScalarValue n_val  = variable_list.template get_value<Scalar, Current>(0);
         ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, Current>(0);

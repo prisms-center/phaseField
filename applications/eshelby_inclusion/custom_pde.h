@@ -54,9 +54,9 @@ private:
   void
   compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_group_id) const override
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_group_id == 1) // linear residual
+    if (solve_block_id == 1) // linear residual
       {
         ScalarValue dist_from_inclusion = variable_list.get_q_point_location().norm();
         ScalarValue inclusion_radius(10.0);
@@ -78,9 +78,9 @@ private:
   void
   compute_lhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_group_id) const override
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_group_id == 1) // linear lhs
+    if (solve_block_id == 1) // linear lhs
       {
         VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
