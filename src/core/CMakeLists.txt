@@ -6,7 +6,7 @@ set(
   dof_manager.cc
   field_container.cc
   initial_conditions.cc
-  nonuniform_dirichlet.cc
+  dirichlet.cc
   problem.cc
   phase_field_tools.cc
   group_solution_handler.cc
@@ -29,7 +29,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/conditional_ostreams.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/dof_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/grid_refiner_criterion.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/core/nonuniform_dirichlet.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/core/dirichlet.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/problem.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/solution_output.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/timer.h
@@ -55,7 +55,7 @@ set(
   dof_manager
   field_container
   initial_conditions
-  nonuniform_dirichlet
+  dirichlet
   problem
   phase_field_tools
   group_solution_handler

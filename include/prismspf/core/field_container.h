@@ -84,33 +84,33 @@ public:
    */
   template <typename ValType>
   static constexpr TensorRank RankFromVal = []() constexpr
-    {
-      if constexpr (std::is_same_v<ValType, ScalarValue> ||
-                    std::is_same_v<ValType, typename ScalarValue::value_type>)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(ValType::rank);
-        }
-    }();
+  {
+    if constexpr (std::is_same_v<ValType, ScalarValue> ||
+                  std::is_same_v<ValType, typename ScalarValue::value_type>)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(ValType::rank);
+      }
+  }();
 
   /**
    * @brief Return the tensor rank from the specified template gradient.
    */
   template <typename GradType>
   static constexpr TensorRank RankFromGrad = []() constexpr
-    {
-      if constexpr (std::is_same_v<GradType, ScalarValue>)
-        {
-          return TensorRank::Scalar;
-        }
-      else
-        {
-          return TensorRank(GradType::rank - 1);
-        }
-    }();
+  {
+    if constexpr (std::is_same_v<GradType, ScalarValue>)
+      {
+        return TensorRank::Scalar;
+      }
+    else
+      {
+        return TensorRank(GradType::rank - 1);
+      }
+  }();
 
   /**
    * @brief Struct to hold the relevant dealii::FEEvaluation for a given solution block
