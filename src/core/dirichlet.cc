@@ -5,7 +5,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/lac/vector.h>
 
-#include <prismspf/core/nonuniform_dirichlet.h>
+#include <prismspf/core/dirichlet.h>
 #include <prismspf/core/pde_operator_base.h>
 
 #include <prismspf/config.h>
@@ -15,7 +15,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-NonuniformDirichlet<dim, degree, number>::NonuniformDirichlet(
+DirichletConditions<dim, degree, number>::DirichletConditions(
   unsigned int                                _index,
   unsigned int                                _boundary_id,
   const PDEOperatorBase<dim, degree, number> &_pde_operator,
@@ -30,7 +30,7 @@ NonuniformDirichlet<dim, degree, number>::NonuniformDirichlet(
 
 template <unsigned int dim, unsigned int degree, typename number>
 number
-NonuniformDirichlet<dim, degree, number>::value(
+DirichletConditions<dim, degree, number>::value(
   const dealii::Point<dim>           &p,
   [[maybe_unused]] const unsigned int component) const
 {
@@ -39,19 +39,15 @@ NonuniformDirichlet<dim, degree, number>::value(
   dealii::Vector<number> temp_vector_value(dim);
 
   // Pass variables to user-facing function to evaluate
-  pde_operator->set_nonuniform_dirichlet(index,
-                                         boundary_id,
-                                         0,
-                                         p,
-                                         temp_scalar_value,
-                                         temp_vector_value[0]);
+  pde_operator
+    ->set_dirichlet(index, boundary_id, 0, p, temp_scalar_value, temp_vector_value[0]);
 
   return temp_scalar_value;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-NonuniformDirichlet<dim, degree, number>::vector_value(
+DirichletConditions<dim, degree, number>::vector_value(
   const dealii::Point<dim> &p,
   dealii::Vector<number>   &value) const
 {
@@ -65,12 +61,12 @@ NonuniformDirichlet<dim, degree, number>::vector_value(
   // Pass variables to user-facing function to evaluate
   for (unsigned int i = 0; i < dim; i++)
     {
-      pde_operator->set_nonuniform_dirichlet(index,
-                                             boundary_id,
-                                             i,
-                                             p,
-                                             temp_scalar_value,
-                                             temp_vector_value[i]);
+      pde_operator->set_dirichlet(index,
+                                  boundary_id,
+                                  i,
+                                  p,
+                                  temp_scalar_value,
+                                  temp_vector_value[i]);
     }
 
   value = temp_vector_value;
@@ -78,6 +74,6 @@ NonuniformDirichlet<dim, degree, number>::vector_value(
 
 // NOLINTEND(readability-identifier-length)
 
-#include "core/nonuniform_dirichlet.inst"
+#include "core/dirichlet.inst"
 
 PRISMS_PF_END_NAMESPACE

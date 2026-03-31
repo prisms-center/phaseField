@@ -170,14 +170,14 @@ public:
           }
         // Terms for the nucleation rate
         auto max = [](const ScalarValue &arr, number val)
-          {
-            ScalarValue result;
-            for (unsigned int i = 0; i < arr.size(); ++i)
-              {
-                result[i] = std::max(arr[i], val);
-              }
-            return result;
-          };
+        {
+          ScalarValue result;
+          for (unsigned int i = 0; i < arr.size(); ++i)
+            {
+              result[i] = std::max(arr[i], val);
+            }
+          return result;
+        };
         // Calculate the nucleation rate
         double current_time = sim_timer.get_time();
         using std::exp;
@@ -207,15 +207,15 @@ public:
       {
         // Calculate the distance function to the nucleus center
         const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()
-          {
-            dealii::Point<dim, ScalarValue> result;
-            const dealii::Point<dim>       &point = nucleus.location;
-            for (unsigned int d = 0; d < dim; ++d)
-              {
-                result[d] = ScalarValue(point[d]);
-              }
-            return result;
-          }();
+        {
+          dealii::Point<dim, ScalarValue> result;
+          const dealii::Point<dim>       &point = nucleus.location;
+          for (unsigned int d = 0; d < dim; ++d)
+            {
+              result[d] = ScalarValue(point[d]);
+            }
+          return result;
+        }();
 
         ScalarValue dist = distance<dim, ScalarValue>(
           q_point_loc,

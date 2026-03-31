@@ -3,8 +3,8 @@
 
 #include "custom_pde.h"
 
+#include <prismspf/core/dirichlet.h>
 #include <prismspf/core/initial_conditions.h>
-#include <prismspf/core/nonuniform_dirichlet.h>
 
 #include <prismspf/user_inputs/user_input_parameters.h>
 
@@ -28,7 +28,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-CustomPDE<dim, degree, number>::set_nonuniform_dirichlet(
+CustomPDE<dim, degree, number>::set_dirichlet(
   [[maybe_unused]] const unsigned int       &index,
   [[maybe_unused]] const unsigned int       &boundary_id,
   [[maybe_unused]] const unsigned int       &component,

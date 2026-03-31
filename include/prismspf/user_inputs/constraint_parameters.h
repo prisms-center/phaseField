@@ -181,6 +181,7 @@ public:
   [[nodiscard]] bool
   has_time_dependent_bcs() const
   { // todo
+    return false;
   }
 
   // Map of boundary conditions. The first key is the field index.
