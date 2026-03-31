@@ -34,9 +34,9 @@ public:
   /**
    * @brief Constructor.
    */
-  SolverBase(SolveBlock                               _solve_group,
+  SolverBase(SolveBlock                               _solve_block,
              const SolveContext<dim, degree, number> &_solve_context)
-    : solve_block(std::move(_solve_group))
+    : solve_block(std::move(_solve_block))
     , solve_context(&_solve_context)
     , solutions(solve_block, solve_context->get_field_attributes())
   {}
@@ -247,7 +247,7 @@ public:
    * @brief Get the solver context.
    */
   [[nodiscard]] const SolveBlock &
-  get_solve_group() const
+  get_solve_block() const
   {
     return solve_block;
   }

@@ -68,9 +68,9 @@ private:
   void
   compute_rhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
-              [[maybe_unused]] unsigned int solve_group_id) const override
+              [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_group_id == 1) // rhs
+    if (solve_block_id == 1) // rhs
       {
         variable_list.set_value_term(0,
                                      variable_list.template get_value<Scalar, OldOne>(0));
@@ -80,9 +80,9 @@ private:
   void
   compute_lhs(FieldContainer<dim, degree, number> &variable_list,
               const SimulationTimer               &sim_timer,
-              unsigned int                         solve_group_id) const override
+              unsigned int                         solve_block_id) const override
   {
-    if (solve_group_id == 1) // lhs
+    if (solve_block_id == 1) // lhs
       {
         variable_list.set_value_term(0,
                                      variable_list.template get_value<Scalar, Trial>(0));

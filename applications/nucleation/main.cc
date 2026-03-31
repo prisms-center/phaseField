@@ -45,13 +45,13 @@ main(int argc, char *argv[])
                         {2},
                         make_dependency_set(fields, {"n", "c"}));
 
-  std::vector<SolveBlock> solve_groups({explicits, nucleation});
+  std::vector<SolveBlock> solve_blocks({explicits, nucleation});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);

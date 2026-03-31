@@ -81,7 +81,7 @@ public:
   /**
    * @brief Constructor.
    */
-  GroupSolutionHandler(SolveBlock                          _solve_group,
+  GroupSolutionHandler(SolveBlock                          _solve_block,
                        const std::vector<FieldAttributes> &_attributes_list);
 
   /**
@@ -172,7 +172,7 @@ public:
    * @brief Get the underlying solve block object.
    */
   [[nodiscard]] const SolveBlock &
-  get_solve_group() const;
+  get_solve_block() const;
 
   /**
    * @brief Get the block index from the global index.

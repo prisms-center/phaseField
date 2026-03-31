@@ -48,9 +48,9 @@ public:
   /**
    * @brief Constructor.
    */
-  MGSolver(SolveBlock                               _solve_group,
+  MGSolver(SolveBlock                               _solve_block,
            const SolveContext<dim, degree, number> &_solve_context)
-    : LinearSolver(_solve_group, _solve_context)
+    : LinearSolver(_solve_block, _solve_context)
   {}
 
   /**

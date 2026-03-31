@@ -22,13 +22,13 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
-make_solvers(const std::vector<SolveBlock>           &solve_groups,
+make_solvers(const std::vector<SolveBlock>           &solve_blocks,
              const SolveContext<dim, degree, number> &solve_context)
 {
   // Todo: upgrade to recursive for aux solvers
   std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
-  solvers.reserve(solve_groups.size());
-  for (const auto &solve_block : solve_groups)
+  solvers.reserve(solve_blocks.size());
+  for (const auto &solve_block : solve_blocks)
     {
       switch (solve_block.solve_type)
         {
@@ -60,11 +60,11 @@ make_solvers(const std::vector<SolveBlock>           &solve_groups,
 }
 
 std::list<DependencyMap>
-get_all_dependency_sets(const std::vector<SolveBlock> &solve_groups)
+get_all_dependency_sets(const std::vector<SolveBlock> &solve_blocks)
 {
   // Todo: upgrade to recursive for aux solvers
   std::list<DependencyMap> output;
-  for (const auto &solve_block : solve_groups)
+  for (const auto &solve_block : solve_blocks)
     {
       output.push_back(solve_block.dependencies_lhs);
       output.push_back(solve_block.dependencies_rhs);
@@ -95,12 +95,12 @@ get_solution_managers_from_solvers(
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
   const std::vector<FieldAttributes>         &_field_attributes,
-  const std::vector<SolveBlock>              &_solve_groups,
+  const std::vector<SolveBlock>              &_solve_blocks,
   const UserInputParameters<dim>             &_user_inputs,
   PhaseFieldTools<dim>                       &_pf_tools,
   const PDEOperatorBase<dim, degree, number> &_pde_operator)
   : field_attributes(_field_attributes)
-  , solve_groups(_solve_groups)
+  , solve_blocks(_solve_blocks)
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
   , triangulation_manager(_user_inputs.spatial_discretization, false)
@@ -117,7 +117,7 @@ Problem<dim, degree, number>::Problem(
                   constraint_manager,
                   solution_indexer,
                   _pde_operator)
-  , solvers(make_solvers(solve_groups, solve_context))
+  , solvers(make_solvers(solve_blocks, solve_context))
   , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , grid_refiner(solve_context)
 {}
@@ -166,7 +166,7 @@ Problem<dim, degree, number>::init_system()
   Timer::start_section("Initialize Solvers");
   for (auto &solver : solvers)
     {
-      solver->init(get_all_dependency_sets(solve_groups));
+      solver->init(get_all_dependency_sets(solve_blocks));
     }
   Timer::end_section("Initialize Solvers");
 
@@ -266,7 +266,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   Timer::start_section("Solvers");
   for (auto &solver : solvers)
     {
-      SolveTiming solve_timing = solver->get_solve_group().solve_timing;
+      SolveTiming solve_timing = solver->get_solve_block().solve_timing;
       if ((solve_timing == PostProcess && !is_output_increment) ||
           (solve_timing == NucleationRate &&
            !(is_nucleation_increment || is_output_increment)))

@@ -30,9 +30,9 @@ public:
   /**
    * @brief Constructor.
    */
-  ExplicitSolver(SolveBlock                               _solve_group,
+  ExplicitSolver(SolveBlock                               _solve_block,
                  const SolveContext<dim, degree, number> &_solve_context)
-    : SolverBase<dim, degree, number>(_solve_group, _solve_context)
+    : SolverBase<dim, degree, number>(_solve_block, _solve_context)
   {}
 
   void

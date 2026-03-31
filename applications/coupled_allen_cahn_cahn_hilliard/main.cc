@@ -33,25 +33,25 @@ main(int argc, char *argv[])
 
   };
 
-  SolveBlock exp_group(
+  SolveBlock exp_block(
     0,
     Explicit,
     Primary,
     {0, 1},
     make_dependency_set(fields,
                         {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"}));
-  SolveBlock              pp_group(1,
+  SolveBlock              pp_block(1,
                       Explicit,
                       PostProcess,
                                    {2, 3},
                       make_dependency_set(fields, {"n", "grad(n)", "c", "grad(c)"}));
-  std::vector<SolveBlock> solve_groups({exp_group, pp_group});
+  std::vector<SolveBlock> solve_blocks({exp_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);

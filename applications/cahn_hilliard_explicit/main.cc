@@ -29,37 +29,37 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> fields = {FieldAttributes("c"),
                                          FieldAttributes("mu"),
                                          FieldAttributes("f_tot")};
-  std::vector<SolveBlock>      solve_groups;
-  SolveBlock                   c_group;
-  c_group.id               = 0;
-  c_group.solve_type       = Explicit;
-  c_group.solve_timing     = Initialized;
-  c_group.field_indices    = {0};
-  c_group.dependencies_rhs = make_dependency_set(fields, {"old_1(c)", "grad(old_1(mu))"});
+  std::vector<SolveBlock>      solve_blocks;
+  SolveBlock                   c_block;
+  c_block.id               = 0;
+  c_block.solve_type       = Explicit;
+  c_block.solve_timing     = Initialized;
+  c_block.field_indices    = {0};
+  c_block.dependencies_rhs = make_dependency_set(fields, {"old_1(c)", "grad(old_1(mu))"});
 
-  SolveBlock mu_group;
-  mu_group.id               = 1;
-  mu_group.solve_type       = Explicit;
-  mu_group.solve_timing     = Uninitialized;
-  mu_group.field_indices    = {1};
-  mu_group.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
+  SolveBlock mu_block;
+  mu_block.id               = 1;
+  mu_block.solve_type       = Explicit;
+  mu_block.solve_timing     = Uninitialized;
+  mu_block.field_indices    = {1};
+  mu_block.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
 
-  SolveBlock pp_group;
-  pp_group.id               = 2;
-  pp_group.solve_type       = Explicit;
-  pp_group.solve_timing     = PostProcess;
-  pp_group.field_indices    = {2};
-  pp_group.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
+  SolveBlock pp_block;
+  pp_block.id               = 2;
+  pp_block.solve_type       = Explicit;
+  pp_block.solve_timing     = PostProcess;
+  pp_block.field_indices    = {2};
+  pp_block.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
 
-  solve_groups.push_back(c_group);
-  solve_groups.push_back(mu_group);
-  solve_groups.push_back(pp_group);
+  solve_blocks.push_back(c_block);
+  solve_blocks.push_back(mu_block);
+  solve_blocks.push_back(pp_block);
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solve_groups,
+                                       solve_blocks,
                                        user_inputs,
                                        pf_tools,
                                        pde_operator);
