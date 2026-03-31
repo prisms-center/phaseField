@@ -41,14 +41,14 @@ class MGSolver : public LinearSolver<dim, degree, number>
   using LinearSolver::lhs_operators;
   using SolverBase::rhs_operators;
   using SolverBase::solutions;
+  using SolverBase::solve_block;
   using SolverBase::solve_context;
-  using SolverBase::solve_group;
 
 public:
   /**
    * @brief Constructor.
    */
-  MGSolver(SolveGroup                               _solve_group,
+  MGSolver(SolveBlock                               _solve_group,
            const SolveContext<dim, degree, number> &_solve_context)
     : LinearSolver(_solve_group, _solve_context)
   {}
@@ -81,7 +81,7 @@ public:
     dealii::MGTransferBlockMatrixFree<dim, number> mg_transfer; // Constraints?
     // NOTE: dof_handler.distribute_mg_dofs() must have been called
     mg_transfer.build(
-      solve_context->dof_manager.get_field_dof_handlers(solve_group.field_indices, 0));
+      solve_context->dof_manager.get_field_dof_handlers(solve_block.field_indices, 0));
 
     // 4. MG Smoother (takes in operators) This is similar to a solver, but is
     // conceptually different.
@@ -140,7 +140,7 @@ public:
                            BlockVector<number>,
                            dealii::MGTransferBlockMatrixFree<dim, number>>
       preconditioner_mg(
-        solve_context->dof_manager.get_field_dof_handlers(solve_group.field_indices, 0),
+        solve_context->dof_manager.get_field_dof_handlers(solve_block.field_indices, 0),
         multigrid,
         mg_transfer);
 

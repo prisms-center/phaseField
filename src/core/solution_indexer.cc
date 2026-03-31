@@ -87,7 +87,7 @@ SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
 }
 
 template <unsigned int dim, typename number>
-const SolveGroup &
+const SolveBlock &
 SolutionIndexer<dim, number>::get_solve_group(unsigned int index) const
 {
   return solutions[index]->get_solve_group();

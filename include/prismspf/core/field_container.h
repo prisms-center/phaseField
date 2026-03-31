@@ -16,7 +16,7 @@
 #include <prismspf/core/dependencies.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/solution_indexer.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
@@ -84,36 +84,33 @@ public:
    */
   template <typename ValType>
   static constexpr TensorRank RankFromVal = []() constexpr
-  {
-    if constexpr (std::is_same_v<ValType, ScalarValue>)
-      {
-        return TensorRank::Scalar;
-      }
-    else if constexpr (std::is_same_v<ValType, ScalarValue::value_type>)
-      {
-        return TensorRank::Scalar;
-      }
-    else
-      {
-        return TensorRank(ValType::rank);
-      }
-  }();
+    {
+      if constexpr (std::is_same_v<ValType, ScalarValue> ||
+                    std::is_same_v<ValType, typename ScalarValue::value_type>)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(ValType::rank);
+        }
+    }();
 
   /**
    * @brief Return the tensor rank from the specified template gradient.
    */
   template <typename GradType>
   static constexpr TensorRank RankFromGrad = []() constexpr
-  {
-    if constexpr (std::is_same_v<GradType, ScalarValue>)
-      {
-        return TensorRank::Scalar;
-      }
-    else
-      {
-        return TensorRank(GradType::rank - 1);
-      }
-  }();
+    {
+      if constexpr (std::is_same_v<GradType, ScalarValue>)
+        {
+          return TensorRank::Scalar;
+        }
+      else
+        {
+          return TensorRank(GradType::rank - 1);
+        }
+    }();
 
   /**
    * @brief Struct to hold the relevant dealii::FEEvaluation for a given solution block
@@ -155,7 +152,7 @@ public:
     EvalFlags integration_flags = EvalFlags::nothing;
 
     /**
-     * @brief The solution group.
+     * @brief The solution block.
      *
      * @remark It would look nicer to just use the SolutionIndexer, but this way decreases
      * indexing, increasing performance.
@@ -220,17 +217,17 @@ public:
    * `field_attributes` is the collection of field attributes. We only use this for the
    * rank of field (Scalar/Vector).
    * `solution_indexer` is the solution indexer object, which allows us to get access to
-   * solution vectors from in and outside the current solve group.
+   * solution vectors from in and outside the current solve block.
    * `relative_level` is the multigrid level.
    * `dependency_map` is the map of field indices and their dependency flags.
-   * `solve_group` is the object that contains attributes about the current solve group.
+   * `solve_block` is the object that contains attributes about the current solve block.
    * `matrix_free` is the dealii::MatrixFree object.
    */
   FieldContainer(const std::vector<FieldAttributes> &_field_attributes,
                  const SolutionIndexer<dim, number> &_solution_indexer,
                  unsigned int                        _relative_level,
                  const DependencyMap                &dependency_map,
-                 const SolveGroup                   &_solve_group,
+                 const SolveBlock                   &_solve_group,
                  const MatrixFree<dim, number>      &matrix_free);
 
   /**
@@ -484,9 +481,9 @@ private:
   std::vector<FEEValuationDeps<TensorRank::Vector>> feeval_deps_vector;
 
   /**
-   * @brief Solve group information.
+   * @brief Solve block information.
    */
-  const SolveGroup *solve_group;
+  const SolveBlock *solve_block;
 
   /**
    * @brief FEEvaluation object for generic cell operations.
@@ -810,7 +807,7 @@ inline void
 FieldContainer<dim, degree, number>::integrate()
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
+  for (const Types::Index &field_index : solve_block->field_indices)
     {
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
@@ -829,7 +826,7 @@ inline void
 FieldContainer<dim, degree, number>::distribute(BlockVector<number> *dst_solutions)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
+  for (const Types::Index &field_index : solve_block->field_indices)
     {
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
@@ -849,7 +846,7 @@ FieldContainer<dim, degree, number>::integrate_and_distribute(
   BlockVector<number> *dst_solutions)
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
-  for (const Types::Index &field_index : solve_group->field_indices)
+  for (const Types::Index &field_index : solve_block->field_indices)
     {
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {

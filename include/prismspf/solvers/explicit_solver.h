@@ -24,13 +24,13 @@ class ExplicitSolver : public SolverBase<dim, degree, number>
 {
   using SolverBase<dim, degree, number>::solutions;
   using SolverBase<dim, degree, number>::solve_context;
-  using SolverBase<dim, degree, number>::solve_group;
+  using SolverBase<dim, degree, number>::solve_block;
 
 public:
   /**
    * @brief Constructor.
    */
-  ExplicitSolver(SolveGroup                               _solve_group,
+  ExplicitSolver(SolveBlock                               _solve_group,
                  const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_group, _solve_context)
   {}
@@ -49,14 +49,14 @@ public:
                                    solve_context->get_field_attributes(),
                                    solve_context->get_solution_indexer(),
                                    relative_level,
-                                   solve_group.dependencies_rhs,
+                                   solve_block.dependencies_rhs,
                                    solve_context->get_simulation_timer());
         rhs_operators[relative_level].initialize(solutions);
         rhs_operators[relative_level].set_scaling_diagonal(
           true,
           solve_context->get_invm_manager().get_invm(
             solve_context->get_field_attributes(),
-            solve_group.field_indices,
+            solve_block.field_indices,
             relative_level));
       }
   }

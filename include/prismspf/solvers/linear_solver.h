@@ -35,18 +35,18 @@ class LinearSolver : public SolverBase<dim, degree, number>
 protected:
   using SolverBase<dim, degree, number>::solutions;
   using SolverBase<dim, degree, number>::solve_context;
-  using SolverBase<dim, degree, number>::solve_group;
+  using SolverBase<dim, degree, number>::solve_block;
 
 public:
   /**
    * @brief Constructor.
    */
-  LinearSolver(SolveGroup                               _solve_group,
+  LinearSolver(SolveBlock                               _solve_group,
                const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_group, _solve_context)
     , lin_params(
         solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
-          solve_group.id))
+          solve_block.id))
   {}
 
   /**
@@ -72,14 +72,14 @@ public:
                                    solve_context->get_field_attributes(),
                                    solve_context->get_solution_indexer(),
                                    relative_level,
-                                   solve_group.dependencies_rhs,
+                                   solve_block.dependencies_rhs,
                                    solve_context->get_simulation_timer());
         rhs_operators[relative_level].initialize(solutions);
         rhs_operators[relative_level].set_scaling_diagonal(
           lin_params.tolerance_type != AbsoluteResidual,
           solve_context->get_invm_manager().get_invm_sqrt(
             solve_context->get_field_attributes(),
-            solve_group.field_indices,
+            solve_block.field_indices,
             relative_level));
       }
     // Initialize lhs_operators
@@ -91,14 +91,14 @@ public:
                                    solve_context->get_field_attributes(),
                                    solve_context->get_solution_indexer(),
                                    relative_level,
-                                   solve_group.dependencies_lhs,
+                                   solve_block.dependencies_lhs,
                                    solve_context->get_simulation_timer());
         lhs_operators[relative_level].initialize(solutions);
         lhs_operators[relative_level].set_scaling_diagonal(
           lin_params.tolerance_type != AbsoluteResidual,
           solve_context->get_invm_manager().get_invm_sqrt(
             solve_context->get_field_attributes(),
-            solve_group.field_indices,
+            solve_block.field_indices,
             relative_level));
       }
     linear_solver_control.set_max_steps(lin_params.max_iterations);
@@ -198,7 +198,7 @@ protected:
       }
     if (type == RMSEPerField || type == IntegratedPerField)
       {
-        value *= sqrt(double(solve_group.field_indices.size()));
+        value *= sqrt(double(solve_block.field_indices.size()));
       }
     return value;
   }

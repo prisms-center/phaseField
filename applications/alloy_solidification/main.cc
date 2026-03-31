@@ -30,7 +30,7 @@ main(int argc, char *argv[])
                                          FieldAttributes("xi"),
                                          FieldAttributes("c")};
 
-  SolveGroup explicits(
+  SolveBlock explicits(
     0,
     Explicit,
     Initialized,
@@ -38,19 +38,19 @@ main(int argc, char *argv[])
     make_dependency_set(
       fields,
       {"old_1(U)", "grad(old_1(U))", "old_1(phi)", "grad(old_1(phi))", "old_1(xi)"}));
-  SolveGroup xi_solve(1,
+  SolveBlock xi_solve(1,
                       Explicit,
                       Uninitialized,
                       {2},
                       make_dependency_set(fields, {"U", "phi", "grad(phi)"}));
 
-  SolveGroup pp_solve(2,
+  SolveBlock pp_solve(2,
                       Explicit,
                       PostProcess,
                       {3},
                       make_dependency_set(fields, {"U", "phi"}));
 
-  std::vector<SolveGroup>        solves({explicits, xi_solve, pp_solve});
+  std::vector<SolveBlock>        solves({explicits, xi_solve, pp_solve});
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);

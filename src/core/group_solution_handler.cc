@@ -7,7 +7,7 @@
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/group_solution_handler.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 
@@ -19,12 +19,12 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
-  SolveGroup                          _solve_group,
+  SolveBlock                          _solve_group,
   const std::vector<FieldAttributes> &_attributes_list)
-  : solve_group(std::move(_solve_group))
+  : solve_block(std::move(_solve_group))
 {
-  block_to_global_index.assign(solve_group.field_indices.begin(),
-                               solve_group.field_indices.end());
+  block_to_global_index.assign(solve_block.field_indices.begin(),
+                               solve_block.field_indices.end());
   global_to_block_index =
     std::vector<Types::Index>(_attributes_list.size(), Numbers::invalid_index);
   for (unsigned int i = 0; i < block_to_global_index.size(); ++i)
@@ -148,9 +148,9 @@ GroupSolutionHandler<dim, number>::get_block_index(unsigned int global_index) co
 
 template <unsigned int dim, typename number>
 auto
-GroupSolutionHandler<dim, number>::get_solve_group() const -> const SolveGroup &
+GroupSolutionHandler<dim, number>::get_solve_group() const -> const SolveBlock &
 {
-  return solve_group;
+  return solve_block;
 }
 
 template <unsigned int dim, typename number>
@@ -178,7 +178,7 @@ GroupSolutionHandler<dim, number>::init(
   unsigned int                                  num_old_saved)
 {
   ConditionalOStreams::pout_base()
-    << "Initializing solution set for solver " << solve_group.id << "...\n"
+    << "Initializing solution set for solver " << solve_block.id << "...\n"
     << std::flush;
   Timer::start_section("initialize solution set");
 
@@ -223,8 +223,8 @@ GroupSolutionHandler<dim, number>::reinit(
 
       solution_levels[relative_level].matrix_free.reinit(
         SystemWide<dim, degree>::mapping,
-        dof_manager.get_field_dof_handlers(solve_group.field_indices, relative_level),
-        constraint_manager.get_constraints(solve_group.field_indices, relative_level),
+        dof_manager.get_field_dof_handlers(solve_block.field_indices, relative_level),
+        constraint_manager.get_constraints(solve_block.field_indices, relative_level),
         dealii::QGaussLobatto<1>(degree + 1), // should dim really be 1?
         additional_data);
     }
@@ -238,8 +238,8 @@ GroupSolutionHandler<dim, number>::reinit(
       // way
       std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
         partitioners;
-      partitioners.reserve(solve_group.field_indices.size());
-      for (unsigned int block_index = 0; block_index < solve_group.field_indices.size();
+      partitioners.reserve(solve_block.field_indices.size());
+      for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
            ++block_index)
         {
           partitioners.push_back(matrix_free.get_vector_partitioner(block_index));
@@ -259,7 +259,7 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::init_solution_transfer()
 {
-  unsigned int num_blocks = solve_group.field_indices.size();
+  unsigned int num_blocks = solve_block.field_indices.size();
   block_solution_transfer.clear();
   block_solution_transfer.reserve(num_blocks);
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
@@ -273,7 +273,7 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::prepare_for_solution_transfer()
 {
-  unsigned int                      num_blocks    = solve_group.field_indices.size();
+  unsigned int                      num_blocks    = solve_block.field_indices.size();
   const SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
@@ -294,7 +294,7 @@ void
 GroupSolutionHandler<dim, number>::execute_solution_transfer()
 {
   // implementation will have identical structure to `prepare_for_solution_transfer()`
-  unsigned int                num_blocks    = solve_group.field_indices.size();
+  unsigned int                num_blocks    = solve_block.field_indices.size();
   SolutionLevel<dim, number> &top_solutions = solution_levels[0];
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
@@ -341,7 +341,7 @@ GroupSolutionHandler<dim, number>::apply_constraints_to_all(unsigned int relativ
   MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
   for (BlockVector<number> &solutions : old_solutions)
     {
-      unsigned int num_blocks = solve_group.field_indices.size();
+      unsigned int num_blocks = solve_block.field_indices.size();
       for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
         {
           matrix_free.get_affine_constraints(block_index)
@@ -357,7 +357,7 @@ GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level
   BlockVector<number>     &solutions   = solution_levels[relative_level].solutions;
   MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
 
-  unsigned int num_blocks = solve_group.field_indices.size();
+  unsigned int num_blocks = solve_block.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
       matrix_free.get_affine_constraints(block_index)

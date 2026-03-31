@@ -33,15 +33,15 @@ main(int argc, char *argv[])
         FieldAttributes("mg_n", Scalar),
         FieldAttributes("f_tot", Scalar),
       };
-      std::vector<SolveGroup> solve_groups;
-      SolveGroup              newton_group(
+      std::vector<SolveBlock> solve_groups;
+      SolveBlock              newton_group(
         1,
         Newton,
         Primary,
         {0},
         make_dependency_set(field_attributes, {"n", "grad(n)", "old_1(n)"}),
         make_dependency_set(field_attributes, {"n", "change(n)", "grad(change(n))"}));
-      SolveGroup pp_group(2,
+      SolveBlock pp_group(2,
                           Explicit,
                           PostProcess,
                           {1, 2},

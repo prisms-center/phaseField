@@ -5,7 +5,7 @@
 #include <prismspf/core/problem.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_output.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
@@ -22,34 +22,34 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<std::shared_ptr<SolverBase<dim, degree, number>>>
-make_solvers(const std::vector<SolveGroup>           &solve_groups,
+make_solvers(const std::vector<SolveBlock>           &solve_groups,
              const SolveContext<dim, degree, number> &solve_context)
 {
   // Todo: upgrade to recursive for aux solvers
   std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> solvers;
   solvers.reserve(solve_groups.size());
-  for (const auto &solve_group : solve_groups)
+  for (const auto &solve_block : solve_groups)
     {
-      switch (solve_group.solve_type)
+      switch (solve_block.solve_type)
         {
           case SolveType::Explicit:
             solvers.emplace_back(
-              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_group,
+              std::make_shared<ExplicitSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
             break;
           case SolveType::Linear:
             solvers.emplace_back(
-              std::make_shared<LinearSolver<dim, degree, number>>(solve_group,
+              std::make_shared<LinearSolver<dim, degree, number>>(solve_block,
                                                                   solve_context));
             break;
           case SolveType::Newton:
             solvers.emplace_back(
-              std::make_shared<NewtonSolver<dim, degree, number>>(solve_group,
+              std::make_shared<NewtonSolver<dim, degree, number>>(solve_block,
                                                                   solve_context));
             break;
           case SolveType::Constant:
             solvers.emplace_back(
-              std::make_shared<ConstantSolver<dim, degree, number>>(solve_group,
+              std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
             break;
           default:
@@ -60,14 +60,14 @@ make_solvers(const std::vector<SolveGroup>           &solve_groups,
 }
 
 std::list<DependencyMap>
-get_all_dependency_sets(const std::vector<SolveGroup> &solve_groups)
+get_all_dependency_sets(const std::vector<SolveBlock> &solve_groups)
 {
   // Todo: upgrade to recursive for aux solvers
   std::list<DependencyMap> output;
-  for (const auto &solve_group : solve_groups)
+  for (const auto &solve_block : solve_groups)
     {
-      output.push_back(solve_group.dependencies_lhs);
-      output.push_back(solve_group.dependencies_rhs);
+      output.push_back(solve_block.dependencies_lhs);
+      output.push_back(solve_block.dependencies_rhs);
     }
   return output;
 }
@@ -95,7 +95,7 @@ get_solution_managers_from_solvers(
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
   const std::vector<FieldAttributes>         &_field_attributes,
-  const std::vector<SolveGroup>              &_solve_groups,
+  const std::vector<SolveBlock>              &_solve_groups,
   const UserInputParameters<dim>             &_user_inputs,
   PhaseFieldTools<dim>                       &_pf_tools,
   const PDEOperatorBase<dim, degree, number> &_pde_operator)

@@ -10,7 +10,7 @@
 
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
-#include <prismspf/core/solve_group.h>
+#include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
