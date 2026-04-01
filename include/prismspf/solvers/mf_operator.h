@@ -261,6 +261,12 @@ public:
 
   // NOLINTEND(readability-identifier-naming)
 
+  /**
+   * @brief Whether to read plain dof values from src, otherwise applies homogeneous part
+   * of constraints to the read of src.
+   */
+  bool read_plain = false;
+
 private:
   /**
    * @brief The attribute list of the relevant variables.
