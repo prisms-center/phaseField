@@ -216,10 +216,17 @@ public:
   zero_out_ghosts(unsigned int relative_level = 0) const;
 
   /**
-   * @brief Apply the given constraints to a solution vector of a given field index.
+   * @brief Apply the constraints to the solution vector.
    */
   void
   apply_constraints(unsigned int relative_level = 0);
+
+  /**
+   * @brief Apply the constraints to another vector.
+   */
+  void
+  apply_constraints(BlockVector<number> &solution_vector,
+                    unsigned int         relative_level = 0);
 
   /**
    * @brief Apply the given constraints to all the solution vectors, including old.

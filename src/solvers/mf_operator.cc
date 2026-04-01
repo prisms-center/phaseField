@@ -50,7 +50,7 @@ MFOperator<dim, degree, number>::compute_local_operator(
   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
     {
       // Initialize, read DOFs, and set evaluation flags for each variable
-      variable_list.reinit_and_eval(cell, &src);
+      variable_list.reinit_and_eval(cell, &src, read_plain);
 
       // Evaluate the user-defined pde at each quadrature point
       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)

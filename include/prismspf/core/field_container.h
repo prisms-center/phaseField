@@ -196,10 +196,12 @@ public:
     reinit(unsigned int cell);
 
     void
-    eval(const BlockVector<number> *_src_solutions);
+    eval(const BlockVector<number> *_src_solutions, bool plain);
 
     void
-    reinit_and_eval(unsigned int cell, const BlockVector<number> *_src_solutions);
+    reinit_and_eval(unsigned int               cell,
+                    const BlockVector<number> *_src_solutions,
+                    bool                       plain);
 
     void
     integrate();
@@ -241,7 +243,7 @@ public:
    * dependencies.
    */
   void
-  eval(const BlockVector<number> *src_solutions);
+  eval(const BlockVector<number> *src_solutions, bool plain);
 
   /**
    * @brief Initialize based on cell, read solution vector, and evaluate based on
@@ -250,7 +252,9 @@ public:
    * This is more efficient than calling `reinit` and `eval` individually.
    */
   void
-  reinit_and_eval(unsigned int cell, const BlockVector<number> *src_solutions);
+  reinit_and_eval(unsigned int               cell,
+                  const BlockVector<number> *src_solutions,
+                  bool                       plain);
 
   /**
    * @brief Integrate the residuals.
@@ -655,7 +659,8 @@ template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline void
 FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::eval(
-  const BlockVector<number> *_src_solutions)
+  const BlockVector<number> *_src_solutions,
+  bool                       plain)
 {
   // NOTE: `read_dof_values_plain` must be called here so that constraints aren't
   // implicitly applied. This allows us to have inhomogeneous constraints.
@@ -675,7 +680,15 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::eval(
     }
   if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
     {
-      fe_eval_src_dst->first.read_dof_values_plain(_src_solutions->block(block_index));
+      if (plain)
+        {
+          fe_eval_src_dst->first.read_dof_values_plain(
+            _src_solutions->block(block_index));
+        }
+      else
+        {
+          fe_eval_src_dst->first.read_dof_values(_src_solutions->block(block_index));
+        }
       fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
     }
 }
@@ -685,7 +698,8 @@ template <TensorRank Rank>
 inline void
 FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::reinit_and_eval(
   unsigned int               cell,
-  const BlockVector<number> *_src_solutions)
+  const BlockVector<number> *_src_solutions,
+  bool                       plain)
 {
   // NOTE: `read_dof_values_plain` must be called here so that constraints aren't
   // implicitly applied. This allows us to have inhomogeneous constraints.
@@ -710,8 +724,15 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::reinit_and_eval(
       fe_eval_src_dst->first.reinit(cell);
       if (fe_eval_src_dst->second != EvalFlags::nothing)
         {
-          fe_eval_src_dst->first.read_dof_values_plain(
-            _src_solutions->block(block_index));
+          if (plain)
+            {
+              fe_eval_src_dst->first.read_dof_values_plain(
+                _src_solutions->block(block_index));
+            }
+          else
+            {
+              fe_eval_src_dst->first.read_dof_values(_src_solutions->block(block_index));
+            }
           fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
         }
     }
@@ -771,15 +792,16 @@ FieldContainer<dim, degree, number>::reinit(unsigned int cell)
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
-FieldContainer<dim, degree, number>::eval(const BlockVector<number> *src_solutions)
+FieldContainer<dim, degree, number>::eval(const BlockVector<number> *src_solutions,
+                                          bool                       plain)
 {
   for (auto &fe_eval : feeval_deps_scalar)
     {
-      fe_eval.eval(src_solutions);
+      fe_eval.eval(src_solutions, plain);
     }
   for (auto &fe_eval : feeval_deps_vector)
     {
-      fe_eval.eval(src_solutions);
+      fe_eval.eval(src_solutions, plain);
     }
   // Don't eval `shared_feeval_scalar` because we only use it for information.
 }
@@ -788,15 +810,16 @@ template <unsigned int dim, unsigned int degree, typename number>
 inline void
 FieldContainer<dim, degree, number>::reinit_and_eval(
   unsigned int               cell,
-  const BlockVector<number> *src_solutions)
+  const BlockVector<number> *src_solutions,
+  bool                       plain)
 {
   for (auto &fe_eval : feeval_deps_scalar)
     {
-      fe_eval.reinit_and_eval(cell, src_solutions);
+      fe_eval.reinit_and_eval(cell, src_solutions, plain);
     }
   for (auto &fe_eval : feeval_deps_vector)
     {
-      fe_eval.reinit_and_eval(cell, src_solutions);
+      fe_eval.reinit_and_eval(cell, src_solutions, plain);
     }
   // Don't eval `shared_feeval_scalar` because we only use it for information.
   shared_feeval_scalar.reinit(cell);
