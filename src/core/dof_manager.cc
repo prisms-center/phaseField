@@ -24,7 +24,7 @@ DoFManager<dim, degree>::DoFManager(const std::vector<FieldAttributes> &field_at
         {
           dof_handlers[field_index][relative_level] =
             &(level_dof_handlers.at(relative_level)
-                .at(uint(field_attributes[field_index].field_type)));
+                .at(static_cast<unsigned int>(field_attributes[field_index].field_type)));
         }
     }
 }
