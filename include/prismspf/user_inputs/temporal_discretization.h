@@ -29,7 +29,7 @@ public:
    */
   TemporalDiscretization(double _dt, double final_time)
     : dt(_dt)
-    , num_increments(uint((final_time + dt) / _dt))
+    , num_increments(static_cast<unsigned int>((final_time + dt) / _dt))
   {}
 
   /**
