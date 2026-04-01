@@ -354,14 +354,21 @@ template <unsigned int dim, typename number>
 void
 GroupSolutionHandler<dim, number>::apply_constraints(unsigned int relative_level)
 {
-  BlockVector<number>     &solutions   = solution_levels[relative_level].solutions;
-  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
+  BlockVector<number> &solutions = solution_levels[relative_level].solutions;
+  apply_constraints(solutions, relative_level);
+}
 
-  unsigned int num_blocks = solve_block.field_indices.size();
+template <unsigned int dim, typename number>
+void
+GroupSolutionHandler<dim, number>::apply_constraints(BlockVector<number> &solution_vector,
+                                                     unsigned int         relative_level)
+{
+  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
+  unsigned int             num_blocks  = solve_block.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
       matrix_free.get_affine_constraints(block_index)
-        .distribute(solutions.block(block_index));
+        .distribute(solution_vector.block(block_index));
     }
 }
 
