@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: landinjm/pagoma-dependencies:alpine-minimal
+      user: --user root
     permissions:
       # Write perms to we can copy-paste doxygen docs
       contents: write
@@ -23,11 +24,6 @@ jobs:
       uses: actions/checkout@v6
       with:
         submodules: true # Check out submodules so we get doxygen awesome
-
-    - name: Setup doxygen
-      run: |
-        sudo apt-get install doxygen
-        sudo apt-get install -y graphviz
 
     - name: Build doxygen files
       run: |
