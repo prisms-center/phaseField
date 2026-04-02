@@ -27,7 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        apt add --no-cache \
+        apk add --no-cache \
           rsync
           git
           grep
