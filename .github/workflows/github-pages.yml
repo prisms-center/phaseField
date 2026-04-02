@@ -28,9 +28,9 @@ jobs:
     - name: Install dependencies
       run: |
         apk add --no-cache \
-          rsync
-          git
-          grep
+          rsync \
+          git \
+          grep \
           sed
 
     - name: Build doxygen files
