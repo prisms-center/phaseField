@@ -517,8 +517,6 @@ if(PRISMS_PF_DOCS)
   # Add target to generate documentation
   doxygen_add_docs(
     doc
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/include
     COMMENT "Generating Doxygen documentation"
     CONFIG_FILE ${DOXYGEN_OUTPUT}
     ALL
