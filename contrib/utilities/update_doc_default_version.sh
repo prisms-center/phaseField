@@ -13,7 +13,7 @@ FILE_PATH="$1"
 
 # Grab the latest version from the config.h file
 config_h="${1%doc/}include/prismspf/config.h"
-latest_version=$(grep -oP '(?<=#define PRISMS_PF_VERSION ")[^"]+' "$config_h" | tr -d ' \n')
+latest_version=$(sed -n 's/^#define PRISMS_PF_VERSION "\(.*\)"/\1/p' "$config_h" | tr -d ' \n')
 echo "Latest version found: $latest_version"
 
 # Create HTML
