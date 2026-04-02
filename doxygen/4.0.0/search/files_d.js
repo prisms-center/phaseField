@@ -12,6 +12,5 @@ var searchData=
   ['solvers_2ecc_9',['solvers.cc',['../solvers_8cc.html',1,'']]],
   ['solvers_2eh_10',['solvers.h',['../solvers_8h.html',1,'']]],
   ['spatial_5fdiscretization_2eh_11',['spatial_discretization.h',['../spatial__discretization_8h.html',1,'']]],
-  ['structure_2eh_12',['structure.h',['../structure_8h.html',1,'']]],
-  ['system_5fwide_2eh_13',['system_wide.h',['../system__wide_8h.html',1,'']]]
+  ['system_5fwide_2eh_12',['system_wide.h',['../system__wide_8h.html',1,'']]]
 ];

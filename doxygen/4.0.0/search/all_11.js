@@ -107,10 +107,9 @@ var searchData=
   ['strip_5fspaces_104',['strip_spaces',['../classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55',1,'InputFileReader']]],
   ['strip_5fwhitespace_105',['strip_whitespace',['../utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2',1,'utilities.h']]],
   ['structure_20of_20a_20prisms_20pf_20application_106',['Structure of a PRISMS-PF application',['../structure.html',1,'']]],
-  ['structure_2eh_107',['structure.h',['../structure_8h.html',1,'']]],
-  ['subdivisions_108',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]],
-  ['submission_5fvalid_109',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
-  ['sync_110',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
-  ['system_5fwide_2eh_111',['system_wide.h',['../system__wide_8h.html',1,'']]],
-  ['systemwide_112',['SystemWide',['../classSystemWide.html',1,'']]]
+  ['subdivisions_107',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]],
+  ['submission_5fvalid_108',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
+  ['sync_109',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
+  ['system_5fwide_2eh_110',['system_wide.h',['../system__wide_8h.html',1,'']]],
+  ['systemwide_111',['SystemWide',['../classSystemWide.html',1,'']]]
 ];
