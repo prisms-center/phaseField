@@ -1,7 +1,0 @@
-<map id="applications/blank/custom_pde.h" name="applications/blank/custom_pde.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="87,5,227,50"/>
-<area shape="rect" id="Node000002" href="$ICs__and__BCs_8cc.html" title=" " alt="" coords="5,98,146,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,63,97,100,93,96,126,60"/>
-<area shape="rect" id="Node000003" href="$equations_8cc.html" title=" " alt="" coords="169,98,310,143"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="189,60,222,96,218,100,185,63"/>
-</map>

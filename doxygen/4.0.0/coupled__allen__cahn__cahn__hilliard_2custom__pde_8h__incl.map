@@ -1,7 +1,0 @@
-<map id="applications/coupled_allen_cahn_cahn_hilliard/custom_pde.h" name="applications/coupled_allen_cahn_cahn_hilliard/custom_pde.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="91,5,280,67"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,115,206,160"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,69,135,104,130,101,159,66"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="230,124,301,151"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,66,248,110,244,113,208,69"/>
-</map>
