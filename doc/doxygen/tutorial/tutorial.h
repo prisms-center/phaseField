@@ -57,7 +57,7 @@ or \c Constant. See \ref SolveType for details.
 \par
 <ul>
 <li> \c Initialized: On increment 0, uses the initial conditions functionality to
-ex<li>citly initialize the fields. Solves normally otherwise.
+explicitly initialize the fields. Solves normally otherwise.
 <li> \c Uninitialized: Solves normally with the equations on every increment.
 <li> \c PostProcess: Only solves on output increments.
 <li> \c NucleationRate: Only solves on nucleation increments and output increments.
