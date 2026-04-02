@@ -25,6 +25,14 @@ jobs:
       with:
         submodules: true # Check out submodules so we get doxygen awesome
 
+    - name: Install dependencies
+      run: |
+        apt add --no-cache \
+          rsync
+          git
+          grep
+          sed
+
     - name: Build doxygen files
       run: |
         cmake --workflow --preset docs
