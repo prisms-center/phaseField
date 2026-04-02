@@ -33,6 +33,9 @@ jobs:
           grep \
           sed
 
+    - name: Fix git safe directory
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
     - name: Build doxygen files
       run: |
         cmake --workflow --preset docs
