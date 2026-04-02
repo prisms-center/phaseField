@@ -31,7 +31,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "PRISMS-PF Manual"
 PROJECT_NUMBER         = @PRISMS_PF_VERSION@
 PROJECT_BRIEF          = ""
-PROJECT_LOGO           = ../../logo_v2_small.png
+PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/logo_v2_small.png
 PROJECT_ICON           =
 OUTPUT_DIRECTORY       = @DOXYGEN_OUTPUT_DIRECTORY@
 CREATE_SUBDIRS         = NO
@@ -155,7 +155,12 @@ WARN_LOGFILE           = DoxygenWarningLog.txt
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = ../../src ../../include main applications installation tutorial
+INPUT                  = @CMAKE_SOURCE_DIR@/src \
+                         @CMAKE_SOURCE_DIR@/include \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/main \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/applications \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/installation \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/tutorial
 INPUT_ENCODING         = UTF-8
 INPUT_FILE_ENCODING    =
 FILE_PATTERNS          = *.c \
@@ -260,8 +265,12 @@ HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @CMAKE_SOURCE_DIR@/doc/doxygen/header.html
 HTML_FOOTER            =
 HTML_STYLESHEET        =
-HTML_EXTRA_STYLESHEET  = @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome.css custom.css
-HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js doxygen-awesome-css/doxygen-awesome-tabs.js version_selector_handler.js
+HTML_EXTRA_STYLESHEET  = @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome.css \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/custom.css
+HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/doxygen-awesome-css/doxygen-awesome-tabs.js \
+                         @CMAKE_SOURCE_DIR@/doc/doxygen/version_selector_handler.js
 HTML_COLORSTYLE        = LIGHT
 HTML_COLORSTYLE_HUE    = 209
 HTML_COLORSTYLE_SAT    = 255
