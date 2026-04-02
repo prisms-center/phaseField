@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['with_20docker_0',['Installing with Docker',['../docker.html',1,'']]]
+  ['tutorial_0',['Tutorial',['../tutorial.html',1,'']]]
 ];
