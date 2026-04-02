@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: landinjm/pagoma-dependencies:alpine-minimal
-      user: root
+      options: --user root
     permissions:
       # Write perms to we can copy-paste doxygen docs
       contents: write
