@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['installation_0',['Installation',['../installation.html',1,'']]],
-  ['installing_20from_20source_1',['Installing from Source',['../source.html',1,'']]],
-  ['installing_20with_20docker_2',['Installing with Docker',['../docker.html',1,'']]]
+  ['eshelby_20inclusion_0',['PRISMS-PF: Eshelby Inclusion',['../md_applications_2eshelby__inclusion_2eshelby__inclusion.html',1,'']]],
+  ['evolution_20coupled_20with_20nucleation_20october_202_202024_1',['KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)',['../md_applications_2nucleation_2KKS__nucleation.html',1,'']]]
 ];

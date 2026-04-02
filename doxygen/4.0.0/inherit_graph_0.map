@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,156,38"/>
-<area shape="rect" id="Node000001" href="$classUserConstants_1_1VariantPrinter.html" title="Class for printing of variant types. This is bad practice and should be fixed." alt="" coords="204,5,361,45"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="170,23,204,23,204,28,170,28"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="21,5,126,33"/>
+<area shape="rect" id="Node000001" href="$classCustomPDE.html" title="This is a derived class of MatrixFreeOperator where the user implements their PDEs." alt="" coords="190,24,384,68"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="141,25,190,31,189,36,140,30"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,57,142,85"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="157,59,189,55,190,60,158,64"/>
 </map>

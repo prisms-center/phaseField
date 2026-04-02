@@ -1,0 +1,13 @@
+<map id="applications/coupled_allen_cahn_cahn_hilliard/main.cc" name="applications/coupled_allen_cahn_cahn_hilliard/main.cc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="247,5,436,67"/>
+<area shape="rect" id="Node000002" href="$coupled__allen__cahn__cahn__hilliard_2custom__pde_8h.html" title=" " alt="" coords="129,124,242,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,70,220,117,217,113,292,65"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="266,115,417,160"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="344,68,344,99,339,99,339,68"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="441,124,621,151"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="401,65,494,114,491,118,398,70"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,208,206,252"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="176,153,137,198,133,194,172,150"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="230,216,301,244"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="199,150,246,203,242,206,195,153"/>
+</map>

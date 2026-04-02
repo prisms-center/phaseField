@@ -1,0 +1,17 @@
+<map id="applications/blank/custom_pde.h" name="applications/blank/custom_pde.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="624,5,764,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,106,217,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="623,41,229,101,198,106,197,101,228,95,623,36"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="241,98,394,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="624,49,410,100,408,95,622,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="418,98,585,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="649,53,562,94,560,89,647,48"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="610,98,777,143"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="696,50,696,83,691,83,691,50"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="801,98,989,143"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="743,48,834,89,832,94,741,53"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="1013,98,1145,143"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="765,42,999,95,998,100,764,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="1168,106,1302,134"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="765,34,943,58,1157,95,1176,100,1174,105,1156,101,942,64,764,40"/>
+</map>

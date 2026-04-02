@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['grains_2eh_0',['grains.h',['../grains_8h.html',1,'']]],
-  ['grid_5frefiner_5fcriterion_2eh_1',['grid_refiner_criterion.h',['../grid__refiner__criterion_8h.html',1,'']]],
-  ['group_5fsolution_5fhandler_2ecc_2',['group_solution_handler.cc',['../group__solution__handler_8cc.html',1,'']]],
-  ['group_5fsolution_5fhandler_2eh_3',['group_solution_handler.h',['../group__solution__handler_8h.html',1,'']]]
+  ['main_2ecc_0',['main.cc',['../allen__cahn__explicit_2main_8cc.html',1,'(Global Namespace)'],['../alloy__solidification_2main_8cc.html',1,'(Global Namespace)'],['../blank_2main_8cc.html',1,'(Global Namespace)'],['../cahn__hilliard__explicit_2main_8cc.html',1,'(Global Namespace)'],['../coupled__allen__cahn__cahn__hilliard_2main_8cc.html',1,'(Global Namespace)'],['../eshelby__inclusion_2main_8cc.html',1,'(Global Namespace)'],['../nucleation_2main_8cc.html',1,'(Global Namespace)'],['../spinodal__decomposition_2main_8cc.html',1,'(Global Namespace)']]]
 ];

@@ -25,61 +25,84 @@
 var NAVTREE =
 [
   [ "PRISMS-PF Manual", "index.html", [
-    [ "PRISMS-PF", "index.html", null ],
-    [ "Installation", "installation.html", [
-      [ "Docker", "docker.html", null ],
-      [ "Source", "source.html", null ]
+    [ "PRISMS-PF: Allen-Cahn Dynamics", "md_applications_2allen__cahn__explicit_2allen__cahn.html", [
+      [ "Kinetics", "md_applications_2allen__cahn__explicit_2allen__cahn.html#autotoc_md2", null ],
+      [ "Time discretization", "md_applications_2allen__cahn__explicit_2allen__cahn.html#autotoc_md3", null ],
+      [ "Weak formulation", "md_applications_2allen__cahn__explicit_2allen__cahn.html#autotoc_md4", null ]
     ] ],
-    [ "Tutorial", "tutorial.html", null ],
-    [ "Applications", "applications.html", null ],
-    [ "Contact", "contact.html", null ],
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
-      [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
-        [ "Variables", "namespacemembers_vars.html", null ],
-        [ "Typedefs", "namespacemembers_type.html", null ]
-      ] ]
+    [ "PRISMS-PF: Alloy Solidification", "md_applications_2alloy__solidification_2alloy__solidification.html", [
+      [ "Model", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md6", null ],
+      [ "Governing Equations", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md7", null ],
+      [ "Model Constants", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md8", null ],
+      [ "Time Discretization", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md9", null ],
+      [ "Weak Formulation", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md10", null ],
+      [ "References", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md11", null ],
+      [ "Appendix", "md_applications_2alloy__solidification_2alloy__solidification.html#autotoc_md12", null ]
+    ] ],
+    [ "PRISMS PhaseField: Cahn-Hilliard Dynamics (Mixed-Formulation)", "md_applications_2cahn__hilliard__explicit_2cahn__hilliard.html", [
+      [ "Variational treatment", "md_applications_2cahn__hilliard__explicit_2cahn__hilliard.html#autotoc_md14", null ],
+      [ "Kinetics", "md_applications_2cahn__hilliard__explicit_2cahn__hilliard.html#autotoc_md15", null ],
+      [ "Time discretization", "md_applications_2cahn__hilliard__explicit_2cahn__hilliard.html#autotoc_md16", null ],
+      [ "Weak formulation", "md_applications_2cahn__hilliard__explicit_2cahn__hilliard.html#autotoc_md17", null ]
+    ] ],
+    [ "PRISMS PhaseField: Coupled Cahn-Hilliard and Allen-Cahn Dynamics", "md_applications_2coupled__allen__cahn__cahn__hilliard_2coupled__allen__cahn__cahn__hilliard.html", [
+      [ "Variational treatment", "md_applications_2coupled__allen__cahn__cahn__hilliard_2coupled__allen__cahn__cahn__hilliard.html#autotoc_md19", null ],
+      [ "Kinetics", "md_applications_2coupled__allen__cahn__cahn__hilliard_2coupled__allen__cahn__cahn__hilliard.html#autotoc_md20", null ],
+      [ "Time discretization", "md_applications_2coupled__allen__cahn__cahn__hilliard_2coupled__allen__cahn__cahn__hilliard.html#autotoc_md21", null ],
+      [ "Weak formulation", "md_applications_2coupled__allen__cahn__cahn__hilliard_2coupled__allen__cahn__cahn__hilliard.html#autotoc_md22", null ]
+    ] ],
+    [ "PRISMS-PF: Eshelby Inclusion", "md_applications_2eshelby__inclusion_2eshelby__inclusion.html", [
+      [ "Governing equations", "md_applications_2eshelby__inclusion_2eshelby__inclusion.html#autotoc_md24", null ],
+      [ "Residual expressions", "md_applications_2eshelby__inclusion_2eshelby__inclusion.html#autotoc_md25", null ]
+    ] ],
+    [ "KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)", "md_applications_2nucleation_2KKS__nucleation.html", [
+      [ "Precipitate Evolution", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md27", [
+        [ "Variational formulation", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md28", null ],
+        [ "Required inputs", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md29", null ],
+        [ "Variational treatment", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md30", null ],
+        [ "Kinetics", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md31", null ],
+        [ "Time discretization", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md32", null ],
+        [ "Weak formulation", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md33", null ]
+      ] ],
+      [ "Nucleation method", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md34", [
+        [ "Nucleation rate", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md35", null ],
+        [ "Nucleation probability", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md36", null ],
+        [ "Hold time", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md37", null ],
+        [ "Required nucleation inputs", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md38", null ]
+      ] ],
+      [ "Appendix I: Example functions for $f_{\\alpha}$, $f_{\\beta}$, $f_{Landau}$, $H(\\eta)$", "md_applications_2nucleation_2KKS__nucleation.html#autotoc_md39", null ]
+    ] ],
+    [ "PRISMS PhaseField: Cahn-Hilliard Dynamics (Mixed-Formulation)", "md_applications_2spinodal__decomposition_2cahn__hilliard.html", [
+      [ "Variational treatment", "md_applications_2spinodal__decomposition_2cahn__hilliard.html#autotoc_md41", null ],
+      [ "Kinetics", "md_applications_2spinodal__decomposition_2cahn__hilliard.html#autotoc_md42", null ],
+      [ "Time discretization", "md_applications_2spinodal__decomposition_2cahn__hilliard.html#autotoc_md43", null ],
+      [ "Weak formulation", "md_applications_2spinodal__decomposition_2cahn__hilliard.html#autotoc_md44", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", "functions_vars" ],
-        [ "Typedefs", "functions_type.html", null ],
-        [ "Enumerations", "functions_enum.html", null ],
-        [ "Enumerator", "functions_eval.html", null ]
+        [ "All", "functions.html", null ],
+        [ "Functions", "functions_func.html", null ],
+        [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+        [ "Functions", "globals_func.html", null ]
       ] ]
-    ] ],
-    [ "Examples", "examples.html", "examples" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"Chemical-example.html",
-"classInvMManager.html#ac45fc92cd2df556eaf89bb621d5395c2",
-"classSolveGroup.html#a03fe63ec42de064b0e61a265871a1a01",
-"functions_p.html",
-"structFieldContainer_1_1FEEValuationDeps.html",
-"type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768a0947271ee3d44e16e7b98449f9fa76ce"
+"ICs__and__BCs_8cc.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
