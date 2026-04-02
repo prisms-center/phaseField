@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,131,33"/>
+<area shape="rect" id="Node000001" href="$classCGSolver.html" title="This class exists as a hack to get access to the residual vector for the custom convergence criterion..." alt="" coords="179,5,340,33"/>
+<area shape="poly" id="edge6_Node000000_Node000001" title=" " alt="" coords="146,16,178,16,178,22,146,22"/>
+</map>

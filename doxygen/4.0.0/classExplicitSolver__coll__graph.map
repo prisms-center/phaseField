@@ -1,0 +1,7 @@
+<map id="ExplicitSolver&lt; dim, degree, number &gt;" name="ExplicitSolver&lt; dim, degree, number &gt;">
+<area shape="rect" id="Node000001" title="This class handles the explicit solves of all explicit fields." alt="" coords="24,192,178,237"/>
+<area shape="rect" id="Node000002" href="$classSolverBase.html" title=" " alt="" coords="5,98,197,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,158,104,192,98,192,98,158"/>
+<area shape="rect" id="Node000003" href="$classSolveBlock.html" title="Structure to hold the attributes of a solve&#45;block." alt="" coords="54,5,148,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,48,104,97,98,97,98,48"/>
+</map>

@@ -1,0 +1,26 @@
+html {
+    /* override light-mode variables here */
+}
+
+html.dark-mode {
+    /* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */
+}
+
+#projectalign {
+    display: flex;
+    justify-content: space-between;
+    /* project title left, selector right */
+    align-items: center;
+    gap: 10px;
+}
+
+#versionSelector {
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 2px solid #888;
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
