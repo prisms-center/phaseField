@@ -10,7 +10,6 @@
 	    <tab type="user" url="\ref source" title="Source"/>
     </tab>
     <tab	type="usergroup" url="\ref tutorial" title="Tutorial">
-      <tab type="user" url="tutorial.html" title="Tutorial"/>
       <tab type="user" url="structure.html" title="Structure"/>
     </tab>
     <tab type="user" url="applications.html" title="Applications"/>

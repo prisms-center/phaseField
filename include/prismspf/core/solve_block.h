@@ -26,20 +26,17 @@ enum SolveTiming
   /**
    * @brief Primary fields are initialized explicitly through initial conditions rather
    * than through the solver on increment zero.
-   * @example Concentration variable
    */
   Primary,
   Initialized = Primary,
   /**
    * @brief Secondary fields are only evaluated by the pde solver on every increment, not
    * initialized by a separate function.
-   * @example Chemical potential
    */
   Secondary,
   Uninitialized = Secondary,
   /**
    * @brief PostProcess fields are only solved on output increments.
-   * @example Local free energy density
    */
   PostProcess,
   /**
