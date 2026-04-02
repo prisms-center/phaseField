@@ -1,5 +1,26 @@
 var searchData=
 [
-  ['u0_0',['U0',['../classCustomPDE.html#a9d25a219ae76d4d55bb12cb41e2257fb',1,'CustomPDE']]],
-  ['u_5foff_1',['U_off',['../classCustomPDE.html#a13f67cd9c5fccd65fbbf5c43a1ed0af9',1,'CustomPDE']]]
+  ['n_5fcells_0',['n_cells',['../classReadUnstructuredVTK.html#a7d5fdfbd5d037e0d5e42eee998c73e30',1,'ReadUnstructuredVTK']]],
+  ['n_5fdata_5fpoints_1',['n_data_points',['../structInitialConditionFile.html#a2e2ff0ebb97ba5ba6cda2acf9eea3da1',1,'InitialConditionFile']]],
+  ['n_5foutputs_2',['n_outputs',['../classFieldOutputParameterLoader.html#a1ea7f70ce2b8bbae160193950fa40731',1,'FieldOutputParameterLoader']]],
+  ['n_5fpoints_3',['n_points',['../classReadBinary.html#acc24e749113a7f6e8655688f17021657',1,'ReadBinary::n_points'],['../classReadUnstructuredVTK.html#a659409fc81679d227beb68c2b8d70f17',1,'ReadUnstructuredVTK::n_points']]],
+  ['n_5fpoints_5fper_5fhex_5fcell_4',['n_points_per_hex_cell',['../classReadUnstructuredVTK.html#aaed73b4a9818969c43c2d216f1aa8147',1,'ReadUnstructuredVTK']]],
+  ['n_5fscalars_5',['n_scalars',['../classReadUnstructuredVTK.html#a05c3eca371f68c90d5edbcf85053ec0c',1,'ReadUnstructuredVTK']]],
+  ['n_5fspace_5fcoordinates_6',['n_space_coordinates',['../classReadUnstructuredVTK.html#ac57fc1dec7be986bfe5f8676f7bf0815',1,'ReadUnstructuredVTK']]],
+  ['n_5fvalues_7',['n_values',['../classReadBinary.html#ac08af7e1e52d2b5000f56ad1612f0de8',1,'ReadBinary']]],
+  ['n_5fvectors_8',['n_vectors',['../classReadUnstructuredVTK.html#af6c83773daac7c0694d8fa787422aef5',1,'ReadUnstructuredVTK']]],
+  ['name_9',['name',['../structFieldAttributes.html#af273820aa53e82deb517c45b0dfbb702',1,'FieldAttributes::name'],['../structTimer_1_1Scope.html#a12869177bcdd56be2a412fde224e5337',1,'Timer::Scope::name']]],
+  ['newton_5fparams_10',['newton_params',['../classNewtonSolver.html#a3ed196406b73421f1a902e0a0b8523ff',1,'NewtonSolver']]],
+  ['newton_5fsolvers_11',['newton_solvers',['../structNonlinearSolveParameterSet.html#aa9531c5fe54e37587d44343cfa971cf9',1,'NonlinearSolveParameterSet']]],
+  ['newton_5fupdates_12',['newton_updates',['../classNewtonSolver.html#ad8a5b265ca334e75782cb1ea02ea083c',1,'NewtonSolver']]],
+  ['nonlinear_5fsolve_5fparameters_13',['nonlinear_solve_parameters',['../classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788',1,'UserInputParameters']]],
+  ['nuc_5fparams_14',['nuc_params',['../classNucleusRefinementFunction.html#ab80a58ea6514bd397a0055e55abe83d3',1,'NucleusRefinementFunction']]],
+  ['nucleating_5ffield_5findices_15',['nucleating_field_indices',['../structFieldAttributes.html#a526154d2afc31a567667fc4924f238e5',1,'FieldAttributes']]],
+  ['nucleation_5fparameters_16',['nucleation_parameters',['../classUserInputParameters.html#a9db6d31c2b8debf71fbbcb1f89946102',1,'UserInputParameters']]],
+  ['nucleation_5fperiod_17',['nucleation_period',['../structNucleationParameters.html#a1957920bc7601dfc1db08b2616e9ab27',1,'NucleationParameters']]],
+  ['nuclei_5flist_18',['nuclei_list',['../structPhaseFieldTools.html#ac1539b32070dd5207aada2b83009fca4',1,'PhaseFieldTools::nuclei_list'],['../classNucleusRefinementFunction.html#a596fc87a41cde78a171b23d80913c3cc',1,'NucleusRefinementFunction::nuclei_list']]],
+  ['nucleus_5fexclusion_5fdistance_19',['nucleus_exclusion_distance',['../structNucleationParameters.html#a8b8ae2bf211b71ac73fd2629f9327a12',1,'NucleationParameters']]],
+  ['num_5fincrements_20',['num_increments',['../structTemporalDiscretization.html#a2d4a12f2f905c541c80c6d3e2d74ec54',1,'TemporalDiscretization']]],
+  ['num_5flevels_21',['num_levels',['../classInvMManager.html#a541264bfc6a440393f11e36daa19c67d',1,'InvMManager']]],
+  ['num_5fquad_5fpoints_22',['num_quad_points',['../classRefinementManager.html#ad5df04dbe2d17d4d58b01a3340b005ed',1,'RefinementManager']]]
 ];

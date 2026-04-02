@@ -1,7 +1,7 @@
 var classUserConstants =
 [
     [ "VariantPrinter", "classUserConstants_1_1VariantPrinter.html", "classUserConstants_1_1VariantPrinter" ],
-    [ "InputVariant", "classUserConstants.html#a8144f3b57de74fc37095d6286be588e8", null ],
+    [ "InputVariant", "classUserConstants.html#a5946a1675835856bf9eb9424e53dc579", null ],
     [ "add_user_constant", "classUserConstants.html#a5579bbb1335c38ae05a523b9572af082", null ],
     [ "compute_rank_1_tensor_constant", "classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0", null ],
     [ "compute_rank_2_tensor_constant", "classUserConstants.html#ab60436298be45c100e71d92ad717961b", null ],

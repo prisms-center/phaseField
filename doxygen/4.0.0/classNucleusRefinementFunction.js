@@ -1,6 +1,6 @@
 var classNucleusRefinementFunction =
 [
-    [ "CellIterator", "classNucleusRefinementFunction.html#ad30139a1c1fbcb5b1a107d8ca97e9bde", null ],
+    [ "CellIterator", "classNucleusRefinementFunction.html#a1fcc3a36a63c4152fd4816ecb50ea664", null ],
     [ "NucleusRefinementFunction", "classNucleusRefinementFunction.html#a6e8be28b9b15c7071a7b18b21af465f6", null ],
     [ "flag", "classNucleusRefinementFunction.html#aa07d36e9c4565e5e01b4da504f07531d", null ],
     [ "nuc_params", "classNucleusRefinementFunction.html#ab80a58ea6514bd397a0055e55abe83d3", null ],

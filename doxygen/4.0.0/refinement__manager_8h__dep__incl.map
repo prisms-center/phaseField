@@ -1,7 +1,7 @@
-<map id="/home/runner/work/phaseField/phaseField/include/prismspf/core/refinement_manager.h" name="/home/runner/work/phaseField/phaseField/include/prismspf/core/refinement_manager.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,228,60"/>
-<area shape="rect" id="Node000002" href="$problem_8h.html" title=" " alt="" coords="9,108,228,163"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,74,121,108,116,108,116,74"/>
-<area shape="rect" id="Node000003" href="$problem_8cc.html" title=" " alt="" coords="5,211,232,251"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,176,121,211,116,211,116,176"/>
+<map id="include/prismspf/core/refinement_manager.h" name="include/prismspf/core/refinement_manager.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,178,50"/>
+<area shape="rect" id="Node000002" href="$problem_8h.html" title=" " alt="" coords="11,98,172,143"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,66,94,98,89,98,89,66"/>
+<area shape="rect" id="Node000003" href="$problem_8cc.html" title=" " alt="" coords="17,191,166,218"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,158,94,190,89,190,89,158"/>
 </map>

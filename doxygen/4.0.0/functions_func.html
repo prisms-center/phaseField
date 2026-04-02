@@ -28,6 +28,7 @@ MathJax.Hub.Config({
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
   <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
@@ -48,6 +49,7 @@ MathJax.Hub.Config({
         <table cellspacing="0" cellpadding="0">
           <tbody>
             <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="logo_v2_small.png" /></td>
               <td id="projectalign">
                 <div id="projectname">PRISMS-PF Manual </div>
                 <div id="projectnumber"></div> <!-- version selector will be injected here -->
@@ -120,31 +122,34 @@ $(function(){initNavTree('functions_func.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock">Here is a list of all functions with links to the classes they belong to:</div>
 
-<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>compute_explicit_rhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#a4deccfe466a4aa7fa78d11353c01c9d1">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>compute_lhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#ad6f148df4d7c78f5d94ec2b3f3794aed">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>compute_nonexplicit_lhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#ab6a0d2b0b8c16b515a6bae61af83d331">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>compute_nonexplicit_rhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#a1a66bdbd8622ee6d2c1fd3d949f5de6d">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>compute_postprocess_explicit_rhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#a7cd9fd0be0b56e3d25ab98006b678cbc">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>compute_rhs()&#160;:&#160;<a class="el" href="classCustomPDE.html#af2672b6e443c70892811d8de03c39891">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>CustomPDE()&#160;:&#160;<a class="el" href="classCustomPDE.html#aa7483a0de0c84a03bee200ddf9f79299">CustomPDE&lt; dim, degree, number &gt;</a></li>
-</ul>
-
-
-<h3><a id="index_l" name="index_l"></a>- l -</h3><ul>
-<li>load_variable_attributes()&#160;:&#160;<a class="el" href="classCustomAttributeLoader.html#a948eb95d601ad81fefd10814247d46ec">CustomAttributeLoader</a></li>
-</ul>
-
-
-<h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>seed_nucleus()&#160;:&#160;<a class="el" href="classCustomPDE.html#a839cf47bd536cb3d3ddf8f50a5e702a8">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>set_dirichlet()&#160;:&#160;<a class="el" href="classCustomPDE.html#a47a05de3d801fbb2479fd3dddfdc6b87">CustomPDE&lt; dim, degree, number &gt;</a></li>
-<li>set_initial_condition()&#160;:&#160;<a class="el" href="classCustomPDE.html#ac8c4f2dc831d248adc9b20f6404f5ea1">CustomPDE&lt; dim, degree, number &gt;</a></li>
-</ul>
-
-
-<h3><a id="index__7E" name="index__7E"></a>- ~ -</h3><ul>
-<li>~CustomAttributeLoader()&#160;:&#160;<a class="el" href="classCustomAttributeLoader.html#a7bd979cdccafdb4ba3829d91862430f0">CustomAttributeLoader</a></li>
+<h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
+<li>access_valid()&#160;:&#160;<a class="el" href="classFieldContainer.html#a262de7f0be80667de20f7ccb51b57518">FieldContainer&lt; dim, degree, number &gt;</a></li>
+<li>add_checkpoint_list()&#160;:&#160;<a class="el" href="structCheckpointParameters.html#acf16903d020b26b4954ec7fe83b70b21">CheckpointParameters</a></li>
+<li>add_equal_spacing_checkpoints()&#160;:&#160;<a class="el" href="structCheckpointParameters.html#ac2d867f4e3c1ed31f42de523eb949133">CheckpointParameters</a></li>
+<li>add_equal_spacing_outputs()&#160;:&#160;<a class="el" href="structOutputParameters.html#ae3154eb2f9d315d65b746edb9cd044e0">OutputParameters</a></li>
+<li>add_initial_condition_file()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a81b8731dbc20dedc8938493476169b28">LoadInitialConditionParameters</a></li>
+<li>add_log_spacing_checkpoints()&#160;:&#160;<a class="el" href="structCheckpointParameters.html#a6b9ed274bb91f623fc6e725512cd136c">CheckpointParameters</a></li>
+<li>add_log_spacing_outputs()&#160;:&#160;<a class="el" href="structOutputParameters.html#a3dd9fe4312e4f71c09555d98e00ff675">OutputParameters</a></li>
+<li>add_n_per_decade_checkpoints()&#160;:&#160;<a class="el" href="structCheckpointParameters.html#a87900a4bbfe6ec657d336df171e0d358">CheckpointParameters</a></li>
+<li>add_n_per_decade_outputs()&#160;:&#160;<a class="el" href="structOutputParameters.html#abc74901ab13b859f4f7288337b4b86c9">OutputParameters</a></li>
+<li>add_output_list()&#160;:&#160;<a class="el" href="structOutputParameters.html#a69327fa613975f3372d3e4c35a71ea6c">OutputParameters</a></li>
+<li>add_refinement_marker()&#160;:&#160;<a class="el" href="classRefinementManager.html#aa0f82ad24167e5e40f5ff9bccb167786">RefinementManager&lt; dim, degree, number &gt;</a></li>
+<li>add_user_constant()&#160;:&#160;<a class="el" href="classUserConstants.html#a5579bbb1335c38ae05a523b9572af082">UserConstants&lt; dim &gt;</a></li>
+<li>apply_constraints()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#aacb370c097f3e3aee4e49eaf47590ea4">GroupSolutionHandler&lt; dim, number &gt;</a></li>
+<li>apply_constraints_to_all()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a2cca78730bd60f5ae1aa506d911f9c58">GroupSolutionHandler&lt; dim, number &gt;</a></li>
+<li>apply_initial_condition_for_old_fields()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a8bdd92268192ca6f3790ec072aebc923">GroupSolutionHandler&lt; dim, number &gt;</a></li>
+<li>assign_boundary_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a7909becd32d37c394dde69710010bde6">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_checkpoint_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#af12d1068105bfcddd9b6e49cd3d80400">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_grain_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a1d2673b835a4c8f59b073ecbe29513af">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_linear_solve_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a1050c51b634b9c33d9647af7f922a3a5">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_load_initial_condition_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6b616c195352863b5b69aa6bd4055fb1">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_miscellaneous_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a8f3e2fa561880287afc797e8375abe97">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_nonlinear_solve_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a7ef02e115ea13695b185cbc78989820c">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_nucleation_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a584575f6f8c2cfa44c9b420f35e1a83e">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_output_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_spatial_discretization_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">UserInputParameters&lt; dim &gt;</a></li>
+<li>assign_temporal_discretization_parameters()&#160;:&#160;<a class="el" href="classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f">UserInputParameters&lt; dim &gt;</a></li>
+<li>attempt_nucleation()&#160;:&#160;<a class="el" href="classNucleationManager.html#a253febf95b10416da010f81aeafcd83e">NucleationManager&lt; dim, degree, number &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

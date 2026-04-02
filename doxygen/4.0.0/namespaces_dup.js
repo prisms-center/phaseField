@@ -23,6 +23,6 @@ var namespaces_dup =
       [ "fmod", "namespacestd.html#af30f66fa919ee4207f875331acaaf1e5", null ]
     ] ],
     [ "Types", "namespaceTypes.html", [
-      [ "Index", "namespaceTypes.html#ad43767ccbb4d5208362d886b906fb7b7", null ]
+      [ "Index", "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186", null ]
     ] ]
 ];

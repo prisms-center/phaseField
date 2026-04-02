@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: Main Page</title>
+  <title>PRISMS-PF Manual: PRISMS-PF</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -28,6 +28,7 @@ MathJax.Hub.Config({
 <script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
   <link href="doxygen.css" rel="stylesheet" type="text/css" />
   <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
   <script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
   <script type="text/javascript">
     DoxygenAwesomeDarkModeToggle.init()
@@ -48,6 +49,7 @@ MathJax.Hub.Config({
         <table cellspacing="0" cellpadding="0">
           <tbody>
             <tr id="projectrow">
+              <td id="projectlogo"><img alt="Logo" src="logo_v2_small.png" /></td>
               <td id="projectalign">
                 <div id="projectname">PRISMS-PF Manual </div>
                 <div id="projectnumber"></div> <!-- version selector will be injected here -->
@@ -117,10 +119,44 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">PRISMS-PF Manual Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">PRISMS-PF </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><dl class="section warning"><dt>Warning</dt><dd>This is the documentation for v4.0.0, which is still actively under development. Use the version selector to switch to v3.0.0 for a stable version.</dd></dl>
+<h2><a class="anchor" id="welcome"></a>
+Welcome</h2>
+<p>Welcome to the PRISMS-PF documentation! Click on any of the links in the sidebar and header to navigate the site. New users can start with the <a class="el" href="installation.html">Installation</a> and <a class="el" href="tutorial.html">Tutorial</a> sections.</p>
+<h2><a class="anchor" id="overview"></a>
+Overview</h2>
+<p>PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution. The phase field method is commonly used for predicting the evolution of microstructures under a wide range of environments and materials.</p>
+<p>The main goals of PRISMS-PF are to:</p><ul>
+<li>provide a <b>simple interface</b> for solving a <b>wide variety</b> of partial differential equations (PDEs)</li>
+<li>have <b>parallel performance</b> that meets or exceeds that of other phase field codes</li>
+<li>be <b>extensible</b> to allow users to add their own PDEs and modules</li>
+<li>provide a <b>rich set of pre-built applications</b> for common phase field problems</li>
+<li><b>benchmark</b> code against other codes to ensure correctness</li>
+<li>be <b>open source</b> and <b>freely available</b> to the community</li>
+</ul>
+<dl class="section remark"><dt>Remarks</dt><dd>While PRISMS-PF was conceived as a phase field code, it is by no means limited to phase field applications. Like deal.II positions itself as a general-purpose finite element library, PRISMS-PF is a general-purpose partial differential equation (PDE) solver.<br  />
+<br  />
+ However, the numerics are primarily designed for phase field, and might be unsuitable for your application. If you find yourself in this position, please <a class="el" href="contact.html">Contact</a> us!</dd></dl>
+<p>This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.</p>
+<h2><a class="anchor" id="links_contact"></a>
+Helpful Links &amp; Contact Info</h2>
+<p><a href="http://www.prisms-center.org/#/home">PRISMS Center Homepage</a><br  />
+<a href="https://github.com/prisms-center/phaseField">GitHub Repository</a><br  />
+<a href="https://github.com/prisms-center/phaseField/discussions">GitHub Discussions</a><br  />
+<a href="https://groups.google.com/forum/#!forum/prisms-pf-users">User Forum</a><br  />
+<a href="https://materialscommons.org/public/communities/3">Community of Practice</a><br  />
+<a href="https://www.youtube.com/@PRISMSCenter">PRISMS YouTube</a><br  />
+<br  />
+External phase field links:<br  />
+<a href="https://pages.nist.gov/pfhub/">PFHub</a><br  />
+<a href="https://pages.nist.gov/pf-recommended-practices/intro.html">PF Best Practices</a><br  />
+<br  />
+Contact us at <a href="#" onclick="location.href='mai'+'lto:'+'pri'+'sm'+'s-p'+'f@'+'umi'+'ch'+'.ed'+'u'; return false;">prism<span class="obfuscator">.nosp@m.</span>s-pf<span class="obfuscator">.nosp@m.</span>@umic<span class="obfuscator">.nosp@m.</span>h.ed<span class="obfuscator">.nosp@m.</span>u</a> </p>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['k_0',['k',['../classCustomPDE.html#a8b39785f69a5d08cddc047eb80b3b0e9',1,'CustomPDE']]],
-  ['k1_1',['k1',['../classCustomPDE.html#aa69eb74eb012caee8132ffc4f5611325',1,'CustomPDE']]],
-  ['k2_2',['k2',['../classCustomPDE.html#aff03dc7f06709e0e233c1b63fe1eb7da',1,'CustomPDE']]],
-  ['kappa_3',['kappa',['../classCustomPDE.html#a267cf91950821ef7e6f345132b3036b4',1,'CustomPDE']]],
-  ['kcv_4',['KcV',['../classCustomPDE.html#a0da3d6258132983bf0ac04501fbeb834',1,'CustomPDE']]],
-  ['kn_5',['Kn',['../classCustomPDE.html#a4f1fb5bdb976e2ca70ba5ebe28b9b5e6',1,'CustomPDE']]],
-  ['knv_6',['KnV',['../classCustomPDE.html#aef8439249b7c1f037d1787a1065bc1a7',1,'CustomPDE']]]
+  ['generic_5fconstraints_0',['generic_constraints',['../classConstraintManager.html#a5478db6a89f5ccbd800e7ab4c0a070fd',1,'ConstraintManager']]],
+  ['global_5frefinement_1',['global_refinement',['../structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2',1,'SpatialDiscretization']]],
+  ['global_5fto_5fblock_5findex_2',['global_to_block_index',['../classGroupSolutionHandler.html#a68dea5783935e329402debc8893e85ee',1,'GroupSolutionHandler']]],
+  ['gradient_5flower_5fbound_3',['gradient_lower_bound',['../structRefinementCriterion.html#ad0d97f2d4ffffef01ed12f48e0ce6641',1,'RefinementCriterion']]],
+  ['grid_5frefiner_4',['grid_refiner',['../classProblem.html#a0bf1a3def2c17b9558adffa1853d0658',1,'Problem']]]
 ];

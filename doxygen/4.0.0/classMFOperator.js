@@ -1,8 +1,8 @@
 var classMFOperator =
 [
-    [ "Operator", "classMFOperator.html#a19a39d2df1286d85b4f426c29774dedf", null ],
+    [ "Operator", "classMFOperator.html#abfc621e434b61003c6e0ba1aba7f5ed9", null ],
     [ "ScalarValue", "classMFOperator.html#a387c249b0e85d44f96b26e1f2db8d178", null ],
-    [ "Value", "classMFOperator.html#ad3159af356fbc4214360462f2f29ddf4", null ],
+    [ "Value", "classMFOperator.html#a98447f0aceca3c7a184d1b02a764e117", null ],
     [ "VectorValue", "classMFOperator.html#a831d1ef6be7fa35569d6e19b099a59c6", null ],
     [ "MFOperator", "classMFOperator.html#a35cbbe838a8b3892d3a12cb4089603c1", null ],
     [ "clear", "classMFOperator.html#a8b8550b071e9fa310f766b10df5e6fd8", null ],
@@ -27,10 +27,11 @@ var classMFOperator =
     [ "inverse_diagonal_entries", "classMFOperator.html#a40f704a080d33bb28f51c887787fc2e0", null ],
     [ "pde_op", "classMFOperator.html#a150dac000277d438fbb42712d012b55d", null ],
     [ "pde_operator", "classMFOperator.html#ac3220b503b15611bd4a37ba5d832ce7d", null ],
+    [ "read_plain", "classMFOperator.html#adcff82ea1e1cf6b47d4beba76908d906", null ],
     [ "relative_level", "classMFOperator.html#a4822dd6bfa23d61a35ec1a35a1674453", null ],
     [ "scale_by_diagonal", "classMFOperator.html#ae3990901e68a996296f1fad123f208c8", null ],
     [ "scaling_diagonal", "classMFOperator.html#a7f5910d390dfc9ca1da226e3da37d900", null ],
     [ "sim_timer", "classMFOperator.html#aae6869272329cf262b67cfffb514d007", null ],
     [ "solution_indexer", "classMFOperator.html#ae6d393990987b210dfee601dc6c2930b", null ],
-    [ "solve_group", "classMFOperator.html#ade005e68ef700a902f7f5fed9b84e4af", null ]
+    [ "solve_block", "classMFOperator.html#a850f316be3224e40f9eac451f5049ec5", null ]
 ];

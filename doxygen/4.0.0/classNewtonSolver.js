@@ -1,6 +1,6 @@
 var classNewtonSolver =
 [
-    [ "NewtonSolver", "classNewtonSolver.html#afbb6857107dd324ed4772e499a4c83d4", null ],
+    [ "NewtonSolver", "classNewtonSolver.html#ad88a436867f113e2b6d0f9955801d273", null ],
     [ "init", "classNewtonSolver.html#a65c26fa3c7f78ecbb0f0811622f8116c", null ],
     [ "reinit", "classNewtonSolver.html#a2267ec75641bb4c1fdee4d5b5d32777f", null ],
     [ "solve_level", "classNewtonSolver.html#a8ecdc8c06d568a9ac0a448be07270224", null ],

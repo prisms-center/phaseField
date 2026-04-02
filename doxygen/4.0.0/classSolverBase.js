@@ -1,13 +1,13 @@
 var classSolverBase =
 [
-    [ "SolverBase", "classSolverBase.html#ae1fdaf7a42f93469f5517bba616f3bda", null ],
+    [ "SolverBase", "classSolverBase.html#a84149fa02932ffb0254b239d561ce35e", null ],
     [ "~SolverBase", "classSolverBase.html#a4ad5a8e2d8bacc3b0f05c95a7342786b", null ],
     [ "SolverBase", "classSolverBase.html#a5bce98970b784ac227ef51fbb9b8e1af", null ],
     [ "SolverBase", "classSolverBase.html#a7aaaabe2e3a109fea97747184d4c3add", null ],
     [ "execute_solution_transfer", "classSolverBase.html#a014e7fc567c422256eb895622a82c875", null ],
     [ "get_solution_manager", "classSolverBase.html#af789046f2f978e521d32c8406bd573d8", null ],
     [ "get_solution_manager", "classSolverBase.html#a3b68531259b2341d346ce576e3679b65", null ],
-    [ "get_solve_group", "classSolverBase.html#a8d5139aaba5bec3238ee9b4d51a53433", null ],
+    [ "get_solve_block", "classSolverBase.html#a2f12aec653c061a5bdc2e3f5bdde048b", null ],
     [ "init", "classSolverBase.html#a9096e85006aaa8a2faf963eb5b6ec405", null ],
     [ "operator=", "classSolverBase.html#ae815598882fb5248c6a2c8892ea52231", null ],
     [ "operator=", "classSolverBase.html#a974a20bc684247f729de953d6b077154", null ],
@@ -21,6 +21,6 @@ var classSolverBase =
     [ "update_ghosts", "classSolverBase.html#aea9076dd7e2cbcc6df6c19e0ac2ee0dd", null ],
     [ "aux_solvers", "classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5", null ],
     [ "solutions", "classSolverBase.html#a98409232846d6bd3316279b5d47cee06", null ],
-    [ "solve_context", "classSolverBase.html#a9c9264dcdc1db490647ba420141337c9", null ],
-    [ "solve_group", "classSolverBase.html#a41828d3ddc967e1c2c63d846add65a37", null ]
+    [ "solve_block", "classSolverBase.html#ae2e3be10e79adacb07a691d9618df8f4", null ],
+    [ "solve_context", "classSolverBase.html#a9c9264dcdc1db490647ba420141337c9", null ]
 ];

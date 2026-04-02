@@ -9,6 +9,6 @@ var classSolutionIndexer =
     [ "get_solution_level_and_block_index", "classSolutionIndexer.html#ab411f6d2196131ec663638303728a103", null ],
     [ "get_solution_vector", "classSolutionIndexer.html#abc6371f1b776b412c471cef708ef95a6", null ],
     [ "get_solution_vector", "classSolutionIndexer.html#ae0b6911a2596c7c3c5f21e0172fd2516", null ],
-    [ "get_solve_group", "classSolutionIndexer.html#ae3c74ebeb6c768ac4707afb131bbc091", null ],
+    [ "get_solve_block", "classSolutionIndexer.html#a742324232c169d9b842d269c47d982bb", null ],
     [ "solutions", "classSolutionIndexer.html#a092890bc737fd2f9456d6cada9bde6ae", null ]
 ];

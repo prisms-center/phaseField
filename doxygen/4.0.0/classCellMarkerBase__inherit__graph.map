@@ -1,5 +1,5 @@
 <map id="CellMarkerBase&lt; dim &gt;" name="CellMarkerBase&lt; dim &gt;">
-<area shape="rect" id="Node000001" title="Base class for cell markers." alt="" coords="18,5,197,31"/>
-<area shape="rect" id="Node000002" href="$classNucleusRefinementFunction.html" title="The class handles the stochastic nucleation in PRISMS&#45;PF." alt="" coords="5,79,209,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,44,110,79,105,79,105,44"/>
+<area shape="rect" id="Node000001" title="Base class for cell markers." alt="" coords="18,5,196,33"/>
+<area shape="rect" id="Node000002" href="$classNucleusRefinementFunction.html" title="The class handles the stochastic nucleation in PRISMS&#45;PF." alt="" coords="5,81,209,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,49,110,80,104,80,104,49"/>
 </map>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['october_202_202024_0',['KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)',['../md_applications_2nucleation_2KKS__nucleation.html',1,'']]],
-  ['of_20precipitate_20evolution_20coupled_20with_20nucleation_20october_202_202024_1',['KKS Phase Field Model of Precipitate Evolution coupled with nucleation (October 2, 2024)',['../md_applications_2nucleation_2KKS__nucleation.html',1,'']]]
+  ['q_5fpoint_0',['q_point',['../classFieldContainer.html#a6391a97d62e191e94a72a51bd36d8c75',1,'FieldContainer']]],
+  ['quadrature_1',['quadrature',['../classSystemWide.html#a821763857a67e0352e7fed53e8bc52a4',1,'SystemWide']]]
 ];
