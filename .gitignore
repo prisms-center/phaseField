@@ -20,6 +20,7 @@ compile_commands.json
 *.pvtu
 *.vtk
 *.txt
+!CMakeLists.txt
 
 # Executables
 main
