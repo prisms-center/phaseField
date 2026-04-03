@@ -5,8 +5,11 @@
 cmake_minimum_required(VERSION 3.28)
 cmake_policy(VERSION 3.28)
 
+# Name the application
+set(APPLICATION_NAME "nucleation")
+
 # Create a project for the application
-project(my_app CXX)
+project(${APPLICATION_NAME} CXX)
 
 # Set the build type to debug is not specified
 if(NOT CMAKE_BUILD_TYPE)
@@ -26,11 +29,19 @@ find_package(
 )
 
 # Declare the application executable
-add_executable(main)
+add_executable(${APPLICATION_NAME})
+
+# Rename the output executable to main
+set_target_properties(
+  ${APPLICATION_NAME}
+  PROPERTIES
+    OUTPUT_NAME
+      main
+)
 
 # Add sources
 target_sources(
-  main
+  ${APPLICATION_NAME}
   PRIVATE
     main.cc
     custom_pde.h
@@ -38,9 +49,9 @@ target_sources(
 
 # Require C++20
 # TODO: Remove this
-target_compile_features(main PRIVATE cxx_std_20)
+target_compile_features(${APPLICATION_NAME} PRIVATE cxx_std_20)
 set_target_properties(
-  main
+  ${APPLICATION_NAME}
   PROPERTIES
     CXX_STANDARD
       20
@@ -52,7 +63,7 @@ set_target_properties(
 
 # Link PRISMS-PF
 target_link_libraries(
-  main
+  ${APPLICATION_NAME}
   PRIVATE
     $<$<CONFIG:Debug>:PRISMS-PF::prisms_pf_debug>
     $<$<CONFIG:Release>:PRISMS-PF::prisms_pf_release>

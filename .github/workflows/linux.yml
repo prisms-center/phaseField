@@ -1,0 +1,40 @@
+name: GitHub-Linux
+
+on:
+  pull-request:
+    branches:
+      - 4.0-dev
+    paths-ignore:
+      - 'doc/**'
+      - 'contrib/**'
+
+concurrency:
+  group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request'}}
+
+permissions: read-all
+
+jobs:
+  CI:
+    strategy:
+      matrix:
+        include:
+          - platform: linux/amd64
+            runs-on: ubuntu-24.04
+          - platform: linux/arm64
+            runs-on: ubuntu-24.04-arm
+
+    runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 120
+    container:
+      image: landinjm/pagoma-dependencies:alpine-minimal
+      options: --user root
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Build
+        run: |
+          cmake --workflow --preset debug
+          cmake --install build/debug --prefix install
+

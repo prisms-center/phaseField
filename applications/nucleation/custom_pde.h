@@ -179,10 +179,9 @@ public:
           return result;
         };
         // Calculate the nucleation rate
-        double current_time = sim_timer.get_time();
-        using std::exp;
+        double      current_time = sim_timer.get_time();
         ScalarValue J =
-          k1 * exp(-k2 / (max(ssf, number(1.0e-6)))) * exp(-tau / current_time);
+          k1 * std::exp(-k2 / (max(ssf, number(1.0e-6)))) * std::exp(-tau / current_time);
         for (unsigned int i = 0; i < ScalarValue::size(); ++i)
           {
             if (n[i] >= 0.01)
@@ -203,7 +202,7 @@ public:
     unsigned int current_increment = sim_timer.get_increment();
     double       current_time      = sim_timer.get_time();
     // Iterate through nuclei list
-    for (const prisms::Nucleus<dim> &nucleus : get_pf_tools().nuclei_list)
+    for (const Nucleus<dim> &nucleus : get_pf_tools().nuclei_list)
       {
         // Calculate the distance function to the nucleus center
         const dealii::Point<dim, ScalarValue> loc_as_arr = [&]()

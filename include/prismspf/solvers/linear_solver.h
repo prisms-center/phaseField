@@ -207,16 +207,15 @@ protected:
   double
   normalization_value()
   {
-    SolverToleranceType type = lin_params.tolerance_type;
-    using std::sqrt;
-    double value = 1.0;
+    SolverToleranceType type  = lin_params.tolerance_type;
+    double              value = 1.0;
     if (type == RMSEPerField || type == RMSETotal)
       {
-        value *= sqrt(solve_context->get_triangulation_manager().get_volume());
+        value *= std::sqrt(solve_context->get_triangulation_manager().get_volume());
       }
     if (type == RMSEPerField || type == IntegratedPerField)
       {
-        value *= sqrt(double(solve_block.field_indices.size()));
+        value *= std::sqrt(double(solve_block.field_indices.size()));
       }
     return value;
   }
