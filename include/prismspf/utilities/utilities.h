@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
@@ -11,6 +12,8 @@
 
 #include <boost/range/algorithm.hpp>
 #include <boost/range/algorithm_ext.hpp>
+
+#include <prismspf/utilities/vectorized_operations.h>
 
 #include <prismspf/config.h>
 
@@ -114,12 +117,11 @@ string_to_type_pair_with_delimiters(
  * @brief Positive moldulo (remainder)
  * returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)
  */
-template <typename Real, typename OtherReal>
-inline Real
-pmod(const Real &value, const OtherReal &modulus)
+template <typename Number>
+inline DEAL_II_ALWAYS_INLINE Number
+pmod(const Number &value, const Number &modulus)
 {
-  using std::fmod;
-  return fmod(fmod(value, modulus) + modulus, modulus);
+  return std::fmod(std::fmod(value, modulus) + modulus, modulus);
 }
 
 /**
@@ -133,7 +135,7 @@ constexpr unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
  * that the provided parameters are in Voigt notation.
  */
 template <unsigned int dim, typename T>
-inline void
+inline DEAL_II_ALWAYS_INLINE void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<1, voigt_tensor_size<dim>, T> &strain,
                dealii::Tensor<1, voigt_tensor_size<dim>, T>       &stress)
@@ -146,7 +148,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
  * functions internally converts to Voigt notation.
  */
 template <unsigned int dim, typename T>
-inline void
+inline DEAL_II_ALWAYS_INLINE void
 compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
                const dealii::Tensor<2, dim, T>                    &strain,
                dealii::Tensor<2, dim, T>                          &stress)
@@ -272,7 +274,7 @@ eval_flags_to_string(dealii::EvaluationFlags::EvaluationFlags flag)
 }
 
 template <unsigned int dim, typename number>
-inline std::vector<number>
+inline DEAL_II_ALWAYS_INLINE std::vector<number>
 dealii_point_to_vector(const dealii::Point<dim, number> &point)
 {
   static_assert(dim < 4, "We only allow 3 space dimensions");

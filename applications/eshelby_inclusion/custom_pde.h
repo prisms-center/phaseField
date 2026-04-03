@@ -61,10 +61,9 @@ private:
         ScalarValue dist_from_inclusion = variable_list.get_q_point_location().norm();
         ScalarValue inclusion_radius(10.0);
 
-        VectorGrad transformation_strain;
-        using std::tanh;
+        VectorGrad  transformation_strain;
         ScalarValue strain_value =
-          0.01 * (0.5 + 0.5 * tanh(10.0 * (dist_from_inclusion - inclusion_radius)));
+          0.01 * (0.5 + 0.5 * std::tanh(10.0 * (dist_from_inclusion - inclusion_radius)));
         for (unsigned int i = 0; i < dim; i++)
           {
             transformation_strain[i][i] = strain_value;

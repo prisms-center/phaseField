@@ -408,36 +408,19 @@ print_subsection("Configuring installation targets")
 
 include(GNUInstallDirs)
 
-if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
-  install(
-    TARGETS
-      prisms_pf_debug
-      prisms_pf_release
-    EXPORT prisms_pf_targets
-    ARCHIVE
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME
-      DESTINATION ${CMAKE_INSTALL_BINDIR}
-    FILE_SET HEADERS
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  )
-else()
-  install(
-    TARGETS
-      prisms_pf
-    EXPORT prisms_pf_targets
-    ARCHIVE
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME
-      DESTINATION ${CMAKE_INSTALL_BINDIR}
-    FILE_SET HEADERS
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-  )
-endif()
+install(
+  TARGETS
+    ${PRISMS_PF_TARGETS}
+  EXPORT prisms_pf_targets
+  ARCHIVE
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+  FILE_SET HEADERS
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 # Install the generated config.h separately since it's in the build tree
 install(
@@ -446,7 +429,7 @@ install(
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/prismspf
 )
 
-# Export the targets file so downstream can use find_package(prisms_pf)
+# Export the targets file so downstream can use find_package(PRISMS-PF)
 install(
   EXPORT prisms_pf_targets
   FILE prisms_pf_targets.cmake
@@ -472,6 +455,31 @@ install(
     ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
+
+# =========================================================
+# Build exports (find_package with build dir)
+# =========================================================
+
+print_subsection("Configuring build-tree export")
+
+export(
+  TARGETS
+    ${PRISMS_PF_TARGETS}
+  NAMESPACE PRISMS-PF::
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/prisms_pf_targets.cmake"
+)
+
+# =========================================================
+# Examples
+# =========================================================
+
+print_subsection("Configuring PRISMS-PF examples")
+# TODO: Add status messages here
+
+if(PRISMS_PF_EXAMPLES)
+  set(PRISMS_PF_DIR ${CMAKE_BINARY_DIR})
+  add_subdirectory(applications)
+endif()
 
 # =========================================================
 # Testing

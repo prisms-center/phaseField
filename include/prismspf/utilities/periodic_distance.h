@@ -33,7 +33,6 @@ distance(const dealii::Point<dim, real> &point1,
   real dist = real(0.0);
   for (unsigned int d = 0; d < dim; ++d)
     {
-      using std::min;
       real delta = point2[d] - point1[d];
       if (rectangular_mesh.periodic_directions.contains(d))
         {
@@ -43,8 +42,7 @@ distance(const dealii::Point<dim, real> &point1,
         }
       dist += delta * delta;
     }
-  using std::sqrt;
-  return sqrt(dist);
+  return std::sqrt(dist);
 }
 
 PRISMS_PF_END_NAMESPACE

@@ -315,13 +315,12 @@ private:
   void
   sqrt(SolutionVector<number> &dst, const SolutionVector<number> &src) const
   {
-    using std::sqrt;
     src.update_ghost_values();
     dst.update_ghost_values();
     Assert(dst.size() == src.size(), dealii::ExcInternalError());
     for (unsigned int i = 0; i < src.locally_owned_size(); ++i)
       {
-        dst.local_element(i) = sqrt(src.local_element(i));
+        dst.local_element(i) = std::sqrt(src.local_element(i));
       }
   }
 
