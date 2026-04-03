@@ -46,7 +46,7 @@ foreach(_example ${_examples})
         OUTPUT_QUIET
       )
       if(configure_result)
-        message(WARNING \"Failed to configure application: ${_example}\")
+        message(FATAL_ERROR \"Failed to configure application: ${_example}\")
       else()
         execute_process(
           COMMAND ${CMAKE_COMMAND} --build build
@@ -54,7 +54,7 @@ foreach(_example ${_examples})
           RESULT_VARIABLE build_result
         )
         if(build_result)
-          message(WARNING \"Failed to build application: ${_example}\")
+          message(FATAL_ERROR \"Failed to build application: ${_example}\")
         endif()
       endif()
       "
