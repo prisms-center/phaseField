@@ -343,7 +343,7 @@ $(function(){initNavTree('read__vtk_8h_source.html',''); initResizable(true); })
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                scalar_name));</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  <span class="comment">// Convert the dealii point to a vector</span></div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  std::vector&lt;double&gt; point_vector = <a class="code hl_function" href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector&lt;dim, double&gt;</a>(point);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  std::vector&lt;double&gt; point_vector = <a class="code hl_function" href="utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector&lt;dim, double&gt;</a>(point);</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="comment">// Set the active scalar and update the reader</span></div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;SetScalarsName(scalar_name.c_str());</div>
@@ -438,7 +438,7 @@ $(function(){initNavTree('read__vtk_8h_source.html',''); initResizable(true); })
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>                vector_name));</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="comment">// Convert the dealii point to a vector</span></div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  std::vector&lt;double&gt; point_vector = <a class="code hl_function" href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector&lt;dim, double&gt;</a>(point);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  std::vector&lt;double&gt; point_vector = <a class="code hl_function" href="utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector&lt;dim, double&gt;</a>(point);</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="comment">// Set the active vector and update the reader</span></div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  <a class="code hl_variable" href="classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08">reader</a>-&gt;SetVectorsName(vector_name.c_str());</div>
@@ -553,7 +553,7 @@ $(function(){initNavTree('read__vtk_8h_source.html',''); initResizable(true); })
 <div class="ttc" id="aread__field__factory_8h_html_a1d1cfd8ffb84e947f82999c682b666a7ac55875d93c53ee540550f728b9d36960"><div class="ttname"><a href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7ac55875d93c53ee540550f728b9d36960">Type::ReadUnstructuredVTK</a></div><div class="ttdeci">@ ReadUnstructuredVTK</div><div class="ttdef"><b>Definition</b> read_field_factory.h:31</div></div>
 <div class="ttc" id="astructInitialConditionFile_html"><div class="ttname"><a href="structInitialConditionFile.html">InitialConditionFile</a></div><div class="ttdoc">Struct that store the read-in information for a single file.</div><div class="ttdef"><b>Definition</b> load_initial_condition_parameters.h:25</div></div>
 <div class="ttc" id="astructSpatialDiscretization_html"><div class="ttname"><a href="structSpatialDiscretization.html">SpatialDiscretization</a></div><div class="ttdoc">Struct that holds spatial discretization parameters.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:230</div></div>
-<div class="ttc" id="autilities_8h_html_a5e53f5d41b901d9cb616e0d90c5eb8c0"><div class="ttname"><a href="utilities_8h.html#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector</a></div><div class="ttdeci">std::vector&lt; number &gt; dealii_point_to_vector(const dealii::Point&lt; dim, number &gt; &amp;point)</div><div class="ttdef"><b>Definition</b> utilities.h:276</div></div>
+<div class="ttc" id="autilities_8h_html_a6900a956ef14d53b30c0616e7cf7b930"><div class="ttname"><a href="utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector</a></div><div class="ttdeci">DEAL_II_ALWAYS_INLINE std::vector&lt; number &gt; dealii_point_to_vector(const dealii::Point&lt; dim, number &gt; &amp;point)</div><div class="ttdef"><b>Definition</b> utilities.h:278</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -126,23 +126,24 @@ $(function(){initNavTree('utilities_8h.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">utilities.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;deal.II/base/config.h&gt;</code><br />
+<code>#include &lt;deal.II/base/exceptions.h&gt;</code><br />
 <code>#include &lt;deal.II/base/point.h&gt;</code><br />
 <code>#include &lt;deal.II/base/tensor.h&gt;</code><br />
 <code>#include &lt;deal.II/base/vectorization.h&gt;</code><br />
 <code>#include &lt;deal.II/matrix_free/evaluation_flags.h&gt;</code><br />
 <code>#include &lt;boost/range/algorithm.hpp&gt;</code><br />
 <code>#include &lt;boost/range/algorithm_ext.hpp&gt;</code><br />
+<code>#include &lt;<a class="el" href="vectorized__operations_8h_source.html">prismspf/utilities/vectorized_operations.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;string_view&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
-<code>#include &lt;<a class="el" href="vectorized__operations_8h_source.html">prismspf/utilities/vectorized_operations.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utilities.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="1824" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="2028" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -162,18 +163,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a332c5b699f76d9002da29b4db8931786"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; OtherType, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a332c5b699f76d9002da29b4db8931786">string_to_type_pair_with_delimiters</a> (const std::string &amp;string, const std::unordered_map&lt; std::string, <a class="el" href="read__field__factory_8h.html#a1d1cfd8ffb84e947f82999c682b666a7">Type</a> &gt; &amp;table, const std::unordered_map&lt; std::string, OtherType &gt; &amp;other_table, const std::pair&lt; char, char &gt; &amp;delimiters={'(', ')'})</td></tr>
 <tr class="memdesc:a332c5b699f76d9002da29b4db8931786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function that converts a string to some type pair, given two mappings and a set of delimiters.  <br /></td></tr>
 <tr class="separator:a332c5b699f76d9002da29b4db8931786"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bd4c1b2e176e9c19da4d66eae956efe" id="r_a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memTemplParams" colspan="2">template&lt;typename Real, typename OtherReal&gt; </td></tr>
-<tr class="memitem:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memTemplItemLeft" align="right" valign="top">Real&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a> (const Real &amp;value, const OtherReal &amp;modulus)</td></tr>
-<tr class="memdesc:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)  <br /></td></tr>
-<tr class="separator:a4bd4c1b2e176e9c19da4d66eae956efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f87f41d5e8d087ca7181c79897c4dd8" id="r_a9f87f41d5e8d087ca7181c79897c4dd8"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:a9f87f41d5e8d087ca7181c79897c4dd8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9f87f41d5e8d087ca7181c79897c4dd8">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:a9f87f41d5e8d087ca7181c79897c4dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
-<tr class="separator:a9f87f41d5e8d087ca7181c79897c4dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3b4434209ffa501043cb8c3ad650e65" id="r_aa3b4434209ffa501043cb8c3ad650e65"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:aa3b4434209ffa501043cb8c3ad650e65"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa3b4434209ffa501043cb8c3ad650e65">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:aa3b4434209ffa501043cb8c3ad650e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. Note: this functions internally converts to Voigt notation.  <br /></td></tr>
-<tr class="separator:aa3b4434209ffa501043cb8c3ad650e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa82813cf82bc07c48bf1e91eb5d7f381" id="r_aa82813cf82bc07c48bf1e91eb5d7f381"><td class="memTemplParams" colspan="2">template&lt;typename Number&gt; </td></tr>
+<tr class="memitem:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE Number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa82813cf82bc07c48bf1e91eb5d7f381">pmod</a> (const Number &amp;value, const Number &amp;modulus)</td></tr>
+<tr class="memdesc:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)  <br /></td></tr>
+<tr class="separator:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f491b84b7691a9ad37e73b9d4e66e60" id="r_a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
+<tr class="memitem:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5f491b84b7691a9ad37e73b9d4e66e60">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
+<tr class="memdesc:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
+<tr class="separator:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea50fb4cefe498899ea22ddcbca3c40" id="r_a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
+<tr class="memitem:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6ea50fb4cefe498899ea22ddcbca3c40">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
+<tr class="memdesc:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. Note: this functions internally converts to Voigt notation.  <br /></td></tr>
+<tr class="separator:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a235abb5b94d2d1f594561b4ee4f061e2" id="r_a235abb5b94d2d1f594561b4ee4f061e2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a235abb5b94d2d1f594561b4ee4f061e2">strip_whitespace</a> (const std::string &amp;_text)</td></tr>
 <tr class="memdesc:a235abb5b94d2d1f594561b4ee4f061e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove whitespace from strings.  <br /></td></tr>
 <tr class="separator:a235abb5b94d2d1f594561b4ee4f061e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,9 +184,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a480bbcaf894aee490f6ae4e1f5a798db" id="r_a480bbcaf894aee490f6ae4e1f5a798db"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a480bbcaf894aee490f6ae4e1f5a798db">eval_flags_to_string</a> (dealii::EvaluationFlags::EvaluationFlags flag)</td></tr>
 <tr class="memdesc:a480bbcaf894aee490f6ae4e1f5a798db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert evaluation flags to string.  <br /></td></tr>
 <tr class="separator:a480bbcaf894aee490f6ae4e1f5a798db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e53f5d41b901d9cb616e0d90c5eb8c0" id="r_a5e53f5d41b901d9cb616e0d90c5eb8c0"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename number&gt; </td></tr>
-<tr class="memitem:a5e53f5d41b901d9cb616e0d90c5eb8c0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5e53f5d41b901d9cb616e0d90c5eb8c0">dealii_point_to_vector</a> (const dealii::Point&lt; dim, number &gt; &amp;point)</td></tr>
-<tr class="separator:a5e53f5d41b901d9cb616e0d90c5eb8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930" id="r_a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename number&gt; </td></tr>
+<tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE std::vector&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector</a> (const dealii::Point&lt; dim, number &gt; &amp;point)</td></tr>
+<tr class="separator:a6900a956ef14d53b30c0616e7cf7b930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -222,8 +223,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a9f87f41d5e8d087ca7181c79897c4dd8" name="a9f87f41d5e8d087ca7181c79897c4dd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f87f41d5e8d087ca7181c79897c4dd8">&#9670;&#160;</a></span>compute_stress() <span class="overload">[1/2]</span></h2>
+<a id="a5f491b84b7691a9ad37e73b9d4e66e60" name="a5f491b84b7691a9ad37e73b9d4e66e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f491b84b7691a9ad37e73b9d4e66e60">&#9670;&#160;</a></span>compute_stress() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,7 +235,7 @@ template&lt;unsigned int dim, typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void compute_stress </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE void compute_stress </td>
           <td>(</td>
           <td class="paramtype">const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>elasticity_tensor</em></span>, </td>
         </tr>
@@ -260,8 +261,8 @@ template&lt;unsigned int dim, typename T&gt; </div>
 
 </div>
 </div>
-<a id="aa3b4434209ffa501043cb8c3ad650e65" name="aa3b4434209ffa501043cb8c3ad650e65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3b4434209ffa501043cb8c3ad650e65">&#9670;&#160;</a></span>compute_stress() <span class="overload">[2/2]</span></h2>
+<a id="a6ea50fb4cefe498899ea22ddcbca3c40" name="a6ea50fb4cefe498899ea22ddcbca3c40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea50fb4cefe498899ea22ddcbca3c40">&#9670;&#160;</a></span>compute_stress() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,7 +273,7 @@ template&lt;unsigned int dim, typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void compute_stress </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE void compute_stress </td>
           <td>(</td>
           <td class="paramtype">const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>elasticity_tensor</em></span>, </td>
         </tr>
@@ -298,8 +299,8 @@ template&lt;unsigned int dim, typename T&gt; </div>
 
 </div>
 </div>
-<a id="a5e53f5d41b901d9cb616e0d90c5eb8c0" name="a5e53f5d41b901d9cb616e0d90c5eb8c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e53f5d41b901d9cb616e0d90c5eb8c0">&#9670;&#160;</a></span>dealii_point_to_vector()</h2>
+<a id="a6900a956ef14d53b30c0616e7cf7b930" name="a6900a956ef14d53b30c0616e7cf7b930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6900a956ef14d53b30c0616e7cf7b930">&#9670;&#160;</a></span>dealii_point_to_vector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,7 +311,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; number &gt; dealii_point_to_vector </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE std::vector&lt; number &gt; dealii_point_to_vector </td>
           <td>(</td>
           <td class="paramtype">const dealii::Point&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>point</em></span></td><td>)</td>
           <td></td>
@@ -352,26 +353,26 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a4bd4c1b2e176e9c19da4d66eae956efe" name="a4bd4c1b2e176e9c19da4d66eae956efe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bd4c1b2e176e9c19da4d66eae956efe">&#9670;&#160;</a></span>pmod()</h2>
+<a id="aa82813cf82bc07c48bf1e91eb5d7f381" name="aa82813cf82bc07c48bf1e91eb5d7f381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa82813cf82bc07c48bf1e91eb5d7f381">&#9670;&#160;</a></span>pmod()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Real, typename OtherReal&gt; </div>
+template&lt;typename Number&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Real pmod </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE Number pmod </td>
           <td>(</td>
-          <td class="paramtype">const Real &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+          <td class="paramtype">const Number &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const OtherReal &amp;</td>          <td class="paramname"><span class="paramname"><em>modulus</em></span>&#160;)</td>
+          <td class="paramtype">const Number &amp;</td>          <td class="paramname"><span class="paramname"><em>modulus</em></span>&#160;)</td>
         </tr>
       </table>
   </td>

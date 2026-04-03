@@ -154,22 +154,20 @@ $(function(){initNavTree('periodic__distance_8h_source.html',''); initResizable(
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  real dist = real(0.0);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d = 0; d &lt; dim; ++d)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keyword">using </span>std::min;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      real delta = point2[d] - point1[d];</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="keywordflow">if</span> (rectangular_mesh.<a class="code hl_variable" href="structRectangularMesh.html#a83e44eff521a0ff235ae14f0924ed587">periodic_directions</a>.contains(d))</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>          <span class="keyword">const</span> real length      = rectangular_mesh.<a class="code hl_variable" href="structRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[d];</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>          <span class="keyword">const</span> real half_length = length / 2.0;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>          delta                  = <a class="code hl_function" href="utilities_8h.html#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a>(delta - half_length, length) - half_length;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      dist += delta * delta;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">using </span>std::sqrt;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">return</span> sqrt(dist);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      real delta = point2[d] - point1[d];</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keywordflow">if</span> (rectangular_mesh.<a class="code hl_variable" href="structRectangularMesh.html#a83e44eff521a0ff235ae14f0924ed587">periodic_directions</a>.contains(d))</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>          <span class="keyword">const</span> real length      = rectangular_mesh.<a class="code hl_variable" href="structRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9">size</a>[d];</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>          <span class="keyword">const</span> real half_length = length / 2.0;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>          delta                  = <a class="code hl_function" href="utilities_8h.html#aa82813cf82bc07c48bf1e91eb5d7f381">pmod</a>(delta - half_length, length) - half_length;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      dist += delta * delta;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">return</span> std::sqrt(dist);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
 </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="anamespacePRISMS__PF__BEGIN__NAMESPACE_html"><div class="ttname"><a href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div><div class="ttdef"><b>Definition</b> conditional_ostreams.cc:20</div></div>
 <div class="ttc" id="aperiodic__distance_8h_html_a5fefe05fa81a5af6e87566a0d0480f6c"><div class="ttname"><a href="periodic__distance_8h.html#a5fefe05fa81a5af6e87566a0d0480f6c">distance</a></div><div class="ttdeci">PRISMS_PF_BEGIN_NAMESPACE real distance(const dealii::Point&lt; dim, real &gt; &amp;point1, const dealii::Point&lt; dim, real &gt; &amp;point2, const RectangularMesh&lt; dim &gt; &amp;rectangular_mesh)</div><div class="ttdoc">Calculate the distance between two points considering periodic boundaries. Note: templates must be pr...</div><div class="ttdef"><b>Definition</b> periodic_distance.h:24</div></div>
 <div class="ttc" id="aspatial__discretization_8h_html"><div class="ttname"><a href="spatial__discretization_8h.html">spatial_discretization.h</a></div></div>
@@ -178,7 +176,7 @@ $(function(){initNavTree('periodic__distance_8h_source.html',''); initResizable(
 <div class="ttc" id="astructRectangularMesh_html_a83e44eff521a0ff235ae14f0924ed587"><div class="ttname"><a href="structRectangularMesh.html#a83e44eff521a0ff235ae14f0924ed587">RectangularMesh::periodic_directions</a></div><div class="ttdeci">std::set&lt; unsigned int &gt; periodic_directions</div><div class="ttdoc">Which directions have periodic conditions.</div><div class="ttdef"><b>Definition</b> spatial_discretization.h:99</div></div>
 <div class="ttc" id="auser__input__parameters_8h_html"><div class="ttname"><a href="user__input__parameters_8h.html">user_input_parameters.h</a></div></div>
 <div class="ttc" id="autilities_8h_html"><div class="ttname"><a href="utilities_8h.html">utilities.h</a></div></div>
-<div class="ttc" id="autilities_8h_html_a4bd4c1b2e176e9c19da4d66eae956efe"><div class="ttname"><a href="utilities_8h.html#a4bd4c1b2e176e9c19da4d66eae956efe">pmod</a></div><div class="ttdeci">Real pmod(const Real &amp;value, const OtherReal &amp;modulus)</div><div class="ttdoc">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negati...</div><div class="ttdef"><b>Definition</b> utilities.h:119</div></div>
+<div class="ttc" id="autilities_8h_html_aa82813cf82bc07c48bf1e91eb5d7f381"><div class="ttname"><a href="utilities_8h.html#aa82813cf82bc07c48bf1e91eb5d7f381">pmod</a></div><div class="ttdeci">DEAL_II_ALWAYS_INLINE Number pmod(const Number &amp;value, const Number &amp;modulus)</div><div class="ttdoc">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negati...</div><div class="ttdef"><b>Definition</b> utilities.h:122</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
