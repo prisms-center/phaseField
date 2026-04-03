@@ -19,7 +19,6 @@ compile_commands.json
 *.vtu
 *.pvtu
 *.vtk
-*.txt
 
 # Executables
 main
