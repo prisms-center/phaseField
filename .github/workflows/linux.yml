@@ -30,6 +30,9 @@ jobs:
       image: landinjm/pagoma-dependencies:alpine-minimal
       options: --user root
     steps:
+      - uses: laverdet/alpine-arm64@v1
+        if: matrix.host.arch == 'arm64'
+
       - name: Checkout repo
         uses: actions/checkout@v6
 
