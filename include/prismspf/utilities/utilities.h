@@ -143,7 +143,7 @@ compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_te
 
 /**
  * @brief Compute the stress with a given displacement and elasticity tensor. Note: this
- * functions internally converts to Voigt notation.
+ * function internally converts to Voigt notation.
  */
 template <unsigned int dim, typename T>
 inline void
