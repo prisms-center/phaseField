@@ -37,4 +37,3 @@ jobs:
         run: |
           cmake --workflow --preset debug
           cmake --install build/debug --prefix install
-
