@@ -16,4 +16,3 @@ subsection output
   set condition = EQUAL_SPACING
   set number = 1
 end
-
