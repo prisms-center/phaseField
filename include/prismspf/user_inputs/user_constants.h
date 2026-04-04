@@ -146,11 +146,13 @@ private:
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_cij_tensor(std::vector<double> elastic_constants,
-                 const std::string  &elastic_const_symmetry) const;
+                 const std::string  &elastic_const_symmetry,
+                 const StressState  &stress_state) const;
 
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
   get_cij_matrix(const ElasticityModel     &model,
-                 const std::vector<double> &constants) const;
+                 const std::vector<double> &constants,
+                 const StressState         &stress_state) const;
 
   /**
    * @brief List of user-defined constants.
@@ -449,8 +451,44 @@ UserConstants<dim>::construct_user_constant(
             dealii::Utilities::string_to_double(model_constants_strings.at(i));
         }
       const std::string &elastic_const_symmetry = model_constants_type_strings.at(0);
+
+      // get the stress state for the 2D case
+      StressState stress_state = StressState::ThreeDimension;
+      if (dim == 2)
+        {
+          if (model_constants_type_strings.size() == 4)
+            {
+              if (boost::iequals(model_constants_type_strings.at(3), "planestress"))
+                {
+                  stress_state = StressState::PlaneStress;
+                }
+              else if (boost::iequals(model_constants_type_strings.at(3), "planestrain"))
+                {
+                  stress_state = StressState::PlaneStrain;
+                }
+              else
+                {
+                  AssertThrow(
+                    false,
+                    dealii::ExcMessage(
+                      "Wrong 2D stress state. Use planestress or planestrain."));
+                }
+            }
+          else if (model_constants_type_strings.size() == 3)
+            {
+              // Default to plane strain if nothing is specified
+              stress_state = StressState::PlaneStrain;
+            }
+          else
+            {
+              AssertThrow(false,
+                          dealii::ExcMessage(
+                            "Wrong format of user-defined elastic constants."));
+            }
+        }
+
       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> temp =
-        get_cij_tensor(temp_elastic_constants, elastic_const_symmetry);
+        get_cij_tensor(temp_elastic_constants, elastic_const_symmetry, stress_state);
       return temp;
     }
 
@@ -493,7 +531,8 @@ UserConstants<dim>::primitive_model_constant(
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
-                                   const std::string  &elastic_const_symmetry) const
+                                   const std::string  &elastic_const_symmetry,
+                                   const StressState  &stress_state) const
 {
   // First set the material model
   ElasticityModel mat_model = Isotropic;
@@ -536,16 +575,17 @@ UserConstants<dim>::get_cij_tensor(std::vector<double> elastic_constants,
                      });
     }
 
-  return get_cij_matrix(mat_model, elastic_constants);
+  return get_cij_matrix(mat_model, elastic_constants, stress_state);
 }
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
 UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
-                                   const std::vector<double> &constants) const
+                                   const std::vector<double> &constants,
+                                   const StressState         &stress_state) const
 {
-  // Initialize compliance tensor
-  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> compliance;
+  // Initialize stiffness tensor
+  dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)> stiffness;
 
   switch (dim)
     {
@@ -555,16 +595,16 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
           switch (model)
             {
-                // For the 1D case, it make little sense to accept anything besides an
-                // isotropic elasticity tensor. One hiccup, is that if a user is debugging
-                // an application and switches to 1D, they will have to modify the
-                // elasticity constants to align with that. While more burdensome, there's
-                // less of a chance of producing spurious behavior.
+              // For the 1D case, it make little sense to accept anything besides an
+              // isotropic elasticity tensor. One hiccup, is that if a user is debugging
+              // an application and switches to 1D, they will have to modify the
+              // elasticity constants to align with that. While more burdensome, there's
+              // less of a chance of producing spurious behavior.
               case Isotropic:
                 {
                   const double modulus = constants.at(0);
 
-                  compliance[xx_dir][xx_dir] = modulus;
+                  stiffness[xx_dir][xx_dir] = modulus;
                   break;
                 }
               default:
@@ -585,27 +625,98 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
           switch (model)
             {
               // Like the 1D case, it is nonsensical to have transverse or orthotropic
-              // compliance tensors, so we throw an error.
+              // stiffness tensors, so we throw an error.
               case Isotropic:
                 {
-                  // For isotropic compliance tensors, we can simplify the computation to
+                  // For isotropic stiffness tensors, we can simplify the computation to
                   // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
                   // modulus. In cartesian coordinates,
                   // $$$
                   // c_{ijkl} = \lambda \delta_{ij} \delta_{kl} + \mu (\delta_{ik}
                   // \delta_{jl} + \delta_{il} \delta_{kj})
                   // $$$
+                  // In 2D, we distinguish between plane stress and plane strain
                   const double modulus = constants.at(0);
                   const double poisson = constants.at(1);
 
                   const double shear_modulus = modulus / (2 * (1 + poisson));
-                  const double lambda =
-                    poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
+                  double       lambda        = 0.0;
+                  switch (stress_state)
+                    {
+                      case PlaneStress:
+                        {
+                          lambda = poisson * modulus / ((1 - poisson * poisson));
+                          break;
+                        }
+                      case PlaneStrain:
+                        {
+                          lambda =
+                            poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
+                          break;
+                        }
+                      default:
+                        AssertThrow(false,
+                                    dealii::ExcMessage("Invalid stress state type"));
+                    }
 
-                  compliance[xx_dir][xx_dir] = compliance[yy_dir][yy_dir] =
+                  stiffness[xx_dir][xx_dir] = stiffness[yy_dir][yy_dir] =
                     lambda + 2 * shear_modulus;
-                  compliance[xy_dir][xy_dir] = shear_modulus;
-                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = lambda;
+                  stiffness[xy_dir][xy_dir] = shear_modulus;
+                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = lambda;
+                  break;
+                }
+              case Orthotropic:
+                {
+                  // In 2D, we distinguish between plane stress and plane strain
+                  switch (stress_state)
+                    {
+                      case PlaneStress:
+                        {
+                          const double E1   = constants.at(0);
+                          const double E2   = constants.at(1);
+                          const double nu12 = constants.at(2);
+                          const double G12  = constants.at(3);
+
+                          const double nu21  = nu12 * (E2 / E1);
+                          const double denom = 1.0 - (nu12 * nu21);
+
+                          stiffness[xx_dir][xx_dir] = E1 / denom;
+                          stiffness[yy_dir][yy_dir] = E2 / denom;
+                          stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
+                            (nu12 * E2) / denom;
+                          stiffness[xy_dir][xy_dir] = G12;
+                          break;
+                        }
+                      case PlaneStrain:
+                        {
+                          const double E1   = constants.at(0);
+                          const double E2   = constants.at(1);
+                          const double E3   = constants.at(2);
+                          const double nu12 = constants.at(3);
+                          const double nu13 = constants.at(4);
+                          const double nu23 = constants.at(5);
+                          const double G12  = constants.at(6);
+
+                          const double nu21 = nu12 * (E2 / E1);
+                          const double nu31 = nu13 * (E3 / E1);
+                          const double nu32 = nu23 * (E3 / E2);
+
+                          const double delta = 1.0 - (nu12 * nu21) - (nu23 * nu32) -
+                                               (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
+
+                          stiffness[xx_dir][xx_dir] =
+                            (E1 * (1.0 - (nu23 * nu32))) / delta;
+                          stiffness[yy_dir][yy_dir] =
+                            (E2 * (1.0 - (nu13 * nu31))) / delta;
+                          stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
+                            (E1 * (nu21 + (nu31 * nu23))) / delta;
+                          stiffness[xy_dir][xy_dir] = G12;
+                          break;
+                        }
+                      default:
+                        AssertThrow(false,
+                                    dealii::ExcMessage("Invalid stress state type"));
+                    }
                   break;
                 }
               case Anisotropic:
@@ -616,15 +727,12 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
                   // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-                  compliance[xx_dir][xx_dir] = constants.at(0);
-                  compliance[yy_dir][yy_dir] = constants.at(1);
-                  compliance[xy_dir][xy_dir] = constants.at(2);
-                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] =
-                    constants.at(3);
-                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] =
-                    constants.at(4);
-                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] =
-                    constants.at(5);
+                  stiffness[xx_dir][xx_dir] = constants.at(0);
+                  stiffness[yy_dir][yy_dir] = constants.at(1);
+                  stiffness[xy_dir][xy_dir] = constants.at(2);
+                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = constants.at(3);
+                  stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants.at(4);
+                  stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants.at(5);
 
                   // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
@@ -647,7 +755,7 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
             {
               case Isotropic:
                 {
-                  // For isotropic compliance tensors, we can simplify the computation to
+                  // For isotropic stiffness tensors, we can simplify the computation to
                   // two parameters: $\lambda$ and $\mu$, where $\mu$ is the shear
                   // modulus. In cartesian coordinates,
                   // $$$
@@ -661,13 +769,13 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
                   const double lambda =
                     poisson * modulus / ((1 + poisson) * (1 - 2 * poisson));
 
-                  compliance[xx_dir][xx_dir]     = compliance[yy_dir][yy_dir] =
-                    compliance[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;
-                  compliance[yz_dir][yz_dir]     = compliance[xz_dir][xz_dir] =
-                    compliance[xy_dir][xy_dir]   = shear_modulus;
-                  compliance[xx_dir][yy_dir]     = compliance[yy_dir][xx_dir] =
-                    compliance[xx_dir][zz_dir]   = compliance[zz_dir][xx_dir] =
-                      compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = lambda;
+                  stiffness[xx_dir][xx_dir]     = stiffness[yy_dir][yy_dir] =
+                    stiffness[zz_dir][zz_dir]   = lambda + 2 * shear_modulus;
+                  stiffness[yz_dir][yz_dir]     = stiffness[xz_dir][xz_dir] =
+                    stiffness[xy_dir][xy_dir]   = shear_modulus;
+                  stiffness[xx_dir][yy_dir]     = stiffness[yy_dir][xx_dir] =
+                    stiffness[xx_dir][zz_dir]   = stiffness[zz_dir][xx_dir] =
+                      stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = lambda;
                   break;
                 }
               case Anisotropic:
@@ -678,35 +786,70 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
 
                   // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-                  compliance[xx_dir][xx_dir] = constants[0];
-                  compliance[yy_dir][yy_dir] = constants[1];
-                  compliance[zz_dir][zz_dir] = constants[2];
-                  compliance[yz_dir][yz_dir] = constants[3];
-                  compliance[xz_dir][xz_dir] = constants[4];
-                  compliance[xy_dir][xy_dir] = constants[5];
-                  compliance[xx_dir][yy_dir] = compliance[yy_dir][xx_dir] = constants[6];
-                  compliance[xx_dir][zz_dir] = compliance[zz_dir][xx_dir] = constants[7];
-                  compliance[xx_dir][yz_dir] = compliance[yz_dir][xx_dir] = constants[8];
-                  compliance[xx_dir][xz_dir] = compliance[xz_dir][xx_dir] = constants[9];
-                  compliance[xx_dir][xy_dir] = compliance[xy_dir][xx_dir] = constants[10];
-                  compliance[yy_dir][zz_dir] = compliance[zz_dir][yy_dir] = constants[11];
-                  compliance[yy_dir][yz_dir] = compliance[yz_dir][yy_dir] = constants[12];
-                  compliance[yy_dir][xz_dir] = compliance[xz_dir][yy_dir] = constants[13];
-                  compliance[yy_dir][xy_dir] = compliance[xy_dir][yy_dir] = constants[14];
-                  compliance[zz_dir][yz_dir] = compliance[yz_dir][zz_dir] = constants[15];
-                  compliance[zz_dir][xz_dir] = compliance[xz_dir][zz_dir] = constants[16];
-                  compliance[zz_dir][xy_dir] = compliance[xy_dir][zz_dir] = constants[17];
-                  compliance[yz_dir][xz_dir] = compliance[xz_dir][yz_dir] = constants[18];
-                  compliance[yz_dir][xy_dir] = compliance[xy_dir][yz_dir] = constants[19];
-                  compliance[xz_dir][xy_dir] = compliance[xy_dir][xz_dir] = constants[20];
+                  stiffness[xx_dir][xx_dir] = constants[0];
+                  stiffness[yy_dir][yy_dir] = constants[1];
+                  stiffness[zz_dir][zz_dir] = constants[2];
+                  stiffness[yz_dir][yz_dir] = constants[3];
+                  stiffness[xz_dir][xz_dir] = constants[4];
+                  stiffness[xy_dir][xy_dir] = constants[5];
+                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] = constants[6];
+                  stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] = constants[7];
+                  stiffness[xx_dir][yz_dir] = stiffness[yz_dir][xx_dir] = constants[8];
+                  stiffness[xx_dir][xz_dir] = stiffness[xz_dir][xx_dir] = constants[9];
+                  stiffness[xx_dir][xy_dir] = stiffness[xy_dir][xx_dir] = constants[10];
+                  stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] = constants[11];
+                  stiffness[yy_dir][yz_dir] = stiffness[yz_dir][yy_dir] = constants[12];
+                  stiffness[yy_dir][xz_dir] = stiffness[xz_dir][yy_dir] = constants[13];
+                  stiffness[yy_dir][xy_dir] = stiffness[xy_dir][yy_dir] = constants[14];
+                  stiffness[zz_dir][yz_dir] = stiffness[yz_dir][zz_dir] = constants[15];
+                  stiffness[zz_dir][xz_dir] = stiffness[xz_dir][zz_dir] = constants[16];
+                  stiffness[zz_dir][xy_dir] = stiffness[xy_dir][zz_dir] = constants[17];
+                  stiffness[yz_dir][xz_dir] = stiffness[xz_dir][yz_dir] = constants[18];
+                  stiffness[yz_dir][xy_dir] = stiffness[xy_dir][yz_dir] = constants[19];
+                  stiffness[xz_dir][xy_dir] = stiffness[xy_dir][xz_dir] = constants[20];
 
                   // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
                   break;
                 }
               case Transverse:
-              // TODO (landinjm): implement
+                {
+                  // TODO (landinjm): implement
+                  AssertThrow(false, FeatureNotImplemented("Transverse material"));
+                  break;
+                }
               case Orthotropic:
-              // TODO (landinjm): implement
+                {
+                  const double E1   = constants.at(0);
+                  const double E2   = constants.at(1);
+                  const double E3   = constants.at(2);
+                  const double nu12 = constants.at(3);
+                  const double nu13 = constants.at(4);
+                  const double nu23 = constants.at(5);
+                  const double G12  = constants.at(6);
+                  const double G13  = constants.at(7);
+                  const double G23  = constants.at(8);
+
+                  const double nu21 = nu12 * (E2 / E1);
+                  const double nu31 = nu13 * (E3 / E1);
+                  const double nu32 = nu23 * (E3 / E2);
+
+                  const double delta = 1.0 - (nu12 * nu21) - (nu23 * nu32) -
+                                       (nu13 * nu31) - (2.0 * nu12 * nu23 * nu31);
+
+                  stiffness[xx_dir][xx_dir] = (E1 * (1.0 - nu23 * nu32)) / delta;
+                  stiffness[yy_dir][yy_dir] = (E2 * (1.0 - nu13 * nu31)) / delta;
+                  stiffness[zz_dir][zz_dir] = (E3 * (1.0 - nu12 * nu21)) / delta;
+                  stiffness[xx_dir][yy_dir] = stiffness[yy_dir][xx_dir] =
+                    (E1 * (nu21 + nu31 * nu23)) / delta;
+                  stiffness[xx_dir][zz_dir] = stiffness[zz_dir][xx_dir] =
+                    (E1 * (nu31 + nu21 * nu32)) / delta;
+                  stiffness[yy_dir][zz_dir] = stiffness[zz_dir][yy_dir] =
+                    (E2 * (nu32 + nu12 * nu31)) / delta;
+                  stiffness[yz_dir][yz_dir] = G23;
+                  stiffness[xz_dir][xz_dir] = G13;
+                  stiffness[xy_dir][xy_dir] = G12;
+                  break;
+                }
               default:
                 AssertThrow(false, dealii::ExcMessage("Invalid elasticity model type"));
             }
@@ -718,7 +861,7 @@ UserConstants<dim>::get_cij_matrix(const ElasticityModel     &model,
         }
     }
 
-  return compliance;
+  return stiffness;
 }
 
 template <unsigned int dim>

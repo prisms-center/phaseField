@@ -67,6 +67,16 @@ enum ElasticityModel : std::uint8_t
 };
 
 /**
+ * @brief State of stress.
+ */
+enum StressState : std::uint8_t
+{
+  ThreeDimension,
+  PlaneStrain,
+  PlaneStress,
+};
+
+/**
  * @brief Internal classification for types of variable dependencies.
  */
 enum DependencyType : int
@@ -151,6 +161,25 @@ to_string(ElasticityModel type)
         return "Orthotropic";
       case ElasticityModel::Anisotropic:
         return "Anisotropic";
+      default:
+        return "UNKNOWN";
+    }
+}
+
+/**
+ * @brief Enum to string for StressState
+ */
+inline std::string
+to_string(StressState type)
+{
+  switch (type)
+    {
+      case StressState::ThreeDimension:
+        return "ThreeDimension";
+      case StressState::PlaneStrain:
+        return "PlaneStrain";
+      case StressState::PlaneStress:
+        return "PlaneStress";
       default:
         return "UNKNOWN";
     }
