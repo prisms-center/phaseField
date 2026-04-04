@@ -12,5 +12,6 @@ var searchData=
   ['integrate_5fand_5fdistribute_9',['integrate_and_distribute',['../structFieldContainer_1_1FEEValuationDeps.html#acad46cf09446961fc4441d88b687e7e6',1,'FieldContainer::FEEValuationDeps::integrate_and_distribute()'],['../classFieldContainer.html#aa819a5fcb462c6253a5aebbc3def745d',1,'FieldContainer::integrate_and_distribute()']]],
   ['interpolate_10',['interpolate',['../classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123',1,'ReadBinary']]],
   ['invert_11',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
-  ['invmmanager_12',['InvMManager',['../classInvMManager.html#a010d55b73253a017a15b43813698ac99',1,'InvMManager']]]
+  ['invmmanager_12',['InvMManager',['../classInvMManager.html#a010d55b73253a017a15b43813698ac99',1,'InvMManager']]],
+  ['is_5fsupported_13',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
 ];

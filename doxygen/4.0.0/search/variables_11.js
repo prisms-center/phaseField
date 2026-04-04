@@ -31,5 +31,6 @@ var searchData=
   ['step_5flength_28',['step_length',['../structNonlinearSolverParameters.html#a102446805d57273733d71f3dc298a5a6',1,'NonlinearSolverParameters']]],
   ['stream1_29',['stream1',['../classTeeStream_1_1TeeBuffer.html#a17899104d6ba197aecbc7996ceb2d09c',1,'TeeStream::TeeBuffer']]],
   ['stream2_30',['stream2',['../classTeeStream_1_1TeeBuffer.html#add1ded05b8372dfeecd24eba6bdfc620',1,'TeeStream::TeeBuffer']]],
-  ['subdivisions_31',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]]
+  ['strike_31',['STRIKE',['../classTerminalColor.html#af4f59d6277479ef972a6fd0987dd60d4',1,'TerminalColor']]],
+  ['subdivisions_32',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]]
 ];

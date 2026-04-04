@@ -44,6 +44,7 @@ var NAVTREE =
         [ "Typedefs", "namespacemembers_type.html", null ]
       ] ]
     ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -77,9 +78,9 @@ var NAVTREEINDEX =
 "annotated.html",
 "classInvMManager.html#aa780655b777080c3a76f8fa5cb856c31",
 "classSolveContext.html#a626886816174089b2655b0c8232fea83",
-"functions_j.html",
-"structFieldConstraints.html",
-"type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700ad78fca036136942a30423b5f23c53ac2"
+"dirichlet_8cc.html",
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5dacdd030c6485c7b0801d32116fd9d7103",
+"structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

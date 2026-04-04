@@ -84,6 +84,7 @@ var hierarchy =
     ] ],
     [ "SystemWide< dim, degree >", "classSystemWide.html", null ],
     [ "TemporalDiscretization", "structTemporalDiscretization.html", null ],
+    [ "TerminalColor", "classTerminalColor.html", null ],
     [ "Timer", "classTimer.html", null ],
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html", null ],
     [ "TriangulationManager< dim >", "classTriangulationManager.html", null ],

@@ -52,6 +52,8 @@ var searchData=
   ['invmmanager_49',['InvMManager',['../classInvMManager.html',1,'InvMManager&lt; dim, degree, number &gt;'],['../classInvMManager.html#a010d55b73253a017a15b43813698ac99',1,'InvMManager::InvMManager()']]],
   ['io_5fparameters_2eh_50',['io_parameters.h',['../io__parameters_8h.html',1,'']]],
   ['is_5fnucleation_5frate_5fvariable_51',['is_nucleation_rate_variable',['../structFieldAttributes.html#a75b369ecdb02aec7ef8ebcd61aa8f037',1,'FieldAttributes']]],
-  ['isotropic_52',['Isotropic',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13',1,'type_enums.h']]],
-  ['iterations_53',['iterations',['../namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b',1,'Defaults']]]
+  ['is_5fsupported_52',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]],
+  ['isotropic_53',['Isotropic',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590aa986e31cfc4be5610bf8955fda1928b13',1,'type_enums.h']]],
+  ['italic_54',['ITALIC',['../classTerminalColor.html#a6895859fc5a0c7f934b5b7f4d33388e5',1,'TerminalColor']]],
+  ['iterations_55',['iterations',['../namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b',1,'Defaults']]]
 ];

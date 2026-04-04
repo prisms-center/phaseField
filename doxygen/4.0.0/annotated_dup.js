@@ -64,6 +64,7 @@ var annotated_dup =
     [ "SystemWide", "classSystemWide.html", "classSystemWide" ],
     [ "TeeStream", "classTeeStream.html", "classTeeStream" ],
     [ "TemporalDiscretization", "structTemporalDiscretization.html", "structTemporalDiscretization" ],
+    [ "TerminalColor", "classTerminalColor.html", "classTerminalColor" ],
     [ "Timer", "classTimer.html", "classTimer" ],
     [ "TriangulationManager", "classTriangulationManager.html", "classTriangulationManager" ],
     [ "UserConstants", "classUserConstants.html", "classUserConstants" ],

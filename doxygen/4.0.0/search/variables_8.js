@@ -16,5 +16,6 @@ var searchData=
   ['invm_5fsqrt_5fvector_13',['invm_sqrt_vector',['../classInvMManager.html#a552b08b49fc589f8c66c971b25a3ca3a',1,'InvMManager']]],
   ['invm_5fvector_14',['invm_vector',['../classInvMManager.html#a8adff8530af5cc4db7c76c678a6f5575',1,'InvMManager']]],
   ['is_5fnucleation_5frate_5fvariable_15',['is_nucleation_rate_variable',['../structFieldAttributes.html#a75b369ecdb02aec7ef8ebcd61aa8f037',1,'FieldAttributes']]],
-  ['iterations_16',['iterations',['../namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b',1,'Defaults']]]
+  ['italic_16',['ITALIC',['../classTerminalColor.html#a6895859fc5a0c7f934b5b7f4d33388e5',1,'TerminalColor']]],
+  ['iterations_17',['iterations',['../namespaceDefaults.html#a4cf6f3f53f9733c155e9c2f5e083d83b',1,'Defaults']]]
 ];

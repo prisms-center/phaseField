@@ -15,5 +15,6 @@ var searchData=
   ['constraints_12',['constraints',['../classConstraintManager.html#a30c003b63c89d8a3b852524bed0af27c',1,'ConstraintManager']]],
   ['criterion_13',['criterion',['../structRefinementCriterion.html#adeae4819de1d5357043678bb9352619b',1,'RefinementCriterion']]],
   ['current_5fincrement_14',['current_increment',['../classSimulationTimer.html#a91b657a1a2260be48a02130734c25277',1,'SimulationTimer']]],
-  ['current_5ftime_15',['current_time',['../classSimulationTimer.html#a1a5ad442fdccc94a66e45b54e2ee5668',1,'SimulationTimer']]]
+  ['current_5ftime_15',['current_time',['../classSimulationTimer.html#a1a5ad442fdccc94a66e45b54e2ee5668',1,'SimulationTimer']]],
+  ['cyan_16',['CYAN',['../classTerminalColor.html#af982a643d8e363759c1454a757387581',1,'TerminalColor']]]
 ];

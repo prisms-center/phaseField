@@ -99,9 +99,10 @@ var searchData=
   ['gradient_5flower_5fbound_96',['gradient_lower_bound',['../structRefinementCriterion.html#ad0d97f2d4ffffef01ed12f48e0ce6641',1,'RefinementCriterion']]],
   ['gradient_5fmagnitude_5fabove_5fthreshold_97',['gradient_magnitude_above_threshold',['../structRefinementCriterion.html#a76f156fa9cc6a8e510a45a743e6e7847',1,'RefinementCriterion']]],
   ['grains_2eh_98',['grains.h',['../grains_8h.html',1,'']]],
-  ['grid_5frefiner_99',['grid_refiner',['../classProblem.html#a0bf1a3def2c17b9558adffa1853d0658',1,'Problem']]],
-  ['grid_5frefiner_5fcriterion_2eh_100',['grid_refiner_criterion.h',['../grid__refiner__criterion_8h.html',1,'']]],
-  ['group_5fsolution_5fhandler_2ecc_101',['group_solution_handler.cc',['../group__solution__handler_8cc.html',1,'']]],
-  ['group_5fsolution_5fhandler_2eh_102',['group_solution_handler.h',['../group__solution__handler_8h.html',1,'']]],
-  ['groupsolutionhandler_103',['GroupSolutionHandler',['../classGroupSolutionHandler.html',1,'GroupSolutionHandler&lt; dim, number &gt;'],['../classGroupSolutionHandler.html#a31ae0827fa3552ba604aa772e6a668e6',1,'GroupSolutionHandler::GroupSolutionHandler()']]]
+  ['green_99',['GREEN',['../classTerminalColor.html#ae29704ab677033be8c4bad9fd62ab395',1,'TerminalColor']]],
+  ['grid_5frefiner_100',['grid_refiner',['../classProblem.html#a0bf1a3def2c17b9558adffa1853d0658',1,'Problem']]],
+  ['grid_5frefiner_5fcriterion_2eh_101',['grid_refiner_criterion.h',['../grid__refiner__criterion_8h.html',1,'']]],
+  ['group_5fsolution_5fhandler_2ecc_102',['group_solution_handler.cc',['../group__solution__handler_8cc.html',1,'']]],
+  ['group_5fsolution_5fhandler_2eh_103',['group_solution_handler.h',['../group__solution__handler_8h.html',1,'']]],
+  ['groupsolutionhandler_104',['GroupSolutionHandler',['../classGroupSolutionHandler.html',1,'GroupSolutionHandler&lt; dim, number &gt;'],['../classGroupSolutionHandler.html#a31ae0827fa3552ba604aa772e6a668e6',1,'GroupSolutionHandler::GroupSolutionHandler()']]]
 ];

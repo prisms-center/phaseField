@@ -8,11 +8,13 @@ var searchData=
   ['read_5fplain_5',['read_plain',['../classMFOperator.html#adcff82ea1e1cf6b47d4beba76908d906',1,'MFOperator']]],
   ['reader_6',['reader',['../classReadInitialCondition.html#a13ed06e47530cbf6aa395c3e19358800',1,'ReadInitialCondition::reader'],['../classReadUnstructuredVTK.html#aae197959e5362d5bf2b2faeb18600b08',1,'ReadUnstructuredVTK::reader']]],
   ['rectangular_5fmesh_7',['rectangular_mesh',['../structSpatialDiscretization.html#a2c922cba91a622eae21f194453a5d35d',1,'SpatialDiscretization']]],
-  ['refinement_5fcriteria_8',['refinement_criteria',['../structSpatialDiscretization.html#a6af0aee24a304d5a0a73819aefe16b52',1,'SpatialDiscretization']]],
-  ['refinement_5fradius_9',['refinement_radius',['../structNucleationParameters.html#a631f5292c002f777c70414e07e6ac994',1,'NucleationParameters']]],
-  ['relative_5flevel_10',['relative_level',['../classFieldContainer.html#a4b53fc780ce6372a96eda1600e0feb2f',1,'FieldContainer::relative_level'],['../classMFOperator.html#a4822dd6bfa23d61a35ec1a35a1674453',1,'MFOperator::relative_level']]],
-  ['remeshing_5fperiod_11',['remeshing_period',['../structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320',1,'SpatialDiscretization']]],
-  ['rhs_5foperators_12',['rhs_operators',['../classExplicitSolver.html#aa237122d4f5989735e66a2cd48655583',1,'ExplicitSolver::rhs_operators'],['../classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250',1,'LinearSolver::rhs_operators']]],
-  ['rhs_5fvector_13',['rhs_vector',['../classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa',1,'LinearSolver']]],
-  ['rng_14',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]]
+  ['red_8',['RED',['../classTerminalColor.html#a498b84451de0cf4fb419c5cde2d397f4',1,'TerminalColor']]],
+  ['refinement_5fcriteria_9',['refinement_criteria',['../structSpatialDiscretization.html#a6af0aee24a304d5a0a73819aefe16b52',1,'SpatialDiscretization']]],
+  ['refinement_5fradius_10',['refinement_radius',['../structNucleationParameters.html#a631f5292c002f777c70414e07e6ac994',1,'NucleationParameters']]],
+  ['relative_5flevel_11',['relative_level',['../classFieldContainer.html#a4b53fc780ce6372a96eda1600e0feb2f',1,'FieldContainer::relative_level'],['../classMFOperator.html#a4822dd6bfa23d61a35ec1a35a1674453',1,'MFOperator::relative_level']]],
+  ['remeshing_5fperiod_12',['remeshing_period',['../structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320',1,'SpatialDiscretization']]],
+  ['reset_13',['RESET',['../classTerminalColor.html#a636af85482f680b481768f2e41d57bc8',1,'TerminalColor']]],
+  ['rhs_5foperators_14',['rhs_operators',['../classExplicitSolver.html#aa237122d4f5989735e66a2cd48655583',1,'ExplicitSolver::rhs_operators'],['../classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250',1,'LinearSolver::rhs_operators']]],
+  ['rhs_5fvector_15',['rhs_vector',['../classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa',1,'LinearSolver']]],
+  ['rng_16',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]]
 ];
