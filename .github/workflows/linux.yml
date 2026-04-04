@@ -1,7 +1,7 @@
 name: GitHub-Linux
 
 on:
-  pull-request:
+  pull_request:
     branches:
       - 4.0-dev
     paths-ignore:
@@ -30,6 +30,9 @@ jobs:
       image: landinjm/pagoma-dependencies:alpine-minimal
       options: --user root
     steps:
+      - uses: laverdet/alpine-arm64@v1
+        if: matrix.platform == 'linux/arm64'
+
       - name: Checkout repo
         uses: actions/checkout@v6
 
