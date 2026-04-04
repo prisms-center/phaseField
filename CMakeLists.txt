@@ -477,7 +477,6 @@ print_subsection("Configuring PRISMS-PF examples")
 # TODO: Add status messages here
 
 if(PRISMS_PF_EXAMPLES)
-  set(PRISMS_PF_DIR ${CMAKE_BINARY_DIR})
   add_subdirectory(applications)
 endif()
 

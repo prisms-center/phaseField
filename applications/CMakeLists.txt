@@ -41,6 +41,7 @@ foreach(_example ${_examples})
       "
       execute_process(
         COMMAND ${CMAKE_COMMAND} -S . -B build
+          -D PRISMS_PF_DIR=${CMAKE_BINARY_DIR}
         WORKING_DIRECTORY applications/${_example}
         RESULT_VARIABLE configure_result
         OUTPUT_QUIET
