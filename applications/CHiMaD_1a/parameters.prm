@@ -1,0 +1,34 @@
+subsection Rectangular mesh
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set global refinement = 6
+set max refinement = 6
+set min refinement = 4
+set mesh adaptivity = true
+set remeshing period = 1000
+
+subsection refinement criterion: 0
+  set variables                      = c
+  set type                           = value
+  set value lower bound              = 0.05
+  set value upper bound              = 0.95
+end
+
+set time step = 1.0e-3
+set number steps = 100000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 10
+  set file type = pvtu
+end
+
+set Model constant McV = 1.0, DOUBLE
+set Model constant KcV = 1.5, DOUBLE
+set Model constant WcV = 4.0, DOUBLE
