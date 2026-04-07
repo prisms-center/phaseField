@@ -32,6 +32,14 @@ CheckOptions:
   - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
     value: 'true'
 
+# Exempt certain short variable names from length minimum
+  - key: readability-identifier-length.IgnoredVariableNames
+    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|q)$'
+  - key: readability-identifier-length.IgnoredParameterNames
+    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|q)$'
+  - key: readability-identifier-length.IgnoredLoopCounterNames
+    value: '^(i|j|k|n|q)$'
+
 # Naming conventions
   - key:             readability-identifier-naming.ClassCase
     value:           CamelCase

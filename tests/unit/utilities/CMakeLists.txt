@@ -1,0 +1,1 @@
+add_unit_tests(utilities vectorized_operations.cc)

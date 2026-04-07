@@ -13,6 +13,10 @@
       "name": "debugrelease"
     },
     {
+      "configurePreset": "test",
+      "name": "test"
+    },
+    {
       "configurePreset": "docs",
       "name": "docs",
       "targets": [
@@ -53,8 +57,8 @@
         "PRISMS_PF_PERFORMANCE_TESTS": "ON",
         "PRISMS_PF_REGRESSION_TESTS": "ON",
         "PRISMS_PF_UNIT_TESTS": "ON",
-        "PRISMS_PF_WITH_CALIPER": "ON",
-        "PRISMS_PF_WITH_VTK": "ON"
+        "PRISMS_PF_WITH_CALIPER": "OFF",
+        "PRISMS_PF_WITH_VTK": "OFF"
       },
       "generator": "Ninja",
       "hidden": true,
@@ -91,6 +95,16 @@
       "name": "debugrelease"
     },
     {
+      "binaryDir": "${sourceDir}/build/test",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "description": "Test build with all test types enabled",
+      "displayName": "Test Config",
+      "inherits": "dev",
+      "name": "test"
+    },
+    {
       "binaryDir": "${sourceDir}/build/docs",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -100,6 +114,19 @@
       "displayName": "Docs Config",
       "inherits": "dev",
       "name": "docs"
+    }
+  ],
+  "testPresets": [
+    {
+      "configurePreset": "test",
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": false
+      },
+      "name": "test",
+      "output": {
+        "outputOnFailure": true
+      }
     }
   ],
   "version": 6,
@@ -140,6 +167,23 @@
         {
           "name": "debugrelease",
           "type": "build"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "steps": [
+        {
+          "name": "test",
+          "type": "configure"
+        },
+        {
+          "name": "test",
+          "type": "build"
+        },
+        {
+          "name": "test",
+          "type": "test"
         }
       ]
     },

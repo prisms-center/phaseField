@@ -36,7 +36,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6
 
-      - name: Build
+      - name: Run tests
         run: |
-          cmake --workflow --preset debug
-          cmake --install build/debug --prefix install
+          cmake --workflow --preset test
+
+      - name: Compile Applications
+        run: |
+          cmake --install build/test --prefix install
