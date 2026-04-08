@@ -78,9 +78,9 @@ var NAVTREEINDEX =
 "annotated.html",
 "classInvMManager.html#aa780655b777080c3a76f8fa5cb856c31",
 "classSolveContext.html#a626886816174089b2655b0c8232fea83",
-"dirichlet_8cc.html",
-"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5dacdd030c6485c7b0801d32116fd9d7103",
-"structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a"
+"dir_db21045c204ec69458cba4d9d7ba76a8.html",
+"solve__block_8h.html#a2e2b40c8a7e6e221a9e7586cfadea934",
+"structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

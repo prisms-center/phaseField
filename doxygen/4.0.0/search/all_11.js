@@ -111,7 +111,8 @@ var searchData=
   ['structure_20of_20a_20prisms_20pf_20application_108',['Structure of a PRISMS-PF application',['../structure.html',1,'']]],
   ['subdivisions_109',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]],
   ['submission_5fvalid_110',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
-  ['sync_111',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
-  ['system_5fwide_2eh_112',['system_wide.h',['../system__wide_8h.html',1,'']]],
-  ['systemwide_113',['SystemWide',['../classSystemWide.html',1,'']]]
+  ['symmetries_111',['Symmetries',['../namespaceSymmetries.html',1,'']]],
+  ['sync_112',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
+  ['system_5fwide_2eh_113',['system_wide.h',['../system__wide_8h.html',1,'']]],
+  ['systemwide_114',['SystemWide',['../classSystemWide.html',1,'']]]
 ];

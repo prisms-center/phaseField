@@ -1,5 +1,12 @@
 var NAVTREEINDEX4 =
 {
+"solve__block_8h.html#a2e2b40c8a7e6e221a9e7586cfadea934":[8,0,1,0,0,22,1],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5d":[8,0,1,0,0,22,2],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da254bd1cf3c287ac4eb3d47320b1c92b6":[8,0,1,0,0,22,2,3],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da35c33effed98e564ad1bd10ef61d302c":[8,0,1,0,0,22,2,0],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da64439573dc47a5939a70ca832cb05327":[8,0,1,0,0,22,2,5],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daa2658079745aba85e114e0e02f5106ad":[8,0,1,0,0,22,2,4],
+"solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daae32940b344dab2f4e31be660ce1ab02":[8,0,1,0,0,22,2,1],
 "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5dacdd030c6485c7b0801d32116fd9d7103":[8,0,1,0,0,22,2,2],
 "solve__block_8h_source.html":[8,0,1,0,0,22],
 "solve__context_8h.html":[8,0,1,0,4,7],
@@ -242,12 +249,5 @@ var NAVTREEINDEX4 =
 "structSolutionLevel.html#ad218f21f1582d03a872f0480481105e5":[7,0,52,2],
 "structSpatialDiscretization.html":[7,0,57],
 "structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd":[7,0,57,7],
-"structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43":[7,0,57,3],
-"structSpatialDiscretization.html#a1da92dca8feba69b1ccb3bb6695798eb":[7,0,57,12],
-"structSpatialDiscretization.html#a2c922cba91a622eae21f194453a5d35d":[7,0,57,8],
-"structSpatialDiscretization.html#a6af0aee24a304d5a0a73819aefe16b52":[7,0,57,9],
-"structSpatialDiscretization.html#a6b3af6772b0cf43ff9aba658871edb28":[7,0,57,2],
-"structSpatialDiscretization.html#a740e02a72ea3555c243d78e522168927":[7,0,57,11],
-"structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320":[7,0,57,10],
-"structSpatialDiscretization.html#ab84bf855e1c8453c2dcd01350cf607e2":[7,0,57,4]
+"structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43":[7,0,57,3]
 };

@@ -139,40 +139,40 @@ $(function(){initNavTree('vectorized__operations_8h_source.html',''); initResiza
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="comment">// NOLINTBEGIN(cert-dcl58-cpp, readability-identifier-naming,</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="comment">// readability-identifier-length)</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">   24</a></span>  <a class="code hl_function" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">erf</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;x)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>      out[i] = <a class="code hl_function" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">std::erf</a>(x[i]);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">   23</a></span>  <a class="code hl_function" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">erf</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;x)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>      out[i] = <a class="code hl_function" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">std::erf</a>(x[i]);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
 </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">   34</a></span>  <a class="code hl_function" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">erfc</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;x)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      out[i] = <a class="code hl_function" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">std::erfc</a>(x[i]);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">   33</a></span>  <a class="code hl_function" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">erfc</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;x)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      out[i] = <a class="code hl_function" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">std::erfc</a>(x[i]);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
 </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">   44</a></span>  <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">fmod</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;numer, <span class="keyword">const</span> Number denom)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8">   43</a></span>  <a class="code hl_function" href="namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8">atan2</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;y,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;x)</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  {</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      out[i] = <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a>(numer[i], denom);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      out[i] = <a class="code hl_function" href="namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8">std::atan2</a>(y[i], x[i]);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> out;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
 </div>
@@ -180,26 +180,38 @@ $(function(){initNavTree('vectorized__operations_8h_source.html',''); initResiza
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
 <div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacestd.html#a2a99eb17e996c20e7f62de2d149075c1">   54</a></span>  <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">fmod</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;numer,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>       const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;denom)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      out[i] = <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a>(numer[i], denom[i]);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">return</span> out;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">   54</a></span>  <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">fmod</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;numer, <span class="keyword">const</span> Number denom)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      out[i] = <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a>(numer[i], denom);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// NOLINTEND(cert-dcl58-cpp, readability-identifier-naming,</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// readability-identifier-length)</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace std</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Number, std::<span class="keywordtype">size_t</span> w<span class="keywordtype">id</span>th&gt;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  inline ::dealii::VectorizedArray&lt;Number, width&gt;</div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacestd.html#a2a99eb17e996c20e7f62de2d149075c1">   64</a></span>  <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">fmod</a>(const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;numer,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>       const ::dealii::VectorizedArray&lt;Number, width&gt; &amp;denom)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    ::dealii::VectorizedArray&lt;Number, width&gt; out;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; dealii::VectorizedArray&lt;Number, width&gt;::size(); ++i)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      out[i] = <a class="code hl_function" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a>(numer[i], denom[i]);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> out;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  }</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// NOLINTEND(cert-dcl58-cpp, readability-identifier-naming,</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// readability-identifier-length)</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace std</span></div>
 </div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> vectorized_operations.h:17</div></div>
-<div class="ttc" id="anamespacestd_html_a67a0ce2e48b26df9dd8b7e209dc94cd6"><div class="ttname"><a href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">std::erf</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; erf(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:24</div></div>
-<div class="ttc" id="anamespacestd_html_aaa800855aade4d1dc4ff77d813317481"><div class="ttname"><a href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">std::erfc</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; erfc(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:34</div></div>
-<div class="ttc" id="anamespacestd_html_af30f66fa919ee4207f875331acaaf1e5"><div class="ttname"><a href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; fmod(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;numer, const Number denom)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:44</div></div>
+<div class="ttc" id="anamespacestd_html_a1ddf81741bd46d7cbf9987ed0215dfb8"><div class="ttname"><a href="namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8">std::atan2</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; atan2(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;y, const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:43</div></div>
+<div class="ttc" id="anamespacestd_html_a67a0ce2e48b26df9dd8b7e209dc94cd6"><div class="ttname"><a href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">std::erf</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; erf(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:23</div></div>
+<div class="ttc" id="anamespacestd_html_aaa800855aade4d1dc4ff77d813317481"><div class="ttname"><a href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">std::erfc</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; erfc(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:33</div></div>
+<div class="ttc" id="anamespacestd_html_af30f66fa919ee4207f875331acaaf1e5"><div class="ttname"><a href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a></div><div class="ttdeci">inline ::dealii::VectorizedArray&lt; Number, width &gt; fmod(const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;numer, const Number denom)</div><div class="ttdef"><b>Definition</b> vectorized_operations.h:54</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

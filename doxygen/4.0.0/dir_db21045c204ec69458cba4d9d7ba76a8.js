@@ -1,5 +1,6 @@
 var dir_db21045c204ec69458cba4d9d7ba76a8 =
 [
+    [ "crystal_symmetry.h", "crystal__symmetry_8h.html", "crystal__symmetry_8h" ],
     [ "integrator.h", "integrator_8h.html", "integrator_8h" ],
     [ "periodic_distance.h", "periodic__distance_8h.html", "periodic__distance_8h" ],
     [ "terminal.h", "terminal_8h.html", "terminal_8h" ],

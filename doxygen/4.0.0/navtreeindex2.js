@@ -222,6 +222,8 @@ var NAVTREEINDEX2 =
 "contact.html":[4],
 "contact_8h.html":[8,0,0,0,2,0],
 "contact_8h_source.html":[8,0,0,0,2,0],
+"crystal__symmetry_8h.html":[8,0,1,0,6,0],
+"crystal__symmetry_8h_source.html":[8,0,1,0,6,0],
 "dependencies_8h.html":[8,0,1,0,0,3],
 "dependencies_8h.html#a8ee155eab2c56d1d5418eed94e41a238":[8,0,1,0,0,3,2],
 "dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d":[8,0,1,0,0,3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "dir_cce3571c19e1460ab7bfdfaca6a2c71d.html":[8,0,1,0,3],
 "dir_d072f1071a3646681f3a467cd7b8e324.html":[8,0,0,0,0],
 "dir_d44c64559bbebec7f509842c48db8b23.html":[8,0,1],
-"dir_d7097b21af907bf9dd39f88b5093fe19.html":[8,0,1,0],
-"dir_db21045c204ec69458cba4d9d7ba76a8.html":[8,0,1,0,6],
-"dir_e68e8157741866f444e17edd764ebbae.html":[8,0,0]
+"dir_d7097b21af907bf9dd39f88b5093fe19.html":[8,0,1,0]
 };

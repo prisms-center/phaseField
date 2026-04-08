@@ -27,5 +27,6 @@ var searchData=
   ['assign_5foutput_5fparameters_24',['assign_output_parameters',['../classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0',1,'UserInputParameters']]],
   ['assign_5fspatial_5fdiscretization_5fparameters_25',['assign_spatial_discretization_parameters',['../classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f',1,'UserInputParameters']]],
   ['assign_5ftemporal_5fdiscretization_5fparameters_26',['assign_temporal_discretization_parameters',['../classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f',1,'UserInputParameters']]],
-  ['attempt_5fnucleation_27',['attempt_nucleation',['../classNucleationManager.html#a253febf95b10416da010f81aeafcd83e',1,'NucleationManager']]]
+  ['atan2_27',['atan2',['../namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8',1,'std']]],
+  ['attempt_5fnucleation_28',['attempt_nucleation',['../classNucleationManager.html#a253febf95b10416da010f81aeafcd83e',1,'NucleationManager']]]
 ];

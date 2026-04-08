@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta name="generator" content="Doxygen 1.13.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PRISMS-PF Manual: include/prismspf/utilities/vectorized_operations.h File Reference</title>
+  <title>PRISMS-PF Manual: include/prismspf/utilities/crystal_symmetry.h File Reference</title>
   <link href="tabs.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="jquery.js"></script>
   <script type="text/javascript" src="dynsections.js"></script>
@@ -94,7 +94,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('vectorized__operations_8h.html',''); initResizable(true); });
+$(function(){initNavTree('crystal__symmetry_8h.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -123,54 +123,46 @@ $(function(){initNavTree('vectorized__operations_8h.html',''); initResizable(tru
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">vectorized_operations.h File Reference</div></div>
+  <div class="headertitle"><div class="title">crystal_symmetry.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;deal.II/base/vectorization.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="vectorized__operations_8h_source.html">prismspf/utilities/vectorized_operations.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
-<code>#include &lt;cmath&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for vectorized_operations.h:</div>
+Include dependency graph for crystal_symmetry.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vectorized__operations_8h__incl.svg" width="451" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="vectorized__operations_8h__dep__incl.svg" width="3078" height="1539"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="crystal__symmetry_8h__incl.svg" width="451" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
-<p><a href="vectorized__operations_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="crystal__symmetry_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestd.html">std</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSymmetries.html">Symmetries</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a67a0ce2e48b26df9dd8b7e209dc94cd6" id="r_a67a0ce2e48b26df9dd8b7e209dc94cd6"><td class="memTemplParams" colspan="2">template&lt;typename Number, std::size_t width&gt; </td></tr>
-<tr class="memitem:a67a0ce2e48b26df9dd8b7e209dc94cd6"><td class="memTemplItemLeft" align="right" valign="top">inline ::dealii::VectorizedArray&lt; Number, width &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6">std::erf</a> (const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</td></tr>
-<tr class="separator:a67a0ce2e48b26df9dd8b7e209dc94cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa800855aade4d1dc4ff77d813317481" id="r_aaa800855aade4d1dc4ff77d813317481"><td class="memTemplParams" colspan="2">template&lt;typename Number, std::size_t width&gt; </td></tr>
-<tr class="memitem:aaa800855aade4d1dc4ff77d813317481"><td class="memTemplItemLeft" align="right" valign="top">inline ::dealii::VectorizedArray&lt; Number, width &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#aaa800855aade4d1dc4ff77d813317481">std::erfc</a> (const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</td></tr>
-<tr class="separator:aaa800855aade4d1dc4ff77d813317481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ddf81741bd46d7cbf9987ed0215dfb8" id="r_a1ddf81741bd46d7cbf9987ed0215dfb8"><td class="memTemplParams" colspan="2">template&lt;typename Number, std::size_t width&gt; </td></tr>
-<tr class="memitem:a1ddf81741bd46d7cbf9987ed0215dfb8"><td class="memTemplItemLeft" align="right" valign="top">inline ::dealii::VectorizedArray&lt; Number, width &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8">std::atan2</a> (const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;y, const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;x)</td></tr>
-<tr class="separator:a1ddf81741bd46d7cbf9987ed0215dfb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af30f66fa919ee4207f875331acaaf1e5" id="r_af30f66fa919ee4207f875331acaaf1e5"><td class="memTemplParams" colspan="2">template&lt;typename Number, std::size_t width&gt; </td></tr>
-<tr class="memitem:af30f66fa919ee4207f875331acaaf1e5"><td class="memTemplItemLeft" align="right" valign="top">inline ::dealii::VectorizedArray&lt; Number, width &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#af30f66fa919ee4207f875331acaaf1e5">std::fmod</a> (const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;numer, const Number denom)</td></tr>
-<tr class="separator:af30f66fa919ee4207f875331acaaf1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a99eb17e996c20e7f62de2d149075c1" id="r_a2a99eb17e996c20e7f62de2d149075c1"><td class="memTemplParams" colspan="2">template&lt;typename Number, std::size_t width&gt; </td></tr>
-<tr class="memitem:a2a99eb17e996c20e7f62de2d149075c1"><td class="memTemplItemLeft" align="right" valign="top">inline ::dealii::VectorizedArray&lt; Number, width &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#a2a99eb17e996c20e7f62de2d149075c1">std::fmod</a> (const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;numer, const ::dealii::VectorizedArray&lt; Number, width &gt; &amp;denom)</td></tr>
-<tr class="separator:a2a99eb17e996c20e7f62de2d149075c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72bf90cfc8c47c5e54aa18bdc6faf25" id="r_af72bf90cfc8c47c5e54aa18bdc6faf25"><td class="memTemplParams" colspan="2">template&lt;unsigned int N, typename T&gt; </td></tr>
+<tr class="memitem:af72bf90cfc8c47c5e54aa18bdc6faf25"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25">Symmetries::cos_arctan</a> (const T &amp;x) noexcept</td></tr>
+<tr class="memdesc:af72bf90cfc8c47c5e54aa18bdc6faf25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cos(N * arctan(x)).  <br /></td></tr>
+<tr class="separator:af72bf90cfc8c47c5e54aa18bdc6faf25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ae6a843bf19ef1525c6cc5d0346d9b4" id="r_a4ae6a843bf19ef1525c6cc5d0346d9b4"><td class="memTemplParams" colspan="2">template&lt;unsigned int N, typename T&gt; </td></tr>
+<tr class="memitem:a4ae6a843bf19ef1525c6cc5d0346d9b4"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4">Symmetries::cos_theta</a> (const T &amp;nx, const T &amp;ny) noexcept</td></tr>
+<tr class="memdesc:a4ae6a843bf19ef1525c6cc5d0346d9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cos(N * theta) where theta = arctan(ny/nx).  <br /></td></tr>
+<tr class="separator:a4ae6a843bf19ef1525c6cc5d0346d9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbdf4186df67f1d7a5b79399c2d757e9" id="r_afbdf4186df67f1d7a5b79399c2d757e9"><td class="memTemplParams" colspan="2">template&lt;unsigned int N, typename T&gt; </td></tr>
+<tr class="memitem:afbdf4186df67f1d7a5b79399c2d757e9"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9">Symmetries::cos_psi</a> (const T &amp;nx, const T &amp;ny, const T &amp;nz) noexcept</td></tr>
+<tr class="memdesc:afbdf4186df67f1d7a5b79399c2d757e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cos(N * psi) where theta = arctan(sqrt(nx^2+ny^2)/ny).  <br /></td></tr>
+<tr class="separator:afbdf4186df67f1d7a5b79399c2d757e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><a class="el" href="vectorized__operations_8h.html">vectorized_operations.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_d7097b21af907bf9dd39f88b5093fe19.html">prismspf</a></li><li class="navelem"><a class="el" href="dir_db21045c204ec69458cba4d9d7ba76a8.html">utilities</a></li><li class="navelem"><a class="el" href="crystal__symmetry_8h.html">crystal_symmetry.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

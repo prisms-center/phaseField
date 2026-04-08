@@ -1,0 +1,13 @@
+<map id="include/prismspf/utilities/crystal_symmetry.h" name="include/prismspf/utilities/crystal_symmetry.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="160,5,342,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,191,203,218"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,53,178,73,150,100,127,138,113,177,108,175,122,136,146,96,174,69,206,48"/>
+<area shape="rect" id="Node000003" href="$vectorized__operations_8h.html" title=" " alt="" coords="160,98,341,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,50,253,83,248,83,248,50"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="312,191,445,218"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="299,48,329,69,356,97,373,136,380,175,375,176,368,137,351,99,326,73,296,53"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="213,146,142,185,139,180,210,141"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="286,141,347,180,344,184,283,146"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="226,191,288,218"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="255,143,258,175,252,175,250,143"/>
+</map>

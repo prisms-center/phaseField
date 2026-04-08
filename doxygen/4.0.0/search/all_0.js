@@ -37,7 +37,8 @@ var searchData=
   ['assign_5foutput_5fparameters_34',['assign_output_parameters',['../classUserInputParameters.html#a6651bef02013ca63d78c3deb49f031f0',1,'UserInputParameters']]],
   ['assign_5fspatial_5fdiscretization_5fparameters_35',['assign_spatial_discretization_parameters',['../classUserInputParameters.html#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f',1,'UserInputParameters']]],
   ['assign_5ftemporal_5fdiscretization_5fparameters_36',['assign_temporal_discretization_parameters',['../classUserInputParameters.html#a0f162328bb15924d5c106c6730bf5e0f',1,'UserInputParameters']]],
-  ['attempt_5fnucleation_37',['attempt_nucleation',['../classNucleationManager.html#a253febf95b10416da010f81aeafcd83e',1,'NucleationManager']]],
-  ['aux_5fsolve_5fcontainer_38',['aux_solve_container',['../classSolveBlock.html#a5544f4ba511f662ece6aa9ab413e936a',1,'SolveBlock']]],
-  ['aux_5fsolvers_39',['aux_solvers',['../classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5',1,'SolverBase']]]
+  ['atan2_37',['atan2',['../namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8',1,'std']]],
+  ['attempt_5fnucleation_38',['attempt_nucleation',['../classNucleationManager.html#a253febf95b10416da010f81aeafcd83e',1,'NucleationManager']]],
+  ['aux_5fsolve_5fcontainer_39',['aux_solve_container',['../classSolveBlock.html#a5544f4ba511f662ece6aa9ab413e936a',1,'SolveBlock']]],
+  ['aux_5fsolvers_40',['aux_solvers',['../classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5',1,'SolverBase']]]
 ];

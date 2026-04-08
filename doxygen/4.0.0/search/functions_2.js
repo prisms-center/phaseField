@@ -30,7 +30,10 @@ var searchData=
   ['conditionalostreams_27',['ConditionalOStreams',['../classConditionalOStreams.html#a78490dd8f5e481e36e1a91ea40a547e5',1,'ConditionalOStreams::ConditionalOStreams()=default'],['../classConditionalOStreams.html#a48ffd94e1431be4f12577e192d163f5c',1,'ConditionalOStreams::ConditionalOStreams(const ConditionalOStreams &amp;solver_base)=delete'],['../classConditionalOStreams.html#a8710eedb7d99c8c5cda1681110a6462c',1,'ConditionalOStreams::ConditionalOStreams(ConditionalOStreams &amp;&amp;solver_base) noexcept=delete']]],
   ['constraintmanager_28',['ConstraintManager',['../classConstraintManager.html#aec865ea1c433629f9b8f49ef3721373f',1,'ConstraintManager']]],
   ['construct_5fuser_5fconstant_29',['construct_user_constant',['../classUserConstants.html#a00d9c5f996c650688da96ce81c5c4be8',1,'UserConstants']]],
-  ['create_5freader_30',['create_reader',['../read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4',1,'read_field_factory.h']]],
-  ['criterion_5fstring_31',['criterion_string',['../structRefinementCriterion.html#a24743f1c90f649399d73d2b2ebbef504',1,'RefinementCriterion']]],
-  ['current_5fsection_32',['current_section',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]]
+  ['cos_5farctan_30',['cos_arctan',['../namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25',1,'Symmetries']]],
+  ['cos_5fpsi_31',['cos_psi',['../namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9',1,'Symmetries']]],
+  ['cos_5ftheta_32',['cos_theta',['../namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4',1,'Symmetries']]],
+  ['create_5freader_33',['create_reader',['../read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4',1,'read_field_factory.h']]],
+  ['criterion_5fstring_34',['criterion_string',['../structRefinementCriterion.html#a24743f1c90f649399d73d2b2ebbef504',1,'RefinementCriterion']]],
+  ['current_5fsection_35',['current_section',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a1fdf7838f78b58e467eaf5e1f81c10c4',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]]
 ];

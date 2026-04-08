@@ -17,10 +17,16 @@ var namespaces_dup =
     ] ],
     [ "PRISMS_PF_BEGIN_NAMESPACE", "namespacePRISMS__PF__BEGIN__NAMESPACE.html", "namespacePRISMS__PF__BEGIN__NAMESPACE" ],
     [ "std", "namespacestd.html", [
+      [ "atan2", "namespacestd.html#a1ddf81741bd46d7cbf9987ed0215dfb8", null ],
       [ "erf", "namespacestd.html#a67a0ce2e48b26df9dd8b7e209dc94cd6", null ],
       [ "erfc", "namespacestd.html#aaa800855aade4d1dc4ff77d813317481", null ],
       [ "fmod", "namespacestd.html#a2a99eb17e996c20e7f62de2d149075c1", null ],
       [ "fmod", "namespacestd.html#af30f66fa919ee4207f875331acaaf1e5", null ]
+    ] ],
+    [ "Symmetries", "namespaceSymmetries.html", [
+      [ "cos_arctan", "namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25", null ],
+      [ "cos_psi", "namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9", null ],
+      [ "cos_theta", "namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4", null ]
     ] ],
     [ "Types", "namespaceTypes.html", [
       [ "Index", "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186", null ]
