@@ -142,6 +142,41 @@ public:
         std::ofstream     vtk_output(filename);
         data_out.write_vtk(vtk_output);
       }
+    else if (file_type == "xdmf")
+      {
+#ifdef DEAL_II_WITH_HDF5
+        std::ostringstream increment_stream;
+        increment_stream << std::setw(static_cast<int>(n_trailing_digits))
+                         << std::setfill('0') << increment;
+
+        const std::string h5_filename =
+          file_prefix + "_" + increment_stream.str() + ".h5";
+        const std::string xdmf_filename = file_prefix + ".xdmf";
+
+        // Prepare the data filter
+        dealii::DataOutBase::DataOutFilter data_filter(
+          dealii::DataOutBase::DataOutFilterFlags(true, true));
+        data_out.write_filtered_data(data_filter);
+
+        // Write binary HDF5
+        data_out.write_hdf5_parallel(data_filter, h5_filename, MPI_COMM_WORLD);
+
+        // Create the XDMF wrapper for this timestep
+        std::vector<dealii::XDMFEntry> xdmf_entries;
+        xdmf_entries.push_back(data_out.create_xdmf_entry(data_filter,
+                                                          h5_filename,
+                                                          increment,
+                                                          MPI_COMM_WORLD));
+
+        data_out.write_xdmf_file(xdmf_entries, xdmf_filename, MPI_COMM_WORLD);
+#else
+        AssertThrow(
+          false,
+          dealii::ExcMessage(
+            "You are trying to write an XDMF file as an output; however, PRISMS-PF "
+            "was not built with HDF5. Please reconfig PRISMS-PF with HDF5."));
+#endif
+      }
     else
       {
         AssertThrow(false, UnreachableCode());
