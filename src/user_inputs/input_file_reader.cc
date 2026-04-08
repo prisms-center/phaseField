@@ -422,6 +422,7 @@ InputFileReader::declare_solver_parameters()
         parameter_handler.declare_alias("tolerance value", "tolerance");
         parameter_handler.declare_alias("solver_ids", "solve blocks");
         parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve block ids");
         parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
@@ -478,6 +479,7 @@ InputFileReader::declare_solver_parameters()
         parameter_handler.declare_alias("tolerance value", "tolerance");
         parameter_handler.declare_alias("solver_ids", "solve blocks");
         parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve block ids");
         parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
