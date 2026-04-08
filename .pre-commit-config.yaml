@@ -1,3 +1,5 @@
+# run pre-commit locally with:
+# python3 -m pre_commit run --all-files
 fail_fast: true
 
 repos:
