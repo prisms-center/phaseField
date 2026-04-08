@@ -21,7 +21,7 @@ function(add_unit_tests MODULE)
     target_link_libraries(
       ${_test_name}
       PRIVATE
-        prisms_pf
+        prisms_pf::prisms_pf
         Catch2::Catch2WithMain
     )
 
