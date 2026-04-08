@@ -420,6 +420,9 @@ InputFileReader::declare_solver_parameters()
                                         dealii::Patterns::Integer(0, INT_MAX),
                                         "The minimum multigrid level.");
         parameter_handler.declare_alias("tolerance value", "tolerance");
+        parameter_handler.declare_alias("solver_ids", "solve blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
 
@@ -473,6 +476,9 @@ InputFileReader::declare_solver_parameters()
           "The constant damping value to be used if the backtrace "
           "line-search approach isn't used.");
         parameter_handler.declare_alias("tolerance value", "tolerance");
+        parameter_handler.declare_alias("solver_ids", "solve blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
     }
