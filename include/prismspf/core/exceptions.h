@@ -14,23 +14,14 @@ PRISMS_PF_BEGIN_NAMESPACE
 // NOLINTBEGIN(readability-identifier-naming)
 
 /**
- * Function for deal.II AssertThrow that is only valid in DEBUG mode. This is used to
- * throw and error that can be caught by catch2 while not bloating code in release mode.
+ * Macro for assertion that is only called in DEBUG mode. This is used to
+ * throw a catchable exception with zero overhead in RELEASE mode.
+ * dealii Assert will call abort(), which is not useful to us.
  */
 #ifdef DEBUG
-template <typename Condition, typename Exception>
-constexpr void
-AssertThrowDebug(const Condition &cond, const Exception &exc)
-{
-  AssertThrow(cond, exc);
-}
+#  define AssertThrowDebug(cond, exc) AssertThrow(cond, exc);
 #else
-template <typename Condition, typename Exception>
-constexpr void
-AssertThrowDebug(const Condition &, const Exception &)
-{
-  // Do nothing in release mode
-}
+#  define AssertThrowDebug(cond, exc)
 #endif
 
 // NOLINTEND(readability-identifier-naming)

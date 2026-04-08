@@ -5,6 +5,7 @@
 Makefile
 cmake_install.cmake
 CMakeUserPresets.json
+CMakeCache.txt
 
 # IDE files
 **/.cache
