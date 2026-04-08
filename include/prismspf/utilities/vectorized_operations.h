@@ -40,6 +40,17 @@ namespace std
 
   template <typename Number, std::size_t width>
   inline ::dealii::VectorizedArray<Number, width>
+  atan2(const ::dealii::VectorizedArray<Number, width> &y,
+        const ::dealii::VectorizedArray<Number, width> &x)
+  {
+    ::dealii::VectorizedArray<Number, width> out;
+    for (unsigned int i = 0; i < dealii::VectorizedArray<Number, width>::size(); ++i)
+      out[i] = std::atan2(y[i], x[i]);
+    return out;
+  }
+
+  template <typename Number, std::size_t width>
+  inline ::dealii::VectorizedArray<Number, width>
   fmod(const ::dealii::VectorizedArray<Number, width> &numer, const Number denom)
   {
     ::dealii::VectorizedArray<Number, width> out;

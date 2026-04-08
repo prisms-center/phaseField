@@ -7,6 +7,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/periodic_distance.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/utilities.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/vectorized_operations.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/utilities/crystal_symmetry.h
 )
 
 set(_inst_bases integrator)

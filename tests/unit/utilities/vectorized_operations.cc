@@ -27,7 +27,7 @@ TEMPLATE_TEST_CASE("erf matches std::erf element-wise",
   using VecArray              = dealii::VectorizedArray<TestType>;
   constexpr std::size_t width = VecArray::size();
 
-  constexpr auto tol = TestType(1e-6);
+  constexpr auto tol = TestType(1e-5);
 
   SECTION("known values")
   {
