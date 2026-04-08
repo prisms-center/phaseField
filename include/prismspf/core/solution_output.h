@@ -173,8 +173,8 @@ public:
         AssertThrow(
           false,
           dealii::ExcMessage(
-            "You are trying to write an XDMF file as an output; however, PRISMS-PF "
-            "was not built with HDF5. Please reconfig PRISMS-PF with HDF5."));
+            "You are trying to write an XDMF file as an output; however, deal.II "
+            "was not built with HDF5. Please reconfig deal.II with HDF5."));
 #endif
       }
     else
