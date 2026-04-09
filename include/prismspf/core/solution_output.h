@@ -151,7 +151,8 @@ public:
 
         const std::string h5_filename =
           file_prefix + "_" + increment_stream.str() + ".h5";
-        const std::string xdmf_filename = file_prefix + ".xdmf";
+        const std::string xdmf_filename =
+          file_prefix + "_" + increment_stream.str() + ".xdmf";
 
         // Prepare the data filter
         dealii::DataOutBase::DataOutFilter data_filter(
