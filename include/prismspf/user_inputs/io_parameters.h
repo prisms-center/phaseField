@@ -132,10 +132,11 @@ public:
                                     dealii::Patterns::Anything(),
                                     "The base name for the output file, before the time "
                                     "step and processor info are added.");
-    parameter_handler.declare_entry("file type",
-                                    "vtu",
-                                    dealii::Patterns::Selection("vtu|vtk|pvtu"),
-                                    "The output file type (either vtu, pvtu, or vtk).");
+    parameter_handler.declare_entry(
+      "file type",
+      "vtu",
+      dealii::Patterns::Selection("vtu|vtk|pvtu|xdmf"),
+      "The output file type (either vtu, pvtu, vtk, or xdmf).");
     parameter_handler.declare_entry(
       "subdivisions",
       "0",
