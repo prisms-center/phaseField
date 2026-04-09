@@ -263,22 +263,58 @@ $(function(){initNavTree('solution__output_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        std::ofstream     vtk_output(filename);</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        data_out.write_vtk(vtk_output);</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>      }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (file_type == <span class="stringliteral">&quot;xdmf&quot;</span>)</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        AssertThrow(<span class="keyword">false</span>, UnreachableCode());</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>      }</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="comment">// Update the ghost values again to allow for read access</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index = 0; index &lt; field_attributes.size(); ++index)</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>      {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        solution_indexer.<a class="code hl_function" href="classSolutionIndexer.html#ae0b6911a2596c7c3c5f21e0172fd2516">get_solution_vector</a>(index).update_ghost_values();</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>      }</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#ifdef DEAL_II_WITH_HDF5</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        std::ostringstream increment_stream;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        increment_stream &lt;&lt; std::setw(static_cast&lt;int&gt;(n_trailing_digits))</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                         &lt;&lt; std::setfill(<span class="charliteral">&#39;0&#39;</span>) &lt;&lt; increment;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keyword">const</span> std::string h5_filename =</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>          file_prefix + <span class="stringliteral">&quot;_&quot;</span> + increment_stream.str() + <span class="stringliteral">&quot;.h5&quot;</span>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keyword">const</span> std::string xdmf_filename =</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>          file_prefix + <span class="stringliteral">&quot;_&quot;</span> + increment_stream.str() + <span class="stringliteral">&quot;.xdmf&quot;</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <span class="comment">// Prepare the data filter</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        dealii::DataOutBase::DataOutFilter data_filter(</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>          dealii::DataOutBase::DataOutFilterFlags(<span class="keyword">true</span>, <span class="keyword">true</span>));</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        data_out.write_filtered_data(data_filter);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="comment">// Write binary HDF5</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        data_out.write_hdf5_parallel(data_filter, h5_filename, MPI_COMM_WORLD);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="comment">// Create the XDMF wrapper for this timestep</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        std::vector&lt;dealii::XDMFEntry&gt; xdmf_entries;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        xdmf_entries.push_back(data_out.create_xdmf_entry(data_filter,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                                                          h5_filename,</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                                          increment,</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                                                          MPI_COMM_WORLD));</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        data_out.write_xdmf_file(xdmf_entries, xdmf_filename, MPI_COMM_WORLD);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        AssertThrow(</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>          <span class="keyword">false</span>,</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>          dealii::ExcMessage(</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            <span class="stringliteral">&quot;You are trying to write an XDMF file as an output; however, deal.II &quot;</span></div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            <span class="stringliteral">&quot;was not built with HDF5. Please reconfig deal.II with HDF5.&quot;</span>));</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>      }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>      {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        AssertThrow(<span class="keyword">false</span>, UnreachableCode());</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="comment">// Update the ghost values again to allow for read access</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> index = 0; index &lt; field_attributes.size(); ++index)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>      {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        solution_indexer.<a class="code hl_function" href="classSolutionIndexer.html#ae0b6911a2596c7c3c5f21e0172fd2516">get_solution_vector</a>(index).update_ghost_values();</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>      }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  }</div>
 </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>};</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
 </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>PRISMS_PF_END_NAMESPACE</div>
 <div class="ttc" id="aclassDoFManager_html"><div class="ttname"><a href="classDoFManager.html">DoFManager</a></div><div class="ttdoc">Class that manages the deal.II DoFHandlers.</div><div class="ttdef"><b>Definition</b> dof_manager.h:27</div></div>
 <div class="ttc" id="aclassDoFManager_html_aea951ec0feead653c63178393d367694"><div class="ttname"><a href="classDoFManager.html#aea951ec0feead653c63178393d367694">DoFManager::get_field_dof_handler</a></div><div class="ttdeci">const dealii::DoFHandler&lt; dim &gt; &amp; get_field_dof_handler(Types::Index field_index, unsigned int relative_level=0) const</div><div class="ttdoc">Getter function for the DoFHandler (reference).</div><div class="ttdef"><b>Definition</b> dof_manager.h:63</div></div>
 <div class="ttc" id="aclassSimulationTimer_html"><div class="ttname"><a href="classSimulationTimer.html">SimulationTimer</a></div><div class="ttdef"><b>Definition</b> simulation_timer.h:13</div></div>
