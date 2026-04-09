@@ -181,35 +181,39 @@ public:
   {
     for (const auto &global_index : solve_block.field_indices)
       {
-        if (solve_context->get_user_inputs()
-              .load_ic_parameters.get_read_initial_conditions_from_file())
+        bool initialized_from_file = false;
+
+        // First, try to find this variable in IC files
+        const auto &initial_condition_parameters =
+          solve_context->get_user_inputs().load_ic_parameters;
+
+        for (const auto &initial_condition_file :
+             initial_condition_parameters.get_initial_condition_files())
           {
-            const auto &initial_condition_parameters =
-              solve_context->get_user_inputs().load_ic_parameters;
-            for (const auto &initial_condition_file :
-                 initial_condition_parameters.get_initial_condition_files())
+            auto name_it =
+              std::find(initial_condition_file.simulation_variable_names.begin(),
+                        initial_condition_file.simulation_variable_names.end(),
+                        solve_context->get_field_attributes()[global_index].name);
+            if (name_it != initial_condition_file.simulation_variable_names.end())
               {
-                auto name_it =
-                  std::find(initial_condition_file.simulation_variable_names.begin(),
-                            initial_condition_file.simulation_variable_names.end(),
-                            solve_context->get_field_attributes()[global_index].name);
-                if (name_it != initial_condition_file.simulation_variable_names.end())
-                  {
-                    solutions.get_solution_vector(global_index).zero_out_ghost_values();
-                    dealii::VectorTools::interpolate(
-                      SystemWide<dim, degree>::mapping,
-                      solve_context->get_dof_manager().get_field_dof_handler(
-                        global_index),
-                      ReadInitialCondition<dim, number>(
-                        *name_it,
-                        solve_context->get_field_attributes()[global_index].field_type,
-                        initial_condition_file,
-                        solve_context->get_user_inputs().spatial_discretization),
-                      solutions.get_solution_vector(global_index));
-                  }
+                // Found in file - read from file
+                solutions.get_solution_vector(global_index).zero_out_ghost_values();
+                dealii::VectorTools::interpolate(
+                  SystemWide<dim, degree>::mapping,
+                  solve_context->get_dof_manager().get_field_dof_handler(global_index),
+                  ReadInitialCondition<dim, number>(
+                    *name_it,
+                    solve_context->get_field_attributes()[global_index].field_type,
+                    initial_condition_file,
+                    solve_context->get_user_inputs().spatial_discretization),
+                  solutions.get_solution_vector(global_index));
+
+                initialized_from_file = true;
+                break; // Stop searching once found
               }
           }
-        else
+        // If not found in files, use programmatic IC
+        if (!initialized_from_file)
           {
             solutions.get_solution_vector(global_index).zero_out_ghost_values();
             dealii::VectorTools::interpolate(
@@ -221,6 +225,7 @@ public:
                 solve_context->get_pde_operator()),
               solutions.get_solution_vector(global_index));
           }
+
         solutions.apply_initial_condition_for_old_fields();
       }
   }
