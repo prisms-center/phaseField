@@ -62,6 +62,7 @@ option(PRISMS_PF_REGRESSION_TESTS "Whether to build the regression tests or not.
 option(PRISMS_PF_PERFORMANCE_TESTS "Whether to build the performance tests or not." OFF)
 option(PRISMS_PF_EXAMPLES "Whether to build examples or not." OFF)
 option(PRISMS_PF_DOCS "Whether to build documentation or not." OFF)
+option(PRISMS_PF_CLANG_TIDY "Whether to run clang-tidy during the build stage." OFF)
 
 # NOTE: This relies on the fact that deal.II is also compiled with 64-bit indices
 option(PRISMS_PF_64BIT_INDICES "Whether to use 64-bit indices for large simulations" OFF)
@@ -100,6 +101,16 @@ print_variables(
   ""
 )
 
+if(PRISMS_PF_CLANG_TIDY)
+	# NOTE: I've tested clang-tidy-18 and found that it fails. clang-tidy-20 works.
+	find_program(CLANG_TIDY_TOOL NAMES clang-tidy clang-tidy-20 clang-tidy-19)
+	execute_process(COMMAND ${CLANG_TIDY_TOOL} --version OUTPUT_VARIABLE CLANG_TIDY_TOOL_VERSION ERROR_VARIABLE CLANG_TIDY_TOOL_VERSION)
+	string(REGEX MATCH "[0-9]+(\\.[0-9]+)+" CLANG_TIDY_TOOL_VERSION "${CLANG_TIDY_TOOL_VERSION}")
+	message(STATUS "clang-tidy ${CLANG_TIDY_TOOL_VERSION} (${CLANG_TIDY_TOOL})")
+	# NOTE: To avoid linting on the vendored source files we set CXX_CLANG_TIDY
+	# as a property of our targets
+endif()
+
 # =========================================================
 # Find dependencies
 # =========================================================
@@ -113,7 +124,7 @@ FetchContent_Declare(
   libassert
   GIT_REPOSITORY https://github.com/jeremy-rifkin/libassert.git
   GIT_TAG v2.2.1
-  EXCLUDE_FROM_ALL
+  SYSTEM
 )
 
 if(PRISMS_PF_UNIT_TESTS)
@@ -121,6 +132,7 @@ if(PRISMS_PF_UNIT_TESTS)
     Catch2
     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
     GIT_TAG v3.13.0
+    SYSTEM
   )
 endif()
 

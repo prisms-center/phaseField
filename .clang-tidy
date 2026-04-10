@@ -9,13 +9,13 @@ Checks: >
   cppcoreguidelines-*,
   hicpp-*,
   misc-*,
-  -misc-include-cleaner,
   modernize-*,
   -modernize-use-trailing-return-type,
   mpi-*,
   performance-*,
   readability-*,
   -readability-convert-member-functions-to-static,
+  -readability-math-missing-parentheses,
 
 CheckOptions:
 # Ignore the macro expansions for complexity checks (e.g., deal.II's Assert)
@@ -34,9 +34,9 @@ CheckOptions:
 
 # Exempt certain short variable names from length minimum
   - key: readability-identifier-length.IgnoredVariableNames
-    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|q)$'
+    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|nx|ny|nz|q)$'
   - key: readability-identifier-length.IgnoredParameterNames
-    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|q)$'
+    value: '^(i|j|k|n|x|y|z|dx|dy|dz|dt|nx|ny|nz|q)$'
   - key: readability-identifier-length.IgnoredLoopCounterNames
     value: '^(i|j|k|n|q)$'
 
@@ -82,4 +82,6 @@ CheckOptions:
   - key:             readability-identifier-naming.IgnoreMainLikeFunctions
     value:           1
 
+HeaderFilterRegex: '.*prismspf.*'
+SystemHeaders: false
 WarningsAsErrors: '*'
