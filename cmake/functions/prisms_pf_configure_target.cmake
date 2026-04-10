@@ -38,6 +38,16 @@ function(prisms_pf_configure_target target_name build_type)
       $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
   )
 
+  # clang-tidy if defined
+  if(CLANG_TIDY_TOOL)
+    set_target_properties(
+      ${target_name}
+      PROPERTIES
+        CXX_CLANG_TIDY
+          "${CLANG_TIDY_TOOL}"
+    )
+  endif()
+
   # Include the config file in the target
   target_include_directories(
     ${target_name}
