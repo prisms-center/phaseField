@@ -23,10 +23,7 @@
 
 #include <prismspf/config.h>
 
-#include <memory>
-#include <type_traits>
 #include <utility>
-#include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -141,7 +138,7 @@ public:
     FEEDepPairPtr fe_eval_src_dst;
 
     /**
-     * @brief Collection of FEEvaluation for old solutions (< n -1 state).
+     * @brief Collection of FEEvaluation for old solutions (< n-1 state).
      */
     std::vector<FEEDepPairPtr> fe_eval_old;
 
@@ -287,112 +284,112 @@ public:
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Value<Rank>
-  get_value(Types::Index global_variable_index) const;
+  get_value(Types::Index field_index) const;
 
   /**
    * @brief Return the value of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] Value<Rank>
-  get_value(Types::Index global_variable_index, DependencyType type) const;
+  get_value(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the gradient of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Gradient<Rank>
-  get_gradient(Types::Index global_variable_index) const;
+  get_gradient(Types::Index field_index) const;
 
   /**
    * @brief Return the gradient of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] Gradient<Rank>
-  get_gradient(Types::Index global_variable_index, DependencyType type) const;
+  get_gradient(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the hessian of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Hessian<Rank>
-  get_hessian(Types::Index global_variable_index) const;
+  get_hessian(Types::Index field_index) const;
 
   /**
    * @brief Return the hessian of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] Hessian<Rank>
-  get_hessian(Types::Index global_variable_index, DependencyType type) const;
+  get_hessian(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the diagonal of the hessian of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Gradient<Rank>
-  get_hessian_diagonal(Types::Index global_variable_index) const;
+  get_hessian_diagonal(Types::Index field_index) const;
 
   /**
    * @brief Return the diagonal of the hessian of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] Gradient<Rank>
-  get_hessian_diagonal(Types::Index global_variable_index, DependencyType type) const;
+  get_hessian_diagonal(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the laplacian of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] Value<Rank>
-  get_laplacian(Types::Index global_variable_index) const;
+  get_laplacian(Types::Index field_index) const;
 
   /**
    * @brief Return the laplacian of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] Value<Rank>
-  get_laplacian(Types::Index global_variable_index, DependencyType type) const;
+  get_laplacian(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the divergence of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] ScalarValue
-  get_divergence(Types::Index global_variable_index) const;
+  get_divergence(Types::Index field_index) const;
 
   /**
    * @brief Return the divergence of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] ScalarValue
-  get_divergence(Types::Index global_variable_index, DependencyType type) const;
+  get_divergence(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the symmetric gradient of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] dealii::SymmetricTensor<2, dim, ScalarValue>
-  get_symmetric_gradient(Types::Index global_variable_index) const;
+  get_symmetric_gradient(Types::Index field_index) const;
 
   /**
    * @brief Return the symmetric gradient of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] dealii::SymmetricTensor<2, dim, ScalarValue>
-  get_symmetric_gradient(Types::Index global_variable_index, DependencyType type) const;
+  get_symmetric_gradient(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the curl of the specified field.
    */
   template <TensorRank Rank, DependencyType type>
   [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>
-  get_curl(Types::Index global_variable_index) const;
+  get_curl(Types::Index field_index) const;
 
   /**
    * @brief Return the curl of the specified field.
    */
   template <TensorRank Rank>
   [[nodiscard]] dealii::Tensor<1, (dim == 2 ? 1 : dim), ScalarValue>
-  get_curl(Types::Index global_variable_index, DependencyType type) const;
+  get_curl(Types::Index field_index, DependencyType type) const;
 
   /**
    * @brief Return the quadrature point location.
@@ -417,14 +414,14 @@ public:
    */
   template <typename ValType>
   void
-  set_value_term(Types::Index global_variable_index, const ValType &val);
+  set_value_term(Types::Index field_index, const ValType &val);
 
   /**
    * @brief Set the residual gradient of the specified scalar/vector field.
    */
   template <typename GradType>
   void
-  set_gradient_term(Types::Index global_variable_index, const GradType &val);
+  set_gradient_term(Types::Index field_index, const GradType &val);
 
 private:
   template <TensorRank Rank>
@@ -511,6 +508,16 @@ private:
   unsigned int q_point = 0;
 };
 
+inline static const std::map<DependencyType, std::string> dependency_type_to_string = {
+  {DependencyType::Current,  "current"},
+  {DependencyType::OldOne,   "old_1"  },
+  {DependencyType::OldTwo,   "old_2"  },
+  {DependencyType::OldThree, "old_3"  },
+  {DependencyType::OldFour,  "old_4"  },
+  {DependencyType::SRC,      "src"    },
+  {DependencyType::DST,      "dst"    }
+};
+
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
@@ -548,6 +555,37 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
     }
 }
 
+class ExcDepNotInitialized : public dealii::ExceptionBase
+{
+public:
+  ExcDepNotInitialized(DependencyType _dependency_type)
+    : dependency_type(_dependency_type)
+  {}
+
+  const char *
+  what() const noexcept override
+  {
+    return "Access was attempted for a field that was not declared as a "
+           "dependency for the current solve block.\n";
+  }
+
+  void
+  print_info(std::ostream &out) const override
+  {
+    out << what() << std::flush;
+  }
+
+private:
+  DependencyType dependency_type;
+};
+#ifdef DEBUG
+#  define AssertAccessible(fe_eval_pair_ptr, dependency_type)                   \
+    AssertThrowDebug(block_index != -1, ExcDepNotInitialized(dependency_type)); \
+    AssertThrowDebug(fe_eval_pair_ptr, ExcDepNotInitialized(dependency_type));
+#else
+#  define AssertAccessible(fe_eval_pair_ptr, dependency_type)
+#endif
+
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 template <DependencyType Type>
@@ -555,17 +593,20 @@ inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>:
   template FEEval<Rank> &
   FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get() const
 {
-  // TODO: Assertions
   if constexpr (Type == DependencyType::SRC || Type == DependencyType::DST)
     {
+      AssertAccessible(fe_eval_src_dst, Type);
       return fe_eval_src_dst->first;
     }
   else if constexpr (Type == DependencyType::Current)
     {
+      AssertAccessible(fe_eval, Type);
       return fe_eval->first;
     }
   else
     {
+      AssertThrowDebug(int(Type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(Type));
+      AssertAccessible(fe_eval_old[int(Type) - 1], Type);
       return fe_eval_old[int(Type) - 1]->first;
     }
 }
@@ -577,17 +618,20 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template FEEval<Rank> &
   FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get()
 {
-  // TODO: Assertions
   if constexpr (Type == DependencyType::SRC || Type == DependencyType::DST)
     {
+      AssertAccessible(fe_eval_src_dst, Type);
       return fe_eval_src_dst->first;
     }
   else if constexpr (Type == DependencyType::Current)
     {
+      AssertAccessible(fe_eval, Type);
       return fe_eval->first;
     }
   else
     {
+      AssertThrowDebug(int(Type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(Type));
+      AssertAccessible(fe_eval_old[int(Type) - 1], Type);
       return fe_eval_old[int(Type) - 1]->first;
     }
 }
@@ -599,16 +643,19 @@ inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>:
   FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get(
     DependencyType type) const
 {
-  // TODO: Assertions
   if (type == DependencyType::SRC || type == DependencyType::DST)
     {
+      AssertAccessible(fe_eval_src_dst, type);
       return fe_eval_src_dst->first;
     }
   if (type == DependencyType::Current)
     {
+      AssertAccessible(fe_eval, type);
       return fe_eval->first;
     }
   {
+    AssertThrowDebug(int(type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(type));
+    AssertAccessible(fe_eval_old[int(type) - 1], type);
     return fe_eval_old[type - 1]->first;
   }
 }
@@ -619,17 +666,20 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template FEEval<Rank> &
   FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::get(DependencyType type)
 {
-  // TODO: Assertions
   if (type == DependencyType::SRC || type == DependencyType::DST)
     {
+      AssertAccessible(fe_eval_src_dst, type);
       return fe_eval_src_dst->first;
     }
   if (type == DependencyType::Current)
     {
+      AssertAccessible(fe_eval, type);
       return fe_eval->first;
     }
   {
-    return fe_eval_old[type - 1]->first;
+    AssertThrowDebug(int(type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(type));
+    AssertAccessible(fe_eval_old[int(type) - 1], type);
+    return fe_eval_old[int(type) - 1]->first;
   }
 }
 
@@ -891,72 +941,99 @@ FieldContainer<dim, degree, number>::set_q_point(unsigned int q)
   q_point = q;
 }
 
+// there are two catches we can do here.
+// 1. Dependencies for the dependency type (current, old, src/dst) don't exist.
+// 2. Dependency is not initialized for values/gradients.
+// We catch these separately to give more informative error messages.
+#define GetterTempl(dependency_type) template get<dependency_type>()
+#define GetterNoTempl(dependency_type) get(dependency_type)
+#define ReturnGetter(get_handle, Rank, field_index, dependency_type, getter)        \
+  try                                                                               \
+    {                                                                               \
+      AssertThrowDebug((field_index) < get_relevant_feeval_vector<Rank>().size(),   \
+                       dealii::ExcMessage("Error: Field index " +                   \
+                                          std::to_string(field_index) +             \
+                                          " is not associated with any field."));   \
+      return get_relevant_feeval_vector<Rank>()[field_index]                        \
+        .getter(dependency_type)                                                    \
+        .get_handle(q_point);                                                       \
+    }                                                                               \
+  catch (const ExcDepNotInitialized &e)                                             \
+    {                                                                               \
+      std::cerr << "Error when trying to access field with index " << (field_index) \
+                << " and dependency type "                                          \
+                << dependency_type_to_string.at(dependency_type) << ":\n"           \
+                << e.what()                                                         \
+                << "Ensure that each dependency is requested in the solve block.\n" \
+                << std::flush;                                                      \
+      throw;                                                                        \
+    }                                                                               \
+  catch (const dealii::internal::ExcAccessToUninitializedField &e)                  \
+    {                                                                               \
+      std::cerr << "Error when trying to access field with index " << (field_index) \
+                << " and dependency type "                                          \
+                << dependency_type_to_string.at(dependency_type)                    \
+                << ":\nAccess was attempted for values or gradients that were "     \
+                   "not requested.\n"                                               \
+                << std::flush;                                                      \
+      throw;                                                                        \
+    }
+
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
-  FieldContainer<dim, degree, number>::get_value(Types::Index global_variable_index) const
+  FieldContainer<dim, degree, number>::get_value(Types::Index field_index) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_value(q_point);
+  ReturnGetter(get_value, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
-  FieldContainer<dim, degree, number>::get_value(Types::Index   global_variable_index,
+  FieldContainer<dim, degree, number>::get_value(Types::Index   field_index,
                                                  DependencyType type) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_value(
-    q_point);
+  ReturnGetter(get_value, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Gradient<Rank>
-  FieldContainer<dim, degree, number>::get_gradient(
-    Types::Index global_variable_index) const
+  FieldContainer<dim, degree, number>::get_gradient(Types::Index field_index) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_gradient(q_point);
+  ReturnGetter(get_gradient, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Gradient<Rank>
-  FieldContainer<dim, degree, number>::get_gradient(Types::Index   global_variable_index,
+  FieldContainer<dim, degree, number>::get_gradient(Types::Index   field_index,
                                                     DependencyType type) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_gradient(
-    q_point);
+  ReturnGetter(get_gradient, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Hessian<Rank>
-  FieldContainer<dim, degree, number>::get_hessian(
-    Types::Index global_variable_index) const
+  FieldContainer<dim, degree, number>::get_hessian(Types::Index field_index) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_hessian(q_point);
+  ReturnGetter(get_hessian, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Hessian<Rank>
-  FieldContainer<dim, degree, number>::get_hessian(Types::Index   global_variable_index,
+  FieldContainer<dim, degree, number>::get_hessian(Types::Index   field_index,
                                                    DependencyType type) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_hessian(
-    q_point);
+  ReturnGetter(get_hessian, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -964,72 +1041,57 @@ template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Gradient<Rank>
   FieldContainer<dim, degree, number>::get_hessian_diagonal(
-    Types::Index global_variable_index) const
+    Types::Index field_index) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_hessian_diagonal(q_point);
+  ReturnGetter(get_hessian_diagonal, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Gradient<Rank>
-  FieldContainer<dim, degree, number>::get_hessian_diagonal(
-    Types::Index   global_variable_index,
-    DependencyType type) const
+  FieldContainer<dim, degree, number>::get_hessian_diagonal(Types::Index   field_index,
+                                                            DependencyType type) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .get(type)
-    .get_hessian_diagonal(q_point);
+  ReturnGetter(get_hessian_diagonal, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
-  FieldContainer<dim, degree, number>::get_laplacian(
-    Types::Index global_variable_index) const
+  FieldContainer<dim, degree, number>::get_laplacian(Types::Index field_index) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_laplacian(q_point);
+  ReturnGetter(get_laplacian, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
-  FieldContainer<dim, degree, number>::get_laplacian(Types::Index   global_variable_index,
+  FieldContainer<dim, degree, number>::get_laplacian(Types::Index   field_index,
                                                      DependencyType type) const
 {
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .get(type)
-    .get_laplacian(q_point);
+  ReturnGetter(get_laplacian, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE typename FieldContainer<dim, degree, number>::ScalarValue
-FieldContainer<dim, degree, number>::get_divergence(
-  Types::Index global_variable_index) const
+FieldContainer<dim, degree, number>::get_divergence(Types::Index field_index) const
 {
   static_assert(Rank == 1, "Divergences are only available for vector fields");
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_divergence(q_point);
+  ReturnGetter(get_divergence, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE typename FieldContainer<dim, degree, number>::ScalarValue
-FieldContainer<dim, degree, number>::get_divergence(Types::Index   global_variable_index,
+FieldContainer<dim, degree, number>::get_divergence(Types::Index   field_index,
                                                     DependencyType type) const
 {
   static_assert(Rank == 1, "Divergences are only available for vector fields");
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .get(type)
-    .get_divergence(q_point);
+  ReturnGetter(get_divergence, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1037,26 +1099,21 @@ template <TensorRank Rank, DependencyType type>
 inline DEAL_II_ALWAYS_INLINE dealii::
   SymmetricTensor<2, dim, typename FieldContainer<dim, degree, number>::ScalarValue>
   FieldContainer<dim, degree, number>::get_symmetric_gradient(
-    Types::Index global_variable_index) const
+    Types::Index field_index) const
 {
   static_assert(Rank == 1, "Symmetric gradients are only available for vector fields");
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_symmetric_gradient(q_point);
+  ReturnGetter(get_symmetric_gradient, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline DEAL_II_ALWAYS_INLINE dealii::
   SymmetricTensor<2, dim, typename FieldContainer<dim, degree, number>::ScalarValue>
-  FieldContainer<dim, degree, number>::get_symmetric_gradient(
-    Types::Index   global_variable_index,
-    DependencyType type) const
+  FieldContainer<dim, degree, number>::get_symmetric_gradient(Types::Index   field_index,
+                                                              DependencyType type) const
 {
   static_assert(Rank == 1, "Symmetric gradients are only available for vector fields");
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .get(type)
-    .get_symmetric_gradient(q_point);
+  ReturnGetter(get_symmetric_gradient, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1065,15 +1122,14 @@ inline DEAL_II_ALWAYS_INLINE
   dealii::Tensor<1,
                  (dim == 2 ? 1 : dim),
                  typename FieldContainer<dim, degree, number>::ScalarValue>
-  FieldContainer<dim, degree, number>::get_curl(Types::Index global_variable_index) const
+  FieldContainer<dim, degree, number>::get_curl(Types::Index field_index) const
 {
   static_assert(Rank == 1, "Curl is only available for vector fields");
-  Assert(dim > 1,
-         dealii::ExcMessage(
-           "Curl is only available for vector fields with dimension greater than 1."));
-  return get_relevant_feeval_vector<Rank>()[global_variable_index]
-    .template get<type>()
-    .get_curl(q_point);
+  AssertThrowDebug(
+    dim > 1,
+    dealii::ExcMessage(
+      "Curl is only available for vector fields with dimension greater than 1."));
+  ReturnGetter(get_curl, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1082,15 +1138,15 @@ inline DEAL_II_ALWAYS_INLINE
   dealii::Tensor<1,
                  (dim == 2 ? 1 : dim),
                  typename FieldContainer<dim, degree, number>::ScalarValue>
-  FieldContainer<dim, degree, number>::get_curl(Types::Index   global_variable_index,
+  FieldContainer<dim, degree, number>::get_curl(Types::Index   field_index,
                                                 DependencyType type) const
 {
   static_assert(Rank == 1, "Curl is only available for vector fields");
-  Assert(dim > 1,
-         dealii::ExcMessage(
-           "Curl is only available for vector fields with dimension greater than 1."));
-  return get_relevant_feeval_vector<Rank>()[global_variable_index].get(type).get_curl(
-    q_point);
+  AssertThrowDebug(
+    dim > 1,
+    dealii::ExcMessage(
+      "Curl is only available for vector fields with dimension greater than 1."));
+  ReturnGetter(get_curl, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1119,26 +1175,59 @@ FieldContainer<dim, degree, number>::get_n_q_points() const
 template <unsigned int dim, unsigned int degree, typename number>
 template <typename ValType>
 inline DEAL_II_ALWAYS_INLINE void
-FieldContainer<dim, degree, number>::set_value_term(Types::Index   global_variable_index,
+FieldContainer<dim, degree, number>::set_value_term(Types::Index   field_index,
                                                     const ValType &val)
 {
+  AssertThrowDebug((field_index) <
+                     get_relevant_feeval_vector<RankFromVal<ValType>>().size(),
+                   dealii::ExcMessage("Error: Field index " +
+                                      std::to_string(field_index) +
+                                      " is not associated with any field."));
   auto &relevant_feeval_vector =
-    get_relevant_feeval_vector<RankFromVal<ValType>>()[global_variable_index];
-  relevant_feeval_vector.template get<DependencyType::DST>().submit_value(val, q_point);
-  relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::values;
+    get_relevant_feeval_vector<RankFromVal<ValType>>()[field_index];
+  try
+    {
+      relevant_feeval_vector.template get<DependencyType::DST>().submit_value(val,
+                                                                              q_point);
+      relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::values;
+    }
+  catch (...)
+    {
+      std::cerr << "Error when trying to submit value for field with index "
+                << (field_index)
+                << ": Error: Submission for field not part of this solve block.\n"
+                << std::flush;
+      throw;
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <typename GradType>
 inline DEAL_II_ALWAYS_INLINE void
-FieldContainer<dim, degree, number>::set_gradient_term(Types::Index global_variable_index,
+FieldContainer<dim, degree, number>::set_gradient_term(Types::Index    field_index,
                                                        const GradType &val)
 {
+  AssertThrowDebug((field_index) <
+                     get_relevant_feeval_vector<RankFromGrad<GradType>>().size(),
+                   dealii::ExcMessage("Error: Field index " +
+                                      std::to_string(field_index) +
+                                      " is not associated with any field."));
   auto &relevant_feeval_vector =
-    get_relevant_feeval_vector<RankFromGrad<GradType>>()[global_variable_index];
-  relevant_feeval_vector.template get<DependencyType::DST>().submit_gradient(val,
-                                                                             q_point);
-  relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::gradients;
+    get_relevant_feeval_vector<RankFromGrad<GradType>>()[field_index];
+  try
+    {
+      relevant_feeval_vector.template get<DependencyType::DST>().submit_gradient(val,
+                                                                                 q_point);
+      relevant_feeval_vector.integration_flags |= dealii::EvaluationFlags::gradients;
+    }
+  catch (...)
+    {
+      std::cerr << "Error when trying to submit gradient for field with index "
+                << (field_index)
+                << ": Error: Submission for field not part of this solve block.\n"
+                << std::flush;
+      throw;
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1208,5 +1297,10 @@ FieldContainer<dim, degree, number>::submission_valid(
 {
   // TODO
 }
+
+#undef AssertAccessible
+#undef ReturnGetter
+#undef GetterTempl
+#undef GetterNoTempl
 
 PRISMS_PF_END_NAMESPACE
