@@ -26,7 +26,10 @@ var namespaces_dup =
     [ "Symmetries", "namespaceSymmetries.html", [
       [ "cos_arctan", "namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25", null ],
       [ "cos_psi", "namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9", null ],
-      [ "cos_theta", "namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4", null ]
+      [ "cos_theta", "namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4", null ],
+      [ "sin_arctan", "namespaceSymmetries.html#ab0bbf25f38e9daa065bed7e27fb10e75", null ],
+      [ "sin_psi", "namespaceSymmetries.html#a7eda8f47fd9e9684c5a870e08712b74b", null ],
+      [ "sin_theta", "namespaceSymmetries.html#a2deb1b46a521eb35906c6408f67e3c41", null ]
     ] ],
     [ "Types", "namespaceTypes.html", [
       [ "Index", "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186", null ]

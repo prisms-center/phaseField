@@ -179,7 +179,10 @@ var NAVTREEINDEX3 =
 "namespacePRISMS__PF__BEGIN__NAMESPACE.html#a98086cf878f2f16ac184d1513ab16ef4":[5,0,2,1],
 "namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab158d849906462dbb04e776b12f75722":[5,0,2,2],
 "namespaceSymmetries.html":[5,0,4],
+"namespaceSymmetries.html#a2deb1b46a521eb35906c6408f67e3c41":[5,0,4,5],
 "namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4":[5,0,4,2],
+"namespaceSymmetries.html#a7eda8f47fd9e9684c5a870e08712b74b":[5,0,4,4],
+"namespaceSymmetries.html#ab0bbf25f38e9daa065bed7e27fb10e75":[5,0,4,3],
 "namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25":[5,0,4,0],
 "namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9":[5,0,4,1],
 "namespaceTypes.html":[5,0,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX3 =
 "solution__indexer_8cc.html":[8,0,2,0,9],
 "solution__indexer_8h.html":[8,0,1,0,0,20],
 "solution__indexer_8h_source.html":[8,0,1,0,0,20],
-"solution__output_8cc.html":[8,0,2,0,10],
-"solution__output_8h.html":[8,0,1,0,0,21],
-"solution__output_8h_source.html":[8,0,1,0,0,21],
-"solve__block_8h.html":[8,0,1,0,0,22]
+"solution__output_8cc.html":[8,0,2,0,10]
 };

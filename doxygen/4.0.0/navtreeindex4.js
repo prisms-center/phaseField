@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"solution__output_8h.html":[8,0,1,0,0,21],
+"solution__output_8h_source.html":[8,0,1,0,0,21],
+"solve__block_8h.html":[8,0,1,0,0,22],
 "solve__block_8h.html#a2e2b40c8a7e6e221a9e7586cfadea934":[8,0,1,0,0,22,1],
 "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5d":[8,0,1,0,0,22,2],
 "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da254bd1cf3c287ac4eb3d47320b1c92b6":[8,0,1,0,0,22,2,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "structSolutionLevel.html":[7,0,52],
 "structSolutionLevel.html#a5432cb3504f98bd0db25d0ad17ab2ff5":[7,0,52,0],
 "structSolutionLevel.html#aaf9da35c448c4c1c604e9abcd135ea1d":[7,0,52,1],
-"structSolutionLevel.html#ad218f21f1582d03a872f0480481105e5":[7,0,52,2],
-"structSpatialDiscretization.html":[7,0,57],
-"structSpatialDiscretization.html#a158f04a989353c64db8eb0ce53ba8fcd":[7,0,57,7],
-"structSpatialDiscretization.html#a1856ceb654034be5a9b667b98e735c43":[7,0,57,3]
+"structSolutionLevel.html#ad218f21f1582d03a872f0480481105e5":[7,0,52,2]
 };
