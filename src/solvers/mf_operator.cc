@@ -10,8 +10,6 @@
 
 #include <prismspf/solvers/mf_operator.h>
 
-#include "prismspf/core/conditional_ostreams.h"
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>

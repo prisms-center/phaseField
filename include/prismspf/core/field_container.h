@@ -138,7 +138,7 @@ public:
     FEEDepPairPtr fe_eval_src_dst;
 
     /**
-     * @brief Collection of FEEvaluation for old solutions (< n -1 state).
+     * @brief Collection of FEEvaluation for old solutions (< n-1 state).
      */
     std::vector<FEEDepPairPtr> fe_eval_old;
 
@@ -565,7 +565,7 @@ public:
   const char *
   what() const noexcept override
   {
-    return "Error: Access was attempted for a field that was not declared as a "
+    return "Access was attempted for a field that was not declared as a "
            "dependency for the current solve block.\n";
   }
 
@@ -605,7 +605,7 @@ inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>:
     }
   else
     {
-      AssertThrowDebug(int(Type) < fe_eval_old.size(), ExcDepNotInitialized(Type));
+      AssertThrowDebug(int(Type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(Type));
       AssertAccessible(fe_eval_old[int(Type) - 1], Type);
       return fe_eval_old[int(Type) - 1]->first;
     }
@@ -630,7 +630,7 @@ inline DEAL_II_ALWAYS_INLINE
     }
   else
     {
-      AssertThrowDebug(int(Type) < fe_eval_old.size(), ExcDepNotInitialized(Type));
+      AssertThrowDebug(int(Type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(Type));
       AssertAccessible(fe_eval_old[int(Type) - 1], Type);
       return fe_eval_old[int(Type) - 1]->first;
     }
@@ -654,7 +654,7 @@ inline DEAL_II_ALWAYS_INLINE const typename FieldContainer<dim, degree, number>:
       return fe_eval->first;
     }
   {
-    AssertThrowDebug(int(type) < fe_eval_old.size(), ExcDepNotInitialized(type));
+    AssertThrowDebug(int(type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(type));
     AssertAccessible(fe_eval_old[int(type) - 1], type);
     return fe_eval_old[type - 1]->first;
   }
@@ -677,7 +677,7 @@ inline DEAL_II_ALWAYS_INLINE
       return fe_eval->first;
     }
   {
-    AssertThrowDebug(int(type) < fe_eval_old.size(), ExcDepNotInitialized(type));
+    AssertThrowDebug(int(type) - 1 < fe_eval_old.size(), ExcDepNotInitialized(type));
     AssertAccessible(fe_eval_old[int(type) - 1], type);
     return fe_eval_old[int(type) - 1]->first;
   }
@@ -945,70 +945,38 @@ FieldContainer<dim, degree, number>::set_q_point(unsigned int q)
 // 1. Dependencies for the dependency type (current, old, src/dst) don't exist.
 // 2. Dependency is not initialized for values/gradients.
 // We catch these separately to give more informative error messages.
-#define ReturnGetterTempl(get_handle, Rank, field_index, dependency_type)             \
-  try                                                                                 \
-    {                                                                                 \
-      AssertThrowDebug((field_index) < get_relevant_feeval_vector<Rank>().size(),     \
-                       dealii::ExcMessage("Error: Field index " +                     \
-                                          std::to_string(field_index) +               \
-                                          " is not associated with any field."));     \
-      return get_relevant_feeval_vector<Rank>()[field_index]                          \
-        .template get<dependency_type>()                                              \
-        .get_handle(q_point);                                                         \
-    }                                                                                 \
-  catch (const ExcDepNotInitialized &e)                                               \
-    {                                                                                 \
-      std::cerr << "Error when trying to access field with index " << (field_index)   \
-                << " and dependency type "                                            \
-                << dependency_type_to_string.at(dependency_type) << ": " << e.what()  \
-                << "\nEnsure that each dependency is requested in the solve block.\n" \
-                << std::flush;                                                        \
-      throw;                                                                          \
-    }                                                                                 \
-  catch (const dealii::internal::ExcAccessToUninitializedField &e)                    \
-    {                                                                                 \
-      std::cerr << "Error when trying to access field with index " << (field_index)   \
-                << " and dependency type "                                            \
-                << dependency_type_to_string.at(dependency_type)                      \
-                << ":\nAccess was attempted for values or gradients that were "       \
-                   "not requested.\n"                                                 \
-                << std::flush;                                                        \
-      throw;                                                                          \
-    }
-
-// there are two catches we can do here.
-// 1. Dependencies for the dependency type (current, old, src/dst) don't exist.
-// 2. Dependency is not initialized for values/gradients.
-// We catch these separately to give more informative error messages.
-#define ReturnGetterNoTempl(get_handle, Rank, field_index, dependency_type)            \
-  try                                                                                  \
-    {                                                                                  \
-      AssertThrowDebug((field_index) < get_relevant_feeval_vector<Rank>().size(),      \
-                       dealii::ExcMessage("Error: Field index " +                      \
-                                          std::to_string(field_index) +                \
-                                          " is not associated with any field."));      \
-      return get_relevant_feeval_vector<Rank>()[field_index]                           \
-        .get(dependency_type)                                                          \
-        .get_handle(q_point);                                                          \
-    }                                                                                  \
-  catch (const ExcDepNotInitialized &e)                                                \
-    {                                                                                  \
-      std::cerr << "Error when trying to access field with index " << (field_index)    \
-                << " and dependency type "                                             \
-                << dependency_type_to_string.at(dependency_type) << ": " << e.what()   \
-                << "\n Ensure that each dependency is requested in the solve block.\n" \
-                << std::flush;                                                         \
-      throw;                                                                           \
-    }                                                                                  \
-  catch (const dealii::internal::ExcAccessToUninitializedField &e)                     \
-    {                                                                                  \
-      std::cerr << "Error when trying to access field with index " << (field_index)    \
-                << " and dependency type "                                             \
-                << dependency_type_to_string.at(dependency_type)                       \
-                << ": Error: Access was attempted for values or gradients that were "  \
-                   "not requested.\n"                                                  \
-                << std::flush;                                                         \
-      throw;                                                                           \
+#define GetterTempl(dependency_type) template get<dependency_type>()
+#define GetterNoTempl(dependency_type) get(dependency_type)
+#define ReturnGetter(get_handle, Rank, field_index, dependency_type, getter)        \
+  try                                                                               \
+    {                                                                               \
+      AssertThrowDebug((field_index) < get_relevant_feeval_vector<Rank>().size(),   \
+                       dealii::ExcMessage("Error: Field index " +                   \
+                                          std::to_string(field_index) +             \
+                                          " is not associated with any field."));   \
+      return get_relevant_feeval_vector<Rank>()[field_index]                        \
+        .getter(dependency_type)                                                    \
+        .get_handle(q_point);                                                       \
+    }                                                                               \
+  catch (const ExcDepNotInitialized &e)                                             \
+    {                                                                               \
+      std::cerr << "Error when trying to access field with index " << (field_index) \
+                << " and dependency type "                                          \
+                << dependency_type_to_string.at(dependency_type) << ":\n"           \
+                << e.what()                                                         \
+                << "Ensure that each dependency is requested in the solve block.\n" \
+                << std::flush;                                                      \
+      throw;                                                                        \
+    }                                                                               \
+  catch (const dealii::internal::ExcAccessToUninitializedField &e)                  \
+    {                                                                               \
+      std::cerr << "Error when trying to access field with index " << (field_index) \
+                << " and dependency type "                                          \
+                << dependency_type_to_string.at(dependency_type)                    \
+                << ":\nAccess was attempted for values or gradients that were "     \
+                   "not requested.\n"                                               \
+                << std::flush;                                                      \
+      throw;                                                                        \
     }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1017,7 +985,7 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
   FieldContainer<dim, degree, number>::get_value(Types::Index field_index) const
 {
-  ReturnGetterTempl(get_value, Rank, field_index, type);
+  ReturnGetter(get_value, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1027,7 +995,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_value(Types::Index   field_index,
                                                  DependencyType type) const
 {
-  ReturnGetterNoTempl(get_value, Rank, field_index, type);
+  ReturnGetter(get_value, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1036,7 +1004,7 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Gradient<Rank>
   FieldContainer<dim, degree, number>::get_gradient(Types::Index field_index) const
 {
-  ReturnGetterTempl(get_gradient, Rank, field_index, type);
+  ReturnGetter(get_gradient, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1046,7 +1014,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_gradient(Types::Index   field_index,
                                                     DependencyType type) const
 {
-  ReturnGetterNoTempl(get_gradient, Rank, field_index, type);
+  ReturnGetter(get_gradient, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1055,7 +1023,7 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Hessian<Rank>
   FieldContainer<dim, degree, number>::get_hessian(Types::Index field_index) const
 {
-  ReturnGetterTempl(get_hessian, Rank, field_index, type);
+  ReturnGetter(get_hessian, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1065,7 +1033,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_hessian(Types::Index   field_index,
                                                    DependencyType type) const
 {
-  ReturnGetterNoTempl(get_hessian, Rank, field_index, type);
+  ReturnGetter(get_hessian, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1075,7 +1043,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_hessian_diagonal(
     Types::Index field_index) const
 {
-  ReturnGetterTempl(get_hessian_diagonal, Rank, field_index, type);
+  ReturnGetter(get_hessian_diagonal, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1085,7 +1053,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_hessian_diagonal(Types::Index   field_index,
                                                             DependencyType type) const
 {
-  ReturnGetterNoTempl(get_hessian_diagonal, Rank, field_index, type);
+  ReturnGetter(get_hessian_diagonal, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1094,7 +1062,7 @@ inline DEAL_II_ALWAYS_INLINE
   typename FieldContainer<dim, degree, number>::template Value<Rank>
   FieldContainer<dim, degree, number>::get_laplacian(Types::Index field_index) const
 {
-  ReturnGetterTempl(get_laplacian, Rank, field_index, type);
+  ReturnGetter(get_laplacian, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1104,7 +1072,7 @@ inline DEAL_II_ALWAYS_INLINE
   FieldContainer<dim, degree, number>::get_laplacian(Types::Index   field_index,
                                                      DependencyType type) const
 {
-  ReturnGetterNoTempl(get_laplacian, Rank, field_index, type);
+  ReturnGetter(get_laplacian, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1113,7 +1081,7 @@ inline DEAL_II_ALWAYS_INLINE typename FieldContainer<dim, degree, number>::Scala
 FieldContainer<dim, degree, number>::get_divergence(Types::Index field_index) const
 {
   static_assert(Rank == 1, "Divergences are only available for vector fields");
-  ReturnGetterTempl(get_divergence, Rank, field_index, type);
+  ReturnGetter(get_divergence, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1123,7 +1091,7 @@ FieldContainer<dim, degree, number>::get_divergence(Types::Index   field_index,
                                                     DependencyType type) const
 {
   static_assert(Rank == 1, "Divergences are only available for vector fields");
-  ReturnGetterNoTempl(get_divergence, Rank, field_index, type);
+  ReturnGetter(get_divergence, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1134,7 +1102,7 @@ inline DEAL_II_ALWAYS_INLINE dealii::
     Types::Index field_index) const
 {
   static_assert(Rank == 1, "Symmetric gradients are only available for vector fields");
-  ReturnGetterTempl(get_symmetric_gradient, Rank, field_index, type);
+  ReturnGetter(get_symmetric_gradient, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1145,7 +1113,7 @@ inline DEAL_II_ALWAYS_INLINE dealii::
                                                               DependencyType type) const
 {
   static_assert(Rank == 1, "Symmetric gradients are only available for vector fields");
-  ReturnGetterNoTempl(get_symmetric_gradient, Rank, field_index, type);
+  ReturnGetter(get_symmetric_gradient, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1161,7 +1129,7 @@ inline DEAL_II_ALWAYS_INLINE
     dim > 1,
     dealii::ExcMessage(
       "Curl is only available for vector fields with dimension greater than 1."));
-  ReturnGetterTempl(get_curl, Rank, field_index, type);
+  ReturnGetter(get_curl, Rank, field_index, type, GetterTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1178,7 +1146,7 @@ inline DEAL_II_ALWAYS_INLINE
     dim > 1,
     dealii::ExcMessage(
       "Curl is only available for vector fields with dimension greater than 1."));
-  ReturnGetterNoTempl(get_curl, Rank, field_index, type);
+  ReturnGetter(get_curl, Rank, field_index, type, GetterNoTempl);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1331,7 +1299,8 @@ FieldContainer<dim, degree, number>::submission_valid(
 }
 
 #undef AssertAccessible
-#undef ReturnGetterTempl
-#undef ReturnGetterNoTempl
+#undef ReturnGetter
+#undef GetterTempl
+#undef GetterNoTempl
 
 PRISMS_PF_END_NAMESPACE
