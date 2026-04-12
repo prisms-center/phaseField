@@ -5,6 +5,7 @@
 
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/mpi.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vectorization.h>
@@ -17,12 +18,31 @@
 
 #include <prismspf/config.h>
 
-#include <array>
 #include <string>
 #include <string_view>
 #include <unordered_map>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+class MPI_InitFinalize : public dealii::Utilities::MPI::MPI_InitFinalize
+{
+public:
+#ifdef DEBUG
+  MPI_InitFinalize(int                                &argc,
+                   char                             **&argv,
+                   [[maybe_unused]] const unsigned int max_num_threads =
+                     dealii::numbers::invalid_unsigned_int)
+    : dealii::Utilities::MPI::MPI_InitFinalize(argc, argv, 1)
+  {}
+#else
+  MPI_InitFinalize(
+    int               &argc,
+    char            **&argv,
+    const unsigned int max_num_threads = dealii::numbers::invalid_unsigned_int)
+    : dealii::Utilities::MPI::MPI_InitFinalize(argc, argv, max_num_threads)
+  {}
+#endif
+};
 
 /**
  * @brief Helper function that converts a string to some type, given a mapping.
