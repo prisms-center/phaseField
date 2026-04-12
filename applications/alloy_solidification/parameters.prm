@@ -30,12 +30,12 @@ end
 
 set Model constant epsilon = 0.01, DOUBLE
 set Model constant k = 0.14, DOUBLE
-set Model constant c0 = 3.0, DOUBLE
+set Model constant c_0 = 3.0, DOUBLE
 set Model constant lambda = 20.0, DOUBLE
-set Model constant Dtilde = 12.534, DOUBLE
-set Model constant Vtilde = 9.4536, DOUBLE
-set Model constant ltilde = 21175.7186, DOUBLE
-set Model constant U0 = -1.0, DOUBLE
+set Model constant D_tilde = 12.534, DOUBLE
+set Model constant V_tilde = 9.4536, DOUBLE
+set Model constant l_tilde = 21175.7186, DOUBLE
+set Model constant U_0 = -1.0, DOUBLE
 set Model constant U_off = 0.9, DOUBLE
-set Model constant y0 = 5.0, DOUBLE
-set Model constant regval = 1.0e-10, DOUBLE
+set Model constant y_0 = 5.0, DOUBLE
+set Model constant reg_val = 1.0e-10, DOUBLE
