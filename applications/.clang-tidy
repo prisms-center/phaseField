@@ -1,0 +1,40 @@
+# Setting file for clang-tidy
+
+Checks: >
+  -*,
+  boost-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  cert-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  hicpp-*,
+  misc-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  mpi-*,
+  performance-*,
+  readability-*,
+  -readability-convert-member-functions-to-static,
+  -readability-math-missing-parentheses,
+  -readability-magic-numbers,
+  -readability-identifier-length,
+
+CheckOptions:
+# Ignore the macro expansions for complexity checks (e.g., deal.II's Assert)
+  - key: readability-function-cognitive-complexity.IgnoreMacros
+    value: 'true'
+
+# Ignore bool conversion
+  - key: readability-implicit-bool-conversion.AllowIntegerConditions
+    value: 'true'
+  - key: readability-implicit-bool-conversion.AllowPointerConditions
+    value: 'true'
+
+# Structs are meant to be public
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: 'true'
+
+HeaderFilterRegex: '.*prismspf.*'
+SystemHeaders: false
+WarningsAsErrors: '*'

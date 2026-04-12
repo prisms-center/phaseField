@@ -25,6 +25,20 @@ main(int argc, char *argv[])
   constexpr unsigned int dim    = 2;
   constexpr unsigned int degree = 2;
 
+  /**
+   * We have four fields in this application.
+   *   U - The dimensionless supersaturation
+   *   phi - The solid/liquid order parameter
+   *   xi - The auxiliary field used to split the order parameter evolution equation
+   *   c - The concentration.
+   *
+   * The first three equations are explicit with U and phi evolving with a forward Euler
+   * time integration scheme. The interesting particle of the equation is xi, which we use
+   * to make the evaluation of phi easier. This auxiliary field, xi, has no initial
+   * condition and is only used to evolve the order parameter.
+   *
+   * The last field is the concentration, which we only need for postprocessing.
+   */
   std::vector<FieldAttributes> fields = {FieldAttributes("U"),
                                          FieldAttributes("phi"),
                                          FieldAttributes("xi"),
@@ -55,10 +69,10 @@ main(int argc, char *argv[])
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);
   Problem<dim, degree, double>   problem(fields,
-                                       solves,
-                                       user_inputs,
-                                       pf_tools,
-                                       pde_operator);
+                                         solves,
+                                         user_inputs,
+                                         pf_tools,
+                                         pde_operator);
   problem.solve();
 
   return 0;
