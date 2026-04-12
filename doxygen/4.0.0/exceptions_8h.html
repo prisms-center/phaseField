@@ -121,6 +121,7 @@ $(function(){initNavTree('exceptions_8h.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">exceptions.h File Reference</div></div>
 </div><!--header-->
@@ -141,11 +142,13 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="exceptions_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a0d5036b8f035358279d18d4afa70a68b" id="r_a0d5036b8f035358279d18d4afa70a68b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d5036b8f035358279d18d4afa70a68b">AssertThrowDebug</a>(cond,  exc)</td></tr>
+<tr class="separator:a0d5036b8f035358279d18d4afa70a68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3aa53aaede4070eba6caaceefd766cac" id="r_a3aa53aaede4070eba6caaceefd766cac"><td class="memTemplParams" colspan="2">template&lt;typename <a class="el" href="constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a>, typename Exception&gt; </td></tr>
-<tr class="memitem:a3aa53aaede4070eba6caaceefd766cac"><td class="memTemplItemLeft" align="right" valign="top">PRISMS_PF_BEGIN_NAMESPACE constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3aa53aaede4070eba6caaceefd766cac">AssertThrowDebug</a> (const <a class="el" href="constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a> &amp;, const Exception &amp;)</td></tr>
-<tr class="separator:a3aa53aaede4070eba6caaceefd766cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af272af578fc89a269c2755b84af53962" id="r_af272af578fc89a269c2755b84af53962"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af272af578fc89a269c2755b84af53962">DeclException1</a> (FeatureNotImplemented, std::string,&lt;&lt; &quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;&lt;&lt; arg1&lt;&lt; &quot;\nCheck the issues section of PRISMS-PF's github to see if this feature is under &quot; &quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot; &quot;feel that feature is worthwhile for yourself and others.&quot;)</td></tr>
 <tr class="separator:af272af578fc89a269c2755b84af53962"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d86451113c706c6d08508cfafc6380f" id="r_a8d86451113c706c6d08508cfafc6380f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a> (UnreachableCode, &quot;This code should not have been reached.&quot;)</td></tr>
@@ -153,39 +156,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ab27ff3a391d6de427c4c5317b62999a8" id="r_ab27ff3a391d6de427c4c5317b62999a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a> (DependencyNotFound, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a>, std::string,&lt;&lt; &quot;Attempted access of the variable with index &quot;&lt;&lt; arg1&lt;&lt; &quot; and dependency type &quot;&lt;&lt; arg2&lt;&lt; &quot; that was not marked as needed. Please check CustomAttributeLoader.&quot;)</td></tr>
 <tr class="separator:ab27ff3a391d6de427c4c5317b62999a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a3aa53aaede4070eba6caaceefd766cac" name="a3aa53aaede4070eba6caaceefd766cac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3aa53aaede4070eba6caaceefd766cac">&#9670;&#160;</a></span>AssertThrowDebug()</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0d5036b8f035358279d18d4afa70a68b" name="a0d5036b8f035358279d18d4afa70a68b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d5036b8f035358279d18d4afa70a68b">&#9670;&#160;</a></span>AssertThrowDebug</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename <a class="el" href="constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a>, typename Exception&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE constexpr void AssertThrowDebug </td>
+          <td class="memname">#define AssertThrowDebug</td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fe">Condition</a> &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>cond</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Exception &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>exc</em></span>&#160;)</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>Function for deal.II AssertThrow that is only valid in DEBUG mode. This is used to throw and error that can be caught by catch2 while not bloating code in release mode. </p>
+<p>Macro for assertion that is only called in DEBUG mode. This is used to throw a catchable exception with zero overhead in RELEASE mode. dealii Assert will call abort(), which is not useful to us. </p>
 
 </div>
 </div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="af272af578fc89a269c2755b84af53962" name="af272af578fc89a269c2755b84af53962"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af272af578fc89a269c2755b84af53962">&#9670;&#160;</a></span>DeclException1()</h2>
 

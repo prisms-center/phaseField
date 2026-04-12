@@ -35,11 +35,12 @@ var searchData=
   ['remove_5fparentheses_32',['remove_parentheses',['../classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6',1,'UserConstants']]],
   ['reset_33',['RESET',['../classTerminalColor.html#a636af85482f680b481768f2e41d57bc8',1,'TerminalColor']]],
   ['reset_34',['reset',['../classSimulationTimer.html#afa462fedaa49d65c5c3dea5e63f89c0a',1,'SimulationTimer']]],
-  ['rhs_5foperators_35',['rhs_operators',['../classExplicitSolver.html#aa237122d4f5989735e66a2cd48655583',1,'ExplicitSolver::rhs_operators'],['../classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250',1,'LinearSolver::rhs_operators']]],
-  ['rhs_5fvector_36',['rhs_vector',['../classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa',1,'LinearSolver']]],
-  ['rmseperfield_37',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
-  ['rmsetotal_38',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
-  ['rng_39',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
-  ['rngengine_40',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
-  ['run_20a_20simulation_41',['Run a simulation',['../structure.html#problem',1,'']]]
+  ['returngetter_35',['ReturnGetter',['../field__container_8h.html#ab0365f90a85baf585da947322627e7c6',1,'field_container.h']]],
+  ['rhs_5foperators_36',['rhs_operators',['../classExplicitSolver.html#aa237122d4f5989735e66a2cd48655583',1,'ExplicitSolver::rhs_operators'],['../classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250',1,'LinearSolver::rhs_operators']]],
+  ['rhs_5fvector_37',['rhs_vector',['../classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa',1,'LinearSolver']]],
+  ['rmseperfield_38',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
+  ['rmsetotal_39',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
+  ['rng_40',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
+  ['rngengine_41',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
+  ['run_20a_20simulation_42',['Run a simulation',['../structure.html#problem',1,'']]]
 ];

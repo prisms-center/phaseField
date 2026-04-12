@@ -18,5 +18,6 @@ var searchData=
   ['mgsolver_15',['MGSolver',['../classMGSolver.html#accf7afa820d7d82ce169b3fdddbe2235',1,'MGSolver']]],
   ['mpi_5fbroadcast_5fnuclei_16',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
   ['mpi_5fdatatype_17',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
-  ['mpi_5fgather_5fnuclei_18',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]]
+  ['mpi_5fgather_5fnuclei_18',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
+  ['mpi_5finitfinalize_19',['MPI_InitFinalize',['../classMPI__InitFinalize.html#ab8695e241c5177b4a04e0d408f8f6c3c',1,'MPI_InitFinalize']]]
 ];

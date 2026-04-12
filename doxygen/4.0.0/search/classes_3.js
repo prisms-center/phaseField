@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['explicitsolver_0',['ExplicitSolver',['../classExplicitSolver.html',1,'']]]
+  ['excdepnotinitialized_0',['ExcDepNotInitialized',['../classExcDepNotInitialized.html',1,'']]],
+  ['explicitsolver_1',['ExplicitSolver',['../classExplicitSolver.html',1,'']]]
 ];

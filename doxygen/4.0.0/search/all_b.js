@@ -46,8 +46,9 @@ var searchData=
   ['mpi_5fbroadcast_5fnuclei_43',['mpi_broadcast_nuclei',['../classNucleationManager.html#a4cf6ea096ed7b1291bc2928cd0904bca',1,'NucleationManager']]],
   ['mpi_5fdatatype_44',['mpi_datatype',['../structNucleus.html#a567edb715eee48cd250f9eece9a8008b',1,'Nucleus']]],
   ['mpi_5fgather_5fnuclei_45',['mpi_gather_nuclei',['../classNucleationManager.html#aa9cad1ef245a6e38a738ca90f3d97f26',1,'NucleationManager']]],
-  ['my_5fblue_46',['MY_BLUE',['../classTerminalColor.html#a34da6054aa0a0fedd8c6ec908bcaae40',1,'TerminalColor']]],
-  ['my_5fgray_47',['MY_GRAY',['../classTerminalColor.html#a1486a91501b99e6ef224b0c3d137805d',1,'TerminalColor']]],
-  ['my_5forange_48',['MY_ORANGE',['../classTerminalColor.html#a0ba2ffebb602deedd6d3cca37e7333b4',1,'TerminalColor']]],
-  ['my_5fpurple_49',['MY_PURPLE',['../classTerminalColor.html#a103b4edae858554664b9023a9104a4e0',1,'TerminalColor']]]
+  ['mpi_5finitfinalize_46',['MPI_InitFinalize',['../classMPI__InitFinalize.html',1,'MPI_InitFinalize'],['../classMPI__InitFinalize.html#ab8695e241c5177b4a04e0d408f8f6c3c',1,'MPI_InitFinalize::MPI_InitFinalize()']]],
+  ['my_5fblue_47',['MY_BLUE',['../classTerminalColor.html#a34da6054aa0a0fedd8c6ec908bcaae40',1,'TerminalColor']]],
+  ['my_5fgray_48',['MY_GRAY',['../classTerminalColor.html#a1486a91501b99e6ef224b0c3d137805d',1,'TerminalColor']]],
+  ['my_5forange_49',['MY_ORANGE',['../classTerminalColor.html#a0ba2ffebb602deedd6d3cca37e7333b4',1,'TerminalColor']]],
+  ['my_5fpurple_50',['MY_PURPLE',['../classTerminalColor.html#a103b4edae858554664b9023a9104a4e0',1,'TerminalColor']]]
 ];

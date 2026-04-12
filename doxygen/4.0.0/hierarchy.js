@@ -11,6 +11,9 @@ var hierarchy =
     [ "Dependency", "structDependency.html", null ],
     [ "DependencyExtents", "structDependencyExtents.html", null ],
     [ "DoFManager< dim, degree >", "classDoFManager.html", null ],
+    [ "dealii::ExceptionBase", null, [
+      [ "ExcDepNotInitialized", "classExcDepNotInitialized.html", null ]
+    ] ],
     [ "FieldContainer< dim, degree, number >::FEEValuationDeps< Rank >", "structFieldContainer_1_1FEEValuationDeps.html", null ],
     [ "FieldAttributes", "structFieldAttributes.html", null ],
     [ "FieldConstraints< dim >", "structFieldConstraints.html", null ],
@@ -34,6 +37,9 @@ var hierarchy =
     ] ],
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html", null ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
+    [ "dealii::Utilities::MPI::MPI_InitFinalize", null, [
+      [ "MPI_InitFinalize", "classMPI__InitFinalize.html", null ]
+    ] ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", null ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],
     [ "NucleationManager< dim, degree, number >", "classNucleationManager.html", null ],

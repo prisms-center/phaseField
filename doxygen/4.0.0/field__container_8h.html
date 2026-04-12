@@ -121,7 +121,9 @@ $(function(){initNavTree('field__container_8h.html',''); initResizable(true); })
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">field_container.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -142,14 +144,11 @@ $(function(){initNavTree('field__container_8h.html',''); initResizable(true); })
 <code>#include &lt;<a class="el" href="type__enums_8h_source.html">prismspf/core/type_enums.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="types_8h_source.html">prismspf/core/types.h</a>&gt;</code><br />
 <code>#include &lt;prismspf/config.h&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for field_container.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="field__container_8h__incl.svg" width="4670" height="966"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="field__container_8h__incl.svg" width="4696" height="966"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -167,7 +166,190 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structFieldContainer_1_1FEEValuationDeps.html">FieldContainer&lt; dim, degree, number &gt;::FEEValuationDeps&lt; Rank &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct to hold the relevant dealii::FEEvaluation for a given solution block index.  <a href="structFieldContainer_1_1FEEValuationDeps.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classExcDepNotInitialized.html">ExcDepNotInitialized</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a1e89670563699150566dc8d5546d024c" id="r_a1e89670563699150566dc8d5546d024c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e89670563699150566dc8d5546d024c">AssertAccessible</a>(fe_eval_pair_ptr,  dependency_type)</td></tr>
+<tr class="separator:a1e89670563699150566dc8d5546d024c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b14792bebb89c2fcb601e675fbd046" id="r_a71b14792bebb89c2fcb601e675fbd046"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71b14792bebb89c2fcb601e675fbd046">GetterTempl</a>(dependency_type)</td></tr>
+<tr class="separator:a71b14792bebb89c2fcb601e675fbd046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44fe018f77bbf9ed2a550cfd71950872" id="r_a44fe018f77bbf9ed2a550cfd71950872"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44fe018f77bbf9ed2a550cfd71950872">GetterNoTempl</a>(dependency_type)</td></tr>
+<tr class="separator:a44fe018f77bbf9ed2a550cfd71950872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0365f90a85baf585da947322627e7c6" id="r_ab0365f90a85baf585da947322627e7c6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0365f90a85baf585da947322627e7c6">ReturnGetter</a>(get_handle,  Rank,  field_index,  dependency_type,  getter)</td></tr>
+<tr class="separator:ab0365f90a85baf585da947322627e7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a95bd416dd495bcf385aa83adf63cb40b" id="r_a95bd416dd495bcf385aa83adf63cb40b"><td class="memItemLeft" align="right" valign="top">static const std::map&lt; <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95bd416dd495bcf385aa83adf63cb40b">dependency_type_to_string</a></td></tr>
+<tr class="separator:a95bd416dd495bcf385aa83adf63cb40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a1e89670563699150566dc8d5546d024c" name="a1e89670563699150566dc8d5546d024c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e89670563699150566dc8d5546d024c">&#9670;&#160;</a></span>AssertAccessible</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define AssertAccessible</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>fe_eval_pair_ptr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>dependency_type</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44fe018f77bbf9ed2a550cfd71950872" name="a44fe018f77bbf9ed2a550cfd71950872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44fe018f77bbf9ed2a550cfd71950872">&#9670;&#160;</a></span>GetterNoTempl</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GetterNoTempl</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>dependency_type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">get(dependency_type)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a71b14792bebb89c2fcb601e675fbd046" name="a71b14792bebb89c2fcb601e675fbd046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71b14792bebb89c2fcb601e675fbd046">&#9670;&#160;</a></span>GetterTempl</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GetterTempl</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>dependency_type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> get&lt;dependency_type&gt;()</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab0365f90a85baf585da947322627e7c6" name="ab0365f90a85baf585da947322627e7c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0365f90a85baf585da947322627e7c6">&#9670;&#160;</a></span>ReturnGetter</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ReturnGetter</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>get_handle</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>Rank</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>dependency_type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>getter</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">try</span>                                                                               \</div>
+<div class="line">    {                                                                               \</div>
+<div class="line">      AssertThrowDebug((field_index) &lt; get_relevant_feeval_vector&lt;Rank&gt;().size(),   \</div>
+<div class="line">                       dealii::ExcMessage(<span class="stringliteral">&quot;Error: Field index &quot;</span> +                   \</div>
+<div class="line">                                          std::to_string(field_index) +             \</div>
+<div class="line">                                          <span class="stringliteral">&quot; is not associated with any field.&quot;</span>));   \</div>
+<div class="line">      <span class="keywordflow">return</span> get_relevant_feeval_vector&lt;Rank&gt;()[field_index]                        \</div>
+<div class="line">        .getter(dependency_type)                                                    \</div>
+<div class="line">        .get_handle(q_point);                                                       \</div>
+<div class="line">    }                                                                               \</div>
+<div class="line">  catch (<span class="keyword">const</span> <a class="code hl_class" href="classExcDepNotInitialized.html">ExcDepNotInitialized</a> &amp;e)                                             \</div>
+<div class="line">    {                                                                               \</div>
+<div class="line">      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error when trying to access field with index &quot;</span> &lt;&lt; (field_index) \</div>
+<div class="line">                &lt;&lt; <span class="stringliteral">&quot; and dependency type &quot;</span>                                          \</div>
+<div class="line">                &lt;&lt; <a class="code hl_variable" href="#a95bd416dd495bcf385aa83adf63cb40b">dependency_type_to_string</a>.at(dependency_type) &lt;&lt; <span class="stringliteral">&quot;:\n&quot;</span>           \</div>
+<div class="line">                &lt;&lt; e.what()                                                         \</div>
+<div class="line">                &lt;&lt; <span class="stringliteral">&quot;Ensure that each dependency is requested in the solve block.\n&quot;</span> \</div>
+<div class="line">                &lt;&lt; std::flush;                                                      \</div>
+<div class="line">      <span class="keywordflow">throw</span>;                                                                        \</div>
+<div class="line">    }                                                                               \</div>
+<div class="line">  catch (<span class="keyword">const</span> dealii::internal::ExcAccessToUninitializedField &amp;e)                  \</div>
+<div class="line">    {                                                                               \</div>
+<div class="line">      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error when trying to access field with index &quot;</span> &lt;&lt; (field_index) \</div>
+<div class="line">                &lt;&lt; <span class="stringliteral">&quot; and dependency type &quot;</span>                                          \</div>
+<div class="line">                &lt;&lt; <a class="code hl_variable" href="#a95bd416dd495bcf385aa83adf63cb40b">dependency_type_to_string</a>.at(dependency_type)                    \</div>
+<div class="line">                &lt;&lt; <span class="stringliteral">&quot;:\nAccess was attempted for values or gradients that were &quot;</span>     \</div>
+<div class="line">                   <span class="stringliteral">&quot;not requested.\n&quot;</span>                                               \</div>
+<div class="line">                &lt;&lt; std::flush;                                                      \</div>
+<div class="line">      <span class="keywordflow">throw</span>;                                                                        \</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclassExcDepNotInitialized_html"><div class="ttname"><a href="classExcDepNotInitialized.html">ExcDepNotInitialized</a></div><div class="ttdef"><b>Definition</b> field_container.h:559</div></div>
+<div class="ttc" id="afield__container_8h_html_a95bd416dd495bcf385aa83adf63cb40b"><div class="ttname"><a href="#a95bd416dd495bcf385aa83adf63cb40b">dependency_type_to_string</a></div><div class="ttdeci">static const std::map&lt; DependencyType, std::string &gt; dependency_type_to_string</div><div class="ttdef"><b>Definition</b> field_container.h:511</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a95bd416dd495bcf385aa83adf63cb40b" name="a95bd416dd495bcf385aa83adf63cb40b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95bd416dd495bcf385aa83adf63cb40b">&#9670;&#160;</a></span>dependency_type_to_string</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::map&lt;<a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a>, std::string&gt; dependency_type_to_string</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca0650b2dde22d49f39e066ee117de1ac6">DependencyType::Current</a>,  <span class="stringliteral">&quot;current&quot;</span>},</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcae6a73fea98af2dfc936178576b79feb2">DependencyType::OldOne</a>,   <span class="stringliteral">&quot;old_1&quot;</span>  },</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcae7617a7ec63f90084dde7f3d8c04d0a8">DependencyType::OldTwo</a>,   <span class="stringliteral">&quot;old_2&quot;</span>  },</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaab2a220311958094eb352dc881a96f46">DependencyType::OldThree</a>, <span class="stringliteral">&quot;old_3&quot;</span>  },</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca86bdc383bcf31e553d6c7a1a9a4bb795">DependencyType::OldFour</a>,  <span class="stringliteral">&quot;old_4&quot;</span>  },</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226">DependencyType::SRC</a>,      <span class="stringliteral">&quot;src&quot;</span>    },</div>
+<div class="line">  {<a class="code hl_enumvalue" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233">DependencyType::DST</a>,      <span class="stringliteral">&quot;dst&quot;</span>    }</div>
+<div class="line">}</div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfca0650b2dde22d49f39e066ee117de1ac6"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca0650b2dde22d49f39e066ee117de1ac6">Current</a></div><div class="ttdeci">@ Current</div><div class="ttdef"><b>Definition</b> type_enums.h:80</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233">DST</a></div><div class="ttdeci">@ DST</div><div class="ttdef"><b>Definition</b> type_enums.h:74</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfca86bdc383bcf31e553d6c7a1a9a4bb795"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca86bdc383bcf31e553d6c7a1a9a4bb795">OldFour</a></div><div class="ttdeci">@ OldFour</div><div class="ttdef"><b>Definition</b> type_enums.h:84</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfcaab2a220311958094eb352dc881a96f46"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaab2a220311958094eb352dc881a96f46">OldThree</a></div><div class="ttdeci">@ OldThree</div><div class="ttdef"><b>Definition</b> type_enums.h:83</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226">SRC</a></div><div class="ttdeci">@ SRC</div><div class="ttdef"><b>Definition</b> type_enums.h:75</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfcae6a73fea98af2dfc936178576b79feb2"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcae6a73fea98af2dfc936178576b79feb2">OldOne</a></div><div class="ttdeci">@ OldOne</div><div class="ttdef"><b>Definition</b> type_enums.h:81</div></div>
+<div class="ttc" id="atype__enums_8h_html_ad7e80c9ffed51cd6988f622c9cbd3dfcae7617a7ec63f90084dde7f3d8c04d0a8"><div class="ttname"><a href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfcae7617a7ec63f90084dde7f3d8c04d0a8">OldTwo</a></div><div class="ttdeci">@ OldTwo</div><div class="ttdef"><b>Definition</b> type_enums.h:82</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
