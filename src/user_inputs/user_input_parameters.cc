@@ -505,7 +505,7 @@ UserInputParameters<dim>::load_model_constants(
   const InputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const std::string &constant_name : input_file_reader.get_model_constant_names())
+  for (const std::string &constant_name : input_file_reader.get_names())
     {
       std::string constants_text = "Model constant ";
       constants_text.append(constant_name);

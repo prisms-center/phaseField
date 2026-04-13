@@ -26,12 +26,11 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , McV(get_user_inputs().user_constants.get_model_constant_double("McV"))
-    , KcV(get_user_inputs().user_constants.get_model_constant_double("KcV"))
-    , WcV(get_user_inputs().user_constants.get_model_constant_double("WcV"))
-    , c0(get_user_inputs().user_constants.get_model_constant_double("c0"))
-    , icamplitude(
-        get_user_inputs().user_constants.get_model_constant_double("icamplitude"))
+    , McV(get_user_inputs().user_constants.get_double("McV"))
+    , KcV(get_user_inputs().user_constants.get_double("KcV"))
+    , WcV(get_user_inputs().user_constants.get_double("WcV"))
+    , c0(get_user_inputs().user_constants.get_double("c0"))
+    , icamplitude(get_user_inputs().user_constants.get_double("icamplitude"))
     , dist(-1.0, 1.0)
   {}
 

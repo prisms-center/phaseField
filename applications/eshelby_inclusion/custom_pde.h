@@ -26,8 +26,7 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , stiffness(get_user_inputs().user_constants.get_model_constant_elasticity_tensor(
-        "stiffness"))
+    , stiffness(get_user_inputs().user_constants.get_elasticity_tensor("stiffness"))
   {}
 
 private:

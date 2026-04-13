@@ -29,7 +29,7 @@ public:
    * extract the model constant names).
    */
   [[nodiscard]] std::set<std::string>
-  get_model_constant_names();
+  get_names();
 
   /**
    * @brief Get the parameter handler.
@@ -44,7 +44,7 @@ public:
    * @brief Get the model constant names.
    */
   [[nodiscard]] const std::set<std::string> &
-  get_model_constant_names() const
+  get_names() const
   {
     return model_constant_names;
   }

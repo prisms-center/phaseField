@@ -26,17 +26,17 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , c_0(get_user_inputs().user_constants.get_model_constant_double("c_0"))
-    , U_0(get_user_inputs().user_constants.get_model_constant_double("U_0"))
-    , U_off(get_user_inputs().user_constants.get_model_constant_double("U_off"))
-    , y_0(get_user_inputs().user_constants.get_model_constant_double("y_0"))
-    , epsilon(get_user_inputs().user_constants.get_model_constant_double("epsilon"))
-    , k(get_user_inputs().user_constants.get_model_constant_double("k"))
-    , lambda(get_user_inputs().user_constants.get_model_constant_double("lambda"))
-    , D_tilde(get_user_inputs().user_constants.get_model_constant_double("D_tilde"))
-    , V_tilde(get_user_inputs().user_constants.get_model_constant_double("V_tilde"))
-    , l_tilde(get_user_inputs().user_constants.get_model_constant_double("l_tilde"))
-    , reg_val(get_user_inputs().user_constants.get_model_constant_double("reg_val"))
+    , c_0(get_user_inputs().user_constants.get_double("c_0"))
+    , U_0(get_user_inputs().user_constants.get_double("U_0"))
+    , U_off(get_user_inputs().user_constants.get_double("U_off"))
+    , y_0(get_user_inputs().user_constants.get_double("y_0"))
+    , epsilon(get_user_inputs().user_constants.get_double("epsilon"))
+    , k(get_user_inputs().user_constants.get_double("k"))
+    , lambda(get_user_inputs().user_constants.get_double("lambda"))
+    , D_tilde(get_user_inputs().user_constants.get_double("D_tilde"))
+    , V_tilde(get_user_inputs().user_constants.get_double("V_tilde"))
+    , l_tilde(get_user_inputs().user_constants.get_double("l_tilde"))
+    , reg_val(get_user_inputs().user_constants.get_double("reg_val"))
   {}
 
 private:
