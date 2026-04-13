@@ -12,11 +12,11 @@ class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
-  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using ScalarGrad  = dealii::Tensor<1, dim, ScalarValue>;
+  using ScalarHess  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
+  using VectorGrad  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorHess  = dealii::Tensor<3, dim, ScalarValue>;
   using PDEOperatorBase<dim, degree, number>::get_user_inputs;
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
