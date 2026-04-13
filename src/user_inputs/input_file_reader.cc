@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 InputFileReader::InputFileReader(std::string input_file_name)
   : parameters_file_name(std::move(input_file_name))
 {
-  model_constant_names     = get_model_constant_names();
+  model_constant_names     = get_names();
   const auto num_constants = static_cast<unsigned int>(model_constant_names.size());
 
   ConditionalOStreams::pout_base() << "Number of constants: " << num_constants << "\n";
@@ -137,7 +137,7 @@ InputFileReader::parse_line(std::string        line,
 }
 
 std::set<std::string>
-InputFileReader::get_model_constant_names()
+InputFileReader::get_names()
 {
   const std::string keyword             = "set";
   const std::string entry_name_begining = "Model constant";
