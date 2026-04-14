@@ -45,7 +45,7 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-\eta^{n+1} = \eta^{n} - \Delta t M(f_{,\eta}^{n} - \kappa \nabla^2 \eta^{n})
+\eta^{n} = \eta^{n-1} - \Delta t M(f_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1})
 \end{align}
 $$
 
@@ -55,20 +55,20 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-\int_{\Omega} w \eta^{n+1} ~dV &= \int_{\Omega} w \eta^{n} - w \Delta t M(f_{,\eta}^{n} - \kappa \nabla^2 \eta^{n}) ~dV \\
-&= \int_{\Omega} w \left( \eta^{n} - \Delta t M f_{,\eta}^{n} \right) + \nabla w (-\Delta t M \kappa) \cdot (\nabla \eta^{n}) ~dV \quad [\kappa \nabla \eta \cdot n = 0 \quad \text{on} \quad \partial \Omega]
+\int_{\Omega} w \eta^{n} ~dV &= \int_{\Omega} w \eta^{n-1} - w \Delta t M(f_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1}) ~dV \\
+&= \int_{\Omega} w \left( \eta^{n-1} - \Delta t M f_{,\eta}^{n-1} \right) + \nabla w (-\Delta t M \kappa) \cdot (\nabla \eta^{n-1}) ~dV \quad [\kappa \nabla \eta \cdot n = 0 \quad \text{on} \quad \partial \Omega]
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta}= \eta^{n} - \Delta t M f_{,\eta}^{n}
+r_{\eta}= \eta^{n-1} - \Delta t M f_{,\eta}^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta x} = -\Delta t M \kappa\nabla \eta^{n}
+r_{\eta x} = -\Delta t M \kappa\nabla \eta^{n-1}
 \end{align}
 $$
 

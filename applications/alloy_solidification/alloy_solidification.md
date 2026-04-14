@@ -203,9 +203,10 @@ along with
 
 $$
 \begin{equation}
-\tan(\theta) = \frac{\partial \phi / \partial y}{\partial \phi / \partial x}.
+\tan(\theta) = {\frac{\partial \phi}{\partial y}}/{\frac{\partial \phi}{\partial x}}.
 \end{equation}
 $$
+
 See Appendix for details.
 
 Also, the second and third terms on the right-hand side can be expressed using a divergence operator, allowing them to be grouped with the first term, which will simplify matters later. Carrying out these transformations yields:
@@ -237,13 +238,13 @@ Considering forward Euler explicit time stepping, we have the time-discretized k
 
 $$
 \begin{equation}
-\phi^{n+1}=\phi^{n} + \frac{\xi^n}{\tau_\phi}\Delta t,
+\phi^{n}=\phi^{n-1} + \frac{\xi^{n-1}}{\tau_\phi}\Delta t,
 \end{equation}
 $$
 
 $$
 \begin{align}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath}_{at}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right],
+U^{n}=U^{n-1}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^{n-1}}{2} \nabla U^{n-1} - \vec{\jmath}_{at}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^{n-1}]\frac{\xi^{n-1}}{\tau_\phi} \right],
 \end{align}
 $$
 
@@ -251,7 +252,7 @@ and
 
 $$
 \begin{align}
-\xi^{n+1} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.\\
+\xi^{n} = & \nabla \cdot  \left[ \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial x} + \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial y}\right)\hat{x} \right.\\
 & \left . + \left(a_s^2(\theta^n) \frac{\partial \phi^n}{\partial y} - \epsilon_m m a_s(\theta^n) \sin \left[ m \left(\theta^n - \theta_0 \right) \right] \frac{\partial \phi^n}{\partial x}\right)\hat{y}\right]\\
 & +\phi^n-{(\phi^n)}^3 - \lambda {\left[1-{(\phi^n)}^2\right]}^2 \left[ U^n + U_\text{off} + \frac{\tilde{y} - \tilde{y}_0 - \tilde{V}_p t}{\tilde{l}_T} \right].
 \end{align}
@@ -262,13 +263,13 @@ The weak formulation is obtained by multiplying the time-discretized equations b
 
 $$
 \begin{align}
-\int_{\Omega}   \omega  \phi^{n+1}  ~dV = \int_{\Omega}   \omega \left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right) ~dV.
+\int_{\Omega}   \omega  \phi^{n}  ~dV = \int_{\Omega}   \omega \left(\phi^{n-1} + \frac{ \xi^{n-1}}{\tau_\phi}\Delta t\right) ~dV.
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\phi} &= \left(\phi^n + \frac{ \xi^n}{\tau_\phi}\Delta t\right)
+r_{\phi} &= \left(\phi^{n-1} + \frac{ \xi^{n-1}}{\tau_\phi}\Delta t\right)
 \end{align}
 $$
 
@@ -277,7 +278,7 @@ For the weak form of
 
 $$
 \begin{align}
-U^{n+1}=U^{n}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^n}{2} \nabla U^n - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^n]\frac{\xi^n}{\tau_\phi} \right],
+U^{n}=U^{n-1}+\frac{\Delta t}{\tau_U}\left[\nabla \cdot \left( \tilde{D}\frac{1-\phi^{n-1}}{2} \nabla U^{n-1} - \vec{\jmath_{at}}^{\ U} \right) + \frac{1}{2}[1+(1-k)U^{n-1}]\frac{\xi^{n-1}}{\tau_\phi} \right],
 \end{align}
 $$
 
@@ -293,21 +294,21 @@ into the gradient of $1/\tau_U$:
 
 $$
 \begin{align}
-\int_{\Omega}   \omega  U^{n+1}  ~dV =&
-\int_{\Omega} \omega \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV\\
-&+\int_{\Omega}  \nabla  \omega  \cdot \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^n)\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV.
+\int_{\Omega}   \omega  U^{n}  ~dV =&
+\int_{\Omega} \omega \left( U^{n-1} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^{n-1}]\xi^{n-1}  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^{n-1}}{2}\nabla U^{n-1}-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV\\
+&+\int_{\Omega}  \nabla  \omega  \cdot \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}(1-\phi^{n-1})\nabla U^{n-1}-\vec{\jmath}_{at}^{\,U}\right] \right) ~dV.
 \end{align}
 $$
 
 $$
 \begin{align}
-r_U &=  \left( U^{n} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^n]\xi^n  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
+r_U &=  \left( U^{n-1} + \frac{\Delta t}{2\tau_U\tau_\phi}[1+(1-k)U^{n-1}]\xi^{n-1}  - \frac{\Delta t (1-k)}{2\tau_U^2} \nabla \phi \cdot \left[\tilde{D}\frac{1-\phi^{n-1}}{2}\nabla U^{n-1}-\vec{\jmath}_{at}^{\,U}\right] \right)
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{Ux} &= \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}\frac{1-\phi^n}{2}\nabla U^n-\vec{\jmath}_{at}^{\,U}\right] \right)
+r_{Ux} &= \left( -\frac{\Delta t}{\tau_U}\left[\tilde{D}\frac{1-\phi^{n-1}}{2}\nabla U^{n-1}-\vec{\jmath}_{at}^{\,U}\right] \right)
 \end{align}
 $$
 
@@ -315,7 +316,7 @@ Finally, for $\xi$, we obtain
 
 $$
 \begin{equation}
-\int_{\Omega}   \omega \xi^{n+1} ~dV =\int_{\Omega} \omega r_\xi ~dV + \int_{\Omega} \nabla \omega r_{\xi x} ~dV,
+\int_{\Omega}   \omega \xi^{n} ~dV =\int_{\Omega} \omega r_\xi ~dV + \int_{\Omega} \nabla \omega r_{\xi x} ~dV,
 \end{equation}
 $$
 
@@ -349,6 +350,7 @@ The above values of $r_{\phi}$, $r_{U}$, $r_{Ux}$,  $r_{\xi}$ and  $r_{\xi x}$ a
 ## Appendix
 
 First, we express $\theta$ as a function of the gradient components:
+
 $$
 \begin{equation}
 \theta = \arctan\left( \frac{\phi_y}{\phi_x} \right)
@@ -356,6 +358,7 @@ $$
 $$
 
 Applying the chain rule for $\theta$:
+
 $$
 \begin{align}
 \frac{\partial \theta}{\partial \phi_x} &= \frac{1}{1 + (\phi_y/\phi_x)^2} \cdot \left( -\frac{\phi_y}{\phi_x^2} \right) = -\frac{\phi_y}{\phi_x^2 + \phi_y^2} = -\frac{\sin \theta}{|\nabla \phi|} \\
@@ -364,11 +367,13 @@ $$
 $$
 
 Now, applying the chain rule for $a(\theta)$:
+
 $$
 \begin{equation}
 \frac{\partial a}{\partial \phi_x} = \frac{da}{d\theta} \frac{\partial \theta}{\partial \phi_x} = -\frac{a'(\theta) \sin \theta}{|\nabla \phi|}
 \end{equation}
 $$
+
 $$
 \begin{equation}
 \frac{\partial a}{\partial \phi_y} = \frac{da}{d\theta} \frac{\partial \theta}{\partial \phi_y} = \frac{a'(\theta) \cos \theta}{|\nabla \phi|}

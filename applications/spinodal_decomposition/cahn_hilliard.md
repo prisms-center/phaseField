@@ -73,13 +73,15 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
-  \mu^{n+1} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n}
+  c^{n} &= c^{n-1} + \Delta t M~\nabla \cdot (\nabla \mu^{n-1})
 \end{align}
 $$
 
+The auxiliary field is updated as
+
 $$
 \begin{align}
- c^{n+1} &= c^{n} + \Delta t M~\nabla \cdot (\nabla \mu^{n})
+  \mu^{n} &= f_{,c}^{n} -  \kappa \nabla^2 c^{n}
 \end{align}
 $$
 
@@ -88,7 +90,33 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \mu^{n+1}  ~dV &= \int_{\Omega}  w  f_{,c}^{n} - w \kappa \nabla^2 c^{n}~dV
+\int_{\Omega}   w c^{n} ~dV&= \int_{\Omega}   w c^{n-1} + w \Delta t M~\nabla \cdot (\nabla \mu^{n-1}) ~dV
+\end{align}
+$$
+
+$$
+\begin{align}
+&= \int_{\Omega}   w c^{n-1} + \nabla w  (-\Delta t M)~ \cdot (\nabla \mu^{n-1}) ~dV \quad \text{[neglecting boundary flux]}
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{c} &= c^{n-1}
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n-1})
+\end{align}
+$$
+
+and
+
+$$
+\begin{align}
+  \int_{\Omega}   w  \mu^{n}  ~dV &= \int_{\Omega}  w  f_{,c}^{n} - w \kappa \nabla^2 c^{n}~dV
 \end{align}
 $$
 
@@ -107,32 +135,6 @@ $$
 $$
 \begin{align}
 r_{mux} &= \kappa \nabla c^{n}
-\end{align}
-$$
-
-and
-
-$$
-\begin{align}
-\int_{\Omega}   w c^{n+1} ~dV&= \int_{\Omega}   w c^{n} + w \Delta t M~\nabla \cdot (\nabla \mu^{n}) ~dV
-\end{align}
-$$
-
-$$
-\begin{align}
-&= \int_{\Omega}   w c^{n} + \nabla w  (-\Delta t M)~ \cdot (\nabla \mu^{n}) ~dV \quad \text{[neglecting boundary flux]}
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{c} &= c^{n}
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{c x} &= (-\Delta t M)~ \cdot (\nabla \mu^{n})
 \end{align}
 $$
 

@@ -139,13 +139,13 @@ Using forward Euler explicit time stepping, the equations from the Kinetics sect
 
 $$
 \begin{align}
-c^{n+1} = c^{n}+\Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}} M \nabla \mu_c \right) \right]
+c^{n} = c^{n-1}+\Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}^{n-1}} M \nabla \mu_c^{n-1} \right) \right]
 \end{align}
 $$
 
 $$
 \begin{align}
-\eta_p^{n+1} = \eta_p^n -\Delta t L \mu_{\eta_p}
+\eta_p^{n} = \eta_p^{n-1} -\Delta t L \mu_{\eta_p}^{n-1}
 \end{align}
 $$
 
@@ -154,7 +154,31 @@ Writing the equations from the Kinetics section in the weak form, with the arbit
 
 $$
 \begin{align}
-\int_\Omega w c^{n+1} dV &= \int_\Omega wc^{n}+w  \Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}}  M \nabla \mu_c \right) \right] dV
+\int_\Omega w c^{n} dV &= \int_\Omega wc^{n-1}+w  \Delta t \left[\nabla \cdot \left(\frac{1}{f_{,cc}^{n-1}}  M \nabla \mu_c^{n-1} \right) \right] dV
+\end{align}
+$$
+
+$$
+\begin{align}
+%&= \int_\Omega wc^{n-1} +\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
+\end{align}
+$$
+
+$$
+\begin{align}
+r_c &= c^{n-1}
+\end{align}
+$$
+
+$$
+\begin{align}
+r_{cx} &= \Delta t  M \nabla \mu_c^{n-1}
+\end{align}
+$$
+
+$$
+\begin{align}
+\int_\Omega w \eta^{n} dV &= \int_\Omega w \eta^{n-1}-w  \Delta t L \mu_{\eta}^{n-1} dV
 \end{align}
 $$
 
@@ -166,37 +190,13 @@ $$
 
 $$
 \begin{align}
-r_c &= c^{n}
+r_c &= c^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{cx} &= \Delta t  M \nabla \mu_c
-\end{align}
-$$
-
-$$
-\begin{align}
-\int_\Omega w \eta^{n+1} dV &= \int_\Omega w \eta^{n}-w  \Delta t L \mu_{\eta} dV
-\end{align}
-$$
-
-$$
-\begin{align}
-%&= \int_\Omega wc^{n} +\nabla w \cdot (\Delta t  M \nabla \mu_c ) dV
-\end{align}
-$$
-
-$$
-\begin{align}
-r_c &= c^{n}
-\end{align}
-$$
-
-$$
-\begin{align}
-r_{cx} &= \Delta t  M \nabla \mu_c
+r_{cx} &= \Delta t  M \nabla \mu_c^{n-1}
 \end{align}
 $$
 
@@ -204,7 +204,7 @@ The expression of $\frac{1}{f_{,cc}} \mu_c$ can be written as:
 
 $$
 \begin{equation}
-\frac{1}{f_{,cc}}  \nabla \mu_c =  \nabla c + (c_{\alpha}-c_{\beta}) H(\eta)_{,\eta} \nabla \eta
+\frac{1}{f_{,cc}^{n-1}}  \nabla \mu_c^{n-1} =  \nabla c^{n-1} + (c_{\alpha}^{n-1}-c_{\beta}^{n-1}) H_{,\eta}^{n-1} \nabla \eta^{n-1}
 \end{equation}
 $$
 
@@ -212,19 +212,19 @@ Applying the divergence theorem to the weak CH equation, one can derive the resi
 
 $$
 \begin{equation}
-\int_\Omega w c^{n+1} dV = \int_\Omega w c^{n} +\nabla w \cdot (-\Delta t  M \frac{1}{f_{,cc}} \nabla \mu_c ) dV
+\int_\Omega w c^{n} dV = \int_\Omega w c^{n-1} +\nabla w \cdot (-\Delta t  M \frac{1}{f_{,cc}^{n-1}} \nabla \mu_c^{n-1} ) dV
 \end{equation}
 $$
 
 $$
 \begin{align}
-r_c &= c^{n}
+r_c &= c^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{cx} &= -\Delta t  M \frac{1}{f_{,cc}} \nabla \mu_c
+r_{cx} &= -\Delta t  M \frac{1}{f_{,cc}^{n-1}} \nabla \mu_c^{n-1}
 \end{align}
 $$
 
@@ -232,25 +232,25 @@ Expanding $\mu_{\eta}$ in the weak AC equation and applying the divergence theor
 
 $$
 \begin{align}
-\int_\Omega w \eta^{n+1} dV = &\int_\Omega w \bigg[ \eta^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H_{,\eta}(\eta^n) -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}H_{,\eta}(\eta^n) + W f_{Landau,\eta}
+\int_\Omega w \eta^{n} dV = &\int_\Omega w \bigg[ \eta^{n-1}-\Delta t L \bigg[(f_{\beta}^{n-1}-f_{\alpha}^{n-1})H_{,\eta}^{n-1} - (c_{\beta}^{n-1}-c_{\alpha}^{n-1}) f_{\beta,c_{\beta}}^{n-1}H_{,\eta}^{n-1} + W f_{Landau,\eta}^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-&+ \nabla w \cdot (-\Delta t  L \kappa \nabla \eta^n ) dV
+&+ \nabla w \cdot (-\Delta t  L \kappa \nabla \eta^{n-1} ) dV
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta} &= \eta^{n}-\Delta t L \bigg[(f_{\beta}-f_{\alpha})H_{,\eta}(\eta^n) -(c_{\beta}-c_{\alpha}) f_{\beta,c_{\beta}}H_{,\eta}(\eta^n) + W f_{Landau,\eta}
+r_{\eta} &= \eta^{n-1}-\Delta t L \bigg[(f_{\beta}^{n-1}-f_{\alpha}^{n-1})H_{,\eta}^{n-1} - (c_{\beta}^{n-1}-c_{\alpha}^{n-1}) f_{\beta,c_{\beta}}^{n-1}H_{,\eta}^{n-1} + W f_{Landau,\eta}^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta x} &= -\Delta t  L \kappa \nabla \eta^n
+r_{\eta x} &= -\Delta t  L \kappa \nabla \eta^{n-1}
 \end{align}
 $$
 
