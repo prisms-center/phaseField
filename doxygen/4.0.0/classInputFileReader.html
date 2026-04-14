@@ -139,15 +139,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa320e6ded8304f238a445bd920dd9272" id="r_aa320e6ded8304f238a445bd920dd9272"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa320e6ded8304f238a445bd920dd9272">InputFileReader</a> (std::string input_file_name)</td></tr>
 <tr class="memdesc:aa320e6ded8304f238a445bd920dd9272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:aa320e6ded8304f238a445bd920dd9272"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad10d22bd70b09bdc13803ce1261f9fce" id="r_ad10d22bd70b09bdc13803ce1261f9fce"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad10d22bd70b09bdc13803ce1261f9fce">get_model_constant_names</a> ()</td></tr>
-<tr class="memdesc:ad10d22bd70b09bdc13803ce1261f9fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the trailing part of the entry name after a specified string (used to extract the model constant names).  <br /></td></tr>
-<tr class="separator:ad10d22bd70b09bdc13803ce1261f9fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3c9c4a5120990be665ed472f88c83c1" id="r_ae3c9c4a5120990be665ed472f88c83c1"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3c9c4a5120990be665ed472f88c83c1">get_names</a> ()</td></tr>
+<tr class="memdesc:ae3c9c4a5120990be665ed472f88c83c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the trailing part of the entry name after a specified string (used to extract the model constant names).  <br /></td></tr>
+<tr class="separator:ae3c9c4a5120990be665ed472f88c83c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43516d8890cdc244ac27cdc8ca65b932" id="r_a43516d8890cdc244ac27cdc8ca65b932"><td class="memItemLeft" align="right" valign="top">dealii::ParameterHandler &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43516d8890cdc244ac27cdc8ca65b932">get_parameter_handler</a> ()</td></tr>
 <tr class="memdesc:a43516d8890cdc244ac27cdc8ca65b932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the parameter handler.  <br /></td></tr>
 <tr class="separator:a43516d8890cdc244ac27cdc8ca65b932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4dc47d61d0a3d752dfb3a4cddd9aac3" id="r_aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="memItemLeft" align="right" valign="top">const std::set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4dc47d61d0a3d752dfb3a4cddd9aac3">get_model_constant_names</a> () const</td></tr>
-<tr class="memdesc:aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model constant names.  <br /></td></tr>
-<tr class="separator:aa4dc47d61d0a3d752dfb3a4cddd9aac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1a6370a0b1d2f62ab95a27a799309f1" id="r_af1a6370a0b1d2f62ab95a27a799309f1"><td class="memItemLeft" align="right" valign="top">const std::set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1a6370a0b1d2f62ab95a27a799309f1">get_names</a> () const</td></tr>
+<tr class="memdesc:af1a6370a0b1d2f62ab95a27a799309f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the model constant names.  <br /></td></tr>
+<tr class="separator:af1a6370a0b1d2f62ab95a27a799309f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97aab5765b031532f58cb7b15f0de6c3" id="r_a97aab5765b031532f58cb7b15f0de6c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97aab5765b031532f58cb7b15f0de6c3">declare_parameters</a> ()</td></tr>
 <tr class="memdesc:a97aab5765b031532f58cb7b15f0de6c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to declare the parameters to be read from an input file.  <br /></td></tr>
 <tr class="separator:a97aab5765b031532f58cb7b15f0de6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -513,8 +513,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad10d22bd70b09bdc13803ce1261f9fce" name="ad10d22bd70b09bdc13803ce1261f9fce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad10d22bd70b09bdc13803ce1261f9fce">&#9670;&#160;</a></span>get_model_constant_names() <span class="overload">[1/2]</span></h2>
+<a id="ae3c9c4a5120990be665ed472f88c83c1" name="ae3c9c4a5120990be665ed472f88c83c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3c9c4a5120990be665ed472f88c83c1">&#9670;&#160;</a></span>get_names() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -523,7 +523,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::set&lt; std::string &gt; InputFileReader::get_model_constant_names </td>
+          <td class="memname">std::set&lt; std::string &gt; InputFileReader::get_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -540,8 +540,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa4dc47d61d0a3d752dfb3a4cddd9aac3" name="aa4dc47d61d0a3d752dfb3a4cddd9aac3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4dc47d61d0a3d752dfb3a4cddd9aac3">&#9670;&#160;</a></span>get_model_constant_names() <span class="overload">[2/2]</span></h2>
+<a id="af1a6370a0b1d2f62ab95a27a799309f1" name="af1a6370a0b1d2f62ab95a27a799309f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1a6370a0b1d2f62ab95a27a799309f1">&#9670;&#160;</a></span>get_names() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -550,7 +550,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::set&lt; std::string &gt; &amp; InputFileReader::get_model_constant_names </td>
+          <td class="memname">const std::set&lt; std::string &gt; &amp; InputFileReader::get_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
