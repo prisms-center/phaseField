@@ -26,17 +26,15 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , Mc(get_user_inputs().user_constants.get_model_constant_double("Mc"))
-    , Mn(get_user_inputs().user_constants.get_model_constant_double("Mn"))
-    , Kn(get_user_inputs().user_constants.get_model_constant_double("Kn"))
-    , center1(
-        get_user_inputs().user_constants.get_model_constant_rank_1_tensor("center1"))
-    , center2(
-        get_user_inputs().user_constants.get_model_constant_rank_1_tensor("center2"))
-    , radius1(get_user_inputs().user_constants.get_model_constant_double("radius1"))
-    , radius2(get_user_inputs().user_constants.get_model_constant_double("radius2"))
-    , matrix_concentration(get_user_inputs().user_constants.get_model_constant_double(
-        "matrix_concentration"))
+    , Mc(get_user_inputs().user_constants.get_double("Mc"))
+    , Mn(get_user_inputs().user_constants.get_double("Mn"))
+    , Kn(get_user_inputs().user_constants.get_double("Kn"))
+    , center1(get_user_inputs().user_constants.get_rank_1_tensor("center1"))
+    , center2(get_user_inputs().user_constants.get_rank_1_tensor("center2"))
+    , radius1(get_user_inputs().user_constants.get_double("radius1"))
+    , radius2(get_user_inputs().user_constants.get_double("radius2"))
+    , matrix_concentration(
+        get_user_inputs().user_constants.get_double("matrix_concentration"))
   {}
 
 private:
