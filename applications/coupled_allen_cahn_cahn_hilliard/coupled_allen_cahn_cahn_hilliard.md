@@ -61,13 +61,13 @@ Considering forward Euler explicit time stepping, we have the time discretized k
 
 $$
 \begin{align}
- \eta^{n+1} &= \eta^{n}  - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \nabla^2 \eta^n)
+ \eta^{n} &= \eta^{n-1}  - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1})
 \end{align}
 $$
 
 $$
 \begin{align}
-c^{n+1} &= c^{n}  + \Delta t M_{\eta}~\nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))
+c^{n} &= c^{n-1}  + \Delta t M_{\eta}~\nabla \cdot (\nabla (f_{\alpha,c}^{n-1}(1-H^{n-1})+f_{\beta,c}^n H^{n-1}))
 \end{align}
 $$
 
@@ -76,25 +76,25 @@ In the weak formulation, considering an arbitrary variation $w$, the above equat
 
 $$
 \begin{align}
-  \int_{\Omega}   w  \eta^{n+1}  ~dV &= \int_{\Omega}   w \eta^{n} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n - \kappa \nabla^2 \eta^n)  ~dV
+  \int_{\Omega}   w  \eta^{n}  ~dV &= \int_{\Omega}   w \eta^{n-1} -   w    \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1} - \kappa \nabla^2 \eta^{n-1})  ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-  &=\int_{\Omega}  w  \left(\eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n} ~dV
+  &=\int_{\Omega}  w  \left(\eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1}) \right)+ \nabla w \cdot (- \Delta t M_{\eta}\kappa) \nabla \eta^{n-1} ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta} &= \eta^{n} - \Delta t M_{\eta}~ ((f_{\beta,c}^n-f_{\alpha,c}^n)H_{,\eta}^n)
+r_{\eta} &= \eta^{n-1} - \Delta t M_{\eta}~ ((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H_{,\eta}^{n-1})
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{\eta x} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n}
+r_{\eta x} &= (- \Delta t M_{\eta}\kappa) \nabla \eta^{n-1}
 \end{align}
 $$
 
@@ -102,25 +102,25 @@ and
 
 $$
 \begin{align}
-  \int_{\Omega}   w  c^{n+1}  ~dV &= \int_{\Omega}   w c^{n} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^n(1-H^{n})+f_{\beta,c}^n H^{n}))  ~dV
+  \int_{\Omega}   w  c^{n}  ~dV &= \int_{\Omega}   w c^{n-1} + w    \Delta t M_{c}~ \nabla \cdot (\nabla (f_{\alpha,c}^{n-1}(1-H^{n-1})+f_{\beta,c}^{n-1} H^{n-1}))  ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-    &= \int_{\Omega}   w c^{n} +  \nabla w   (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ] ~dV
+    &= \int_{\Omega}   w c^{n-1} +  \nabla w   (-\Delta t M_{c})~ [~(f_{\alpha,cc}^{n-1}(1-H^{n-1})+f_{\beta,cc}^{n-1} H^{n-1}) \nabla c + ~((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H^{n-1}_{,\eta} \nabla \eta) ] ~dV
 \end{align}
 $$
 
 $$
 \begin{align}
-r_c &= c^{n}
+r_c &= c^{n-1}
 \end{align}
 $$
 
 $$
 \begin{align}
-r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^n(1-H^{n})+f_{\beta,cc}^n H^{n}) \nabla c + ~((f_{\beta,c}^n-f_{\alpha,c}^n)H^{n}_{,\eta} \nabla \eta) ]
+r_{cx} &= (-\Delta t M_{c})~ [~(f_{\alpha,cc}^{n-1}(1-H^{n-1})+f_{\beta,cc}^{n-1} H^{n-1}) \nabla c + ~((f_{\beta,c}^{n-1}-f_{\alpha,c}^{n-1})H^{n-1}_{,\eta} \nabla \eta) ]
 \end{align}
 $$
 
