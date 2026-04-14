@@ -59,8 +59,11 @@ struct OutputParameters
   void
   add_equal_spacing_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
-    AssertThrow(num_increments > 0,
-                dealii::ExcMessage("num_increments must be greater than 0.\n"));
+    if (num_increments == 0)
+      {
+        output_list.insert(0);
+        return;
+      }
     if (!num_outputs)
       {
         return;
