@@ -345,26 +345,43 @@ InputFileReader::declare_mesh()
 void
 InputFileReader::declare_time_discretization()
 {
-  parameter_handler.declare_entry("number steps",
-                                  "1",
-                                  dealii::Patterns::Integer(1, INT_MAX),
-                                  "The total number of step for the simulation.");
+  parameter_handler.declare_entry("final increment",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The final increment for the simulation.");
   parameter_handler.declare_entry("time step",
                                   "0.0",
                                   dealii::Patterns::Double(0.0, DBL_MAX),
                                   "The time step size for the simulation.");
-  parameter_handler.declare_entry(
-    "end time",
-    "0.0",
-    dealii::Patterns::Double(0.0, DBL_MAX),
-    "The value of simulated time where the simulation ends.");
-  parameter_handler.declare_alias("number steps", "steps");
-  parameter_handler.declare_alias("number steps", "iterations");
-  parameter_handler.declare_alias("number steps", "number of steps");
-  parameter_handler.declare_alias("number steps", "num steps");
-  parameter_handler.declare_alias("number steps", "n steps");
+  parameter_handler.declare_entry("end time",
+                                  "0.0",
+                                  dealii::Patterns::Double(0.0, DBL_MAX),
+                                  "The value of simulated time where the simulation "
+                                  "ends. Overrides final increment if greater than 0.");
+
+  parameter_handler.declare_alias("final increment", "number steps");
+  parameter_handler.declare_alias("final increment", "number of steps");
+  parameter_handler.declare_alias("final increment", "num steps");
+  parameter_handler.declare_alias("final increment", "n steps");
+  parameter_handler.declare_alias("final increment", "last increment");
+  parameter_handler.declare_alias("final increment", "end increment");
+  parameter_handler.declare_alias("final increment", "final_increment");
+  parameter_handler.declare_alias("final increment", "number_steps");
+  parameter_handler.declare_alias("final increment", "number_of_steps");
+  parameter_handler.declare_alias("final increment", "num_steps");
+  parameter_handler.declare_alias("final increment", "n_steps");
+  parameter_handler.declare_alias("final increment", "last_increment");
+  parameter_handler.declare_alias("final increment", "end_increment");
+  parameter_handler.declare_alias("final increment", "steps"); //
+  parameter_handler.declare_alias("final increment", "iterations");
+  parameter_handler.declare_alias("final increment", "increments");
+
   parameter_handler.declare_alias("time step", "timestep");
+  parameter_handler.declare_alias("time step", "time_step");
   parameter_handler.declare_alias("time step", "dt");
+
+  parameter_handler.declare_alias("end time", "final time");
+  parameter_handler.declare_alias("end time", "end_time");
 }
 
 void

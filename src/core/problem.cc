@@ -208,7 +208,7 @@ Problem<dim, degree, number>::solve()
   init_system();
   Timer::end_section("Initialization");
 
-  ConditionalOStreams::pout_base() << "\n";
+  ConditionalOStreams::pout_base() << "\nSolving...\n\n" << std::flush;
 
   ConditionalOStreams::pout_summary()
     << "================================================\n"

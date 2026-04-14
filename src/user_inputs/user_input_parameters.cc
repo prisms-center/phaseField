@@ -131,7 +131,7 @@ UserInputParameters<dim>::assign_temporal_discretization_parameters(
 {
   temporal_discretization.dt = parameter_handler.get_double("time step");
   temporal_discretization.num_increments =
-    static_cast<unsigned int>(parameter_handler.get_integer("number steps"));
+    static_cast<unsigned int>(parameter_handler.get_integer("final increment"));
   double final_time = parameter_handler.get_double("end time");
   if (final_time > 0.0)
     {
