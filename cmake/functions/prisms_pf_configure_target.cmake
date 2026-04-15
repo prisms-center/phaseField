@@ -18,6 +18,16 @@ function(prisms_pf_configure_target target_name build_type)
         ON
   )
 
+# Create the compiler flags we care about
+set(PRISMS_PF_CXX_FLAGS ${DEAL_II_CXX_FLAGS} ${CMAKE_CXX_FLAGS})
+set(PRISMS_PF_CXX_FLAGS_DEBUG ${DEAL_II_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS_DEBUG})
+set(PRISMS_PF_CXX_FLAGS_RELEASE ${DEAL_II_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS_RELEASE})
+
+	# Separate space delimited arguments into list
+	separate_arguments(PRISMS_PF_CXX_FLAGS_LIST UNIX_COMMAND "${PRISMS_PF_CXX_FLAGS}")
+	separate_arguments(PRISMS_PF_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${PRISMS_PF_CXX_FLAGS_DEBUG}")
+	separate_arguments(PRISMS_PF_CXX_FLAGS_RELEASE_LIST UNIX_COMMAND "${PRISMS_PF_CXX_FLAGS_RELEASE}")
+
   # Add the compile flags, which we inherit from deal.II
   # TODO: We really shouldn't do this and have suggested
   # flags that get inherited from deal.II
@@ -26,15 +36,15 @@ function(prisms_pf_configure_target target_name build_type)
     target_compile_options(
       ${target_name}
       PUBLIC
-        ${DEAL_II_CXX_FLAGS_LIST}
-        ${DEAL_II_CXX_FLAGS_DEBUG_LIST}
+			${PRISMS_PF_CXX_FLAGS_LIST}
+			${PRISMS_PF_CXX_FLAGS_DEBUG_LIST}
     )
   elseif(build_type STREQUAL "Release")
     target_compile_options(
       ${target_name}
       PUBLIC
-        ${DEAL_II_CXX_FLAGS_LIST}
-        ${DEAL_II_CXX_FLAGS_RELEASE_LIST}
+			${PRISMS_PF_CXX_FLAGS_LIST}
+			${PRISMS_PF_CXX_FLAGS_RELEASE_LIST}
     )
   else()
     message(FATAL_ERROR "Unknown build_type = ${build_type}")
@@ -44,15 +54,15 @@ function(prisms_pf_configure_target target_name build_type)
     target_link_options(
       ${target_name}
       PUBLIC
-        SHELL:${DEAL_II_LINKER_FLAGS}
-        SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}
+        ${DEAL_II_LINKER_FLAGS}
+        ${DEAL_II_LINKER_FLAGS_DEBUG}
     )
   elseif(build_type STREQUAL "Release")
     target_link_options(
       ${target_name}
       PUBLIC
-        SHELL:${DEAL_II_LINKER_FLAGS}
-        SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}
+        ${DEAL_II_LINKER_FLAGS}
+        ${DEAL_II_LINKER_FLAGS_RELEASE}
     )
   else()
     message(FATAL_ERROR "Unknown build_type = ${build_type}")

@@ -261,14 +261,6 @@ print_variables(
   CMAKE_CXX_FLAGS_RELEASE
 )
 
-separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
-separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
-separate_arguments(
-  DEAL_II_CXX_FLAGS_RELEASE_LIST
-  UNIX_COMMAND
-  "${DEAL_II_CXX_FLAGS_RELEASE}"
-)
-
 # Check the deal.II was built with the right dependencies
 if(NOT DEAL_II_WITH_MPI)
   message(FATAL_ERROR "deal.II was not built with MPI support!")
