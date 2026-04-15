@@ -508,6 +508,10 @@ InputFileReader::declare_output_parameters()
 {
   parameter_handler.enter_subsection("output");
   {
+    parameter_handler.declare_entry("folder name",
+                                    "solutions",
+                                    dealii::Patterns::Anything(),
+                                    "The name for the output folder.");
     parameter_handler.declare_entry("file name",
                                     "solution",
                                     dealii::Patterns::Anything(),
