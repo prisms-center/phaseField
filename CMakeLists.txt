@@ -242,7 +242,7 @@ print_variables(
 # TODO: Don't rely on deal.II do stuff ourselves
 
 function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-std=[^ ]+" "" stripped "${input}")
+  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
   string(STRIP "${stripped}" stripped)
   set(${output} "${stripped}" PARENT_SCOPE)
 endfunction()
@@ -259,14 +259,6 @@ print_variables(
   CMAKE_CXX_FLAGS
   CMAKE_CXX_FLAGS_DEBUG
   CMAKE_CXX_FLAGS_RELEASE
-)
-
-separate_arguments(DEAL_II_CXX_FLAGS_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS}")
-separate_arguments(DEAL_II_CXX_FLAGS_DEBUG_LIST UNIX_COMMAND "${DEAL_II_CXX_FLAGS_DEBUG}")
-separate_arguments(
-  DEAL_II_CXX_FLAGS_RELEASE_LIST
-  UNIX_COMMAND
-  "${DEAL_II_CXX_FLAGS_RELEASE}"
 )
 
 # Check the deal.II was built with the right dependencies
