@@ -22,21 +22,41 @@ function(prisms_pf_configure_target target_name build_type)
   # TODO: We really shouldn't do this and have suggested
   # flags that get inherited from deal.II
   # TODO: These shouldn't be public
-  target_compile_options(
-    ${target_name}
-    PUBLIC
-      ${DEAL_II_CXX_FLAGS_LIST}
-      $<$<CONFIG:Debug>:${DEAL_II_CXX_FLAGS_DEBUG_LIST}>
-      $<$<CONFIG:Release>:${DEAL_II_CXX_FLAGS_RELEASE_LIST}>
-  )
+  if(build_type STREQUAL "Debug")
+    target_compile_options(
+      ${target_name}
+      PUBLIC
+        ${DEAL_II_CXX_FLAGS_LIST}
+        ${DEAL_II_CXX_FLAGS_DEBUG_LIST}
+    )
+  elseif(build_type STREQUAL "Release")
+    target_compile_options(
+      ${target_name}
+      PUBLIC
+        ${DEAL_II_CXX_FLAGS_LIST}
+        ${DEAL_II_CXX_FLAGS_RELEASE_LIST}
+    )
+  else()
+    message(FATAL_ERROR "Unknown build_type = ${build_type}")
+  endif()
 
-  target_link_options(
-    ${target_name}
-    PUBLIC
-      SHELL:${DEAL_II_LINKER_FLAGS}
-      $<$<CONFIG:Debug>:SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}>
-      $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
-  )
+  if(build_type STREQUAL "Debug")
+    target_link_options(
+      ${target_name}
+      PUBLIC
+        SHELL:${DEAL_II_LINKER_FLAGS}
+        SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}
+    )
+  elseif(build_type STREQUAL "Release")
+    target_link_options(
+      ${target_name}
+      PUBLIC
+        SHELL:${DEAL_II_LINKER_FLAGS}
+        SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}
+    )
+  else()
+    message(FATAL_ERROR "Unknown build_type = ${build_type}")
+  endif()
 
   # clang-tidy if defined
   if(CLANG_TIDY_TOOL)

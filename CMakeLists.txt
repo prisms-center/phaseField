@@ -242,7 +242,7 @@ print_variables(
 # TODO: Don't rely on deal.II do stuff ourselves
 
 function(strip_dealii_flags input output)
-  string(REGEX REPLACE "-O[0-9s]|-std=[^ ]+" "" stripped "${input}")
+  string(REGEX REPLACE "-std=[^ ]+" "" stripped "${input}")
   string(STRIP "${stripped}" stripped)
   set(${output} "${stripped}" PARENT_SCOPE)
 endfunction()
