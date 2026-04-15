@@ -138,6 +138,9 @@ struct OutputParameters
     return output_list.size();
   }
 
+  // Output folder name
+  std::string folder_name;
+
   // Output file type ()
   std::string file_type;
 
