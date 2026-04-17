@@ -508,14 +508,14 @@ InputFileReader::declare_output_parameters()
 {
   parameter_handler.enter_subsection("output");
   {
-    parameter_handler.declare_entry("folder name",
+    parameter_handler.declare_entry("directory",
                                     "solutions",
                                     dealii::Patterns::Anything(),
-                                    "The name for the output folder.");
+                                    "The name of the output directory.");
     parameter_handler.declare_entry("file name",
                                     "solution",
                                     dealii::Patterns::Anything(),
-                                    "The name for the output file, before the "
+                                    "The prefix of the output files, before the "
                                     "time step and processor info are added.");
     parameter_handler.declare_entry(
       "file type",
@@ -554,6 +554,7 @@ InputFileReader::declare_output_parameters()
       dealii::Patterns::Bool(),
       "Whether to print the summary table of the wall time and wall time for "
       "individual subroutines every time the code outputs.");
+    parameter_handler.declare_alias("directory", "folder name");
   }
   parameter_handler.leave_subsection();
 }

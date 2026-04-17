@@ -147,9 +147,9 @@ UserInputParameters<dim>::assign_output_parameters(
 {
   parameter_handler.enter_subsection("output");
   {
-    output_parameters.folder_name = parameter_handler.get("folder name");
-    output_parameters.file_name   = parameter_handler.get("file name");
-    output_parameters.file_type   = parameter_handler.get("file type");
+    output_parameters.directory = parameter_handler.get("directory");
+    output_parameters.file_name = parameter_handler.get("file name");
+    output_parameters.file_type = parameter_handler.get("file type");
     output_parameters.patch_subdivisions =
       static_cast<unsigned int>(parameter_handler.get_integer("subdivisions"));
 
