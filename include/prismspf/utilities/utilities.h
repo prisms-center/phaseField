@@ -5,9 +5,11 @@
 
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/logstream.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
+#include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
@@ -22,25 +24,42 @@
 #include <string_view>
 #include <unordered_map>
 
+namespace cali
+{
+  class ConfigManager;
+}
+
 PRISMS_PF_BEGIN_NAMESPACE
 
-class MPI_InitFinalize : public dealii::Utilities::MPI::MPI_InitFinalize
+/**
+ * @brief This class does the boilerplate that precedes and succeeds the simulation.
+ *
+ * @note In this class we initialize MPI, so everything that follows executes per process.
+ */
+class MPIInitFinalize : public dealii::Utilities::MPI::MPI_InitFinalize
 {
 public:
-#ifdef DEBUG
-  MPI_InitFinalize(int                                &argc,
-                   char                             **&argv,
-                   [[maybe_unused]] const unsigned int max_num_threads =
-                     dealii::numbers::invalid_unsigned_int)
-    : dealii::Utilities::MPI::MPI_InitFinalize(argc, argv, 1)
-  {}
+  MPIInitFinalize(int &argc, char **&argv, unsigned int _max_n_threads = 0);
+
+  ~MPIInitFinalize();
+
+private:
+  /**
+   * @brief Number of threads to try and use.
+   *
+   * @note If PRISMS_PF_THREADS=OFF this is always set to 1 unless otherwise specified.
+   */
+#ifdef PRISMS_PF_THREADS
+  static constexpr unsigned int max_n_threads = dealii::numbers::invalid_unsigned_int;
 #else
-  MPI_InitFinalize(
-    int               &argc,
-    char            **&argv,
-    const unsigned int max_num_threads = dealii::numbers::invalid_unsigned_int)
-    : dealii::Utilities::MPI::MPI_InitFinalize(argc, argv, max_num_threads)
-  {}
+  static constexpr unsigned int max_n_threads = 1;
+#endif
+
+  /**
+   * @brief Caliper config manager
+   */
+#ifdef PRISMS_PF_WITH_CALIPER
+  std::unique_ptr<cali::ConfigManager> mgr;
 #endif
 };
 

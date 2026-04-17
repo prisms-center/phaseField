@@ -298,7 +298,17 @@ if(NOT DEAL_II_WITH_64BIT_INDICES STREQUAL PRISMS_PF_64BIT_INDICES)
   )
 endif()
 
-# TODO: Add caliper
+# Find Caliper if we've enabled it
+if(PRISMS_PF_WITH_CALIPER)
+  find_package(
+    caliper
+    REQUIRED
+    HINTS
+      ${CALIPER_DIR}
+      $ENV{CALIPER_DIR}
+  )
+endif()
+
 # TODO: Add VTK
 
 # FetchCotent MakeAvailable for the other vendored dependencies

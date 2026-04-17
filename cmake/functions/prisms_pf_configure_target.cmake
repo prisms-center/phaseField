@@ -155,6 +155,7 @@ function(prisms_pf_configure_target target_name build_type)
     ${target_name}
     PUBLIC
       MPI::MPI_CXX
+      $<$<BOOL:${PRISMS_PF_WITH_CALIPER}>:caliper>
     PRIVATE
       $<BUILD_LOCAL_INTERFACE:libassert::assert>
   )
