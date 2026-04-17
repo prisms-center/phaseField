@@ -70,7 +70,7 @@ public:
   {
     if (solve_block_id == 1) // linear rhs
       {
-        variable_list.set_gradient_term(0, VectorValue());
+        variable_list.set_value_term(0, ScalarValue(0.0));
       }
   }
 

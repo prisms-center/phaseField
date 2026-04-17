@@ -25,14 +25,16 @@ main(int argc, char *argv[])
   constexpr unsigned int dim    = 2;
   constexpr unsigned int degree = 2;
 
+  // Define the fields. In this case, we only have one field, u.
   std::vector<FieldAttributes> fields = {FieldAttributes("u")};
 
-  SolveBlock linear_solve(1,
-                          Linear,
-                          Uninitialized,
-                          {0},
-                          {},
-                          make_dependency_set(fields, {"grad(lhs(u))"}));
+  // Define the solve block that solves the linear PDE.
+  SolveBlock linear_solve;
+  linear_solve.id               = 1;
+  linear_solve.field_indices    = {0}; // u
+  linear_solve.solve_type       = Linear;
+  linear_solve.solve_timing     = Uninitialized;
+  linear_solve.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))"});
 
   std::vector<SolveBlock> solve_blocks({linear_solve});
 
