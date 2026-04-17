@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - 4.0-dev
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref }}
