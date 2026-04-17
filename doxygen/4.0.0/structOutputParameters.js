@@ -9,6 +9,7 @@ var structOutputParameters =
     [ "print_parameter_summary", "structOutputParameters.html#a8c5c30cb129285cf40f8dfa7b8cc9f8d", null ],
     [ "should_output", "structOutputParameters.html#a9dc9e90a0a6db418605ee918d6ba102d", null ],
     [ "validate", "structOutputParameters.html#ad8a167c995eb0da8caea0f916b32ed02", null ],
+    [ "directory", "structOutputParameters.html#af554957eb23377d9a1098423adfb57dd", null ],
     [ "file_name", "structOutputParameters.html#a6d76eb8d97954e7ac5a1822b4cedd1e8", null ],
     [ "file_type", "structOutputParameters.html#ab0df2db42a18657d93b5f388f2117413", null ],
     [ "output_list", "structOutputParameters.html#a9771dee0609ee12001963d53b58f3373", null ],

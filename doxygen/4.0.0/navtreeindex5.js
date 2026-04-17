@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"structRefinementCriterion.html":[7,0,50],
 "structRefinementCriterion.html#a1b104a3e47f11f5119a96b8a890e7fd3":[7,0,50,0],
 "structRefinementCriterion.html#a24743f1c90f649399d73d2b2ebbef504":[7,0,50,1],
 "structRefinementCriterion.html#a2abe1974a53262282636c44a787efeeb":[7,0,50,3],

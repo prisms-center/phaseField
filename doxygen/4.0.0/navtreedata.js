@@ -80,7 +80,7 @@ var NAVTREEINDEX =
 "classSolveContext.html#a0bdecaf7a6ce7c753711952350bc373a",
 "dir_aebb8dcc11953d78e620bbef0b9e2183.html",
 "read__field__factory_8h.html#a42275eddf71c83153aa8a2115c76dfe4",
-"structRefinementCriterion.html#a1b104a3e47f11f5119a96b8a890e7fd3"
+"structRefinementCriterion.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
