@@ -138,14 +138,14 @@ struct OutputParameters
     return output_list.size();
   }
 
-  // Output folder name
-  std::string folder_name;
+  // Output directory
+  std::string directory = "solutions";
 
   // Output file type ()
-  std::string file_type;
+  std::string file_type = "vtu";
 
   // Output file name
-  std::string file_name;
+  std::string file_name = "solution";
 
   // The number of subdivisions to apply when building patches. By default this is the
   // element degree.

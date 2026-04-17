@@ -314,7 +314,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   if (user_inputs.output_parameters.should_output(increment))
     {
       std::filesystem::path output_prefix =
-        std::filesystem::path(user_inputs.output_parameters.folder_name) /
+        std::filesystem::path(user_inputs.output_parameters.directory) /
         user_inputs.output_parameters.file_name;
       std::filesystem::path output_path = output_prefix;
       output_path.remove_filename();
