@@ -26,20 +26,18 @@ MPIInitFinalize::MPIInitFinalize(int                          &argc,
   dealii::deallog.depth_console(0);
 
 #ifdef PRISMS_PF_WITH_CALIPER
-  mgr = std::make_unique<cali::ConfigManager>();
-
   // Add some useful defaults for Caliper
   // TODO: Make this configurable at the command line
-  mgr->add("runtime-report,mem.highwatermark");
+  mgr.add("runtime-report,mem.highwatermark");
 
   // Check for configuration errors
-  if (mgr->error())
+  if (mgr.error())
     {
-      std::cerr << "Caliper error: " << mgr->error_msg() << "\n" << std::flush;
+      std::cerr << "Caliper error: " << mgr.error_msg() << "\n" << std::flush;
     }
 
   // Start configured performance measurements, if any
-  mgr->start();
+  mgr.start();
 #endif
 }
 
@@ -47,7 +45,7 @@ MPIInitFinalize::~MPIInitFinalize()
 {
 #ifdef PRISMS_PF_WITH_CALIPER
   // Close and flush Caliper config manager. Must be done before finalizing MPI
-  mgr->flush();
+  mgr.flush();
 #endif
   // The dealii::Utilities::MPI::MPI_InitFinalize is implicitly destructed
 }

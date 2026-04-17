@@ -24,10 +24,10 @@
 #include <string_view>
 #include <unordered_map>
 
-namespace cali
-{
-  class ConfigManager;
-}
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali-manager.h>
+#  include <caliper/cali.h>
+#endif
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -59,7 +59,7 @@ private:
    * @brief Caliper config manager
    */
 #ifdef PRISMS_PF_WITH_CALIPER
-  std::unique_ptr<cali::ConfigManager> mgr;
+  cali::ConfigManager mgr;
 #endif
 };
 
