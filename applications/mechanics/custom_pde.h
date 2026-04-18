@@ -31,12 +31,11 @@ public:
 
 private:
   void
-  set_initial_condition([[maybe_unused]] const Poing<dim>   &p,
+  set_initial_condition([[maybe_unused]] const Point<dim>   &p,
                         [[maybe_unused]] const unsigned int &index,
                         [[maybe_unused]] const double       &scalar_IC,
                         [[maybe_unused]] Vector<double>     &vector_IC) override;
-  {
-  }
+  {}
 
   void
   compute_rhs(FieldContainer<dim, degree, number>      &variable_list,
