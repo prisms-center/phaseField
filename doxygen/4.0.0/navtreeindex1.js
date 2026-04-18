@@ -77,8 +77,10 @@ var NAVTREEINDEX1 =
 "classMGSolver.html#adc361a961aa585a782d2131ffc1ce322":[7,0,30,7],
 "classMGSolver.html#ae2e3be10e79adacb07a691d9618df8f4":[7,0,30,9],
 "classMGSolver.html#af0d70ff2ff50f7df45e9a32c334f67c0":[7,0,30,1],
-"classMPI__InitFinalize.html":[7,0,32],
-"classMPI__InitFinalize.html#ab8695e241c5177b4a04e0d408f8f6c3c":[7,0,32,0],
+"classMPIInitFinalize.html":[7,0,32],
+"classMPIInitFinalize.html#a1cb52965517520e0667955c604721f91":[7,0,32,2],
+"classMPIInitFinalize.html#a9cd2df9b62aabda5b5631dff43c709e5":[7,0,32,1],
+"classMPIInitFinalize.html#aba602b90b70fc51525c68b326c3e2cbb":[7,0,32,0],
 "classNewtonSolver.html":[7,0,33],
 "classNewtonSolver.html#a2267ec75641bb4c1fdee4d5b5d32777f":[7,0,33,2],
 "classNewtonSolver.html#a3ed196406b73421f1a902e0a0b8523ff":[7,0,33,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "classSolveBlock.html#ae4854c490eba31d442c24bba0bdf08e3":[7,0,56,4],
 "classSolveBlock.html#aed4db27b24952789059c00d833b912d6":[7,0,56,9],
 "classSolveContext.html":[7,0,57],
-"classSolveContext.html#a088feba649304f5f24a9674b598679cf":[7,0,57,19],
-"classSolveContext.html#a08e4c7c780d5f08d9012cf481df1e727":[7,0,57,3],
-"classSolveContext.html#a0ac9023eb2bd83a5cc8e4c4228ae80c9":[7,0,57,1]
+"classSolveContext.html#a088feba649304f5f24a9674b598679cf":[7,0,57,19]
 };

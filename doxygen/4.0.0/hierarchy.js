@@ -38,7 +38,7 @@ var hierarchy =
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html", null ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
     [ "dealii::Utilities::MPI::MPI_InitFinalize", null, [
-      [ "MPI_InitFinalize", "classMPI__InitFinalize.html", null ]
+      [ "MPIInitFinalize", "classMPIInitFinalize.html", null ]
     ] ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", null ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", null ],

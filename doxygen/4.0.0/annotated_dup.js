@@ -34,7 +34,7 @@ var annotated_dup =
     [ "MFOperator", "classMFOperator.html", "classMFOperator" ],
     [ "MGSolver", "classMGSolver.html", "classMGSolver" ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", "structMiscellaneousParameters" ],
-    [ "MPI_InitFinalize", "classMPI__InitFinalize.html", "classMPI__InitFinalize" ],
+    [ "MPIInitFinalize", "classMPIInitFinalize.html", "classMPIInitFinalize" ],
     [ "NewtonSolver", "classNewtonSolver.html", "classNewtonSolver" ],
     [ "NonlinearSolveParameterSet", "structNonlinearSolveParameterSet.html", "structNonlinearSolveParameterSet" ],
     [ "NonlinearSolverParameters", "structNonlinearSolverParameters.html", "structNonlinearSolverParameters" ],

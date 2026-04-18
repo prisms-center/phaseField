@@ -1,6 +1,6 @@
 var utilities_8h =
 [
-    [ "MPI_InitFinalize", "classMPI__InitFinalize.html", "classMPI__InitFinalize" ],
+    [ "MPIInitFinalize", "classMPIInitFinalize.html", "classMPIInitFinalize" ],
     [ "bool_to_string", "utilities_8h.html#aee6045a81583b0f6442439f3a7c06d9a", null ],
     [ "compute_stress", "utilities_8h.html#a5f491b84b7691a9ad37e73b9d4e66e60", null ],
     [ "compute_stress", "utilities_8h.html#a6ea50fb4cefe498899ea22ddcbca3c40", null ],

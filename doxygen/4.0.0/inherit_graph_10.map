@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,5,161,50"/>
-<area shape="rect" id="Node000001" href="$classMPI__InitFinalize.html" title=" " alt="" coords="209,14,332,42"/>
-<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="176,25,209,25,209,30,176,30"/>
+<area shape="rect" id="Node000001" href="$classMPIInitFinalize.html" title="This class does the boilerplate that precedes and succeeds the simulation." alt="" coords="209,14,325,42"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="176,25,208,25,208,30,176,30"/>
 </map>

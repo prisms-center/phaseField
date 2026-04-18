@@ -4,5 +4,5 @@ var searchData=
   ['mfoperator_1',['MFOperator',['../classMFOperator.html',1,'']]],
   ['mgsolver_2',['MGSolver',['../classMGSolver.html',1,'']]],
   ['miscellaneousparameters_3',['MiscellaneousParameters',['../structMiscellaneousParameters.html',1,'']]],
-  ['mpi_5finitfinalize_4',['MPI_InitFinalize',['../classMPI__InitFinalize.html',1,'']]]
+  ['mpiinitfinalize_4',['MPIInitFinalize',['../classMPIInitFinalize.html',1,'']]]
 ];
