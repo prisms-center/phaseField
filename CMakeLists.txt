@@ -302,19 +302,11 @@ endif()
 if(PRISMS_PF_WITH_CALIPER)
   find_package(
     caliper
-    QUIET
+    REQUIRED
     HINTS
       ${CALIPER_DIR}
       $ENV{CALIPER_DIR}
   )
-  if(NOT caliper_FOUND)
-    message(
-      FATAL_ERROR
-      "PRISMS-PF was configured with PRISMS_PF_WITH_CALIPER=ON, however a suitable "
-      "Caliper installation could not be found. Turn off PRISMS_PF_WITH_CALIPER or "
-      "specify its directory with caliper_DIR or CALIPER_DIR."
-    )
-  endif()
 endif()
 
 # TODO: Add VTK

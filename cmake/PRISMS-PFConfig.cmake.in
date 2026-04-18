@@ -4,13 +4,13 @@
 include(CMakeFindDependencyMacro)
 
 # MPI
-find_dependency(MPI REQUIRED COMPONENTS CXX)
+find_dependency(MPI COMPONENTS CXX)
 
 # deal.II
-find_dependency(deal.II REQUIRED HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
+find_dependency(deal.II HINTS ${DEAL_II_DIR} $ENV{DEAL_II_DIR})
 
 # Caliper
-find_dependency(caliper QUIET HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
+find_package(caliper HINTS ${CALIPER_DIR} $ENV{CALIPER_DIR})
 
 # Exported targets
 include(${CMAKE_CURRENT_LIST_DIR}/prisms_pf_targets.cmake)
