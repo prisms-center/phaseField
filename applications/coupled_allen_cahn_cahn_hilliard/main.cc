@@ -12,10 +12,7 @@ int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  prisms::MPI_InitFinalize mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
-
-  // Restrict deal.II console printing
-  dealii::deallog.depth_console(0);
+  prisms::MPIInitFinalize mpi_init(argc, argv);
 
   // Parse the command line options (if there are any) to get the name of the input
   // file

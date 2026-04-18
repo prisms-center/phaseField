@@ -9,6 +9,7 @@ set(
   eshelby_inclusion
   nucleation
   spinodal_decomposition
+  laplace
 )
 
 # For each example install the source files, configure, and compile
