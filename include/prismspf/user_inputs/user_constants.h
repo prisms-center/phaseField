@@ -47,7 +47,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] double
-  get_model_constant_double(const std::string &constant_name) const;
+  get_double(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the int from the `model_constants` that are defined from the
@@ -56,7 +56,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] int
-  get_model_constant_int(const std::string &constant_name) const;
+  get_int(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the bool from the `model_constants` that are defined from the
@@ -65,7 +65,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] bool
-  get_model_constant_bool(const std::string &constant_name) const;
+  get_bool(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
@@ -74,7 +74,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<1, dim>
-  get_model_constant_rank_1_tensor(const std::string &constant_name) const;
+  get_rank_1_tensor(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the rank 2 tensor from the `model_constants` that are defined from
@@ -83,7 +83,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, dim>
-  get_model_constant_rank_2_tensor(const std::string &constant_name) const;
+  get_rank_2_tensor(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the elasticity tensor from the `model_constants` that are defined
@@ -92,7 +92,7 @@ public:
    * @param constant_name Name of the constant to retrieve.
    */
   [[nodiscard]] dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-  get_model_constant_elasticity_tensor(const std::string &constant_name) const;
+  get_elasticity_tensor(const std::string &constant_name) const;
 
   /**
    * @brief Print all user-specified constants
@@ -226,7 +226,7 @@ private:
 
 template <unsigned int dim>
 inline double
-UserConstants<dim>::get_model_constant_double(const std::string &constant_name) const
+UserConstants<dim>::get_double(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -239,7 +239,7 @@ UserConstants<dim>::get_model_constant_double(const std::string &constant_name) 
 
 template <unsigned int dim>
 inline int
-UserConstants<dim>::get_model_constant_int(const std::string &constant_name) const
+UserConstants<dim>::get_int(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -252,7 +252,7 @@ UserConstants<dim>::get_model_constant_int(const std::string &constant_name) con
 
 template <unsigned int dim>
 inline bool
-UserConstants<dim>::get_model_constant_bool(const std::string &constant_name) const
+UserConstants<dim>::get_bool(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -265,8 +265,7 @@ UserConstants<dim>::get_model_constant_bool(const std::string &constant_name) co
 
 template <unsigned int dim>
 inline dealii::Tensor<1, dim>
-UserConstants<dim>::get_model_constant_rank_1_tensor(
-  const std::string &constant_name) const
+UserConstants<dim>::get_rank_1_tensor(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -279,8 +278,7 @@ UserConstants<dim>::get_model_constant_rank_1_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, dim>
-UserConstants<dim>::get_model_constant_rank_2_tensor(
-  const std::string &constant_name) const
+UserConstants<dim>::get_rank_2_tensor(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(
@@ -293,8 +291,7 @@ UserConstants<dim>::get_model_constant_rank_2_tensor(
 
 template <unsigned int dim>
 inline dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>
-UserConstants<dim>::get_model_constant_elasticity_tensor(
-  const std::string &constant_name) const
+UserConstants<dim>::get_elasticity_tensor(const std::string &constant_name) const
 {
   Assert(model_constants.find(constant_name) != model_constants.end(),
          dealii::ExcMessage(

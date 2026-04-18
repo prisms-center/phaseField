@@ -126,6 +126,8 @@ TriangulationManager<dim>::generate_mesh(
       AssertThrow(false, UnreachableCode("Invalid TriangulationType"));
     }
 
+  // TODO: Once we move to a pattern of manual initialization after default construction,
+  // call this separately using the user_inputs output directory.
   export_triangulation_as_vtk("triangulation");
 
   // Global refinement

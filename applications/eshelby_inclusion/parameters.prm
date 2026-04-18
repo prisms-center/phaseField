@@ -2,39 +2,16 @@ subsection Rectangular mesh
   set x size = 100.0
   set y size = 100.0
   set z size = 100.0
-  set x subdivisions = 1
-  set y subdivisions = 1
-  set z subdivisions = 1
 end
 
 set global refinement = 6
-
-set number steps = 1
-
-subsection output
-  set list = 0
-end
 
 subsection linear solver parameters: 0
   set solver_ids               = 1
 
   set max iterations           = 1000
-  #set tolerance type           = AbsoluteResidual
+  set tolerance type           = RMSEPerField
   set tolerance value          = 1e-10
-
-  #set min mg level             = 0
-  #set preconditioner type      = GMG
-  #set smoother degree          = 5
-  #set smoothing range          = 20
-  #set eigenvalue cg iterations = 20
-end
-
-subsection newton solver parameters: 0
-  set solver_ids               = 1
-
-  #set max iterations           = 100
-  #set tolerance type           = AbsoluteResidual
-  #set tolerance value          = 1.0e-10
 end
 
 subsection boundary conditions: 0

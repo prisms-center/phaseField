@@ -59,8 +59,11 @@ struct OutputParameters
   void
   add_equal_spacing_outputs(unsigned int num_outputs, unsigned int num_increments)
   {
-    AssertThrow(num_increments > 0,
-                dealii::ExcMessage("num_increments must be greater than 0.\n"));
+    if (num_increments == 0)
+      {
+        output_list.insert(0);
+        return;
+      }
     if (!num_outputs)
       {
         return;
@@ -135,11 +138,14 @@ struct OutputParameters
     return output_list.size();
   }
 
+  // Output directory
+  std::string directory = "solutions";
+
   // Output file type ()
-  std::string file_type;
+  std::string file_type = "vtu";
 
   // Output file name
-  std::string file_name;
+  std::string file_name = "solution";
 
   // The number of subdivisions to apply when building patches. By default this is the
   // element degree.

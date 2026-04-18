@@ -18,25 +18,97 @@ function(prisms_pf_configure_target target_name build_type)
         ON
   )
 
+  # Create the compiler flags we care about
+  set(
+    PRISMS_PF_CXX_FLAGS
+    ${DEAL_II_CXX_FLAGS}
+    ${CMAKE_CXX_FLAGS}
+  )
+  set(
+    PRISMS_PF_CXX_FLAGS_DEBUG
+    ${DEAL_II_CXX_FLAGS_DEBUG}
+    ${CMAKE_CXX_FLAGS_DEBUG}
+  )
+  set(
+    PRISMS_PF_CXX_FLAGS_RELEASE
+    ${DEAL_II_CXX_FLAGS_RELEASE}
+    ${CMAKE_CXX_FLAGS_RELEASE}
+  )
+
+  # Separate space delimited arguments into list
+  separate_arguments(PRISMS_PF_CXX_FLAGS_LIST UNIX_COMMAND "${PRISMS_PF_CXX_FLAGS}")
+  separate_arguments(
+    PRISMS_PF_CXX_FLAGS_DEBUG_LIST
+    UNIX_COMMAND
+    "${PRISMS_PF_CXX_FLAGS_DEBUG}"
+  )
+  separate_arguments(
+    PRISMS_PF_CXX_FLAGS_RELEASE_LIST
+    UNIX_COMMAND
+    "${PRISMS_PF_CXX_FLAGS_RELEASE}"
+  )
+
+  separate_arguments(DEAL_II_LINKER_FLAGS_LIST UNIX_COMMAND "${DEAL_II_LINKER_FLAGS}")
+  separate_arguments(
+    DEAL_II_LINKER_FLAGS_DEBUG_LIST
+    UNIX_COMMAND
+    "${DEAL_II_LINKER_FLAGS_DEBUG}"
+  )
+  separate_arguments(
+    DEAL_II_LINKER_FLAGS_RELEASE_LIST
+    UNIX_COMMAND
+    "${DEAL_II_LINKER_FLAGS_RELEASE}"
+  )
+
   # Add the compile flags, which we inherit from deal.II
   # TODO: We really shouldn't do this and have suggested
   # flags that get inherited from deal.II
   # TODO: These shouldn't be public
-  target_compile_options(
-    ${target_name}
-    PUBLIC
-      ${DEAL_II_CXX_FLAGS_LIST}
-      $<$<CONFIG:Debug>:${DEAL_II_CXX_FLAGS_DEBUG_LIST}>
-      $<$<CONFIG:Release>:${DEAL_II_CXX_FLAGS_RELEASE_LIST}>
-  )
+  if(build_type STREQUAL "Debug")
+    target_compile_options(
+      ${target_name}
+      PUBLIC
+        ${PRISMS_PF_CXX_FLAGS_LIST}
+        ${PRISMS_PF_CXX_FLAGS_DEBUG_LIST}
+    )
+  elseif(build_type STREQUAL "Release")
+    target_compile_options(
+      ${target_name}
+      PUBLIC
+        ${PRISMS_PF_CXX_FLAGS_LIST}
+        ${PRISMS_PF_CXX_FLAGS_RELEASE_LIST}
+    )
+  else()
+    message(FATAL_ERROR "Unknown build_type = ${build_type}")
+  endif()
 
-  target_link_options(
-    ${target_name}
-    PUBLIC
-      SHELL:${DEAL_II_LINKER_FLAGS}
-      $<$<CONFIG:Debug>:SHELL:${DEAL_II_LINKER_FLAGS_DEBUG}>
-      $<$<CONFIG:Release>:SHELL:${DEAL_II_LINKER_FLAGS_RELEASE}>
-  )
+  if(build_type STREQUAL "Debug")
+    target_link_options(
+      ${target_name}
+      PUBLIC
+        ${DEAL_II_LINKER_FLAGS_LIST}
+        ${DEAL_II_LINKER_FLAGS_DEBUG_LIST}
+    )
+  elseif(build_type STREQUAL "Release")
+    target_link_options(
+      ${target_name}
+      PUBLIC
+        ${DEAL_II_LINKER_FLAGS_LIST}
+        ${DEAL_II_LINKER_FLAGS_RELEASE_LIST}
+    )
+  else()
+    message(FATAL_ERROR "Unknown build_type = ${build_type}")
+  endif()
+
+  # clang-tidy if defined
+  if(CLANG_TIDY_TOOL)
+    set_target_properties(
+      ${target_name}
+      PROPERTIES
+        CXX_CLANG_TIDY
+          "${CLANG_TIDY_TOOL}"
+    )
+  endif()
 
   # Include the config file in the target
   target_include_directories(
@@ -83,6 +155,7 @@ function(prisms_pf_configure_target target_name build_type)
     ${target_name}
     PUBLIC
       MPI::MPI_CXX
+      $<$<BOOL:${PRISMS_PF_WITH_CALIPER}>:caliper>
     PRIVATE
       $<BUILD_LOCAL_INTERFACE:libassert::assert>
   )

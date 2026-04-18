@@ -5,8 +5,11 @@
 
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/logstream.h>
+#include <deal.II/base/mpi.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
+#include <deal.II/base/types.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
@@ -17,12 +20,48 @@
 
 #include <prismspf/config.h>
 
-#include <array>
 #include <string>
 #include <string_view>
 #include <unordered_map>
 
+#ifdef PRISMS_PF_WITH_CALIPER
+#  include <caliper/cali-manager.h>
+#  include <caliper/cali.h>
+#endif
+
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief This class does the boilerplate that precedes and succeeds the simulation.
+ *
+ * @note In this class we initialize MPI, so everything that follows executes per process.
+ */
+class MPIInitFinalize : public dealii::Utilities::MPI::MPI_InitFinalize
+{
+public:
+  MPIInitFinalize(int &argc, char **&argv, unsigned int _max_n_threads = 0);
+
+  ~MPIInitFinalize();
+
+private:
+  /**
+   * @brief Number of threads to try and use.
+   *
+   * @note If PRISMS_PF_THREADS=OFF this is always set to 1 unless otherwise specified.
+   */
+#ifdef PRISMS_PF_THREADS
+  static constexpr unsigned int max_n_threads = dealii::numbers::invalid_unsigned_int;
+#else
+  static constexpr unsigned int max_n_threads = 1;
+#endif
+
+  /**
+   * @brief Caliper config manager
+   */
+#ifdef PRISMS_PF_WITH_CALIPER
+  cali::ConfigManager mgr;
+#endif
+};
 
 /**
  * @brief Helper function that converts a string to some type, given a mapping.

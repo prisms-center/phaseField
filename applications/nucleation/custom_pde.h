@@ -12,11 +12,11 @@ class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
-  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using ScalarGrad  = dealii::Tensor<1, dim, ScalarValue>;
+  using ScalarHess  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
+  using VectorGrad  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorHess  = dealii::Tensor<3, dim, ScalarValue>;
   using PDEOperatorBase<dim, degree, number>::get_user_inputs;
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
@@ -46,25 +46,24 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , c_avg(get_user_inputs().user_constants.get_model_constant_double("c_avg"))
-    , McV(get_user_inputs().user_constants.get_model_constant_double("McV"))
-    , MnV(get_user_inputs().user_constants.get_model_constant_double("MnV"))
-    , KnV(get_user_inputs().user_constants.get_model_constant_double("KnV"))
-    , W_barrier(get_user_inputs().user_constants.get_model_constant_double("W_barrier"))
-    , A0(get_user_inputs().user_constants.get_model_constant_double("A0"))
-    , A2(get_user_inputs().user_constants.get_model_constant_double("A2"))
-    , calmin(get_user_inputs().user_constants.get_model_constant_double("calmin"))
-    , B0(get_user_inputs().user_constants.get_model_constant_double("B0"))
-    , B2(get_user_inputs().user_constants.get_model_constant_double("B2"))
-    , cbtmin(get_user_inputs().user_constants.get_model_constant_double("cbtmin"))
-    , k1(get_user_inputs().user_constants.get_model_constant_double("k1"))
-    , k2(get_user_inputs().user_constants.get_model_constant_double("k2"))
-    , tau(get_user_inputs().user_constants.get_model_constant_double("tau"))
-    , epsilon(get_user_inputs().user_constants.get_model_constant_double("epsilon"))
-    , r_nuc(get_user_inputs().user_constants.get_model_constant_double("r_nuc"))
-    , r_freeze(get_user_inputs().user_constants.get_model_constant_double("r_freeze"))
-    , seeding_duration(
-        get_user_inputs().user_constants.get_model_constant_double("seeding_duration"))
+    , c_avg(get_user_inputs().user_constants.get_double("c_avg"))
+    , McV(get_user_inputs().user_constants.get_double("McV"))
+    , MnV(get_user_inputs().user_constants.get_double("MnV"))
+    , KnV(get_user_inputs().user_constants.get_double("KnV"))
+    , W_barrier(get_user_inputs().user_constants.get_double("W_barrier"))
+    , A0(get_user_inputs().user_constants.get_double("A0"))
+    , A2(get_user_inputs().user_constants.get_double("A2"))
+    , calmin(get_user_inputs().user_constants.get_double("calmin"))
+    , B0(get_user_inputs().user_constants.get_double("B0"))
+    , B2(get_user_inputs().user_constants.get_double("B2"))
+    , cbtmin(get_user_inputs().user_constants.get_double("cbtmin"))
+    , k1(get_user_inputs().user_constants.get_double("k1"))
+    , k2(get_user_inputs().user_constants.get_double("k2"))
+    , tau(get_user_inputs().user_constants.get_double("tau"))
+    , epsilon(get_user_inputs().user_constants.get_double("epsilon"))
+    , r_nuc(get_user_inputs().user_constants.get_double("r_nuc"))
+    , r_freeze(get_user_inputs().user_constants.get_double("r_freeze"))
+    , seeding_duration(get_user_inputs().user_constants.get_double("seeding_duration"))
     , interface_coeff(std::sqrt(2.0 * KnV / W_barrier))
   {}
 

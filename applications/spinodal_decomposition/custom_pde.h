@@ -12,11 +12,11 @@ class CustomPDE : public PDEOperatorBase<dim, degree, number>
 {
 public:
   using ScalarValue = dealii::VectorizedArray<number>;
-  using ScalarGrad  = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using ScalarHess  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorValue = dealii::Tensor<1, dim, dealii::VectorizedArray<number>>;
-  using VectorGrad  = dealii::Tensor<2, dim, dealii::VectorizedArray<number>>;
-  using VectorHess  = dealii::Tensor<3, dim, dealii::VectorizedArray<number>>;
+  using ScalarGrad  = dealii::Tensor<1, dim, ScalarValue>;
+  using ScalarHess  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
+  using VectorGrad  = dealii::Tensor<2, dim, ScalarValue>;
+  using VectorHess  = dealii::Tensor<3, dim, ScalarValue>;
   using PDEOperatorBase<dim, degree, number>::get_user_inputs;
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
@@ -26,12 +26,11 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , McV(get_user_inputs().user_constants.get_model_constant_double("McV"))
-    , KcV(get_user_inputs().user_constants.get_model_constant_double("KcV"))
-    , WcV(get_user_inputs().user_constants.get_model_constant_double("WcV"))
-    , c0(get_user_inputs().user_constants.get_model_constant_double("c0"))
-    , icamplitude(
-        get_user_inputs().user_constants.get_model_constant_double("icamplitude"))
+    , McV(get_user_inputs().user_constants.get_double("McV"))
+    , KcV(get_user_inputs().user_constants.get_double("KcV"))
+    , WcV(get_user_inputs().user_constants.get_double("WcV"))
+    , c0(get_user_inputs().user_constants.get_double("c0"))
+    , icamplitude(get_user_inputs().user_constants.get_double("icamplitude"))
     , dist(-1.0, 1.0)
   {}
 

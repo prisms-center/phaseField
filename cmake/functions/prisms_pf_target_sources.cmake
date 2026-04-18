@@ -32,7 +32,7 @@ function(prisms_pf_target_sources targets headers sources inst_bases)
     )
 
     # Includes
-    target_include_directories(${_target} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/..)
+    target_include_directories(${_target} PRIVATE ${CMAKE_BINARY_DIR}/src)
 
     # Let CMake know that .cc files can't compile until the .inst
     # files exist

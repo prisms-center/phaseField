@@ -11,16 +11,15 @@
 [PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
 [Code repository](https://github.com/prisms-center/phaseField) <br>
 [User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/) <br>
-[User registration link](http://goo.gl/forms/GXo7Im8p2Y) <br>
 [User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
 [Training slides/exercises](https://goo.gl/BBTkJ8) <br>
 [PFHub phase-field community](https://pages.nist.gov/pfhub/)
 
 ## What is PRISMS-PF?
 
-PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution in microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has 24 pre-built application modules, including for precipitate evolution, grain growth, and solidification.
+PRISMS-PF is a powerful, massively parallel finite element code for conducting phase field and other related simulations of microstructural evolution.  The phase field method is commonly used for predicting the evolution in microstructures under a wide range of conditions and material systems. PRISMS-PF provides a simple interface for solving customizable systems of partial differential equations of the type commonly found in phase field models, and has pre-built application modules, including for precipitate evolution, grain growth, and solidification.
 
-With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with or exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be over 6x faster than an equivalent finite difference code.
+With PRISMS-PF, you have access to adaptive meshing and parallelization with near-ideal scaling for over a thousand processors. Moreover, the matrix-free framework from the deal.II library allows much larger than simulations than typical finite element programs – PRISMS-PF has been used for simulations with over one billion degrees of freedom. PRISMS-PF also provides performance competitive with, and often exceeding single-purpose codes. For example, even without enabling the mesh adaptivity features in PRISMS-PF, it has been demonstrated to be over 6x faster than an equivalent finite difference code.
 
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center
 at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
@@ -33,7 +32,7 @@ S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A
 
 If additionally you would like to cite a specific release of PRISMS-PF, please use the following format:
 
-PRISMS-PF, v2.4.0 (2024). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.14026472.
+PRISMS-PF, v4.0.0 (2026). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.14026472.
 
 For DOI information for other releases, please refer to [this site](https://doi.org/10.5281/zenodo.14026472).
 
@@ -47,18 +46,20 @@ Install CMake, p4est, and deal.II (version 9.6.0 or above required).
 
 Clone the PRISMS-PF GitHub repository and navigate its folder.
 ```bash
-git clone -b <tag ID> https://github.com/prisms-center/phaseField.git
-cd phaseField
+$ git clone  https://github.com/prisms-center/phaseField.git
+$ cd phaseField
 ```
-Here ```<tag ID>``` corresponds to the stable release version of your choice. For example, to clone the latest release (2.4), type
-```bash
-git clone -b v2.4 https://github.com/prisms-center/phaseField.git
-```
+
 Configure and compile the main library.
 ```bash
-cmake . && make -j <nprocs>
+# Place this first line into your rc file to have permanent access to $PRISMS_PF_DIR
+$ export PRISMS_PF_DIR="path/to/where/you/want/to/install"
+
+$ cmake -B build -DCMAKE_BUILD_TYPE=DebugRelease
+$ cmake --build build -j <nprocs>
+$ cmake --install build --prefix=$PRISMS_PF_DIR
 ```
-here `<nprocs>` denotes the number of threads you want to use to compile the library.
+Here `<nprocs>` denotes the number of threads you want to use to compile the library.
 
 ### Running a pre-built application:
 
@@ -75,19 +76,20 @@ users.
 
 Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):
 ```bash
-cd applications/cahnHilliard
-cmake .
-make -j <nprocs>
+$ cd applications/spinodal_decomposition
+$ cmake -B build -DCMAKE_BUILD_TYPE=<type>
+$ cmake --build build
 ```
-This will generate two executable files: `main` and `main-debug`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimizations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime).
+where ```type``` is ```Release``` for performant simulations or ```Debug``` for development with error-checking.
+This will generate an executable file `build/main`. Debug and release are compiler configurations. Debug mode is slower, but contains less optimizations and more meaningful error messages. This makes it ideal for application/model code development. Release mode has less "safety features" and meaningful error messages, with more optimizations (faster runtime). Our curated application are configured in Debug by default.
 
-Debug execution (serial runs):
+Execution (serial runs):
 ```bash
-$ ./main-debug
+$ build/main
 ```
-Release execution (parallel runs):
+Execution (parallel runs):
 ```bash
-$ mpirun -np <nprocs> ./main
+$ mpirun -np <nprocs> build/main
 ```
 
 ### Visualization:
@@ -96,8 +98,8 @@ Output of the primal fields is in standard vtk
 format (parallel:*.pvtu, serial:*.vtu files) which can be visualized with the
 following open source applications:
 
-1. VisIt (https://wci.llnl.gov/simulation/computer-codes/visit/downloads)
-2. Paraview (http://www.paraview.org/download/)
+1. VisIt (https://visit-dav.github.io/visit-website/)
+2. Paraview (https://www.paraview.org/download/)
 
 ## Version information:
 

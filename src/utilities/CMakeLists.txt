@@ -1,5 +1,9 @@
 # Manually specify files to be included
-set(_sources integrator.cc)
+set(
+  _sources
+  integrator.cc
+  utilities.cc
+)
 
 set(
   _headers

@@ -5,6 +5,7 @@
 
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/problem.h>
+#include <prismspf/core/solve_block.h>
 
 using namespace prisms;
 
@@ -19,29 +20,20 @@ main(int argc, char *argv[])
   ParseCMDOptions cli_options(argc, argv);
 
   constexpr unsigned int dim    = 2;
-  constexpr unsigned int degree = 1;
+  constexpr unsigned int degree = 2;
 
-  std::vector<FieldAttributes> fields = {
-    FieldAttributes("c", Scalar),
-    FieldAttributes("n", Scalar),
-    FieldAttributes("f_tot", Scalar),
-    FieldAttributes("mag_grad_c", Scalar),
+  // Define the fields. In this case, we only have one field, u.
+  std::vector<FieldAttributes> fields = {FieldAttributes("u")};
 
-  };
+  // Define the solve block that solves the linear PDE.
+  SolveBlock linear_solve;
+  linear_solve.id               = 1;
+  linear_solve.field_indices    = {0}; // u
+  linear_solve.solve_type       = Linear;
+  linear_solve.solve_timing     = Uninitialized;
+  linear_solve.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))"});
 
-  SolveBlock exp_block(
-    0,
-    Explicit,
-    Primary,
-    {0, 1},
-    make_dependency_set(fields,
-                        {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"}));
-  SolveBlock              pp_block(1,
-                      Explicit,
-                      PostProcess,
-                                   {2, 3},
-                      make_dependency_set(fields, {"n", "grad(n)", "c", "grad(c)"}));
-  std::vector<SolveBlock> solve_blocks({exp_block, pp_block});
+  std::vector<SolveBlock> solve_blocks({linear_solve});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;

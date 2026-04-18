@@ -145,15 +145,10 @@ inline ReadBinary<dim, number>::ReadBinary(
                                  this->ic_file.filename));
 
   // Reserve space in the data vector
-  data.reserve(n_values);
+  data.resize(n_values);
 
   // Read in the data
-  for (dealii::types::global_dof_index i : std::views::iota(0U, n_values))
-    {
-      std::array<char, sizeof(number)> buffer;
-      data_file.read(buffer.data(), sizeof(number));
-      data.push_back(std::bit_cast<number>(buffer));
-    }
+  data_file.read(reinterpret_cast<char *>(data.data()), n_values * sizeof(number));
   data_file.close();
 }
 
@@ -199,11 +194,8 @@ ReadBinary<dim, number>::write_file(const std::vector<number>  &data,
               dealii::ExcMessage("Could not open binary file: " + ic_file.filename));
 
   // Write the data
-  for (dealii::types::global_dof_index j : std::views::iota(0U, data.size()))
-    {
-      auto buffer = std::bit_cast<std::array<char, sizeof(number)>>(data[j]);
-      data_file.write(buffer.data(), sizeof(number));
-    }
+  data_file.write(reinterpret_cast<const char *>(data.data()),
+                  data.size() * sizeof(number));
   data_file.close();
 }
 

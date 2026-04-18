@@ -57,7 +57,16 @@ MFOperator<dim, degree, number>::compute_local_operator(
         {
           variable_list.set_q_point(quad);
           // Evaluate the function pointer (the user-defined pde)
-          (pde_operator->*pde_op)(variable_list, *sim_timer, solve_block.id);
+          try
+            {
+              (pde_operator->*pde_op)(variable_list, *sim_timer, solve_block.id);
+            }
+          catch (...)
+            {
+              std::cerr << "Error: Exception thrown in equations during solve block "
+                        << solve_block.id << "!" << std::endl;
+              throw;
+            }
         }
 
       // Integrate and add to global vector dst

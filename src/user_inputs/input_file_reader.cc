@@ -25,7 +25,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 InputFileReader::InputFileReader(std::string input_file_name)
   : parameters_file_name(std::move(input_file_name))
 {
-  model_constant_names     = get_model_constant_names();
+  model_constant_names     = get_names();
   const auto num_constants = static_cast<unsigned int>(model_constant_names.size());
 
   ConditionalOStreams::pout_base() << "Number of constants: " << num_constants << "\n";
@@ -137,7 +137,7 @@ InputFileReader::parse_line(std::string        line,
 }
 
 std::set<std::string>
-InputFileReader::get_model_constant_names()
+InputFileReader::get_names()
 {
   const std::string keyword             = "set";
   const std::string entry_name_begining = "Model constant";
@@ -345,26 +345,43 @@ InputFileReader::declare_mesh()
 void
 InputFileReader::declare_time_discretization()
 {
-  parameter_handler.declare_entry("number steps",
-                                  "1",
-                                  dealii::Patterns::Integer(1, INT_MAX),
-                                  "The total number of step for the simulation.");
+  parameter_handler.declare_entry("final increment",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The final increment for the simulation.");
   parameter_handler.declare_entry("time step",
                                   "0.0",
                                   dealii::Patterns::Double(0.0, DBL_MAX),
                                   "The time step size for the simulation.");
-  parameter_handler.declare_entry(
-    "end time",
-    "0.0",
-    dealii::Patterns::Double(0.0, DBL_MAX),
-    "The value of simulated time where the simulation ends.");
-  parameter_handler.declare_alias("number steps", "steps");
-  parameter_handler.declare_alias("number steps", "iterations");
-  parameter_handler.declare_alias("number steps", "number of steps");
-  parameter_handler.declare_alias("number steps", "num steps");
-  parameter_handler.declare_alias("number steps", "n steps");
+  parameter_handler.declare_entry("end time",
+                                  "0.0",
+                                  dealii::Patterns::Double(0.0, DBL_MAX),
+                                  "The value of simulated time where the simulation "
+                                  "ends. Overrides final increment if greater than 0.");
+
+  parameter_handler.declare_alias("final increment", "number steps");
+  parameter_handler.declare_alias("final increment", "number of steps");
+  parameter_handler.declare_alias("final increment", "num steps");
+  parameter_handler.declare_alias("final increment", "n steps");
+  parameter_handler.declare_alias("final increment", "last increment");
+  parameter_handler.declare_alias("final increment", "end increment");
+  parameter_handler.declare_alias("final increment", "final_increment");
+  parameter_handler.declare_alias("final increment", "number_steps");
+  parameter_handler.declare_alias("final increment", "number_of_steps");
+  parameter_handler.declare_alias("final increment", "num_steps");
+  parameter_handler.declare_alias("final increment", "n_steps");
+  parameter_handler.declare_alias("final increment", "last_increment");
+  parameter_handler.declare_alias("final increment", "end_increment");
+  parameter_handler.declare_alias("final increment", "steps"); //
+  parameter_handler.declare_alias("final increment", "iterations");
+  parameter_handler.declare_alias("final increment", "increments");
+
   parameter_handler.declare_alias("time step", "timestep");
+  parameter_handler.declare_alias("time step", "time_step");
   parameter_handler.declare_alias("time step", "dt");
+
+  parameter_handler.declare_alias("end time", "final time");
+  parameter_handler.declare_alias("end time", "end_time");
 }
 
 void
@@ -420,6 +437,10 @@ InputFileReader::declare_solver_parameters()
                                         dealii::Patterns::Integer(0, INT_MAX),
                                         "The minimum multigrid level.");
         parameter_handler.declare_alias("tolerance value", "tolerance");
+        parameter_handler.declare_alias("solver_ids", "solve blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve block ids");
+        parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
 
@@ -473,6 +494,10 @@ InputFileReader::declare_solver_parameters()
           "The constant damping value to be used if the backtrace "
           "line-search approach isn't used.");
         parameter_handler.declare_alias("tolerance value", "tolerance");
+        parameter_handler.declare_alias("solver_ids", "solve blocks");
+        parameter_handler.declare_alias("solver_ids", "solve_blocks");
+        parameter_handler.declare_alias("solver_ids", "solve block ids");
+        parameter_handler.declare_alias("solver_ids", "solve_block_ids");
       }
       parameter_handler.leave_subsection();
     }
@@ -483,15 +508,20 @@ InputFileReader::declare_output_parameters()
 {
   parameter_handler.enter_subsection("output");
   {
+    parameter_handler.declare_entry("directory",
+                                    "solutions",
+                                    dealii::Patterns::Anything(),
+                                    "The name of the output directory.");
     parameter_handler.declare_entry("file name",
                                     "solution",
                                     dealii::Patterns::Anything(),
-                                    "The name for the output file, before the "
+                                    "The prefix of the output files, before the "
                                     "time step and processor info are added.");
-    parameter_handler.declare_entry("file type",
-                                    "vtu",
-                                    dealii::Patterns::Selection("vtu|vtk|pvtu"),
-                                    "The output file type (either vtu, pvtu, or vtk).");
+    parameter_handler.declare_entry(
+      "file type",
+      "vtu",
+      dealii::Patterns::Selection("vtu|vtk|pvtu|xdmf"),
+      "The output file type (either vtu, pvtu, vtk, or xdmf).");
     parameter_handler.declare_entry(
       "subdivisions",
       "0",
@@ -524,6 +554,7 @@ InputFileReader::declare_output_parameters()
       dealii::Patterns::Bool(),
       "Whether to print the summary table of the wall time and wall time for "
       "individual subroutines every time the code outputs.");
+    parameter_handler.declare_alias("directory", "folder name");
   }
   parameter_handler.leave_subsection();
 }

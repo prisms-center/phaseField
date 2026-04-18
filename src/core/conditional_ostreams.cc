@@ -21,6 +21,7 @@ namespace
   std::ofstream &
   get_summary_log_file()
   {
+    // TODO: Make this configurable.
     static std::ofstream file("summary.log", std::ios::out | std::ios::trunc);
     if (!file.is_open())
       {

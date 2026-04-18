@@ -131,7 +131,7 @@ UserInputParameters<dim>::assign_temporal_discretization_parameters(
 {
   temporal_discretization.dt = parameter_handler.get_double("time step");
   temporal_discretization.num_increments =
-    static_cast<unsigned int>(parameter_handler.get_integer("number steps"));
+    static_cast<unsigned int>(parameter_handler.get_integer("final increment"));
   double final_time = parameter_handler.get_double("end time");
   if (final_time > 0.0)
     {
@@ -147,6 +147,7 @@ UserInputParameters<dim>::assign_output_parameters(
 {
   parameter_handler.enter_subsection("output");
   {
+    output_parameters.directory = parameter_handler.get("directory");
     output_parameters.file_name = parameter_handler.get("file name");
     output_parameters.file_type = parameter_handler.get("file type");
     output_parameters.patch_subdivisions =
@@ -505,7 +506,7 @@ UserInputParameters<dim>::load_model_constants(
   const InputFileReader    &input_file_reader,
   dealii::ParameterHandler &parameter_handler)
 {
-  for (const std::string &constant_name : input_file_reader.get_model_constant_names())
+  for (const std::string &constant_name : input_file_reader.get_names())
     {
       std::string constants_text = "Model constant ";
       constants_text.append(constant_name);

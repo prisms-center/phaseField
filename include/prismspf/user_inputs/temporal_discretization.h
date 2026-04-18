@@ -49,7 +49,7 @@ public:
   double dt = 1.0;
 
   // Total number of increments
-  unsigned int num_increments = 1;
+  unsigned int num_increments = 0;
 };
 
 inline void

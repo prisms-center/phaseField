@@ -208,7 +208,7 @@ Problem<dim, degree, number>::solve()
   init_system();
   Timer::end_section("Initialization");
 
-  ConditionalOStreams::pout_base() << "\n";
+  ConditionalOStreams::pout_base() << "\nSolving...\n\n" << std::flush;
 
   ConditionalOStreams::pout_summary()
     << "================================================\n"
@@ -313,8 +313,10 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   // Output results if needed
   if (user_inputs.output_parameters.should_output(increment))
     {
-      std::string           output_prefix = "solutions/solution";
-      std::filesystem::path output_path   = output_prefix;
+      std::filesystem::path output_prefix =
+        std::filesystem::path(user_inputs.output_parameters.directory) /
+        user_inputs.output_parameters.file_name;
+      std::filesystem::path output_path = output_prefix;
       output_path.remove_filename();
       std::filesystem::create_directories(output_path);
       Timer::start_section("Output");

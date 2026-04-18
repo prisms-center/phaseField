@@ -12,8 +12,7 @@ int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  dealii::Utilities::MPI::MPI_InitFinalize
-    mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
+  prisms::MPI_InitFinalize mpi_init(argc, argv, dealii::numbers::invalid_unsigned_int);
 
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
