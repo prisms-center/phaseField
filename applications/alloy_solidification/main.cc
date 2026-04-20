@@ -40,27 +40,31 @@ main(int argc, char *argv[])
                                          FieldAttributes("xi"),
                                          FieldAttributes("c")};
 
-  SolveBlock explicits(
-    0,
-    Explicit,
-    Initialized,
-    {0, 1},
-    make_dependency_set(
-      fields,
-      {"old_1(U)", "grad(old_1(U))", "old_1(phi)", "grad(old_1(phi))", "old_1(xi)"}));
-  SolveBlock xi_solve(1,
-                      Explicit,
-                      Uninitialized,
-                      {2},
-                      make_dependency_set(fields, {"U", "phi", "grad(phi)"}));
+  SolveBlock explicits;
+  explicits.id               = 0;
+  explicits.solve_type       = Explicit;
+  explicits.solve_timing     = Initialized;
+  explicits.field_indices    = {0, 1};
+  explicits.dependencies_rhs = make_dependency_set(
+    fields,
+    {"old_1(U)", "grad(old_1(U))", "old_1(phi)", "grad(old_1(phi))", "old_1(xi)"});
 
-  SolveBlock pp_solve(2,
-                      Explicit,
-                      PostProcess,
-                      {3},
-                      make_dependency_set(fields, {"U", "phi"}));
+  SolveBlock xi_solve;
+  xi_solve.id               = 1;
+  xi_solve.solve_type       = Explicit;
+  xi_solve.solve_timing     = Uninitialized;
+  xi_solve.field_indices    = {2};
+  xi_solve.dependencies_rhs = make_dependency_set(fields, {"U", "phi", "grad(phi)"});
 
-  std::vector<SolveBlock>        solves({explicits, xi_solve, pp_solve});
+  SolveBlock pp_solve;
+  pp_solve.id               = 2;
+  pp_solve.solve_type       = Explicit;
+  pp_solve.solve_timing     = PostProcess;
+  pp_solve.field_indices    = {3};
+  pp_solve.dependencies_rhs = make_dependency_set(fields, {"U", "phi"});
+
+  std::vector<SolveBlock> solves({explicits, xi_solve, pp_solve});
+
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
   PhaseFieldTools<dim>           pf_tools;
   CustomPDE<dim, degree, double> pde_operator(user_inputs, pf_tools);

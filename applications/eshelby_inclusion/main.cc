@@ -23,12 +23,12 @@ main(int argc, char *argv[])
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector)};
 
-  SolveBlock linear_solve(1,
-                          Linear,
-                          Uninitialized,
-                          {0},
-                          {},
-                          make_dependency_set(fields, {"grad(lhs(u))"}));
+  SolveBlock linear_solve;
+  linear_solve.id               = 1;
+  linear_solve.solve_type       = Linear;
+  linear_solve.solve_timing     = Uninitialized;
+  linear_solve.field_indices    = {0};
+  linear_solve.dependencies_lhs = make_dependency_set(fields, {"grad(lhs(u))"});
 
   std::vector<SolveBlock> solve_blocks({linear_solve});
 

@@ -27,17 +27,21 @@ main(int argc, char *argv[])
     FieldAttributes("f_tot", Scalar),
   };
 
-  SolveBlock              exp_block(1,
-                       Explicit,
-                       Primary,
-                                    {0},
-                       make_dependency_set(field_attributes,
-                                                        {"old_1(n)", "grad(old_1(n))"}));
-  SolveBlock              pp_block(2,
-                      Explicit,
-                      PostProcess,
-                                   {1, 2},
-                      make_dependency_set(field_attributes, {"n", "grad(n)"}));
+  SolveBlock exp_block;
+  exp_block.id            = 1;
+  exp_block.solve_type    = Explicit;
+  exp_block.solve_timing  = Primary;
+  exp_block.field_indices = {0};
+  exp_block.dependencies_rhs =
+    make_dependency_set(field_attributes, {"old_1(n)", "grad(old_1(n))"});
+
+  SolveBlock pp_block;
+  pp_block.id               = 2;
+  pp_block.solve_type       = Explicit;
+  pp_block.solve_timing     = PostProcess;
+  pp_block.field_indices    = {1, 2};
+  pp_block.dependencies_rhs = make_dependency_set(field_attributes, {"n", "grad(n)"});
+
   std::vector<SolveBlock> solve_blocks({exp_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());
