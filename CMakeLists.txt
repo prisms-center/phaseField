@@ -485,6 +485,12 @@ install(
     ${CMAKE_CURRENT_BINARY_DIR}/cmake/PRISMS-PFConfigVersion.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/PRISMS-PF
 )
+# Install executable utilities
+install(
+  PROGRAMS
+    ${CMAKE_SOURCE_DIR}/contrib/postprocessing/visualize2D
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
 
 # =========================================================
 # Build exports (find_package with build dir)
