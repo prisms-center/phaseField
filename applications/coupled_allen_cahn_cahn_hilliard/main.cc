@@ -29,18 +29,23 @@ main(int argc, char *argv[])
 
   };
 
-  SolveBlock exp_block(
-    0,
-    Explicit,
-    Primary,
-    {0, 1},
+  SolveBlock exp_block;
+  exp_block.id            = 0;
+  exp_block.solve_type    = Explicit;
+  exp_block.solve_timing  = Primary;
+  exp_block.field_indices = {0, 1};
+  exp_block.dependencies_rhs =
     make_dependency_set(fields,
-                        {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"}));
-  SolveBlock              pp_block(1,
-                      Explicit,
-                      PostProcess,
-                                   {2, 3},
-                      make_dependency_set(fields, {"n", "grad(n)", "c", "grad(c)"}));
+                        {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"});
+
+  SolveBlock pp_block;
+  pp_block.id            = 1;
+  pp_block.solve_type    = Explicit;
+  pp_block.solve_timing  = PostProcess;
+  pp_block.field_indices = {2, 3};
+  pp_block.dependencies_rhs =
+    make_dependency_set(fields, {"n", "grad(n)", "c", "grad(c)"});
+
   std::vector<SolveBlock> solve_blocks({exp_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(cli_options.get_parameters_filename());

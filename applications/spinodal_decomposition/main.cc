@@ -25,8 +25,8 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> fields = {FieldAttributes("c"),
                                          FieldAttributes("mu"),
                                          FieldAttributes("f_tot")};
-  std::vector<SolveBlock>      solve_blocks;
-  SolveBlock                   c_block;
+
+  SolveBlock c_block;
   c_block.id               = 0;
   c_block.solve_type       = Explicit;
   c_block.solve_timing     = Initialized;
@@ -47,9 +47,7 @@ main(int argc, char *argv[])
   pp_block.field_indices    = {2};
   pp_block.dependencies_rhs = make_dependency_set(fields, {"c", "grad(c)"});
 
-  solve_blocks.push_back(c_block);
-  solve_blocks.push_back(mu_block);
-  solve_blocks.push_back(pp_block);
+  std::vector<SolveBlock> solve_blocks({c_block, mu_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;
