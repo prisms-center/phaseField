@@ -1,0 +1,124 @@
+#!/usr/bin/env -S visit -cli -nowin -s
+
+# run with:
+# visit -cli -nowin -s visualize2D
+# or:
+# visualize2D
+# if visit is in your PATH and the file is executable
+
+import os
+import json
+from visit import *
+from visit_utils import encoding
+
+# Step 0: Read settings from JSON file
+with open("plot_settings.json", "r") as f:
+    settings = json.load(f)
+
+# Step 1: Open a database (the whole .vtu time series)
+dbname=settings.get("database", "solutions/solution_*.vtu database")
+OpenDatabase(dbname)
+
+#Step 2: Pseudocolor plots
+for var_name, var_settings in settings["pseudocolor"].items():
+    AddPlot("Pseudocolor", var_name, 1, 1)
+    PseudocolorAtts = PseudocolorAttributes()
+
+    # Get settings with defaults
+    color_table = var_settings.get("color_table", "turbo")
+    invert = var_settings.get("invert", False)
+    use_minmax = var_settings.get("use_minmax", False)
+    min_val = var_settings.get("min", 0)
+    max_val = var_settings.get("max", 1)
+
+    opacity_type = var_settings.get("opacity_type", "opaque").lower()
+    opacity = var_settings.get("opacity", 1.0)
+    legend = var_settings.get("legend", False)
+
+    # Set attributes
+    PseudocolorAtts.colorTableName = color_table
+    if use_minmax:
+        PseudocolorAtts.minFlag = 1
+        PseudocolorAtts.min = min_val
+        PseudocolorAtts.maxFlag = 1
+        PseudocolorAtts.max = max_val
+    else:
+        PseudocolorAtts.minFlag = 0
+        PseudocolorAtts.maxFlag = 0
+    PseudocolorAtts.invertColorTable = 1 if invert else 0
+    if opacity_type == "opaque":
+        PseudocolorAtts.opacityType = PseudocolorAtts.FullyOpaque
+    elif opacity_type == "constant":
+        PseudocolorAtts.opacityType = PseudocolorAtts.Constant
+    elif opacity_type == "ramp":
+        PseudocolorAtts.opacityType = PseudocolorAtts.Ramp
+    PseudocolorAtts.opacity = opacity
+    if not legend:
+        PseudocolorAtts.legendFlag = 0
+
+    SetPlotOptions(PseudocolorAtts)
+
+#Step 3: Adjust annotation and view
+view = settings.get("view", "windowless").lower()
+show_time = settings.get("show_time", False)
+label_axes = settings.get("label_axes", False)
+x_label = settings.get("x_label", "X-Axis")
+y_label = settings.get("y_label", "Y-Axis")
+
+AnnotationAtts = AnnotationAttributes()
+AnnotationAtts.userInfoFlag = 0
+AnnotationAtts.axes2D.xAxis.title.visible = 0 if not label_axes else 1
+AnnotationAtts.axes2D.yAxis.title.visible = 0 if not label_axes else 1
+AnnotationAtts.axes2D.xAxis.title.title = x_label
+AnnotationAtts.axes2D.yAxis.title.title = y_label
+AnnotationAtts.databaseInfoFlag = 0 if not show_time else 1
+AnnotationAtts.timeInfoFlag = 0 if not show_time else 1
+
+SetAnnotationAttributes(AnnotationAtts)
+
+View2DAtts = View2DAttributes()
+if view == "windowless":
+    View2DAtts.viewportCoords = (0, 1, 0, 1) # (xmin, xmax, ymin, ymax)
+elif view == "windowed":
+    View2DAtts.viewportCoords = (0.25, 0.95, 0.15, 0.90) # (0.05, 0.95, 0.05, 0.90)
+
+View2DAtts.fullFrameActivationMode = View2DAtts.On  # On, Off, Auto
+SetView2D(View2DAtts)
+ResetView()
+
+# Step 4: Draw the plots
+DrawPlots()
+
+# Step 5: Animate through time and save results
+frame_dir = settings.get("frame_directory", "frames")
+frame_prefix = settings.get("frame_prefix", "frame_")
+gapless = settings.get("gapless", False)
+# Clear any existing frames in the directory
+if os.path.exists(frame_dir):
+    for f in os.listdir(frame_dir):
+        file_path = os.path.join(frame_dir, f)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+# Make the directory
+os.makedirs(frame_dir, exist_ok=True)
+n_digits = len(str(TimeSliderGetNStates()))
+for states in range(TimeSliderGetNStates()):
+    # Set slider to state
+    SetTimeSliderState(states)
+    # Get the time corresponding to the state
+    Query("Time")
+    # Assign this time to the variable "t"
+    t = GetQueryOutputValue()
+    # Print the state number, time and phase fraction to
+    # screen and to files
+    print("Saving frame % d, time %.1f" %(states, t))
+    SaveWindowAtts = SaveWindowAttributes()
+    if gapless:
+        SaveWindowAtts.fileName = f'{frame_dir}/{frame_prefix}'
+    else:
+        SaveWindowAtts.fileName = f'{frame_dir}/{frame_prefix}{states:0{n_digits}d}'
+    SetSaveWindowAttributes(SaveWindowAtts)
+    SaveWindow()
+DeleteAllPlots()
+CloseDatabase(dbname)
+exit()
