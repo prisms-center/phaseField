@@ -1,5 +1,8 @@
 #!/usr/bin/env -S visit -cli -nowin -s
 
+# developer note: line endings DO matter for this file,
+# make sure to use LF (Unix) line endings, not CRLF (Windows)
+
 # run with:
 # visit -cli -nowin -s visualize2D
 # or:
@@ -11,7 +14,7 @@ import json
 from visit import *
 from visit_utils import encoding
 
-# Step 0: Read settings from JSON file
+# Step 0: Read settings from a JSON file
 with open("plot_settings.json", "r") as f:
     settings = json.load(f)
 
