@@ -3,7 +3,7 @@ name: GitHub-Linux
 on:
   pull_request:
     branches:
-      - 4.0-dev
+      - master
     paths-ignore:
       - 'doc/**'
       - 'contrib/**'

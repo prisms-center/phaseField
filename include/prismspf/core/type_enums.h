@@ -71,8 +71,19 @@ enum ElasticityModel : std::uint8_t
  */
 enum StressState : std::uint8_t
 {
+  /**
+   * General 3D stress state.
+   */
   ThreeDimension,
+  /**
+   * Assumes the body is very thick or infinitely long. Strain components in the
+   * out-of-plane direction are zero: epsilon_z = gamma_xz = gamma_yz = 0.
+   */
   PlaneStrain,
+  /**
+   * Assumes the body is very thin. Stress components associated with the out-of-plane
+   * direction are zero: sigma_z = tau_xz = tau_yz = 0.
+   */
   PlaneStress,
 };
 

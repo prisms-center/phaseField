@@ -9,12 +9,6 @@ Make sure Doxygen Awesome has been pulled.
 git submodule update --init --recursive
 ```
 
-## Pull Git Submodules
-Make sure Doxygen Awesome has been pulled.
-```
-git submodule update --init --recursive
-```
-
 ## Install Doxygen
 Doxygen can be installed from https://www.doxygen.nl/
 
