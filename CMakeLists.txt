@@ -71,10 +71,19 @@ option(PRISMS_PF_ADDITIONAL_DEGREES "Whether to compile with element degrees of 
 # NOTE: When on deal.II will try to use the max number of threads with respect to the number
 # of MPI processes.
 option(PRISMS_PF_THREADS "Whether to use threading." ON)
+option(PRISMS_PF_GPU "Whether to use GPU backends" OFF)
+if(PRISMS_PF_GPU)
+  message(WARNING "GPU backends are still under development")
+endif()
 
 option(
   PRISMS_PF_WITH_VTK
   "Whether the user wants to compile PRISMS-PF with vtk, or not"
+  OFF
+)
+option(
+  PRISMS_PF_WITH_HDF5
+  "Whether the user wants to compile PRISMS-PF with HDF5, or not"
   OFF
 )
 option(

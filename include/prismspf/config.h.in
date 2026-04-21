@@ -12,9 +12,11 @@
 // Build information
 #cmakedefine PRISMS_PF_64BIT_INDICES
 #cmakedefine PRISMS_PF_THREADS
+#cmakedefine PRISMS_PF_GPU
 
-#cmakedefine PRISMS_PF_WITH_CALIPER
 #cmakedefine PRISMS_PF_WITH_VTK
+#cmakedefine PRISMS_PF_WITH_HDF5
+#cmakedefine PRISMS_PF_WITH_CALIPER
 
 #define PRISMS_PF_CXX_COMPILER "@CMAKE_CXX_COMPILER_ID@"
 #define PRISMS_PF_CXX_COMPILER_VERSION "@CMAKE_CXX_COMPILER_VERSION@"
@@ -35,6 +37,12 @@
   namespace prisms                \
   {
 #define PRISMS_PF_END_NAMESPACE }
+
+// Replacement macros for deal.II that do nothing
+#ifndef PRISMS_PF_GPU
+#  define DEAL_II_HOST_DEVICE
+#  define DEAL_II_HOST_DEVICE_ALWAYS_INLINE
+#endif
 
 // Replacement macros for caliper that do nothing
 #ifndef PRISMS_PF_WITH_CALIPER
