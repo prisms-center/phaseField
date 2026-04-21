@@ -19,10 +19,13 @@ with open("plot_settings.json", "r") as f:
     settings = json.load(f)
 
 # Step 1: Open a database (the whole .vtu time series)
-dbname=settings.get("database", "solutions/solution_*.vtu database")
-OpenDatabase(dbname)
+dbdir = settings.get("database_directory", "solutions")
+dbname = settings.get("database_name", "solution_*.vtu database")
+dbpath = os.path.join(dbdir, dbname)
+print(f"Opening database: {dbpath}")
+OpenDatabase(dbpath)
 
-#Step 2: Pseudocolor plots
+# Step 2: Pseudocolor plots
 for var_name, var_settings in settings["pseudocolor"].items():
     AddPlot("Pseudocolor", var_name, 1, 1)
     PseudocolorAtts = PseudocolorAttributes()
@@ -60,6 +63,7 @@ for var_name, var_settings in settings["pseudocolor"].items():
         PseudocolorAtts.legendFlag = 0
 
     SetPlotOptions(PseudocolorAtts)
+DrawPlots()
 
 #Step 3: Adjust annotation and view
 view = settings.get("view", "windowless").lower()
@@ -79,20 +83,20 @@ AnnotationAtts.timeInfoFlag = 0 if not show_time else 1
 
 SetAnnotationAttributes(AnnotationAtts)
 
-View2DAtts = View2DAttributes()
+View2DAtts = GetView2D()
+coords = View2DAtts.windowCoords
+aspect_ratio = (coords[1] - coords[0]) / (coords[3] - coords[2]) # (ymax - ymin) / (xmax - xmin)
+print(f"Aspect ratio: {aspect_ratio:.4f}")
 if view == "windowless":
     View2DAtts.viewportCoords = (0, 1, 0, 1) # (xmin, xmax, ymin, ymax)
 elif view == "windowed":
-    View2DAtts.viewportCoords = (0.25, 0.95, 0.15, 0.90) # (0.05, 0.95, 0.05, 0.90)
+    View2DAtts.viewportCoords = (0.25, 0.95, 0.15, 0.90) # VisIt default
 
-View2DAtts.fullFrameActivationMode = View2DAtts.On  # On, Off, Auto
+View2DAtts.fullFrameActivationMode = View2DAtts.Off # Don't break aspect ratio
 SetView2D(View2DAtts)
 ResetView()
 
-# Step 4: Draw the plots
-DrawPlots()
-
-# Step 5: Animate through time and save results
+# Step 4: Animate through time and save results
 frame_dir = settings.get("frame_directory", "frames")
 frame_prefix = settings.get("frame_prefix", "frame_")
 gapless = settings.get("gapless", False)
@@ -116,6 +120,8 @@ for states in range(TimeSliderGetNStates()):
     # screen and to files
     print("Saving frame % d, time %.1f" %(states, t))
     SaveWindowAtts = SaveWindowAttributes()
+    SaveWindowAtts.resConstraint = SaveWindowAtts.NoConstraint
+    SaveWindowAtts.width = int(SaveWindowAtts.height * aspect_ratio)
     if gapless:
         SaveWindowAtts.fileName = f'{frame_dir}/{frame_prefix}'
     else:

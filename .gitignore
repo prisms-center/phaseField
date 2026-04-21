@@ -20,6 +20,7 @@ compile_commands.json
 *.vtu
 *.pvtu
 *.vtk
+frames
 
 # Executables
 main
