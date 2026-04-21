@@ -333,7 +333,7 @@ $(function(){initNavTree('read__binary_8h_source.html',''); initResizable(true);
 <div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> d : std::views::iota(0U, dim))</div>
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    {</div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>      spacing[d] = <a class="code hl_variable" href="classReadFieldBase.html#a71cf57b5115d1b44a5ce092eda919ba6">spatial_discretization</a>.rectangular_mesh.size[d] /</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                   <span class="keyword">static_cast&lt;</span>number<span class="keyword">&gt;</span>(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.n_data_points[d]);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                   <span class="keyword">static_cast&lt;</span>number<span class="keyword">&gt;</span>(this-&gt;<a class="code hl_variable" href="classReadFieldBase.html#a43841d5a7c93676c7e6076cd19b0c904">ic_file</a>.n_data_points[d] - 1);</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    }</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="comment">// Compute the indices of the lower corner of the cell containing the point</span></div>
