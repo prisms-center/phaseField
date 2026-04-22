@@ -129,5 +129,5 @@ for states in range(TimeSliderGetNStates()):
     SetSaveWindowAttributes(SaveWindowAtts)
     SaveWindow()
 DeleteAllPlots()
-CloseDatabase(dbname)
+CloseDatabase(dbpath)
 exit()

@@ -1,55 +1,43 @@
 subsection Rectangular mesh
-  set x size = 50
-  set y size = 50
-  set z size = 50
-  set x subdivisions = 1
-  set y subdivisions = 1
-  set z subdivisions = 1
+  set x size = 100.0
+  set y size = 100.0
+  set z size = 100.0
 end
 
-set global refinement = 7
-set max refinement                    = 7
+set global refinement = 8
+set max refinement                    = 8
 set min refinement                    = 3
 set mesh adaptivity                   = true
-set remeshing period                  = 90
+set remeshing period                  = 800
 
 subsection refinement criterion: 0
   set type                           = value
-
   set value lower bound              = 0.01
   set value upper bound              = 0.99
   set variables                      = n
 end
 
 set time step = 1.0e-2
-set end time = 15
+set number steps = 10000
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 50
+  set number = 5
 end
 
-set Model constant MnV = 1.0, DOUBLE
-set Model constant KnV = 2.0, DOUBLE
+set Model constant m_well = 1.0, DOUBLE
+set Model constant kappa = 2.0, DOUBLE
 
 subsection linear solver parameters: 0
   set solver_ids               = 1
-
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-6
-
-  #set min mg level             = 0
-  #set preconditioner type      = GMG
-  #set smoother degree          = 5
-  #set smoothing range          = 15.0
-  #set eigenvalue cg iterations = 10
 end
 
 subsection newton solver parameters: 0
   set solver_ids               = 1
-
   set max iterations           = 100
-  set step size = 0.99
+  set step size                = 1.0
   set tolerance value          = 1.0e-6
 end
