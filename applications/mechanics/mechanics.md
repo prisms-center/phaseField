@@ -99,4 +99,3 @@ $$
 r_{ux} &= -\sigma
 \end{align}
 $$
-
