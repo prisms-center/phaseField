@@ -246,12 +246,12 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ac9f7aa00bbccab9a806513417a940c28" id="r_ac9f7aa00bbccab9a806513417a940c28"><td class="memItemLeft" align="right" valign="top">dealii::SolverControl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9f7aa00bbccab9a806513417a940c28">linear_solver_control</a></td></tr>
 <tr class="memdesc:ac9f7aa00bbccab9a806513417a940c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver control. Contains max iterations and tolerance.  <br /></td></tr>
 <tr class="separator:ac9f7aa00bbccab9a806513417a940c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a817a6956db89d71ed8e9f955eff5f8c3" id="r_a817a6956db89d71ed8e9f955eff5f8c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a817a6956db89d71ed8e9f955eff5f8c3">inhomogenous_values</a></td></tr>
-<tr class="memdesc:a817a6956db89d71ed8e9f955eff5f8c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing only the inhomogeneous constraints (namely, non-zero Dirichlet values)  <br /></td></tr>
-<tr class="separator:a817a6956db89d71ed8e9f955eff5f8c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a164f2d003a6d3482a34016d9f8d073a5" id="r_a164f2d003a6d3482a34016d9f8d073a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a164f2d003a6d3482a34016d9f8d073a5">inhomogenous_rhs</a></td></tr>
-<tr class="memdesc:a164f2d003a6d3482a34016d9f8d073a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the linear operator applied to the inhomogeneous values.  <br /></td></tr>
-<tr class="separator:a164f2d003a6d3482a34016d9f8d073a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb16805454c50f82bae0b84546b0823" id="r_a0fb16805454c50f82bae0b84546b0823"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb16805454c50f82bae0b84546b0823">inhomogeneous_values</a></td></tr>
+<tr class="memdesc:a0fb16805454c50f82bae0b84546b0823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing only the inhomogeneous constraints (namely, non-zero Dirichlet values)  <br /></td></tr>
+<tr class="separator:a0fb16805454c50f82bae0b84546b0823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a730bddc055e54986797b1602bc2a5c0f" id="r_a730bddc055e54986797b1602bc2a5c0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a730bddc055e54986797b1602bc2a5c0f">inhomogeneous_rhs</a></td></tr>
+<tr class="memdesc:a730bddc055e54986797b1602bc2a5c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the linear operator applied to the inhomogeneous values.  <br /></td></tr>
+<tr class="separator:a730bddc055e54986797b1602bc2a5c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
@@ -454,8 +454,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a164f2d003a6d3482a34016d9f8d073a5" name="a164f2d003a6d3482a34016d9f8d073a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a164f2d003a6d3482a34016d9f8d073a5">&#9670;&#160;</a></span>inhomogenous_rhs</h2>
+<a id="a730bddc055e54986797b1602bc2a5c0f" name="a730bddc055e54986797b1602bc2a5c0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a730bddc055e54986797b1602bc2a5c0f">&#9670;&#160;</a></span>inhomogeneous_rhs</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -466,7 +466,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogenous_rhs</td>
+          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_rhs</td>
         </tr>
       </table>
   </td>
@@ -480,8 +480,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a817a6956db89d71ed8e9f955eff5f8c3" name="a817a6956db89d71ed8e9f955eff5f8c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a817a6956db89d71ed8e9f955eff5f8c3">&#9670;&#160;</a></span>inhomogenous_values</h2>
+<a id="a0fb16805454c50f82bae0b84546b0823" name="a0fb16805454c50f82bae0b84546b0823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb16805454c50f82bae0b84546b0823">&#9670;&#160;</a></span>inhomogeneous_values</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -492,7 +492,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogenous_values</td>
+          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::inhomogeneous_values</td>
         </tr>
       </table>
   </td>
