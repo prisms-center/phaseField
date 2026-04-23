@@ -1,4 +1,4 @@
-# PRISMS-PF: Eshelby Inclusion
+# PRISMS-PF: Mechanics (Infinitesimal Strain)
 
 This example application implements a simple 3D calculation of the displacement field near a homogeneous inclusion.
 
@@ -23,15 +23,7 @@ $$
 \end{align}
 $$
 
-where $\sigma = C : (\epsilon-\epsilon^0)$ is the stress tensor, $\epsilon^0$ is the misfit strain (eigenstrain), and $t=\sigma \cdot n$ is the surface traction. In this case, we assume that the diagonal elements of $\epsilon^0$ take the form:
-
-$$
-\begin{equation}
-\epsilon^0_{ii} = m \left(\frac{1}{2} + \frac{1}{2} \tanh\left(\frac{r-a}{\ell}\right) \right)
-\end{equation}
-$$
-
-where $m$ is the magnitide of the misfit strain inside the inclusion, $\ell$ determines the thickness of the "interface" between the inclusion and the matrix, $r$ is the distance from the origin, and $a$ is the radius of the inclusion. The off-diagonal elements of $\epsilon^0$ are zero.
+where $\sigma = C : (\epsilon-\epsilon^0)$ is the stress tensor, $\epsilon^0$ is the misfit strain (eigenstrain), and $t=\sigma \cdot n$ is the surface traction.
 
 The minimization of the variation, $\delta \Pi=0$, gives the weak formulation of the governing equation of mechanics:
 
@@ -49,7 +41,7 @@ R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0
 \end{align}
 $$
 
-## Residual expressions
+## Expressions (TODO: This is not correct as of 4.0)
 In PRISMS-PF, two sets of residuals are required for elliptic PDEs (such as this one), one for the left-hand side of the equation (LHS) and one for the right-hand side of the equation (RHS). We solve $R=0$ by casting this in a form that can be solved as a matrix inversion problem. This will involve a brief detour into the discretized form of the equation. First we derive an expression for the solution, given an initial guess, $u_0$:
 
 $$
@@ -108,5 +100,3 @@ r_{ux} &= -\sigma
 \end{align}
 $$
 
-The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file:
-`applications/eschelby_inclusion/equations.cc`
