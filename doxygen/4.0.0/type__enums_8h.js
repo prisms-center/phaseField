@@ -41,6 +41,11 @@ var type__enums_8h =
       [ "Linear", "type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9a1a1f3bc55fefa098d9034cc46e2e7a2b", null ],
       [ "Newton", "type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9a8f30b8b078c89d4f5241949e7a5dd6f6", null ]
     ] ],
+    [ "StressState", "type__enums_8h.html#a36f00fd02174a32129b7da95c568d799", [
+      [ "ThreeDimension", "type__enums_8h.html#a36f00fd02174a32129b7da95c568d799a3ecdce43b54d3ec77dd4f578b19821d1", null ],
+      [ "PlaneStrain", "type__enums_8h.html#a36f00fd02174a32129b7da95c568d799adec17294735cc46d1363f5b0e0ebeb3f", null ],
+      [ "PlaneStress", "type__enums_8h.html#a36f00fd02174a32129b7da95c568d799a7839c036e366958ed63a76f35f6bfb26", null ]
+    ] ],
     [ "TensorRank", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9", [
       [ "Undefined", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9a18f893264a00711081b62de694f99db4", null ],
       [ "Scalar", "type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13", null ],
@@ -50,5 +55,6 @@ var type__enums_8h =
     [ "to_string", "type__enums_8h.html#a19a26215f2444dace48f93255a1d572c", null ],
     [ "to_string", "type__enums_8h.html#a3801563956cba2623a082aa139947f42", null ],
     [ "to_string", "type__enums_8h.html#a9ca54d45051221616d693425b4c51dfa", null ],
-    [ "to_string", "type__enums_8h.html#a7c74e2afa5aec1145a42183fbbca8dbb", null ]
+    [ "to_string", "type__enums_8h.html#a7c74e2afa5aec1145a42183fbbca8dbb", null ],
+    [ "to_string", "type__enums_8h.html#aa1b145438c28cca36a8dcd09d317edaa", null ]
 ];

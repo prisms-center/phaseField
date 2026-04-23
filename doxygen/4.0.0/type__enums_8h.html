@@ -164,6 +164,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1a86717d44634f6efc9531d43737590a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Symmetry of elastic tensor.  <a href="#a1a86717d44634f6efc9531d43737590a">More...</a><br /></td></tr>
 <tr class="separator:a1a86717d44634f6efc9531d43737590a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36f00fd02174a32129b7da95c568d799" id="r_a36f00fd02174a32129b7da95c568d799"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36f00fd02174a32129b7da95c568d799">StressState</a> : std::uint8_t { <a class="el" href="#a36f00fd02174a32129b7da95c568d799a3ecdce43b54d3ec77dd4f578b19821d1">ThreeDimension</a>
+, <a class="el" href="#a36f00fd02174a32129b7da95c568d799adec17294735cc46d1363f5b0e0ebeb3f">PlaneStrain</a>
+, <a class="el" href="#a36f00fd02174a32129b7da95c568d799a7839c036e366958ed63a76f35f6bfb26">PlaneStress</a>
+ }</td></tr>
+<tr class="memdesc:a36f00fd02174a32129b7da95c568d799"><td class="mdescLeft">&#160;</td><td class="mdescRight">State of stress.  <a href="#a36f00fd02174a32129b7da95c568d799">More...</a><br /></td></tr>
+<tr class="separator:a36f00fd02174a32129b7da95c568d799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7e80c9ffed51cd6988f622c9cbd3dfc" id="r_ad7e80c9ffed51cd6988f622c9cbd3dfc"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> : int { <br />
 &#160;&#160;<a class="el" href="#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233">DST</a> = -2
 , <a class="el" href="#ad7e80c9ffed51cd6988f622c9cbd3dfcaafc38ae6a337625b99d6cd83fe7de226">SRC</a> = -1
@@ -210,6 +216,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3801563956cba2623a082aa139947f42" id="r_a3801563956cba2623a082aa139947f42"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3801563956cba2623a082aa139947f42">to_string</a> (<a class="el" href="#a1a86717d44634f6efc9531d43737590a">ElasticityModel</a> type)</td></tr>
 <tr class="memdesc:a3801563956cba2623a082aa139947f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for <a class="el" href="#a1a86717d44634f6efc9531d43737590a" title="Symmetry of elastic tensor.">ElasticityModel</a>.  <br /></td></tr>
 <tr class="separator:a3801563956cba2623a082aa139947f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b145438c28cca36a8dcd09d317edaa" id="r_aa1b145438c28cca36a8dcd09d317edaa"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1b145438c28cca36a8dcd09d317edaa">to_string</a> (<a class="el" href="#a36f00fd02174a32129b7da95c568d799">StressState</a> type)</td></tr>
+<tr class="memdesc:aa1b145438c28cca36a8dcd09d317edaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for <a class="el" href="#a36f00fd02174a32129b7da95c568d799" title="State of stress.">StressState</a>.  <br /></td></tr>
+<tr class="separator:aa1b145438c28cca36a8dcd09d317edaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19a26215f2444dace48f93255a1d572c" id="r_a19a26215f2444dace48f93255a1d572c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19a26215f2444dace48f93255a1d572c">to_string</a> (<a class="el" href="#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type)</td></tr>
 <tr class="memdesc:a19a26215f2444dace48f93255a1d572c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum to string for <a class="el" href="#ad7e80c9ffed51cd6988f622c9cbd3dfc" title="Internal classification for types of variable dependencies.">DependencyType</a>.  <br /></td></tr>
 <tr class="separator:a19a26215f2444dace48f93255a1d572c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -370,6 +379,30 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a36f00fd02174a32129b7da95c568d799" name="a36f00fd02174a32129b7da95c568d799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36f00fd02174a32129b7da95c568d799">&#9670;&#160;</a></span>StressState</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a36f00fd02174a32129b7da95c568d799">StressState</a> : std::uint8_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>State of stress. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a36f00fd02174a32129b7da95c568d799a3ecdce43b54d3ec77dd4f578b19821d1" name="a36f00fd02174a32129b7da95c568d799a3ecdce43b54d3ec77dd4f578b19821d1"></a>ThreeDimension&#160;</td><td class="fielddoc"><p>General 3D stress state. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a36f00fd02174a32129b7da95c568d799adec17294735cc46d1363f5b0e0ebeb3f" name="a36f00fd02174a32129b7da95c568d799adec17294735cc46d1363f5b0e0ebeb3f"></a>PlaneStrain&#160;</td><td class="fielddoc"><p>Assumes the body is very thick or infinitely long. Strain components in the out-of-plane direction are zero: epsilon_z = gamma_xz = gamma_yz = 0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a36f00fd02174a32129b7da95c568d799a7839c036e366958ed63a76f35f6bfb26" name="a36f00fd02174a32129b7da95c568d799a7839c036e366958ed63a76f35f6bfb26"></a>PlaneStress&#160;</td><td class="fielddoc"><p>Assumes the body is very thin. Stress components associated with the out-of-plane direction are zero: sigma_z = tau_xz = tau_yz = 0. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="af35e0aebc0459f2aab5c5052e1ea46f9" name="af35e0aebc0459f2aab5c5052e1ea46f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af35e0aebc0459f2aab5c5052e1ea46f9">&#9670;&#160;</a></span>TensorRank</h2>
 
@@ -394,7 +427,7 @@ Functions</h2></td></tr>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a12e5b65d3d598a17a78951be9f17016f" name="a12e5b65d3d598a17a78951be9f17016f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12e5b65d3d598a17a78951be9f17016f">&#9670;&#160;</a></span>to_string() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a12e5b65d3d598a17a78951be9f17016f">&#9670;&#160;</a></span>to_string() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -421,7 +454,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a19a26215f2444dace48f93255a1d572c" name="a19a26215f2444dace48f93255a1d572c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19a26215f2444dace48f93255a1d572c">&#9670;&#160;</a></span>to_string() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a19a26215f2444dace48f93255a1d572c">&#9670;&#160;</a></span>to_string() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,7 +481,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a3801563956cba2623a082aa139947f42" name="a3801563956cba2623a082aa139947f42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3801563956cba2623a082aa139947f42">&#9670;&#160;</a></span>to_string() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3801563956cba2623a082aa139947f42">&#9670;&#160;</a></span>to_string() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,7 +508,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a9ca54d45051221616d693425b4c51dfa" name="a9ca54d45051221616d693425b4c51dfa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ca54d45051221616d693425b4c51dfa">&#9670;&#160;</a></span>to_string() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ca54d45051221616d693425b4c51dfa">&#9670;&#160;</a></span>to_string() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -502,7 +535,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a7c74e2afa5aec1145a42183fbbca8dbb" name="a7c74e2afa5aec1145a42183fbbca8dbb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c74e2afa5aec1145a42183fbbca8dbb">&#9670;&#160;</a></span>to_string() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c74e2afa5aec1145a42183fbbca8dbb">&#9670;&#160;</a></span>to_string() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -525,6 +558,33 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enum to string for <a class="el" href="#a2658de27ec5c27a74fb176ec89d8c700" title="Solver tolerance type.">SolverToleranceType</a>. </p>
+
+</div>
+</div>
+<a id="aa1b145438c28cca36a8dcd09d317edaa" name="aa1b145438c28cca36a8dcd09d317edaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b145438c28cca36a8dcd09d317edaa">&#9670;&#160;</a></span>to_string() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a36f00fd02174a32129b7da95c568d799">StressState</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enum to string for <a class="el" href="#a36f00fd02174a32129b7da95c568d799" title="State of stress.">StressState</a>. </p>
 
 </div>
 </div>

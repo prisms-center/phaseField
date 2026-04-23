@@ -295,7 +295,7 @@ $(function(){initNavTree('utilities_8h_source.html',''); initResizable(true); })
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      epsilon[xx_dir] = strain[xx_dir][xx_dir];</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>      epsilon[yy_dir] = strain[yy_dir][yy_dir];</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>      epsilon[zz_dir] = strain[zz_dir][zz_dir];</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>      <span class="comment">// In Voigt notation: epsilonngineering shear strain=zz_dir*strain</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>      <span class="comment">// In Voigt notation: epsilon are engineering shear strains</span></div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>      epsilon[yz_dir] = strain[yy_dir][zz_dir] + strain[zz_dir][yy_dir];</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      epsilon[xz_dir] = strain[xx_dir][zz_dir] + strain[zz_dir][xx_dir];</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];</div>
@@ -324,7 +324,7 @@ $(function(){initNavTree('utilities_8h_source.html',''); initResizable(true); })
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>      epsilon[xx_dir] = strain[xx_dir][xx_dir];</div>
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>      epsilon[yy_dir] = strain[yy_dir][yy_dir];</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      <span class="comment">// In Voigt notation: epsilonngineering shear strain=xy_dir*strain</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>      <span class="comment">// In Voigt notation: epsilon are engineering shear strains</span></div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];</div>
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>      <span class="comment">// Multiply elasticity_tensor and epsilon to get sigma</span></div>
