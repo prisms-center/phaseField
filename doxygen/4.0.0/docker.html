@@ -139,7 +139,7 @@ Installation with Docker</h2>
 <div class="line">prismspf/prismspf:latest</div>
 </div><!-- fragment --><p> This will link your local applications directory (the one in <code>prisms_workspace</code>) to the one in the Docker image. If you plan to modify the core library, you should link one directory higher to preserve your changes. In other words, </p><div class="fragment"><div class="line">docker run -ti -v</div>
 <div class="line">~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest</div>
-</div><!-- fragment --><p> You can then run the applications in the container as you would normally. For example, to run the <code>allen_cahn_explicit</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd allen_cahn_explicit</div>
+</div><!-- fragment --><p> You can then run the applications in the container as you would normally. For example, to run the <code>allen_cahn</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd allen_cahn/<span class="keyword">explicit</span></div>
 <div class="line">cmake .</div>
 <div class="line">make</div>
 <div class="line">mpirun -n 1 ./main</div>
