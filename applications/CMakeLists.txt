@@ -10,6 +10,7 @@ set(
   eshelby_inclusion
   nucleation
   laplace
+  pfhub_benchmarks/1/a
 )
 
 # For each example install the source files, configure, and compile

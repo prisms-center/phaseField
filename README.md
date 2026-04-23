@@ -82,7 +82,7 @@ users.
 
 Entering the following commands will run one of the pre-built example applications (the Cahn-Hilliard spinodal decomposition application in this case):
 ```bash
-$ cd applications/spinodal_decomposition
+$ cd applications/cahn_hilliard_explicit
 $ cmake -B build -DCMAKE_BUILD_TYPE=<type>
 $ cmake --build build
 ```
