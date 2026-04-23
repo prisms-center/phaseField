@@ -225,7 +225,6 @@ public:
                 solve_context->get_pde_operator()),
               solutions.get_solution_vector(global_index));
           }
-
         solutions.apply_initial_condition_for_old_fields();
       }
   }
