@@ -3,8 +3,6 @@
 
 #include <prismspf/core/pde_operator_base.h>
 
-#include <random>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -68,7 +66,7 @@ private:
 
         scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
       }
-    scalar_value = std::min(scalar_value, static_cast<number>(1.0));
+    scalar_value = std::min(scalar_value, number(1.0));
   }
 
   void
@@ -76,7 +74,7 @@ private:
               const SimulationTimer               &sim_timer,
               unsigned int                         solve_block_id) const override
   {
-    if (solve_block_id == 1) // explicit
+    if (solve_block_id == 1) // explicit n
       {
         ScalarValue n_val  = variable_list.template get_value<Scalar, OldOne>(0);
         ScalarGrad  n_grad = variable_list.template get_gradient<Scalar, OldOne>(0);
@@ -94,16 +92,10 @@ private:
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
-        ScalarValue f_grad = 0.0;
-        for (unsigned int i = 0; i < dim; i++)
-          {
-            f_grad += 0.5 * kappa * n_grad[i] * n_grad[i];
-          }
-        f_tot = f_chem + f_grad;
+        ScalarValue f_grad = 0.5 * kappa * n_grad.norm_square();
+        f_tot              = f_chem + f_grad;
 
-        variable_list.set_value_term(1,
-                                     std::sqrt(n_grad[0] * n_grad[0] +
-                                               n_grad[1] * n_grad[1]));
+        variable_list.set_value_term(1, n_grad.norm());
         variable_list.set_value_term(2, f_tot);
       }
   }

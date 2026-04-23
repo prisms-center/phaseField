@@ -1,14 +1,14 @@
 # Manually list all the examples
 set(
   _examples
-  allen_cahn_explicit
+  allen_cahn/explicit
+  allen_cahn/implicit
   alloy_solidification
   blank
   cahn_hilliard_explicit
   coupled_allen_cahn_cahn_hilliard
   eshelby_inclusion
   nucleation
-  spinodal_decomposition
   laplace
 )
 

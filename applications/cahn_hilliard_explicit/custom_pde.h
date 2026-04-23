@@ -29,6 +29,10 @@ public:
     , McV(get_user_inputs().user_constants.get_double("McV"))
     , KcV(get_user_inputs().user_constants.get_double("KcV"))
     , WcV(get_user_inputs().user_constants.get_double("WcV"))
+    , ic_type(get_user_inputs().user_constants.get_int("ic_type"))
+    , c0(get_user_inputs().user_constants.get_double("c0"))
+    , icamplitude(get_user_inputs().user_constants.get_double("icamplitude"))
+    , dist(-1.0, 1.0)
   {}
 
 private:
@@ -41,37 +45,46 @@ private:
   {
     const dealii::Tensor<1, dim> &mesh_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
-    if (index == 0)
+    if (index == 0) // redundant
       {
-        double center[12][3] = {
-          {0.1, 0.3,  0},
-          {0.8, 0.7,  0},
-          {0.5, 0.2,  0},
-          {0.4, 0.4,  0},
-          {0.3, 0.9,  0},
-          {0.8, 0.1,  0},
-          {0.9, 0.5,  0},
-          {0.0, 0.1,  0},
-          {0.1, 0.6,  0},
-          {0.5, 0.6,  0},
-          {1,   1,    0},
-          {0.7, 0.95, 0}
-        };
-        double rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
-        double dist    = 0.0;
-        double sdf     = std::numeric_limits<double>::max();
-        for (unsigned int i = 0; i < 12; i++)
-          {
-            dist = 0.0;
-            for (unsigned int dir = 0; dir < dim; dir++)
-              {
-                double comp_diff = point[dir] - center[i][dir] * mesh_size[dir];
-                dist += comp_diff * comp_diff;
-              }
-            dist = std::sqrt(dist) - rad[i];
-            sdf  = std::min(sdf, dist);
+        if (ic_type == 0)
+          { // Random number generator (Type std::mt19937_64)
+            RNGEngine &rng = get_user_inputs().misc_parameters.rng;
+            // noise around c0 with amplitude icamplitude
+            scalar_value = c0 + icamplitude * dist(rng);
           }
-        scalar_value += 0.5 * (1.0 - std::tanh(sdf / 1.5));
+        else if (ic_type == 1)
+          {
+            double center[12][3] = {
+              {0.1, 0.3,  0},
+              {0.8, 0.7,  0},
+              {0.5, 0.2,  0},
+              {0.4, 0.4,  0},
+              {0.3, 0.9,  0},
+              {0.8, 0.1,  0},
+              {0.9, 0.5,  0},
+              {0.0, 0.1,  0},
+              {0.1, 0.6,  0},
+              {0.5, 0.6,  0},
+              {1,   1,    0},
+              {0.7, 0.95, 0}
+            };
+            double rad[12] = {12, 14, 19, 16, 11, 12, 17, 15, 20, 10, 11, 14};
+            double dist    = 0.0;
+            double sdf     = std::numeric_limits<double>::max();
+            for (unsigned int i = 0; i < 12; i++)
+              {
+                dist = 0.0;
+                for (unsigned int dir = 0; dir < dim; dir++)
+                  {
+                    double comp_diff = point[dir] - center[i][dir] * mesh_size[dir];
+                    dist += comp_diff * comp_diff;
+                  }
+                dist = std::sqrt(dist) - rad[i];
+                sdf  = std::min(sdf, dist);
+              }
+            scalar_value += 0.5 * (1.0 - std::tanh(sdf / 1.5));
+          }
       }
   }
 
@@ -111,13 +124,8 @@ private:
 
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem = c * c * c * c - 2.0 * c * c * c + c * c;
-        ScalarValue f_grad = 0.0;
-
-        for (unsigned int i = 0; i < dim; i++)
-          {
-            f_grad += 0.5 * KcV * cx[i] * cx[i];
-          }
-        f_tot = f_chem + f_grad;
+        ScalarValue f_grad = 0.5 * KcV * cx.norm_square();
+        f_tot              = f_chem + f_grad;
         variable_list.set_value_term(2, f_tot);
       }
   }
@@ -125,6 +133,11 @@ private:
   ScalarValue McV;
   ScalarValue KcV;
   ScalarValue WcV;
+
+  int                                            ic_type;
+  number                                         c0;
+  number                                         icamplitude;
+  mutable std::uniform_real_distribution<number> dist;
 };
 
 PRISMS_PF_END_NAMESPACE
