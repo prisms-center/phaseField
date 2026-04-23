@@ -2,9 +2,6 @@ subsection Rectangular mesh
   set x size = 100.0
   set y size = 100.0
   set z size = 100.0
-  set x subdivisions = 1
-  set y subdivisions = 1
-  set z subdivisions = 1
 end
 
 set global refinement = 8

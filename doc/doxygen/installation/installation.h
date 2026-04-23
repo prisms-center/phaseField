@@ -91,9 +91,9 @@ docker run -ti -v
 ~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
 ```
 You can then run the applications in the container as you would normally. For example,
-to run the `allen_cahn_explicit` application, you can use the following commands:
+to run the `allen_cahn` application, you can use the following commands:
 ```
-cd allen_cahn_explicit
+cd allen_cahn/explicit
 cmake .
 make
 mpirun -n 1 ./main
@@ -183,10 +183,10 @@ This will build the PRISMS-PF library in both debug and release modes.
 Next, set the `PRISMS_PF_DIR` environment variable to point to the PRISMS-PF installation
 directory (the directory containing the `lib` and `include` directories).
 You can now compile and run any of the applications in the `applications` directory. For
-example, to compile and run the `allen_cahn_explicit` application, you can use the
+example, to compile and run the `allen_cahn` application, you can use the
 following commands:
 ```
-cd applications/allen_cahn_explicit
+cd applications/allen_cahn/explicit
 cmake .
 make
 mpirun -n <nprocs> ./main

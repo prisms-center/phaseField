@@ -24,8 +24,8 @@ public:
   explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
                      PhaseFieldTools<dim>           &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
-    , m_well(1.0)
-    , kappa(2.0)
+    , m_well(get_user_inputs().user_constants.get_double("m_well"))
+    , kappa(get_user_inputs().user_constants.get_double("kappa"))
   {}
 
 private:
@@ -36,6 +36,8 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
+    const dealii::Tensor<1, dim> &mesh_size =
+      get_user_inputs().spatial_discretization.rectangular_mesh.size;
     constexpr number center[12][3] = {
       {0.1, 0.3,  0},
       {0.8, 0.7,  0},
@@ -57,14 +59,14 @@ private:
         dist = 0.0;
         for (unsigned int dir = 0; dir < dim; dir++)
           {
-            dist += (point[dir] - center[i][dir] * 100.0) *
-                    (point[dir] - center[i][dir] * 100.0);
+            const number comp_diff = point[dir] - center[i][dir] * mesh_size[dir];
+            dist += comp_diff * comp_diff;
           }
         dist = std::sqrt(dist);
 
         scalar_value += 0.5 * (1.0 - std::tanh((dist - rad[i]) / 1.5));
       }
-    scalar_value = std::min(scalar_value, static_cast<number>(1.0));
+    scalar_value = std::min(scalar_value, number(1.0));
   }
 
   void
@@ -72,7 +74,7 @@ private:
               const SimulationTimer               &sim_timer,
               unsigned int                         solve_block_id) const override
   {
-    if (solve_block_id == 1) // n
+    if (solve_block_id == 1) // implicit n rhs
       {
         ScalarValue n     = variable_list.template get_value<Scalar, Current>(0);
         ScalarGrad  nx    = variable_list.template get_gradient<Scalar, Current>(0);
@@ -92,16 +94,10 @@ private:
         ScalarValue f_tot  = 0.0;
         ScalarValue f_chem =
           n_val * n_val * n_val * n_val - 2.0 * n_val * n_val * n_val + n_val * n_val;
-        ScalarValue f_grad = 0.0;
-        for (unsigned int i = 0; i < dim; i++)
-          {
-            f_grad += 0.5 * kappa * n_grad[i] * n_grad[i];
-          }
-        f_tot = f_chem + f_grad;
+        ScalarValue f_grad = 0.5 * kappa * n_grad.norm_square();
+        f_tot              = f_chem + f_grad;
 
-        variable_list.set_value_term(1,
-                                     std::sqrt(n_grad[0] * n_grad[0] +
-                                               n_grad[1] * n_grad[1]));
+        variable_list.set_value_term(1, n_grad.norm());
         variable_list.set_value_term(2, f_tot);
       }
   }
@@ -111,7 +107,7 @@ private:
               const SimulationTimer               &sim_timer,
               unsigned int                         solve_block_id) const override
   {
-    if (solve_block_id == 1) // n
+    if (solve_block_id == 1) // implicit n lhs
       {
         ScalarValue n         = variable_list.template get_value<Scalar, Current>(0);
         ScalarValue change_n  = variable_list.template get_value<Scalar, Change>(0);
