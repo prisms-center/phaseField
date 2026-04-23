@@ -11,9 +11,9 @@ set(APPLICATION_NAME "pfhub_benchmark_1_a")
 # Create a project for the application
 project(${APPLICATION_NAME} CXX)
 
-# Set the build type to release if not specified
+# Set the build type to debug if not specified
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type" FORCE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
 endif()
 
 # Export compile commands for IDEs
