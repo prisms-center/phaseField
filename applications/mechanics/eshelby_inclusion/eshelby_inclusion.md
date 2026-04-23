@@ -49,7 +49,7 @@ R &=  \int_{\Omega}   \nabla w :  \sigma ~dV = 0
 \end{align}
 $$
 
-## Residual expressions
+## Expressions (TODO: This is not correct as of 4.0)
 In PRISMS-PF, two sets of residuals are required for elliptic PDEs (such as this one), one for the left-hand side of the equation (LHS) and one for the right-hand side of the equation (RHS). We solve $R=0$ by casting this in a form that can be solved as a matrix inversion problem. This will involve a brief detour into the discretized form of the equation. First we derive an expression for the solution, given an initial guess, $u_0$:
 
 $$
@@ -109,4 +109,4 @@ r_{ux} &= -\sigma
 $$
 
 The above values of $r_{ux}^{LHS}$ and $r_{ux}$ are used to define the residuals in the following input file:
-`applications/eschelby_inclusion/equations.cc`
+`applications/mechanics/eshelby_inclusion/custom_pde.h`

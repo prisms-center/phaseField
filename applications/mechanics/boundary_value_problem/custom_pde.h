@@ -46,8 +46,12 @@ private:
                 [[maybe_unused]] number                   &scalar_value,
                 [[maybe_unused]] number &vector_component_value) const override
   {
-    scalar_value           = 0.0;
-    vector_component_value = 0.0;
+    // Zero except for x-component of u on x=0 face
+    if (index == 0 && boundary_id == 0 && component == 0)
+      {
+        vector_component_value = -1.0;
+        return;
+      }
   }
 
   void
@@ -55,21 +59,9 @@ private:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_block_id == 1) // linear residual
+    if (solve_block_id == 1) // linear rhs
       {
-        ScalarValue dist_from_inclusion = variable_list.get_q_point_location().norm();
-        ScalarValue inclusion_radius(10.0);
-
-        VectorGrad  transformation_strain;
-        ScalarValue strain_value =
-          0.01 * (0.5 + 0.5 * std::tanh(10.0 * (dist_from_inclusion - inclusion_radius)));
-        for (unsigned int i = 0; i < dim; i++)
-          {
-            transformation_strain[i][i] = strain_value;
-          }
-        VectorGrad stress;
-        compute_stress<dim, ScalarValue>(stiffness, transformation_strain, stress);
-        variable_list.set_gradient_term(0, -stress);
+        variable_list.set_value_term(0, VectorValue());
       }
   }
 

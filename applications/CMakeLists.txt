@@ -7,7 +7,8 @@ set(
   blank
   cahn_hilliard_explicit
   coupled_allen_cahn_cahn_hilliard
-  eshelby_inclusion
+  mechanics/boundary_value_problem
+  mechanics/eshelby_inclusion
   nucleation
   laplace
   pfhub_benchmarks/1/a
