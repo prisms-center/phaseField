@@ -103,9 +103,9 @@ public:
       }
     linear_solver_control.set_max_steps(lin_params.max_iterations);
     linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
-    inhomogenous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogenous_values, 0);
-    inhomogenous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
+    solutions.apply_constraints(inhomogeneous_values, 0);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
   }
 
   /**
@@ -121,9 +121,9 @@ public:
         rhs_vector[relative_level].reinit(
           solutions.get_solution_full_vector(relative_level));
       }
-    inhomogenous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogenous_values, 0);
-    inhomogenous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
+    solutions.apply_constraints(inhomogeneous_values, 0);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
   }
 
   /**
@@ -141,10 +141,16 @@ public:
     rhs_operators[relative_level].compute_operator(rhs_vector[relative_level]);
     if (relative_level == 0)
       {
+        // Note 1. Use the previous result of the linear solve without nonzero dirichlet
+        // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
+        // not actually what it is being used as here, we just don't want to allocate a
+        // whole new vector for this purpose
+        solutions.get_solution_full_vector(0).swap(inhomogeneous_rhs);
+        // Get the homogeneous rhs
         lhs_operators[0].read_plain = true;
-        lhs_operators[0].compute_operator(inhomogenous_rhs, inhomogenous_values);
+        lhs_operators[0].compute_operator(inhomogeneous_rhs, inhomogeneous_values);
         lhs_operators[0].read_plain = false;
-        rhs_vector[0] -= inhomogenous_rhs;
+        rhs_vector[0] -= inhomogeneous_rhs;
       }
     // Linear solve
     do_linear_solve(rhs_vector[relative_level],
@@ -153,7 +159,13 @@ public:
 
     if (relative_level == 0)
       {
-        solutions.get_solution_full_vector(0) += inhomogenous_values;
+        // Note 2. Make a copy of the solution to use as the initial guess in the next
+        // increment. See Note 1. `inhomogeneous_rhs` is not actually what it is being
+        // used as here, we just don't want to allocate a whole new vector for this
+        // purpose
+        inhomogeneous_rhs = solutions.get_solution_full_vector(0);
+        // Add back in nonzero dirichlet conditions
+        solutions.get_solution_full_vector(0) += inhomogeneous_values;
       }
     // Apply constraints
     solutions.apply_constraints(relative_level);
@@ -235,12 +247,12 @@ private:
    * @brief Vector containing only the inhomogeneous constraints (namely, non-zero
    * Dirichlet values)
    */
-  BlockVector<number> inhomogenous_values;
+  BlockVector<number> inhomogeneous_values;
 
   /**
    * @brief Result of the linear operator applied to the inhomogeneous values.
    */
-  BlockVector<number> inhomogenous_rhs;
+  BlockVector<number> inhomogeneous_rhs;
 };
 
 PRISMS_PF_END_NAMESPACE
