@@ -1,0 +1,27 @@
+set global refinement = 7
+set max refinement = 7
+set min refinement = 2
+set mesh adaptivity = true
+set remeshing period = 1000
+
+subsection refinement criterion: 0
+  set variables                      = c
+  set type                           = value
+  set value lower bound              = 0.31
+  set value upper bound              = 0.69
+end
+
+set time step = 1.0e-3
+set end time = 420
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 400
+end
+
+subsection linear solver parameters: 0
+  set solver_ids               = 3
+
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-6
+end
