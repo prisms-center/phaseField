@@ -61,6 +61,12 @@ $ cmake --install build --prefix=$PRISMS_PF_DIR
 ```
 Here `<nprocs>` denotes the number of threads you want to use to compile the library.
 
+For access to executable utilities provided by PRISMS-PF, you should also add `bin` to path:
+```bash
+# Place this first line into your rc file to have permanent access to executables
+export PATH=$PRISMS_PF_DIR/bin:$PATH
+```
+
 ### Running a pre-built application:
 
 Please refer to the [Running a PRISMS-PF Example App](https://prisms-center.github.io/phaseField/doxygen/) for full details including instructions for visualization of the results.

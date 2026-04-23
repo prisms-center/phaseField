@@ -27,19 +27,21 @@ main(int argc, char *argv[])
     FieldAttributes("nucleation_rate", Scalar, true, {1}),
   };
 
-  SolveBlock explicits(
-    0,
-    Explicit,
-    Primary,
-    {0, 1},
+  SolveBlock explicits;
+  explicits.id            = 0;
+  explicits.solve_type    = Explicit;
+  explicits.solve_timing  = Primary;
+  explicits.field_indices = {0, 1};
+  explicits.dependencies_rhs =
     make_dependency_set(fields,
-                        {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"}));
+                        {"old_1(c)", "grad(old_1(c))", "old_1(n)", "grad(old_1(n))"});
 
-  SolveBlock nucleation(1,
-                        Explicit,
-                        NucleationRate,
-                        {2},
-                        make_dependency_set(fields, {"n", "c"}));
+  SolveBlock nucleation;
+  nucleation.id               = 1;
+  nucleation.solve_type       = Explicit;
+  nucleation.solve_timing     = NucleationRate;
+  nucleation.field_indices    = {2};
+  nucleation.dependencies_rhs = make_dependency_set(fields, {"n", "c"});
 
   std::vector<SolveBlock> solve_blocks({explicits, nucleation});
 
