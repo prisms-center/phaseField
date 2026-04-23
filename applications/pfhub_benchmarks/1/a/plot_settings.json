@@ -9,9 +9,9 @@
       "color_table": "RdBu",
       "invert": true,
       "legend": false,
-      "use_minmax": true,
+      "max": 0.7,
       "min": 0.3,
-      "max": 0.7
+      "use_minmax": true
     }
   },
   "show_time": false,
