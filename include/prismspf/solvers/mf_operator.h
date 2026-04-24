@@ -22,6 +22,7 @@
 
 #include <prismspf/config.h>
 
+#include <memory>
 #include <vector>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
@@ -228,12 +229,6 @@ public:
   clear();
 
   /**
-   * @brief Set constrained entries to one.
-   */
-  // void
-  // set_constrained_entries_to_one(SolutionVector<number> &dst) const;
-
-  /**
    * @brief Get read access to the MatrixFree<dim, number> object stored with this
    * operator.
    */
@@ -243,7 +238,7 @@ public:
   /**
    * @brief Get read access to the inverse diagonal of this operator.
    */
-  const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> &
+  const std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> &
   get_matrix_diagonal_inverse() const;
 
   /**
@@ -262,6 +257,18 @@ public:
   Tvmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
 
   // NOLINTEND(readability-identifier-naming)
+
+  /**
+   * @brief Reinit diagonal matrix to have the correct shape.
+   */
+  void
+  reinit_matrix_diagonal(const BlockVector<number> &shape);
+
+  /**
+   * @brief Evaluate matrix diagonal (and inverse).
+   */
+  void
+  eval_matrix_diagonal();
 
   /**
    * @brief Whether to read plain dof values from src, otherwise applies homogeneous part
@@ -336,13 +343,14 @@ private:
   /**
    * @brief The diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> diagonal_entries =
+    std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>();
 
   /**
    * @brief The inverse diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>>
-    inverse_diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> inverse_diagonal_entries =
+    std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>();
 };
 
 PRISMS_PF_END_NAMESPACE

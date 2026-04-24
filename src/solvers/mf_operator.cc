@@ -10,6 +10,8 @@
 
 #include <prismspf/solvers/mf_operator.h>
 
+#include "prismspf/core/group_solution_handler.h"
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -197,6 +199,28 @@ MFOperator<dim, degree, number>::compute_local_field_diagonal(
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
+void
+MFOperator<dim, degree, number>::reinit_matrix_diagonal(const BlockVector<number> &shape)
+{
+  diagonal_entries->get_vector().reinit(shape);
+  inverse_diagonal_entries->get_vector().reinit(shape);
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+void
+MFOperator<dim, degree, number>::eval_matrix_diagonal()
+{
+  auto &diag     = diagonal_entries->get_vector();
+  auto &inv_diag = inverse_diagonal_entries->get_vector();
+  compute_diagonal(diag, diag);
+  for (unsigned int i : diag.locally_owned_elements())
+    {
+      number diag_el = diag[i];
+      inv_diag[i]    = 1.0 / diag_el;
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
 dealii::types::global_dof_index
 MFOperator<dim, degree, number>::m() const
 {
@@ -233,24 +257,6 @@ MFOperator<dim, degree, number>::clear()
   inverse_diagonal_entries.reset();
 }
 
-// template <unsigned int dim, unsigned int degree, typename number>
-// void
-// MFOperator<dim, degree, number>::set_constrained_entries_to_one(SolutionVector<number>
-// &dst) const
-// {
-//   for (unsigned int j = 0; j < dealii::MatrixFreeOperators::BlockHelper::n_blocks(dst);
-//   ++j)
-//     {
-//       const std::vector<unsigned int> &constrained_dofs =
-//         data->get_constrained_dofs(selected_fields[j]);
-//       for (const auto constrained_dof : constrained_dofs)
-//         {
-//           dealii::MatrixFreeOperators::BlockHelper::subblock(dst, j).local_element(
-//             constrained_dof) = 1.0;
-//         }
-//     }
-// }
-
 template <unsigned int dim, unsigned int degree, typename number>
 const MatrixFree<dim, number> *
 MFOperator<dim, degree, number>::get_matrix_free() const
@@ -259,7 +265,7 @@ MFOperator<dim, degree, number>::get_matrix_free() const
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> &
+const std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> &
 MFOperator<dim, degree, number>::get_matrix_diagonal_inverse() const
 {
   Assert(inverse_diagonal_entries.get() != nullptr && inverse_diagonal_entries->m() > 0,
