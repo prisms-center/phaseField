@@ -75,137 +75,126 @@ MFOperator<dim, degree, number>::compute_local_operator(
     }
 }
 
-// template <unsigned int dim, unsigned int degree, typename number>
-// void
-// MFOperator<dim, degree, number>::compute_diagonal()
-//{
-//   inverse_diagonal_entries.reset(new dealii::DiagonalMatrix<SolutionVector<number>>());
-//   SolutionVector<number> &inverse_diagonal = inverse_diagonal_entries->get_vector();
-//   data->initialize_dof_vector(inverse_diagonal, field_index);
-//   const unsigned int dummy = 0;
-//   data->cell_loop(&MFOperator::compute_local_diagonal, this, inverse_diagonal, dummy);
-//
-//   set_constrained_entries_to_one(inverse_diagonal);
-//
-//   for (unsigned int i = 0; i < inverse_diagonal.locally_owned_size(); ++i)
-//     {
-//       Assert(inverse_diagonal.local_element(i) > static_cast<number>(0.0),
-//              dealii::ExcMessage(
-//                "No diagonal entry in a positive definite operator should be zero"));
-//       inverse_diagonal.local_element(i) = number(1.0) /
-//       inverse_diagonal.local_element(i);
-//     }
-// }
+template <unsigned int dim, unsigned int degree, typename number>
+void
+MFOperator<dim, degree, number>::compute_diagonal(BlockVector<number>       &dst,
+                                                  const BlockVector<number> &src) const
+{
+  dst.reinit(src);
+  data->cell_loop(&MFOperator::compute_local_diagonal, this, dst, src);
 
-// template <unsigned int dim, unsigned int degree, typename number>
-// void
-// MFOperator<dim, degree, number>::compute_local_diagonal(
-//   const MatrixFree<dim, number>
-//   &_data, BlockVector<number> &diagonal,
-//   [[maybe_unused]] const unsigned int                                    &dummy,
-//   const std::pair<unsigned int, unsigned int> &cell_range) const
-// {
-//   // Construct FEEvaluation objects
-//   // The reason this is constructed here, rather than as a private member is because
-//   // compute_local_rhs is called by cell_loop, which multithreads. There would be data
-//   // races.
-//   FieldContainer<dim, degree, number> variable_list(1 /*args*/);
-//   DSTContainer<dim, degree, number>   dst_fields(solve_block.field_indices,
-//                                                field_attributes,
-//                                                *data,
-//                                                field_to_block_index);
-//
-//   for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
-//     {
-//       // Reinit the cell for all the dependencies
-//       variable_list.reinit_and_eval(cell);
-//       dst_fields.reinit(cell);
-//
-//       // To get the diagonal of the "matrix", repeatedly "multiply the matrix" by a
-//       test x
-//       // vector (change vector) and store the solution in the i-th position in the y
-//       // vector (the diagonal).
-//       // First (i=1) x vector: I 0 0 0
-//       // Second(i=2) x vector: 0 I 0 0 ...
-//       // Submit zeros for everything except the diagonals
-//       for (unsigned int field_index : solve_block.field_indices)
-//         {
-//           if (/* Scalar */)
-//             {
-//               dealii::AlignedVector<ScalarValue> cell_diagonal =
-//                 compute_field_diagonal<TensorRank::Scalar>(variable_list,
-//                                                            dst_fields,
-//                                                            field_index);
-//               // Submit calculated diagonal values and distribute
-//               for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-//                 {
-//                   feeval_ptr->submit_dof_value(cell_diagonal[i], i);
-//                 }
-//               feeval_ptr->distribute_local_to_global(dst);
-//             }
-//
-//           // Submit calculated diagonal values and distribute
-//           for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-//             {
-//               if (/* Scalar */)
-//                 {
-//                   feeval_ptr->submit_dof_value((*diagonal_ptr)[i], i);
-//                 }
-//               else
-//                 {
-//                   feeval_ptr->submit_dof_value((*diagonal_ptr)[i][0], i);
-//                 }
-//             }
-//           feeval_ptr->distribute_local_to_global(
-//             diagonal.block(field_to_block_index[field_index]));
-//         }
-//     }
-// }
+  // This is to make sure the preconditioner doesn't break down when there are
+  // Dirichlet conditions (which lead to zero diagonal entries). The actual value
+  // of these entries doesn't matter since they get overwritten by the constraints
+  // application in the solver.
+  set_zero_entries_to_one(dst);
+}
 
-// template <unsigned int dim, unsigned int degree, typename number>
-// template <MFOperator<dim, degree, number>::TensorRank Rank>
-// auto
-// MFOperator<dim, degree, number>::compute_field_diagonal(
-//   FieldContainer<dim, degree, number> &variable_list,
-//   DSTContainer<dim, degree, number>   &dst_fields,
-//   unsigned int field_index) const -> dealii::AlignedVector<Value<Rank>>
-// {
-//   unsigned int n_dofs_per_cell = variable_list.get_dofs_per_component(field_index);
-//   dealii::AlignedVector<Value<Rank>> cell_diagonal(n_dofs_per_cell, zero<Rank>());
-//   // vector_feeval_ptr->dofs_per_component;
-//   // scalar_feeval_ptr->dofs_per_cell;
-//   for (unsigned int i = 0; i < n_dofs_per_cell; ++i)
-//     {
-//       for (unsigned int j = 0; j < n_dofs_per_cell; ++j)
-//         {
-//           dst_fields.set_dof_value(field_index,
-//                                    i == j ? identity<Rank>() : zero<Rank>(),
-//                                    j);
-//         }
-//
-//       // Evaluate the dependencies based on the flags
-//       variable_list.eval();
-//
-//       // Evaluate at each quadrature point
-//       for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
-//         {
-//           variable_list.set_q_point(quad);
-//           dst_fields.set_q_point(quad);
-//           pde_operator->pde_op(variable_list, dst_fields);
-//         }
-//
-//       // Integrate the diagonal
-//       dst_fields.integrate(field_index);
-//
-//       // TODO: fix this
-//       dst_fields.eval();
-//       cell_diagonal[i] =
-//         dst_fields.get_dof_value(field_index,
-//                                  i,
-//                                  variable_list.get_dof_value(field_index, i));
-//     }
-//   return cell_diagonal;
-// }
+template <unsigned int dim, unsigned int degree, typename number>
+void
+MFOperator<dim, degree, number>::compute_local_diagonal(
+  const MatrixFree<dim, number>               &_data,
+  BlockVector<number>                         &diagonal,
+  const BlockVector<number>                   &dummy_src, // just needs right shape
+  const std::pair<unsigned int, unsigned int> &cell_range) const
+{
+  FieldContainer<dim, degree, number> variable_list(field_attributes,
+                                                    *solution_indexer,
+                                                    relative_level,
+                                                    dependency_map,
+                                                    solve_block,
+                                                    _data);
+
+  for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
+    {
+      // Reinit the cell for all the dependencies
+      variable_list.reinit_and_eval(cell, &dummy_src, false);
+
+      // To get the diagonal of the "matrix", repeatedly "multiply the matrix" by a test x
+      // vector (src vector) and store the solution in the i-th position in the y
+      // vector (the diagonal).
+      // First (i=1) x vector: I 0 0 0
+      // Second(i=2) x vector: 0 I 0 0 ...
+      // Submit zeros for everything except the diagonals
+      for (unsigned int field_index : solve_block.field_indices)
+        {
+          if (field_attributes[field_index].field_type == TensorRank::Scalar)
+            {
+              compute_local_field_diagonal<TensorRank::Scalar>(variable_list,
+                                                               diagonal,
+                                                               field_index);
+            }
+          else if (field_attributes[field_index].field_type == TensorRank::Vector)
+            {
+              compute_local_field_diagonal<TensorRank::Vector>(variable_list,
+                                                               diagonal,
+                                                               field_index);
+            }
+        }
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+auto
+MFOperator<dim, degree, number>::compute_local_field_diagonal(
+  FieldContainer<dim, degree, number> &variable_list,
+  BlockVector<number>                 &diagonal,
+  unsigned int field_index) const -> dealii::AlignedVector<Value<Rank>>
+{
+  // Number of nodes in the cell
+  constexpr static unsigned int dofs_per_component =
+    FieldContainer<dim, degree, number>::dofs_per_component;
+  // "zero lhs vector"
+  for (unsigned int some_field_index : solve_block.field_indices)
+    {
+      for (unsigned int i = 0; i < dofs_per_component; ++i)
+        {
+          variable_list.submit_dof_value(some_field_index, zero<Rank>(), i);
+        }
+    }
+  // Object to hold the local diagonal
+  dealii::AlignedVector<Value<Rank>> cell_diagonal(dofs_per_component, zero<Rank>());
+  for (unsigned int i = 0; i < dofs_per_component; ++i)
+    {
+      for (unsigned int j = 0; j < dofs_per_component; ++j)
+        {
+          variable_list.submit_dof_value(field_index,
+                                         i == j ? identity<Rank>() : zero<Rank>(),
+                                         j);
+        }
+
+      // Evaluate the dependencies based on the flags
+      variable_list.eval_without_read();
+
+      // Evaluate at each quadrature point
+      for (unsigned int quad = 0; quad < variable_list.get_n_q_points(); ++quad)
+        {
+          variable_list.set_q_point(quad);
+          try
+            {
+              (pde_operator->*pde_op)(variable_list, *sim_timer, solve_block.id);
+            }
+          catch (...)
+            {
+              std::cerr << "Error: Exception thrown in equations during solve block "
+                        << solve_block.id << "!" << std::endl;
+              throw;
+            }
+        }
+      // Integrate the diagonal
+      variable_list.integrate();
+
+      // variable_list.eval(); //needed?
+      variable_list.get_dof_value_to(cell_diagonal[i], field_index, i);
+    }
+  // Use FieldContainer interface to write local diagonal to global
+  for (unsigned int i = 0; i < dofs_per_component; ++i)
+    {
+      variable_list.submit_dof_value(field_index, cell_diagonal[i], i);
+    }
+  variable_list.distribute(field_index, &diagonal);
+}
 
 template <unsigned int dim, unsigned int degree, typename number>
 dealii::types::global_dof_index

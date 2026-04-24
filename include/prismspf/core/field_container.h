@@ -201,6 +201,9 @@ public:
                     bool                       plain);
 
     void
+    eval_without_read();
+
+    void
     integrate();
 
     void
@@ -254,19 +257,32 @@ public:
                   bool                       plain);
 
   /**
-   * @brief Integrate the residuals.
+   * @brief Evaluate src to quad pts based on dependency flags. Assume feeval has local
+   * dof values already.
+   */
+  void
+  eval_without_read();
+
+  /**
+   * @brief Integrate the values.
    */
   void
   integrate();
 
   /**
-   * @brief Distribute the integrated residuals.
+   * @brief Distribute the integrated values to a solution vector.
    */
   void
   distribute(BlockVector<number> *dst_solutions);
 
   /**
-   * @brief Integrate the residuals and distribute from local to global.
+   * @brief Distribute the integrated values to a solution vector for one field.
+   */
+  void
+  distribute(unsigned int field_index, BlockVector<number> *dst_solutions);
+
+  /**
+   * @brief Integrate the values and distribute from local to global.
    *
    * This is more efficient that calling `integrate` and `distribute` individually.
    */
@@ -410,18 +426,37 @@ public:
   get_n_q_points() const;
 
   /**
-   * @brief Set the residual value of the specified scalar/vector field.
+   * @brief Set the value of the specified scalar/vector field.
    */
   template <typename ValType>
   void
   set_value_term(Types::Index field_index, const ValType &val);
 
   /**
-   * @brief Set the residual gradient of the specified scalar/vector field.
+   * @brief Set the gradient of the specified scalar/vector field.
    */
   template <typename GradType>
   void
   set_gradient_term(Types::Index field_index, const GradType &val);
+
+  /**
+   * @brief Get the dof values directly from a node.
+   */
+  template <typename ValType>
+  void
+  get_dof_value_to(ValType     &destination,
+                   Types::Index field_index,
+                   unsigned int dof_index);
+
+  /**
+   * @brief Set the dof values directly at a node.
+   */
+  template <typename ValType>
+  void
+  submit_dof_value(Types::Index field_index, const ValType &val, unsigned int dof_index);
+
+  constexpr static unsigned int dofs_per_component =
+    FEEval<Scalar>::static_dofs_per_component;
 
 private:
   template <TensorRank Rank>
@@ -791,6 +826,17 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::reinit_and_eval(
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 inline void
+FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::eval_without_read()
+{
+  if (fe_eval_src_dst && fe_eval_src_dst->second != EvalFlags::nothing)
+    {
+      fe_eval_src_dst->first.evaluate(fe_eval_src_dst->second);
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <TensorRank Rank>
+inline void
 FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::integrate()
 {
   if (fe_eval_src_dst)
@@ -877,6 +923,20 @@ FieldContainer<dim, degree, number>::reinit_and_eval(
 
 template <unsigned int dim, unsigned int degree, typename number>
 inline void
+FieldContainer<dim, degree, number>::eval_without_read()
+{
+  for (auto &fe_eval : feeval_deps_scalar)
+    {
+      fe_eval.eval_without_read();
+    }
+  for (auto &fe_eval : feeval_deps_vector)
+    {
+      fe_eval.eval_without_read();
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline void
 FieldContainer<dim, degree, number>::integrate()
 {
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
@@ -910,7 +970,22 @@ FieldContainer<dim, degree, number>::distribute(BlockVector<number> *dst_solutio
           feeval_deps_vector[field_index].distribute(dst_solutions);
         }
     }
-  // Don't distribute `shared_feeval_scalar` because we only use it for information.
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline void
+FieldContainer<dim, degree, number>::distribute(unsigned int         field_index,
+                                                BlockVector<number> *dst_solutions)
+{
+  const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
+  if (field_attributes[field_index].field_type == TensorRank::Scalar)
+    {
+      feeval_deps_scalar[field_index].distribute(dst_solutions);
+    }
+  else /* vector */
+    {
+      feeval_deps_vector[field_index].distribute(dst_solutions);
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -930,8 +1005,6 @@ FieldContainer<dim, degree, number>::integrate_and_distribute(
           feeval_deps_vector[field_index].integrate_and_distribute(dst_solutions);
         }
     }
-  // Don't integrate and distribute `shared_feeval_scalar` because we only use it for
-  // information.
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -1223,6 +1296,64 @@ FieldContainer<dim, degree, number>::set_gradient_term(Types::Index    field_ind
   catch (...)
     {
       std::cerr << "Error when trying to submit gradient for field with index "
+                << (field_index)
+                << ": Error: Submission for field not part of this solve block.\n"
+                << std::flush;
+      throw;
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename ValType>
+inline DEAL_II_ALWAYS_INLINE void
+FieldContainer<dim, degree, number>::get_dof_value_to(ValType     &destination,
+                                                      Types::Index field_index,
+                                                      unsigned int dof_index)
+{
+  AssertThrowDebug((field_index) <
+                     get_relevant_feeval_vector<RankFromVal<ValType>>().size(),
+                   dealii::ExcMessage("Error: Field index " +
+                                      std::to_string(field_index) +
+                                      " is not associated with any field."));
+  auto &relevant_feeval_vector =
+    get_relevant_feeval_vector<RankFromVal<ValType>>()[field_index];
+  try
+    {
+      destination =
+        relevant_feeval_vector.template get<DependencyType::DST>().get_dof_value(
+          dof_index);
+    }
+  catch (...)
+    {
+      std::cerr << "Error when trying to get dof value for field with index "
+                << (field_index) << ": Error: Field not part of this solve block.\n"
+                << std::flush;
+      throw;
+    }
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+template <typename ValType>
+inline DEAL_II_ALWAYS_INLINE void
+FieldContainer<dim, degree, number>::submit_dof_value(Types::Index   field_index,
+                                                      const ValType &val,
+                                                      unsigned int   dof_index)
+{
+  AssertThrowDebug((field_index) <
+                     get_relevant_feeval_vector<RankFromVal<ValType>>().size(),
+                   dealii::ExcMessage("Error: Field index " +
+                                      std::to_string(field_index) +
+                                      " is not associated with any field."));
+  auto &relevant_feeval_vector =
+    get_relevant_feeval_vector<RankFromVal<ValType>>()[field_index];
+  try
+    {
+      relevant_feeval_vector.template get<DependencyType::DST>()
+        .submit_dof_value(val, dof_index);
+    }
+  catch (...)
+    {
+      std::cerr << "Error when trying to submit dof value for field with index "
                 << (field_index)
                 << ": Error: Submission for field not part of this solve block.\n"
                 << std::flush;

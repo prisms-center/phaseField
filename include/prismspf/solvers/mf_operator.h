@@ -18,6 +18,8 @@
 
 #include <prismspf/solvers/solver_base.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
 #include <vector>
@@ -64,7 +66,7 @@ public:
                                    dealii::Tensor<int(Rank), dim, ScalarValue>>;
 
   template <TensorRank Rank>
-  Value<Rank>
+  static Value<Rank>
   identity()
   {
     if constexpr (Rank == TensorRank::Scalar)
@@ -80,13 +82,14 @@ public:
             {
               obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
             }
+          return obj;
         }();
         return ident;
       }
   }
 
   template <TensorRank Rank>
-  Value<Rank>
+  static Value<Rank>
   zero()
   {
     if constexpr (Rank == TensorRank::Scalar)
@@ -168,29 +171,28 @@ private:
                          const BlockVector<number>                   &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
-  // public:
-  //   /**
-  //    * @brief Compute the diagonal of this operator.
-  //    */
-  //   void
-  //   compute_diagonal();
-  //
-  // private:
-  //   /**
-  //    * @brief Local computation of the diagonal of the operator.
-  //    */
-  //   void
-  //   compute_local_diagonal(const MatrixFree<dim, number> &_data,
-  //                          BlockVector<number>                                 &dst,
-  //                          const unsigned int                          &dummy,
-  //                          const std::pair<unsigned int, unsigned int> &cell_range)
-  //                          const;
-  //
-  //   template <TensorRank Rank>
-  //   dealii::AlignedVector<Value<Rank>>
-  //   compute_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
-  //                          DSTContainer<dim, degree, number>   &dst_fields,
-  //                          unsigned int                         field_index) const;
+public:
+  /**
+   * @brief Compute the diagonal of this operator.
+   */
+  void
+  compute_diagonal(BlockVector<number> &dst, const BlockVector<number> &src) const;
+
+private:
+  /**
+   * @brief Local computation of the diagonal of the operator.
+   */
+  void
+  compute_local_diagonal(const MatrixFree<dim, number>               &_data,
+                         BlockVector<number>                         &diagonal,
+                         const BlockVector<number>                   &dummy_src,
+                         const std::pair<unsigned int, unsigned int> &cell_range) const;
+
+  template <TensorRank Rank>
+  dealii::AlignedVector<Value<Rank>>
+  compute_local_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
+                               BlockVector<number>                 &diagonal,
+                               unsigned int                         field_index) const;
 
 public:
   /**
