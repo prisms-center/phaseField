@@ -57,7 +57,7 @@ public:
   using VectorValue = dealii::Tensor<1, dim, ScalarValue>;
 
   template <TensorRank Rank>
-  using Value = std::conditional_t<Rank == TensorRank::Scalar,
+  using Value = std::conditional_t<Rank == TensorRank::Scalar || dim == 1,
                                    ScalarValue,
                                    dealii::Tensor<int(Rank), dim, ScalarValue>>;
 
@@ -1367,7 +1367,7 @@ inline DEAL_II_ALWAYS_INLINE std::vector<
   typename FieldContainer<dim, degree, number>::template FEEValuationDeps<Rank>> &
 FieldContainer<dim, degree, number>::get_relevant_feeval_vector()
 {
-  if constexpr (Rank == TensorRank::Scalar)
+  if constexpr (Rank == TensorRank::Scalar || dim == 1)
     {
       return feeval_deps_scalar;
     }
@@ -1383,7 +1383,7 @@ inline DEAL_II_ALWAYS_INLINE const std::vector<
   typename FieldContainer<dim, degree, number>::template FEEValuationDeps<Rank>> &
 FieldContainer<dim, degree, number>::get_relevant_feeval_vector() const
 {
-  if constexpr (Rank == TensorRank::Scalar)
+  if constexpr (Rank == TensorRank::Scalar || dim == 1)
     {
       return feeval_deps_scalar;
     }

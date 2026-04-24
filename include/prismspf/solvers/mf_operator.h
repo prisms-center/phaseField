@@ -61,7 +61,7 @@ public:
   ) const;
 
   template <TensorRank Rank>
-  using Value = std::conditional_t<Rank == TensorRank::Scalar,
+  using Value = std::conditional_t<Rank == TensorRank::Scalar || dim == 1,
                                    ScalarValue,
                                    dealii::Tensor<int(Rank), dim, ScalarValue>>;
 
@@ -69,7 +69,7 @@ public:
   static Value<Rank>
   identity()
   {
-    if constexpr (Rank == TensorRank::Scalar)
+    if constexpr (Rank == TensorRank::Scalar || dim == 1)
       {
         return ScalarValue(1.0);
       }
@@ -92,7 +92,7 @@ public:
   static Value<Rank>
   zero()
   {
-    if constexpr (Rank == TensorRank::Scalar)
+    if constexpr (Rank == TensorRank::Scalar || dim == 1)
       {
         return ScalarValue(0.0);
       }
@@ -189,7 +189,7 @@ private:
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
   template <TensorRank Rank>
-  dealii::AlignedVector<Value<Rank>>
+  void
   compute_local_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
                                BlockVector<number>                 &diagonal,
                                unsigned int                         field_index) const;

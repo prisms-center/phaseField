@@ -136,11 +136,11 @@ MFOperator<dim, degree, number>::compute_local_diagonal(
 
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
-auto
+void
 MFOperator<dim, degree, number>::compute_local_field_diagonal(
   FieldContainer<dim, degree, number> &variable_list,
   BlockVector<number>                 &diagonal,
-  unsigned int field_index) const -> dealii::AlignedVector<Value<Rank>>
+  unsigned int                         field_index) const
 {
   // Number of nodes in the cell
   constexpr static unsigned int dofs_per_component =
