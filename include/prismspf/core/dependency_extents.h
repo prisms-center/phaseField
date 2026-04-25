@@ -35,9 +35,9 @@ struct DependencyExtents
   // TODO: update this to account multigrid levels. Will need more
   // than std::list<DependencyMap>
   DependencyExtents(const std::set<unsigned int>   &field_indices,
-                    const std::list<DependencyMap> &all_dependeny_sets)
+                    const std::list<DependencyMap> &all_dependency_sets)
   {
-    for (const DependencyMap &dependency_set : all_dependeny_sets)
+    for (const DependencyMap &dependency_set : all_dependency_sets)
       {
         for (unsigned int field_index : field_indices)
           {
