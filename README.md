@@ -1,6 +1,6 @@
 ![](logo_v2.png)
 
-[![GitHub Linux](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml)
+[!GitHub Linux](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/linux.yml)
 [![Check Links](https://github.com/prisms-center/phaseField/actions/workflows/links.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/links.yml)
 
 [![License: LGPL v2.1](https://img.shields.io/badge/License-lgpl-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
