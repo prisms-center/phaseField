@@ -52,9 +52,9 @@ public:
    * @brief Initialize the solver.
    */
   void
-  init(const std::list<DependencyMap> &all_dependeny_sets) override
+  init(const std::list<DependencyMap> &all_dependency_sets) override
   {
-    LinearSolver<dim, degree, number>::init(all_dependeny_sets);
+    LinearSolver<dim, degree, number>::init(all_dependency_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     newton_updates.resize(num_levels);
     for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)

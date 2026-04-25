@@ -12,6 +12,7 @@
 
 #include <prismspf/config.h>
 
+#include <any>
 #include <set>
 #include <string>
 #include <vector>
@@ -121,14 +122,19 @@ public:
     return id < other.id;
   }
 
+  /**
+   * @brief Type-erased factory function for instantiating custom solvers.
+   */
+  std::any custom_solver_factory;
+
   void
   validate() const
   {
-    AssertThrow(
-      solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
-        solve_type == SolveType::Linear || solve_type == SolveType::Newton,
-      dealii::ExcMessage(
-        "A valid solve type must be selected (Constant | Explicit | Linear | Newton)\n"));
+    AssertThrow(solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
+                  solve_type == SolveType::Linear || solve_type == SolveType::Newton ||
+                  solve_type == SolveType::CustomSolver,
+                dealii::ExcMessage("A valid solve type must be selected (Constant | "
+                                   "Explicit | Linear | Newton | CustomSolver)\n"));
     AssertThrow(!field_indices.empty(),
                 dealii::ExcMessage("This solve block must manage at least 1 field.\n"));
     if (solve_type == SolveType::Newton)
@@ -179,6 +185,16 @@ public:
         AssertThrow(dependencies_rhs.empty() && dependencies_lhs.empty(),
                     dealii::ExcMessage("Constant \"solves\" do not have an RHS or LHS, "
                                        "and should have no dependencies.\n"));
+      }
+    else if (solve_type == SolveType::CustomSolver)
+      {
+        AssertThrow(
+          custom_solver_factory.has_value(),
+          dealii::ExcMessage(
+            "SolveType::CustomSolver requires setting custom_solver_factory.\n"));
+        AssertThrow(!field_indices.empty(),
+                    dealii::ExcMessage(
+                      "This solve block must manage at least 1 field.\n"));
       }
     for (const auto &[field_index, dependency] : dependencies_rhs)
       {
