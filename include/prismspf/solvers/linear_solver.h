@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/solver_selector.h>
@@ -186,10 +187,14 @@ public:
     // Linear solve
     try
       {
-        lin_solver.solve(lhs_operator,
-                         x_vector,
-                         b_vector,
-                         dealii::PreconditionIdentity());
+        lhs_operator.reinit_matrix_diagonal(x_vector);
+        lhs_operator.eval_matrix_diagonal();
+        dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                      BlockVector<number>,
+                                      dealii::DiagonalMatrix<BlockVector<number>>>
+          chebyshev;
+
+        lin_solver.solve(lhs_operator, x_vector, b_vector, chebyshev);
         if (solve_context->get_user_inputs().output_parameters.should_output(
               solve_context->get_simulation_timer().get_increment()))
           {
@@ -236,6 +241,35 @@ protected:
     return value;
   }
 
+  void
+  initialize_preconditioner()
+  {
+    if (lin_params.preconditioner == None)
+      {
+        void(0); // do nothing
+      }
+    if (lin_params.preconditioner == Chebyshev)
+      {
+        initialize_chebyshev();
+      }
+  }
+
+  void
+  initialize_chebyshev()
+  {
+    typename dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                           BlockVector<number>>::AdditionalData
+      precond_data;
+
+    precond_data.degree          = lin_params.smoother_degree;
+    precond_data.smoothing_range = lin_params.smoothing_range; // ≈ λ_min / λ_max
+    precond_data.eig_cg_n_iterations =
+      lin_params.eig_cg_n_iterations; // estimate λ_max via CG
+    precond_data.preconditioner = lhs_operators[0].get_matrix_diagonal_inverse();
+
+    precond_chebyshev.initialize(lhs_operators[0], precond_data);
+  }
+
 private:
   /**
    * @brief Linear solver parameters
@@ -262,6 +296,11 @@ private:
    * @brief Result of the linear operator applied to the inhomogeneous values.
    */
   BlockVector<number> inhomogeneous_rhs;
+
+  dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                BlockVector<number>,
+                                dealii::DiagonalMatrix<BlockVector<number>>>
+    precond_chebyshev;
 };
 
 PRISMS_PF_END_NAMESPACE
