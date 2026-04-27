@@ -1,7 +1,11 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
+#include <deal.II/base/mpi.h>
+#include <deal.II/base/numbers.h>
+
 #include <prismspf/core/dependencies.h>
+#include <prismspf/core/exceptions.h>
 #include <prismspf/core/problem.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_output.h>
@@ -220,11 +224,12 @@ Problem<dim, degree, number>::solve()
   const TemporalDiscretization   &time_info   = user_inputs.temporal_discretization;
   SimulationTimer                &sim_timer   = solve_context.get_simulation_timer();
   // Main time-stepping loop
-  while (sim_timer.get_increment() <= time_info.num_increments)
+  int exit_status = 0;
+  while (sim_timer.get_increment() <= time_info.num_increments && exit_status == 0)
     {
       // Solve a single increment
       // Includes nucleation, refinement, constraints, solve, output, and update
-      solve_increment(sim_timer);
+      exit_status = solve_increment(sim_timer);
       // Update time
       sim_timer.increment();
     }
@@ -244,14 +249,32 @@ Problem<dim, degree, number>::solve()
   Timer::end_section("Problem Solve");
   // Print timer summary
   Timer::print_summary();
+
+  // Throw exception if we exitied for a bad reason
+  switch (exit_status)
+    {
+      case 0: // normal
+      case 1: // exit early as normal behavior
+        break;
+      case 2: // exit early because NaN
+        if (dealii::Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+          {
+            throw ExcNaN("Exiting early.\n");
+          }
+        break;
+      default:
+        break;
+    }
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-void
+int
 Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
 {
-  const UserInputParameters<dim> &user_inputs = *user_inputs_ptr;
-  unsigned int                    increment   = sim_timer.get_increment();
+  int                             exit_status  = 0;
+  bool                            force_output = false;
+  const UserInputParameters<dim> &user_inputs  = *user_inputs_ptr;
+  unsigned int                    increment    = sim_timer.get_increment();
   bool is_output_increment = user_inputs.output_parameters.should_output(increment);
   bool is_nucleation_increment =
     user_inputs.nucleation_parameters.should_attempt_nucleation(increment);
@@ -278,8 +301,25 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
   Timer::end_section("Solvers");
 
-  // Check for stochastic nucleation. TODO: this is taking up a ton of time, even when
-  // nucleation is completely off. Diagnose and fix.
+  // Check for NaN. This isn't an exhaustive search. Just a quick check on specific
+  // values.
+  for (unsigned int field_index = 0;
+       field_index < solve_context.get_field_attributes().size();
+       ++field_index)
+    {
+      if (dealii::Utilities::MPI::logical_or(!dealii::numbers::is_finite(
+                                               solve_context.get_solution_indexer()
+                                                 .get_solution_vector(field_index)
+                                                 .local_element(0)),
+                                             MPI_COMM_WORLD))
+        {
+          exit_status  = 2;
+          force_output = true;
+          break;
+        }
+    }
+
+  // Check for stochastic nucleation.
   bool any_nucleation_occurred = false;
   if (is_nucleation_increment)
     {
@@ -311,7 +351,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 
   // Output results if needed
-  if (user_inputs.output_parameters.should_output(increment))
+  if (user_inputs.output_parameters.should_output(increment) || force_output)
     {
       std::filesystem::path output_prefix =
         std::filesystem::path(user_inputs.output_parameters.directory) /
@@ -366,6 +406,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     {
       solver->update();
     }
+  return exit_status;
 }
 
 #include "core/problem.inst"
