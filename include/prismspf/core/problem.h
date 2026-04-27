@@ -45,9 +45,10 @@ public:
 
 private:
   /**
-   * @brief Solve a single increment of the given PDEs.
+   * @brief Solve a single increment of the given PDEs. Returns nonzero if any exit_early
+   * condition is raised.
    */
-  void
+  int
   solve_increment(SimulationTimer &sim_timer);
 
   /**
