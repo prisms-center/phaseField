@@ -1,0 +1,17 @@
+{
+  "database_directory": "solutions",
+  "database_name": "solution_*.pvtu database",
+  "frame_directory": "frames",
+  "gapless": true,
+  "label_axes": false,
+  "pseudocolor": {
+    "c": {
+      "color_table": "RdBu",
+      "invert": true,
+      "legend": false,
+      "use_minmax": true
+    }
+  },
+  "show_time": false,
+  "view": "windowless"
+}
