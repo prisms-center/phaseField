@@ -2,6 +2,8 @@
 
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
 
+// clang-format off
+
 // Version numbers
 #define PRISMS_PF_VERSION "@PRISMS_PF_VERSION@"
 #define PRISMS_PF_VERSION_MAJOR @PRISMS_PF_VERSION_MAJOR@
@@ -32,17 +34,13 @@
 #define PRISMS_PF_DEAL_II_VERSION_MINOR @DEAL_II_VERSION_MINOR@
 #define PRISMS_PF_DEAL_II_VERSION_SUBMINOR @DEAL_II_VERSION_SUBMINOR@
 
+// clang-format on
+
 // Macros for opening and closing prisms namespace
 #define PRISMS_PF_BEGIN_NAMESPACE \
   namespace prisms                \
   {
 #define PRISMS_PF_END_NAMESPACE }
-
-// Replacement macros for deal.II that do nothing
-#ifndef PRISMS_PF_GPU
-#  define DEAL_II_HOST_DEVICE
-#  define DEAL_II_HOST_DEVICE_ALWAYS_INLINE
-#endif
 
 // Replacement macros for caliper that do nothing
 #ifndef PRISMS_PF_WITH_CALIPER
