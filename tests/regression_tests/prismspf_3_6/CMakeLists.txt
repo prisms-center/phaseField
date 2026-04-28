@@ -2,8 +2,8 @@
 #  CMake script for the PRISMS-PF applications
 ##
 
-cmake_minimum_required(VERSION 3.28)
-cmake_policy(VERSION 3.28)
+cmake_minimum_required(VERSION 3.25)
+cmake_policy(VERSION 3.25)
 
 # Create a project for the application
 project(my_app CXX)
