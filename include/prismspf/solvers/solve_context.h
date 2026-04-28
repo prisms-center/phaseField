@@ -38,13 +38,13 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(std::vector<FieldAttributes>                _field_attributes,
-               const UserInputParameters<dim>             &_user_inputs,
-               TriangulationManager<dim>                  &_triangulation_manager,
-               DoFManager<dim, degree>                    &_dof_manager,
-               ConstraintManager<dim, degree, number>     &_constraint_manager,
-               SolutionIndexer<dim, number>               &_solution_indexer,
-               const PDEOperatorBase<dim, degree, number> &_pde_operator)
+  SolveContext(std::vector<FieldAttributes>            _field_attributes,
+               const UserInputParameters<dim>         &_user_inputs,
+               TriangulationManager<dim>              &_triangulation_manager,
+               DoFManager<dim, degree>                &_dof_manager,
+               ConstraintManager<dim, degree, number> &_constraint_manager,
+               SolutionIndexer<dim, number>           &_solution_indexer,
+               PDEOperatorBase<dim, degree, number>   &_pde_operator)
     : field_attributes(std::move(_field_attributes))
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
@@ -190,6 +190,16 @@ public:
     return *pde_operator;
   }
 
+  /**
+   * @brief Get a shared pointer to the pde operator.
+   */
+  [[nodiscard]] PDEOperatorBase<dim, degree, number> &
+  get_pde_operator()
+  {
+    Assert(pde_operator != nullptr, dealii::ExcNotInitialized());
+    return *pde_operator;
+  }
+
 private:
   /**
    * @brief Field attributes.
@@ -234,7 +244,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  PDEOperatorBase<dim, degree, number> *pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

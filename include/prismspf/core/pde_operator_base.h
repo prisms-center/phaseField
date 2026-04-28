@@ -16,6 +16,9 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+template <unsigned int dim, unsigned int degree, typename number>
+class SolveContext;
+
 /**
  * @brief This class contains the user implementation of each PDE operator.
  */
@@ -85,6 +88,24 @@ public:
   compute_lhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int                         solver_id) const
+  {}
+
+  /**
+   * @brief Function called right before a solve block. Gives access to all the internal
+   * classes, so you can break things here.
+   */
+  virtual void
+  pre_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                  [[maybe_unused]] unsigned int                       solver_id)
+  {}
+
+  /**
+   * @brief Function called right after a solve block.Gives access to all the internal
+   * classes, so you can break things here.
+   */
+  virtual void
+  post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                   [[maybe_unused]] unsigned int                       solver_id)
   {}
 
   /**

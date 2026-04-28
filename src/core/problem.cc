@@ -94,11 +94,11 @@ get_solution_managers_from_solvers(
 
 template <unsigned int dim, unsigned int degree, typename number>
 Problem<dim, degree, number>::Problem(
-  const std::vector<FieldAttributes>         &_field_attributes,
-  const std::vector<SolveBlock>              &_solve_blocks,
-  const UserInputParameters<dim>             &_user_inputs,
-  PhaseFieldTools<dim>                       &_pf_tools,
-  const PDEOperatorBase<dim, degree, number> &_pde_operator)
+  const std::vector<FieldAttributes>   &_field_attributes,
+  const std::vector<SolveBlock>        &_solve_blocks,
+  const UserInputParameters<dim>       &_user_inputs,
+  PhaseFieldTools<dim>                 &_pf_tools,
+  PDEOperatorBase<dim, degree, number> &_pde_operator)
   : field_attributes(_field_attributes)
   , solve_blocks(_solve_blocks)
   , user_inputs_ptr(&_user_inputs)
@@ -273,8 +273,12 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
         {
           continue;
         }
+      solve_context.get_pde_operator().pre_solve_block(solve_context,
+                                                       solver->get_solve_block().id);
       solver->solve();
       solver->update_ghosts();
+      solve_context.get_pde_operator().post_solve_block(solve_context,
+                                                        solver->get_solve_block().id);
     }
   Timer::end_section("Solvers");
 
