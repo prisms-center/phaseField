@@ -145,9 +145,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:adea91b8223ef7a7d2b09ebc7e23fb6d2" id="r_adea91b8223ef7a7d2b09ebc7e23fb6d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adea91b8223ef7a7d2b09ebc7e23fb6d2">solve_increment</a> (<a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;sim_timer)</td></tr>
-<tr class="memdesc:adea91b8223ef7a7d2b09ebc7e23fb6d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a single increment of the given PDEs.  <br /></td></tr>
-<tr class="separator:adea91b8223ef7a7d2b09ebc7e23fb6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d18b5598daf20435ce09829b8983616" id="r_a4d18b5598daf20435ce09829b8983616"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d18b5598daf20435ce09829b8983616">solve_increment</a> (<a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;sim_timer)</td></tr>
+<tr class="memdesc:a4d18b5598daf20435ce09829b8983616"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve a single increment of the given PDEs. Returns nonzero if any exit_early condition is raised.  <br /></td></tr>
+<tr class="separator:a4d18b5598daf20435ce09829b8983616"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ab4e0dbdf0e935e3803c439ac2e2512" id="r_a0ab4e0dbdf0e935e3803c439ac2e2512"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ab4e0dbdf0e935e3803c439ac2e2512">init_system</a> ()</td></tr>
 <tr class="memdesc:a0ab4e0dbdf0e935e3803c439ac2e2512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the system.  <br /></td></tr>
 <tr class="separator:a0ab4e0dbdf0e935e3803c439ac2e2512"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,8 +315,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="adea91b8223ef7a7d2b09ebc7e23fb6d2" name="adea91b8223ef7a7d2b09ebc7e23fb6d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adea91b8223ef7a7d2b09ebc7e23fb6d2">&#9670;&#160;</a></span>solve_increment()</h2>
+<a id="a4d18b5598daf20435ce09829b8983616" name="a4d18b5598daf20435ce09829b8983616"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d18b5598daf20435ce09829b8983616">&#9670;&#160;</a></span>solve_increment()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,7 +327,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classProblem.html">Problem</a>&lt; dim, degree, number &gt;::solve_increment </td>
+          <td class="memname">int <a class="el" href="classProblem.html">Problem</a>&lt; dim, degree, number &gt;::solve_increment </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>sim_timer</em></span></td><td>)</td>
           <td></td>
@@ -340,7 +340,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Solve a single increment of the given PDEs. </p>
+<p>Solve a single increment of the given PDEs. Returns nonzero if any exit_early condition is raised. </p>
 
 </div>
 </div>

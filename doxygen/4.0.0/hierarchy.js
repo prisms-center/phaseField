@@ -11,6 +11,9 @@ var hierarchy =
     [ "Dependency", "structDependency.html", null ],
     [ "DependencyExtents", "structDependencyExtents.html", null ],
     [ "DoFManager< dim, degree >", "classDoFManager.html", null ],
+    [ "std::exception", null, [
+      [ "ExcNaN", "classExcNaN.html", null ]
+    ] ],
     [ "dealii::ExceptionBase", null, [
       [ "ExcDepNotInitialized", "classExcDepNotInitialized.html", null ]
     ] ],

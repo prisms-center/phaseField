@@ -14,10 +14,11 @@ var searchData=
   ['evalflags_11',['EvalFlags',['../structDependency.html#a471c265e7f6c5e3c8c4c90000c693173',1,'Dependency::EvalFlags'],['../classSolveBlock.html#a7886588eb2d38800481753177965e6d6',1,'SolveBlock::EvalFlags'],['../types_8h.html#a637da5cdfafc0cd5d277b2f75bb1d8d7',1,'EvalFlags:&#160;types.h']]],
   ['excdepnotinitialized_12',['ExcDepNotInitialized',['../classExcDepNotInitialized.html',1,'ExcDepNotInitialized'],['../classExcDepNotInitialized.html#a3b008c8fbd3f8fbe8e243b3ca839083d',1,'ExcDepNotInitialized::ExcDepNotInitialized()']]],
   ['exceptions_2eh_13',['exceptions.h',['../exceptions_8h.html',1,'']]],
-  ['execute_5fgrid_5frefinement_14',['execute_grid_refinement',['../classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a',1,'TriangulationManager']]],
-  ['execute_5fsolution_5ftransfer_15',['execute_solution_transfer',['../classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab',1,'GroupSolutionHandler::execute_solution_transfer()'],['../classSolverBase.html#a014e7fc567c422256eb895622a82c875',1,'SolverBase::execute_solution_transfer()']]],
-  ['explicit_16',['Explicit',['../type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9ad2dd6ed7eca9210b09941bee2c62735f',1,'type_enums.h']]],
-  ['explicit_5fsolver_2eh_17',['explicit_solver.h',['../explicit__solver_8h.html',1,'']]],
-  ['explicitsolver_18',['ExplicitSolver',['../classExplicitSolver.html',1,'ExplicitSolver&lt; dim, degree, number &gt;'],['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver::ExplicitSolver()']]],
-  ['export_5ftriangulation_5fas_5fvtk_19',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]
+  ['excnan_14',['ExcNaN',['../classExcNaN.html',1,'ExcNaN'],['../classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e',1,'ExcNaN::ExcNaN()']]],
+  ['execute_5fgrid_5frefinement_15',['execute_grid_refinement',['../classTriangulationManager.html#a7bb857b9b31d0c8ff36a42281190f84a',1,'TriangulationManager']]],
+  ['execute_5fsolution_5ftransfer_16',['execute_solution_transfer',['../classGroupSolutionHandler.html#aab67ca948ec1e0d3d0f53c645878a5ab',1,'GroupSolutionHandler::execute_solution_transfer()'],['../classSolverBase.html#a014e7fc567c422256eb895622a82c875',1,'SolverBase::execute_solution_transfer()']]],
+  ['explicit_17',['Explicit',['../type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9ad2dd6ed7eca9210b09941bee2c62735f',1,'type_enums.h']]],
+  ['explicit_5fsolver_2eh_18',['explicit_solver.h',['../explicit__solver_8h.html',1,'']]],
+  ['explicitsolver_19',['ExplicitSolver',['../classExplicitSolver.html',1,'ExplicitSolver&lt; dim, degree, number &gt;'],['../classExplicitSolver.html#a7b1568d7be5ce26453a262bd81e19064',1,'ExplicitSolver::ExplicitSolver()']]],
+  ['export_5ftriangulation_5fas_5fvtk_20',['export_triangulation_as_vtk',['../classTriangulationManager.html#aa2ab608f86964043ab3ec2a13ab06c6f',1,'TriangulationManager']]]
 ];

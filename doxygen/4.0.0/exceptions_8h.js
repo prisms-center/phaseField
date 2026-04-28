@@ -1,5 +1,6 @@
 var exceptions_8h =
 [
+    [ "ExcNaN", "classExcNaN.html", "classExcNaN" ],
     [ "AssertThrowDebug", "exceptions_8h.html#a0d5036b8f035358279d18d4afa70a68b", null ],
     [ "DeclException1", "exceptions_8h.html#af272af578fc89a269c2755b84af53962", null ],
     [ "DeclException2", "exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8", null ],

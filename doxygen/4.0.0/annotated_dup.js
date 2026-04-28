@@ -15,6 +15,7 @@ var annotated_dup =
     [ "DirichletConditions", "classDirichletConditions.html", "classDirichletConditions" ],
     [ "DoFManager", "classDoFManager.html", "classDoFManager" ],
     [ "ExcDepNotInitialized", "classExcDepNotInitialized.html", "classExcDepNotInitialized" ],
+    [ "ExcNaN", "classExcNaN.html", "classExcNaN" ],
     [ "ExplicitSolver", "classExplicitSolver.html", "classExplicitSolver" ],
     [ "FieldAttributes", "structFieldAttributes.html", "structFieldAttributes" ],
     [ "FieldConstraints", "structFieldConstraints.html", "structFieldConstraints" ],

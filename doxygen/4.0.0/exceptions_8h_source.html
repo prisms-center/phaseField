@@ -134,40 +134,70 @@ $(function(){initNavTree('exceptions_8h_source.html',''); initResizable(true); }
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;prismspf/config.h&gt;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;exception&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// NOLINTBEGIN(readability-identifier-naming)</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifdef DEBUG</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#  define AssertThrowDebug(cond, exc) AssertThrow(cond, exc);</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a0d5036b8f035358279d18d4afa70a68b">   24</a></span><span class="preprocessor">#  define AssertThrowDebug(cond, exc)</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// NOLINTEND(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><a class="code hl_namespace" href="namespacePRISMS__PF__BEGIN__NAMESPACE.html">PRISMS_PF_BEGIN_NAMESPACE</a></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">// NOLINTBEGIN(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#ifdef DEBUG</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#  define AssertThrowDebug(cond, exc) AssertThrow(cond, exc);</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a0d5036b8f035358279d18d4afa70a68b">   26</a></span><span class="preprocessor">#  define AssertThrowDebug(cond, exc)</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// NOLINTBEGIN</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">   35</a></span><a class="code hl_function" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">DeclException1</a>(</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  FeatureNotImplemented,</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  std::string,</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  &lt;&lt; <span class="stringliteral">&quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;</span> &lt;&lt; arg1</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  &lt;&lt; <span class="stringliteral">&quot;\nCheck the issues section of PRISMS-PF&#39;s github to see if this feature is under &quot;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>     <span class="stringliteral">&quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>     <span class="stringliteral">&quot;feel that feature is worthwhile for yourself and others.&quot;</span>);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">   47</a></span><a class="code hl_function" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a>(UnreachableCode, <span class="stringliteral">&quot;This code should not have been reached.&quot;</span>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">   53</a></span><a class="code hl_function" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a>(DependencyNotFound,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>               <a class="code hl_typedef" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a>,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>               std::string,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>               &lt;&lt; <span class="stringliteral">&quot;Attempted access of the variable with index &quot;</span> &lt;&lt; arg1</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>               &lt;&lt; <span class="stringliteral">&quot; and dependency type &quot;</span> &lt;&lt; arg2</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>               &lt;&lt; <span class="stringliteral">&quot; that was not marked as needed. Please check CustomAttributeLoader.&quot;</span>);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// NOLINTEND</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">// NOLINTEND(readability-identifier-naming)</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// NOLINTBEGIN</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classExcNaN.html">   33</a></span><span class="keyword">class </span><a class="code hl_function" href="classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e">ExcNaN</a> : <span class="keyword">public</span> std::exception</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">   36</a></span>  std::string <a class="code hl_variable" href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">message</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// Constructor to store a custom message</span></div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e">   40</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e">ExcNaN</a>(<span class="keyword">const</span> std::string &amp;msg = <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    : <a class="code hl_variable" href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">message</a>(<span class="stringliteral">&quot;PRISMS-PF detected somewhere that a value was NaN.\n&quot;</span> + msg)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {}</div>
+</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Overriding the virtual what() method</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *</div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classExcNaN.html#afe8180a5f501dc2dd18e5f34f452b6e0">   46</a></span>  <a class="code hl_function" href="classExcNaN.html#afe8180a5f501dc2dd18e5f34f452b6e0">what</a>() const noexcept<span class="keyword"> override</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">message</a>.c_str();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">   56</a></span><a class="code hl_function" href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">DeclException1</a>(</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  FeatureNotImplemented,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::string,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  &lt;&lt; <span class="stringliteral">&quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;</span> &lt;&lt; arg1</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  &lt;&lt; <span class="stringliteral">&quot;\nCheck the issues section of PRISMS-PF&#39;s github to see if this feature is under &quot;</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>     <span class="stringliteral">&quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot;</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>     <span class="stringliteral">&quot;feel that feature is worthwhile for yourself and others.&quot;</span>);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">   68</a></span><a class="code hl_function" href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a>(UnreachableCode, <span class="stringliteral">&quot;This code should not have been reached.&quot;</span>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">   74</a></span><a class="code hl_function" href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a>(DependencyNotFound,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>               <a class="code hl_typedef" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a>,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>               std::string,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>               &lt;&lt; <span class="stringliteral">&quot;Attempted access of the variable with index &quot;</span> &lt;&lt; arg1</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>               &lt;&lt; <span class="stringliteral">&quot; and dependency type &quot;</span> &lt;&lt; arg2</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>               &lt;&lt; <span class="stringliteral">&quot; that was not marked as needed. Please check CustomAttributeLoader.&quot;</span>);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">// NOLINTEND</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>PRISMS_PF_END_NAMESPACE</div>
+<div class="ttc" id="aclassExcNaN_html_a7c4a619034c6ef91a4b9a0a4ead2b27b"><div class="ttname"><a href="classExcNaN.html#a7c4a619034c6ef91a4b9a0a4ead2b27b">ExcNaN::message</a></div><div class="ttdeci">std::string message</div><div class="ttdef"><b>Definition</b> exceptions.h:36</div></div>
+<div class="ttc" id="aclassExcNaN_html_ad119b3218a8031bbd92d96b319bcab1e"><div class="ttname"><a href="classExcNaN.html#ad119b3218a8031bbd92d96b319bcab1e">ExcNaN::ExcNaN</a></div><div class="ttdeci">ExcNaN(const std::string &amp;msg=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> exceptions.h:40</div></div>
+<div class="ttc" id="aclassExcNaN_html_afe8180a5f501dc2dd18e5f34f452b6e0"><div class="ttname"><a href="classExcNaN.html#afe8180a5f501dc2dd18e5f34f452b6e0">ExcNaN::what</a></div><div class="ttdeci">const char * what() const noexcept override</div><div class="ttdef"><b>Definition</b> exceptions.h:46</div></div>
 <div class="ttc" id="aexceptions_8h_html_a8d86451113c706c6d08508cfafc6380f"><div class="ttname"><a href="exceptions_8h.html#a8d86451113c706c6d08508cfafc6380f">DeclExceptionMsg</a></div><div class="ttdeci">DeclExceptionMsg(UnreachableCode, &quot;This code should not have been reached.&quot;)</div></div>
 <div class="ttc" id="aexceptions_8h_html_ab27ff3a391d6de427c4c5317b62999a8"><div class="ttname"><a href="exceptions_8h.html#ab27ff3a391d6de427c4c5317b62999a8">DeclException2</a></div><div class="ttdeci">DeclException2(DependencyNotFound, Types::Index, std::string,&lt;&lt; &quot;Attempted access of the variable with index &quot;&lt;&lt; arg1&lt;&lt; &quot; and dependency type &quot;&lt;&lt; arg2&lt;&lt; &quot; that was not marked as needed. Please check CustomAttributeLoader.&quot;)</div></div>
 <div class="ttc" id="aexceptions_8h_html_af272af578fc89a269c2755b84af53962"><div class="ttname"><a href="exceptions_8h.html#af272af578fc89a269c2755b84af53962">DeclException1</a></div><div class="ttdeci">DeclException1(FeatureNotImplemented, std::string,&lt;&lt; &quot;The following feature has yet to be implemented in PRISMS-PF:\n  &quot;&lt;&lt; arg1&lt;&lt; &quot;\nCheck the issues section of PRISMS-PF&#39;s github to see if this feature is under &quot; &quot;development. Additionally, please considering provided a patch to PRISMS-PF if you &quot; &quot;feel that feature is worthwhile for yourself and others.&quot;)</div></div>
