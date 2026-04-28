@@ -159,6 +159,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abeab88ba7ee6307c86fc53cb40208e26" id="r_abeab88ba7ee6307c86fc53cb40208e26"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abeab88ba7ee6307c86fc53cb40208e26">compute_lhs</a> (<a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt; &amp;variable_list, const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;sim_timer, unsigned int solver_id) const</td></tr>
 <tr class="memdesc:abeab88ba7ee6307c86fc53cb40208e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-implemented class for the RHS of nonexplicit equations.  <br /></td></tr>
 <tr class="separator:abeab88ba7ee6307c86fc53cb40208e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9c1136adf59c5587fc6cd0a03ed818f" id="r_ae9c1136adf59c5587fc6cd0a03ed818f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9c1136adf59c5587fc6cd0a03ed818f">pre_solve_block</a> (<a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;solve_context, unsigned int solver_id)</td></tr>
+<tr class="memdesc:ae9c1136adf59c5587fc6cd0a03ed818f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called right before a solve block. Gives access to all the internal classes, so you can break things here.  <br /></td></tr>
+<tr class="separator:ae9c1136adf59c5587fc6cd0a03ed818f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaac0725042b4f5226d034617a171f413" id="r_aaac0725042b4f5226d034617a171f413"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaac0725042b4f5226d034617a171f413">post_solve_block</a> (<a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;solve_context, unsigned int solver_id)</td></tr>
+<tr class="memdesc:aaac0725042b4f5226d034617a171f413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function called right after a solve block.Gives access to all the internal classes, so you can break things here.  <br /></td></tr>
+<tr class="separator:aaac0725042b4f5226d034617a171f413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6534c54f5eaf853c221a11025e04822f" id="r_a6534c54f5eaf853c221a11025e04822f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6534c54f5eaf853c221a11025e04822f">get_user_inputs</a> () const</td></tr>
 <tr class="memdesc:a6534c54f5eaf853c221a11025e04822f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the user inputs (constant reference).  <br /></td></tr>
 <tr class="separator:a6534c54f5eaf853c221a11025e04822f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -390,6 +396,72 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Get the user inputs (constant reference). </p>
+
+</div>
+</div>
+<a id="aaac0725042b4f5226d034617a171f413" name="aaac0725042b4f5226d034617a171f413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaac0725042b4f5226d034617a171f413">&#9670;&#160;</a></span>post_solve_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt;::post_solve_block </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_context</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>solver_id</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function called right after a solve block.Gives access to all the internal classes, so you can break things here. </p>
+
+</div>
+</div>
+<a id="ae9c1136adf59c5587fc6cd0a03ed818f" name="ae9c1136adf59c5587fc6cd0a03ed818f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9c1136adf59c5587fc6cd0a03ed818f">&#9670;&#160;</a></span>pre_solve_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt;::pre_solve_block </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solve_context</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>solver_id</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function called right before a solve block. Gives access to all the internal classes, so you can break things here. </p>
 
 </div>
 </div>

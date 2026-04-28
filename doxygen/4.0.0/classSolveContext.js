@@ -1,6 +1,6 @@
 var classSolveContext =
 [
-    [ "SolveContext", "classSolveContext.html#a9ca395a4b46561c7c059fad258b45a3f", null ],
+    [ "SolveContext", "classSolveContext.html#aaa4b3defd85f5db61b90165bb0414ba4", null ],
     [ "get_constraint_manager", "classSolveContext.html#a0ac9023eb2bd83a5cc8e4c4228ae80c9", null ],
     [ "get_constraint_manager", "classSolveContext.html#a5ab3719bb4fb4c0db5753df9acfbaec7", null ],
     [ "get_dof_manager", "classSolveContext.html#a08e4c7c780d5f08d9012cf481df1e727", null ],
@@ -8,6 +8,7 @@ var classSolveContext =
     [ "get_field_attributes", "classSolveContext.html#a2396501948f50e9f4ea3bccef1280d0c", null ],
     [ "get_invm_manager", "classSolveContext.html#ae57afa6df355c48d740ac596fb54c8e4", null ],
     [ "get_invm_manager", "classSolveContext.html#ab2c5e3e07b327d660003e6894432a7e1", null ],
+    [ "get_pde_operator", "classSolveContext.html#a3cc7c038f10ccb734d6e9621e6d16ed9", null ],
     [ "get_pde_operator", "classSolveContext.html#a74a290f799dd5f0daaa05cf40bd00534", null ],
     [ "get_simulation_timer", "classSolveContext.html#a2b004ae7e161c2362fa83682f22fc945", null ],
     [ "get_simulation_timer", "classSolveContext.html#a77236d45ac0aba933968f22b3172faa0", null ],
@@ -19,7 +20,7 @@ var classSolveContext =
     [ "dof_manager", "classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f", null ],
     [ "field_attributes", "classSolveContext.html#ab849665a3485ecfbdf294ee4f17eee49", null ],
     [ "invm_manager", "classSolveContext.html#abee84067d14d7d97694a0fa1f5517fb4", null ],
-    [ "pde_operator", "classSolveContext.html#a088feba649304f5f24a9674b598679cf", null ],
+    [ "pde_operator", "classSolveContext.html#a0868de97a3daef4759b4699e5a80c8ca", null ],
     [ "sim_timer", "classSolveContext.html#a26e7654efe218f6df006e89f04a78e1b", null ],
     [ "solution_indexer", "classSolveContext.html#ab1d02bd4e7c58852d864b332e9c6aba7", null ],
     [ "triangulation_manager", "classSolveContext.html#a762dbccd776a3f026962c4771d8f5b55", null ],

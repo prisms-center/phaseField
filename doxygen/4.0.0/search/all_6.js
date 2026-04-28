@@ -55,7 +55,7 @@ var searchData=
   ['get_5foutput_52',['get_output',['../classReadUnstructuredVTK.html#a6cdaaa5d7880f6e1182627a0932849c8',1,'ReadUnstructuredVTK']]],
   ['get_5fparameter_5fhandler_53',['get_parameter_handler',['../classInputFileReader.html#a43516d8890cdc244ac27cdc8ca65b932',1,'InputFileReader']]],
   ['get_5fparameters_5ffilename_54',['get_parameters_filename',['../classParseCMDOptions.html#ae0592fb24306a984c5a930be3de46e11',1,'ParseCMDOptions']]],
-  ['get_5fpde_5foperator_55',['get_pde_operator',['../classSolveContext.html#a74a290f799dd5f0daaa05cf40bd00534',1,'SolveContext']]],
+  ['get_5fpde_5foperator_55',['get_pde_operator',['../classSolveContext.html#a74a290f799dd5f0daaa05cf40bd00534',1,'SolveContext::get_pde_operator() const'],['../classSolveContext.html#a3cc7c038f10ccb734d6e9621e6d16ed9',1,'SolveContext::get_pde_operator()']]],
   ['get_5fperiodic_5fface_5fpairs_56',['get_periodic_face_pairs',['../classTriangulationManager.html#aaae6980dc639e2b88b9c324e92cd3c2c',1,'TriangulationManager']]],
   ['get_5fpf_5ftools_57',['get_pf_tools',['../classPDEOperatorBase.html#aa88b6fa76040b5788e668233036a5b91',1,'PDEOperatorBase']]],
   ['get_5fq_5fpoint_5flocation_58',['get_q_point_location',['../classFieldContainer.html#ac5a4bdd240cf4081bdf3e2a0baf50c19',1,'FieldContainer']]],

@@ -77,7 +77,7 @@ var searchData=
   ['solve_5ftiming_74',['solve_timing',['../classSolveBlock.html#a1c571692d3e43eb50246b8b386129af4',1,'SolveBlock']]],
   ['solve_5ftype_75',['solve_type',['../classSolveBlock.html#a0739672b68537b448b8c247060e494ef',1,'SolveBlock']]],
   ['solveblock_76',['SolveBlock',['../classSolveBlock.html',1,'SolveBlock'],['../classSolveBlock.html#a46791ee87747d4ad83882f30c9a293f2',1,'SolveBlock::SolveBlock()']]],
-  ['solvecontext_77',['SolveContext',['../classSolveContext.html',1,'SolveContext&lt; dim, degree, number &gt;'],['../classSolveContext.html#a9ca395a4b46561c7c059fad258b45a3f',1,'SolveContext::SolveContext()']]],
+  ['solvecontext_77',['SolveContext',['../classSolveContext.html',1,'SolveContext&lt; dim, degree, number &gt;'],['../classSolveContext.html#aaa4b3defd85f5db61b90165bb0414ba4',1,'SolveContext::SolveContext()']]],
   ['solvegroup_78',['SolveGroup',['../solve__block_8h.html#a2e2b40c8a7e6e221a9e7586cfadea934',1,'solve_block.h']]],
   ['solver_5fbase_2ecc_79',['solver_base.cc',['../solver__base_8cc.html',1,'']]],
   ['solver_5fbase_2eh_80',['solver_base.h',['../solver__base_8h.html',1,'']]],
