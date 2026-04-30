@@ -134,6 +134,7 @@ $(function(){initNavTree('utilities_8h.html',''); initResizable(true); });
 <code>#include &lt;deal.II/base/point.h&gt;</code><br />
 <code>#include &lt;deal.II/base/tensor.h&gt;</code><br />
 <code>#include &lt;deal.II/base/types.h&gt;</code><br />
+<code>#include &lt;deal.II/base/utilities.h&gt;</code><br />
 <code>#include &lt;deal.II/base/vectorization.h&gt;</code><br />
 <code>#include &lt;deal.II/matrix_free/evaluation_flags.h&gt;</code><br />
 <code>#include &lt;boost/range/algorithm.hpp&gt;</code><br />
@@ -146,7 +147,7 @@ $(function(){initNavTree('utilities_8h.html',''); initResizable(true); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utilities.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="2486" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilities_8h__incl.svg" width="2671" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -184,6 +185,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6ea50fb4cefe498899ea22ddcbca3c40">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
 <tr class="memdesc:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. Note: this function internally converts to Voigt notation.  <br /></td></tr>
 <tr class="separator:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29308e85d46b19122900b96a31310a27" id="r_a29308e85d46b19122900b96a31310a27"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename T&gt; </td></tr>
+<tr class="memitem:a29308e85d46b19122900b96a31310a27"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29308e85d46b19122900b96a31310a27">stabilization_parameter</a> (const T &amp;timestep, const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity, const T &amp;kinematic_viscosity)</td></tr>
+<tr class="memdesc:a29308e85d46b19122900b96a31310a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a>  <br /></td></tr>
+<tr class="separator:a29308e85d46b19122900b96a31310a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1788e3e79a6c15437b8aa7893852549" id="r_ae1788e3e79a6c15437b8aa7893852549"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename T&gt; </td></tr>
+<tr class="memitem:ae1788e3e79a6c15437b8aa7893852549"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae1788e3e79a6c15437b8aa7893852549">stabilization_parameter</a> (const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity, const T &amp;kinematic_viscosity)</td></tr>
+<tr class="memdesc:ae1788e3e79a6c15437b8aa7893852549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a>  <br /></td></tr>
+<tr class="separator:ae1788e3e79a6c15437b8aa7893852549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba67c90e812e42b2c70c0572bc407d1f" id="r_aba67c90e812e42b2c70c0572bc407d1f"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename T&gt; </td></tr>
+<tr class="memitem:aba67c90e812e42b2c70c0572bc407d1f"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aba67c90e812e42b2c70c0572bc407d1f">stabilization_parameter</a> (const T &amp;timestep, const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity)</td></tr>
+<tr class="memdesc:aba67c90e812e42b2c70c0572bc407d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a>  <br /></td></tr>
+<tr class="separator:aba67c90e812e42b2c70c0572bc407d1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39cdcaf23e65767c70faa45302ccf6e3" id="r_a39cdcaf23e65767c70faa45302ccf6e3"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename T&gt; </td></tr>
+<tr class="memitem:a39cdcaf23e65767c70faa45302ccf6e3"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a39cdcaf23e65767c70faa45302ccf6e3">stabilization_parameter</a> (const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity)</td></tr>
+<tr class="memdesc:a39cdcaf23e65767c70faa45302ccf6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a>  <br /></td></tr>
+<tr class="separator:a39cdcaf23e65767c70faa45302ccf6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a235abb5b94d2d1f594561b4ee4f061e2" id="r_a235abb5b94d2d1f594561b4ee4f061e2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a235abb5b94d2d1f594561b4ee4f061e2">strip_whitespace</a> (const std::string &amp;_text)</td></tr>
 <tr class="memdesc:a235abb5b94d2d1f594561b4ee4f061e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove whitespace from strings.  <br /></td></tr>
 <tr class="separator:a235abb5b94d2d1f594561b4ee4f061e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -392,6 +409,165 @@ template&lt;typename Number&gt; </div>
 </div><div class="memdoc">
 
 <p>Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers) </p>
+
+</div>
+</div>
+<a id="a39cdcaf23e65767c70faa45302ccf6e3" name="a39cdcaf23e65767c70faa45302ccf6e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39cdcaf23e65767c70faa45302ccf6e3">&#9670;&#160;</a></span>stabilization_parameter() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE T stabilization_parameter </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>element_volume</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 1, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>velocity</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a> </p>
+<p>For the element size, we use the diameter of a sphere with equivalent volume as the cell. This is then divided by the degree.</p>
+<dl class="section note"><dt>Note</dt><dd>This is for pure advection steady-state problems </dd></dl>
+
+</div>
+</div>
+<a id="ae1788e3e79a6c15437b8aa7893852549" name="ae1788e3e79a6c15437b8aa7893852549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1788e3e79a6c15437b8aa7893852549">&#9670;&#160;</a></span>stabilization_parameter() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE T stabilization_parameter </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>element_volume</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 1, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>velocity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>kinematic_viscosity</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a> </p>
+<p>For the element size, we use the diameter of a sphere with equivalent volume as the cell. This is then divided by the degree.</p>
+<dl class="section note"><dt>Note</dt><dd>This is for steady state problems </dd></dl>
+
+</div>
+</div>
+<a id="aba67c90e812e42b2c70c0572bc407d1f" name="aba67c90e812e42b2c70c0572bc407d1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba67c90e812e42b2c70c0572bc407d1f">&#9670;&#160;</a></span>stabilization_parameter() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE T stabilization_parameter </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>timestep</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>element_volume</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 1, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>velocity</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a> </p>
+<p>For the element size, we use the diameter of a sphere with equivalent volume as the cell. This is then divided by the degree.</p>
+<dl class="section note"><dt>Note</dt><dd>This is for pure advection transient problems </dd></dl>
+
+</div>
+</div>
+<a id="a29308e85d46b19122900b96a31310a27" name="a29308e85d46b19122900b96a31310a27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29308e85d46b19122900b96a31310a27">&#9670;&#160;</a></span>stabilization_parameter() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE T stabilization_parameter </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>timestep</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>element_volume</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const dealii::Tensor&lt; 1, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>velocity</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;</td>          <td class="paramname"><span class="paramname"><em>kinematic_viscosity</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a> </p>
+<p>For the element size, we use the diameter of a sphere with equivalent volume as the cell. This is then divided by the degree. </p>
 
 </div>
 </div>

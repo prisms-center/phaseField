@@ -40,11 +40,12 @@ var searchData=
   ['solverbase_37',['SolverBase',['../classSolverBase.html#a84149fa02932ffb0254b239d561ce35e',1,'SolverBase::SolverBase(SolveBlock _solve_block, const SolveContext&lt; dim, degree, number &gt; &amp;_solve_context)'],['../classSolverBase.html#a5bce98970b784ac227ef51fbb9b8e1af',1,'SolverBase::SolverBase(const SolverBase &amp;solver_base)=delete'],['../classSolverBase.html#a7aaaabe2e3a109fea97747184d4c3add',1,'SolverBase::SolverBase(SolverBase &amp;&amp;solver_base) noexcept=delete']]],
   ['sphericalmesh_38',['SphericalMesh',['../structSphericalMesh.html#a38656f8ae89b5fc27c56178f4950abdd',1,'SphericalMesh::SphericalMesh()=default'],['../structSphericalMesh.html#ad6da88a01ab53c2630c7f1f74ead6ca1',1,'SphericalMesh::SphericalMesh(double _radius)']]],
   ['sqrt_39',['sqrt',['../classInvMManager.html#aaef460da324382a16a4bd5c4d26ada07',1,'InvMManager']]],
-  ['start_5fsection_40',['start_section',['../classTimer.html#a64705ee502c79c919034afc1377d5b61',1,'Timer']]],
-  ['string_5fto_5ftype_41',['string_to_type',['../utilities_8h.html#a3ee55d4355c72a77599aa47eb196ffb9',1,'utilities.h']]],
-  ['string_5fto_5ftype_5fpair_5fwith_5fdelimiters_42',['string_to_type_pair_with_delimiters',['../utilities_8h.html#a332c5b699f76d9002da29b4db8931786',1,'utilities.h']]],
-  ['strip_5fspaces_43',['strip_spaces',['../classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55',1,'InputFileReader']]],
-  ['strip_5fwhitespace_44',['strip_whitespace',['../utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2',1,'utilities.h']]],
-  ['submission_5fvalid_45',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
-  ['sync_46',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]]
+  ['stabilization_5fparameter_40',['stabilization_parameter',['../utilities_8h.html#a29308e85d46b19122900b96a31310a27',1,'stabilization_parameter(const T &amp;timestep, const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity, const T &amp;kinematic_viscosity):&#160;utilities.h'],['../utilities_8h.html#ae1788e3e79a6c15437b8aa7893852549',1,'stabilization_parameter(const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity, const T &amp;kinematic_viscosity):&#160;utilities.h'],['../utilities_8h.html#aba67c90e812e42b2c70c0572bc407d1f',1,'stabilization_parameter(const T &amp;timestep, const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity):&#160;utilities.h'],['../utilities_8h.html#a39cdcaf23e65767c70faa45302ccf6e3',1,'stabilization_parameter(const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity):&#160;utilities.h']]],
+  ['start_5fsection_41',['start_section',['../classTimer.html#a64705ee502c79c919034afc1377d5b61',1,'Timer']]],
+  ['string_5fto_5ftype_42',['string_to_type',['../utilities_8h.html#a3ee55d4355c72a77599aa47eb196ffb9',1,'utilities.h']]],
+  ['string_5fto_5ftype_5fpair_5fwith_5fdelimiters_43',['string_to_type_pair_with_delimiters',['../utilities_8h.html#a332c5b699f76d9002da29b4db8931786',1,'utilities.h']]],
+  ['strip_5fspaces_44',['strip_spaces',['../classInputFileReader.html#ae9db18a08815e49696bd0bdc7f028b55',1,'InputFileReader']]],
+  ['strip_5fwhitespace_45',['strip_whitespace',['../utilities_8h.html#a235abb5b94d2d1f594561b4ee4f061e2',1,'utilities.h']]],
+  ['submission_5fvalid_46',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
+  ['sync_47',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]]
 ];
