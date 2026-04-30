@@ -267,8 +267,8 @@ template <unsigned int dim, unsigned int degree, typename T>
 inline DEAL_II_ALWAYS_INLINE T
 stabilization_parameter(const T                         &timestep,
                         const T                         &element_volume,
-                        const T                         &kinematic_viscosity,
-                        const dealii::Tensor<1, dim, T> &velocity)
+                        const dealii::Tensor<1, dim, T> &velocity,
+                        const T                         &kinematic_viscosity)
 {
   using dealii::Utilities::fixed_power;
   using std::cbrt;
@@ -319,8 +319,8 @@ stabilization_parameter(const T                         &timestep,
 template <unsigned int dim, unsigned int degree, typename T>
 inline DEAL_II_ALWAYS_INLINE T
 stabilization_parameter(const T                         &element_volume,
-                        const T                         &kinematic_viscosity,
-                        const dealii::Tensor<1, dim, T> &velocity)
+                        const dealii::Tensor<1, dim, T> &velocity,
+                        const T                         &kinematic_viscosity)
 {
   using dealii::Utilities::fixed_power;
   using std::cbrt;
