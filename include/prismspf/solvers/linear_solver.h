@@ -4,8 +4,8 @@
 #pragma once
 
 #include <deal.II/lac/precondition.h>
-#include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/solver_control.h>
+#include <deal.II/lac/solver_selector.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/group_solution_handler.h>
@@ -103,6 +103,8 @@ public:
       }
     linear_solver_control.set_max_steps(lin_params.max_iterations);
     linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
+    lin_solver.select(lin_params.solver_type);
+    lin_solver.set_control(linear_solver_control);
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
     inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
@@ -184,8 +186,10 @@ public:
     // Linear solve
     try
       {
-        dealii::SolverCG<BlockVector<number>> cg_solver(linear_solver_control);
-        cg_solver.solve(lhs_operator, x_vector, b_vector, dealii::PreconditionIdentity());
+        lin_solver.solve(lhs_operator,
+                         x_vector,
+                         b_vector,
+                         dealii::PreconditionIdentity());
         if (solve_context->get_user_inputs().output_parameters.should_output(
               solve_context->get_simulation_timer().get_increment()))
           {
@@ -242,6 +246,11 @@ private:
    * @brief Solver control. Contains max iterations and tolerance.
    */
   dealii::SolverControl linear_solver_control;
+
+  /**
+   * @brief Solver. Can switch between different linear solvers.
+   */
+  dealii::SolverSelector<BlockVector<number>> lin_solver;
 
   /**
    * @brief Vector containing only the inhomogeneous constraints (namely, non-zero
