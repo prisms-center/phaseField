@@ -20,6 +20,9 @@ PRISMS_PF_BEGIN_NAMESPACE
  */
 struct LinearSolverParameters
 {
+  // Solver type. richardson|cg|bicgstab|gmres|fgmres|minres
+  std::string solver_type = "cg";
+
   // Solver tolerance
   double tolerance = Defaults::tolerance;
 

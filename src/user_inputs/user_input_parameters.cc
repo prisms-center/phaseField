@@ -318,6 +318,10 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
 
         LinearSolverParameters linear_solver_parameters;
+
+        // Set the linear solver type
+        linear_solver_parameters.solver_type = parameter_handler.get("solver type");
+
         // Set the tolerance type
         static const std::map<std::string, SolverToleranceType> tolerance_types = {
           {"AbsoluteResidual",   AbsoluteResidual  },

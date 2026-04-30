@@ -4,6 +4,7 @@
 #include <deal.II/base/config.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/patterns.h>
+#include <deal.II/lac/solver_selector.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
@@ -400,6 +401,11 @@ InputFileReader::declare_solver_parameters()
           dealii::Patterns::Anything(),
           "The ids of the solvers that will use these settings.");
         parameter_handler.declare_entry(
+          "solver type",
+          "cg",
+          dealii::Patterns::Selection(dealii::SolverSelector<>::get_solver_names()),
+          "The type of iterative solver to use for linear solves.");
+        parameter_handler.declare_entry(
           "tolerance type",
           "AbsoluteResidual",
           dealii::Patterns::Selection("AbsoluteResidual|RMSEPerField|IntegratedPerField|"
@@ -441,6 +447,12 @@ InputFileReader::declare_solver_parameters()
         parameter_handler.declare_alias("solver_ids", "solve_blocks");
         parameter_handler.declare_alias("solver_ids", "solve block ids");
         parameter_handler.declare_alias("solver_ids", "solve_block_ids");
+        parameter_handler.declare_alias("solver type", "solver_type");
+        parameter_handler.declare_alias("solver type", "linear solver type");
+        parameter_handler.declare_alias("solver type", "linear_solver_type");
+        parameter_handler.declare_alias("solver type", "linear solver");
+        parameter_handler.declare_alias("solver type", "linear_solver");
+        parameter_handler.declare_alias("solver type", "type");
       }
       parameter_handler.leave_subsection();
 
