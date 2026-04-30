@@ -106,37 +106,44 @@ public:
     unsigned int iter               = 0;
     number       l2_norm            = -1.0;
     int          total_lin_iters    = 0;
-    while (newton_unconverged && iter++ < newton_max_iterations)
+    while (newton_unconverged && iter < newton_max_iterations)
       {
-        // Zero out the ghosts
+        // Apply constraints to solution vector
+        solutions.apply_constraints(relative_level);
+        solutions.update_ghosts(relative_level);
 
         // Solve for Newton-residual (r)
         Timer::start_section("Zero ghosts");
         newton_residual.zero_out_ghost_values();
         Timer::end_section("Zero ghosts");
         rhs_op.compute_operator(newton_residual);
-        newton_residual.update_ghost_values(); // needed?
+        newton_residual.update_ghost_values();
+
+        // Check convergence.
+        l2_norm            = newton_residual.l2_norm();
+        newton_unconverged = l2_norm > newton_tolerance;
+        if (!newton_unconverged || iter == newton_max_iterations)
+          {
+            continue;
+          }
 
         // Solve for Newton update. (-dr/du|Du)
         total_lin_iters += do_linear_solve(newton_residual, lhs_op, newton_update);
-        newton_update.update_ghost_values(); // needed?
+        newton_update.update_ghost_values();
+
+        // Zero out the ghosts
+        solutions.get_solution_full_vector(relative_level).zero_out_ghost_values();
 
         // Perform Newton update.
         solutions.get_solution_full_vector(relative_level)
           .add(newton_step_length, newton_update);
-
-        // Apply constraints to solution vector
-        solutions.apply_constraints(relative_level);
 
         // Update the ghosts
         Timer::start_section("Update ghosts");
         solutions.update_ghosts(relative_level);
         Timer::end_section("Update ghosts");
 
-        // Check convergence.
-        l2_norm            = newton_residual.l2_norm();
-        newton_unconverged = l2_norm > newton_tolerance;
-
+        iter++;
         // Todo: implement some super simple backtracking. Something like if the residual
         // increases instead of decreasing, try again with a smaller step length.
       }
