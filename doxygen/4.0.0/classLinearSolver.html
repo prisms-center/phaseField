@@ -246,6 +246,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ac9f7aa00bbccab9a806513417a940c28" id="r_ac9f7aa00bbccab9a806513417a940c28"><td class="memItemLeft" align="right" valign="top">dealii::SolverControl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9f7aa00bbccab9a806513417a940c28">linear_solver_control</a></td></tr>
 <tr class="memdesc:ac9f7aa00bbccab9a806513417a940c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver control. Contains max iterations and tolerance.  <br /></td></tr>
 <tr class="separator:ac9f7aa00bbccab9a806513417a940c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a933fe3ec5e22329efc330bb5be2cc6d0" id="r_a933fe3ec5e22329efc330bb5be2cc6d0"><td class="memItemLeft" align="right" valign="top">dealii::SolverSelector&lt; <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a933fe3ec5e22329efc330bb5be2cc6d0">lin_solver</a></td></tr>
+<tr class="memdesc:a933fe3ec5e22329efc330bb5be2cc6d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver. Can switch between different linear solvers.  <br /></td></tr>
+<tr class="separator:a933fe3ec5e22329efc330bb5be2cc6d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fb16805454c50f82bae0b84546b0823" id="r_a0fb16805454c50f82bae0b84546b0823"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fb16805454c50f82bae0b84546b0823">inhomogeneous_values</a></td></tr>
 <tr class="memdesc:a0fb16805454c50f82bae0b84546b0823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing only the inhomogeneous constraints (namely, non-zero Dirichlet values)  <br /></td></tr>
 <tr class="separator:a0fb16805454c50f82bae0b84546b0823"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -553,6 +556,32 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Linear solver parameters. </p>
+
+</div>
+</div>
+<a id="a933fe3ec5e22329efc330bb5be2cc6d0" name="a933fe3ec5e22329efc330bb5be2cc6d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a933fe3ec5e22329efc330bb5be2cc6d0">&#9670;&#160;</a></span>lin_solver</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">dealii::SolverSelector&lt;<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; &gt; <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::lin_solver</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Solver. Can switch between different linear solvers. </p>
 
 </div>
 </div>

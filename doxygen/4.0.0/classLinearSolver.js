@@ -10,6 +10,7 @@ var classLinearSolver =
     [ "inhomogeneous_values", "classLinearSolver.html#a0fb16805454c50f82bae0b84546b0823", null ],
     [ "lhs_operators", "classLinearSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4", null ],
     [ "lin_params", "classLinearSolver.html#a374eccb15f96a9d99973d550106f8f29", null ],
+    [ "lin_solver", "classLinearSolver.html#a933fe3ec5e22329efc330bb5be2cc6d0", null ],
     [ "linear_solver_control", "classLinearSolver.html#ac9f7aa00bbccab9a806513417a940c28", null ],
     [ "rhs_operators", "classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250", null ],
     [ "rhs_vector", "classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa", null ]

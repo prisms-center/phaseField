@@ -6,6 +6,7 @@ var structLinearSolverParameters =
     [ "preconditioner", "structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986", null ],
     [ "smoother_degree", "structLinearSolverParameters.html#aab59e11a916740acb1c0b20f9eb28712", null ],
     [ "smoothing_range", "structLinearSolverParameters.html#afdf7bb1ca9629c165cc7c31878984f4e", null ],
+    [ "solver_type", "structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa", null ],
     [ "tolerance", "structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76", null ],
     [ "tolerance_type", "structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680", null ]
 ];

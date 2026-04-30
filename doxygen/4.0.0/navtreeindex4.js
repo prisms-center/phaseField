@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"problem_8h.html":[8,0,1,0,0,17],
 "problem_8h_source.html":[8,0,1,0,0,17],
 "read__binary_8h.html":[8,0,1,0,1,0],
 "read__binary_8h_source.html":[8,0,1,0,1,0],
@@ -143,9 +144,10 @@ var NAVTREEINDEX4 =
 "structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c":[7,0,28,1],
 "structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3":[7,0,28,2],
 "structLinearSolverParameters.html#a332de98b33d544018bc47924bee53920":[7,0,28,0],
-"structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76":[7,0,28,6],
-"structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680":[7,0,28,7],
+"structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76":[7,0,28,7],
+"structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680":[7,0,28,8],
 "structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986":[7,0,28,3],
+"structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa":[7,0,28,6],
 "structLinearSolverParameters.html#aab59e11a916740acb1c0b20f9eb28712":[7,0,28,4],
 "structLinearSolverParameters.html#afdf7bb1ca9629c165cc7c31878984f4e":[7,0,28,5],
 "structLoadInitialConditionParameters.html":[7,0,29],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f":[7,0,0,0,0,0],
 "structPhaseFieldTools.html":[7,0,44],
 "structPhaseFieldTools.html#ac1539b32070dd5207aada2b83009fca4":[7,0,44,0],
-"structRectangularMesh.html":[7,0,50],
-"structRectangularMesh.html#a1239e45b673843dd168d6c79e7f401eb":[7,0,50,5],
-"structRectangularMesh.html#a138ca09db6d51d64e8fa8f49ddc95ca1":[7,0,50,1]
+"structRectangularMesh.html":[7,0,50]
 };

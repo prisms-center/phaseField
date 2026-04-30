@@ -24,13 +24,14 @@ var searchData=
   ['solve_5fcontext_21',['solve_context',['../classProblem.html#a8ab8c6c55f421a4e728bff2482fd6ab5',1,'Problem::solve_context'],['../classRefinementManager.html#aede2c7cf263c1871b74909698e6057b3',1,'RefinementManager::solve_context'],['../classSolverBase.html#a9c9264dcdc1db490647ba420141337c9',1,'SolverBase::solve_context'],['../classMGSolver.html#a9c9264dcdc1db490647ba420141337c9',1,'MGSolver::solve_context']]],
   ['solve_5ftiming_22',['solve_timing',['../classSolveBlock.html#a1c571692d3e43eb50246b8b386129af4',1,'SolveBlock']]],
   ['solve_5ftype_23',['solve_type',['../classSolveBlock.html#a0739672b68537b448b8c247060e494ef',1,'SolveBlock']]],
-  ['solvers_24',['solvers',['../classProblem.html#a894dc76b5dee932156dfafe82c40ca24',1,'Problem']]],
-  ['spatial_5fdiscretization_25',['spatial_discretization',['../classConstraintManager.html#a6fd6f5fc6db82a5847cbff898a3d0d18',1,'ConstraintManager::spatial_discretization'],['../classReadFieldBase.html#a71cf57b5115d1b44a5ce092eda919ba6',1,'ReadFieldBase::spatial_discretization'],['../classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc',1,'UserInputParameters::spatial_discretization']]],
-  ['spherical_5fmesh_26',['spherical_mesh',['../structSpatialDiscretization.html#a740e02a72ea3555c243d78e522168927',1,'SpatialDiscretization']]],
-  ['src_5fflag_27',['src_flag',['../structDependency.html#a3913c6f8db8db3cec49771c84126d940',1,'Dependency']]],
-  ['step_5flength_28',['step_length',['../structNonlinearSolverParameters.html#a102446805d57273733d71f3dc298a5a6',1,'NonlinearSolverParameters']]],
-  ['stream1_29',['stream1',['../classTeeStream_1_1TeeBuffer.html#a17899104d6ba197aecbc7996ceb2d09c',1,'TeeStream::TeeBuffer']]],
-  ['stream2_30',['stream2',['../classTeeStream_1_1TeeBuffer.html#add1ded05b8372dfeecd24eba6bdfc620',1,'TeeStream::TeeBuffer']]],
-  ['strike_31',['STRIKE',['../classTerminalColor.html#af4f59d6277479ef972a6fd0987dd60d4',1,'TerminalColor']]],
-  ['subdivisions_32',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]]
+  ['solver_5ftype_24',['solver_type',['../structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa',1,'LinearSolverParameters']]],
+  ['solvers_25',['solvers',['../classProblem.html#a894dc76b5dee932156dfafe82c40ca24',1,'Problem']]],
+  ['spatial_5fdiscretization_26',['spatial_discretization',['../classConstraintManager.html#a6fd6f5fc6db82a5847cbff898a3d0d18',1,'ConstraintManager::spatial_discretization'],['../classReadFieldBase.html#a71cf57b5115d1b44a5ce092eda919ba6',1,'ReadFieldBase::spatial_discretization'],['../classUserInputParameters.html#a19bfa05b741c5b49ccdf80ffc08351fc',1,'UserInputParameters::spatial_discretization']]],
+  ['spherical_5fmesh_27',['spherical_mesh',['../structSpatialDiscretization.html#a740e02a72ea3555c243d78e522168927',1,'SpatialDiscretization']]],
+  ['src_5fflag_28',['src_flag',['../structDependency.html#a3913c6f8db8db3cec49771c84126d940',1,'Dependency']]],
+  ['step_5flength_29',['step_length',['../structNonlinearSolverParameters.html#a102446805d57273733d71f3dc298a5a6',1,'NonlinearSolverParameters']]],
+  ['stream1_30',['stream1',['../classTeeStream_1_1TeeBuffer.html#a17899104d6ba197aecbc7996ceb2d09c',1,'TeeStream::TeeBuffer']]],
+  ['stream2_31',['stream2',['../classTeeStream_1_1TeeBuffer.html#add1ded05b8372dfeecd24eba6bdfc620',1,'TeeStream::TeeBuffer']]],
+  ['strike_32',['STRIKE',['../classTerminalColor.html#af4f59d6277479ef972a6fd0987dd60d4',1,'TerminalColor']]],
+  ['subdivisions_33',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]]
 ];
