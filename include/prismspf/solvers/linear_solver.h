@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/solver_selector.h>
@@ -36,6 +37,10 @@ protected:
   using SolverBase<dim, degree, number>::solutions;
   using SolverBase<dim, degree, number>::solve_context;
   using SolverBase<dim, degree, number>::solve_block;
+  using PreconditionChebyshev =
+    dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                  BlockVector<number>,
+                                  dealii::DiagonalMatrix<BlockVector<number>>>;
 
 public:
   /**
@@ -108,6 +113,7 @@ public:
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
     inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    initialize_preconditioner();
   }
 
   /**
@@ -186,27 +192,38 @@ public:
     // Linear solve
     try
       {
-        lin_solver.solve(lhs_operator,
-                         x_vector,
-                         b_vector,
-                         dealii::PreconditionIdentity());
-        if (solve_context->get_user_inputs().output_parameters.should_output(
-              solve_context->get_simulation_timer().get_increment()))
+        if (lin_params.preconditioner == None)
           {
-            ConditionalOStreams::pout_summary()
-              << " Linear solve final residual : "
-              << linear_solver_control.last_value() / normalization_value()
-              << " Linear steps: " << linear_solver_control.last_step() << "\n"
-              << std::flush;
+            lin_solver.solve(lhs_operator,
+                             x_vector,
+                             b_vector,
+                             dealii::PreconditionIdentity());
+          }
+        if (lin_params.preconditioner == Chebyshev)
+          {
+            lhs_operator.reinit_matrix_diagonal(x_vector);
+            lhs_operator.eval_matrix_diagonal();
+
+            lin_solver.solve(lhs_operator, x_vector, b_vector, precond_chebyshev);
           }
       }
-    catch (...) // TODO: more specific catch
+    catch (...) // TODO: more specific catch so that we dont ignore
+                // non-convergence-related errors.
       {
         ConditionalOStreams::pout_base()
           << "[Increment " << solve_context->get_simulation_timer().get_increment()
           << "] "
           << "Warning: linear solver did not converge as per set tolerances before "
           << lin_params.max_iterations << " iterations.\n";
+      }
+    if (solve_context->get_user_inputs().output_parameters.should_output(
+          solve_context->get_simulation_timer().get_increment()))
+      {
+        ConditionalOStreams::pout_summary()
+          << " Linear solve final residual : "
+          << linear_solver_control.last_value() / normalization_value()
+          << " Linear steps: " << linear_solver_control.last_step() << "\n"
+          << std::flush;
       }
     return linear_solver_control.last_step();
   }
@@ -236,6 +253,32 @@ protected:
     return value;
   }
 
+  void
+  initialize_preconditioner()
+  {
+    if (lin_params.preconditioner == None)
+      {
+        void(0); // do nothing
+      }
+    if (lin_params.preconditioner == Chebyshev)
+      {
+        initialize_chebyshev();
+      }
+  }
+
+  void
+  initialize_chebyshev()
+  {
+    precond_data.degree          = lin_params.smoother_degree;
+    precond_data.smoothing_range = lin_params.smoothing_range; // ≈ λ_min / λ_max
+    precond_data.eig_cg_n_iterations =
+      lin_params.eig_cg_n_iterations; // estimate λ_max via CG
+    lhs_operators[0].reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
+    precond_data.preconditioner = lhs_operators[0].get_matrix_diagonal_inverse();
+
+    precond_chebyshev.initialize(lhs_operators[0], precond_data);
+  }
+
 private:
   /**
    * @brief Linear solver parameters
@@ -262,6 +305,9 @@ private:
    * @brief Result of the linear operator applied to the inhomogeneous values.
    */
   BlockVector<number> inhomogeneous_rhs;
+
+  PreconditionChebyshev                 precond_chebyshev;
+  PreconditionChebyshev::AdditionalData precond_data;
 };
 
 PRISMS_PF_END_NAMESPACE

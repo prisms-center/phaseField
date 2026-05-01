@@ -142,6 +142,7 @@ enum SolverToleranceType : std::uint8_t
 enum PreconditionerType : std::uint8_t
 {
   None,
+  Chebyshev,
   GMG
 };
 

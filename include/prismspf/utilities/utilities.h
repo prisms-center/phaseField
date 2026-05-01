@@ -64,6 +64,19 @@ private:
 #endif
 };
 
+template <typename dealii_vector>
+void
+set_zero_entries_to_one(dealii_vector &vec)
+{
+  for (const auto index : vec.locally_owned_elements())
+    {
+      if (vec[index] == 0.0)
+        {
+          vec[index] = 1.0;
+        }
+    }
+}
+
 /**
  * @brief Helper function that converts a string to some type, given a mapping.
  */

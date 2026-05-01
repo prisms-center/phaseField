@@ -350,10 +350,17 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
 
         // Set preconditioner type and related parameters
+        static const std::map<std::string, PreconditionerType> preconditioner_map = {
+          {"None",      None     },
+          {"none",      None     },
+          {"",          None     },
+          {"Chebyshev", Chebyshev},
+          {"chebyshev", Chebyshev},
+          {"GMG",       GMG      },
+          {"gmg",       GMG      }
+        };
         linear_solver_parameters.preconditioner =
-          boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
-            ? PreconditionerType::GMG
-            : PreconditionerType::None;
+          preconditioner_map.at(parameter_handler.get("preconditioner type"));
 
         linear_solver_parameters.smoothing_range =
           parameter_handler.get_double("smoothing range");

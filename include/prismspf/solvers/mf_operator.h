@@ -18,8 +18,11 @@
 
 #include <prismspf/solvers/solver_base.h>
 
+#include <prismspf/utilities/utilities.h>
+
 #include <prismspf/config.h>
 
+#include <memory>
 #include <vector>
 
 #if DEAL_II_VERSION_MAJOR >= 9 && DEAL_II_VERSION_MINOR >= 7
@@ -59,15 +62,15 @@ public:
   ) const;
 
   template <TensorRank Rank>
-  using Value = std::conditional_t<Rank == TensorRank::Scalar,
+  using Value = std::conditional_t<Rank == TensorRank::Scalar || dim == 1,
                                    ScalarValue,
                                    dealii::Tensor<int(Rank), dim, ScalarValue>>;
 
   template <TensorRank Rank>
-  Value<Rank>
+  static Value<Rank>
   identity()
   {
-    if constexpr (Rank == TensorRank::Scalar)
+    if constexpr (Rank == TensorRank::Scalar || dim == 1)
       {
         return ScalarValue(1.0);
       }
@@ -80,16 +83,17 @@ public:
             {
               obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
             }
+          return obj;
         }();
         return ident;
       }
   }
 
   template <TensorRank Rank>
-  Value<Rank>
+  static Value<Rank>
   zero()
   {
-    if constexpr (Rank == TensorRank::Scalar)
+    if constexpr (Rank == TensorRank::Scalar || dim == 1)
       {
         return ScalarValue(0.0);
       }
@@ -168,29 +172,28 @@ private:
                          const BlockVector<number>                   &src,
                          const std::pair<unsigned int, unsigned int> &cell_range) const;
 
-  // public:
-  //   /**
-  //    * @brief Compute the diagonal of this operator.
-  //    */
-  //   void
-  //   compute_diagonal();
-  //
-  // private:
-  //   /**
-  //    * @brief Local computation of the diagonal of the operator.
-  //    */
-  //   void
-  //   compute_local_diagonal(const MatrixFree<dim, number> &_data,
-  //                          BlockVector<number>                                 &dst,
-  //                          const unsigned int                          &dummy,
-  //                          const std::pair<unsigned int, unsigned int> &cell_range)
-  //                          const;
-  //
-  //   template <TensorRank Rank>
-  //   dealii::AlignedVector<Value<Rank>>
-  //   compute_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
-  //                          DSTContainer<dim, degree, number>   &dst_fields,
-  //                          unsigned int                         field_index) const;
+public:
+  /**
+   * @brief Compute the diagonal of this operator.
+   */
+  void
+  compute_diagonal(BlockVector<number> &dst, const BlockVector<number> &src) const;
+
+private:
+  /**
+   * @brief Local computation of the diagonal of the operator.
+   */
+  void
+  compute_local_diagonal(const MatrixFree<dim, number>               &_data,
+                         BlockVector<number>                         &diagonal,
+                         const BlockVector<number>                   &dummy_src,
+                         const std::pair<unsigned int, unsigned int> &cell_range) const;
+
+  template <TensorRank Rank>
+  void
+  compute_local_field_diagonal(FieldContainer<dim, degree, number> &variable_list,
+                               BlockVector<number>                 &diagonal,
+                               unsigned int                         field_index) const;
 
 public:
   /**
@@ -226,12 +229,6 @@ public:
   clear();
 
   /**
-   * @brief Set constrained entries to one.
-   */
-  // void
-  // set_constrained_entries_to_one(SolutionVector<number> &dst) const;
-
-  /**
    * @brief Get read access to the MatrixFree<dim, number> object stored with this
    * operator.
    */
@@ -241,7 +238,7 @@ public:
   /**
    * @brief Get read access to the inverse diagonal of this operator.
    */
-  const std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> &
+  const std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> &
   get_matrix_diagonal_inverse() const;
 
   /**
@@ -260,6 +257,18 @@ public:
   Tvmult(BlockVector<number> &dst, const BlockVector<number> &src) const;
 
   // NOLINTEND(readability-identifier-naming)
+
+  /**
+   * @brief Reinit diagonal matrix to have the correct shape.
+   */
+  void
+  reinit_matrix_diagonal(const BlockVector<number> &shape);
+
+  /**
+   * @brief Evaluate matrix diagonal (and inverse).
+   */
+  void
+  eval_matrix_diagonal();
 
   /**
    * @brief Whether to read plain dof values from src, otherwise applies homogeneous part
@@ -334,13 +343,14 @@ private:
   /**
    * @brief The diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>> diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> diagonal_entries =
+    std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>();
 
   /**
    * @brief The inverse diagonal matrix.
    */
-  std::shared_ptr<dealii::DiagonalMatrix<SolutionVector<number>>>
-    inverse_diagonal_entries;
+  std::shared_ptr<dealii::DiagonalMatrix<BlockVector<number>>> inverse_diagonal_entries =
+    std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>();
 };
 
 PRISMS_PF_END_NAMESPACE
