@@ -422,8 +422,8 @@ InputFileReader::declare_solver_parameters()
           "The maximum number of linear solver iterations before the loop "
           "is stopped.");
         parameter_handler.declare_entry("preconditioner type",
-                                        "GMG",
-                                        dealii::Patterns::Selection("None|GMG"),
+                                        "None",
+                                        dealii::Patterns::Selection("None|Chebyshev"),
                                         "The preconditioner type for the linear solver.");
         parameter_handler.declare_entry("smoothing range",
                                         "15.0",
@@ -453,6 +453,8 @@ InputFileReader::declare_solver_parameters()
         parameter_handler.declare_alias("solver type", "linear solver");
         parameter_handler.declare_alias("solver type", "linear_solver");
         parameter_handler.declare_alias("solver type", "type");
+        parameter_handler.declare_alias("preconditioner type", "preconditioner_type");
+        parameter_handler.declare_alias("preconditioner type", "preconditioner");
       }
       parameter_handler.leave_subsection();
 

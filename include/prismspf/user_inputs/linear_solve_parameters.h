@@ -33,7 +33,7 @@ struct LinearSolverParameters
   unsigned int max_iterations = Defaults::iterations;
 
   // Preconditioner
-  PreconditionerType preconditioner = PreconditionerType::GMG;
+  PreconditionerType preconditioner = PreconditionerType::None;
 
   // Smoothing range for eigenvalues. This denotes the lower bound of eigenvalues that are
   // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated

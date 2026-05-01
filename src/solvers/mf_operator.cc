@@ -224,19 +224,14 @@ template <unsigned int dim, unsigned int degree, typename number>
 dealii::types::global_dof_index
 MFOperator<dim, degree, number>::m() const
 {
-  // Assert(data.get() != nullptr, dealii::ExcNotInitialized());
-  //
-  // const unsigned int total_size =
-  //  std::accumulate(selected_fields.begin(),
-  //                  selected_fields.end(),
-  //                  0U,
-  //                  [this](unsigned int sum, unsigned int field)
-  //                  {
-  //                    return sum + data->get_vector_partitioner(field)->size();
-  //                  });
-  // return total_size;
-  AssertThrow(false, FeatureNotImplemented("m()"));
-  return 0;
+  Assert(data != nullptr, dealii::ExcNotInitialized());
+  unsigned int sum = 0;
+  for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+       ++block_index)
+    {
+      sum += data->get_vector_partitioner(block_index)->size();
+    }
+  return sum;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
