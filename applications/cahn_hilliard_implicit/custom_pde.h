@@ -158,10 +158,10 @@ private:
         ScalarValue j_mu_mu_val = delta_mu_val;
         // VectorValue j_mu_mu_vec = ;
 
-        variable_list.set_value_term(0, j_c_c_val);
-        variable_list.set_gradient_term(0, -j_c_mu_vec);
-        variable_list.set_value_term(1, j_mu_c_val + j_mu_mu_val);
-        variable_list.set_gradient_term(1, -j_mu_c_vec);
+        variable_list.set_value_term(0, -j_c_c_val);
+        variable_list.set_gradient_term(0, j_c_mu_vec);
+        variable_list.set_value_term(1, -j_mu_c_val - j_mu_mu_val);
+        variable_list.set_gradient_term(1, j_mu_c_vec);
       }
   }
 

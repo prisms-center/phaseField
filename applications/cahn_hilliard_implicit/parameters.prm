@@ -4,8 +4,8 @@ subsection Rectangular mesh
   set z size = 100
 end
 
-set global refinement = 7
-set max refinement = 7
+set global refinement = 6
+set max refinement = 6
 set min refinement = 2
 set mesh adaptivity = true
 set remeshing period = 1000
@@ -22,8 +22,8 @@ set number steps = 100000
 
 subsection output
   set condition = EQUAL_SPACING
-  set number = 50
-  set file type = pvtu
+  set number = 500
+  set list = 1,2,3,4,5,6,7,8,9
 end
 
 set Model constant McV = 1.0, DOUBLE
@@ -33,7 +33,7 @@ set Model constant WcV = 16.0, DOUBLE
 # The type of initial condition to use
 # 0: noise for spinodal decomposition
 # 1: spheres for coarsening
-set Model constant ic_type = 1, INT
+set Model constant ic_type = 0, INT
 
 # Initial composition and random noise amplitude for spinodal mode
 set Model constant c0 = 0.50, DOUBLE
@@ -41,9 +41,10 @@ set Model constant icamplitude = 0.1, DOUBLE
 
 subsection linear solver parameters: 0
   set solver_ids               = 0
+  set solver type              = bicgstab
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
-  set tolerance value          = 0.5e-6
+  set tolerance value          = 1.0e-6
 end
 
 subsection newton solver parameters: 0
