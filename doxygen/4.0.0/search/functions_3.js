@@ -22,7 +22,7 @@ var searchData=
   ['dependencyextents_19',['DependencyExtents',['../structDependencyExtents.html#addc3abb2dd1bf40f40e514881a6bcdf4',1,'DependencyExtents']]],
   ['dirichletconditions_20',['DirichletConditions',['../classDirichletConditions.html#ab2609373ef68e576ae27d2b8549495fb',1,'DirichletConditions']]],
   ['distance_21',['distance',['../periodic__distance_8h.html#a5fefe05fa81a5af6e87566a0d0480f6c',1,'periodic_distance.h']]],
-  ['distribute_22',['distribute',['../structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830',1,'FieldContainer::FEEValuationDeps::distribute()'],['../classFieldContainer.html#a8803244d8760a67917e9dca2e2d5cabc',1,'FieldContainer::distribute()']]],
+  ['distribute_22',['distribute',['../structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830',1,'FieldContainer::FEEValuationDeps::distribute()'],['../classFieldContainer.html#a8803244d8760a67917e9dca2e2d5cabc',1,'FieldContainer::distribute(BlockVector&lt; number &gt; *dst_solutions)'],['../classFieldContainer.html#a120b0d31daa135eb751580b857b71ed8',1,'FieldContainer::distribute(unsigned int field_index, BlockVector&lt; number &gt; *dst_solutions)']]],
   ['do_5fadaptive_5frefinement_23',['do_adaptive_refinement',['../classRefinementManager.html#ad221d9f1b0aaa271133993a31be5f344',1,'RefinementManager']]],
   ['do_5finitial_5frefinement_24',['do_initial_refinement',['../classRefinementManager.html#ad09c4dc590452fac3ce2dfa0c1313a3c',1,'RefinementManager']]],
   ['do_5flinear_5fsolve_25',['do_linear_solve',['../classLinearSolver.html#a36f7c8f0fe8c9828d745ad1b1f6c66f4',1,'LinearSolver::do_linear_solve()'],['../classMGSolver.html#a36f7c8f0fe8c9828d745ad1b1f6c66f4',1,'MGSolver::do_linear_solve()']]],

@@ -11,10 +11,11 @@ var searchData=
   ['dependency_5ftype_8',['dependency_type',['../classExcDepNotInitialized.html#af2c05f125dfca64b818fed6f01c2abd0',1,'ExcDepNotInitialized']]],
   ['dependency_5ftype_5fto_5fstring_9',['dependency_type_to_string',['../field__container_8h.html#a95bd416dd495bcf385aa83adf63cb40b',1,'field_container.h']]],
   ['depth_10',['depth',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta']]],
-  ['diagonal_5fentries_11',['diagonal_entries',['../classMFOperator.html#a1a27835b097cd6ac5513a4a37da0e45b',1,'MFOperator']]],
+  ['diagonal_5fentries_11',['diagonal_entries',['../classMFOperator.html#a8aba2fa7cd8ba402793660ec44ca6311',1,'MFOperator']]],
   ['dim_12',['DIM',['../classTerminalColor.html#a6f956a804bda3f30d9da43149f187cea',1,'TerminalColor']]],
   ['directory_13',['directory',['../structOutputParameters.html#af554957eb23377d9a1098423adfb57dd',1,'OutputParameters']]],
   ['dof_5fhandlers_14',['dof_handlers',['../classDoFManager.html#a7d8e76075626d155b717631139f8fbe5',1,'DoFManager']]],
   ['dof_5fmanager_15',['dof_manager',['../classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d',1,'ConstraintManager::dof_manager'],['../classProblem.html#a341cbd4f8bd025d3f53cbb17b57cb047',1,'Problem::dof_manager'],['../classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f',1,'SolveContext::dof_manager']]],
-  ['dt_16',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
+  ['dofs_5fper_5fcomponent_16',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
+  ['dt_17',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];

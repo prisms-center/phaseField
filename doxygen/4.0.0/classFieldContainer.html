@@ -156,9 +156,9 @@ Public Types</h2></td></tr>
 <tr class="memitem:a4a70c9eef1194602b5e51bebc6940397" id="r_a4a70c9eef1194602b5e51bebc6940397"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a70c9eef1194602b5e51bebc6940397">VectorValue</a> = dealii::Tensor&lt;1, dim, <a class="el" href="#a6b19e13e03d93afaaa6833c9d8bc1fb7">ScalarValue</a>&gt;</td></tr>
 <tr class="memdesc:a4a70c9eef1194602b5e51bebc6940397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef for the basic vector that the user manipulates.  <br /></td></tr>
 <tr class="separator:a4a70c9eef1194602b5e51bebc6940397"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d783e8ba02fce9756986b100c028de8" id="r_a6d783e8ba02fce9756986b100c028de8"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
-<tr class="memitem:a6d783e8ba02fce9756986b100c028de8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a></td></tr>
-<tr class="separator:a6d783e8ba02fce9756986b100c028de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955832d99874d5c2e2894d6978508f24" id="r_a955832d99874d5c2e2894d6978508f24"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
+<tr class="memitem:a955832d99874d5c2e2894d6978508f24"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a></td></tr>
+<tr class="separator:a955832d99874d5c2e2894d6978508f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66c3933ef42a9b41dfc5fb29dd1c26fd" id="r_a66c3933ef42a9b41dfc5fb29dd1c26fd"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
 <tr class="memitem:a66c3933ef42a9b41dfc5fb29dd1c26fd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a66c3933ef42a9b41dfc5fb29dd1c26fd">Gradient</a> = dealii::Tensor&lt;int(Rank) + 1, dim, <a class="el" href="#a6b19e13e03d93afaaa6833c9d8bc1fb7">ScalarValue</a>&gt;</td></tr>
 <tr class="separator:a66c3933ef42a9b41dfc5fb29dd1c26fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,24 +183,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ef16a1dd696ec5b1e8a0f1d31d1a1fd" id="r_a6ef16a1dd696ec5b1e8a0f1d31d1a1fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ef16a1dd696ec5b1e8a0f1d31d1a1fd">reinit_and_eval</a> (unsigned int cell, const <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *src_solutions, bool plain)</td></tr>
 <tr class="memdesc:a6ef16a1dd696ec5b1e8a0f1d31d1a1fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize based on cell, read solution vector, and evaluate based on dependency flags for all dependencies.  <br /></td></tr>
 <tr class="separator:a6ef16a1dd696ec5b1e8a0f1d31d1a1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd72c89e902e2047c657bfbf742cf7f" id="r_aacd72c89e902e2047c657bfbf742cf7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aacd72c89e902e2047c657bfbf742cf7f">eval_without_read</a> ()</td></tr>
+<tr class="memdesc:aacd72c89e902e2047c657bfbf742cf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate src to quad pts based on dependency flags. Assume feeval has local dof values already.  <br /></td></tr>
+<tr class="separator:aacd72c89e902e2047c657bfbf742cf7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b7f0f176d59695d0770cb85c59f4888" id="r_a6b7f0f176d59695d0770cb85c59f4888"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b7f0f176d59695d0770cb85c59f4888">integrate</a> ()</td></tr>
-<tr class="memdesc:a6b7f0f176d59695d0770cb85c59f4888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the residuals.  <br /></td></tr>
+<tr class="memdesc:a6b7f0f176d59695d0770cb85c59f4888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the values.  <br /></td></tr>
 <tr class="separator:a6b7f0f176d59695d0770cb85c59f4888"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8803244d8760a67917e9dca2e2d5cabc" id="r_a8803244d8760a67917e9dca2e2d5cabc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8803244d8760a67917e9dca2e2d5cabc">distribute</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *dst_solutions)</td></tr>
-<tr class="memdesc:a8803244d8760a67917e9dca2e2d5cabc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distribute the integrated residuals.  <br /></td></tr>
+<tr class="memdesc:a8803244d8760a67917e9dca2e2d5cabc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distribute the integrated values to a solution vector.  <br /></td></tr>
 <tr class="separator:a8803244d8760a67917e9dca2e2d5cabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a120b0d31daa135eb751580b857b71ed8" id="r_a120b0d31daa135eb751580b857b71ed8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a120b0d31daa135eb751580b857b71ed8">distribute</a> (unsigned int field_index, <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *dst_solutions)</td></tr>
+<tr class="memdesc:a120b0d31daa135eb751580b857b71ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distribute the integrated values to a solution vector for one field.  <br /></td></tr>
+<tr class="separator:a120b0d31daa135eb751580b857b71ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa819a5fcb462c6253a5aebbc3def745d" id="r_aa819a5fcb462c6253a5aebbc3def745d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa819a5fcb462c6253a5aebbc3def745d">integrate_and_distribute</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *dst_solutions)</td></tr>
-<tr class="memdesc:aa819a5fcb462c6253a5aebbc3def745d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the residuals and distribute from local to global.  <br /></td></tr>
+<tr class="memdesc:aa819a5fcb462c6253a5aebbc3def745d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the values and distribute from local to global.  <br /></td></tr>
 <tr class="separator:aa819a5fcb462c6253a5aebbc3def745d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a42b9581689f46ca05ad745887fc892" id="r_a5a42b9581689f46ca05ad745887fc892"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a42b9581689f46ca05ad745887fc892">set_q_point</a> (unsigned int q)</td></tr>
 <tr class="memdesc:a5a42b9581689f46ca05ad745887fc892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current quadrature point.  <br /></td></tr>
 <tr class="separator:a5a42b9581689f46ca05ad745887fc892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff20d7bb23fac171a2ff02a0d6522410" id="r_aff20d7bb23fac171a2ff02a0d6522410"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
-<tr class="memitem:aff20d7bb23fac171a2ff02a0d6522410"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aff20d7bb23fac171a2ff02a0d6522410">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
+<tr class="memitem:aff20d7bb23fac171a2ff02a0d6522410"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aff20d7bb23fac171a2ff02a0d6522410">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
 <tr class="memdesc:aff20d7bb23fac171a2ff02a0d6522410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the specified field.  <br /></td></tr>
 <tr class="separator:aff20d7bb23fac171a2ff02a0d6522410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02e2c5fb3647dda7722cd90f28f2dedb" id="r_a02e2c5fb3647dda7722cd90f28f2dedb"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
-<tr class="memitem:a02e2c5fb3647dda7722cd90f28f2dedb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a02e2c5fb3647dda7722cd90f28f2dedb">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
+<tr class="memitem:a02e2c5fb3647dda7722cd90f28f2dedb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a02e2c5fb3647dda7722cd90f28f2dedb">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
 <tr class="memdesc:a02e2c5fb3647dda7722cd90f28f2dedb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the value of the specified field.  <br /></td></tr>
 <tr class="separator:a02e2c5fb3647dda7722cd90f28f2dedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0e443905a8e90223eb0d4abbedd971d" id="r_ab0e443905a8e90223eb0d4abbedd971d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
@@ -228,11 +234,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0f19cc70b9f68f3f207c63f3b1ae3efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the diagonal of the hessian of the specified field.  <br /></td></tr>
 <tr class="separator:a0f19cc70b9f68f3f207c63f3b1ae3efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ffae5e320f5768d5368fd1fa8244811" id="r_a6ffae5e320f5768d5368fd1fa8244811"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
-<tr class="memitem:a6ffae5e320f5768d5368fd1fa8244811"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6ffae5e320f5768d5368fd1fa8244811">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
+<tr class="memitem:a6ffae5e320f5768d5368fd1fa8244811"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6ffae5e320f5768d5368fd1fa8244811">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
 <tr class="memdesc:a6ffae5e320f5768d5368fd1fa8244811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the laplacian of the specified field.  <br /></td></tr>
 <tr class="separator:a6ffae5e320f5768d5368fd1fa8244811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a347ea62912f0be7728293e3c0eda4923" id="r_a347ea62912f0be7728293e3c0eda4923"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
-<tr class="memitem:a347ea62912f0be7728293e3c0eda4923"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a347ea62912f0be7728293e3c0eda4923">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
+<tr class="memitem:a347ea62912f0be7728293e3c0eda4923"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a347ea62912f0be7728293e3c0eda4923">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
 <tr class="memdesc:a347ea62912f0be7728293e3c0eda4923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the laplacian of the specified field.  <br /></td></tr>
 <tr class="separator:a347ea62912f0be7728293e3c0eda4923"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50edcb2b88088e923c65b03f2c7e7d5b" id="r_a50edcb2b88088e923c65b03f2c7e7d5b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
@@ -270,17 +276,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac283c11f42b56ac80804b7e8f22954fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01ea8f6fcfdf6794e98b79406506f559" id="r_a01ea8f6fcfdf6794e98b79406506f559"><td class="memTemplParams" colspan="2">template&lt;typename ValType&gt; </td></tr>
 <tr class="memitem:a01ea8f6fcfdf6794e98b79406506f559"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a01ea8f6fcfdf6794e98b79406506f559">set_value_term</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, const ValType &amp;val)</td></tr>
-<tr class="memdesc:a01ea8f6fcfdf6794e98b79406506f559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual value of the specified scalar/vector field.  <br /></td></tr>
+<tr class="memdesc:a01ea8f6fcfdf6794e98b79406506f559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of the specified scalar/vector field.  <br /></td></tr>
 <tr class="separator:a01ea8f6fcfdf6794e98b79406506f559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c85f97ec43e7ce37302460dee82d4f8" id="r_a0c85f97ec43e7ce37302460dee82d4f8"><td class="memTemplParams" colspan="2">template&lt;typename GradType&gt; </td></tr>
 <tr class="memitem:a0c85f97ec43e7ce37302460dee82d4f8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0c85f97ec43e7ce37302460dee82d4f8">set_gradient_term</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, const GradType &amp;val)</td></tr>
-<tr class="memdesc:a0c85f97ec43e7ce37302460dee82d4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the residual gradient of the specified scalar/vector field.  <br /></td></tr>
+<tr class="memdesc:a0c85f97ec43e7ce37302460dee82d4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the gradient of the specified scalar/vector field.  <br /></td></tr>
 <tr class="separator:a0c85f97ec43e7ce37302460dee82d4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6779de99de777b74add5789f1e2e4f" id="r_aaf6779de99de777b74add5789f1e2e4f"><td class="memTemplParams" colspan="2">template&lt;typename ValType&gt; </td></tr>
+<tr class="memitem:aaf6779de99de777b74add5789f1e2e4f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aaf6779de99de777b74add5789f1e2e4f">get_dof_value_to</a> (ValType &amp;destination, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, unsigned int dof_index)</td></tr>
+<tr class="memdesc:aaf6779de99de777b74add5789f1e2e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dof values directly from a node.  <br /></td></tr>
+<tr class="separator:aaf6779de99de777b74add5789f1e2e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8688d15d20a17ad7261ab214b61222" id="r_a0d8688d15d20a17ad7261ab214b61222"><td class="memTemplParams" colspan="2">template&lt;typename ValType&gt; </td></tr>
+<tr class="memitem:a0d8688d15d20a17ad7261ab214b61222"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a0d8688d15d20a17ad7261ab214b61222">submit_dof_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, const ValType &amp;val, unsigned int dof_index)</td></tr>
+<tr class="memdesc:a0d8688d15d20a17ad7261ab214b61222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the dof values directly at a node.  <br /></td></tr>
+<tr class="separator:a0d8688d15d20a17ad7261ab214b61222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc553b002aaa98586d0d86f4b8d9d607" id="r_afc553b002aaa98586d0d86f4b8d9d607"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
-<tr class="memitem:afc553b002aaa98586d0d86f4b8d9d607"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afc553b002aaa98586d0d86f4b8d9d607">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
+<tr class="memitem:afc553b002aaa98586d0d86f4b8d9d607"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afc553b002aaa98586d0d86f4b8d9d607">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
 <tr class="separator:afc553b002aaa98586d0d86f4b8d9d607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d564a093b59376949a29531c4901fc" id="r_a53d564a093b59376949a29531c4901fc"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
-<tr class="memitem:a53d564a093b59376949a29531c4901fc"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a53d564a093b59376949a29531c4901fc">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
+<tr class="memitem:a53d564a093b59376949a29531c4901fc"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a53d564a093b59376949a29531c4901fc">get_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
 <tr class="separator:a53d564a093b59376949a29531c4901fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a046af1da57bd341513877e43ee7aa172" id="r_a046af1da57bd341513877e43ee7aa172"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
 <tr class="memitem:a046af1da57bd341513877e43ee7aa172"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a66c3933ef42a9b41dfc5fb29dd1c26fd">Gradient</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a046af1da57bd341513877e43ee7aa172">get_gradient</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
@@ -301,10 +315,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ff4b984a6c6a86c072e446f345f61e3"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a66c3933ef42a9b41dfc5fb29dd1c26fd">Gradient</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1ff4b984a6c6a86c072e446f345f61e3">get_hessian_diagonal</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
 <tr class="separator:a1ff4b984a6c6a86c072e446f345f61e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa15690cb30e4037d5a75480ba0b2fd1b" id="r_aa15690cb30e4037d5a75480ba0b2fd1b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
-<tr class="memitem:aa15690cb30e4037d5a75480ba0b2fd1b"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa15690cb30e4037d5a75480ba0b2fd1b">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
+<tr class="memitem:aa15690cb30e4037d5a75480ba0b2fd1b"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa15690cb30e4037d5a75480ba0b2fd1b">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
 <tr class="separator:aa15690cb30e4037d5a75480ba0b2fd1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56efb543ff11d2f1f42f4949ebf1e529" id="r_a56efb543ff11d2f1f42f4949ebf1e529"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
-<tr class="memitem:a56efb543ff11d2f1f42f4949ebf1e529"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a56efb543ff11d2f1f42f4949ebf1e529">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
+<tr class="memitem:a56efb543ff11d2f1f42f4949ebf1e529"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a56efb543ff11d2f1f42f4949ebf1e529">get_laplacian</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type) const</td></tr>
 <tr class="separator:a56efb543ff11d2f1f42f4949ebf1e529"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a593518914f7dcef0ee75707e7a41ffec" id="r_a593518914f7dcef0ee75707e7a41ffec"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank, <a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
 <tr class="memitem:a593518914f7dcef0ee75707e7a41ffec"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;<a class="el" href="#a6b19e13e03d93afaaa6833c9d8bc1fb7">::ScalarValue</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a593518914f7dcef0ee75707e7a41ffec">get_divergence</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index) const</td></tr>
@@ -330,6 +344,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6967f6bc71c81192e34e4b5b018c6dd6" id="r_a6967f6bc71c81192e34e4b5b018c6dd6"><td class="memTemplParams" colspan="2">template&lt;typename GradType&gt; </td></tr>
 <tr class="memitem:a6967f6bc71c81192e34e4b5b018c6dd6"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6967f6bc71c81192e34e4b5b018c6dd6">set_gradient_term</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, const GradType &amp;val)</td></tr>
 <tr class="separator:a6967f6bc71c81192e34e4b5b018c6dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8f8bb88dc00f9e505a877856b1b444b" id="r_af8f8bb88dc00f9e505a877856b1b444b"><td class="memTemplParams" colspan="2">template&lt;typename ValType&gt; </td></tr>
+<tr class="memitem:af8f8bb88dc00f9e505a877856b1b444b"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af8f8bb88dc00f9e505a877856b1b444b">get_dof_value_to</a> (ValType &amp;destination, <a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, unsigned int dof_index)</td></tr>
+<tr class="separator:af8f8bb88dc00f9e505a877856b1b444b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb15a2f687595a38688db43791250ea" id="r_aebb15a2f687595a38688db43791250ea"><td class="memTemplParams" colspan="2">template&lt;typename ValType&gt; </td></tr>
+<tr class="memitem:aebb15a2f687595a38688db43791250ea"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aebb15a2f687595a38688db43791250ea">submit_dof_value</a> (<a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a> field_index, const ValType &amp;val, unsigned int dof_index)</td></tr>
+<tr class="separator:aebb15a2f687595a38688db43791250ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a123dc6ded0888ebfa0ad426382c23029" id="r_a123dc6ded0888ebfa0ad426382c23029"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </td></tr>
 <tr class="memitem:a123dc6ded0888ebfa0ad426382c23029"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE std::vector&lt; typename <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="structFieldContainer_1_1FEEValuationDeps.html">FEEValuationDeps</a>&lt; Rank &gt; &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a123dc6ded0888ebfa0ad426382c23029">get_relevant_feeval_vector</a> ()</td></tr>
 <tr class="separator:a123dc6ded0888ebfa0ad426382c23029"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,6 +367,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ad321103f63f6ad39c8ff4e86c45eaffd"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad321103f63f6ad39c8ff4e86c45eaffd">RankFromGrad</a></td></tr>
 <tr class="memdesc:ad321103f63f6ad39c8ff4e86c45eaffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tensor rank from the specified template gradient.  <br /></td></tr>
 <tr class="separator:ad321103f63f6ad39c8ff4e86c45eaffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663baa5a1fb584a560e6a3527260dd64" id="r_a663baa5a1fb584a560e6a3527260dd64"><td class="memItemLeft" align="right" valign="top">static constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a663baa5a1fb584a560e6a3527260dd64">dofs_per_component</a></td></tr>
+<tr class="separator:a663baa5a1fb584a560e6a3527260dd64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -489,8 +511,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a6d783e8ba02fce9756986b100c028de8" name="a6d783e8ba02fce9756986b100c028de8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d783e8ba02fce9756986b100c028de8">&#9670;&#160;</a></span>Value</h2>
+<a id="a955832d99874d5c2e2894d6978508f24" name="a955832d99874d5c2e2894d6978508f24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955832d99874d5c2e2894d6978508f24">&#9670;&#160;</a></span>Value</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,7 +526,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line"> std::conditional_t&lt;Rank == <a class="code hl_enumvalue" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a>,</div>
+<b>Initial value:</b><div class="fragment"><div class="line"> std::conditional_t&lt;Rank == <a class="code hl_enumvalue" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13">TensorRank::Scalar</a> || dim == 1,</div>
 <div class="line">                                   <a class="code hl_typedef" href="#a6b19e13e03d93afaaa6833c9d8bc1fb7">ScalarValue</a>,</div>
 <div class="line">                                   dealii::Tensor&lt;int(Rank), dim, <a class="code hl_typedef" href="#a6b19e13e03d93afaaa6833c9d8bc1fb7">ScalarValue</a>&gt;&gt;</div>
 <div class="ttc" id="atype__enums_8h_html_af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13"><div class="ttname"><a href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9ad589986008e8fea1b1726f564d17dd13">Scalar</a></div><div class="ttdeci">@ Scalar</div><div class="ttdef"><b>Definition</b> type_enums.h:54</div></div>
@@ -616,7 +638,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <a id="a8803244d8760a67917e9dca2e2d5cabc" name="a8803244d8760a67917e9dca2e2d5cabc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8803244d8760a67917e9dca2e2d5cabc">&#9670;&#160;</a></span>distribute()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8803244d8760a67917e9dca2e2d5cabc">&#9670;&#160;</a></span>distribute() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -640,7 +662,40 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Distribute the integrated residuals. </p>
+<p>Distribute the integrated values to a solution vector. </p>
+
+</div>
+</div>
+<a id="a120b0d31daa135eb751580b857b71ed8" name="a120b0d31daa135eb751580b857b71ed8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a120b0d31daa135eb751580b857b71ed8">&#9670;&#160;</a></span>distribute() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::distribute </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *</td>          <td class="paramname"><span class="paramname"><em>dst_solutions</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Distribute the integrated values to a solution vector for one field. </p>
 
 </div>
 </div>
@@ -674,6 +729,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Read solution vector, and evaluate based on dependency flags for all dependencies. </p>
+
+</div>
+</div>
+<a id="aacd72c89e902e2047c657bfbf742cf7f" name="aacd72c89e902e2047c657bfbf742cf7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacd72c89e902e2047c657bfbf742cf7f">&#9670;&#160;</a></span>eval_without_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::eval_without_read </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Evaluate src to quad pts based on dependency flags. Assume feeval has local dof values already. </p>
 
 </div>
 </div>
@@ -984,6 +1068,76 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaf6779de99de777b74add5789f1e2e4f" name="aaf6779de99de777b74add5789f1e2e4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf6779de99de777b74add5789f1e2e4f">&#9670;&#160;</a></span>get_dof_value_to() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename ValType&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_dof_value_to </td>
+          <td>(</td>
+          <td class="paramtype">ValType &amp;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>dof_index</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the dof values directly from a node. </p>
+
+</div>
+</div>
+<a id="af8f8bb88dc00f9e505a877856b1b444b" name="af8f8bb88dc00f9e505a877856b1b444b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8f8bb88dc00f9e505a877856b1b444b">&#9670;&#160;</a></span>get_dof_value_to() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename ValType&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_dof_value_to </td>
+          <td>(</td>
+          <td class="paramtype">ValType &amp;</td>          <td class="paramname"><span class="paramname"><em>destination</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>dof_index</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1422,7 +1576,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
+          <td class="memname"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span></td><td>)</td>
           <td> const</td>
@@ -1453,7 +1607,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span></td><td>)</td>
           <td> const</td>
@@ -1482,7 +1636,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
+          <td class="memname"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
         </tr>
@@ -1517,7 +1671,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_laplacian </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
         </tr>
@@ -1852,7 +2006,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
+          <td class="memname"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span></td><td>)</td>
           <td> const</td>
@@ -1883,7 +2037,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span></td><td>)</td>
           <td> const</td>
@@ -1912,7 +2066,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
+          <td class="memname"><a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
         </tr>
@@ -1947,7 +2101,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a6d783e8ba02fce9756986b100c028de8">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
+          <td class="memname">DEAL_II_ALWAYS_INLINE <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::template <a class="el" href="#a955832d99874d5c2e2894d6978508f24">Value</a>&lt; Rank &gt; <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::get_value </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
         </tr>
@@ -1991,7 +2145,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Integrate the residuals. </p>
+<p>Integrate the values. </p>
 
 </div>
 </div>
@@ -2020,7 +2174,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Integrate the residuals and distribute from local to global. </p>
+<p>Integrate the values and distribute from local to global. </p>
 <p>This is more efficient that calling <code>integrate</code> and <code>distribute</code> individually. </p>
 
 </div>
@@ -2116,7 +2270,7 @@ template&lt;typename GradType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Set the residual gradient of the specified scalar/vector field. </p>
+<p>Set the gradient of the specified scalar/vector field. </p>
 
 </div>
 </div>
@@ -2205,7 +2359,7 @@ template&lt;typename ValType&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Set the residual value of the specified scalar/vector field. </p>
+<p>Set the value of the specified scalar/vector field. </p>
 
 </div>
 </div>
@@ -2275,7 +2429,104 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
+<a id="a0d8688d15d20a17ad7261ab214b61222" name="a0d8688d15d20a17ad7261ab214b61222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d8688d15d20a17ad7261ab214b61222">&#9670;&#160;</a></span>submit_dof_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename ValType&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::submit_dof_value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ValType &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>dof_index</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the dof values directly at a node. </p>
+
+</div>
+</div>
+<a id="aebb15a2f687595a38688db43791250ea" name="aebb15a2f687595a38688db43791250ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebb15a2f687595a38688db43791250ea">&#9670;&#160;</a></span>submit_dof_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;typename ValType&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DEAL_II_ALWAYS_INLINE void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::submit_dof_value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186">Types::Index</a></td>          <td class="paramname"><span class="paramname"><em>field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ValType &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>dof_index</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a663baa5a1fb584a560e6a3527260dd64" name="a663baa5a1fb584a560e6a3527260dd64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a663baa5a1fb584a560e6a3527260dd64">&#9670;&#160;</a></span>dofs_per_component</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::dofs_per_component</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">    <a class="code hl_typedef" href="#a62c98372c374cd253873057e95c1a2ab">FEEval&lt;Scalar&gt;::static_dofs_per_component</a></div>
+<div class="ttc" id="aclassFieldContainer_html_a62c98372c374cd253873057e95c1a2ab"><div class="ttname"><a href="#a62c98372c374cd253873057e95c1a2ab">FieldContainer::FEEval</a></div><div class="ttdeci">dealii::FEEvaluation&lt; dim, degree, degree+1, dealii::Tensor&lt; int(Rank), dim &gt;::n_independent_components, number, ScalarValue &gt; FEEval</div><div class="ttdef"><b>Definition</b> field_container.h:71</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aa3af0d60827a45a1e1cdd000f50c30fd" name="aa3af0d60827a45a1e1cdd000f50c30fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3af0d60827a45a1e1cdd000f50c30fd">&#9670;&#160;</a></span>feeval_deps_scalar</h2>
 

@@ -166,6 +166,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaa63fe2b7e9813f6260f3da42f043d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f2b279a285c1c99cf65e8a015cdccb" id="r_a95f2b279a285c1c99cf65e8a015cdccb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95f2b279a285c1c99cf65e8a015cdccb">reinit_and_eval</a> (unsigned int cell, const <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *_src_solutions, bool plain)</td></tr>
 <tr class="separator:a95f2b279a285c1c99cf65e8a015cdccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a099f6ad6a91be23eb433a180cb716bfc" id="r_a099f6ad6a91be23eb433a180cb716bfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a099f6ad6a91be23eb433a180cb716bfc">eval_without_read</a> ()</td></tr>
+<tr class="separator:a099f6ad6a91be23eb433a180cb716bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a419ad4e46ade2ce497141916a97387d1" id="r_a419ad4e46ade2ce497141916a97387d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a419ad4e46ade2ce497141916a97387d1">integrate</a> ()</td></tr>
 <tr class="separator:a419ad4e46ade2ce497141916a97387d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a521e594067ddf6046a68e3a680be8830" id="r_a521e594067ddf6046a68e3a680be8830"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a521e594067ddf6046a68e3a680be8830">distribute</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; *dst_solutions)</td></tr>
@@ -359,6 +361,35 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>plain</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a099f6ad6a91be23eb433a180cb716bfc" name="a099f6ad6a91be23eb433a180cb716bfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a099f6ad6a91be23eb433a180cb716bfc">&#9670;&#160;</a></span>eval_without_read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;<a class="el" href="#abf4ec8da7efaa1f2987bc3f8cfd0f000">::FEEValuationDeps</a>&lt; Rank &gt;::eval_without_read </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>

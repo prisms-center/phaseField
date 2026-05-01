@@ -26,6 +26,7 @@ var type__enums_8h =
     ] ],
     [ "PreconditionerType", "type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700b", [
       [ "None", "type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af", null ],
+      [ "Chebyshev", "type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700baa533459c08077e92f289693540d77e6a", null ],
       [ "GMG", "type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bae1fe899e8d7d383afcd7fddaf2399c53", null ]
     ] ],
     [ "SolverToleranceType", "type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700", [

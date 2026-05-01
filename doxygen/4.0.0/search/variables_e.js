@@ -11,8 +11,10 @@ var searchData=
   ['periodicity_5fvector_8',['periodicity_vector',['../classTriangulationManager.html#ac167522f89800a541531822c526a6b1d',1,'TriangulationManager']]],
   ['pf_5ftools_9',['pf_tools',['../classPDEOperatorBase.html#a3b011d6dc53d8f325dad8706fa64d237',1,'PDEOperatorBase::pf_tools'],['../classProblem.html#ae2cad2a03b338021938ea7dbdbcaec59',1,'Problem::pf_tools']]],
   ['pp_5fnucleation_5frate_5fexists_10',['pp_nucleation_rate_exists',['../structNucleationParameters.html#ab636c7b8965b6f6b4ea1f5511e1d8aee',1,'NucleationParameters']]],
-  ['preconditioner_11',['preconditioner',['../structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986',1,'LinearSolverParameters']]],
-  ['print_5foutput_5fperiod_12',['print_output_period',['../structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade',1,'OutputParameters']]],
-  ['print_5ftiming_5fwith_5fcheckpoint_13',['print_timing_with_checkpoint',['../structCheckpointParameters.html#a2ed5640324834697451c9f1dab809740',1,'CheckpointParameters']]],
-  ['print_5ftiming_5fwith_5foutput_14',['print_timing_with_output',['../structOutputParameters.html#a0666fa7e06fc537f358e586953b76735',1,'OutputParameters']]]
+  ['precond_5fchebyshev_11',['precond_chebyshev',['../classLinearSolver.html#a51a30a940050d9ba23c37be97a15be14',1,'LinearSolver']]],
+  ['precond_5fdata_12',['precond_data',['../classLinearSolver.html#a58f4b26d4aa77d68f2deda2703587068',1,'LinearSolver']]],
+  ['preconditioner_13',['preconditioner',['../structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986',1,'LinearSolverParameters']]],
+  ['print_5foutput_5fperiod_14',['print_output_period',['../structOutputParameters.html#a63099768759ac6a3eef5a08370ac7ade',1,'OutputParameters']]],
+  ['print_5ftiming_5fwith_5fcheckpoint_15',['print_timing_with_checkpoint',['../structCheckpointParameters.html#a2ed5640324834697451c9f1dab809740',1,'CheckpointParameters']]],
+  ['print_5ftiming_5fwith_5foutput_16',['print_timing_with_output',['../structOutputParameters.html#a0666fa7e06fc537f358e586953b76735',1,'OutputParameters']]]
 ];

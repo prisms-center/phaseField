@@ -122,6 +122,7 @@ $(function(){initNavTree('classLinearSolver.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -211,10 +212,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2f12aec653c061a5bdc2e3f5bdde048b inherit pub_methods_classSolverBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver context.  <br /></td></tr>
 <tr class="separator:a2f12aec653c061a5bdc2e3f5bdde048b inherit pub_methods_classSolverBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a978c802315f6716d0c013da3290a8dbe" id="r_a978c802315f6716d0c013da3290a8dbe"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a></td></tr>
+<tr class="separator:a978c802315f6716d0c013da3290a8dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a4f977b595684df41ac232ef6b7e17c8c" id="r_a4f977b595684df41ac232ef6b7e17c8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f977b595684df41ac232ef6b7e17c8c">normalization_value</a> ()</td></tr>
 <tr class="separator:a4f977b595684df41ac232ef6b7e17c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19aa1bd667f6d8e78bfbf65e2490478e" id="r_a19aa1bd667f6d8e78bfbf65e2490478e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19aa1bd667f6d8e78bfbf65e2490478e">initialize_preconditioner</a> ()</td></tr>
+<tr class="separator:a19aa1bd667f6d8e78bfbf65e2490478e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61cac6b1981ff3d3a1dfcd6854cd3a4" id="r_ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab61cac6b1981ff3d3a1dfcd6854cd3a4">initialize_chebyshev</a> ()</td></tr>
+<tr class="separator:ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -255,11 +265,45 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a730bddc055e54986797b1602bc2a5c0f" id="r_a730bddc055e54986797b1602bc2a5c0f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a730bddc055e54986797b1602bc2a5c0f">inhomogeneous_rhs</a></td></tr>
 <tr class="memdesc:a730bddc055e54986797b1602bc2a5c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Result of the linear operator applied to the inhomogeneous values.  <br /></td></tr>
 <tr class="separator:a730bddc055e54986797b1602bc2a5c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51a30a940050d9ba23c37be97a15be14" id="r_a51a30a940050d9ba23c37be97a15be14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51a30a940050d9ba23c37be97a15be14">precond_chebyshev</a></td></tr>
+<tr class="separator:a51a30a940050d9ba23c37be97a15be14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58f4b26d4aa77d68f2deda2703587068" id="r_a58f4b26d4aa77d68f2deda2703587068"><td class="memItemLeft" align="right" valign="top">PreconditionChebyshev::AdditionalData&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58f4b26d4aa77d68f2deda2703587068">precond_data</a></td></tr>
+<tr class="separator:a58f4b26d4aa77d68f2deda2703587068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class LinearSolver&lt; dim, degree, number &gt;</div><p>This class handles the explicit solves of all explicit fields. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="a978c802315f6716d0c013da3290a8dbe" name="a978c802315f6716d0c013da3290a8dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a978c802315f6716d0c013da3290a8dbe">&#9670;&#160;</a></span>PreconditionChebyshev</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::PreconditionChebyshev</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line"> </div>
+<div class="line">    dealii::PreconditionChebyshev&lt;MFOperator&lt;dim, degree, number&gt;,</div>
+<div class="line">                                  <a class="code hl_typedef" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector&lt;number&gt;</a>,</div>
+<div class="line">                                  dealii::DiagonalMatrix&lt;BlockVector&lt;number&gt;&gt;&gt;</div>
+<div class="ttc" id="agroup__solution__handler_8h_html_ac3c985dc29b3bf1104df7ebd51bc7c15"><div class="ttname"><a href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a></div><div class="ttdeci">dealii::LinearAlgebra::distributed::BlockVector&lt; number &gt; BlockVector</div><div class="ttdoc">Typedef for solution block vector.</div><div class="ttdef"><b>Definition</b> group_solution_handler.h:29</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae3b77af5f056e684117a2d707189f971" name="ae3b77af5f056e684117a2d707189f971"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3b77af5f056e684117a2d707189f971">&#9670;&#160;</a></span>LinearSolver()</h2>
 
@@ -360,6 +404,60 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 <p>Reimplemented from <a class="el" href="classSolverBase.html#a9096e85006aaa8a2faf963eb5b6ec405">SolverBase&lt; dim, degree, number &gt;</a>.</p>
 
 <p>Reimplemented in <a class="el" href="classNewtonSolver.html#a65c26fa3c7f78ecbb0f0811622f8116c">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+
+</div>
+</div>
+<a id="ab61cac6b1981ff3d3a1dfcd6854cd3a4" name="ab61cac6b1981ff3d3a1dfcd6854cd3a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61cac6b1981ff3d3a1dfcd6854cd3a4">&#9670;&#160;</a></span>initialize_chebyshev()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::initialize_chebyshev </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a19aa1bd667f6d8e78bfbf65e2490478e" name="a19aa1bd667f6d8e78bfbf65e2490478e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19aa1bd667f6d8e78bfbf65e2490478e">&#9670;&#160;</a></span>initialize_preconditioner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::initialize_preconditioner </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -608,6 +706,54 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Solver control. Contains max iterations and tolerance. </p>
+
+</div>
+</div>
+<a id="a51a30a940050d9ba23c37be97a15be14" name="a51a30a940050d9ba23c37be97a15be14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51a30a940050d9ba23c37be97a15be14">&#9670;&#160;</a></span>precond_chebyshev</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a> <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::precond_chebyshev</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a58f4b26d4aa77d68f2deda2703587068" name="a58f4b26d4aa77d68f2deda2703587068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58f4b26d4aa77d68f2deda2703587068">&#9670;&#160;</a></span>precond_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PreconditionChebyshev::AdditionalData <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::precond_data</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

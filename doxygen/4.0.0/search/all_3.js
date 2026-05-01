@@ -38,7 +38,7 @@ var searchData=
   ['dependencytype_35',['DependencyType',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc',1,'type_enums.h']]],
   ['deprecated_20list_36',['Deprecated List',['../deprecated.html',1,'']]],
   ['depth_37',['depth',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html#aef5534cbc948f0ccd67806e4a62d9a7f',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta']]],
-  ['diagonal_5fentries_38',['diagonal_entries',['../classMFOperator.html#a1a27835b097cd6ac5513a4a37da0e45b',1,'MFOperator']]],
+  ['diagonal_5fentries_38',['diagonal_entries',['../classMFOperator.html#a8aba2fa7cd8ba402793660ec44ca6311',1,'MFOperator']]],
   ['dim_39',['DIM',['../classTerminalColor.html#a6f956a804bda3f30d9da43149f187cea',1,'TerminalColor']]],
   ['directory_40',['directory',['../structOutputParameters.html#af554957eb23377d9a1098423adfb57dd',1,'OutputParameters']]],
   ['dirichlet_41',['Dirichlet',['../constraint__parameters_8h.html#a3a2d1de630bc61d956c09d7c1b9965fead2ba0bf65961bac8373de60a7e6571b9',1,'constraint_parameters.h']]],
@@ -46,7 +46,7 @@ var searchData=
   ['dirichlet_2eh_43',['dirichlet.h',['../dirichlet_8h.html',1,'']]],
   ['dirichletconditions_44',['DirichletConditions',['../classDirichletConditions.html',1,'DirichletConditions&lt; dim, degree, number &gt;'],['../classDirichletConditions.html#ab2609373ef68e576ae27d2b8549495fb',1,'DirichletConditions::DirichletConditions()']]],
   ['distance_45',['distance',['../periodic__distance_8h.html#a5fefe05fa81a5af6e87566a0d0480f6c',1,'periodic_distance.h']]],
-  ['distribute_46',['distribute',['../structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830',1,'FieldContainer::FEEValuationDeps::distribute()'],['../classFieldContainer.html#a8803244d8760a67917e9dca2e2d5cabc',1,'FieldContainer::distribute()']]],
+  ['distribute_46',['distribute',['../structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830',1,'FieldContainer::FEEValuationDeps::distribute()'],['../classFieldContainer.html#a8803244d8760a67917e9dca2e2d5cabc',1,'FieldContainer::distribute(BlockVector&lt; number &gt; *dst_solutions)'],['../classFieldContainer.html#a120b0d31daa135eb751580b857b71ed8',1,'FieldContainer::distribute(unsigned int field_index, BlockVector&lt; number &gt; *dst_solutions)']]],
   ['do_5fadaptive_5frefinement_47',['do_adaptive_refinement',['../classRefinementManager.html#ad221d9f1b0aaa271133993a31be5f344',1,'RefinementManager']]],
   ['do_5finitial_5frefinement_48',['do_initial_refinement',['../classRefinementManager.html#ad09c4dc590452fac3ce2dfa0c1313a3c',1,'RefinementManager']]],
   ['do_5flinear_5fsolve_49',['do_linear_solve',['../classLinearSolver.html#a36f7c8f0fe8c9828d745ad1b1f6c66f4',1,'LinearSolver::do_linear_solve()'],['../classMGSolver.html#a36f7c8f0fe8c9828d745ad1b1f6c66f4',1,'MGSolver::do_linear_solve()']]],
@@ -56,6 +56,7 @@ var searchData=
   ['dof_5fmanager_2ecc_53',['dof_manager.cc',['../dof__manager_8cc.html',1,'']]],
   ['dof_5fmanager_2eh_54',['dof_manager.h',['../dof__manager_8h.html',1,'']]],
   ['dofmanager_55',['DoFManager',['../classDoFManager.html',1,'DoFManager&lt; dim, degree &gt;'],['../classDoFManager.html#a4d9a282edb7fb97836d8bde171a4c32d',1,'DoFManager::DoFManager(const std::vector&lt; FieldAttributes &gt; &amp;field_attributes)'],['../classDoFManager.html#a92ac1796b3a06d0fc783dac79d7f13d9',1,'DoFManager::DoFManager(const std::vector&lt; FieldAttributes &gt; &amp;field_attributes, const TriangulationManager&lt; dim &gt; &amp;triangulation_handler)']]],
-  ['dst_56',['DST',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
-  ['dt_57',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
+  ['dofs_5fper_5fcomponent_56',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
+  ['dst_57',['DST',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
+  ['dt_58',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];
