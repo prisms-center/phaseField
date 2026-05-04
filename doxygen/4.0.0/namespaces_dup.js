@@ -9,6 +9,11 @@ var namespaces_dup =
       [ "smoothing_range", "namespaceDefaults.html#a4731bf4284c6b59d29decca367071d44", null ],
       [ "tolerance", "namespaceDefaults.html#ac62f490f33a78f3a170b3f8eae6f5081", null ]
     ] ],
+    [ "Mechanics", "namespaceMechanics.html", [
+      [ "compute_stress", "namespaceMechanics.html#aaf83d1ac4db74ba503d7d85cf2397d42", null ],
+      [ "compute_stress", "namespaceMechanics.html#a9671447899545e87a1fa4438bc310f6e", null ],
+      [ "voigt_tensor_size", "namespaceMechanics.html#aaa000938fa31b60d2fccd09b6d58c5c1", null ]
+    ] ],
     [ "Numbers", "namespaceNumbers.html", [
       [ "invalid_index", "namespaceNumbers.html#a6c9b90814b4eb8306f621bb5e8f1a343", null ],
       [ "max_element_degree", "namespaceNumbers.html#a4591833c4032e6a7c2795c0eca3c8747", null ],
@@ -23,13 +28,13 @@ var namespaces_dup =
       [ "fmod", "namespacestd.html#a2a99eb17e996c20e7f62de2d149075c1", null ],
       [ "fmod", "namespacestd.html#af30f66fa919ee4207f875331acaaf1e5", null ]
     ] ],
-    [ "Symmetries", "namespaceSymmetries.html", [
-      [ "cos_arctan", "namespaceSymmetries.html#af72bf90cfc8c47c5e54aa18bdc6faf25", null ],
-      [ "cos_psi", "namespaceSymmetries.html#afbdf4186df67f1d7a5b79399c2d757e9", null ],
-      [ "cos_theta", "namespaceSymmetries.html#a4ae6a843bf19ef1525c6cc5d0346d9b4", null ],
-      [ "sin_arctan", "namespaceSymmetries.html#ab0bbf25f38e9daa065bed7e27fb10e75", null ],
-      [ "sin_psi", "namespaceSymmetries.html#a7eda8f47fd9e9684c5a870e08712b74b", null ],
-      [ "sin_theta", "namespaceSymmetries.html#a2deb1b46a521eb35906c6408f67e3c41", null ]
+    [ "Symmetry", "namespaceSymmetry.html", [
+      [ "cos_arctan", "namespaceSymmetry.html#a8695ff296b1ad8ab762fb62f3f72098a", null ],
+      [ "cos_psi", "namespaceSymmetry.html#ab69588207ec31b4f24b266cd4c9be1fe", null ],
+      [ "cos_theta", "namespaceSymmetry.html#ad4b8e9c4ba8384250503c0866419c732", null ],
+      [ "sin_arctan", "namespaceSymmetry.html#a97f4ed2e6e0d2ca2631ca98d1b3050a3", null ],
+      [ "sin_psi", "namespaceSymmetry.html#aa6048cd1b64132621ce379f1cca79e48", null ],
+      [ "sin_theta", "namespaceSymmetry.html#a3e19e722b1fbdcc5bc7780337be4f73a", null ]
     ] ],
     [ "Types", "namespaceTypes.html", [
       [ "Index", "namespaceTypes.html#af2c332c5db532b9688f18f37bbc67186", null ]

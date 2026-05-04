@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['types_0',['Types',['../namespaceTypes.html',1,'']]]
+  ['std_0',['std',['../namespacestd.html',1,'']]],
+  ['symmetry_1',['Symmetry',['../namespaceSymmetry.html',1,'']]]
 ];

@@ -122,8 +122,7 @@ $(function(){initNavTree('utilities_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">utilities.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -180,14 +179,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE Number&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa82813cf82bc07c48bf1e91eb5d7f381">pmod</a> (const Number &amp;value, const Number &amp;modulus)</td></tr>
 <tr class="memdesc:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Positive moldulo (remainder) returns the normal remainder. (c++ fmod is defined abnormally for negative numbers)  <br /></td></tr>
 <tr class="separator:aa82813cf82bc07c48bf1e91eb5d7f381"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f491b84b7691a9ad37e73b9d4e66e60" id="r_a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5f491b84b7691a9ad37e73b9d4e66e60">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;strain, dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation.  <br /></td></tr>
-<tr class="separator:a5f491b84b7691a9ad37e73b9d4e66e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ea50fb4cefe498899ea22ddcbca3c40" id="r_a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename T&gt; </td></tr>
-<tr class="memitem:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6ea50fb4cefe498899ea22ddcbca3c40">compute_stress</a> (const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;elasticity_tensor, const dealii::Tensor&lt; 2, dim, T &gt; &amp;strain, dealii::Tensor&lt; 2, dim, T &gt; &amp;stress)</td></tr>
-<tr class="memdesc:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the stress with a given displacement and elasticity tensor. Note: this function internally converts to Voigt notation.  <br /></td></tr>
-<tr class="separator:a6ea50fb4cefe498899ea22ddcbca3c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29308e85d46b19122900b96a31310a27" id="r_a29308e85d46b19122900b96a31310a27"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, unsigned int degree, typename T&gt; </td></tr>
 <tr class="memitem:a29308e85d46b19122900b96a31310a27"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a29308e85d46b19122900b96a31310a27">stabilization_parameter</a> (const T &amp;timestep, const T &amp;element_volume, const dealii::Tensor&lt; 1, dim, T &gt; &amp;velocity, const T &amp;kinematic_viscosity)</td></tr>
 <tr class="memdesc:a29308e85d46b19122900b96a31310a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stabilization term as defined by <a href="https://doi.org/10.1016/0045-7825(92)90141-6">Tezduyar</a>  <br /></td></tr>
@@ -216,13 +207,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930" id="r_a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim, typename number&gt; </td></tr>
 <tr class="memitem:a6900a956ef14d53b30c0616e7cf7b930"><td class="memTemplItemLeft" align="right" valign="top">DEAL_II_ALWAYS_INLINE std::vector&lt; number &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6900a956ef14d53b30c0616e7cf7b930">dealii_point_to_vector</a> (const dealii::Point&lt; dim, number &gt; &amp;point)</td></tr>
 <tr class="separator:a6900a956ef14d53b30c0616e7cf7b930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a601988aed6d84cf87f8a7a7bd9981df2" id="r_a601988aed6d84cf87f8a7a7bd9981df2"><td class="memTemplParams" colspan="2">template&lt;unsigned int dim&gt; </td></tr>
-<tr class="memitem:a601988aed6d84cf87f8a7a7bd9981df2"><td class="memTemplItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a> = (2 * dim) - 1 + (dim / 3)</td></tr>
-<tr class="memdesc:a601988aed6d84cf87f8a7a7bd9981df2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voigt notation index range.  <br /></td></tr>
-<tr class="separator:a601988aed6d84cf87f8a7a7bd9981df2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aee6045a81583b0f6442439f3a7c06d9a" name="aee6045a81583b0f6442439f3a7c06d9a"></a>
@@ -249,82 +233,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Convert bool to string. </p>
-
-</div>
-</div>
-<a id="a5f491b84b7691a9ad37e73b9d4e66e60" name="a5f491b84b7691a9ad37e73b9d4e66e60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f491b84b7691a9ad37e73b9d4e66e60">&#9670;&#160;</a></span>compute_stress() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE void compute_stress </td>
-          <td>(</td>
-          <td class="paramtype">const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>elasticity_tensor</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>strain</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">dealii::Tensor&lt; 1, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>stress</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Compute the stress with a given displacement and elasticity tensor. This assumes that the provided parameters are in Voigt notation. </p>
-
-</div>
-</div>
-<a id="a6ea50fb4cefe498899ea22ddcbca3c40" name="a6ea50fb4cefe498899ea22ddcbca3c40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ea50fb4cefe498899ea22ddcbca3c40">&#9670;&#160;</a></span>compute_stress() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DEAL_II_ALWAYS_INLINE void compute_stress </td>
-          <td>(</td>
-          <td class="paramtype">const dealii::Tensor&lt; 2, <a class="el" href="#a601988aed6d84cf87f8a7a7bd9981df2">voigt_tensor_size</a>&lt; dim &gt;, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>elasticity_tensor</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const dealii::Tensor&lt; 2, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>strain</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">dealii::Tensor&lt; 2, dim, T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>stress</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Compute the stress with a given displacement and elasticity tensor. Note: this function internally converts to Voigt notation. </p>
 
 </div>
 </div>
@@ -680,33 +588,6 @@ template&lt;typename <a class="el" href="read__field__factory_8h.html#a1d1cfd8ff
 </div><div class="memdoc">
 
 <p>Remove whitespace from strings. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a601988aed6d84cf87f8a7a7bd9981df2" name="a601988aed6d84cf87f8a7a7bd9981df2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a601988aed6d84cf87f8a7a7bd9981df2">&#9670;&#160;</a></span>voigt_tensor_size</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Voigt notation index range. </p>
 
 </div>
 </div>

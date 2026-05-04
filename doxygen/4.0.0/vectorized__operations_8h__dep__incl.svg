@@ -21,10 +21,10 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="crystal__symmetry_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="symmetry_8h.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="555.88,-937 419.12,-937 419.12,-903.5 555.88,-903.5 555.88,-937"/>
 <text text-anchor="start" x="427.12" y="-923.5" font-family="Helvetica,sans-Serif" font-size="10.00">include/prismspf/utilities</text>
-<text text-anchor="middle" x="487.5" y="-910.75" font-family="Helvetica,sans-Serif" font-size="10.00">/crystal_symmetry.h</text>
+<text text-anchor="middle" x="487.5" y="-910.75" font-family="Helvetica,sans-Serif" font-size="10.00">/symmetry.h</text>
 </a>
 </g>
 </g>

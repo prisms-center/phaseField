@@ -45,9 +45,9 @@ var searchData=
   ['simulation_5ftimer_2eh_42',['simulation_timer.h',['../simulation__timer_8h.html',1,'']]],
   ['simulation_5fvariable_5fnames_43',['simulation_variable_names',['../structInitialConditionFile.html#a1085d0ad3f23744df264a18ee789f0c9',1,'InitialConditionFile']]],
   ['simulationtimer_44',['SimulationTimer',['../classSimulationTimer.html',1,'SimulationTimer'],['../classSimulationTimer.html#a0af04a55c5a51e3397c4b1a656dd3d98',1,'SimulationTimer::SimulationTimer()=default'],['../classSimulationTimer.html#a179b4841f35a302a29ed2d87d5a9b48c',1,'SimulationTimer::SimulationTimer(double step_size)']]],
-  ['sin_5farctan_45',['sin_arctan',['../namespaceSymmetries.html#ab0bbf25f38e9daa065bed7e27fb10e75',1,'Symmetries']]],
-  ['sin_5fpsi_46',['sin_psi',['../namespaceSymmetries.html#a7eda8f47fd9e9684c5a870e08712b74b',1,'Symmetries']]],
-  ['sin_5ftheta_47',['sin_theta',['../namespaceSymmetries.html#a2deb1b46a521eb35906c6408f67e3c41',1,'Symmetries']]],
+  ['sin_5farctan_45',['sin_arctan',['../namespaceSymmetry.html#a97f4ed2e6e0d2ca2631ca98d1b3050a3',1,'Symmetry']]],
+  ['sin_5fpsi_46',['sin_psi',['../namespaceSymmetry.html#aa6048cd1b64132621ce379f1cca79e48',1,'Symmetry']]],
+  ['sin_5ftheta_47',['sin_theta',['../namespaceSymmetry.html#a3e19e722b1fbdcc5bc7780337be4f73a',1,'Symmetry']]],
   ['size_48',['size',['../structRectangularMesh.html#a5794eebe958cd7c4a737b83bfcf63db9',1,'RectangularMesh']]],
   ['sizetype_49',['SizeType',['../classPDEOperatorBase.html#a1ba96a1d9f2baebfcdd57f65a8f19ab3',1,'PDEOperatorBase']]],
   ['smoother_5fdegree_50',['smoother_degree',['../structLinearSolverParameters.html#aab59e11a916740acb1c0b20f9eb28712',1,'LinearSolverParameters::smoother_degree'],['../namespaceDefaults.html#aff5f010e8045ee4f89afb6fc3170427e',1,'Defaults::smoother_degree']]],
@@ -119,8 +119,9 @@ var searchData=
   ['subdivisions_116',['subdivisions',['../structRectangularMesh.html#a8d1a902c46696c76ba014245003d279e',1,'RectangularMesh']]],
   ['submission_5fvalid_117',['submission_valid',['../classFieldContainer.html#a5a89d7802275754d7599334a0d8a6ac0',1,'FieldContainer']]],
   ['submit_5fdof_5fvalue_118',['submit_dof_value',['../classFieldContainer.html#a0d8688d15d20a17ad7261ab214b61222',1,'FieldContainer::submit_dof_value(Types::Index field_index, const ValType &amp;val, unsigned int dof_index)'],['../classFieldContainer.html#aebb15a2f687595a38688db43791250ea',1,'FieldContainer::submit_dof_value(Types::Index field_index, const ValType &amp;val, unsigned int dof_index)']]],
-  ['symmetries_119',['Symmetries',['../namespaceSymmetries.html',1,'']]],
-  ['sync_120',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
-  ['system_5fwide_2eh_121',['system_wide.h',['../system__wide_8h.html',1,'']]],
-  ['systemwide_122',['SystemWide',['../classSystemWide.html',1,'']]]
+  ['symmetry_119',['Symmetry',['../namespaceSymmetry.html',1,'']]],
+  ['symmetry_2eh_120',['symmetry.h',['../symmetry_8h.html',1,'']]],
+  ['sync_121',['sync',['../classTeeStream_1_1TeeBuffer.html#a7ab2f75f0b9a7e1d5e202924a3d2e603',1,'TeeStream::TeeBuffer']]],
+  ['system_5fwide_2eh_122',['system_wide.h',['../system__wide_8h.html',1,'']]],
+  ['systemwide_123',['SystemWide',['../classSystemWide.html',1,'']]]
 ];

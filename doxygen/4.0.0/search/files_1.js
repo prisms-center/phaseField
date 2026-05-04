@@ -8,6 +8,5 @@ var searchData=
   ['constraint_5fmanager_2ecc_5',['constraint_manager.cc',['../constraint__manager_8cc.html',1,'']]],
   ['constraint_5fmanager_2eh_6',['constraint_manager.h',['../constraint__manager_8h.html',1,'']]],
   ['constraint_5fparameters_2eh_7',['constraint_parameters.h',['../constraint__parameters_8h.html',1,'']]],
-  ['contact_2eh_8',['contact.h',['../contact_8h.html',1,'']]],
-  ['crystal_5fsymmetry_2eh_9',['crystal_symmetry.h',['../crystal__symmetry_8h.html',1,'']]]
+  ['contact_2eh_8',['contact.h',['../contact_8h.html',1,'']]]
 ];
