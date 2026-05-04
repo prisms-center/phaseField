@@ -55,7 +55,7 @@ public:
   void
   init(const std::list<DependencyMap> &all_dependency_sets) override
   {
-    LinearSolver<dim, degree, number>::init(all_dependeny_sets);
+    LinearSolver<dim, degree, number>::init(all_dependency_sets);
     newton_update.reinit(solutions.get_solution_full_vector(0));
   }
 
