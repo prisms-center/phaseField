@@ -3,7 +3,7 @@ var searchData=
   ['lastentry_0',['LastEntry',['../type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768aca29386a7f596e2321b3c9ed8d4c1745',1,'type_enums.h']]],
   ['level_5fdof_5fhandlers_1',['level_dof_handlers',['../classDoFManager.html#aff5da4c060ccd5de1231c381c34d44bf',1,'DoFManager']]],
   ['lhs_2',['LHS',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca3655ed459e56fd114a44b382f345de9b',1,'type_enums.h']]],
-  ['lhs_5foperators_3',['lhs_operators',['../classLinearSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4',1,'LinearSolver::lhs_operators'],['../classMGSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4',1,'MGSolver::lhs_operators']]],
+  ['lhs_5foperator_3',['lhs_operator',['../classLinearSolver.html#a647034c706ee70586a4554dca2b2c2e9',1,'LinearSolver']]],
   ['lin_5fparams_4',['lin_params',['../classLinearSolver.html#a374eccb15f96a9d99973d550106f8f29',1,'LinearSolver']]],
   ['lin_5fsolver_5',['lin_solver',['../classLinearSolver.html#a933fe3ec5e22329efc330bb5be2cc6d0',1,'LinearSolver']]],
   ['linear_6',['Linear',['../type__enums_8h.html#a072e94d49e31cd51e8c341714bf265f9a1a1f3bc55fefa098d9034cc46e2e7a2b',1,'type_enums.h']]],

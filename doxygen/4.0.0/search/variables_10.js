@@ -14,7 +14,7 @@ var searchData=
   ['relative_5flevel_11',['relative_level',['../classFieldContainer.html#a4b53fc780ce6372a96eda1600e0feb2f',1,'FieldContainer::relative_level'],['../classMFOperator.html#a4822dd6bfa23d61a35ec1a35a1674453',1,'MFOperator::relative_level']]],
   ['remeshing_5fperiod_12',['remeshing_period',['../structSpatialDiscretization.html#ab4a2abd7611162024c251d1980e01320',1,'SpatialDiscretization']]],
   ['reset_13',['RESET',['../classTerminalColor.html#a636af85482f680b481768f2e41d57bc8',1,'TerminalColor']]],
-  ['rhs_5foperators_14',['rhs_operators',['../classExplicitSolver.html#aa237122d4f5989735e66a2cd48655583',1,'ExplicitSolver::rhs_operators'],['../classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250',1,'LinearSolver::rhs_operators']]],
-  ['rhs_5fvector_15',['rhs_vector',['../classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa',1,'LinearSolver']]],
+  ['rhs_5foperator_14',['rhs_operator',['../classExplicitSolver.html#a1e6d1d7ee4048dd29420cf982ab34f30',1,'ExplicitSolver::rhs_operator'],['../classLinearSolver.html#a24d2e9496552c6bf1355d9fb9ea9f76b',1,'LinearSolver::rhs_operator']]],
+  ['rhs_5fvector_15',['rhs_vector',['../classLinearSolver.html#a32eab3de4f0a4c01e3b9ee4b33f3b563',1,'LinearSolver']]],
   ['rng_16',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]]
 ];

@@ -16,7 +16,7 @@ var searchData=
   ['newton_5fparams_13',['newton_params',['../classNewtonSolver.html#a3ed196406b73421f1a902e0a0b8523ff',1,'NewtonSolver']]],
   ['newton_5fsolver_2eh_14',['newton_solver.h',['../newton__solver_8h.html',1,'']]],
   ['newton_5fsolvers_15',['newton_solvers',['../structNonlinearSolveParameterSet.html#aa9531c5fe54e37587d44343cfa971cf9',1,'NonlinearSolveParameterSet']]],
-  ['newton_5fupdates_16',['newton_updates',['../classNewtonSolver.html#ad8a5b265ca334e75782cb1ea02ea083c',1,'NewtonSolver']]],
+  ['newton_5fupdate_16',['newton_update',['../classNewtonSolver.html#a5cf17bca4557e9d65b23e9f9aa2fac7b',1,'NewtonSolver']]],
   ['newtonsolver_17',['NewtonSolver',['../classNewtonSolver.html',1,'NewtonSolver&lt; dim, degree, number &gt;'],['../classNewtonSolver.html#ad88a436867f113e2b6d0f9955801d273',1,'NewtonSolver::NewtonSolver()']]],
   ['none_18',['None',['../type__enums_8h.html#abe05dc4f05fe5f0d970c01d3e0d6700bac9d3e887722f2bc482bcca9d41c512af',1,'type_enums.h']]],
   ['nonlinear_5fsolve_5fparameters_19',['nonlinear_solve_parameters',['../classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788',1,'UserInputParameters']]],

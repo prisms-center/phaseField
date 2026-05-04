@@ -166,9 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25726215bb0ee51240fe4ddb659a2465" id="r_a25726215bb0ee51240fe4ddb659a2465"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a25726215bb0ee51240fe4ddb659a2465">reinit</a> ()</td></tr>
 <tr class="memdesc:a25726215bb0ee51240fe4ddb659a2465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solution vectors &amp; apply constraints.  <br /></td></tr>
 <tr class="separator:a25726215bb0ee51240fe4ddb659a2465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa19cd63c06ba623f1fa261a66a00c870" id="r_aa19cd63c06ba623f1fa261a66a00c870"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa19cd63c06ba623f1fa261a66a00c870">solve_level</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:aa19cd63c06ba623f1fa261a66a00c870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve one level.  <br /></td></tr>
-<tr class="separator:aa19cd63c06ba623f1fa261a66a00c870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e7b40e9ed956b72903ab8f297485bf" id="r_a84e7b40e9ed956b72903ab8f297485bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84e7b40e9ed956b72903ab8f297485bf">solve_impl</a> ()</td></tr>
+<tr class="memdesc:a84e7b40e9ed956b72903ab8f297485bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve implementation.  <br /></td></tr>
+<tr class="separator:a84e7b40e9ed956b72903ab8f297485bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0e0369dfd96d47bc23525f9a9e06dd" id="r_a3c0e0369dfd96d47bc23525f9a9e06dd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c0e0369dfd96d47bc23525f9a9e06dd">solve</a> ()</td></tr>
 <tr class="memdesc:a3c0e0369dfd96d47bc23525f9a9e06dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve for a single update step.  <br /></td></tr>
 <tr class="separator:a3c0e0369dfd96d47bc23525f9a9e06dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,6 +245,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>Solve context has initialized members. </dd></dl>
 
 </div>
 </div>
@@ -692,8 +693,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="aa19cd63c06ba623f1fa261a66a00c870" name="aa19cd63c06ba623f1fa261a66a00c870"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa19cd63c06ba623f1fa261a66a00c870">&#9670;&#160;</a></span>solve_level()</h2>
+<a id="a84e7b40e9ed956b72903ab8f297485bf" name="a84e7b40e9ed956b72903ab8f297485bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84e7b40e9ed956b72903ab8f297485bf">&#9670;&#160;</a></span>solve_impl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -704,9 +705,9 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt;::solve_level </td>
+          <td class="memname">virtual void <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt;::solve_impl </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -717,9 +718,9 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Solve one level. </p>
+<p>Solve implementation. </p>
 
-<p>Reimplemented in <a class="el" href="classExplicitSolver.html#adf33455f53527101d1f91fe3de280e52">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#afb6edf18b46bf2cbd7fe03a734d92bc9">LinearSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMGSolver.html#a9fe3f43aa808c57ed4ce2f6dc1148cde">MGSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a8ecdc8c06d568a9ac0a448be07270224">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classExplicitSolver.html#ab8a44e969ae8a6841f4c65baf6b932d8">ExplicitSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e">LinearSolver&lt; dim, degree, number &gt;</a>, <a class="el" href="classMGSolver.html#a3cddddb526f8a5c73192359ed4e4f25c">MGSolver&lt; dim, degree, number &gt;</a>, and <a class="el" href="classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22">NewtonSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>

@@ -16,7 +16,7 @@ var classSolverBase =
     [ "reinit", "classSolverBase.html#a25726215bb0ee51240fe4ddb659a2465", null ],
     [ "set_initial_condition", "classSolverBase.html#a1ea3231db13cc32b113e487f859a41ef", null ],
     [ "solve", "classSolverBase.html#a3c0e0369dfd96d47bc23525f9a9e06dd", null ],
-    [ "solve_level", "classSolverBase.html#aa19cd63c06ba623f1fa261a66a00c870", null ],
+    [ "solve_impl", "classSolverBase.html#a84e7b40e9ed956b72903ab8f297485bf", null ],
     [ "update", "classSolverBase.html#a32666c58a2da7c1da51f5e5dab6fa4be", null ],
     [ "update_ghosts", "classSolverBase.html#aea9076dd7e2cbcc6df6c19e0ac2ee0dd", null ],
     [ "aux_solvers", "classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5", null ],

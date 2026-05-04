@@ -154,15 +154,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2267ec75641bb4c1fdee4d5b5d32777f" id="r_a2267ec75641bb4c1fdee4d5b5d32777f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2267ec75641bb4c1fdee4d5b5d32777f">reinit</a> () override</td></tr>
 <tr class="memdesc:a2267ec75641bb4c1fdee4d5b5d32777f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solver.  <br /></td></tr>
 <tr class="separator:a2267ec75641bb4c1fdee4d5b5d32777f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ecdc8c06d568a9ac0a448be07270224" id="r_a8ecdc8c06d568a9ac0a448be07270224"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ecdc8c06d568a9ac0a448be07270224">solve_level</a> (unsigned int relative_level) override</td></tr>
-<tr class="memdesc:a8ecdc8c06d568a9ac0a448be07270224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve for a single update step.  <br /></td></tr>
-<tr class="separator:a8ecdc8c06d568a9ac0a448be07270224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64e42f20afbf2e75a400056b97d43b22" id="r_a64e42f20afbf2e75a400056b97d43b22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64e42f20afbf2e75a400056b97d43b22">solve_impl</a> () override</td></tr>
+<tr class="memdesc:a64e42f20afbf2e75a400056b97d43b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve for a single update step.  <br /></td></tr>
+<tr class="separator:a64e42f20afbf2e75a400056b97d43b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:ae3b77af5f056e684117a2d707189f971 inherit pub_methods_classLinearSolver" id="r_ae3b77af5f056e684117a2d707189f971"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#ae3b77af5f056e684117a2d707189f971">LinearSolver</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;_solve_context)</td></tr>
 <tr class="memdesc:ae3b77af5f056e684117a2d707189f971 inherit pub_methods_classLinearSolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:ae3b77af5f056e684117a2d707189f971 inherit pub_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36f7c8f0fe8c9828d745ad1b1f6c66f4 inherit pub_methods_classLinearSolver" id="r_a36f7c8f0fe8c9828d745ad1b1f6c66f4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a36f7c8f0fe8c9828d745ad1b1f6c66f4">do_linear_solve</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;b_vector, <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &amp;lhs_operator, <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;x_vector)</td></tr>
-<tr class="separator:a36f7c8f0fe8c9828d745ad1b1f6c66f4 inherit pub_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5546aff1cd68fade625bbdaf22cc8724 inherit pub_methods_classLinearSolver" id="r_a5546aff1cd68fade625bbdaf22cc8724"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a5546aff1cd68fade625bbdaf22cc8724">do_linear_solve</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;b_vector, <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &amp;lhs_matrix, <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;x_vector)</td></tr>
+<tr class="separator:a5546aff1cd68fade625bbdaf22cc8724 inherit pub_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSolverBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classSolverBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSolverBase.html">SolverBase&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:a84149fa02932ffb0254b239d561ce35e inherit pub_methods_classSolverBase" id="r_a84149fa02932ffb0254b239d561ce35e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a84149fa02932ffb0254b239d561ce35e">SolverBase</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt; &amp;_solve_context)</td></tr>
 <tr class="memdesc:a84149fa02932ffb0254b239d561ce35e inherit pub_methods_classSolverBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
@@ -215,18 +215,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ad8a5b265ca334e75782cb1ea02ea083c" id="r_ad8a5b265ca334e75782cb1ea02ea083c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8a5b265ca334e75782cb1ea02ea083c">newton_updates</a></td></tr>
-<tr class="separator:ad8a5b265ca334e75782cb1ea02ea083c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf17bca4557e9d65b23e9f9aa2fac7b" id="r_a5cf17bca4557e9d65b23e9f9aa2fac7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cf17bca4557e9d65b23e9f9aa2fac7b">newton_update</a></td></tr>
+<tr class="separator:a5cf17bca4557e9d65b23e9f9aa2fac7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ed196406b73421f1a902e0a0b8523ff" id="r_a3ed196406b73421f1a902e0a0b8523ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed196406b73421f1a902e0a0b8523ff">newton_params</a></td></tr>
 <tr class="separator:a3ed196406b73421f1a902e0a0b8523ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
-<tr class="memitem:a0f777428d79e0c334f6a1eab347f6250 inherit pro_attribs_classLinearSolver" id="r_a0f777428d79e0c334f6a1eab347f6250"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a0f777428d79e0c334f6a1eab347f6250">rhs_operators</a></td></tr>
-<tr class="memdesc:a0f777428d79e0c334f6a1eab347f6250 inherit pro_attribs_classLinearSolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix free operators for each level.  <br /></td></tr>
-<tr class="separator:a0f777428d79e0c334f6a1eab347f6250 inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3cf84db17c9ab89d04b6f1f83341bf4 inherit pro_attribs_classLinearSolver" id="r_ab3cf84db17c9ab89d04b6f1f83341bf4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4">lhs_operators</a></td></tr>
-<tr class="separator:ab3cf84db17c9ab89d04b6f1f83341bf4 inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86e82ae27ce5c09110e39f12d25fe7aa inherit pro_attribs_classLinearSolver" id="r_a86e82ae27ce5c09110e39f12d25fe7aa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a86e82ae27ce5c09110e39f12d25fe7aa">rhs_vector</a></td></tr>
-<tr class="separator:a86e82ae27ce5c09110e39f12d25fe7aa inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24d2e9496552c6bf1355d9fb9ea9f76b inherit pro_attribs_classLinearSolver" id="r_a24d2e9496552c6bf1355d9fb9ea9f76b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a24d2e9496552c6bf1355d9fb9ea9f76b">rhs_operator</a></td></tr>
+<tr class="memdesc:a24d2e9496552c6bf1355d9fb9ea9f76b inherit pro_attribs_classLinearSolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix free operators.  <br /></td></tr>
+<tr class="separator:a24d2e9496552c6bf1355d9fb9ea9f76b inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a647034c706ee70586a4554dca2b2c2e9 inherit pro_attribs_classLinearSolver" id="r_a647034c706ee70586a4554dca2b2c2e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a647034c706ee70586a4554dca2b2c2e9">lhs_operator</a></td></tr>
+<tr class="separator:a647034c706ee70586a4554dca2b2c2e9 inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32eab3de4f0a4c01e3b9ee4b33f3b563 inherit pro_attribs_classLinearSolver" id="r_a32eab3de4f0a4c01e3b9ee4b33f3b563"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a32eab3de4f0a4c01e3b9ee4b33f3b563">rhs_vector</a></td></tr>
+<tr class="separator:a32eab3de4f0a4c01e3b9ee4b33f3b563 inherit pro_attribs_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classSolverBase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classSolverBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSolverBase.html">SolverBase&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:ae2e3be10e79adacb07a691d9618df8f4 inherit pro_attribs_classSolverBase" id="r_ae2e3be10e79adacb07a691d9618df8f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolveBlock.html">SolveBlock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#ae2e3be10e79adacb07a691d9618df8f4">solve_block</a></td></tr>
 <tr class="memdesc:ae2e3be10e79adacb07a691d9618df8f4 inherit pro_attribs_classSolverBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information about the solve block this handler is responsible for.  <br /></td></tr>
@@ -287,6 +287,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>Solve context has initialized members. </dd></dl>
 
 </div>
 </div>
@@ -353,8 +354,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a8ecdc8c06d568a9ac0a448be07270224" name="a8ecdc8c06d568a9ac0a448be07270224"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ecdc8c06d568a9ac0a448be07270224">&#9670;&#160;</a></span>solve_level()</h2>
+<a id="a64e42f20afbf2e75a400056b97d43b22" name="a64e42f20afbf2e75a400056b97d43b22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64e42f20afbf2e75a400056b97d43b22">&#9670;&#160;</a></span>solve_impl()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -365,9 +366,9 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::solve_level </td>
+          <td class="memname">void <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::solve_impl </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -380,7 +381,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 <p>Solve for a single update step. </p>
 
-<p>Reimplemented from <a class="el" href="classLinearSolver.html#afb6edf18b46bf2cbd7fe03a734d92bc9">LinearSolver&lt; dim, degree, number &gt;</a>.</p>
+<p>Reimplemented from <a class="el" href="classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e">LinearSolver&lt; dim, degree, number &gt;</a>.</p>
 
 </div>
 </div>
@@ -409,8 +410,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
-<a id="ad8a5b265ca334e75782cb1ea02ea083c" name="ad8a5b265ca334e75782cb1ea02ea083c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8a5b265ca334e75782cb1ea02ea083c">&#9670;&#160;</a></span>newton_updates</h2>
+<a id="a5cf17bca4557e9d65b23e9f9aa2fac7b" name="a5cf17bca4557e9d65b23e9f9aa2fac7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf17bca4557e9d65b23e9f9aa2fac7b">&#9670;&#160;</a></span>newton_update</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -421,7 +422,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; &gt; <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::newton_updates</td>
+          <td class="memname"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt;number&gt; <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::newton_update</td>
         </tr>
       </table>
   </td>

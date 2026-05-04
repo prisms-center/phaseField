@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96":[8,0,1,0,3,1,1],
 "nucleus_8h_source.html":[8,0,1,0,3,1],
 "nucleus__refinement__function_8h.html":[8,0,1,0,3,2],
 "nucleus__refinement__function_8h_source.html":[8,0,1,0,3,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "structOutputParameters.html#ad9c1e71e4d92d59708de1e24cb57beb9":[7,0,41,5],
 "structOutputParameters.html#ae3154eb2f9d315d65b746edb9cd044e0":[7,0,41,0],
 "structOutputParameters.html#af554957eb23377d9a1098423adfb57dd":[7,0,41,9],
-"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[5,0,3,0]
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[5,0,3,0],
+"structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html":[7,0,0,0]
 };

@@ -12,7 +12,7 @@ var searchData=
   ['name_9',['name',['../structFieldAttributes.html#af273820aa53e82deb517c45b0dfbb702',1,'FieldAttributes::name'],['../structTimer_1_1Scope.html#a12869177bcdd56be2a412fde224e5337',1,'Timer::Scope::name']]],
   ['newton_5fparams_10',['newton_params',['../classNewtonSolver.html#a3ed196406b73421f1a902e0a0b8523ff',1,'NewtonSolver']]],
   ['newton_5fsolvers_11',['newton_solvers',['../structNonlinearSolveParameterSet.html#aa9531c5fe54e37587d44343cfa971cf9',1,'NonlinearSolveParameterSet']]],
-  ['newton_5fupdates_12',['newton_updates',['../classNewtonSolver.html#ad8a5b265ca334e75782cb1ea02ea083c',1,'NewtonSolver']]],
+  ['newton_5fupdate_12',['newton_update',['../classNewtonSolver.html#a5cf17bca4557e9d65b23e9f9aa2fac7b',1,'NewtonSolver']]],
   ['nonlinear_5fsolve_5fparameters_13',['nonlinear_solve_parameters',['../classUserInputParameters.html#a32392f9e393662e2ef58d08f08b80788',1,'UserInputParameters']]],
   ['nuc_5fparams_14',['nuc_params',['../classNucleusRefinementFunction.html#ab80a58ea6514bd397a0055e55abe83d3',1,'NucleusRefinementFunction']]],
   ['nucleating_5ffield_5findices_15',['nucleating_field_indices',['../structFieldAttributes.html#a526154d2afc31a567667fc4924f238e5',1,'FieldAttributes']]],

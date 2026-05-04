@@ -1,7 +1,7 @@
 var searchData=
 [
   ['level_5fdof_5fhandlers_0',['level_dof_handlers',['../classDoFManager.html#aff5da4c060ccd5de1231c381c34d44bf',1,'DoFManager']]],
-  ['lhs_5foperators_1',['lhs_operators',['../classLinearSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4',1,'LinearSolver::lhs_operators'],['../classMGSolver.html#ab3cf84db17c9ab89d04b6f1f83341bf4',1,'MGSolver::lhs_operators']]],
+  ['lhs_5foperator_1',['lhs_operator',['../classLinearSolver.html#a647034c706ee70586a4554dca2b2c2e9',1,'LinearSolver']]],
   ['lin_5fparams_2',['lin_params',['../classLinearSolver.html#a374eccb15f96a9d99973d550106f8f29',1,'LinearSolver']]],
   ['lin_5fsolver_3',['lin_solver',['../classLinearSolver.html#a933fe3ec5e22329efc330bb5be2cc6d0',1,'LinearSolver']]],
   ['linear_5fsolve_5fparameters_4',['linear_solve_parameters',['../classUserInputParameters.html#a53fa02b5add7145a2dc3e02350222e4f',1,'UserInputParameters']]],
