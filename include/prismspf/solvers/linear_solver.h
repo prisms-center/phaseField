@@ -75,7 +75,7 @@ public:
   void
   init(const std::list<DependencyMap> &all_dependency_sets) override
   {
-    SolverBase<dim, degree, number>::init(all_dependeny_sets);
+    SolverBase<dim, degree, number>::init(all_dependency_sets);
     rhs_vector.reinit(solutions.get_solution_full_vector(0));
 
     // Initialize rhs_operator
