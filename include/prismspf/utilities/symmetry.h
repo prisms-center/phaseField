@@ -8,7 +8,7 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-namespace Symmetries
+namespace Symmetry
 {
   /**
    * @brief Compute cos(N * arctan(x)).
@@ -524,6 +524,6 @@ namespace Symmetries
     // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
   }
 
-} // namespace Symmetries
+} // namespace Symmetry
 
 PRISMS_PF_END_NAMESPACE

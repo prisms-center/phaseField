@@ -1,7 +1,7 @@
 #include <deal.II/base/config.h>
 #include <deal.II/base/vectorization.h>
 
-#include <prismspf/utilities/crystal_symmetry.h>
+#include <prismspf/utilities/symmetry.h>
 #include <prismspf/utilities/vectorized_operations.h>
 
 #include <catch2/catch_template_test_macros.hpp>
@@ -63,7 +63,7 @@ check_all_lanes_abs(const dealii::VectorizedArray<Number, width> &result,
     }
 }
 
-TEMPLATE_TEST_CASE("Symmetries::cos_arctan matches std::cos(N*std::atan(x))",
+TEMPLATE_TEST_CASE("Symmetry::cos_arctan matches std::cos(N*std::atan(x))",
                    "[vectorized][symmetries][cos_arctan]",
                    float,
                    double)
@@ -89,55 +89,55 @@ TEMPLATE_TEST_CASE("Symmetries::cos_arctan matches std::cos(N*std::atan(x))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::cos_arctan<0>(input);
+                  value    = prisms::Symmetry::cos_arctan<0>(input);
                   expected = reference_cos_arctan<0>(input);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::cos_arctan<1>(input);
+                  value    = prisms::Symmetry::cos_arctan<1>(input);
                   expected = reference_cos_arctan<1>(input);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::cos_arctan<2>(input);
+                  value    = prisms::Symmetry::cos_arctan<2>(input);
                   expected = reference_cos_arctan<2>(input);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::cos_arctan<3>(input);
+                  value    = prisms::Symmetry::cos_arctan<3>(input);
                   expected = reference_cos_arctan<3>(input);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::cos_arctan<4>(input);
+                  value    = prisms::Symmetry::cos_arctan<4>(input);
                   expected = reference_cos_arctan<4>(input);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::cos_arctan<5>(input);
+                  value    = prisms::Symmetry::cos_arctan<5>(input);
                   expected = reference_cos_arctan<5>(input);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::cos_arctan<6>(input);
+                  value    = prisms::Symmetry::cos_arctan<6>(input);
                   expected = reference_cos_arctan<6>(input);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::cos_arctan<7>(input);
+                  value    = prisms::Symmetry::cos_arctan<7>(input);
                   expected = reference_cos_arctan<7>(input);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::cos_arctan<8>(input);
+                  value    = prisms::Symmetry::cos_arctan<8>(input);
                   expected = reference_cos_arctan<8>(input);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::cos_arctan<9>(input);
+                  value    = prisms::Symmetry::cos_arctan<9>(input);
                   expected = reference_cos_arctan<9>(input);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::cos_arctan<10>(input);
+                  value    = prisms::Symmetry::cos_arctan<10>(input);
                   expected = reference_cos_arctan<10>(input);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::cos_arctan<11>(input);
+                  value    = prisms::Symmetry::cos_arctan<11>(input);
                   expected = reference_cos_arctan<11>(input);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::cos_arctan<12>(input);
+                  value    = prisms::Symmetry::cos_arctan<12>(input);
                   expected = reference_cos_arctan<12>(input);
                   break;
               }
@@ -148,7 +148,7 @@ TEMPLATE_TEST_CASE("Symmetries::cos_arctan matches std::cos(N*std::atan(x))",
     }
 }
 
-TEMPLATE_TEST_CASE("Symmetries::sin_arctan matches std::sin(N*std::atan(x))",
+TEMPLATE_TEST_CASE("Symmetry::sin_arctan matches std::sin(N*std::atan(x))",
                    "[vectorized][symmetries][sin_arctan]",
                    float,
                    double)
@@ -174,55 +174,55 @@ TEMPLATE_TEST_CASE("Symmetries::sin_arctan matches std::sin(N*std::atan(x))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::sin_arctan<0>(input);
+                  value    = prisms::Symmetry::sin_arctan<0>(input);
                   expected = reference_sin_arctan<0>(input);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::sin_arctan<1>(input);
+                  value    = prisms::Symmetry::sin_arctan<1>(input);
                   expected = reference_sin_arctan<1>(input);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::sin_arctan<2>(input);
+                  value    = prisms::Symmetry::sin_arctan<2>(input);
                   expected = reference_sin_arctan<2>(input);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::sin_arctan<3>(input);
+                  value    = prisms::Symmetry::sin_arctan<3>(input);
                   expected = reference_sin_arctan<3>(input);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::sin_arctan<4>(input);
+                  value    = prisms::Symmetry::sin_arctan<4>(input);
                   expected = reference_sin_arctan<4>(input);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::sin_arctan<5>(input);
+                  value    = prisms::Symmetry::sin_arctan<5>(input);
                   expected = reference_sin_arctan<5>(input);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::sin_arctan<6>(input);
+                  value    = prisms::Symmetry::sin_arctan<6>(input);
                   expected = reference_sin_arctan<6>(input);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::sin_arctan<7>(input);
+                  value    = prisms::Symmetry::sin_arctan<7>(input);
                   expected = reference_sin_arctan<7>(input);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::sin_arctan<8>(input);
+                  value    = prisms::Symmetry::sin_arctan<8>(input);
                   expected = reference_sin_arctan<8>(input);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::sin_arctan<9>(input);
+                  value    = prisms::Symmetry::sin_arctan<9>(input);
                   expected = reference_sin_arctan<9>(input);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::sin_arctan<10>(input);
+                  value    = prisms::Symmetry::sin_arctan<10>(input);
                   expected = reference_sin_arctan<10>(input);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::sin_arctan<11>(input);
+                  value    = prisms::Symmetry::sin_arctan<11>(input);
                   expected = reference_sin_arctan<11>(input);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::sin_arctan<12>(input);
+                  value    = prisms::Symmetry::sin_arctan<12>(input);
                   expected = reference_sin_arctan<12>(input);
                   break;
               }
@@ -233,7 +233,7 @@ TEMPLATE_TEST_CASE("Symmetries::sin_arctan matches std::sin(N*std::atan(x))",
     }
 }
 
-TEMPLATE_TEST_CASE("Symmetries::cos_theta matches std::cos(N*std::atan2(ny,nx))",
+TEMPLATE_TEST_CASE("Symmetry::cos_theta matches std::cos(N*std::atan2(ny,nx))",
                    "[vectorized][symmetries][cos_theta]",
                    float,
                    double)
@@ -262,55 +262,55 @@ TEMPLATE_TEST_CASE("Symmetries::cos_theta matches std::cos(N*std::atan2(ny,nx))"
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::cos_theta<0>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<0>(nx, ny);
                   expected = reference_cos_theta<0>(nx, ny);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::cos_theta<1>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<1>(nx, ny);
                   expected = reference_cos_theta<1>(nx, ny);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::cos_theta<2>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<2>(nx, ny);
                   expected = reference_cos_theta<2>(nx, ny);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::cos_theta<3>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<3>(nx, ny);
                   expected = reference_cos_theta<3>(nx, ny);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::cos_theta<4>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<4>(nx, ny);
                   expected = reference_cos_theta<4>(nx, ny);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::cos_theta<5>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<5>(nx, ny);
                   expected = reference_cos_theta<5>(nx, ny);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::cos_theta<6>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<6>(nx, ny);
                   expected = reference_cos_theta<6>(nx, ny);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::cos_theta<7>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<7>(nx, ny);
                   expected = reference_cos_theta<7>(nx, ny);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::cos_theta<8>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<8>(nx, ny);
                   expected = reference_cos_theta<8>(nx, ny);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::cos_theta<9>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<9>(nx, ny);
                   expected = reference_cos_theta<9>(nx, ny);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::cos_theta<10>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<10>(nx, ny);
                   expected = reference_cos_theta<10>(nx, ny);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::cos_theta<11>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<11>(nx, ny);
                   expected = reference_cos_theta<11>(nx, ny);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::cos_theta<12>(nx, ny);
+                  value    = prisms::Symmetry::cos_theta<12>(nx, ny);
                   expected = reference_cos_theta<12>(nx, ny);
                   break;
               }
@@ -321,7 +321,7 @@ TEMPLATE_TEST_CASE("Symmetries::cos_theta matches std::cos(N*std::atan2(ny,nx))"
     }
 }
 
-TEMPLATE_TEST_CASE("Symmetries::sin_theta matches std::sin(N*std::atan2(ny,nx))",
+TEMPLATE_TEST_CASE("Symmetry::sin_theta matches std::sin(N*std::atan2(ny,nx))",
                    "[vectorized][symmetries][sin_theta]",
                    float,
                    double)
@@ -350,55 +350,55 @@ TEMPLATE_TEST_CASE("Symmetries::sin_theta matches std::sin(N*std::atan2(ny,nx))"
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::sin_theta<0>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<0>(nx, ny);
                   expected = reference_sin_theta<0>(nx, ny);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::sin_theta<1>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<1>(nx, ny);
                   expected = reference_sin_theta<1>(nx, ny);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::sin_theta<2>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<2>(nx, ny);
                   expected = reference_sin_theta<2>(nx, ny);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::sin_theta<3>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<3>(nx, ny);
                   expected = reference_sin_theta<3>(nx, ny);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::sin_theta<4>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<4>(nx, ny);
                   expected = reference_sin_theta<4>(nx, ny);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::sin_theta<5>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<5>(nx, ny);
                   expected = reference_sin_theta<5>(nx, ny);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::sin_theta<6>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<6>(nx, ny);
                   expected = reference_sin_theta<6>(nx, ny);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::sin_theta<7>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<7>(nx, ny);
                   expected = reference_sin_theta<7>(nx, ny);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::sin_theta<8>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<8>(nx, ny);
                   expected = reference_sin_theta<8>(nx, ny);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::sin_theta<9>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<9>(nx, ny);
                   expected = reference_sin_theta<9>(nx, ny);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::sin_theta<10>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<10>(nx, ny);
                   expected = reference_sin_theta<10>(nx, ny);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::sin_theta<11>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<11>(nx, ny);
                   expected = reference_sin_theta<11>(nx, ny);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::sin_theta<12>(nx, ny);
+                  value    = prisms::Symmetry::sin_theta<12>(nx, ny);
                   expected = reference_sin_theta<12>(nx, ny);
                   break;
               }
@@ -410,7 +410,7 @@ TEMPLATE_TEST_CASE("Symmetries::sin_theta matches std::sin(N*std::atan2(ny,nx))"
 }
 
 TEMPLATE_TEST_CASE(
-  "Symmetries::cos_psi matches std::cos(N*std::atan2(sqrt(nx*nx+ny*ny),nz)",
+  "Symmetry::cos_psi matches std::cos(N*std::atan2(sqrt(nx*nx+ny*ny),nz)",
   "[vectorized][symmetries][cos_psi]",
   float,
   double)
@@ -442,55 +442,55 @@ TEMPLATE_TEST_CASE(
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::cos_psi<0>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<0>(nx, ny, nz);
                   expected = reference_cos_psi<0>(nx, ny, nz);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::cos_psi<1>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<1>(nx, ny, nz);
                   expected = reference_cos_psi<1>(nx, ny, nz);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::cos_psi<2>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<2>(nx, ny, nz);
                   expected = reference_cos_psi<2>(nx, ny, nz);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::cos_psi<3>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<3>(nx, ny, nz);
                   expected = reference_cos_psi<3>(nx, ny, nz);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::cos_psi<4>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<4>(nx, ny, nz);
                   expected = reference_cos_psi<4>(nx, ny, nz);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::cos_psi<5>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<5>(nx, ny, nz);
                   expected = reference_cos_psi<5>(nx, ny, nz);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::cos_psi<6>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<6>(nx, ny, nz);
                   expected = reference_cos_psi<6>(nx, ny, nz);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::cos_psi<7>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<7>(nx, ny, nz);
                   expected = reference_cos_psi<7>(nx, ny, nz);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::cos_psi<8>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<8>(nx, ny, nz);
                   expected = reference_cos_psi<8>(nx, ny, nz);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::cos_psi<9>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<9>(nx, ny, nz);
                   expected = reference_cos_psi<9>(nx, ny, nz);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::cos_psi<10>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<10>(nx, ny, nz);
                   expected = reference_cos_psi<10>(nx, ny, nz);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::cos_psi<11>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<11>(nx, ny, nz);
                   expected = reference_cos_psi<11>(nx, ny, nz);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::cos_psi<12>(nx, ny, nz);
+                  value    = prisms::Symmetry::cos_psi<12>(nx, ny, nz);
                   expected = reference_cos_psi<12>(nx, ny, nz);
                   break;
               }
@@ -502,7 +502,7 @@ TEMPLATE_TEST_CASE(
 }
 
 TEMPLATE_TEST_CASE(
-  "Symmetries::sin_psi matches std::sin(N*std::atan2(sqrt(nx*nx+ny*ny),nz)",
+  "Symmetry::sin_psi matches std::sin(N*std::atan2(sqrt(nx*nx+ny*ny),nz)",
   "[vectorized][symmetries][sin_psi]",
   float,
   double)
@@ -534,55 +534,55 @@ TEMPLATE_TEST_CASE(
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetries::sin_psi<0>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<0>(nx, ny, nz);
                   expected = reference_sin_psi<0>(nx, ny, nz);
                   break;
                 case 1:
-                  value    = prisms::Symmetries::sin_psi<1>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<1>(nx, ny, nz);
                   expected = reference_sin_psi<1>(nx, ny, nz);
                   break;
                 case 2:
-                  value    = prisms::Symmetries::sin_psi<2>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<2>(nx, ny, nz);
                   expected = reference_sin_psi<2>(nx, ny, nz);
                   break;
                 case 3:
-                  value    = prisms::Symmetries::sin_psi<3>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<3>(nx, ny, nz);
                   expected = reference_sin_psi<3>(nx, ny, nz);
                   break;
                 case 4:
-                  value    = prisms::Symmetries::sin_psi<4>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<4>(nx, ny, nz);
                   expected = reference_sin_psi<4>(nx, ny, nz);
                   break;
                 case 5:
-                  value    = prisms::Symmetries::sin_psi<5>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<5>(nx, ny, nz);
                   expected = reference_sin_psi<5>(nx, ny, nz);
                   break;
                 case 6:
-                  value    = prisms::Symmetries::sin_psi<6>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<6>(nx, ny, nz);
                   expected = reference_sin_psi<6>(nx, ny, nz);
                   break;
                 case 7:
-                  value    = prisms::Symmetries::sin_psi<7>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<7>(nx, ny, nz);
                   expected = reference_sin_psi<7>(nx, ny, nz);
                   break;
                 case 8:
-                  value    = prisms::Symmetries::sin_psi<8>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<8>(nx, ny, nz);
                   expected = reference_sin_psi<8>(nx, ny, nz);
                   break;
                 case 9:
-                  value    = prisms::Symmetries::sin_psi<9>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<9>(nx, ny, nz);
                   expected = reference_sin_psi<9>(nx, ny, nz);
                   break;
                 case 10:
-                  value    = prisms::Symmetries::sin_psi<10>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<10>(nx, ny, nz);
                   expected = reference_sin_psi<10>(nx, ny, nz);
                   break;
                 case 11:
-                  value    = prisms::Symmetries::sin_psi<11>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<11>(nx, ny, nz);
                   expected = reference_sin_psi<11>(nx, ny, nz);
                   break;
                 case 12:
-                  value    = prisms::Symmetries::sin_psi<12>(nx, ny, nz);
+                  value    = prisms::Symmetry::sin_psi<12>(nx, ny, nz);
                   expected = reference_sin_psi<12>(nx, ny, nz);
                   break;
               }

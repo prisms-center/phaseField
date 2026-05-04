@@ -3,7 +3,7 @@
 
 #include <prismspf/core/pde_operator_base.h>
 
-#include <prismspf/utilities/crystal_symmetry.h>
+#include <prismspf/utilities/symmetry.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -96,13 +96,13 @@ private:
         ScalarGrad normal = phi_grad / (phi_grad.norm() + reg_val);
 
         // Anisotropy term using the crystal symmetry helper function.
-        // NOTE: The Symmetries namespace switches between the expanded polynomials and
+        // NOTE: The Symmetry namespace switches between the expanded polynomials and
         // the actual trigonometric function evaluation. For higher order symmetries,
         // there should exist a crossover point in computational cost between the two
         // methods. We have found that to be around ~5-6; however, your environments
         // performance may differ. Feel free to write out your own polynomail if you would
         // like to.
-        ScalarValue a_n = 1.0 + epsilon * Symmetries::cos_theta<4>(normal[0], normal[1]);
+        ScalarValue a_n = 1.0 + epsilon * Symmetry::cos_theta<4>(normal[0], normal[1]);
 
         // Coefficient before phi
         ScalarValue tau_phi = (1.0 + (1.0 - k) * U) * a_n * a_n;
@@ -146,9 +146,8 @@ private:
         ScalarGrad normal = phi_grad / (phi_grad.norm() + reg_val);
 
         // Anisotropy term and its derivative using the crystal symmetry helper functions
-        ScalarValue a_n = 1.0 + epsilon * Symmetries::cos_theta<4>(normal[0], normal[1]);
-        ScalarValue d_a_n =
-          -4.0 * epsilon * Symmetries::sin_theta<4>(normal[0], normal[1]);
+        ScalarValue a_n   = 1.0 + epsilon * Symmetry::cos_theta<4>(normal[0], normal[1]);
+        ScalarValue d_a_n = -4.0 * epsilon * Symmetry::sin_theta<4>(normal[0], normal[1]);
 
         // dimensionless temperature changes
         ScalarValue y   = variable_list.get_q_point_location()[1];
