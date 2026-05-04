@@ -57,7 +57,7 @@ public:
    * @brief Solve for a single update step.
    */
   void
-  solve_level(unsigned int relative_level) override
+  solve_impl() override
   {}
 
   void

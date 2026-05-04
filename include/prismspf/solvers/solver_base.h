@@ -23,8 +23,6 @@
 
 #include <prismspf/config.h>
 
-#include <memory>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -33,6 +31,7 @@ class SolverBase
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   SolverBase(SolveBlock                               _solve_block,
              const SolveContext<dim, degree, number> &_solve_context)
@@ -104,10 +103,10 @@ public:
   }
 
   /**
-   * @brief Solve one level.
+   * @brief Solve implementation.
    */
   virtual void
-  solve_level([[maybe_unused]] unsigned int relative_level = 0)
+  solve_impl()
   {}
 
   /**
@@ -123,7 +122,7 @@ public:
         set_initial_condition();
         return;
       }
-    this->solve_level(0);
+    this->solve_impl();
     if (solve_context->get_simulation_timer().get_increment() == 0)
       {
         solutions.apply_initial_condition_for_old_fields();

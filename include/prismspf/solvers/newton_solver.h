@@ -32,13 +32,14 @@ protected:
   using SolverBase<dim, degree, number>::solve_block;
   using LinearSolver<dim, degree, number>::do_linear_solve;
   using LinearSolver<dim, degree, number>::normalization_value;
-  using LinearSolver<dim, degree, number>::lhs_operators;
-  using LinearSolver<dim, degree, number>::rhs_operators;
+  using LinearSolver<dim, degree, number>::lhs_operator;
+  using LinearSolver<dim, degree, number>::rhs_operator;
   using LinearSolver<dim, degree, number>::rhs_vector;
 
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   NewtonSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
@@ -55,13 +56,7 @@ public:
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
     LinearSolver<dim, degree, number>::init(all_dependeny_sets);
-    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
-    newton_updates.resize(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        newton_updates[relative_level].reinit(
-          solutions.get_solution_full_vector(relative_level));
-      }
+    newton_update.reinit(solutions.get_solution_full_vector(0));
   }
 
   /**
@@ -71,34 +66,28 @@ public:
   reinit() override
   {
     LinearSolver<dim, degree, number>::reinit();
-    const unsigned int num_levels = newton_updates.size();
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        newton_updates[relative_level].reinit(
-          solutions.get_solution_full_vector(relative_level));
-      }
+    newton_update.reinit(solutions.get_solution_full_vector(0));
   }
 
   /**
    * @brief Solve for a single update step.
    */
   void
-  solve_level(unsigned int relative_level) override
+  solve_impl() override
   {
     const number newton_step_length = newton_params.step_length;
     const number newton_tolerance = newton_params.tolerance_value * normalization_value();
     unsigned int newton_max_iterations = newton_params.max_iterations;
 
-    BlockVector<number>             &newton_residual = rhs_vector[relative_level];
-    BlockVector<number>             &newton_update   = newton_updates[relative_level];
-    MFOperator<dim, degree, number> &rhs_op          = rhs_operators[relative_level];
-    MFOperator<dim, degree, number> &lhs_op          = lhs_operators[relative_level];
+    BlockVector<number>             &newton_residual = rhs_vector;
+    MFOperator<dim, degree, number> &rhs_op          = rhs_operator;
+    MFOperator<dim, degree, number> &lhs_op          = lhs_operator;
     // TODO: setup initial guess for solution vector. Maybe use old_solution if
     // available.
-    if (!solutions.get_solution_level(relative_level).old_solutions.empty())
+    if (!solutions.get_solution_level(0).old_solutions.empty())
       {
-        solutions.get_solution_full_vector(relative_level) =
-          solutions.get_old_solution_full_vector(0, relative_level);
+        solutions.get_solution_full_vector(0) =
+          solutions.get_old_solution_full_vector(0, 0);
       }
 
     // Newton iteration loop.
@@ -109,8 +98,8 @@ public:
     while (newton_unconverged && iter < newton_max_iterations)
       {
         // Apply constraints to solution vector
-        solutions.apply_constraints(relative_level);
-        solutions.update_ghosts(relative_level);
+        solutions.apply_constraints(0);
+        solutions.update_ghosts(0);
 
         // Solve for Newton-residual (r)
         Timer::start_section("Zero ghosts");
@@ -132,15 +121,14 @@ public:
         newton_update.update_ghost_values();
 
         // Zero out the ghosts
-        solutions.get_solution_full_vector(relative_level).zero_out_ghost_values();
+        solutions.get_solution_full_vector(0).zero_out_ghost_values();
 
         // Perform Newton update.
-        solutions.get_solution_full_vector(relative_level)
-          .add(newton_step_length, newton_update);
+        solutions.get_solution_full_vector(0).add(newton_step_length, newton_update);
 
         // Update the ghosts
         Timer::start_section("Update ghosts");
-        solutions.update_ghosts(relative_level);
+        solutions.update_ghosts(0);
         Timer::end_section("Update ghosts");
 
         iter++;
@@ -167,8 +155,8 @@ public:
   }
 
 protected:
-  std::vector<BlockVector<number>> newton_updates; //"change" term
-  NonlinearSolverParameters        newton_params;
+  BlockVector<number>       newton_update; //"change" term
+  NonlinearSolverParameters newton_params;
 };
 
 PRISMS_PF_END_NAMESPACE
