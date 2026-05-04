@@ -5,7 +5,8 @@ set(
   allen_cahn/implicit
   alloy_solidification
   blank
-  cahn_hilliard_explicit
+  cahn_hilliard/explicit
+  cahn_hilliard/implicit
   coupled_allen_cahn_cahn_hilliard
   mechanics/boundary_value_problem
   mechanics/eshelby_inclusion
