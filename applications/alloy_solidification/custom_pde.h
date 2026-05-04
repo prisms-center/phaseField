@@ -3,7 +3,7 @@
 
 #include <prismspf/core/pde_operator_base.h>
 
-#include <prismspf/utilities/crystal_symmetry.h>
+#include <prismspf/utilities/symmetry.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
