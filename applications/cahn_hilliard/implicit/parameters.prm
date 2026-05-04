@@ -4,8 +4,8 @@ subsection Rectangular mesh
   set z size = 100
 end
 
-set global refinement = 6
-set max refinement = 6
+set global refinement = 7
+set max refinement = 7
 set min refinement = 2
 set mesh adaptivity = true
 set remeshing period = 1000
@@ -17,13 +17,12 @@ subsection refinement criterion: 0
   set value upper bound              = 0.99
 end
 
-set time step = 2.0e-4
-set number steps = 100000
+set time step = 5.0e-4
+set end time = 20
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 500
-  set list = 1,2,3,4,5,6,7,8,9
 end
 
 set Model constant McV = 1.0, DOUBLE
