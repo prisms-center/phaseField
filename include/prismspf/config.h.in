@@ -38,7 +38,7 @@
 
 // Macros for opening and closing prisms namespace
 #define PRISMS_PF_BEGIN_NAMESPACE \
-  namespace prisms                \
+  namespace prismspf              \
   {
 #define PRISMS_PF_END_NAMESPACE }
 

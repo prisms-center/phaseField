@@ -89,55 +89,55 @@ TEMPLATE_TEST_CASE("Symmetry::cos_arctan matches std::cos(N*std::atan(x))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::cos_arctan<0>(input);
+                  value    = prismspf::Symmetry::cos_arctan<0>(input);
                   expected = reference_cos_arctan<0>(input);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::cos_arctan<1>(input);
+                  value    = prismspf::Symmetry::cos_arctan<1>(input);
                   expected = reference_cos_arctan<1>(input);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::cos_arctan<2>(input);
+                  value    = prismspf::Symmetry::cos_arctan<2>(input);
                   expected = reference_cos_arctan<2>(input);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::cos_arctan<3>(input);
+                  value    = prismspf::Symmetry::cos_arctan<3>(input);
                   expected = reference_cos_arctan<3>(input);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::cos_arctan<4>(input);
+                  value    = prismspf::Symmetry::cos_arctan<4>(input);
                   expected = reference_cos_arctan<4>(input);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::cos_arctan<5>(input);
+                  value    = prismspf::Symmetry::cos_arctan<5>(input);
                   expected = reference_cos_arctan<5>(input);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::cos_arctan<6>(input);
+                  value    = prismspf::Symmetry::cos_arctan<6>(input);
                   expected = reference_cos_arctan<6>(input);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::cos_arctan<7>(input);
+                  value    = prismspf::Symmetry::cos_arctan<7>(input);
                   expected = reference_cos_arctan<7>(input);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::cos_arctan<8>(input);
+                  value    = prismspf::Symmetry::cos_arctan<8>(input);
                   expected = reference_cos_arctan<8>(input);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::cos_arctan<9>(input);
+                  value    = prismspf::Symmetry::cos_arctan<9>(input);
                   expected = reference_cos_arctan<9>(input);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::cos_arctan<10>(input);
+                  value    = prismspf::Symmetry::cos_arctan<10>(input);
                   expected = reference_cos_arctan<10>(input);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::cos_arctan<11>(input);
+                  value    = prismspf::Symmetry::cos_arctan<11>(input);
                   expected = reference_cos_arctan<11>(input);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::cos_arctan<12>(input);
+                  value    = prismspf::Symmetry::cos_arctan<12>(input);
                   expected = reference_cos_arctan<12>(input);
                   break;
               }
@@ -174,55 +174,55 @@ TEMPLATE_TEST_CASE("Symmetry::sin_arctan matches std::sin(N*std::atan(x))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::sin_arctan<0>(input);
+                  value    = prismspf::Symmetry::sin_arctan<0>(input);
                   expected = reference_sin_arctan<0>(input);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::sin_arctan<1>(input);
+                  value    = prismspf::Symmetry::sin_arctan<1>(input);
                   expected = reference_sin_arctan<1>(input);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::sin_arctan<2>(input);
+                  value    = prismspf::Symmetry::sin_arctan<2>(input);
                   expected = reference_sin_arctan<2>(input);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::sin_arctan<3>(input);
+                  value    = prismspf::Symmetry::sin_arctan<3>(input);
                   expected = reference_sin_arctan<3>(input);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::sin_arctan<4>(input);
+                  value    = prismspf::Symmetry::sin_arctan<4>(input);
                   expected = reference_sin_arctan<4>(input);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::sin_arctan<5>(input);
+                  value    = prismspf::Symmetry::sin_arctan<5>(input);
                   expected = reference_sin_arctan<5>(input);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::sin_arctan<6>(input);
+                  value    = prismspf::Symmetry::sin_arctan<6>(input);
                   expected = reference_sin_arctan<6>(input);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::sin_arctan<7>(input);
+                  value    = prismspf::Symmetry::sin_arctan<7>(input);
                   expected = reference_sin_arctan<7>(input);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::sin_arctan<8>(input);
+                  value    = prismspf::Symmetry::sin_arctan<8>(input);
                   expected = reference_sin_arctan<8>(input);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::sin_arctan<9>(input);
+                  value    = prismspf::Symmetry::sin_arctan<9>(input);
                   expected = reference_sin_arctan<9>(input);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::sin_arctan<10>(input);
+                  value    = prismspf::Symmetry::sin_arctan<10>(input);
                   expected = reference_sin_arctan<10>(input);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::sin_arctan<11>(input);
+                  value    = prismspf::Symmetry::sin_arctan<11>(input);
                   expected = reference_sin_arctan<11>(input);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::sin_arctan<12>(input);
+                  value    = prismspf::Symmetry::sin_arctan<12>(input);
                   expected = reference_sin_arctan<12>(input);
                   break;
               }
@@ -262,55 +262,55 @@ TEMPLATE_TEST_CASE("Symmetry::cos_theta matches std::cos(N*std::atan2(ny,nx))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::cos_theta<0>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<0>(nx, ny);
                   expected = reference_cos_theta<0>(nx, ny);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::cos_theta<1>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<1>(nx, ny);
                   expected = reference_cos_theta<1>(nx, ny);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::cos_theta<2>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<2>(nx, ny);
                   expected = reference_cos_theta<2>(nx, ny);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::cos_theta<3>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<3>(nx, ny);
                   expected = reference_cos_theta<3>(nx, ny);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::cos_theta<4>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<4>(nx, ny);
                   expected = reference_cos_theta<4>(nx, ny);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::cos_theta<5>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<5>(nx, ny);
                   expected = reference_cos_theta<5>(nx, ny);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::cos_theta<6>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<6>(nx, ny);
                   expected = reference_cos_theta<6>(nx, ny);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::cos_theta<7>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<7>(nx, ny);
                   expected = reference_cos_theta<7>(nx, ny);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::cos_theta<8>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<8>(nx, ny);
                   expected = reference_cos_theta<8>(nx, ny);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::cos_theta<9>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<9>(nx, ny);
                   expected = reference_cos_theta<9>(nx, ny);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::cos_theta<10>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<10>(nx, ny);
                   expected = reference_cos_theta<10>(nx, ny);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::cos_theta<11>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<11>(nx, ny);
                   expected = reference_cos_theta<11>(nx, ny);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::cos_theta<12>(nx, ny);
+                  value    = prismspf::Symmetry::cos_theta<12>(nx, ny);
                   expected = reference_cos_theta<12>(nx, ny);
                   break;
               }
@@ -350,55 +350,55 @@ TEMPLATE_TEST_CASE("Symmetry::sin_theta matches std::sin(N*std::atan2(ny,nx))",
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::sin_theta<0>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<0>(nx, ny);
                   expected = reference_sin_theta<0>(nx, ny);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::sin_theta<1>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<1>(nx, ny);
                   expected = reference_sin_theta<1>(nx, ny);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::sin_theta<2>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<2>(nx, ny);
                   expected = reference_sin_theta<2>(nx, ny);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::sin_theta<3>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<3>(nx, ny);
                   expected = reference_sin_theta<3>(nx, ny);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::sin_theta<4>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<4>(nx, ny);
                   expected = reference_sin_theta<4>(nx, ny);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::sin_theta<5>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<5>(nx, ny);
                   expected = reference_sin_theta<5>(nx, ny);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::sin_theta<6>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<6>(nx, ny);
                   expected = reference_sin_theta<6>(nx, ny);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::sin_theta<7>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<7>(nx, ny);
                   expected = reference_sin_theta<7>(nx, ny);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::sin_theta<8>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<8>(nx, ny);
                   expected = reference_sin_theta<8>(nx, ny);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::sin_theta<9>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<9>(nx, ny);
                   expected = reference_sin_theta<9>(nx, ny);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::sin_theta<10>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<10>(nx, ny);
                   expected = reference_sin_theta<10>(nx, ny);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::sin_theta<11>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<11>(nx, ny);
                   expected = reference_sin_theta<11>(nx, ny);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::sin_theta<12>(nx, ny);
+                  value    = prismspf::Symmetry::sin_theta<12>(nx, ny);
                   expected = reference_sin_theta<12>(nx, ny);
                   break;
               }
@@ -442,55 +442,55 @@ TEMPLATE_TEST_CASE(
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::cos_psi<0>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<0>(nx, ny, nz);
                   expected = reference_cos_psi<0>(nx, ny, nz);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::cos_psi<1>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<1>(nx, ny, nz);
                   expected = reference_cos_psi<1>(nx, ny, nz);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::cos_psi<2>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<2>(nx, ny, nz);
                   expected = reference_cos_psi<2>(nx, ny, nz);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::cos_psi<3>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<3>(nx, ny, nz);
                   expected = reference_cos_psi<3>(nx, ny, nz);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::cos_psi<4>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<4>(nx, ny, nz);
                   expected = reference_cos_psi<4>(nx, ny, nz);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::cos_psi<5>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<5>(nx, ny, nz);
                   expected = reference_cos_psi<5>(nx, ny, nz);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::cos_psi<6>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<6>(nx, ny, nz);
                   expected = reference_cos_psi<6>(nx, ny, nz);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::cos_psi<7>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<7>(nx, ny, nz);
                   expected = reference_cos_psi<7>(nx, ny, nz);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::cos_psi<8>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<8>(nx, ny, nz);
                   expected = reference_cos_psi<8>(nx, ny, nz);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::cos_psi<9>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<9>(nx, ny, nz);
                   expected = reference_cos_psi<9>(nx, ny, nz);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::cos_psi<10>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<10>(nx, ny, nz);
                   expected = reference_cos_psi<10>(nx, ny, nz);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::cos_psi<11>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<11>(nx, ny, nz);
                   expected = reference_cos_psi<11>(nx, ny, nz);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::cos_psi<12>(nx, ny, nz);
+                  value    = prismspf::Symmetry::cos_psi<12>(nx, ny, nz);
                   expected = reference_cos_psi<12>(nx, ny, nz);
                   break;
               }
@@ -534,55 +534,55 @@ TEMPLATE_TEST_CASE(
             switch (N)
               {
                 case 0:
-                  value    = prisms::Symmetry::sin_psi<0>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<0>(nx, ny, nz);
                   expected = reference_sin_psi<0>(nx, ny, nz);
                   break;
                 case 1:
-                  value    = prisms::Symmetry::sin_psi<1>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<1>(nx, ny, nz);
                   expected = reference_sin_psi<1>(nx, ny, nz);
                   break;
                 case 2:
-                  value    = prisms::Symmetry::sin_psi<2>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<2>(nx, ny, nz);
                   expected = reference_sin_psi<2>(nx, ny, nz);
                   break;
                 case 3:
-                  value    = prisms::Symmetry::sin_psi<3>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<3>(nx, ny, nz);
                   expected = reference_sin_psi<3>(nx, ny, nz);
                   break;
                 case 4:
-                  value    = prisms::Symmetry::sin_psi<4>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<4>(nx, ny, nz);
                   expected = reference_sin_psi<4>(nx, ny, nz);
                   break;
                 case 5:
-                  value    = prisms::Symmetry::sin_psi<5>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<5>(nx, ny, nz);
                   expected = reference_sin_psi<5>(nx, ny, nz);
                   break;
                 case 6:
-                  value    = prisms::Symmetry::sin_psi<6>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<6>(nx, ny, nz);
                   expected = reference_sin_psi<6>(nx, ny, nz);
                   break;
                 case 7:
-                  value    = prisms::Symmetry::sin_psi<7>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<7>(nx, ny, nz);
                   expected = reference_sin_psi<7>(nx, ny, nz);
                   break;
                 case 8:
-                  value    = prisms::Symmetry::sin_psi<8>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<8>(nx, ny, nz);
                   expected = reference_sin_psi<8>(nx, ny, nz);
                   break;
                 case 9:
-                  value    = prisms::Symmetry::sin_psi<9>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<9>(nx, ny, nz);
                   expected = reference_sin_psi<9>(nx, ny, nz);
                   break;
                 case 10:
-                  value    = prisms::Symmetry::sin_psi<10>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<10>(nx, ny, nz);
                   expected = reference_sin_psi<10>(nx, ny, nz);
                   break;
                 case 11:
-                  value    = prisms::Symmetry::sin_psi<11>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<11>(nx, ny, nz);
                   expected = reference_sin_psi<11>(nx, ny, nz);
                   break;
                 case 12:
-                  value    = prisms::Symmetry::sin_psi<12>(nx, ny, nz);
+                  value    = prismspf::Symmetry::sin_psi<12>(nx, ny, nz);
                   expected = reference_sin_psi<12>(nx, ny, nz);
                   break;
               }

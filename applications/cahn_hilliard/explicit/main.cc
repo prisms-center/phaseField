@@ -6,13 +6,13 @@
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/problem.h>
 
-using namespace prisms;
+using namespace prismspf;
 
 int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  prisms::MPIInitFinalize mpi_init(argc, argv);
+  prismspf::MPIInitFinalize mpi_init(argc, argv);
 
   // Parse the command line options (if there are any) to get the name of the input
   // file
