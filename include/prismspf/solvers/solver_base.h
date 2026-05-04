@@ -79,9 +79,9 @@ public:
    * @brief Initialize the solver.
    */
   virtual void
-  init(const std::list<DependencyMap> &all_dependeny_sets)
+  init(const std::list<DependencyMap> &all_dependency_sets)
   {
-    DependencyExtents extents(solve_block.field_indices, all_dependeny_sets);
+    DependencyExtents extents(solve_block.field_indices, all_dependency_sets);
     solutions.init(solve_context->get_dof_manager(),
                    solve_context->get_constraint_manager(),
                    extents.oldest_age);
