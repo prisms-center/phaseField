@@ -33,7 +33,7 @@ class NucleusRefinementFunction : public CellMarkerBase<dim>
 public:
   using CellIterator =
     dealii::CellAccessor<dim>; // dealii::TriaActiveIterator<dealii::CellAccessor<dim>>;
-  using prisms::CellMarkerBase<dim>::flag;
+  using prismspf::CellMarkerBase<dim>::flag;
 
   NucleusRefinementFunction(const NucleationParameters      &_nuc_params,
                             const std::vector<Nucleus<dim>> &_nuclei_list)

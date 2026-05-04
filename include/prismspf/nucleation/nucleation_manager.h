@@ -226,7 +226,7 @@ NucleationManager<dim, degree, number>::gather_exclude_broadcast_nuclei(
                          global_nuclei.end(),
                          [&](const Nucleus<dim> &existing_nucleus)
                          {
-                           const double distance = prisms::distance<dim, double>(
+                           const double distance = prismspf::distance<dim, double>(
                              nuc.location,
                              existing_nucleus.location,
                              user_inputs.spatial_discretization.rectangular_mesh);
