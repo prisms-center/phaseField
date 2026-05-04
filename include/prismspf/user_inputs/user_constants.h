@@ -30,6 +30,7 @@ public:
   using InputVariant = boost::variant<double,
                                       int,
                                       bool,
+                                      std::string,
                                       dealii::Tensor<1, dim>,
                                       dealii::Tensor<2, dim>,
                                       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>;
@@ -66,6 +67,15 @@ public:
    */
   [[nodiscard]] bool
   get_bool(const std::string &constant_name) const;
+
+  /**
+   * @brief Retrieve the string from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * @param constant_name Name of the constant to retrieve.
+   */
+  [[nodiscard]] std::string
+  get_string(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
@@ -184,6 +194,12 @@ private:
     }
 
     void
+    operator()(const std::string &value) const
+    {
+      ConditionalOStreams::pout_summary() << value;
+    }
+
+    void
     operator()(const dealii::Tensor<1, dim> &value) const
     {
       ConditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
@@ -261,6 +277,19 @@ UserConstants<dim>::get_bool(const std::string &constant_name) const
            constant_name + "."));
 
   return boost::get<bool>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline std::string
+UserConstants<dim>::get_string(const std::string &constant_name) const
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
+           "that you attempted to access was " +
+           constant_name + "."));
+
+  return boost::get<std::string>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
@@ -517,11 +546,15 @@ UserConstants<dim>::primitive_model_constant(
     {
       return boost::iequals(model_constants_strings.at(0), "true");
     }
+  if (boost::iequals(model_constants_type_strings.at(0), "string"))
+    {
+      return model_constants_strings.at(0);
+    }
 
   AssertThrow(false,
               dealii::ExcMessage(
                 "The type for user-defined variables must be `double`, `int`, "
-                "`bool`, `tensor`, or `elastic constants`."));
+                "`bool`, `string`, `tensor`, or `elastic constants`."));
   return 0;
 }
 
