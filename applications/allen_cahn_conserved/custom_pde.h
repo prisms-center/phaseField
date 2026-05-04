@@ -146,7 +146,7 @@ public:
   }
 
   void
-  solve_level(unsigned int relative_level) override
+  solve_impl() override
   {
     number mu_int = Integrator<dim, degree, number>::template integrate<0>(
       this->solve_context->get_dof_manager().get_field_dof_handler(1),
