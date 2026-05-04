@@ -8,13 +8,13 @@
 #include <prismspf/core/solve_block.h>
 #include <prismspf/core/type_enums.h>
 
-using namespace prisms;
+using namespace prismspf;
 
 int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  prisms::MPIInitFinalize mpi_init(argc, argv);
+  prismspf::MPIInitFinalize mpi_init(argc, argv);
 
   // Parse the command line options (if there are any) to get the name of the input
   // file
