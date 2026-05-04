@@ -31,6 +31,7 @@ class SolverBase
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   SolverBase(SolveBlock                               _solve_block,
              const SolveContext<dim, degree, number> &_solve_context)

@@ -39,6 +39,7 @@ protected:
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   NewtonSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)

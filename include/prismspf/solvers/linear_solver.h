@@ -45,6 +45,7 @@ protected:
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   LinearSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
@@ -52,6 +53,20 @@ public:
     , lin_params(
         solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
           solve_block.id))
+    , rhs_operator(solve_context->get_pde_operator(),
+                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                   solve_context->get_field_attributes(),
+                   solve_context->get_solution_indexer(),
+                   0,
+                   solve_block.dependencies_rhs,
+                   solve_context->get_simulation_timer())
+    , lhs_operator(solve_context->get_pde_operator(),
+                   &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                   solve_context->get_field_attributes(),
+                   solve_context->get_solution_indexer(),
+                   0,
+                   solve_block.dependencies_lhs,
+                   solve_context->get_simulation_timer())
   {}
 
   /**
@@ -64,14 +79,6 @@ public:
     rhs_vector.reinit(solutions.get_solution_full_vector(0));
 
     // Initialize rhs_operator
-    rhs_operator =
-      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
-                                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                                      solve_context->get_field_attributes(),
-                                      solve_context->get_solution_indexer(),
-                                      0,
-                                      solve_block.dependencies_rhs,
-                                      solve_context->get_simulation_timer());
     rhs_operator.initialize(solutions);
     rhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
@@ -79,14 +86,6 @@ public:
                                         solve_block.field_indices,
                                         0));
     // Initialize lhs_operator
-    lhs_operator =
-      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
-                                      &PDEOperatorBase<dim, degree, number>::compute_lhs,
-                                      solve_context->get_field_attributes(),
-                                      solve_context->get_solution_indexer(),
-                                      0,
-                                      solve_block.dependencies_lhs,
-                                      solve_context->get_simulation_timer());
     lhs_operator.initialize(solutions);
     lhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(

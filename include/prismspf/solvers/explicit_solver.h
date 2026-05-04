@@ -29,10 +29,18 @@ class ExplicitSolver : public SolverBase<dim, degree, number>
 public:
   /**
    * @brief Constructor.
+   * @pre Solve context has initialized members.
    */
   ExplicitSolver(SolveBlock                               _solve_block,
                  const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_block, _solve_context)
+    , rhs_operator(solve_context->get_pde_operator(),
+                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                   solve_context->get_field_attributes(),
+                   solve_context->get_solution_indexer(),
+                   0,
+                   solve_block.dependencies_rhs,
+                   solve_context->get_simulation_timer())
   {}
 
   void
@@ -41,15 +49,6 @@ public:
     SolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
-
-    rhs_operator =
-      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
-                                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                                      solve_context->get_field_attributes(),
-                                      solve_context->get_solution_indexer(),
-                                      0,
-                                      solve_block.dependencies_rhs,
-                                      solve_context->get_simulation_timer());
     rhs_operator.initialize(solutions);
     rhs_operator.set_scaling_diagonal(
       true,
