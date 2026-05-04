@@ -1,7 +1,7 @@
 var classUserConstants =
 [
     [ "VariantPrinter", "classUserConstants_1_1VariantPrinter.html", "classUserConstants_1_1VariantPrinter" ],
-    [ "InputVariant", "classUserConstants.html#a5946a1675835856bf9eb9424e53dc579", null ],
+    [ "InputVariant", "classUserConstants.html#a7d33694ac1e1d4690d35c88c71608378", null ],
     [ "add_user_constant", "classUserConstants.html#a5579bbb1335c38ae05a523b9572af082", null ],
     [ "compute_rank_1_tensor_constant", "classUserConstants.html#aa90a2d25cb3694103b2503563e99bac0", null ],
     [ "compute_rank_2_tensor_constant", "classUserConstants.html#ab60436298be45c100e71d92ad717961b", null ],
@@ -15,6 +15,7 @@ var classUserConstants =
     [ "get_int", "classUserConstants.html#a0b5aa2a9d0ee992ddc9adfce38028fa5", null ],
     [ "get_rank_1_tensor", "classUserConstants.html#a4a755509e5cb4b1007d745317fc9db65", null ],
     [ "get_rank_2_tensor", "classUserConstants.html#a89f5c6fc333437646f0b7b7742e436b7", null ],
+    [ "get_string", "classUserConstants.html#adc5f0ec32ce7c6074de86223317996f8", null ],
     [ "primitive_model_constant", "classUserConstants.html#a69d613be0a7bf23d387729f3af6e1214", null ],
     [ "print", "classUserConstants.html#adc1db15a0df4d6603bbafe3e6c426aad", null ],
     [ "remove_parentheses", "classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6", null ],

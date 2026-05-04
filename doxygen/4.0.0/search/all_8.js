@@ -24,7 +24,7 @@ var searchData=
   ['input_5ffile_5freader_2ecc_21',['input_file_reader.cc',['../input__file__reader_8cc.html',1,'']]],
   ['input_5ffile_5freader_2eh_22',['input_file_reader.h',['../input__file__reader_8h.html',1,'']]],
   ['inputfilereader_23',['InputFileReader',['../classInputFileReader.html',1,'InputFileReader'],['../classInputFileReader.html#aa320e6ded8304f238a445bd920dd9272',1,'InputFileReader::InputFileReader()']]],
-  ['inputvariant_24',['InputVariant',['../classUserConstants.html#a5946a1675835856bf9eb9424e53dc579',1,'UserConstants']]],
+  ['inputvariant_24',['InputVariant',['../classUserConstants.html#a7d33694ac1e1d4690d35c88c71608378',1,'UserConstants']]],
   ['insertion_5forder_25',['insertion_order',['../structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack.html#a5cd95be549b09f910cfc4a448ba9fdca',1,'PRISMS_PF_BEGIN_NAMESPACE::TimerStack']]],
   ['installation_26',['Installation',['../installation.html',1,'']]],
   ['installation_20with_20docker_27',['Installation with Docker',['../docker.html#docker_installation',1,'']]],

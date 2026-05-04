@@ -148,6 +148,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a57b2052df94042e77f18c6edd0665b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2048034a947c5d41e494a6ae4e5bfde6" id="r_a2048034a947c5d41e494a6ae4e5bfde6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2048034a947c5d41e494a6ae4e5bfde6">operator()</a> (bool value) const</td></tr>
 <tr class="separator:a2048034a947c5d41e494a6ae4e5bfde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2baae56daea54f3cad53951659e408d1" id="r_a2baae56daea54f3cad53951659e408d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2baae56daea54f3cad53951659e408d1">operator()</a> (const std::string &amp;value) const</td></tr>
+<tr class="separator:a2baae56daea54f3cad53951659e408d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe7e4f1cdb3cfc2c02c17d95d6cb86e3" id="r_afe7e4f1cdb3cfc2c02c17d95d6cb86e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">operator()</a> (const dealii::Tensor&lt; 1, dim &gt; &amp;value) const</td></tr>
 <tr class="separator:afe7e4f1cdb3cfc2c02c17d95d6cb86e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a838f0984778187be3bd59a0d2864e664" id="r_a838f0984778187be3bd59a0d2864e664"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a838f0984778187be3bd59a0d2864e664">operator()</a> (const dealii::Tensor&lt; 2, dim &gt; &amp;value) const</td></tr>
@@ -162,7 +164,7 @@ requires ((D != ((2 * D) - 1 + (D / 3))))</td></tr>
 class UserConstants&lt; dim &gt;::VariantPrinter</div><p>Class for printing of variant types. This is bad practice and should be fixed. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2048034a947c5d41e494a6ae4e5bfde6" name="a2048034a947c5d41e494a6ae4e5bfde6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2048034a947c5d41e494a6ae4e5bfde6">&#9670;&#160;</a></span>operator()() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2048034a947c5d41e494a6ae4e5bfde6">&#9670;&#160;</a></span>operator()() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,7 +191,7 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <a id="afe7e4f1cdb3cfc2c02c17d95d6cb86e3" name="afe7e4f1cdb3cfc2c02c17d95d6cb86e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">&#9670;&#160;</a></span>operator()() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe7e4f1cdb3cfc2c02c17d95d6cb86e3">&#9670;&#160;</a></span>operator()() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +218,7 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <a id="a838f0984778187be3bd59a0d2864e664" name="a838f0984778187be3bd59a0d2864e664"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a838f0984778187be3bd59a0d2864e664">&#9670;&#160;</a></span>operator()() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a838f0984778187be3bd59a0d2864e664">&#9670;&#160;</a></span>operator()() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,7 +245,7 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <a id="a8ac21cbcff01da656bffcc6cdd9f8d97" name="a8ac21cbcff01da656bffcc6cdd9f8d97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ac21cbcff01da656bffcc6cdd9f8d97">&#9670;&#160;</a></span>operator()() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ac21cbcff01da656bffcc6cdd9f8d97">&#9670;&#160;</a></span>operator()() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,8 +274,35 @@ requires ((D != ((2 * D) - 1 + (D / 3))))</div>
 
 </div>
 </div>
+<a id="a2baae56daea54f3cad53951659e408d1" name="a2baae56daea54f3cad53951659e408d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2baae56daea54f3cad53951659e408d1">&#9670;&#160;</a></span>operator()() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::VariantPrinter::operator() </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a6220c3af82c523929fd461232312e7c1" name="a6220c3af82c523929fd461232312e7c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6220c3af82c523929fd461232312e7c1">&#9670;&#160;</a></span>operator()() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6220c3af82c523929fd461232312e7c1">&#9670;&#160;</a></span>operator()() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +329,7 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <a id="a57b2052df94042e77f18c6edd0665b68" name="a57b2052df94042e77f18c6edd0665b68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57b2052df94042e77f18c6edd0665b68">&#9670;&#160;</a></span>operator()() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b2052df94042e77f18c6edd0665b68">&#9670;&#160;</a></span>operator()() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
