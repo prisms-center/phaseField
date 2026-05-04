@@ -28,9 +28,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan;
-    using std::cos;
-    using std::sqrt;
+    using prisms::math::atan;
+    using prisms::math::cos;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 3)
       {
@@ -84,9 +84,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan;
-    using std::sin;
-    using std::sqrt;
+    using prisms::math::atan;
+    using prisms::math::sin;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 3)
       {
@@ -140,8 +140,8 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::cos;
+    using prisms::math::atan2;
+    using prisms::math::cos;
 
     if constexpr (N <= 5)
       {
@@ -240,8 +240,8 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::sin;
+    using prisms::math::atan2;
+    using prisms::math::sin;
 
     if constexpr (N <= 5)
       {
@@ -340,9 +340,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::cos;
-    using std::sqrt;
+    using prisms::math::atan2;
+    using prisms::math::cos;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 5)
       {
@@ -441,9 +441,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::sin;
-    using std::sqrt;
+    using prisms::math::atan2;
+    using prisms::math::sin;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 5)
       {
