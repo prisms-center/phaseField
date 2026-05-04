@@ -61,51 +61,39 @@ public:
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
     SolverBase<dim, degree, number>::init(all_dependeny_sets);
-    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
-    rhs_vector.resize(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        rhs_vector[relative_level].reinit(
-          solutions.get_solution_full_vector(relative_level));
-      }
-    // Initialize rhs_operators
-    rhs_operators.reserve(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        rhs_operators.emplace_back(solve_context->get_pde_operator(),
-                                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                                   solve_context->get_field_attributes(),
-                                   solve_context->get_solution_indexer(),
-                                   relative_level,
-                                   solve_block.dependencies_rhs,
-                                   solve_context->get_simulation_timer());
-        rhs_operators[relative_level].initialize(solutions);
-        rhs_operators[relative_level].set_scaling_diagonal(
-          lin_params.tolerance_type != AbsoluteResidual,
-          solve_context->get_invm_manager().get_invm_sqrt(
-            solve_context->get_field_attributes(),
-            solve_block.field_indices,
-            relative_level));
-      }
-    // Initialize lhs_operators
-    lhs_operators.reserve(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        lhs_operators.emplace_back(solve_context->get_pde_operator(),
-                                   &PDEOperatorBase<dim, degree, number>::compute_lhs,
-                                   solve_context->get_field_attributes(),
-                                   solve_context->get_solution_indexer(),
-                                   relative_level,
-                                   solve_block.dependencies_lhs,
-                                   solve_context->get_simulation_timer());
-        lhs_operators[relative_level].initialize(solutions);
-        lhs_operators[relative_level].set_scaling_diagonal(
-          lin_params.tolerance_type != AbsoluteResidual,
-          solve_context->get_invm_manager().get_invm_sqrt(
-            solve_context->get_field_attributes(),
-            solve_block.field_indices,
-            relative_level));
-      }
+    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+
+    // Initialize rhs_operator
+    rhs_operator =
+      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
+                                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                                      solve_context->get_field_attributes(),
+                                      solve_context->get_solution_indexer(),
+                                      0,
+                                      solve_block.dependencies_rhs,
+                                      solve_context->get_simulation_timer());
+    rhs_operator.initialize(solutions);
+    rhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+                                      solve_context->get_invm_manager().get_invm_sqrt(
+                                        solve_context->get_field_attributes(),
+                                        solve_block.field_indices,
+                                        0));
+    // Initialize lhs_operator
+    lhs_operator =
+      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
+                                      &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                                      solve_context->get_field_attributes(),
+                                      solve_context->get_solution_indexer(),
+                                      0,
+                                      solve_block.dependencies_lhs,
+                                      solve_context->get_simulation_timer());
+    lhs_operator.initialize(solutions);
+    lhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+                                      solve_context->get_invm_manager().get_invm_sqrt(
+                                        solve_context->get_field_attributes(),
+                                        solve_block.field_indices,
+                                        0));
+
     linear_solver_control.set_max_steps(lin_params.max_iterations);
     linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
     lin_solver.select(lin_params.solver_type);
@@ -123,12 +111,8 @@ public:
   reinit() override
   {
     SolverBase<dim, degree, number>::reinit();
-    const unsigned int num_levels = rhs_vector.size();
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        rhs_vector[relative_level].reinit(
-          solutions.get_solution_full_vector(relative_level));
-      }
+    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
     inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
@@ -138,55 +122,50 @@ public:
    * @brief Solve for a single update step.
    */
   void
-  solve_level(unsigned int relative_level) override
+  solve_impl() override
   {
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
-    solutions.zero_out_ghosts(relative_level);
+    solutions.zero_out_ghosts(0);
     Timer::end_section("Zero ghosts");
 
     // Set up rhs vector
-    rhs_operators[relative_level].compute_operator(rhs_vector[relative_level]);
-    if (relative_level == 0)
-      {
-        // Note 1. Use the previous result of the linear solve without nonzero dirichlet
-        // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
-        // not actually what it is being used as here, we just don't want to allocate a
-        // whole new vector for this purpose
-        solutions.get_solution_full_vector(0).swap(inhomogeneous_rhs);
-        // Get the homogeneous rhs
-        lhs_operators[0].read_plain = true;
-        lhs_operators[0].compute_operator(inhomogeneous_rhs, inhomogeneous_values);
-        lhs_operators[0].read_plain = false;
-        rhs_vector[0] -= inhomogeneous_rhs;
-      }
-    // Linear solve
-    do_linear_solve(rhs_vector[relative_level],
-                    lhs_operators[relative_level],
-                    solutions.get_solution_full_vector(relative_level));
+    rhs_operator.compute_operator(rhs_vector);
 
-    if (relative_level == 0)
-      {
-        // Note 2. Make a copy of the solution to use as the initial guess in the next
-        // increment. See Note 1. `inhomogeneous_rhs` is not actually what it is being
-        // used as here, we just don't want to allocate a whole new vector for this
-        // purpose
-        inhomogeneous_rhs = solutions.get_solution_full_vector(0);
-        // Add back in nonzero dirichlet conditions
-        solutions.get_solution_full_vector(0) += inhomogeneous_values;
-      }
+    // Note 1. Use the previous result of the linear solve without nonzero dirichlet
+    // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
+    // not actually what it is being used as here, we just don't want to allocate a
+    // whole new vector for this purpose
+    solutions.get_solution_full_vector(0).swap(inhomogeneous_rhs);
+    // Get the homogeneous rhs
+    lhs_operator.read_plain = true;
+    lhs_operator.compute_operator(inhomogeneous_rhs, inhomogeneous_values);
+    lhs_operator.read_plain = false;
+    rhs_vector -= inhomogeneous_rhs;
+
+    // Linear solve
+    do_linear_solve(rhs_vector, lhs_operator, solutions.get_solution_full_vector(0));
+
+    // Note 2. Make a copy of the solution to use as the initial guess in the next
+    // increment. See Note 1. `inhomogeneous_rhs` is not actually what it is being
+    // used as here, we just don't want to allocate a whole new vector for this
+    // purpose
+    inhomogeneous_rhs = solutions.get_solution_full_vector(0);
+    // Add back in nonzero dirichlet conditions
+    solutions.get_solution_full_vector(0) += inhomogeneous_values;
+
     // Apply constraints
-    solutions.apply_constraints(relative_level);
+    solutions.apply_constraints(0);
 
     // Update the ghosts
     Timer::start_section("Update ghosts");
-    solutions.update_ghosts(relative_level);
+    solutions.update_ghosts(0);
     Timer::end_section("Update ghosts");
   }
 
   int
   do_linear_solve(BlockVector<number>             &b_vector,
-                  MFOperator<dim, degree, number> &lhs_operator,
+                  MFOperator<dim, degree, number> &lhs_matrix,
                   BlockVector<number>             &x_vector)
   {
     // Linear solve
@@ -194,17 +173,17 @@ public:
       {
         if (lin_params.preconditioner == None)
           {
-            lin_solver.solve(lhs_operator,
+            lin_solver.solve(lhs_matrix,
                              x_vector,
                              b_vector,
                              dealii::PreconditionIdentity());
           }
         if (lin_params.preconditioner == Chebyshev)
           {
-            lhs_operator.reinit_matrix_diagonal(x_vector);
-            lhs_operator.eval_matrix_diagonal();
+            lhs_matrix.reinit_matrix_diagonal(x_vector);
+            lhs_matrix.eval_matrix_diagonal();
 
-            lin_solver.solve(lhs_operator, x_vector, b_vector, precond_chebyshev);
+            lin_solver.solve(lhs_matrix, x_vector, b_vector, precond_chebyshev);
           }
       }
     catch (...) // TODO: more specific catch so that we dont ignore
@@ -230,12 +209,12 @@ public:
 
 protected:
   /**
-   * @brief Matrix free operators for each level
+   * @brief Matrix free operators
    */
-  std::vector<MFOperator<dim, degree, number>> rhs_operators;
+  MFOperator<dim, degree, number> rhs_operator;
 
-  std::vector<MFOperator<dim, degree, number>> lhs_operators;
-  std::vector<BlockVector<number>>             rhs_vector;
+  MFOperator<dim, degree, number> lhs_operator;
+  BlockVector<number>             rhs_vector;
 
   double
   normalization_value()
@@ -273,10 +252,10 @@ protected:
     precond_data.smoothing_range = lin_params.smoothing_range; // ≈ λ_min / λ_max
     precond_data.eig_cg_n_iterations =
       lin_params.eig_cg_n_iterations; // estimate λ_max via CG
-    lhs_operators[0].reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
-    precond_data.preconditioner = lhs_operators[0].get_matrix_diagonal_inverse();
+    lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
+    precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
 
-    precond_chebyshev.initialize(lhs_operators[0], precond_data);
+    precond_chebyshev.initialize(lhs_operator, precond_data);
   }
 
 private:

@@ -41,54 +41,50 @@ public:
     SolverBase<dim, degree, number>::init(all_dependeny_sets);
     unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
-    rhs_operators.reserve(num_levels);
-    for (unsigned int relative_level = 0; relative_level < num_levels; ++relative_level)
-      {
-        rhs_operators.emplace_back(solve_context->get_pde_operator(),
-                                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                                   solve_context->get_field_attributes(),
-                                   solve_context->get_solution_indexer(),
-                                   relative_level,
-                                   solve_block.dependencies_rhs,
-                                   solve_context->get_simulation_timer());
-        rhs_operators[relative_level].initialize(solutions);
-        rhs_operators[relative_level].set_scaling_diagonal(
-          true,
-          solve_context->get_invm_manager().get_invm(
-            solve_context->get_field_attributes(),
-            solve_block.field_indices,
-            relative_level));
-      }
+
+    rhs_operator =
+      MFOperator<dim, degree, number>(solve_context->get_pde_operator(),
+                                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                                      solve_context->get_field_attributes(),
+                                      solve_context->get_solution_indexer(),
+                                      0,
+                                      solve_block.dependencies_rhs,
+                                      solve_context->get_simulation_timer());
+    rhs_operator.initialize(solutions);
+    rhs_operator.set_scaling_diagonal(
+      true,
+      solve_context->get_invm_manager().get_invm(solve_context->get_field_attributes(),
+                                                 solve_block.field_indices,
+                                                 0));
   }
 
   /**
    * @brief Solve for a single update step.
    */
   void
-  solve_level(unsigned int relative_level) override
+  solve_impl() override
   {
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
-    solutions.zero_out_ghosts(relative_level);
+    solutions.zero_out_ghosts(0);
     Timer::end_section("Zero ghosts");
 
-    rhs_operators[relative_level].compute_operator(
-      solutions.get_solution_full_vector(relative_level));
+    rhs_operator.compute_operator(solutions.get_solution_full_vector(0));
 
     // Apply constraints
-    solutions.apply_constraints(relative_level);
+    solutions.apply_constraints(0);
 
     // Update the ghosts
     Timer::start_section("Update ghosts");
-    solutions.update_ghosts(relative_level);
+    solutions.update_ghosts(0);
     Timer::end_section("Update ghosts");
   }
 
 private:
   /**
-   * @brief Matrix free operators for each level
+   * @brief Matrix free operator.
    */
-  std::vector<MFOperator<dim, degree, number>> rhs_operators;
+  MFOperator<dim, degree, number> rhs_operator;
 };
 
 PRISMS_PF_END_NAMESPACE
