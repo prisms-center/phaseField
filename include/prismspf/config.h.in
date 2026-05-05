@@ -49,6 +49,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 namespace math
 {
 #ifdef PRISMS_PF_GPU
+# include <Kokkos_Core.hpp>
 # include <Kokkos_MathematicalFunctions.hpp> 
 # define MATHTYPE Kokkos
 #else
