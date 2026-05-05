@@ -6,6 +6,8 @@
 
 #include <prismspf/config.h>
 
+#include <prismspf/core/math.h>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 namespace Symmetries
