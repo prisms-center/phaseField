@@ -95,8 +95,11 @@ private:
         // Compute the stabilization parameter
         ScalarValue tau = stabilization_parameter<dim, degree>(dt, h, v);
 
+        // Compute the RHS of residual for SUPG stabilization
+        ScalarValue R = -u + dt * v * u_grad;
+
         variable_list.set_value_term(0, u);
-        variable_list.set_gradient_term(0, v * dt * u);
+        variable_list.set_gradient_term(0, v * dt * u + tau * R * v);
       }
   };
 
@@ -123,7 +126,11 @@ private:
         // Compute the stabilization parameter
         ScalarValue tau = stabilization_parameter<dim, degree>(dt, h, v);
 
+        // Compute the LHS of residual for SUPG stabilization
+        ScalarValue R = u;
+
         variable_list.set_value_term(0, u);
+        variable_list.set_gradient_term(0, -tau * R * v);
       }
   };
 
