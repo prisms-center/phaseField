@@ -15,7 +15,7 @@ int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  prisms::MPIInitFinalize mpi_init(argc, argv);
+  prisms::MPIInitFinalize mpi_init(argc, argv, 1);
 
   // Parse the command line options (if there are any) to get the name of the input
   // file
@@ -32,7 +32,7 @@ main(int argc, char *argv[])
   u_block.solve_timing     = Initialized;
   u_block.field_indices    = {0};
   u_block.dependencies_rhs = make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))"});
-  u_block.dependencies_lhs = make_dependency_set(fields, {"u"});
+  u_block.dependencies_lhs = make_dependency_set(fields, {"lhs(u)"});
 
   std::vector<SolveBlock> solve_groups({u_block});
 

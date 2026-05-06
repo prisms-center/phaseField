@@ -9,7 +9,7 @@ end
 
 set global refinement = 7
 
-set time step = 1.0e-5
+set time step = 1.0e-3
 set number steps = 1
 
 subsection output
