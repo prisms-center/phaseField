@@ -31,8 +31,8 @@ main(int argc, char *argv[])
   u_block.solve_type       = Linear;
   u_block.solve_timing     = Initialized;
   u_block.field_indices    = {0};
-  u_block.dependencies_rhs = make_dependency_set(fields, {"old_1(u)", "grad(old_1(u))"});
-  u_block.dependencies_lhs = make_dependency_set(fields, {"lhs(u)"});
+  u_block.dependencies_rhs = make_dependency_set(fields, {"old_1(u)"});
+  u_block.dependencies_lhs = make_dependency_set(fields, {"lhs(u)", "grad(lhs(u))"});
 
   std::vector<SolveBlock> solve_groups({u_block});
 
