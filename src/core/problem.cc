@@ -327,7 +327,8 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 
   // Check for user triggered stop
-  if (solve_context.get_pde_operator().get_user_stop())
+  if (dealii::Utilities::MPI::logical_or(solve_context.get_pde_operator().get_user_stop(),
+                                         MPI_COMM_WORLD))
     {
       exit_status  = 3;
       force_output = true;
