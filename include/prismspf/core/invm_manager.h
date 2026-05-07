@@ -62,6 +62,14 @@ public:
       dof_manager.get_dof_handlers();
     const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &constraints =
       constraint_manager.get_generic_constraints();
+    using AdditionalData = typename MatrixFree<dim, number>::AdditionalData;
+    // TODO: maybe make the flags determined by user dependencies. (Though I doubt this
+    // is a significant source of runtime)
+    static const AdditionalData additional_data(
+      AdditionalData::TasksParallelScheme::partition_partition,
+      0,
+      dealii::update_values | dealii::update_JxW_values |
+        dealii::update_quadrature_points);
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         data[i].reinit(SystemWide<dim, degree>::mapping,
@@ -69,8 +77,18 @@ public:
                          {&dof_handlers[i][0], &dof_handlers[i][1]}),
                        std::vector<const dealii::AffineConstraints<number> *>(
                          {&constraints[i][0], &constraints[i][1]}),
-                       SystemWide<dim, degree>::quadrature);
+                       SystemWide<dim, degree>::quadrature,
+                       additional_data);
       }
+  }
+
+  /**
+   * @brief Get the matrix free objects.
+   */
+  const std::vector<MatrixFree<dim, number>> &
+  get_matrix_free_vector() const
+  {
+    return data;
   }
 
   /**

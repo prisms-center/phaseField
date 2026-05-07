@@ -79,14 +79,18 @@ public:
     rhs_vector.reinit(solutions.get_solution_full_vector(0));
 
     // Initialize rhs_operator
-    rhs_operator.initialize(solutions);
+    rhs_operator.initialize(
+      solutions,
+      solve_context->get_invm_manager().get_matrix_free_vector()[0]);
     rhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
                                         solve_block.field_indices,
                                         0));
     // Initialize lhs_operator
-    lhs_operator.initialize(solutions);
+    lhs_operator.initialize(
+      solutions,
+      solve_context->get_invm_manager().get_matrix_free_vector()[0]);
     lhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),

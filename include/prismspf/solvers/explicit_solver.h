@@ -47,9 +47,10 @@ public:
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
     SolverBase<dim, degree, number>::init(all_dependeny_sets);
-    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
     // Initialize rhs_operators
-    rhs_operator.initialize(solutions);
+    rhs_operator.initialize(
+      solutions,
+      solve_context->get_invm_manager().get_matrix_free_vector()[0]);
     rhs_operator.set_scaling_diagonal(
       true,
       solve_context->get_invm_manager().get_invm(solve_context->get_field_attributes(),

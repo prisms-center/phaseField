@@ -141,10 +141,11 @@ public:
    * of handling this, but this is the least complicated for now.)
    */
   void
-  initialize(const GroupSolutionHandler<dim, number> &dst_solution)
+  initialize(const GroupSolutionHandler<dim, number> &dst_solution,
+             const MatrixFree<dim, number>           &matrix_free)
   {
     solve_block          = dst_solution.get_solve_block();
-    data                 = &(dst_solution.get_matrix_free(relative_level));
+    data                 = &matrix_free;
     field_to_block_index = dst_solution.get_global_to_block_index();
     for (unsigned int field_index : solve_block.field_indices)
       {
