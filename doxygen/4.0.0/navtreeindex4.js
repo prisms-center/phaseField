@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"nucleation__manager_8h_source.html":[8,0,1,0,3,0],
+"nucleation__parameters_8h.html":[8,0,1,0,5,8],
+"nucleation__parameters_8h_source.html":[8,0,1,0,5,8],
 "nucleus_8h.html":[8,0,1,0,3,1],
 "nucleus_8h.html#a339452e658a71f2adac32af0d5ba7f96":[8,0,1,0,3,1,1],
 "nucleus_8h_source.html":[8,0,1,0,3,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "structOutputParameters.html#a9dc9e90a0a6db418605ee918d6ba102d":[7,0,41,7],
 "structOutputParameters.html#ab0df2db42a18657d93b5f388f2117413":[7,0,41,11],
 "structOutputParameters.html#abc74901ab13b859f4f7288337b4b86c9":[7,0,41,2],
-"structOutputParameters.html#ad8a167c995eb0da8caea0f916b32ed02":[7,0,41,8],
-"structOutputParameters.html#ad9c1e71e4d92d59708de1e24cb57beb9":[7,0,41,5],
-"structOutputParameters.html#ae3154eb2f9d315d65b746edb9cd044e0":[7,0,41,0],
-"structOutputParameters.html#af554957eb23377d9a1098423adfb57dd":[7,0,41,9]
+"structOutputParameters.html#ad8a167c995eb0da8caea0f916b32ed02":[7,0,41,8]
 };

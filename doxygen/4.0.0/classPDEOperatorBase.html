@@ -171,6 +171,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa88b6fa76040b5788e668233036a5b91" id="r_aa88b6fa76040b5788e668233036a5b91"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa88b6fa76040b5788e668233036a5b91">get_pf_tools</a> () const</td></tr>
 <tr class="memdesc:aa88b6fa76040b5788e668233036a5b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the phase field tools (constant reference).  <br /></td></tr>
 <tr class="separator:aa88b6fa76040b5788e668233036a5b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2570d133dcae64929f4c8f667e2a39e9" id="r_a2570d133dcae64929f4c8f667e2a39e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2570d133dcae64929f4c8f667e2a39e9">set_user_stop</a> (bool flag)</td></tr>
+<tr class="memdesc:a2570d133dcae64929f4c8f667e2a39e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set user triggered stop.  <br /></td></tr>
+<tr class="separator:a2570d133dcae64929f4c8f667e2a39e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f2c1cc94d75c57fba23891e7f3ab549" id="r_a3f2c1cc94d75c57fba23891e7f3ab549"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f2c1cc94d75c57fba23891e7f3ab549">get_user_stop</a> ()</td></tr>
+<tr class="memdesc:a3f2c1cc94d75c57fba23891e7f3ab549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get user triggered stop.  <br /></td></tr>
+<tr class="separator:a3f2c1cc94d75c57fba23891e7f3ab549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -180,6 +186,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a3b011d6dc53d8f325dad8706fa64d237" id="r_a3b011d6dc53d8f325dad8706fa64d237"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structPhaseFieldTools.html">PhaseFieldTools</a>&lt; dim &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b011d6dc53d8f325dad8706fa64d237">pf_tools</a> = nullptr</td></tr>
 <tr class="memdesc:a3b011d6dc53d8f325dad8706fa64d237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phase field tools.  <br /></td></tr>
 <tr class="separator:a3b011d6dc53d8f325dad8706fa64d237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab06e29bd0b2bc2ae23fb2e97aa8994dd" id="r_ab06e29bd0b2bc2ae23fb2e97aa8994dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab06e29bd0b2bc2ae23fb2e97aa8994dd">user_stop</a> = false</td></tr>
+<tr class="memdesc:ab06e29bd0b2bc2ae23fb2e97aa8994dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">User triggered stop.  <br /></td></tr>
+<tr class="separator:ab06e29bd0b2bc2ae23fb2e97aa8994dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
@@ -399,6 +408,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
+<a id="a3f2c1cc94d75c57fba23891e7f3ab549" name="a3f2c1cc94d75c57fba23891e7f3ab549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f2c1cc94d75c57fba23891e7f3ab549">&#9670;&#160;</a></span>get_user_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt;::get_user_stop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get user triggered stop. </p>
+
+</div>
+</div>
 <a id="aaac0725042b4f5226d034617a171f413" name="aaac0725042b4f5226d034617a171f413"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaac0725042b4f5226d034617a171f413">&#9670;&#160;</a></span>post_solve_block()</h2>
 
@@ -566,6 +604,35 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
+<a id="a2570d133dcae64929f4c8f667e2a39e9" name="a2570d133dcae64929f4c8f667e2a39e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2570d133dcae64929f4c8f667e2a39e9">&#9670;&#160;</a></span>set_user_stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt;::set_user_stop </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>flag</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set user triggered stop. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a3b011d6dc53d8f325dad8706fa64d237" name="a3b011d6dc53d8f325dad8706fa64d237"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b011d6dc53d8f325dad8706fa64d237">&#9670;&#160;</a></span>pf_tools</h2>
@@ -616,6 +683,32 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>The user-inputs. </p>
+
+</div>
+</div>
+<a id="ab06e29bd0b2bc2ae23fb2e97aa8994dd" name="ab06e29bd0b2bc2ae23fb2e97aa8994dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06e29bd0b2bc2ae23fb2e97aa8994dd">&#9670;&#160;</a></span>user_stop</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt;::user_stop = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>User triggered stop. </p>
 
 </div>
 </div>
