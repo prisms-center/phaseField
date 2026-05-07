@@ -56,6 +56,18 @@ make_solvers(const std::vector<SolveBlock>           &solve_blocks,
               std::make_shared<ConstantSolver<dim, degree, number>>(solve_block,
                                                                     solve_context));
             break;
+          case SolveType::CustomSolver:
+            {
+              using FactoryFunc =
+                std::function<std::shared_ptr<SolverBase<dim, degree, number>>(
+                  const SolveBlock &,
+                  const SolveContext<dim, degree, number> &)>;
+
+              const auto &factory =
+                std::any_cast<FactoryFunc>(solve_block.custom_solver_factory);
+              solvers.emplace_back(factory(solve_block, solve_context));
+              break;
+            }
           default:
             AssertThrow(false, dealii::ExcMessage("Unknown solver type"));
         }
