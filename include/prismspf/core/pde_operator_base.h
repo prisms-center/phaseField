@@ -128,6 +128,24 @@ public:
     return *pf_tools;
   }
 
+  /**
+   * @brief Set user triggered stop.
+   */
+  void
+  set_user_stop(bool flag)
+  {
+    user_stop = flag;
+  }
+
+  /**
+   * @brief Get user triggered stop.
+   */
+  bool
+  get_user_stop()
+  {
+    return user_stop;
+  }
+
 private:
   /**
    * @brief The user-inputs.
@@ -138,6 +156,11 @@ private:
    * @brief Phase field tools.
    */
   const PhaseFieldTools<dim> *pf_tools = nullptr;
+
+  /**
+   * @brief User triggered stop.
+   */
+  bool user_stop = false;
 };
 
 PRISMS_PF_END_NAMESPACE
