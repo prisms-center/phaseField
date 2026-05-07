@@ -262,6 +262,9 @@ Problem<dim, degree, number>::solve()
             throw ExcNaN("Exiting early.\n");
           }
         break;
+      case 3: // exit triggered by user
+        ConditionalOStreams::pout_base() << "\nExiting triggered by user.\n";
+        break;
       default:
         break;
     }
@@ -323,6 +326,14 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
         }
     }
 
+  // Check for user triggered stop
+  if (dealii::Utilities::MPI::logical_or(solve_context.get_pde_operator().get_user_stop(),
+                                         MPI_COMM_WORLD))
+    {
+      exit_status  = 3;
+      force_output = true;
+    }
+
   // Check for stochastic nucleation.
   bool any_nucleation_occurred = false;
   if (is_nucleation_increment)
@@ -355,7 +366,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
     }
 
   // Output results if needed
-  if (user_inputs.output_parameters.should_output(increment) || force_output)
+  if (is_output_increment || force_output)
     {
       std::filesystem::path output_prefix =
         std::filesystem::path(user_inputs.output_parameters.directory) /
