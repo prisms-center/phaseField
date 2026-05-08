@@ -157,11 +157,19 @@ public:
     const SolutionLevel<dim, number> *solution_level = nullptr;
 
     /**
-     * @brief The solution block index.
+     * @brief The solution field index.
      *
      * This is the index that tells dealii::FEEvaluation the corresponding
      * dealii::DoFHandler, dealii::AffineConstraints, and dealii::Quadrature to use from
      * the dealii::MatrixFree.
+     */
+    unsigned int field_index = -1;
+
+    /**
+     * @brief The solution block index.
+     *
+     * This is the index that gets us the correct solution from the corresponding block
+     * vector.
      */
     unsigned int block_index = -1;
 
@@ -170,10 +178,12 @@ public:
      */
     FEEValuationDeps() = default;
 
-    FEEValuationDeps(
-      const Dependency                                                  &dependency,
-      const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
-      bool                                                               is_dst);
+    FEEValuationDeps(const MatrixFree<dim, number>    &matrix_free,
+                     const Dependency                 &dependency,
+                     const SolutionLevel<dim, number> &_solution_level,
+                     unsigned int                      _field_index,
+                     unsigned int                      _block_index,
+                     bool                              is_dst);
 
     template <DependencyType type>
     const FEEval<Rank> &
@@ -556,17 +566,20 @@ inline static const std::map<DependencyType, std::string> dependency_type_to_str
 template <unsigned int dim, unsigned int degree, typename number>
 template <TensorRank Rank>
 FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
-  const Dependency                                                  &dependency,
-  const std::pair<const SolutionLevel<dim, number> *, unsigned int> &mf_id_pair,
-  bool                                                               is_dst)
-  : solution_level(mf_id_pair.first)
-  , block_index(mf_id_pair.second)
+  const MatrixFree<dim, number>    &matrix_free,
+  const Dependency                 &dependency,
+  const SolutionLevel<dim, number> &_solution_level,
+  unsigned int                      _field_index,
+  unsigned int                      _block_index,
+  bool                              is_dst)
+  : solution_level(&_solution_level)
+  , field_index(_field_index)
+  , block_index(_block_index)
 {
   // Make an FEEvaluation if the current solution needs to be evaluated
   if (dependency.flag)
     {
-      fe_eval = std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                          block_index),
+      fe_eval = std::make_shared<FEEDepPair>(FEEval<Rank>(matrix_free, field_index),
                                              dependency.flag);
     }
   // Make FEEvaluations for the the old solutions
@@ -576,16 +589,14 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
       if (dependency.old_flags.at(age)) // kinda redundant... maybe remove?
         {
           fe_eval_old[age] =
-            std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                      block_index),
+            std::make_shared<FEEDepPair>(FEEval<Rank>(matrix_free, field_index),
                                          dependency.old_flags.at(age));
         }
     }
   if (dependency.src_flag || is_dst)
     {
       fe_eval_src_dst =
-        std::make_shared<FEEDepPair>(FEEval<Rank>(solution_level->matrix_free,
-                                                  block_index),
+        std::make_shared<FEEDepPair>(FEEval<Rank>(matrix_free, field_index),
                                      dependency.src_flag);
     }
 }
@@ -593,7 +604,7 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::FEEValuationDeps(
 class ExcDepNotInitialized : public dealii::ExceptionBase
 {
 public:
-  ExcDepNotInitialized(DependencyType _dependency_type)
+  explicit ExcDepNotInitialized(DependencyType _dependency_type)
     : dependency_type(_dependency_type)
   {}
 

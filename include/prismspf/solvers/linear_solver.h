@@ -57,14 +57,14 @@ public:
                    &PDEOperatorBase<dim, degree, number>::compute_rhs,
                    solve_context->get_field_attributes(),
                    solve_context->get_solution_indexer(),
-                   0,
+                   solve_context->get_matrix_free_manager(),
                    solve_block.dependencies_rhs,
                    solve_context->get_simulation_timer())
     , lhs_operator(solve_context->get_pde_operator(),
                    &PDEOperatorBase<dim, degree, number>::compute_lhs,
                    solve_context->get_field_attributes(),
                    solve_context->get_solution_indexer(),
-                   0,
+                   solve_context->get_matrix_free_manager(),
                    solve_block.dependencies_lhs,
                    solve_context->get_simulation_timer())
   {}

@@ -22,6 +22,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/matrix_free_manager.h"
+
 #include <memory>
 #include <vector>
 
@@ -108,22 +110,24 @@ public:
    * @note It might be better to provide a SolveContext object instead of individual
    * components
    */
-  explicit MFOperator(const PDEOperatorBase<dim, degree, number> &operator_owner,
-                      Operator                                    oper,
-                      const std::vector<FieldAttributes>         &_field_attributes,
-                      const SolutionIndexer<dim, number>         &_solution_indexer,
-                      unsigned int                                _relative_level,
-                      DependencyMap                               _dependency_map,
-                      const SimulationTimer                      &_sim_timer)
+  MFOperator(const PDEOperatorBase<dim, degree, number> &operator_owner,
+             Operator                                    oper,
+             const std::vector<FieldAttributes>         &_field_attributes,
+             const SolutionIndexer<dim, number>         &_solution_indexer,
+             const MatrixFreeManager<dim, number>       &_matrix_free_manager,
+             DependencyMap                               _dependency_map,
+             const SimulationTimer                      &_sim_timer)
     : MATRIX_FREE_OPERATOR_BASE()
     , pde_operator(&operator_owner)
     , pde_op(oper)
     , field_attributes(_field_attributes)
     , solution_indexer(&_solution_indexer)
-    , relative_level(_relative_level)
+    , matrix_free_manager(&_matrix_free_manager)
     , dependency_map(std::move(_dependency_map))
     , sim_timer(&_sim_timer)
-  {}
+  {
+    set_relative_level(0);
+  }
 
   /**
    * @brief Initialize.
@@ -132,8 +136,7 @@ public:
    * This is because the purpose of this MFOperator class is to provide an operator with
    * the signature `vmult(VectorType &dst, const VectorType &src)`. Because we are
    * using block vectors, for the MFOperator to work, it needs to have access to the index
-   * mapping in addition to the matrix_free object. Both are stored in the solution
-   * handler.
+   * mapping, which is stored in the solution handler.
    *
    * Additionally, we modify dependency_map to include an entry for every field being
    * solved. This is to avoid a troublesome problem downstream in FieldContainer, where we
@@ -144,7 +147,6 @@ public:
   initialize(const GroupSolutionHandler<dim, number> &dst_solution)
   {
     solve_block          = dst_solution.get_solve_block();
-    data                 = &(dst_solution.get_matrix_free(relative_level));
     field_to_block_index = dst_solution.get_global_to_block_index();
     for (unsigned int field_index : solve_block.field_indices)
       {
@@ -152,10 +154,18 @@ public:
       }
   }
 
+  void
+  set_relative_level(unsigned int _relative_level)
+  {
+    relative_level = _relative_level;
+    AssertThrow(matrix_free_manager != nullptr, dealii::ExcNotInitialized());
+    data = &(matrix_free_manager->get_shared_matrix_free(relative_level));
+  }
+
   // public:
   /**
    * @brief Calls cell_loop on function that calls user-defined operator
-   * @note requires dst is not ghosted
+   * @pre dst is not ghosted
    */
   void
   compute_operator(BlockVector<number>       &dst,
@@ -164,7 +174,7 @@ public:
 private:
   /**
    * @brief Calls user-defined operator
-   * @note requires dst is not ghosted
+   * @pre dst is not ghosted
    */
   void
   compute_local_operator(const MatrixFree<dim, number>               &_data,
@@ -299,11 +309,22 @@ private:
   /**
    * @brief Read-access to fields.
    */
-  const SolutionIndexer<dim, number> *solution_indexer;
+  const SolutionIndexer<dim, number> *solution_indexer = nullptr;
+
+  /**
+   * @brief Matrix-free manager.
+   */
+  const MatrixFreeManager<dim, number> *matrix_free_manager = nullptr;
+
+  /**
+   * @brief Matrix-free object.
+   */
+  const MatrixFree<dim, number> *data = nullptr;
+
   /**
    * @brief Level so that correct fields are read from indexer.
    */
-  unsigned int relative_level;
+  unsigned int relative_level = 0;
 
   /**
    * @brief Which fields should be available to the solve.
@@ -313,7 +334,7 @@ private:
   /**
    * @brief Simulation timer
    */
-  const SimulationTimer *sim_timer;
+  const SimulationTimer *sim_timer = nullptr;
 
   /**
    * @brief Result of operator gets scaled by this (invm for explicit fields)
@@ -329,11 +350,6 @@ private:
    * @brief Mapping from field index to block index (only for dst).
    */
   std::vector<unsigned int> field_to_block_index;
-
-  /**
-   * @brief Matrix-free object.
-   */
-  const MatrixFree<dim, number> *data;
 
   /**
    * @brief Indices of DoFs on edge in case the operator is used in GMG context.

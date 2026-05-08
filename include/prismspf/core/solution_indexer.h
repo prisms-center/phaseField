@@ -52,17 +52,6 @@ public:
                           unsigned int relative_level = 0);
 
   /**
-   * @brief Get the matrixfree object of the group a given field index.
-   */
-  [[nodiscard]] const MatrixFree<dim, number> &
-  get_matrix_free(unsigned int index, unsigned int relative_level = 0) const;
-  /**
-   * @brief Get the matrixfree object of the group a given field index.
-   */
-  [[nodiscard]] MatrixFree<dim, number> &
-  get_matrix_free(unsigned int index, unsigned int relative_level = 0);
-
-  /**
    * @brief Get the solve group of a given field index.
    */
   [[nodiscard]] const SolveBlock &

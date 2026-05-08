@@ -4,11 +4,12 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/base/mg_level_object.h>
-#include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
+#include <prismspf/core/field_attributes.h>
+#include <prismspf/core/invm_manager.h>
+#include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
@@ -17,9 +18,6 @@
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/core/invm_manager.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -50,10 +48,14 @@ public:
     , triangulation_manager(&_triangulation_manager)
     , dof_manager(&_dof_manager)
     , constraint_manager(&_constraint_manager)
+    , matrix_free_manager()
     , solution_indexer(&_solution_indexer)
     , invm_manager(*dof_manager, *constraint_manager, true, true)
     , sim_timer(user_inputs->temporal_discretization.dt)
-    , pde_operator(&_pde_operator) {};
+    , pde_operator(&_pde_operator)
+  {
+    matrix_free_manager.reinit(*dof_manager, *constraint_manager);
+  };
 
   /**
    * @brief Get the field attributes.
@@ -132,6 +134,24 @@ public:
   {
     Assert(constraint_manager != nullptr, dealii::ExcNotInitialized());
     return *constraint_manager;
+  }
+
+  /**
+   * @brief Get the MatrixFree manager.
+   */
+  [[nodiscard]] const MatrixFreeManager<dim, number> &
+  get_matrix_free_manager() const
+  {
+    return matrix_free_manager;
+  }
+
+  /**
+   * @brief Get the MatrixFree manager.
+   */
+  [[nodiscard]] MatrixFreeManager<dim, number> &
+  get_matrix_free_manager()
+  {
+    return matrix_free_manager;
   }
 
   /**
@@ -225,6 +245,11 @@ private:
    * @brief Constraint manager.
    */
   ConstraintManager<dim, degree, number> *constraint_manager;
+
+  /**
+   * @brief MatrixFree object shared for all the fields.
+   */
+  MatrixFreeManager<dim, number> matrix_free_manager;
 
   /**
    * @brief Solution manager.
