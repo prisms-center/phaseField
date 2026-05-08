@@ -38,7 +38,7 @@ public:
                    &PDEOperatorBase<dim, degree, number>::compute_rhs,
                    solve_context->get_field_attributes(),
                    solve_context->get_solution_indexer(),
-                   0,
+                   solve_context->get_matrix_free_manager(),
                    solve_block.dependencies_rhs,
                    solve_context->get_simulation_timer())
   {}
@@ -47,7 +47,8 @@ public:
   init(const std::list<DependencyMap> &all_dependeny_sets) override
   {
     SolverBase<dim, degree, number>::init(all_dependeny_sets);
-    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
+    unsigned int num_levels =
+      solve_context->get_dof_manager().get_dof_handlers_levels().size();
     // Initialize rhs_operators
     rhs_operator.initialize(solutions);
     rhs_operator.set_scaling_diagonal(

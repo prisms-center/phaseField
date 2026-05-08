@@ -40,7 +40,7 @@ public:
                        const ConstraintManager<dim, degree, number> &constraint_manager,
                        bool                                          _calculate_scalar,
                        bool                                          _calculate_vector)
-    : num_levels(dof_manager.get_dof_handlers().size())
+    : num_levels(dof_manager.get_dof_handlers_levels().size())
     , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
   {
@@ -59,9 +59,9 @@ public:
          const ConstraintManager<dim, degree, number> &constraint_manager)
   {
     const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
-      dof_manager.get_dof_handlers();
+      dof_manager.get_dof_handlers_levels();
     const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &constraints =
-      constraint_manager.get_generic_constraints();
+      constraint_manager.get_generic_constraints_levels();
     for (unsigned int i = 0; i < data.size(); ++i)
       {
         data[i].reinit(SystemWide<dim, degree>::mapping,

@@ -69,24 +69,6 @@ SolutionIndexer<dim, number>::get_old_solution_vector(unsigned int age,
 }
 
 template <unsigned int dim, typename number>
-auto
-SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
-                                              unsigned int relative_level) const
-  -> const MatrixFree<dim, number> &
-{
-  return solutions[global_index]->get_matrix_free(relative_level);
-}
-
-template <unsigned int dim, typename number>
-auto
-SolutionIndexer<dim, number>::get_matrix_free(unsigned int global_index,
-                                              unsigned int relative_level)
-  -> MatrixFree<dim, number> &
-{
-  return solutions[global_index]->get_matrix_free(relative_level);
-}
-
-template <unsigned int dim, typename number>
 const SolveBlock &
 SolutionIndexer<dim, number>::get_solve_block(unsigned int index) const
 {

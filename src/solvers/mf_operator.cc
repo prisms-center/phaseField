@@ -226,10 +226,9 @@ MFOperator<dim, degree, number>::m() const
 {
   Assert(data != nullptr, dealii::ExcNotInitialized());
   unsigned int sum = 0;
-  for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
-       ++block_index)
+  for (unsigned int field_index : solve_block.field_indices)
     {
-      sum += data->get_vector_partitioner(block_index)->size();
+      sum += data->get_vector_partitioner(field_index)->size();
     }
   return sum;
 }

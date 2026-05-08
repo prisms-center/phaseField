@@ -59,11 +59,16 @@ public:
                     const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
+   * @brief Getter function for a selection of the constraints.
+   */
+  [[nodiscard]] const std::vector<std::vector<dealii::AffineConstraints<number>>> &
+  get_field_constraints_levels() const;
+
+  /**
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::AffineConstraints<number> *>
-  get_constraints(const std::set<unsigned int> &field_indices,
-                  unsigned int                  relative_level = 0) const;
+  get_field_constraints(unsigned int relative_level = 0) const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
@@ -75,7 +80,13 @@ public:
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
-  get_generic_constraints() const;
+  get_generic_constraints_levels() const;
+
+  /**
+   * @brief Getter function for the constraints.
+   */
+  [[nodiscard]] const std::array<dealii::AffineConstraints<number>, 2> &
+  get_generic_constraints(unsigned int relative_level = 0) const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
@@ -109,7 +120,7 @@ private:
   void
   make_constraints_for_single_field(dealii::AffineConstraints<number> &constraint,
                                     const dealii::DoFHandler<dim>     &dof_handler,
-                                    const FieldConstraints<dim>       &field_constraints,
+                                    const FieldConstraints<dim>       &_field_constraints,
                                     TensorRank                         tensor_rank,
                                     Types::Index                       field_index);
 
@@ -196,7 +207,7 @@ private:
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed
    * by relative mg level.
    */
-  std::vector<std::vector<dealii::AffineConstraints<number>>> constraints;
+  std::vector<std::vector<dealii::AffineConstraints<number>>> field_constraints;
 
   /**
    * @brief Constraints not specific to any field. We need this for invm

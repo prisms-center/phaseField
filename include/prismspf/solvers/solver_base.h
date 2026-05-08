@@ -37,7 +37,9 @@ public:
              const SolveContext<dim, degree, number> &_solve_context)
     : solve_block(std::move(_solve_block))
     , solve_context(&_solve_context)
-    , solutions(solve_block, solve_context->get_field_attributes())
+    , solutions(solve_block,
+                solve_context->get_field_attributes(),
+                solve_context->get_matrix_free_manager().get_shared_matrix_free_levels())
   {}
 
   /**
@@ -82,9 +84,7 @@ public:
   init(const std::list<DependencyMap> &all_dependeny_sets)
   {
     DependencyExtents extents(solve_block.field_indices, all_dependeny_sets);
-    solutions.init(solve_context->get_dof_manager(),
-                   solve_context->get_constraint_manager(),
-                   extents.oldest_age);
+    solutions.init(extents.oldest_age);
 
     // Apply constraints.
     solutions.apply_constraints();
@@ -97,8 +97,7 @@ public:
   reinit()
   {
     // Apply constraints.
-    solutions.reinit(solve_context->get_dof_manager(),
-                     solve_context->get_constraint_manager());
+    solutions.reinit();
     solutions.apply_constraints();
   }
 

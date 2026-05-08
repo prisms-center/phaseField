@@ -19,9 +19,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
-  SolveBlock                          _solve_block,
-  const std::vector<FieldAttributes> &_attributes_list)
+  SolveBlock                                  _solve_block,
+  const std::vector<FieldAttributes>         &_attributes_list,
+  const std::vector<MatrixFree<dim, number>> &_matrix_free_levels)
   : solve_block(std::move(_solve_block))
+  , matrix_free_levels(&_matrix_free_levels)
 {
   block_to_global_index.assign(solve_block.field_indices.begin(),
                                solve_block.field_indices.end());
@@ -124,19 +126,11 @@ GroupSolutionHandler<dim, number>::get_solution_level(unsigned int relative_leve
 }
 
 template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level)
-  -> MatrixFree<dim, number> &
+const std::vector<MatrixFree<dim, number>> &
+GroupSolutionHandler<dim, number>::get_matrix_free_levels() const
 {
-  return solution_levels[relative_level].matrix_free;
-}
-
-template <unsigned int dim, typename number>
-auto
-GroupSolutionHandler<dim, number>::get_matrix_free(unsigned int relative_level) const
-  -> const MatrixFree<dim, number> &
-{
-  return solution_levels[relative_level].matrix_free;
+  Assert(matrix_free_levels != nullptr, dealii::ExcNotInitialized());
+  return *matrix_free_levels;
 }
 
 template <unsigned int dim, typename number>
@@ -170,79 +164,55 @@ GroupSolutionHandler<dim, number>::get_block_to_global_index() const
 // TODO (fractalsbyx): This might all need to go in reinit(). Check if dof_handler and
 // constraint ptrs change.
 template <unsigned int dim, typename number>
-template <unsigned int degree>
 void
-GroupSolutionHandler<dim, number>::init(
-  const DoFManager<dim, degree>                &dof_manager,
-  const ConstraintManager<dim, degree, number> &constraint_manager,
-  unsigned int                                  num_old_saved)
+GroupSolutionHandler<dim, number>::init(unsigned int num_old_saved)
 {
   ConditionalOStreams::pout_base()
     << "Initializing solution set for solver " << solve_block.id << "...\n"
     << std::flush;
-  Timer::start_section("initialize solution set");
+  Timer::start_section("Initialize solution set");
 
   // TODO: figure out more consistent way of passing num_levels
-  const unsigned int num_levels = dof_manager.get_dof_handlers().size();
+  const unsigned int num_levels = get_matrix_free_levels().size();
   solution_levels.resize(num_levels);
 
-  // Initialize matrixfree objects
+  // Make the correct number of old solution vectors
   for (unsigned int relative_level = 0; relative_level < solution_levels.size();
        ++relative_level)
     {
       SolutionLevel<dim, number> &solution_level = solution_levels[relative_level];
       solution_level.old_solutions.resize(num_old_saved);
     }
+
   // Initialize solution vectors
-  reinit(dof_manager, constraint_manager);
+  reinit();
   // Initialize solution transfer
   init_solution_transfer();
 
-  Timer::end_section("initialize solution set");
+  Timer::end_section("Initialize solution set");
 }
 
 template <unsigned int dim, typename number>
-template <unsigned int degree>
 void
-GroupSolutionHandler<dim, number>::reinit(
-  const DoFManager<dim, degree>                &dof_manager,
-  const ConstraintManager<dim, degree, number> &constraint_manager)
+GroupSolutionHandler<dim, number>::reinit()
 {
-  // Initialize matrixfree objects
   for (unsigned int relative_level = 0; relative_level < solution_levels.size();
        ++relative_level)
     {
-      using AdditionalData = typename MatrixFree<dim, number>::AdditionalData;
-      // TODO: maybe make the flags determined by user dependencies. (Though I doubt this
-      // is a significant source of runtime)
-      static const AdditionalData additional_data(
-        AdditionalData::TasksParallelScheme::partition_partition,
-        0,
-        dealii::update_values | dealii::update_gradients | dealii::update_hessians |
-          dealii::update_JxW_values | dealii::update_quadrature_points);
-
-      solution_levels[relative_level].matrix_free.reinit(
-        SystemWide<dim, degree>::mapping,
-        dof_manager.get_field_dof_handlers(solve_block.field_indices, relative_level),
-        constraint_manager.get_constraints(solve_block.field_indices, relative_level),
-        dealii::QGaussLobatto<1>(degree + 1), // should dim really be 1?
-        additional_data);
-    }
-  for (auto &solution_level : solution_levels)
-    {
-      BlockVector<number>              &solutions     = solution_level.solutions;
-      std::vector<BlockVector<number>> &old_solutions = solution_level.old_solutions;
-      MatrixFree<dim, number>          &matrix_free   = solution_level.matrix_free;
+      auto                             &solution_level = solution_levels[relative_level];
+      BlockVector<number>              &solutions      = solution_level.solutions;
+      std::vector<BlockVector<number>> &old_solutions  = solution_level.old_solutions;
+      const MatrixFree<dim, number>    &matrix_free =
+        get_matrix_free_levels()[relative_level];
 
       // These partitioners basically just provide the number of elements in a distributed
       // way
       std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
         partitioners;
       partitioners.reserve(solve_block.field_indices.size());
-      for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
-           ++block_index)
+      for (unsigned int field_index : solve_block.field_indices)
         {
-          partitioners.push_back(matrix_free.get_vector_partitioner(block_index));
+          partitioners.push_back(matrix_free.get_vector_partitioner(field_index));
         }
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
@@ -262,10 +232,10 @@ GroupSolutionHandler<dim, number>::init_solution_transfer()
   unsigned int num_blocks = solve_block.field_indices.size();
   block_solution_transfer.clear();
   block_solution_transfer.reserve(num_blocks);
-  for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
+  for (unsigned int field_index : solve_block.field_indices)
     {
       block_solution_transfer.emplace_back(
-        get_matrix_free().get_dof_handler(block_index));
+        get_matrix_free_levels()[0].get_dof_handler(field_index));
     }
 }
 
@@ -338,13 +308,13 @@ GroupSolutionHandler<dim, number>::apply_constraints_to_all(unsigned int relativ
   apply_constraints(0);
   std::vector<BlockVector<number>> &old_solutions =
     solution_levels[relative_level].old_solutions;
-  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
+  const MatrixFree<dim, number> &matrix_free = get_matrix_free_levels()[relative_level];
   for (BlockVector<number> &solutions : old_solutions)
     {
       unsigned int num_blocks = solve_block.field_indices.size();
       for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
         {
-          matrix_free.get_affine_constraints(block_index)
+          matrix_free.get_affine_constraints(block_to_global_index[block_index])
             .distribute(solutions.block(block_index));
         }
     }
@@ -363,11 +333,11 @@ void
 GroupSolutionHandler<dim, number>::apply_constraints(BlockVector<number> &solution_vector,
                                                      unsigned int         relative_level)
 {
-  MatrixFree<dim, number> &matrix_free = solution_levels[relative_level].matrix_free;
-  unsigned int             num_blocks  = solve_block.field_indices.size();
+  const MatrixFree<dim, number> &matrix_free = get_matrix_free_levels()[relative_level];
+  unsigned int                   num_blocks  = solve_block.field_indices.size();
   for (unsigned int block_index = 0; block_index < num_blocks; block_index++)
     {
-      matrix_free.get_affine_constraints(block_index)
+      matrix_free.get_affine_constraints(block_to_global_index[block_index])
         .distribute(solution_vector.block(block_index));
     }
 }
