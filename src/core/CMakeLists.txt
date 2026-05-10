@@ -43,6 +43,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/dependencies.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/field_attributes.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/initial_conditions.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/core/math.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/pde_operator_base.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/simulation_timer.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/system_wide.h
