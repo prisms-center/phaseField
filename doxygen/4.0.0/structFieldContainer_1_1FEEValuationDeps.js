@@ -3,7 +3,7 @@ var structFieldContainer_1_1FEEValuationDeps =
     [ "FEEDepPair", "structFieldContainer_1_1FEEValuationDeps.html#adec5a21c5da95c81da9568c312bbf403", null ],
     [ "FEEDepPairPtr", "structFieldContainer_1_1FEEValuationDeps.html#a431fa01e92a7329dc6ac7bb05613a750", null ],
     [ "FEEValuationDeps", "structFieldContainer_1_1FEEValuationDeps.html#abf4ec8da7efaa1f2987bc3f8cfd0f000", null ],
-    [ "FEEValuationDeps", "structFieldContainer_1_1FEEValuationDeps.html#a84f131143c52391e4ea4f8ea1d333cfc", null ],
+    [ "FEEValuationDeps", "structFieldContainer_1_1FEEValuationDeps.html#a29384726d89ef099c877caf62f835ed1", null ],
     [ "distribute", "structFieldContainer_1_1FEEValuationDeps.html#a521e594067ddf6046a68e3a680be8830", null ],
     [ "eval", "structFieldContainer_1_1FEEValuationDeps.html#aaa63fe2b7e9813f6260f3da42f043d5f", null ],
     [ "eval_without_read", "structFieldContainer_1_1FEEValuationDeps.html#a099f6ad6a91be23eb433a180cb716bfc", null ],
@@ -21,6 +21,7 @@ var structFieldContainer_1_1FEEValuationDeps =
     [ "fe_eval", "structFieldContainer_1_1FEEValuationDeps.html#a8f973a91be857f68d9b9a4f11630e411", null ],
     [ "fe_eval_old", "structFieldContainer_1_1FEEValuationDeps.html#ac0c5b76f3a2db0f1d42499aeff6a8f9f", null ],
     [ "fe_eval_src_dst", "structFieldContainer_1_1FEEValuationDeps.html#a07acd67f6c5eb058909b9191489308ff", null ],
+    [ "field_index", "structFieldContainer_1_1FEEValuationDeps.html#aeecdb731afbdc7f5cd4e5d6c3af704b0", null ],
     [ "integration_flags", "structFieldContainer_1_1FEEValuationDeps.html#a4bdd7b09d79aadec2b0b9e343f80abec", null ],
     [ "solution_level", "structFieldContainer_1_1FEEValuationDeps.html#acd9c4b784dc4afd2cab8665e856a884a", null ]
 ];

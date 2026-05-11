@@ -148,8 +148,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf4ec8da7efaa1f2987bc3f8cfd0f000" id="r_abf4ec8da7efaa1f2987bc3f8cfd0f000"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf4ec8da7efaa1f2987bc3f8cfd0f000">FEEValuationDeps</a> ()=default</td></tr>
 <tr class="memdesc:abf4ec8da7efaa1f2987bc3f8cfd0f000"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:abf4ec8da7efaa1f2987bc3f8cfd0f000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84f131143c52391e4ea4f8ea1d333cfc" id="r_a84f131143c52391e4ea4f8ea1d333cfc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84f131143c52391e4ea4f8ea1d333cfc">FEEValuationDeps</a> (const <a class="el" href="structDependency.html">Dependency</a> &amp;dependency, const std::pair&lt; const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; *, unsigned int &gt; &amp;mf_id_pair, bool is_dst)</td></tr>
-<tr class="separator:a84f131143c52391e4ea4f8ea1d333cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29384726d89ef099c877caf62f835ed1" id="r_a29384726d89ef099c877caf62f835ed1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29384726d89ef099c877caf62f835ed1">FEEValuationDeps</a> (const MatrixFree&lt; dim, number &gt; &amp;matrix_free, const <a class="el" href="structDependency.html">Dependency</a> &amp;dependency, const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;_solution_level, unsigned int _field_index, unsigned int _block_index, bool is_dst)</td></tr>
+<tr class="separator:a29384726d89ef099c877caf62f835ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46df233708a8c29c96b91dea2acb4dc7" id="r_a46df233708a8c29c96b91dea2acb4dc7"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfc">DependencyType</a> type&gt; </td></tr>
 <tr class="memitem:a46df233708a8c29c96b91dea2acb4dc7"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classFieldContainer.html#a62c98372c374cd253873057e95c1a2ab">FEEval</a>&lt; Rank &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a46df233708a8c29c96b91dea2acb4dc7">get</a> () const</td></tr>
 <tr class="separator:a46df233708a8c29c96b91dea2acb4dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,6 +198,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:acd9c4b784dc4afd2cab8665e856a884a" id="r_acd9c4b784dc4afd2cab8665e856a884a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd9c4b784dc4afd2cab8665e856a884a">solution_level</a> = nullptr</td></tr>
 <tr class="memdesc:acd9c4b784dc4afd2cab8665e856a884a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The solution block.  <br /></td></tr>
 <tr class="separator:acd9c4b784dc4afd2cab8665e856a884a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeecdb731afbdc7f5cd4e5d6c3af704b0" id="r_aeecdb731afbdc7f5cd4e5d6c3af704b0"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeecdb731afbdc7f5cd4e5d6c3af704b0">field_index</a> = -1</td></tr>
+<tr class="memdesc:aeecdb731afbdc7f5cd4e5d6c3af704b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The solution field index.  <br /></td></tr>
+<tr class="separator:aeecdb731afbdc7f5cd4e5d6c3af704b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee5960f43b9d76402f20b1c38e1df48f" id="r_aee5960f43b9d76402f20b1c38e1df48f"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee5960f43b9d76402f20b1c38e1df48f">block_index</a> = -1</td></tr>
 <tr class="memdesc:aee5960f43b9d76402f20b1c38e1df48f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The solution block index.  <br /></td></tr>
 <tr class="separator:aee5960f43b9d76402f20b1c38e1df48f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,8 +282,8 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
 
 </div>
 </div>
-<a id="a84f131143c52391e4ea4f8ea1d333cfc" name="a84f131143c52391e4ea4f8ea1d333cfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84f131143c52391e4ea4f8ea1d333cfc">&#9670;&#160;</a></span>FEEValuationDeps() <span class="overload">[2/2]</span></h2>
+<a id="a29384726d89ef099c877caf62f835ed1" name="a29384726d89ef099c877caf62f835ed1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29384726d89ef099c877caf62f835ed1">&#9670;&#160;</a></span>FEEValuationDeps() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -292,12 +295,27 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
         <tr>
           <td class="memname"><a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;::FEEValuationDeps&lt; Rank &gt;::FEEValuationDeps </td>
           <td>(</td>
+          <td class="paramtype">const MatrixFree&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>matrix_free</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const <a class="el" href="structDependency.html">Dependency</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>dependency</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::pair&lt; const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; *, unsigned int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mf_id_pair</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_solution_level</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>_field_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>_block_index</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -710,7 +728,7 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
 </div><div class="memdoc">
 
 <p>The solution block index. </p>
-<p>This is the index that tells dealii::FEEvaluation the corresponding dealii::DoFHandler, dealii::AffineConstraints, and dealii::Quadrature to use from the dealii::MatrixFree. </p>
+<p>This is the index that gets us the correct solution from the corresponding block vector. </p>
 
 </div>
 </div>
@@ -771,6 +789,27 @@ template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1e
 </div><div class="memdoc">
 
 <p>FEEvaluation for the src and dst solutions. </p>
+
+</div>
+</div>
+<a id="aeecdb731afbdc7f5cd4e5d6c3af704b0" name="aeecdb731afbdc7f5cd4e5d6c3af704b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeecdb731afbdc7f5cd4e5d6c3af704b0">&#9670;&#160;</a></span>field_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="type__enums_8h.html#af35e0aebc0459f2aab5c5052e1ea46f9">TensorRank</a> Rank&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classFieldContainer.html">FieldContainer</a>&lt; dim, degree, number &gt;<a class="el" href="#abf4ec8da7efaa1f2987bc3f8cfd0f000">::FEEValuationDeps</a>&lt; Rank &gt;::field_index = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The solution field index. </p>
+<p>This is the index that tells dealii::FEEvaluation the corresponding dealii::DoFHandler, dealii::AffineConstraints, and dealii::Quadrature to use from the dealii::MatrixFree. </p>
 
 </div>
 </div>

@@ -1,7 +1,7 @@
 var classGroupSolutionHandler =
 [
     [ "SolutionTransfer", "classGroupSolutionHandler.html#ac26fdde92556378f13ed857dbff31af6", null ],
-    [ "GroupSolutionHandler", "classGroupSolutionHandler.html#a31ae0827fa3552ba604aa772e6a668e6", null ],
+    [ "GroupSolutionHandler", "classGroupSolutionHandler.html#ad50a68cf09b69e8d9a7766e69bac59fd", null ],
     [ "apply_constraints", "classGroupSolutionHandler.html#ae54f3f990319fdee6d443cda201a8474", null ],
     [ "apply_constraints", "classGroupSolutionHandler.html#aacb370c097f3e3aee4e49eaf47590ea4", null ],
     [ "apply_constraints_to_all", "classGroupSolutionHandler.html#a2cca78730bd60f5ae1aa506d911f9c58", null ],
@@ -10,8 +10,7 @@ var classGroupSolutionHandler =
     [ "get_block_index", "classGroupSolutionHandler.html#af0959621de3274cbaf56433f67fae7f9", null ],
     [ "get_block_to_global_index", "classGroupSolutionHandler.html#a7df00460558844845b63e86bf716b221", null ],
     [ "get_global_to_block_index", "classGroupSolutionHandler.html#ae201c632cf3de029dcd6f175e45123b1", null ],
-    [ "get_matrix_free", "classGroupSolutionHandler.html#ad4c633cfc540d26e697b3cd8b2d4dd96", null ],
-    [ "get_matrix_free", "classGroupSolutionHandler.html#a4aa691c36fc7bfd46e7d053793ced779", null ],
+    [ "get_matrix_free_levels", "classGroupSolutionHandler.html#a80017ea8c86c834ae78e933d907141b7", null ],
     [ "get_old_solution_full_vector", "classGroupSolutionHandler.html#a4172ea3dd08845b3a62bf2e63e8af835", null ],
     [ "get_old_solution_full_vector", "classGroupSolutionHandler.html#acbca41487e2885aa6a345d214683111d", null ],
     [ "get_old_solution_vector", "classGroupSolutionHandler.html#ac2acb677c3d453a7bfac9075154672c6", null ],
@@ -23,16 +22,17 @@ var classGroupSolutionHandler =
     [ "get_solution_vector", "classGroupSolutionHandler.html#a36d7fa2f0da4704a31009f4c61b186a7", null ],
     [ "get_solution_vector", "classGroupSolutionHandler.html#a724f0e259e34b7cf2a92b5579921a5e2", null ],
     [ "get_solve_block", "classGroupSolutionHandler.html#a710ca7b9ecc6b65f3c69aaec96540f5d", null ],
-    [ "init", "classGroupSolutionHandler.html#a1299761f10947d6c854a73f85a89fb8c", null ],
+    [ "init", "classGroupSolutionHandler.html#a0740fb13dd11234364a4bbbc9ef093ac", null ],
     [ "init_solution_transfer", "classGroupSolutionHandler.html#aad59e8680a215f2a182a79cc4e014c82", null ],
     [ "prepare_for_solution_transfer", "classGroupSolutionHandler.html#a7221007eaafaaf3931454c31019d554e", null ],
-    [ "reinit", "classGroupSolutionHandler.html#ac873da3d9aa93dda68d9817b30eae16a", null ],
+    [ "reinit", "classGroupSolutionHandler.html#a4d4f593868a98d0427a318e66e6fa00f", null ],
     [ "update", "classGroupSolutionHandler.html#a4d5b8e388818074bdf30ed39a1528b63", null ],
     [ "update_ghosts", "classGroupSolutionHandler.html#a717c138ec2317b4356aaf16b90b6dcdd", null ],
     [ "zero_out_ghosts", "classGroupSolutionHandler.html#a969c3eeed22dbe33613c92ec12400fdc", null ],
     [ "block_solution_transfer", "classGroupSolutionHandler.html#adad09d50683e64463457688080c4f676", null ],
     [ "block_to_global_index", "classGroupSolutionHandler.html#a66af004dd5540401d71955e407cf658f", null ],
     [ "global_to_block_index", "classGroupSolutionHandler.html#a68dea5783935e329402debc8893e85ee", null ],
+    [ "matrix_free_levels", "classGroupSolutionHandler.html#a0a26eb6584f326c85f8c1d6ef5146442", null ],
     [ "solution_levels", "classGroupSolutionHandler.html#a52ce086db80558ad294ac80696972f98", null ],
     [ "solve_block", "classGroupSolutionHandler.html#abf15cb44c30e0ad858574dbc58a4012e", null ]
 ];

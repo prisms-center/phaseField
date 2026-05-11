@@ -32,6 +32,7 @@ var annotated_dup =
     [ "LinearSolver", "classLinearSolver.html", "classLinearSolver" ],
     [ "LinearSolverParameters", "structLinearSolverParameters.html", "structLinearSolverParameters" ],
     [ "LoadInitialConditionParameters", "structLoadInitialConditionParameters.html", "structLoadInitialConditionParameters" ],
+    [ "MatrixFreeManager", "classMatrixFreeManager.html", "classMatrixFreeManager" ],
     [ "MFOperator", "classMFOperator.html", "classMFOperator" ],
     [ "MGSolver", "classMGSolver.html", "classMGSolver" ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", "structMiscellaneousParameters" ],

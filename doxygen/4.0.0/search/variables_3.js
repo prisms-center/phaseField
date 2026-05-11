@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../classInvMManager.html#af07d3ed3a334371edb44608afa91cb62',1,'InvMManager::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
+  ['data_0',['data',['../classInvMManager.html#ab7668aad729ce9147b7444f9338c018e',1,'InvMManager::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
   ['dataset_5fformat_1',['dataset_format',['../structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262',1,'InitialConditionFile']]],
   ['default_2',['DEFAULT',['../classTerminalColor.html#a2f8c79b0d150d154e4d8a36a773745f6',1,'TerminalColor']]],
   ['default_5fmax_5fchecked_5fage_3',['default_max_checked_age',['../dependencies_8h.html#ae357b09033ff9072efd8e54943a635c2',1,'dependencies.h']]],
@@ -14,8 +14,7 @@ var searchData=
   ['diagonal_5fentries_11',['diagonal_entries',['../classMFOperator.html#a8aba2fa7cd8ba402793660ec44ca6311',1,'MFOperator']]],
   ['dim_12',['DIM',['../classTerminalColor.html#a6f956a804bda3f30d9da43149f187cea',1,'TerminalColor']]],
   ['directory_13',['directory',['../structOutputParameters.html#af554957eb23377d9a1098423adfb57dd',1,'OutputParameters']]],
-  ['dof_5fhandlers_14',['dof_handlers',['../classDoFManager.html#a7d8e76075626d155b717631139f8fbe5',1,'DoFManager']]],
-  ['dof_5fmanager_15',['dof_manager',['../classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d',1,'ConstraintManager::dof_manager'],['../classProblem.html#a341cbd4f8bd025d3f53cbb17b57cb047',1,'Problem::dof_manager'],['../classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f',1,'SolveContext::dof_manager']]],
-  ['dofs_5fper_5fcomponent_16',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
-  ['dt_17',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
+  ['dof_5fmanager_14',['dof_manager',['../classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d',1,'ConstraintManager::dof_manager'],['../classProblem.html#a341cbd4f8bd025d3f53cbb17b57cb047',1,'Problem::dof_manager'],['../classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f',1,'SolveContext::dof_manager']]],
+  ['dofs_5fper_5fcomponent_15',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
+  ['dt_16',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];

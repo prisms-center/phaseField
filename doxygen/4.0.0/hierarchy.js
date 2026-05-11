@@ -38,6 +38,7 @@ var hierarchy =
     [ "MATRIX_FREE_OPERATOR_BASE", null, [
       [ "MFOperator< dim, degree, number >", "classMFOperator.html", null ]
     ] ],
+    [ "MatrixFreeManager< dim, number >", "classMatrixFreeManager.html", null ],
     [ "PRISMS_PF_BEGIN_NAMESPACE::TimerStack::Meta", "structPRISMS__PF__BEGIN__NAMESPACE_1_1TimerStack_1_1Meta.html", null ],
     [ "MiscellaneousParameters", "structMiscellaneousParameters.html", null ],
     [ "dealii::Utilities::MPI::MPI_InitFinalize", null, [

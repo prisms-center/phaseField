@@ -20,7 +20,7 @@ var classInvMManager =
     [ "sqrt", "classInvMManager.html#aaef460da324382a16a4bd5c4d26ada07", null ],
     [ "calculate_scalar", "classInvMManager.html#a904967d8334b7d1fb318aa5210461d70", null ],
     [ "calculate_vector", "classInvMManager.html#a55de5262ab2b6389a3507dffca8808a6", null ],
-    [ "data", "classInvMManager.html#af07d3ed3a334371edb44608afa91cb62", null ],
+    [ "data", "classInvMManager.html#ab7668aad729ce9147b7444f9338c018e", null ],
     [ "invm_scalar", "classInvMManager.html#a96a140c11f0b78d3251bddf600c52be8", null ],
     [ "invm_sqrt_scalar", "classInvMManager.html#a6434c1f7268e8dc6aa66a29f3db590f7", null ],
     [ "invm_sqrt_vector", "classInvMManager.html#a552b08b49fc589f8c66c971b25a3ca3a", null ],

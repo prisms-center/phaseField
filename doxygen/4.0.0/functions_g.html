@@ -126,6 +126,7 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>gather_exclude_broadcast_nuclei()&#160;:&#160;<a class="el" href="classNucleationManager.html#a971405b99065901cfe2b76bc0aad380f">NucleationManager&lt; dim, degree, number &gt;</a></li>
 <li>generate_mesh()&#160;:&#160;<a class="el" href="structRectangularMesh.html#a6d4cf98b6277c0806a84c07b77029311">RectangularMesh&lt; dim &gt;</a>, <a class="el" href="structSphericalMesh.html#a841a0a4acab41bed1f290dd47636cd28">SphericalMesh&lt; dim &gt;</a>, <a class="el" href="classTriangulationManager.html#a5220079e0053ca9e4165bfc4aa822d98">TriangulationManager&lt; dim &gt;</a></li>
 <li>generic_constraints&#160;:&#160;<a class="el" href="classConstraintManager.html#a5478db6a89f5ccbd800e7ab4c0a070fd">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>generic_matrix_free_levels&#160;:&#160;<a class="el" href="classMatrixFreeManager.html#afa27eff58a37bf30e4511fbad5196709">MatrixFreeManager&lt; dim, number &gt;</a></li>
 <li>get()&#160;:&#160;<a class="el" href="structFieldContainer_1_1FEEValuationDeps.html#a46df233708a8c29c96b91dea2acb4dc7">FieldContainer&lt; dim, degree, number &gt;::FEEValuationDeps&lt; Rank &gt;</a></li>
 <li>get_block_index()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#af0959621de3274cbaf56433f67fae7f9">GroupSolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classSolutionIndexer.html#a238169b4cd604881711ae5a9ecea7303">SolutionIndexer&lt; dim, number &gt;</a></li>
 <li>get_block_to_global_index()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a7df00460558844845b63e86bf716b221">GroupSolutionHandler&lt; dim, number &gt;</a></li>
@@ -135,11 +136,11 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>get_cmd_option()&#160;:&#160;<a class="el" href="classParseCMDOptions.html#a9d4bc9cdc4b80bf2a414da900649ff53">ParseCMDOptions</a></li>
 <li>get_constraint()&#160;:&#160;<a class="el" href="classConstraintManager.html#a5e4af7a74b93b8ca5f3650654fc702e4">ConstraintManager&lt; dim, degree, number &gt;</a></li>
 <li>get_constraint_manager()&#160;:&#160;<a class="el" href="classSolveContext.html#a5ab3719bb4fb4c0db5753df9acfbaec7">SolveContext&lt; dim, degree, number &gt;</a></li>
-<li>get_constraints()&#160;:&#160;<a class="el" href="classConstraintManager.html#a79a7e89d083ed5bdd49f73af0c3a706d">ConstraintManager&lt; dim, degree, number &gt;</a></li>
 <li>get_curl()&#160;:&#160;<a class="el" href="classFieldContainer.html#a50b38bb36139e5f1656c995430abcc64">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_divergence()&#160;:&#160;<a class="el" href="classFieldContainer.html#a50edcb2b88088e923c65b03f2c7e7d5b">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_dof_handler()&#160;:&#160;<a class="el" href="classDoFManager.html#a8488ff74b16ee3110f431471f00dcce7">DoFManager&lt; dim, degree &gt;</a></li>
-<li>get_dof_handlers()&#160;:&#160;<a class="el" href="classDoFManager.html#af0706a28123b16bd3001f233299f9603">DoFManager&lt; dim, degree &gt;</a></li>
+<li>get_dof_handlers()&#160;:&#160;<a class="el" href="classDoFManager.html#a8f2814d89b9fc750595c80d35182d760">DoFManager&lt; dim, degree &gt;</a></li>
+<li>get_dof_handlers_levels()&#160;:&#160;<a class="el" href="classDoFManager.html#a5113f36da820968aaf7531133329dffd">DoFManager&lt; dim, degree &gt;</a></li>
 <li>get_dof_manager()&#160;:&#160;<a class="el" href="classSolveContext.html#a0bdecaf7a6ce7c753711952350bc373a">SolveContext&lt; dim, degree, number &gt;</a></li>
 <li>get_dof_value_to()&#160;:&#160;<a class="el" href="classFieldContainer.html#aaf6779de99de777b74add5789f1e2e4f">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_double()&#160;:&#160;<a class="el" href="classUserConstants.html#a8100bd9df65e23e6fcb94888eb162aaa">UserConstants&lt; dim &gt;</a></li>
@@ -147,10 +148,16 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>get_element_volume()&#160;:&#160;<a class="el" href="classFieldContainer.html#ace5b7e65bf25feb50c56f6c9892f96f9">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_exclusion_distance()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a242594dd8e0b4d72469fa620d2092f37">NucleationParameters</a></li>
 <li>get_field_attributes()&#160;:&#160;<a class="el" href="classSolveContext.html#a2396501948f50e9f4ea3bccef1280d0c">SolveContext&lt; dim, degree, number &gt;</a></li>
+<li>get_field_constraints()&#160;:&#160;<a class="el" href="classConstraintManager.html#a56977ff9e3364f5256f082bf15ce77b4">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>get_field_constraints_levels()&#160;:&#160;<a class="el" href="classConstraintManager.html#a6cfc9d8f371cff57b519acb9ee4cbf79">ConstraintManager&lt; dim, degree, number &gt;</a></li>
 <li>get_field_dof_handler()&#160;:&#160;<a class="el" href="classDoFManager.html#aea951ec0feead653c63178393d367694">DoFManager&lt; dim, degree &gt;</a></li>
-<li>get_field_dof_handlers()&#160;:&#160;<a class="el" href="classDoFManager.html#a6d2aac1cac8b6f2077d684865391ed5c">DoFManager&lt; dim, degree &gt;</a></li>
+<li>get_field_dof_handlers()&#160;:&#160;<a class="el" href="classDoFManager.html#a952d710a214f890e15ae737ad50445a2">DoFManager&lt; dim, degree &gt;</a></li>
+<li>get_field_dof_handlers_levels()&#160;:&#160;<a class="el" href="classDoFManager.html#a3f7134c09dba44add831c0b2df2641fb">DoFManager&lt; dim, degree &gt;</a></li>
 <li>get_generic_constraint()&#160;:&#160;<a class="el" href="classConstraintManager.html#a012067faeda07d9c10356dd4c4b35291">ConstraintManager&lt; dim, degree, number &gt;</a></li>
-<li>get_generic_constraints()&#160;:&#160;<a class="el" href="classConstraintManager.html#aa2a516cd43b6953043f7a5e54d7f0359">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>get_generic_constraints()&#160;:&#160;<a class="el" href="classConstraintManager.html#a2f460f0c227dbb502c7276b12b8186d5">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>get_generic_constraints_levels()&#160;:&#160;<a class="el" href="classConstraintManager.html#abf6b0e80c758398cd6ce59e0f5322208">ConstraintManager&lt; dim, degree, number &gt;</a></li>
+<li>get_generic_matrix_free()&#160;:&#160;<a class="el" href="classMatrixFreeManager.html#ab26a4ed446d510635d2144a36768c9f3">MatrixFreeManager&lt; dim, number &gt;</a></li>
+<li>get_generic_matrix_free_levels()&#160;:&#160;<a class="el" href="classMatrixFreeManager.html#a3cb3d77b45d741c5d72225e0b89f87f0">MatrixFreeManager&lt; dim, number &gt;</a></li>
 <li>get_global_to_block_index()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#ae201c632cf3de029dcd6f175e45123b1">GroupSolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_gradient()&#160;:&#160;<a class="el" href="classFieldContainer.html#ab0e443905a8e90223eb0d4abbedd971d">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_hessian()&#160;:&#160;<a class="el" href="classFieldContainer.html#a2bd849426f9f5fd0aa99b080c2b89546">FieldContainer&lt; dim, degree, number &gt;</a></li>
@@ -164,7 +171,9 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>get_jxw()&#160;:&#160;<a class="el" href="classInvMManager.html#ac015b58fd06c7872787f6e63ca43366a">InvMManager&lt; dim, degree, number &gt;</a></li>
 <li>get_laplacian()&#160;:&#160;<a class="el" href="classFieldContainer.html#a6ffae5e320f5768d5368fd1fa8244811">FieldContainer&lt; dim, degree, number &gt;</a></li>
 <li>get_matrix_diagonal_inverse()&#160;:&#160;<a class="el" href="classMFOperator.html#a08676517ea2cee13c41e5ddfddd9ca25">MFOperator&lt; dim, degree, number &gt;</a></li>
-<li>get_matrix_free()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#ad4c633cfc540d26e697b3cd8b2d4dd96">GroupSolutionHandler&lt; dim, number &gt;</a>, <a class="el" href="classMFOperator.html#ab5671a26b13d4a42b693b299e7e5d2e6">MFOperator&lt; dim, degree, number &gt;</a>, <a class="el" href="classSolutionIndexer.html#a0c21f0c8b26a953f88cfe353035d691b">SolutionIndexer&lt; dim, number &gt;</a></li>
+<li>get_matrix_free()&#160;:&#160;<a class="el" href="classMFOperator.html#ab5671a26b13d4a42b693b299e7e5d2e6">MFOperator&lt; dim, degree, number &gt;</a></li>
+<li>get_matrix_free_levels()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a80017ea8c86c834ae78e933d907141b7">GroupSolutionHandler&lt; dim, number &gt;</a></li>
+<li>get_matrix_free_manager()&#160;:&#160;<a class="el" href="classSolveContext.html#ad8e5c2ef8ad6f8ebb75603b2a3801cbd">SolveContext&lt; dim, degree, number &gt;</a></li>
 <li>get_n_cells()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a6fcebfe92631edeaa378e9650186f4ee">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_n_initial_condition_files()&#160;:&#160;<a class="el" href="structLoadInitialConditionParameters.html#a122cb6ba3a2b97a026bf02ec114f4f42">LoadInitialConditionParameters</a></li>
 <li>get_n_points()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a025261ecdaccf28fc4835529c69e3ed2">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
@@ -193,6 +202,8 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>get_scalars_names()&#160;:&#160;<a class="el" href="classReadUnstructuredVTK.html#a38b6eb828f026967cfcdd047414ff322">ReadUnstructuredVTK&lt; dim, number &gt;</a></li>
 <li>get_seeding_increments()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a5172ddb92117dab3f25bd71838108cb9">NucleationParameters</a></li>
 <li>get_seeding_time()&#160;:&#160;<a class="el" href="structNucleationParameters.html#a000b2981783486287fceb8c8d892f7bd">NucleationParameters</a></li>
+<li>get_shared_matrix_free()&#160;:&#160;<a class="el" href="classMatrixFreeManager.html#a76526bba35a7a8ad05b1a024f238e86a">MatrixFreeManager&lt; dim, number &gt;</a></li>
+<li>get_shared_matrix_free_levels()&#160;:&#160;<a class="el" href="classMatrixFreeManager.html#aef18dfa0c77fd549d62231e081b75ec4">MatrixFreeManager&lt; dim, number &gt;</a></li>
 <li>get_simulation_timer()&#160;:&#160;<a class="el" href="classSolveContext.html#a77236d45ac0aba933968f22b3172faa0">SolveContext&lt; dim, degree, number &gt;</a></li>
 <li>get_solution_full_vector()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a967cbb2ba0c3f28838cc873bbf1d5f4a">GroupSolutionHandler&lt; dim, number &gt;</a></li>
 <li>get_solution_indexer()&#160;:&#160;<a class="el" href="classSolveContext.html#a2d68fb44c5256ef5908299881b3ac37d">SolveContext&lt; dim, degree, number &gt;</a></li>
@@ -221,7 +232,7 @@ $(function(){initNavTree('functions_g.html',''); initResizable(true); });
 <li>gradient_magnitude_above_threshold()&#160;:&#160;<a class="el" href="structRefinementCriterion.html#a76f156fa9cc6a8e510a45a743e6e7847">RefinementCriterion</a></li>
 <li>GREEN&#160;:&#160;<a class="el" href="classTerminalColor.html#ae29704ab677033be8c4bad9fd62ab395">TerminalColor</a></li>
 <li>grid_refiner&#160;:&#160;<a class="el" href="classProblem.html#a0bf1a3def2c17b9558adffa1853d0658">Problem&lt; dim, degree, number &gt;</a></li>
-<li>GroupSolutionHandler()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#a31ae0827fa3552ba604aa772e6a668e6">GroupSolutionHandler&lt; dim, number &gt;</a></li>
+<li>GroupSolutionHandler()&#160;:&#160;<a class="el" href="classGroupSolutionHandler.html#ad50a68cf09b69e8d9a7766e69bac59fd">GroupSolutionHandler&lt; dim, number &gt;</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -167,6 +167,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ac9023eb2bd83a5cc8e4c4228ae80c9" id="r_a0ac9023eb2bd83a5cc8e4c4228ae80c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ac9023eb2bd83a5cc8e4c4228ae80c9">get_constraint_manager</a> ()</td></tr>
 <tr class="memdesc:a0ac9023eb2bd83a5cc8e4c4228ae80c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the constraint manager.  <br /></td></tr>
 <tr class="separator:a0ac9023eb2bd83a5cc8e4c4228ae80c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e5c2ef8ad6f8ebb75603b2a3801cbd" id="r_ad8e5c2ef8ad6f8ebb75603b2a3801cbd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8e5c2ef8ad6f8ebb75603b2a3801cbd">get_matrix_free_manager</a> () const</td></tr>
+<tr class="memdesc:ad8e5c2ef8ad6f8ebb75603b2a3801cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the MatrixFree manager.  <br /></td></tr>
+<tr class="separator:ad8e5c2ef8ad6f8ebb75603b2a3801cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac98ad77d55272f534dfa21d0063e4ceb" id="r_ac98ad77d55272f534dfa21d0063e4ceb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac98ad77d55272f534dfa21d0063e4ceb">get_matrix_free_manager</a> ()</td></tr>
+<tr class="memdesc:ac98ad77d55272f534dfa21d0063e4ceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the MatrixFree manager.  <br /></td></tr>
+<tr class="separator:ac98ad77d55272f534dfa21d0063e4ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d68fb44c5256ef5908299881b3ac37d" id="r_a2d68fb44c5256ef5908299881b3ac37d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d68fb44c5256ef5908299881b3ac37d">get_solution_indexer</a> () const</td></tr>
 <tr class="memdesc:a2d68fb44c5256ef5908299881b3ac37d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution manager.  <br /></td></tr>
 <tr class="separator:a2d68fb44c5256ef5908299881b3ac37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,6 +212,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:abfcc062b426cfa5d0fca411b0cbe22ef" id="r_abfcc062b426cfa5d0fca411b0cbe22ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abfcc062b426cfa5d0fca411b0cbe22ef">constraint_manager</a></td></tr>
 <tr class="memdesc:abfcc062b426cfa5d0fca411b0cbe22ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constraint manager.  <br /></td></tr>
 <tr class="separator:abfcc062b426cfa5d0fca411b0cbe22ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1726bec16f92d11394760909745a64f" id="r_ad1726bec16f92d11394760909745a64f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1726bec16f92d11394760909745a64f">matrix_free_manager</a></td></tr>
+<tr class="memdesc:ad1726bec16f92d11394760909745a64f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MatrixFree object shared for all the fields.  <br /></td></tr>
+<tr class="separator:ad1726bec16f92d11394760909745a64f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1d02bd4e7c58852d864b332e9c6aba7" id="r_ab1d02bd4e7c58852d864b332e9c6aba7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1d02bd4e7c58852d864b332e9c6aba7">solution_indexer</a></td></tr>
 <tr class="memdesc:ab1d02bd4e7c58852d864b332e9c6aba7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solution manager.  <br /></td></tr>
 <tr class="separator:ab1d02bd4e7c58852d864b332e9c6aba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -483,6 +492,64 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Get the invm manager. </p>
+
+</div>
+</div>
+<a id="ac98ad77d55272f534dfa21d0063e4ceb" name="ac98ad77d55272f534dfa21d0063e4ceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac98ad77d55272f534dfa21d0063e4ceb">&#9670;&#160;</a></span>get_matrix_free_manager() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp; <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt;::get_matrix_free_manager </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the MatrixFree manager. </p>
+
+</div>
+</div>
+<a id="ad8e5c2ef8ad6f8ebb75603b2a3801cbd" name="ad8e5c2ef8ad6f8ebb75603b2a3801cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8e5c2ef8ad6f8ebb75603b2a3801cbd">&#9670;&#160;</a></span>get_matrix_free_manager() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp; <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt;::get_matrix_free_manager </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the MatrixFree manager. </p>
 
 </div>
 </div>
@@ -820,6 +887,32 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Solution manager. </p>
+
+</div>
+</div>
+<a id="ad1726bec16f92d11394760909745a64f" name="ad1726bec16f92d11394760909745a64f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1726bec16f92d11394760909745a64f">&#9670;&#160;</a></span>matrix_free_manager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt;dim, number&gt; <a class="el" href="classSolveContext.html">SolveContext</a>&lt; dim, degree, number &gt;::matrix_free_manager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>MatrixFree object shared for all the fields. </p>
 
 </div>
 </div>

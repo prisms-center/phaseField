@@ -14,6 +14,7 @@ var dir_72d2fbe96e504e5d9d70c5885bd9c513 =
     [ "group_solution_handler.h", "group__solution__handler_8h.html", "group__solution__handler_8h" ],
     [ "initial_conditions.h", "initial__conditions_8h.html", "initial__conditions_8h" ],
     [ "invm_manager.h", "invm__manager_8h.html", "invm__manager_8h" ],
+    [ "matrix_free_manager.h", "matrix__free__manager_8h.html", "matrix__free__manager_8h" ],
     [ "parse_cmd_options.h", "parse__cmd__options_8h.html", "parse__cmd__options_8h" ],
     [ "pde_operator_base.h", "pde__operator__base_8h.html", "pde__operator__base_8h" ],
     [ "phase_field_tools.h", "phase__field__tools_8h.html", "phase__field__tools_8h" ],

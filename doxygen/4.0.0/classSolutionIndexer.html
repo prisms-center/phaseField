@@ -150,12 +150,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a887633d3be1e0ceea16acd2bb104c315" id="r_a887633d3be1e0ceea16acd2bb104c315"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a887633d3be1e0ceea16acd2bb104c315">get_old_solution_vector</a> (unsigned int age, unsigned int global_index, unsigned int relative_level=0)</td></tr>
 <tr class="memdesc:a887633d3be1e0ceea16acd2bb104c315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index at a given age.  <br /></td></tr>
 <tr class="separator:a887633d3be1e0ceea16acd2bb104c315"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c21f0c8b26a953f88cfe353035d691b" id="r_a0c21f0c8b26a953f88cfe353035d691b"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c21f0c8b26a953f88cfe353035d691b">get_matrix_free</a> (unsigned int index, unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a0c21f0c8b26a953f88cfe353035d691b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrixfree object of the group a given field index.  <br /></td></tr>
-<tr class="separator:a0c21f0c8b26a953f88cfe353035d691b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a277eb3ed974fdcc177d9458002ce8860" id="r_a277eb3ed974fdcc177d9458002ce8860"><td class="memItemLeft" align="right" valign="top">MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a277eb3ed974fdcc177d9458002ce8860">get_matrix_free</a> (unsigned int index, unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:a277eb3ed974fdcc177d9458002ce8860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrixfree object of the group a given field index.  <br /></td></tr>
-<tr class="separator:a277eb3ed974fdcc177d9458002ce8860"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a742324232c169d9b842d269c47d982bb" id="r_a742324232c169d9b842d269c47d982bb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a742324232c169d9b842d269c47d982bb">get_solve_block</a> (unsigned int index) const</td></tr>
 <tr class="memdesc:a742324232c169d9b842d269c47d982bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solve group of a given field index.  <br /></td></tr>
 <tr class="separator:a742324232c169d9b842d269c47d982bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,72 +221,6 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Get the block index of a field within its solve group. </p>
-
-</div>
-</div>
-<a id="a277eb3ed974fdcc177d9458002ce8860" name="a277eb3ed974fdcc177d9458002ce8860"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a277eb3ed974fdcc177d9458002ce8860">&#9670;&#160;</a></span>get_matrix_free() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt;::get_matrix_free </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the matrixfree object of the group a given field index. </p>
-
-</div>
-</div>
-<a id="a0c21f0c8b26a953f88cfe353035d691b" name="a0c21f0c8b26a953f88cfe353035d691b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c21f0c8b26a953f88cfe353035d691b">&#9670;&#160;</a></span>get_matrix_free() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt;::get_matrix_free </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>index</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the matrixfree object of the group a given field index. </p>
 
 </div>
 </div>

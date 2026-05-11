@@ -127,7 +127,7 @@ $(function(){initNavTree('structSolutionLevel.html',''); initResizable(true); })
 </div><!--header-->
 <div class="contents">
 
-<p>The solution vectors and their corresponding matrix free object with respect to some multigrid level.  
+<p>The solution vectors with respect to on some multigrid level.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="group__solution__handler_8h_source.html">group_solution_handler.h</a>&gt;</code></p>
@@ -138,31 +138,13 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ad218f21f1582d03a872f0480481105e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf9da35c448c4c1c604e9abcd135ea1d" id="r_aaf9da35c448c4c1c604e9abcd135ea1d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf9da35c448c4c1c604e9abcd135ea1d">old_solutions</a></td></tr>
 <tr class="separator:aaf9da35c448c4c1c604e9abcd135ea1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5432cb3504f98bd0db25d0ad17ab2ff5" id="r_a5432cb3504f98bd0db25d0ad17ab2ff5"><td class="memItemLeft" align="right" valign="top">MatrixFree&lt; dim, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5432cb3504f98bd0db25d0ad17ab2ff5">matrix_free</a></td></tr>
-<tr class="separator:a5432cb3504f98bd0db25d0ad17ab2ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
-struct SolutionLevel&lt; dim, number &gt;</div><p>The solution vectors and their corresponding matrix free object with respect to some multigrid level. </p>
-<p><code>solutions</code> is a block vector of all the fields that we keep track of at this level. <code>old_solutions</code> is a vector of with length equal to the number of old states we keep track old. Importantly, for each std::vector entry the block vector has the same shape as <code>solutions</code>. <code>matrix_free</code> is the dealii::MatrixFree object that belongs to the <code>solutions</code> and <code>old_solutions</code> for this level.</p>
+struct SolutionLevel&lt; dim, number &gt;</div><p>The solution vectors with respect to on some multigrid level. </p>
+<p><code>solutions</code> is a block vector of all the fields that we keep track of at this level. <code>old_solutions</code> is a vector of with length equal to the number of old states we keep track old. Importantly, for each std::vector entry the block vector has the same shape as <code>solutions</code>.</p>
 <dl class="section remark"><dt>Remarks</dt><dd>There is a [minor] optimization we could make regarding the old solutions. If a user wants to store up the 2nd old state, we allocate up to the 2nd old state for all fields. This behavior is indiscriminate on whether the user actually needs those vectors, so we could not do that. However, it's painful to deal with and will likely only show minor performance improvements. </dd></dl>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5432cb3504f98bd0db25d0ad17ab2ff5" name="a5432cb3504f98bd0db25d0ad17ab2ff5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5432cb3504f98bd0db25d0ad17ab2ff5">&#9670;&#160;</a></span>matrix_free</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename number&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">MatrixFree&lt;dim, number&gt; <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt;::matrix_free</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aaf9da35c448c4c1c604e9abcd135ea1d" name="aaf9da35c448c4c1c604e9abcd135ea1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf9da35c448c4c1c604e9abcd135ea1d">&#9670;&#160;</a></span>old_solutions</h2>
 

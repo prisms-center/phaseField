@@ -161,12 +161,14 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a35cbbe838a8b3892d3a12cb4089603c1" id="r_a35cbbe838a8b3892d3a12cb4089603c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35cbbe838a8b3892d3a12cb4089603c1">MFOperator</a> (const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;operator_owner, <a class="el" href="#abfc621e434b61003c6e0ba1aba7f5ed9">Operator</a> oper, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_field_attributes, const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; &amp;_solution_indexer, unsigned int _relative_level, <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> _dependency_map, const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;_sim_timer)</td></tr>
-<tr class="memdesc:a35cbbe838a8b3892d3a12cb4089603c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a35cbbe838a8b3892d3a12cb4089603c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7978a0727f7cf68dabcb5f29f1b7c75" id="r_aa7978a0727f7cf68dabcb5f29f1b7c75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7978a0727f7cf68dabcb5f29f1b7c75">MFOperator</a> (const <a class="el" href="classPDEOperatorBase.html">PDEOperatorBase</a>&lt; dim, degree, number &gt; &amp;operator_owner, <a class="el" href="#abfc621e434b61003c6e0ba1aba7f5ed9">Operator</a> oper, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_field_attributes, const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; &amp;_solution_indexer, const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;_matrix_free_manager, <a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a> _dependency_map, const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> &amp;_sim_timer)</td></tr>
+<tr class="memdesc:aa7978a0727f7cf68dabcb5f29f1b7c75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:aa7978a0727f7cf68dabcb5f29f1b7c75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a911839831126b222cc12242536004189" id="r_a911839831126b222cc12242536004189"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a911839831126b222cc12242536004189">initialize</a> (const <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; &amp;dst_solution)</td></tr>
 <tr class="memdesc:a911839831126b222cc12242536004189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize.  <br /></td></tr>
 <tr class="separator:a911839831126b222cc12242536004189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeffcf1d035bfc8cd2107f553c5255be4" id="r_aeffcf1d035bfc8cd2107f553c5255be4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeffcf1d035bfc8cd2107f553c5255be4">set_relative_level</a> (unsigned int _relative_level)</td></tr>
+<tr class="separator:aeffcf1d035bfc8cd2107f553c5255be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5758c2493a6e9e8ddd499d8801d2adf" id="r_ab5758c2493a6e9e8ddd499d8801d2adf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5758c2493a6e9e8ddd499d8801d2adf">compute_operator</a> (<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;dst, const <a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;src=<a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;()) const</td></tr>
 <tr class="memdesc:ab5758c2493a6e9e8ddd499d8801d2adf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls cell_loop on function that calls user-defined operator.  <br /></td></tr>
 <tr class="separator:ab5758c2493a6e9e8ddd499d8801d2adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,16 +247,22 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a150dac000277d438fbb42712d012b55d" id="r_a150dac000277d438fbb42712d012b55d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#abfc621e434b61003c6e0ba1aba7f5ed9">Operator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a150dac000277d438fbb42712d012b55d">pde_op</a></td></tr>
 <tr class="memdesc:a150dac000277d438fbb42712d012b55d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The actual PDE operator function ptr (eg. compute_rhs) for user defined PDEs.  <br /></td></tr>
 <tr class="separator:a150dac000277d438fbb42712d012b55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6d393990987b210dfee601dc6c2930b" id="r_ae6d393990987b210dfee601dc6c2930b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6d393990987b210dfee601dc6c2930b">solution_indexer</a></td></tr>
+<tr class="memitem:ae6d393990987b210dfee601dc6c2930b" id="r_ae6d393990987b210dfee601dc6c2930b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6d393990987b210dfee601dc6c2930b">solution_indexer</a> = nullptr</td></tr>
 <tr class="memdesc:ae6d393990987b210dfee601dc6c2930b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-access to fields.  <br /></td></tr>
 <tr class="separator:ae6d393990987b210dfee601dc6c2930b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4822dd6bfa23d61a35ec1a35a1674453" id="r_a4822dd6bfa23d61a35ec1a35a1674453"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4822dd6bfa23d61a35ec1a35a1674453">relative_level</a></td></tr>
+<tr class="memitem:ae1925b47f3e6b1de1494e7549a24edf7" id="r_ae1925b47f3e6b1de1494e7549a24edf7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1925b47f3e6b1de1494e7549a24edf7">matrix_free_manager</a> = nullptr</td></tr>
+<tr class="memdesc:ae1925b47f3e6b1de1494e7549a24edf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free manager.  <br /></td></tr>
+<tr class="separator:ae1925b47f3e6b1de1494e7549a24edf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af447371f8d326e9a9a55b47ff527f12d" id="r_af447371f8d326e9a9a55b47ff527f12d"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af447371f8d326e9a9a55b47ff527f12d">data</a> = nullptr</td></tr>
+<tr class="memdesc:af447371f8d326e9a9a55b47ff527f12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object.  <br /></td></tr>
+<tr class="separator:af447371f8d326e9a9a55b47ff527f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4822dd6bfa23d61a35ec1a35a1674453" id="r_a4822dd6bfa23d61a35ec1a35a1674453"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4822dd6bfa23d61a35ec1a35a1674453">relative_level</a> = 0</td></tr>
 <tr class="memdesc:a4822dd6bfa23d61a35ec1a35a1674453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Level so that correct fields are read from indexer.  <br /></td></tr>
 <tr class="separator:a4822dd6bfa23d61a35ec1a35a1674453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f85b32bc0d2b91607c74e63d669ee6d" id="r_a6f85b32bc0d2b91607c74e63d669ee6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f85b32bc0d2b91607c74e63d669ee6d">dependency_map</a></td></tr>
 <tr class="memdesc:a6f85b32bc0d2b91607c74e63d669ee6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which fields should be available to the solve.  <br /></td></tr>
 <tr class="separator:a6f85b32bc0d2b91607c74e63d669ee6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae6869272329cf262b67cfffb514d007" id="r_aae6869272329cf262b67cfffb514d007"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae6869272329cf262b67cfffb514d007">sim_timer</a></td></tr>
+<tr class="memitem:aae6869272329cf262b67cfffb514d007" id="r_aae6869272329cf262b67cfffb514d007"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae6869272329cf262b67cfffb514d007">sim_timer</a> = nullptr</td></tr>
 <tr class="memdesc:aae6869272329cf262b67cfffb514d007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulation timer.  <br /></td></tr>
 <tr class="separator:aae6869272329cf262b67cfffb514d007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f5910d390dfc9ca1da226e3da37d900" id="r_a7f5910d390dfc9ca1da226e3da37d900"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f5910d390dfc9ca1da226e3da37d900">scaling_diagonal</a></td></tr>
@@ -266,9 +274,6 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a873ceac7004d746546ec1cdce179bc5a" id="r_a873ceac7004d746546ec1cdce179bc5a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a873ceac7004d746546ec1cdce179bc5a">field_to_block_index</a></td></tr>
 <tr class="memdesc:a873ceac7004d746546ec1cdce179bc5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from field index to block index (only for dst).  <br /></td></tr>
 <tr class="separator:a873ceac7004d746546ec1cdce179bc5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af447371f8d326e9a9a55b47ff527f12d" id="r_af447371f8d326e9a9a55b47ff527f12d"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af447371f8d326e9a9a55b47ff527f12d">data</a></td></tr>
-<tr class="memdesc:af447371f8d326e9a9a55b47ff527f12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix-free object.  <br /></td></tr>
-<tr class="separator:af447371f8d326e9a9a55b47ff527f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0bfa67fb856a88caa5fcc03056107f3" id="r_ab0bfa67fb856a88caa5fcc03056107f3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; unsigned int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0bfa67fb856a88caa5fcc03056107f3">edge_constrained_indices</a></td></tr>
 <tr class="memdesc:ab0bfa67fb856a88caa5fcc03056107f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indices of DoFs on edge in case the operator is used in GMG context.  <br /></td></tr>
 <tr class="separator:ab0bfa67fb856a88caa5fcc03056107f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -372,8 +377,8 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a35cbbe838a8b3892d3a12cb4089603c1" name="a35cbbe838a8b3892d3a12cb4089603c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35cbbe838a8b3892d3a12cb4089603c1">&#9670;&#160;</a></span>MFOperator()</h2>
+<a id="aa7978a0727f7cf68dabcb5f29f1b7c75" name="aa7978a0727f7cf68dabcb5f29f1b7c75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7978a0727f7cf68dabcb5f29f1b7c75">&#9670;&#160;</a></span>MFOperator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +411,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>_relative_level</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt; dim, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_matrix_free_manager</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -421,7 +426,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -599,7 +604,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Calls user-defined operator. </p>
-<dl class="section note"><dt>Note</dt><dd>requires dst is not ghosted </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>dst is not ghosted </dd></dl>
 
 </div>
 </div>
@@ -625,7 +630,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Calls cell_loop on function that calls user-defined operator. </p>
-<dl class="section note"><dt>Note</dt><dd>requires dst is not ghosted </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>dst is not ghosted </dd></dl>
 
 </div>
 </div>
@@ -772,7 +777,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Initialize. </p>
-<dl class="section note"><dt>Note</dt><dd>This will look stylistically strange. We pass in the solution handler for the fields being solved here, but we don't actually use any of the field data from it. This is because the purpose of this <a class="el" href="classMFOperator.html" title="This class exists to evaluate a single user-defined operator for the matrix-free implementation of so...">MFOperator</a> class is to provide an operator with the signature <code>vmult(VectorType &amp;dst, const VectorType &amp;src)</code>. Because we are using block vectors, for the <a class="el" href="classMFOperator.html" title="This class exists to evaluate a single user-defined operator for the matrix-free implementation of so...">MFOperator</a> to work, it needs to have access to the index mapping in addition to the matrix_free object. Both are stored in the solution handler.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This will look stylistically strange. We pass in the solution handler for the fields being solved here, but we don't actually use any of the field data from it. This is because the purpose of this <a class="el" href="classMFOperator.html" title="This class exists to evaluate a single user-defined operator for the matrix-free implementation of so...">MFOperator</a> class is to provide an operator with the signature <code>vmult(VectorType &amp;dst, const VectorType &amp;src)</code>. Because we are using block vectors, for the <a class="el" href="classMFOperator.html" title="This class exists to evaluate a single user-defined operator for the matrix-free implementation of so...">MFOperator</a> to work, it needs to have access to the index mapping, which is stored in the solution handler.</dd></dl>
 <p>Additionally, we modify dependency_map to include an entry for every field being solved. This is to avoid a troublesome problem downstream in <a class="el" href="classFieldContainer.html" title="This class permits the access of a subset of indexed fields and gives an error if any non-allowed fie...">FieldContainer</a>, where we only want to initialize FEEvals for what is needed. (There could be a better way of handling this, but this is the least complicated for now.) </p>
 
 </div>
@@ -816,6 +821,33 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Reinit diagonal matrix to have the correct shape. </p>
+
+</div>
+</div>
+<a id="aeffcf1d035bfc8cd2107f553c5255be4" name="aeffcf1d035bfc8cd2107f553c5255be4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeffcf1d035bfc8cd2107f553c5255be4">&#9670;&#160;</a></span>set_relative_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::set_relative_level </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>_relative_level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -945,7 +977,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const MatrixFree&lt;dim, number&gt;* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::data</td>
+          <td class="memname">const MatrixFree&lt;dim, number&gt;* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::data = nullptr</td>
         </tr>
       </table>
   </td>
@@ -1119,6 +1151,32 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
+<a id="ae1925b47f3e6b1de1494e7549a24edf7" name="ae1925b47f3e6b1de1494e7549a24edf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1925b47f3e6b1de1494e7549a24edf7">&#9670;&#160;</a></span>matrix_free_manager</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classMatrixFreeManager.html">MatrixFreeManager</a>&lt;dim, number&gt;* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::matrix_free_manager = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Matrix-free manager. </p>
+
+</div>
+</div>
 <a id="a150dac000277d438fbb42712d012b55d" name="a150dac000277d438fbb42712d012b55d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a150dac000277d438fbb42712d012b55d">&#9670;&#160;</a></span>pde_op</h2>
 
@@ -1201,7 +1259,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::relative_level</td>
+          <td class="memname">unsigned int <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::relative_level = 0</td>
         </tr>
       </table>
   </td>
@@ -1279,7 +1337,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a>* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::sim_timer</td>
+          <td class="memname">const <a class="el" href="classSimulationTimer.html">SimulationTimer</a>* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::sim_timer = nullptr</td>
         </tr>
       </table>
   </td>
@@ -1305,7 +1363,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt;dim, number&gt;* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::solution_indexer</td>
+          <td class="memname">const <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt;dim, number&gt;* <a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;::solution_indexer = nullptr</td>
         </tr>
       </table>
   </td>

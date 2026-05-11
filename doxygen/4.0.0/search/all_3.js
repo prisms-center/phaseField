@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../classInvMManager.html#af07d3ed3a334371edb44608afa91cb62',1,'InvMManager::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
+  ['data_0',['data',['../classInvMManager.html#ab7668aad729ce9147b7444f9338c018e',1,'InvMManager::data'],['../classReadBinary.html#a0dbc42c34fa79933645a46ef85149064',1,'ReadBinary::data'],['../classMFOperator.html#af447371f8d326e9a9a55b47ff527f12d',1,'MFOperator::data']]],
   ['dataformattype_1',['DataFormatType',['../type__enums_8h.html#a4b6daaa2b300483df81d068cf4a65768',1,'type_enums.h']]],
   ['dataset_5fformat_2',['dataset_format',['../structInitialConditionFile.html#ac22979950186aee16fe98b2d06632262',1,'InitialConditionFile']]],
   ['dealii_5fpoint_5fto_5fvector_3',['dealii_point_to_vector',['../utilities_8h.html#a6900a956ef14d53b30c0616e7cf7b930',1,'utilities.h']]],
@@ -51,12 +51,11 @@ var searchData=
   ['do_5finitial_5frefinement_48',['do_initial_refinement',['../classRefinementManager.html#ad09c4dc590452fac3ce2dfa0c1313a3c',1,'RefinementManager']]],
   ['do_5flinear_5fsolve_49',['do_linear_solve',['../classLinearSolver.html#a5546aff1cd68fade625bbdaf22cc8724',1,'LinearSolver::do_linear_solve()'],['../classMGSolver.html#a5546aff1cd68fade625bbdaf22cc8724',1,'MGSolver::do_linear_solve()']]],
   ['docker_50',['Docker',['../docker.html#docker_installation',1,'Installation with Docker'],['../docker.html',1,'Installing with Docker'],['../docker.html#docker_introduction',1,'Introduction to Docker']]],
-  ['dof_5fhandlers_51',['dof_handlers',['../classDoFManager.html#a7d8e76075626d155b717631139f8fbe5',1,'DoFManager']]],
-  ['dof_5fmanager_52',['dof_manager',['../classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d',1,'ConstraintManager::dof_manager'],['../classProblem.html#a341cbd4f8bd025d3f53cbb17b57cb047',1,'Problem::dof_manager'],['../classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f',1,'SolveContext::dof_manager']]],
-  ['dof_5fmanager_2ecc_53',['dof_manager.cc',['../dof__manager_8cc.html',1,'']]],
-  ['dof_5fmanager_2eh_54',['dof_manager.h',['../dof__manager_8h.html',1,'']]],
-  ['dofmanager_55',['DoFManager',['../classDoFManager.html',1,'DoFManager&lt; dim, degree &gt;'],['../classDoFManager.html#a4d9a282edb7fb97836d8bde171a4c32d',1,'DoFManager::DoFManager(const std::vector&lt; FieldAttributes &gt; &amp;field_attributes)'],['../classDoFManager.html#a92ac1796b3a06d0fc783dac79d7f13d9',1,'DoFManager::DoFManager(const std::vector&lt; FieldAttributes &gt; &amp;field_attributes, const TriangulationManager&lt; dim &gt; &amp;triangulation_handler)']]],
-  ['dofs_5fper_5fcomponent_56',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
-  ['dst_57',['DST',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
-  ['dt_58',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
+  ['dof_5fmanager_51',['dof_manager',['../classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d',1,'ConstraintManager::dof_manager'],['../classProblem.html#a341cbd4f8bd025d3f53cbb17b57cb047',1,'Problem::dof_manager'],['../classSolveContext.html#ac4f42d8f52c9343ee050372f77c9ef8f',1,'SolveContext::dof_manager']]],
+  ['dof_5fmanager_2ecc_52',['dof_manager.cc',['../dof__manager_8cc.html',1,'']]],
+  ['dof_5fmanager_2eh_53',['dof_manager.h',['../dof__manager_8h.html',1,'']]],
+  ['dofmanager_54',['DoFManager',['../classDoFManager.html',1,'DoFManager&lt; dim, degree &gt;'],['../classDoFManager.html#a6893a207746e57c9b8719199e22a82a9',1,'DoFManager::DoFManager()=default'],['../classDoFManager.html#a39c87554d92f03a2ea3b122b1b62f89f',1,'DoFManager::DoFManager(const std::vector&lt; FieldAttributes &gt; &amp;field_attributes, const TriangulationManager&lt; dim &gt; &amp;triangulation_manager)'],['../classDoFManager.html#a0aef68f1480180a71ad697e090d728a3',1,'DoFManager::DoFManager(const DoFManager &amp;)=delete'],['../classDoFManager.html#a28323004ed5f363ae72f4a88151c76fd',1,'DoFManager::DoFManager(const DoFManager &amp;&amp;)=delete']]],
+  ['dofs_5fper_5fcomponent_55',['dofs_per_component',['../classFieldContainer.html#a663baa5a1fb584a560e6a3527260dd64',1,'FieldContainer']]],
+  ['dst_56',['DST',['../type__enums_8h.html#ad7e80c9ffed51cd6988f622c9cbd3dfca7a1970158a695340fdc76c8424740233',1,'type_enums.h']]],
+  ['dt_57',['dt',['../structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a',1,'TemporalDiscretization']]]
 ];

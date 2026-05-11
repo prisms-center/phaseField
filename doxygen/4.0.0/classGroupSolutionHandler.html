@@ -146,9 +146,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a31ae0827fa3552ba604aa772e6a668e6" id="r_a31ae0827fa3552ba604aa772e6a668e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31ae0827fa3552ba604aa772e6a668e6">GroupSolutionHandler</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_attributes_list)</td></tr>
-<tr class="memdesc:a31ae0827fa3552ba604aa772e6a668e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a31ae0827fa3552ba604aa772e6a668e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad50a68cf09b69e8d9a7766e69bac59fd" id="r_ad50a68cf09b69e8d9a7766e69bac59fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad50a68cf09b69e8d9a7766e69bac59fd">GroupSolutionHandler</a> (<a class="el" href="classSolveBlock.html">SolveBlock</a> _solve_block, const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;_attributes_list, const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;_matrix_free_levels)</td></tr>
+<tr class="memdesc:ad50a68cf09b69e8d9a7766e69bac59fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:ad50a68cf09b69e8d9a7766e69bac59fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967cbb2ba0c3f28838cc873bbf1d5f4a" id="r_a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a967cbb2ba0c3f28838cc873bbf1d5f4a">get_solution_full_vector</a> (unsigned int relative_level=0)</td></tr>
 <tr class="memdesc:a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solution vector set. This contains all the normal fields and is typically used for output.  <br /></td></tr>
 <tr class="separator:a967cbb2ba0c3f28838cc873bbf1d5f4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,14 +179,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a31e90d44e2713a190fc00778b329f3c8" id="r_a31e90d44e2713a190fc00778b329f3c8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31e90d44e2713a190fc00778b329f3c8">get_solution_level</a> (unsigned int relative_level=0) const</td></tr>
 <tr class="memdesc:a31e90d44e2713a190fc00778b329f3c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solutions object at a level.  <br /></td></tr>
 <tr class="separator:a31e90d44e2713a190fc00778b329f3c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4c633cfc540d26e697b3cd8b2d4dd96" id="r_ad4c633cfc540d26e697b3cd8b2d4dd96"><td class="memItemLeft" align="right" valign="top">MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4c633cfc540d26e697b3cd8b2d4dd96">get_matrix_free</a> (unsigned int relative_level=0)</td></tr>
-<tr class="memdesc:ad4c633cfc540d26e697b3cd8b2d4dd96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix_free object at a level.  <br /></td></tr>
-<tr class="separator:ad4c633cfc540d26e697b3cd8b2d4dd96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aa691c36fc7bfd46e7d053793ced779" id="r_a4aa691c36fc7bfd46e7d053793ced779"><td class="memItemLeft" align="right" valign="top">const MatrixFree&lt; dim, number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4aa691c36fc7bfd46e7d053793ced779">get_matrix_free</a> (unsigned int relative_level=0) const</td></tr>
-<tr class="memdesc:a4aa691c36fc7bfd46e7d053793ced779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the matrix_free object at a level.  <br /></td></tr>
-<tr class="separator:a4aa691c36fc7bfd46e7d053793ced779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80017ea8c86c834ae78e933d907141b7" id="r_a80017ea8c86c834ae78e933d907141b7"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80017ea8c86c834ae78e933d907141b7">get_matrix_free_levels</a> () const</td></tr>
+<tr class="memdesc:a80017ea8c86c834ae78e933d907141b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying matrix_free objects.  <br /></td></tr>
+<tr class="separator:a80017ea8c86c834ae78e933d907141b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0959621de3274cbaf56433f67fae7f9" id="r_af0959621de3274cbaf56433f67fae7f9"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0959621de3274cbaf56433f67fae7f9">get_block_index</a> (unsigned int global_index) const</td></tr>
-<tr class="memdesc:af0959621de3274cbaf56433f67fae7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the block index from the global index.  <br /></td></tr>
+<tr class="memdesc:af0959621de3274cbaf56433f67fae7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the block index from the global field index.  <br /></td></tr>
 <tr class="separator:af0959621de3274cbaf56433f67fae7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a710ca7b9ecc6b65f3c69aaec96540f5d" id="r_a710ca7b9ecc6b65f3c69aaec96540f5d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSolveBlock.html">SolveBlock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a710ca7b9ecc6b65f3c69aaec96540f5d">get_solve_block</a> () const</td></tr>
 <tr class="memdesc:a710ca7b9ecc6b65f3c69aaec96540f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the underlying solve block object.  <br /></td></tr>
@@ -197,14 +194,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7df00460558844845b63e86bf716b221" id="r_a7df00460558844845b63e86bf716b221"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7df00460558844845b63e86bf716b221">get_block_to_global_index</a> () const</td></tr>
 <tr class="memdesc:a7df00460558844845b63e86bf716b221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global index from the block index.  <br /></td></tr>
 <tr class="separator:a7df00460558844845b63e86bf716b221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1299761f10947d6c854a73f85a89fb8c" id="r_a1299761f10947d6c854a73f85a89fb8c"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
-<tr class="memitem:a1299761f10947d6c854a73f85a89fb8c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a1299761f10947d6c854a73f85a89fb8c">init</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;constraint_manager, unsigned int num_old_saved)</td></tr>
-<tr class="memdesc:a1299761f10947d6c854a73f85a89fb8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solution set.  <br /></td></tr>
-<tr class="separator:a1299761f10947d6c854a73f85a89fb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac873da3d9aa93dda68d9817b30eae16a" id="r_ac873da3d9aa93dda68d9817b30eae16a"><td class="memTemplParams" colspan="2">template&lt;unsigned int degree&gt; </td></tr>
-<tr class="memitem:ac873da3d9aa93dda68d9817b30eae16a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac873da3d9aa93dda68d9817b30eae16a">reinit</a> (const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;dof_manager, const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;constraint_manager)</td></tr>
-<tr class="memdesc:ac873da3d9aa93dda68d9817b30eae16a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solution set.  <br /></td></tr>
-<tr class="separator:ac873da3d9aa93dda68d9817b30eae16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0740fb13dd11234364a4bbbc9ef093ac" id="r_a0740fb13dd11234364a4bbbc9ef093ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0740fb13dd11234364a4bbbc9ef093ac">init</a> (unsigned int num_old_saved)</td></tr>
+<tr class="memdesc:a0740fb13dd11234364a4bbbc9ef093ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solution set.  <br /></td></tr>
+<tr class="separator:a0740fb13dd11234364a4bbbc9ef093ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d4f593868a98d0427a318e66e6fa00f" id="r_a4d4f593868a98d0427a318e66e6fa00f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d4f593868a98d0427a318e66e6fa00f">reinit</a> ()</td></tr>
+<tr class="memdesc:a4d4f593868a98d0427a318e66e6fa00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialize the solution set.  <br /></td></tr>
+<tr class="separator:a4d4f593868a98d0427a318e66e6fa00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a717c138ec2317b4356aaf16b90b6dcdd" id="r_a717c138ec2317b4356aaf16b90b6dcdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a717c138ec2317b4356aaf16b90b6dcdd">update_ghosts</a> (unsigned int relative_level=0) const</td></tr>
 <tr class="memdesc:a717c138ec2317b4356aaf16b90b6dcdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the ghost values.  <br /></td></tr>
 <tr class="separator:a717c138ec2317b4356aaf16b90b6dcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,8 +243,11 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a68dea5783935e329402debc8893e85ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mapping from global field index to block index.  <br /></td></tr>
 <tr class="separator:a68dea5783935e329402debc8893e85ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ce086db80558ad294ac80696972f98" id="r_a52ce086db80558ad294ac80696972f98"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structSolutionLevel.html">SolutionLevel</a>&lt; dim, number &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52ce086db80558ad294ac80696972f98">solution_levels</a></td></tr>
-<tr class="memdesc:a52ce086db80558ad294ac80696972f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solutions and matrix free of each level.  <br /></td></tr>
+<tr class="memdesc:a52ce086db80558ad294ac80696972f98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solutions of each level.  <br /></td></tr>
 <tr class="separator:a52ce086db80558ad294ac80696972f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a26eb6584f326c85f8c1d6ef5146442" id="r_a0a26eb6584f326c85f8c1d6ef5146442"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a26eb6584f326c85f8c1d6ef5146442">matrix_free_levels</a> = nullptr</td></tr>
+<tr class="memdesc:a0a26eb6584f326c85f8c1d6ef5146442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to MatrixFree of each level.  <br /></td></tr>
+<tr class="separator:a0a26eb6584f326c85f8c1d6ef5146442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adad09d50683e64463457688080c4f676" id="r_adad09d50683e64463457688080c4f676"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="#ac26fdde92556378f13ed857dbff31af6">SolutionTransfer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adad09d50683e64463457688080c4f676">block_solution_transfer</a></td></tr>
 <tr class="memdesc:adad09d50683e64463457688080c4f676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for solution transfer to different mesh (for AMR). Can only work on one block at a time.  <br /></td></tr>
 <tr class="separator:adad09d50683e64463457688080c4f676"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,8 +275,8 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a31ae0827fa3552ba604aa772e6a668e6" name="a31ae0827fa3552ba604aa772e6a668e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31ae0827fa3552ba604aa772e6a668e6">&#9670;&#160;</a></span>GroupSolutionHandler()</h2>
+<a id="ad50a68cf09b69e8d9a7766e69bac59fd" name="ad50a68cf09b69e8d9a7766e69bac59fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad50a68cf09b69e8d9a7766e69bac59fd">&#9670;&#160;</a></span>GroupSolutionHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,7 +291,12 @@ template&lt;unsigned int dim, typename number&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_attributes_list</em></span>&#160;)</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_attributes_list</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>_matrix_free_levels</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -437,7 +440,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Get the block index from the global index. </p>
+<p>Get the block index from the global field index. </p>
 
 </div>
 </div>
@@ -499,61 +502,24 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="ad4c633cfc540d26e697b3cd8b2d4dd96" name="ad4c633cfc540d26e697b3cd8b2d4dd96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4c633cfc540d26e697b3cd8b2d4dd96">&#9670;&#160;</a></span>get_matrix_free() <span class="overload">[1/2]</span></h2>
+<a id="a80017ea8c86c834ae78e933d907141b7" name="a80017ea8c86c834ae78e933d907141b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80017ea8c86c834ae78e933d907141b7">&#9670;&#160;</a></span>get_matrix_free_levels()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_matrix_free </td>
+          <td class="memname">const std::vector&lt; MatrixFree&lt; dim, number &gt; &gt; &amp; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_matrix_free_levels </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the matrix_free object at a level. </p>
-
-</div>
-</div>
-<a id="a4aa691c36fc7bfd46e7d053793ced779" name="a4aa691c36fc7bfd46e7d053793ced779"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4aa691c36fc7bfd46e7d053793ced779">&#9670;&#160;</a></span>get_matrix_free() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::get_matrix_free </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>relative_level</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Get the matrix_free object at a level. </p>
+<p>Get the underlying matrix_free objects. </p>
 
 </div>
 </div>
@@ -910,35 +876,25 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="a1299761f10947d6c854a73f85a89fb8c" name="a1299761f10947d6c854a73f85a89fb8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1299761f10947d6c854a73f85a89fb8c">&#9670;&#160;</a></span>init()</h2>
+<a id="a0740fb13dd11234364a4bbbc9ef093ac" name="a0740fb13dd11234364a4bbbc9ef093ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0740fb13dd11234364a4bbbc9ef093ac">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim, typename number&gt; </div>
-<div class="memtemplate">
-template&lt;unsigned int degree&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::init </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_old_saved</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>constraint_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_old_saved</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Initialize the solution set. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>MatrixFree is already reinit. </dd></dl>
 
 </div>
 </div>
@@ -984,30 +940,25 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
-<a id="ac873da3d9aa93dda68d9817b30eae16a" name="ac873da3d9aa93dda68d9817b30eae16a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac873da3d9aa93dda68d9817b30eae16a">&#9670;&#160;</a></span>reinit()</h2>
+<a id="a4d4f593868a98d0427a318e66e6fa00f" name="a4d4f593868a98d0427a318e66e6fa00f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d4f593868a98d0427a318e66e6fa00f">&#9670;&#160;</a></span>reinit()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim, typename number&gt; </div>
-<div class="memtemplate">
-template&lt;unsigned int degree&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::reinit </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classDoFManager.html">DoFManager</a>&lt; dim, degree &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>dof_manager</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classConstraintManager.html">ConstraintManager</a>&lt; dim, degree, number &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>constraint_manager</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Reinitialize the solution set. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>MatrixFree is already reinit. </dd></dl>
 
 </div>
 </div>
@@ -1154,6 +1105,32 @@ template&lt;unsigned int dim, typename number&gt; </div>
 
 </div>
 </div>
+<a id="a0a26eb6584f326c85f8c1d6ef5146442" name="a0a26eb6584f326c85f8c1d6ef5146442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a26eb6584f326c85f8c1d6ef5146442">&#9670;&#160;</a></span>matrix_free_levels</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;MatrixFree&lt;dim, number&gt; &gt;* <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt;::matrix_free_levels = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to MatrixFree of each level. </p>
+
+</div>
+</div>
 <a id="a52ce086db80558ad294ac80696972f98" name="a52ce086db80558ad294ac80696972f98"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a52ce086db80558ad294ac80696972f98">&#9670;&#160;</a></span>solution_levels</h2>
 
@@ -1176,7 +1153,7 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Solutions and matrix free of each level. </p>
+<p>Solutions of each level. </p>
 
 </div>
 </div>
