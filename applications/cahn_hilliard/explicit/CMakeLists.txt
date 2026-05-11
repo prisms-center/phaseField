@@ -62,9 +62,12 @@ set_target_properties(
 )
 
 # Link PRISMS-PF
+# If we're in Debug configuration and PRISMS_PF_BUILD_TYPE is DebugRelease, link to the prisms_pf_debug target,
+# which is only available in prisms_pf DebugRelease configuration.
+# Otherwise link to the prisms_pf target, which may be debug or release
 target_link_libraries(
   ${APPLICATION_NAME}
   PRIVATE
-    $<$<CONFIG:Debug>:PRISMS-PF::prisms_pf_debug>
-    $<$<CONFIG:Release>:PRISMS-PF::prisms_pf_release>
+    $<IF:$<AND:$<CONFIG:Debug>,$<STREQUAL:${PRISMS_PF_BUILD_TYPE},DebugRelease>>,PRISMS-PF::prisms_pf_debug,
+    PRISMS-PF::prisms_pf>
 )
