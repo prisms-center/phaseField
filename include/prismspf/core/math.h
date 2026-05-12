@@ -23,7 +23,6 @@ namespace math
 using PRISMS_PF_MATHTYPE::fabs;
 using PRISMS_PF_MATHTYPE::fmod;
 using PRISMS_PF_MATHTYPE::remainder;
-using PRISMS_PF_MATHTYPE::fma;
 using PRISMS_PF_MATHTYPE::fmax;
 using PRISMS_PF_MATHTYPE::fmin;
 using PRISMS_PF_MATHTYPE::fdim;
