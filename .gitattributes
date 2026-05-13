@@ -1,1 +1,7 @@
 html/* linguist-documentation
+
+# Handle all files as text and normalize to LF on commit
+* text=auto
+
+# Force LF for all files Git detects as text on checkout
+* text eol=lf
