@@ -31,6 +31,7 @@ public:
                                       int,
                                       bool,
                                       std::string,
+                                      std::vector<double>,
                                       dealii::Tensor<1, dim>,
                                       dealii::Tensor<2, dim>,
                                       dealii::Tensor<2, (2 * dim) - 1 + (dim / 3)>>;
@@ -76,6 +77,15 @@ public:
    */
   [[nodiscard]] std::string
   get_string(const std::string &constant_name) const;
+
+  /**
+   * @brief Retrieve the list from the `model_constants` that are defined from the
+   * parameters.prm parser. This is essentially just a wrapper for boost::get.
+   *
+   * @param constant_name Name of the constant to retrieve.
+   */
+  [[nodiscard]] std::vector<double>
+  get_list(const std::string &constant_name) const;
 
   /**
    * @brief Retrieve the rank 1 tensor from the `model_constants` that are defined from
@@ -200,6 +210,17 @@ private:
     }
 
     void
+    operator()(const std::vector<double> &values) const
+    {
+      ConditionalOStreams::pout_summary() << "List: ";
+      for (unsigned int i = 0; i < values.size(); ++i)
+        {
+          ConditionalOStreams::pout_summary()
+            << values[i] << (i == values.size() - 1 ? "" : ", ");
+        }
+    }
+
+    void
     operator()(const dealii::Tensor<1, dim> &value) const
     {
       ConditionalOStreams::pout_summary() << "Tensor<1, " << dim << ">: ";
@@ -290,6 +311,19 @@ UserConstants<dim>::get_string(const std::string &constant_name) const
            constant_name + "."));
 
   return boost::get<std::string>(model_constants.at(constant_name));
+}
+
+template <unsigned int dim>
+inline std::vector<double>
+UserConstants<dim>::get_list(const std::string &constant_name) const
+{
+  Assert(model_constants.find(constant_name) != model_constants.end(),
+         dealii::ExcMessage(
+           "Mismatch between constants in parameters.prm and CustomPDE.h. The constant "
+           "that you attempted to access was " +
+           constant_name + "."));
+
+  return boost::get<std::vector<double>>(model_constants.at(constant_name));
 }
 
 template <unsigned int dim>
@@ -442,6 +476,25 @@ UserConstants<dim>::construct_user_constant(
       return primitive_model_constant(model_constants_strings);
     }
 
+  if (boost::iequals(model_constants_type_strings.at(0), "list"))
+    {
+      remove_parentheses(model_constants_strings);
+      const unsigned int n_elements = model_constants_strings.size() - 1;
+
+      std::vector<double> values;
+      values.reserve(n_elements);
+
+      for (unsigned int i = 0; i < n_elements; ++i)
+        {
+          const std::string data = dealii::Utilities::trim(model_constants_strings.at(i));
+
+          if (!data.empty()) // handle (1, , 3)
+            {
+              values.push_back(dealii::Utilities::string_to_double(data));
+            }
+        }
+      return values;
+    }
   if (boost::iequals(model_constants_type_strings.at(0), "tensor"))
     {
       const unsigned int n_elements = model_constants_strings.size() - 1;
@@ -554,7 +607,7 @@ UserConstants<dim>::primitive_model_constant(
   AssertThrow(false,
               dealii::ExcMessage(
                 "The type for user-defined variables must be `double`, `int`, "
-                "`bool`, `string`, `tensor`, or `elastic constants`."));
+                "`bool`, `string`, `list`, `tensor`, or `elastic constants`."));
   return 0;
 }
 
