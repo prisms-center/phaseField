@@ -5,3 +5,8 @@ html/* linguist-documentation
 
 # Force LF for all files Git detects as text on checkout
 * text eol=lf
+
+# Alternatively, explicitly treat them as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
