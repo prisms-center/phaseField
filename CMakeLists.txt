@@ -13,7 +13,7 @@ cmake_policy(VERSION 3.25)
 
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-  message(FATAL_ERROR "In-source build prohibited.")
+  message(FATAL_ERROR "In-source build prohibited. Use a separate build directory.")
 endif()
 
 # Project declaration, language, and version
@@ -320,6 +320,11 @@ endif()
 
 # TODO: Add VTK
 
+# Set the build type to DebugRelease if unspecified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "DebugRelease" CACHE STRING "Build type" FORCE)
+endif()
+
 # FetchCotent MakeAvailable for the other vendored dependencies
 set(PRISMS_PF_VENDORED_PACKAGES libassert)
 if(PRISMS_PF_UNIT_TESTS OR PRISMS_PF_REGRESSION_TESTS OR PRISMS_PF_PERFORMANCE_TESTS)
@@ -409,31 +414,24 @@ configure_file(cmake/templates.in cmake/templates @ONLY)
 
 if(CMAKE_BUILD_TYPE STREQUAL "DebugRelease")
   add_library(prisms_pf_debug)
-  add_library(prisms_pf_release)
+  add_library(prisms_pf)
 
   prisms_pf_configure_target(prisms_pf_debug "Debug")
-  prisms_pf_configure_target(prisms_pf_release "Release")
+  prisms_pf_configure_target(prisms_pf "Release")
 
   add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf_debug)
-  add_library(prisms_pf::prisms_pf_release ALIAS prisms_pf_release)
+  add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
 
   set(
     PRISMS_PF_TARGETS
     prisms_pf_debug
-    prisms_pf_release
+    prisms_pf
   )
-elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  add_library(prisms_pf_debug)
-  prisms_pf_configure_target(prisms_pf_debug "Debug")
-  add_library(prisms_pf::prisms_pf ALIAS prisms_pf_debug)
-  add_library(prisms_pf::prisms_pf_debug ALIAS prisms_pf_debug)
-  set(PRISMS_PF_TARGETS prisms_pf_debug)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-  add_library(prisms_pf_release)
-  prisms_pf_configure_target(prisms_pf_release "Release")
-  add_library(prisms_pf::prisms_pf ALIAS prisms_pf_release)
-  add_library(prisms_pf::prisms_pf_release ALIAS prisms_pf_release)
-  set(PRISMS_PF_TARGETS prisms_pf_release)
+else()
+  add_library(prisms_pf)
+  prisms_pf_configure_target(prisms_pf ${CMAKE_BUILD_TYPE})
+  add_library(prisms_pf::prisms_pf ALIAS prisms_pf)
+  set(PRISMS_PF_TARGETS prisms_pf)
 endif()
 
 add_subdirectory(src)
