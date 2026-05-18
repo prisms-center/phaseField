@@ -1,0 +1,4 @@
+# Doxygen has a redirect that produces a lot of noise.
+# maybe this can be fixed, but it's not important for 
+# the utility
+https://www.doxygen.org/index.html
