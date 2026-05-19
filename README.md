@@ -4,16 +4,16 @@
 [![Check Links](https://github.com/prisms-center/phaseField/actions/workflows/links.yml/badge.svg)](https://github.com/prisms-center/phaseField/actions/workflows/links.yml)
 
 [![License: LGPL v2.1](https://img.shields.io/badge/License-lgpl-blue.svg)](https://www.gnu.org/licenses/lgpl-2.1)
-[![DOI](https://zenodo.org/badge/22602327.svg)](https://zenodo.org/badge/latestdoi/22602327)
 
 ## Useful links:
 
-[PRISMS-PF Website](https://prisms-center.github.io/phaseField/) <br>
-[Code repository](https://github.com/prisms-center/phaseField) <br>
-[User manual (with installation instructions)](https://prisms-center.github.io/phaseField/doxygen/) <br>
-[User forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
-[Training slides/exercises](https://goo.gl/BBTkJ8) <br>
-[PFHub phase-field community](https://pages.nist.gov/pfhub/)
+[Website](https://prisms-center.github.io/phaseField/)
+[Code repository](https://github.com/prisms-center/phaseField)
+[User manual](https://prisms-center.github.io/phaseField/doxygen/)
+[Discussions](https://github.com/prisms-center/phaseField/discussions)
+[Training slides](https://github.com/prisms-center/PRISMS-PF_Training_Materials)
+[PFHub: phase-field community](https://pages.nist.gov/pfhub/)
+[DOI](https://zenodo.org/badge/latestdoi/22602327)
 
 ## What is PRISMS-PF?
 
