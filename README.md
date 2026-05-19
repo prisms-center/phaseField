@@ -7,13 +7,13 @@
 
 ## Useful links:
 
-[Website](https://prisms-center.github.io/phaseField/)
-[Code repository](https://github.com/prisms-center/phaseField)
-[User manual](https://prisms-center.github.io/phaseField/doxygen/)
-[Discussions](https://github.com/prisms-center/phaseField/discussions)
-[Training slides](https://github.com/prisms-center/PRISMS-PF_Training_Materials)
-[PFHub: phase-field community](https://pages.nist.gov/pfhub/)
-[DOI](https://zenodo.org/badge/latestdoi/22602327)
+[Website](https://prisms-center.github.io/phaseField/) \
+[Code repository](https://github.com/prisms-center/phaseField) \
+[User manual](https://prisms-center.github.io/phaseField/doxygen/) \
+[Discussions](https://github.com/prisms-center/phaseField/discussions) \
+[Training slides](https://github.com/prisms-center/PRISMS-PF_Training_Materials) \
+[PFHub: phase-field community](https://pages.nist.gov/pfhub/) \
+[DOI](https://zenodo.org/badge/latestdoi/22602327) \
 
 ## What is PRISMS-PF?
 
