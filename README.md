@@ -38,7 +38,7 @@ Install the required dependencies:
 
 Configure, compile, and install the main library. We recommend setting the `PRISMS_PF_DIR` variable into your rc file so you have permanent access to it.
 ```
-export PRISMS_PF_DIR="path/to/where/you/want/to/install"
+export PRISMS_PF_DIR="path/to/install"
 ```
 
 ```
