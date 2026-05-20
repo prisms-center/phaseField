@@ -624,6 +624,26 @@ public:
 private:
   DependencyType dependency_type;
 };
+
+class ExcNoSubmission : public dealii::ExceptionBase
+{
+public:
+  explicit ExcNoSubmission()
+  {}
+
+  const char *
+  what() const noexcept override
+  {
+    return "A field had no value or gradient submissions.\n";
+  }
+
+  void
+  print_info(std::ostream &out) const override
+  {
+    out << what() << std::flush;
+  }
+};
+
 #ifdef DEBUG
 #  define AssertAccessible(fe_eval_pair_ptr, dependency_type)                   \
     AssertThrowDebug(block_index != -1, ExcDepNotInitialized(dependency_type)); \
@@ -852,6 +872,7 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::integrate()
 {
   if (fe_eval_src_dst)
     {
+      AssertThrowDebug(integration_flags != EvalFlags::nothing, ExcNoSubmission());
       fe_eval_src_dst->first.integrate(integration_flags);
     }
 }
@@ -877,6 +898,7 @@ FieldContainer<dim, degree, number>::FEEValuationDeps<Rank>::integrate_and_distr
 {
   if (fe_eval_src_dst)
     {
+      AssertThrowDebug(integration_flags != EvalFlags::nothing, ExcNoSubmission());
       fe_eval_src_dst->first.integrate_scatter(integration_flags,
                                                dst_solutions->block(block_index));
     }
@@ -953,13 +975,22 @@ FieldContainer<dim, degree, number>::integrate()
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_block->field_indices)
     {
-      if (field_attributes[field_index].field_type == TensorRank::Scalar)
+      try
         {
-          feeval_deps_scalar[field_index].integrate();
+          if (field_attributes[field_index].field_type == TensorRank::Scalar)
+            {
+              feeval_deps_scalar[field_index].integrate();
+            }
+          else /* vector */
+            {
+              feeval_deps_vector[field_index].integrate();
+            }
         }
-      else /* vector */
+      catch (const ExcNoSubmission &e)
         {
-          feeval_deps_vector[field_index].integrate();
+          AssertThrow(false,
+                      dealii::ExcMessage("Error occurred while integrating field " +
+                                         std::to_string(field_index) + ": " + e.what()));
         }
     }
   // Don't integrate `shared_feeval_scalar` because we only use it for information.
@@ -1007,13 +1038,22 @@ FieldContainer<dim, degree, number>::integrate_and_distribute(
   const std::vector<FieldAttributes> &field_attributes = *field_attributes_ptr;
   for (const Types::Index &field_index : solve_block->field_indices)
     {
-      if (field_attributes[field_index].field_type == TensorRank::Scalar)
+      try
         {
-          feeval_deps_scalar[field_index].integrate_and_distribute(dst_solutions);
+          if (field_attributes[field_index].field_type == TensorRank::Scalar)
+            {
+              feeval_deps_scalar[field_index].integrate_and_distribute(dst_solutions);
+            }
+          else /* vector */
+            {
+              feeval_deps_vector[field_index].integrate_and_distribute(dst_solutions);
+            }
         }
-      else /* vector */
+      catch (const ExcNoSubmission &e)
         {
-          feeval_deps_vector[field_index].integrate_and_distribute(dst_solutions);
+          AssertThrow(false,
+                      dealii::ExcMessage("Error occurred while integrating field " +
+                                         std::to_string(field_index) + ": " + e.what()));
         }
     }
 }
