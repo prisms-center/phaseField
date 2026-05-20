@@ -126,50 +126,107 @@ $(function(){initNavTree('source.html',''); initResizable(true); });
 <div class="textblock"><h2><a class="anchor" id="installation_prerequisites"></a>
 Prerequisites</h2>
 <p>Before you can install PRISMS-PF, you will need to have some prerequisites installed on your machine. These include:</p><ul>
-<li>Git (to clone the repository)</li>
-<li>A C++ compiler with C++20 support (we recommend GCC or Clang)</li>
-<li>CMake (version 3.13.4 or higher)</li>
-<li>LAPACK (for linear algebra operations)</li>
-<li>MPI (we recommend OpenMPI or MPICH)</li>
+<li>A C++ compiler with C++20 support</li>
+<li>CMake (3.25+)</li>
+<li>MPI</li>
 <li>p4est (for adaptive octree meshing)</li>
-<li>VTK (for file I/O) <b>[optional]</b></li>
-<li>Caliper (for profiling) <b>[optional]</b></li>
-<li>deal.II (version 9.6 or higher)</li>
+<li>deal.II (9.6.0+)</li>
 </ul>
-<p>You can install these prerequisites however you like. The first five are typically available on most OSes through your package manager. For example, on Ubuntu, you can install them with: </p><div class="fragment"><div class="line">sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential</div>
-<div class="line">autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin</div>
-<div class="line">openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev</div>
+<p>You can install these prerequisites however you like. The first three are typically available on most OS through your package manager. For example, on Ubuntu, you can install them with: </p><div class="fragment"><div class="line">sudo apt-get install git lsb-release git subversion \</div>
+<div class="line">wget bc libgmp-dev build-essential autoconf automake \</div>
+<div class="line">cmake libtool gfortran python3 libboost-all-dev \</div>
+<div class="line">zlib1g-dev openmpi-bin openmpi-common libopenmpi-dev \</div>
+<div class="line">libblas3 libblas-dev liblapack3 liblapack-dev \</div>
 <div class="line">libsuitesparse-dev</div>
-</div><!-- fragment --><p> To install p4est and deal.II, we recommend following the instructions on the <a href="https://dealii.org/current_release/download/">deal.II installation guide</a>. We suggest building deal.II and p4est using deal.II's automatic installation script <a href="https://github.com/dealii/candi">candi</a>.</p>
+</div><!-- fragment --><p> To install p4est and deal.II, we recommend following the instructions on the <a href="https://dealii.org/current_release/download/">deal.II installation guide</a>. Building deal.II and p4est using deal.II's automatic installation script <a href="https://github.com/dealii/candi">candi</a> is by far the best option for most users.</p>
 <div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/dealii/candi.git</span></div>
 <div class="line">cd candi</div>
-</div><!-- fragment --><p> Modify the <code>candi.cfg</code> file, commenting out any PACKAGES other than dealii and p4est. Then run: </p><div class="fragment"><div class="line">./candi.sh</div>
+</div><!-- fragment --><p> Modify the <code>candi.cfg</code> file, commenting out any PACKAGES other than dealii and p4est. Also, turn on the native optimizations option. You should have something like the following.</p>
+<div class="fragment"><div class="line"><span class="preprocessor"># Option {ON|OFF}: Enable machine-specific optimizations (e.g. -march=native)?</span></div>
+<div class="line">NATIVE_OPTIMIZATIONS=ON</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="preprocessor"># These packages determine the active components of deal.II:</span></div>
+<div class="line">PACKAGES=<span class="stringliteral">&quot;${PACKAGES} once:p4est&quot;</span></div>
+<div class="line">PACKAGES=<span class="stringliteral">&quot;${PACKAGES} dealii&quot;</span></div>
+</div><!-- fragment --><dl class="section remark"><dt>Remarks</dt><dd>If you are building deal.II on a different architecture than you plan to run PRISMS-PF, you can specify the architecture in the <code>DEAL_II_CONFOPTS=""</code> section with <code>-march=&lt;arch&gt;</code>.</dd>
+<dd>
+If you have trouble with deal.II auto-detecting packages or with the system installation of Boost try adding the following. <code>DEAL_II_CONFOPTS="-DDEAL_II_ALLOW_AUTODETECTION=OFF -DDEAL_II_FORCE_BUNDLED_BOOST=ON"</code></dd></dl>
+<p>Then perform the configuration, compilation, and installation with </p><div class="fragment"><div class="line">./candi.sh</div>
 </div><!-- fragment --><p> or </p><div class="fragment"><div class="line">./candi.sh -j &lt;nprocs&gt;</div>
-</div><!-- fragment --><p> to compile with multiple processors (much faster). (Note that we have found that specifying too many processors can sometimes lead to build failures, so if you run into issues, try reducing the number of processors specified.)</p>
-<p>This will install both p4est and deal.II in a local directory (by default,<code>$HOME/dealii-candi/</code>). Be sure to permanently set the <code>DEAL_II_DIR</code> environment variable to point to the deal.II installation.</p>
-<p>To install VTK, we recommend installing from source. </p><div class="fragment"><div class="line">git clone https:<span class="comment">//gitlab.kitware.com/vtk/vtk.git vtk-clone</span></div>
-<div class="line">mkdir vtk-build</div>
-<div class="line">mkdir vtk-install</div>
-<div class="line">cd vtk-build</div>
-<div class="line">cmake ../vtk-clone -DCMAKE_BUILD_TYPE=Release -DVTK_GROUP_ENABLE_QT=OFF</div>
-<div class="line">-DVTK_GROUP_ENABLE_MPI=YES -DVTK_USE_MPI=ON -DVTK_BUILD_TESTING=OFF</div>
-<div class="line">-DCMAKE_INSTALL_PREFIX=../vtk-install</div>
-<div class="line"> </div>
-<div class="line">make -j &lt;numprocs&gt; install</div>
-</div><!-- fragment --><p> Be sure to permanently set the <code>VTK_DIR</code> environment variable to point to the VTK installation (e.g.,<code>$HOME/vtk-install/lib/cmake/vtk-9.xx</code>).</p>
+</div><!-- fragment --><p> to compile with multiple processors (much faster).</p>
+<dl class="section note"><dt>Note</dt><dd>We have found that specifying too many processors can sometimes lead to build failures, so if you run into issues, try reducing the number of processors specified. If this doesn't work <a class="el" href="contact.html">Contact</a> us.</dd></dl>
+<p>This will install both p4est and deal.II in a local directory (by default,<code>$HOME/dealii-candi/</code>). You can override the installation path with the prefix command (<code>./candi.sh -p /path/to/install</code>). Be sure to permanently set the <code>DEAL_II_DIR</code> environment variable to point to the deal.II installation. The candi script will prompt you with steps on how to do this.</p>
 <h2><a class="anchor" id="install_prismspf"></a>
 Installing PRISMS-PF</h2>
-<p>Once you have all the prerequisites installed, you can clone the PRISMS-PF repository from GitHub, configure the build with CMake, and compile the code: </p><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
+<p>Once you have all the prerequisites installed, you can clone the PRISMS-PF repository from GitHub, configure, build, and install the code.</p>
+<p>First, clone the repository and navigate to the main directory. </p><div class="fragment"><div class="line">git clone https:<span class="comment">//github.com/prisms-center/phaseField.git</span></div>
 <div class="line">cd phaseField</div>
-<div class="line">mkdir build</div>
-<div class="line">cd build</div>
-<div class="line">cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=&lt;prisms-install-dir&gt; ..</div>
-<div class="line">make -j &lt;nprocs&gt; install</div>
-</div><!-- fragment --><p> This will build the PRISMS-PF library in both debug and release modes. Next, set the <code>PRISMS_PF_DIR</code> environment variable to point to the PRISMS-PF installation directory (the directory containing the <code>lib</code> and <code>include</code> directories). You can now compile and run any of the applications in the <code>applications</code> directory. For example, to compile and run the <code>allen_cahn</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd applications/allen_cahn/<span class="keyword">explicit</span></div>
-<div class="line">cmake .</div>
+</div><!-- fragment --><p>Next, we'll configure the library. We have a table of configuration options below. Additionally, if you have CMake 3.28+ you can use our <code>CMakePresets.json</code>.</p>
+<h3><a class="anchor" id="cmake_gen_config"></a>
+General Configuration</h3>
+<table class="doxtable">
+<tr>
+<th></th><th>Default </th><th>Description  </th></tr>
+<tr>
+<td><code>PRISMS_PF_AUTODETECTION</code> </td><td>ON </td><td>Try to detect <a class="el" href="#cmake_opt_dependencies">Optional Dependencies</a> that are in path   </td></tr>
+<tr>
+<td><code>PRISMS_PF_UNIT_TESTS</code> </td><td>OFF </td><td>Build the unit tests   </td></tr>
+<tr>
+<td><code>PRISMS_PF_REGRESSION_TESTS</code> </td><td>OFF </td><td>Build the regression tests   </td></tr>
+<tr>
+<td><code>PRISMS_PF_PERFORMANCE_TESTS</code> </td><td>OFF </td><td>Build the performance tests   </td></tr>
+<tr>
+<td><code>PRISMS_PF_EXAMPLES</code> </td><td>OFF </td><td>Build the examples   </td></tr>
+<tr>
+<td><code>PRISMS_PF_DOCS</code> </td><td>OFF </td><td>Build the documentation   </td></tr>
+<tr>
+<td><code>PRISMS_PF_CLANG_TIDY</code> </td><td>OFF </td><td>Run clang-tidy during the build stage   </td></tr>
+</table>
+<h3><a class="anchor" id="cmake_feature_config"></a>
+Feature Configuration</h3>
+<table class="doxtable">
+<tr>
+<th></th><th>Default </th><th>Description  </th></tr>
+<tr>
+<td><code>PRISMS_PF_64BIT_INDICES</code> </td><td>OFF </td><td><p class="starttd">Use 64-bit indices for large scale simulations (&gt;2.147 billion DoFs). This relies on the fact that deal.II is also configured with this option on.</p>
+<p class="endtd">Leaving this on when unnecessary will result in worse performance.   </p>
+</td></tr>
+<tr>
+<td><code>PRISMS_PF_ADDITIONAL_DEGREES</code> </td><td>OFF </td><td><p class="starttd">Compile the core library with element degrees 3+. When turned off, explicit templates will only be compiled for elements degrees 1 and 2. Turning it on will allow access to higher element degrees on the application level, but increases compile time.</p>
+<p class="endtd">Note that deal.II is typically configured with element degrees up to 6. If you want higher element degrees, you must configure deal.II accordingly.   </p>
+</td></tr>
+<tr>
+<td><code>PRISMS_PF_THREADS</code> </td><td>ON </td><td>Use threading when possible for MPI processes in <code>Release</code> mode. When turned off, each MPI process will only use one thread.   </td></tr>
+<tr>
+<td><code>PRISMS_PF_GPU</code> </td><td>OFF </td><td><span style="color:red">[Experimental]</span> Use GPU backends instead of CPU. This is still under active development   </td></tr>
+</table>
+<h3><a class="anchor" id="cmake_opt_dependencies"></a>
+Optional Dependencies</h3>
+<table class="doxtable">
+<tr>
+<th></th><th>Default </th><th>Description  </th></tr>
+<tr>
+<td><code>PRISMS_PF_WITH_VTK</code> </td><td>OFF </td><td>Enable additional VTK file I/O options   </td></tr>
+<tr>
+<td><code>PRISMS_PF_WITH_HDF5</code> </td><td>OFF </td><td>Enable HDF5 file I/O options   </td></tr>
+<tr>
+<td><code>PRISMS_PF_WITH_CALIPER</code> </td><td>OFF </td><td>Enable Caliper as a profiler   </td></tr>
+</table>
+<p>First, set the <code>PRISMS_PF_DIR</code> environment variable to point to where you want to install PRISMS-PF. You can add this to your rc file to have permanent access to <code>$PRISMS_PF_DIR</code>. </p><div class="fragment"><div class="line"><span class="keyword">export</span> PRISMS_PF_DIR=<span class="stringliteral">&quot;path/to/install&quot;</span></div>
+</div><!-- fragment --><p>The most basic configuration is as follows: </p><div class="fragment"><div class="line">cmake -DCMAKE_BUILD_TYPE=DebugRelease -B build</div>
+<div class="line">cmake --build build -j &lt;nprocs&gt;</div>
+<div class="line">cmake --install build --prefix $PRISMS_PF_DIR</div>
+</div><!-- fragment --><p> where <code>&lt;nprocs&gt;</code> is how processors to build in parallel with.</p>
+<p>This will build the PRISMS-PF library in both <code>Debug</code> and <code>Release</code> modes (something that deal.II does that we think is nice). If you'd like to use typical CMake build types you can also do that.</p>
+<p>You can now compile and run any of the applications in the <code>applications</code> directory. For example, to compile and run the explicit <code>allen_cahn</code> application, you can use the following commands: </p><div class="fragment"><div class="line">cd applications/allen_cahn/<span class="keyword">explicit</span></div>
+<div class="line">cmake -DCMAKE_BUILD_TYPE=Release .</div>
 <div class="line">make</div>
-<div class="line">mpirun -n &lt;nprocs&gt; ./main</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<div class="line">mpirun -n &lt;nprocs&gt; main</div>
+</div><!-- fragment --><p>Unlike before, there is no <code>DebugRelease</code> build type on the application level. As an application you must choose between <code>Debug</code> and <code>Release</code>. <code>Debug</code> is the default build type for applications.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>Let's talk about build types! <code>Debug</code> is slooww, concerningly so sometimes. However, it's for good reason. We have a bunch of assertions that are being checked! If you have something wrong with your application, you'll get a meaningful error that will tell you how to fix it. This is good when developing applications. <b>Always run in <code>Debug</code> when developing applications</b>. If you're playing around with model parameters or want to run non-test systems use <code>Release</code>. However, if something goes wrong, you may get an unintelligible error message or a SEGFAULT. <br  />
+ <br  />
+ Let me repeat myself. <b>Always run in <code>Debug</code> when developing applications</b> <br  />
+ - @landinjm &amp; @fractalsbyx </dd></dl>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
