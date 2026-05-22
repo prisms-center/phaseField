@@ -29,6 +29,7 @@ class SolveContext;
 
 /**
  * @brief This class handles the explicit solves of all explicit fields
+ * @todo Separate implementation from header.
  */
 template <unsigned int dim, unsigned int degree, typename number>
 class LinearSolver : public SolverBase<dim, degree, number>
@@ -95,8 +96,7 @@ public:
 
     linear_solver_control.set_max_steps(lin_params.max_iterations);
     linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
-    lin_solver.select(lin_params.solver_type);
-    lin_solver.set_control(linear_solver_control);
+    initialize_solver();
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
     inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
@@ -247,14 +247,47 @@ protected:
   void
   initialize_chebyshev()
   {
-    precond_data.degree          = lin_params.smoother_degree;
-    precond_data.smoothing_range = lin_params.smoothing_range; // ≈ λ_min / λ_max
-    precond_data.eig_cg_n_iterations =
-      lin_params.eig_cg_n_iterations; // estimate λ_max via CG
-    lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
+    const auto &chebyshev_params = lin_params.chebyshev_parameters;
+    precond_data.degree          = chebyshev_params.degree;
+    precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
+    precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
+
     precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
+    lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
 
     precond_chebyshev.initialize(lhs_operator, precond_data);
+  }
+
+  void
+  initialize_solver()
+  {
+    const auto &richardson_parameters = lin_params.richardson_parameters;
+    const auto &bicgstab_parameters   = lin_params.bicgstab_parameters;
+    const auto &gmres_parameters      = lin_params.gmres_parameters;
+    const typename dealii::SolverRichardson<BlockVector<number>>::AdditionalData
+      local_richardson_parameters(richardson_parameters.omega,
+                                  richardson_parameters.use_preconditioned_residual);
+    const typename dealii::SolverBicgstab<BlockVector<number>>::AdditionalData
+      local_bicgstab_parameters(bicgstab_parameters.exact_residual,
+                                bicgstab_parameters.breakdown);
+    const typename dealii::SolverGMRES<BlockVector<number>>::AdditionalData
+      local_gmres_parameters(gmres_parameters.max_basis_size,
+                             gmres_parameters.right_preconditioning,
+                             gmres_parameters.use_default_residual,
+                             gmres_parameters.force_re_orthogonalization,
+                             gmres_parameters.batched_mode,
+                             gmres_parameters.orthogonalization_strategy);
+    const typename dealii::SolverFGMRES<BlockVector<number>>::AdditionalData
+      local_fgmres_parameters(gmres_parameters.max_basis_size,
+                              gmres_parameters.orthogonalization_strategy);
+
+    lin_solver.set_data(local_richardson_parameters);
+    lin_solver.set_data(local_bicgstab_parameters);
+    lin_solver.set_data(local_gmres_parameters);
+    lin_solver.set_data(local_fgmres_parameters);
+
+    lin_solver.select(lin_params.solver_type);
+    lin_solver.set_control(linear_solver_control);
   }
 
 private:
