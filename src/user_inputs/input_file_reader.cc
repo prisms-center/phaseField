@@ -425,19 +425,84 @@ InputFileReader::declare_solver_parameters()
                                         "None",
                                         dealii::Patterns::Selection("None|Chebyshev"),
                                         "The preconditioner type for the linear solver.");
-        parameter_handler.declare_entry("smoothing range",
-                                        "15.0",
-                                        dealii::Patterns::Double(DBL_MIN, DBL_MAX),
-                                        "The smoothing range for eigenvalues.");
-        parameter_handler.declare_entry("smoother degree",
-                                        "5",
-                                        dealii::Patterns::Integer(1, INT_MAX),
-                                        "The smoother polynomial degree.");
-        parameter_handler.declare_entry(
-          "eigenvalue cg iterations",
-          "10",
-          dealii::Patterns::Integer(1, INT_MAX),
-          "The maximum number of CG iterations used to find the maximum eigenvalue.");
+        parameter_handler.enter_subsection("Chebyshev");
+        {
+          parameter_handler.declare_entry("smoothing range",
+                                          "15.0",
+                                          dealii::Patterns::Double(DBL_MIN, DBL_MAX),
+                                          "The smoothing range for eigenvalues.");
+          parameter_handler.declare_entry("smoother degree",
+                                          "5",
+                                          dealii::Patterns::Integer(1, INT_MAX),
+                                          "The smoother polynomial degree.");
+          parameter_handler.declare_entry(
+            "eigenvalue cg iterations",
+            "10",
+            dealii::Patterns::Integer(1, INT_MAX),
+            "The maximum number of CG iterations used to find the maximum eigenvalue.");
+        }
+        parameter_handler.leave_subsection();
+
+        parameter_handler.enter_subsection("Richardson");
+        {
+          parameter_handler.declare_entry("omega",
+                                          "1.0",
+                                          dealii::Patterns::Double(),
+                                          "Damping factor.");
+          parameter_handler.declare_entry("use preconditioned residual",
+                                          "false",
+                                          dealii::Patterns::Bool(),
+                                          "Whether to use the preconditioned residual l2 "
+                                          "norm in the stopping criterion.");
+        }
+        parameter_handler.leave_subsection();
+        parameter_handler.enter_subsection("BiCGStab");
+        {
+          parameter_handler.declare_entry("exact residual",
+                                          "true",
+                                          dealii::Patterns::Bool(),
+                                          "Flag for exact computation of residual.");
+          parameter_handler.declare_entry("breakdown",
+                                          std::to_string(
+                                            std::numeric_limits<double>::min()),
+                                          dealii::Patterns::Double(),
+                                          "Breakdown threshold.");
+        }
+        parameter_handler.leave_subsection();
+        parameter_handler.enter_subsection("GMRES");
+        {
+          parameter_handler.declare_entry(
+            "max basis size",
+            "30",
+            dealii::Patterns::Integer(1, INT_MAX),
+            "The maximum size of the Krylov basis used in GMRES before restarting.");
+          parameter_handler.declare_entry(
+            "orthogonalization strategy",
+            "delayed_classical_gram_schmidt",
+            dealii::Patterns::Selection("classical_gram_schmidt|modified_gram_schmidt|"
+                                        "delayed_classical_gram_schmidt"),
+            "The orthogonalization strategy to use in GMRES.");
+          parameter_handler.declare_entry("right preconditioning",
+                                          "false",
+                                          dealii::Patterns::Bool(),
+                                          "Whether to use right preconditioning.");
+          parameter_handler.declare_entry(
+            "use default residual",
+            "true",
+            dealii::Patterns::Bool(),
+            "Whether to use the default residual computation in GMRES.");
+          parameter_handler.declare_entry(
+            "force re-orthogonalization",
+            "false",
+            dealii::Patterns::Bool(),
+            "Whether to force re-orthogonalization of the Krylov basis in GMRES.");
+          parameter_handler.declare_entry("batched mode",
+                                          "false",
+                                          dealii::Patterns::Bool(),
+                                          "Whether to use batched mode in GMRES.");
+        }
+        parameter_handler.leave_subsection();
+
         parameter_handler.declare_entry("min mg level",
                                         "0",
                                         dealii::Patterns::Integer(0, INT_MAX),

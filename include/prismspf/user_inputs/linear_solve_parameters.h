@@ -4,6 +4,8 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/lac/precondition.h>
+#include <deal.II/lac/solver_selector.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
@@ -35,17 +37,18 @@ struct LinearSolverParameters
   // Preconditioner
   PreconditionerType preconditioner = PreconditionerType::None;
 
-  // Smoothing range for eigenvalues. This denotes the lower bound of eigenvalues that are
-  // smoothed [1.2 λ^max / smoothing_range, 1.2 λ^max], where λ^max is the estimated
-  // maximum eigenvalue. A choice between 5 and 20 is usually useful when the
-  // preconditioner is used as a smoother in multigrid.
-  double smoothing_range = Defaults::smoothing_range;
+  dealii::PreconditionChebyshev<>::AdditionalData chebyshev_parameters;
 
-  // Polynomial degree for the Chebyshev smoother
-  unsigned int smoother_degree = Defaults::smoother_degree;
+  dealii::SolverRichardson<>::AdditionalData richardson_parameters;
+  dealii::SolverBicgstab<>::AdditionalData   bicgstab_parameters;
+  dealii::SolverGMRES<>::AdditionalData      gmres_parameters;
 
-  // Maximum number of CG iterations used to find the maximum eigenvalue
-  unsigned int eig_cg_n_iterations = Defaults::eig_cg_n_iterations;
+  // MinRes and CG do not have additional parameters, so we do not need to store them here
+  // dealii::SolverMinRes<>::AdditionalData minres_parameters;
+  // dealii::SolverCG<>::AdditionalData     cg_parameters;
+  // FGMRES additional parameters are a subset of GMRES parameters, so we can just use
+  // gmres_parameters for both solvers
+  // dealii::SolverFGMRES<>::AdditionalData     fgmres_parameters;
 
   // The minimum multigrid level
   unsigned int min_mg_level = 0;
@@ -100,15 +103,7 @@ LinearSolveParameters::print_parameter_summary() const
 
           if (linear_solver_parameters.preconditioner == PreconditionerType::GMG)
             {
-              ConditionalOStreams::pout_summary()
-                << "  Smoothing range: " << linear_solver_parameters.smoothing_range
-                << "\n"
-                << "  Smoother degree: " << linear_solver_parameters.smoother_degree
-                << "\n"
-                << "  Max eigenvalue CG iterations: "
-                << linear_solver_parameters.eig_cg_n_iterations << "\n"
-                << "Min multigrid level: " << linear_solver_parameters.min_mg_level
-                << "\n";
+              // ConditionalOStreams::pout_summary();
             }
         }
 
