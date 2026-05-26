@@ -2,13 +2,15 @@
 
 #include <deal.II/base/vectorization.h>
 
+#include <prismspf/core/math.h>
+
 #include <prismspf/utilities/vectorized_operations.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
-namespace Symmetries
+namespace Symmetry
 {
   /**
    * @brief Compute cos(N * arctan(x)).
@@ -28,9 +30,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan;
-    using std::cos;
-    using std::sqrt;
+    using prisms::math::atan;
+    using prisms::math::cos;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 3)
       {
@@ -84,9 +86,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan;
-    using std::sin;
-    using std::sqrt;
+    using prisms::math::atan;
+    using prisms::math::sin;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 3)
       {
@@ -140,8 +142,8 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::cos;
+    using prisms::math::atan2;
+    using prisms::math::cos;
 
     if constexpr (N <= 5)
       {
@@ -240,8 +242,8 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::sin;
+    using prisms::math::atan2;
+    using prisms::math::sin;
 
     if constexpr (N <= 5)
       {
@@ -340,9 +342,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::cos;
-    using std::sqrt;
+    using prisms::math::atan2;
+    using prisms::math::cos;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 5)
       {
@@ -441,9 +443,9 @@ namespace Symmetries
   {
     // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
-    using std::atan2;
-    using std::sin;
-    using std::sqrt;
+    using prisms::math::atan2;
+    using prisms::math::sin;
+    using prisms::math::sqrt;
 
     if constexpr (N <= 5)
       {
@@ -524,6 +526,6 @@ namespace Symmetries
     // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
   }
 
-} // namespace Symmetries
+} // namespace Symmetry
 
 PRISMS_PF_END_NAMESPACE

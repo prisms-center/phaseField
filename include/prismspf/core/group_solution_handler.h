@@ -40,15 +40,12 @@ using SolutionVector = typename BlockVector<number>::BlockType;
 using dealii::MatrixFree;
 
 /**
- * @brief The solution vectors and their corresponding matrix free object with respect to
- * some multigrid level.
+ * @brief The solution vectors with respect to on some multigrid level.
  *
  * `solutions` is a block vector of all the fields that we keep track of at this level.
  * `old_solutions` is a vector of with length equal to the number of old states we keep
  * track old. Importantly, for each std::vector entry the block vector has the same shape
  * as `solutions`.
- * `matrix_free` is the dealii::MatrixFree object that belongs to the `solutions` and
- * `old_solutions` for this level.
  *
  * @remark There is a [minor] optimization we could make regarding the old solutions. If a
  * user wants to store up the 2nd old state, we allocate up to the 2nd old state for all
@@ -61,7 +58,6 @@ struct SolutionLevel
 {
   BlockVector<number>              solutions;
   std::vector<BlockVector<number>> old_solutions;
-  MatrixFree<dim, number>          matrix_free;
 };
 
 /**
@@ -81,8 +77,9 @@ public:
   /**
    * @brief Constructor.
    */
-  GroupSolutionHandler(SolveBlock                          _solve_block,
-                       const std::vector<FieldAttributes> &_attributes_list);
+  GroupSolutionHandler(SolveBlock                                  _solve_block,
+                       const std::vector<FieldAttributes>         &_attributes_list,
+                       const std::vector<MatrixFree<dim, number>> &_matrix_free_levels);
 
   /**
    * @brief Get the solution vector set. This contains all the normal fields and is
@@ -151,19 +148,13 @@ public:
   get_solution_level(unsigned int relative_level = 0) const;
 
   /**
-   * @brief Get the matrix_free object at a level.
+   * @brief Get the underlying matrix_free objects.
    */
-  [[nodiscard]] MatrixFree<dim, number> &
-  get_matrix_free(unsigned int relative_level = 0);
+  const std::vector<MatrixFree<dim, number>> &
+  get_matrix_free_levels() const;
 
   /**
-   * @brief Get the matrix_free object at a level.
-   */
-  [[nodiscard]] const MatrixFree<dim, number> &
-  get_matrix_free(unsigned int relative_level = 0) const;
-
-  /**
-   * @brief Get the block index from the global index.
+   * @brief Get the block index from the global field index.
    */
   [[nodiscard]] unsigned int
   get_block_index(unsigned int global_index) const;
@@ -188,20 +179,17 @@ public:
 
   /**
    * @brief Initialize the solution set.
+   * @pre MatrixFree is already reinit.
    */
-  template <unsigned int degree>
   void
-  init(const DoFManager<dim, degree>                &dof_manager,
-       const ConstraintManager<dim, degree, number> &constraint_manager,
-       unsigned int                                  num_old_saved);
+  init(unsigned int num_old_saved);
 
   /**
    * @brief Reinitialize the solution set.
+   * @pre MatrixFree is already reinit.
    */
-  template <unsigned int degree>
   void
-  reinit(const DoFManager<dim, degree>                &dof_manager,
-         const ConstraintManager<dim, degree, number> &constraint_manager);
+  reinit();
 
   /**
    * @brief Update the ghost values.
@@ -282,9 +270,14 @@ private:
   std::vector<unsigned int> global_to_block_index;
 
   /**
-   * @brief Solutions and matrix free of each level.
+   * @brief Solutions of each level.
    */
   std::vector<SolutionLevel<dim, number>> solution_levels;
+
+  /**
+   * @brief Pointer to MatrixFree of each level.
+   */
+  const std::vector<MatrixFree<dim, number>> *matrix_free_levels = nullptr;
 
   /**
    * @brief Utility for solution transfer to different mesh (for AMR). Can only work on

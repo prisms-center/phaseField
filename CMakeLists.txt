@@ -8,8 +8,8 @@
 
 # CMake config
 message(STATUS "Using CMake ${CMAKE_VERSION}")
-cmake_minimum_required(VERSION 3.28)
-cmake_policy(VERSION 3.28)
+cmake_minimum_required(VERSION 3.25)
+cmake_policy(VERSION 3.25)
 
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
@@ -67,6 +67,7 @@ option(PRISMS_PF_CLANG_TIDY "Whether to run clang-tidy during the build stage." 
 # NOTE: This relies on the fact that deal.II is also compiled with 64-bit indices
 option(PRISMS_PF_64BIT_INDICES "Whether to use 64-bit indices for large simulations" OFF)
 # NOTE: This can only go higher than 6 if deal.II is compiled with >6 for the element degree.
+# TODO: Actually implement a check for deal.II having 6+ element degree
 option(PRISMS_PF_ADDITIONAL_DEGREES "Whether to compile with element degrees of 3+." OFF)
 # NOTE: When on deal.II will try to use the max number of threads with respect to the number
 # of MPI processes.

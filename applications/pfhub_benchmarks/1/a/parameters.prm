@@ -1,0 +1,15 @@
+set global refinement = 7
+set max refinement = 7
+set min refinement = 2
+set mesh adaptivity = true
+set remeshing period = 10000
+
+subsection refinement criterion: 0
+  set variables                      = c
+  set type                           = value
+  set value lower bound              = 0.31
+  set value upper bound              = 0.69
+end
+
+set time step = 1.0e-3
+set end time = 1000000

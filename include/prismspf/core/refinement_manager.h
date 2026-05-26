@@ -21,6 +21,8 @@
 
 #include <prismspf/config.h>
 
+#include "prismspf/core/matrix_free_manager.h"
+
 #include <memory>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -427,6 +429,8 @@ private:
     DoFManager<dim, degree> &dof_manager = solve_context->get_dof_manager();
     ConstraintManager<dim, degree, number> &constraint_manager =
       solve_context->get_constraint_manager();
+    MatrixFreeManager<dim, number> &matrix_free_manager =
+      solve_context->get_matrix_free_manager();
 
     // Update ghosts of all fields.
     for (auto solver : solvers)
@@ -448,6 +452,7 @@ private:
     triangulation_manager.reinit();
     dof_manager.reinit(triangulation_manager);
     constraint_manager.reinit(solve_context->get_field_attributes());
+    matrix_free_manager.reinit(dof_manager, constraint_manager);
 
     // Reinit solutions, apply constraints, then solution transfer
     for (auto &solver : solvers)

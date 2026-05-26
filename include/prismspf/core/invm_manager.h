@@ -40,7 +40,7 @@ public:
                        const ConstraintManager<dim, degree, number> &constraint_manager,
                        bool                                          _calculate_scalar,
                        bool                                          _calculate_vector)
-    : num_levels(dof_manager.get_dof_handlers().size())
+    : num_levels(dof_manager.get_dof_handlers_levels().size())
     , calculate_scalar(_calculate_scalar)
     , calculate_vector(_calculate_vector)
   {
@@ -59,18 +59,17 @@ public:
          const ConstraintManager<dim, degree, number> &constraint_manager)
   {
     const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
-      dof_manager.get_dof_handlers();
+      dof_manager.get_dof_handlers_levels();
     const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &constraints =
-      constraint_manager.get_generic_constraints();
+      constraint_manager.get_generic_constraints_levels();
     for (unsigned int i = 0; i < data.size(); ++i)
       {
-        for (unsigned int rank = 0; rank < 2; ++rank)
-          {
-            data[i][rank].reinit(SystemWide<dim, degree>::mapping,
-                                 dof_handlers[i][rank],
-                                 constraints[i][rank],
-                                 SystemWide<dim, degree>::quadrature);
-          }
+        data[i].reinit(SystemWide<dim, degree>::mapping,
+                       std::vector<const dealii::DoFHandler<dim> *>(
+                         {&dof_handlers[i][0], &dof_handlers[i][1]}),
+                       std::vector<const dealii::AffineConstraints<number> *>(
+                         {&constraints[i][0], &constraints[i][1]}),
+                       SystemWide<dim, degree>::quadrature);
       }
   }
 
@@ -214,15 +213,15 @@ private:
       {
         if (calculate_scalar)
           {
-            jxw_scalar[i].reinit(data[i][0].get_vector_partitioner());
-            invm_scalar[i].reinit(data[i][0].get_vector_partitioner());
-            invm_sqrt_scalar[i].reinit(data[i][0].get_vector_partitioner());
+            jxw_scalar[i].reinit(data[i].get_vector_partitioner(0));
+            invm_scalar[i].reinit(data[i].get_vector_partitioner(0));
+            invm_sqrt_scalar[i].reinit(data[i].get_vector_partitioner(0));
           }
         if (calculate_vector)
           {
-            jxw_vector[i].reinit(data[i][1].get_vector_partitioner());
-            invm_vector[i].reinit(data[i][1].get_vector_partitioner());
-            invm_sqrt_vector[i].reinit(data[i][1].get_vector_partitioner());
+            jxw_vector[i].reinit(data[i].get_vector_partitioner(1));
+            invm_vector[i].reinit(data[i].get_vector_partitioner(1));
+            invm_sqrt_vector[i].reinit(data[i].get_vector_partitioner(1));
           }
       }
   }
@@ -235,7 +234,7 @@ private:
   {
     for (unsigned int i = 0; i < data.size(); ++i)
       {
-        data[i][0].cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar[i], 0);
+        data[i].cell_loop(&InvMManager::compute_local_scalar, this, jxw_scalar[i], 0);
         invert(invm_scalar[i], jxw_scalar[i]);
         //
         sqrt(invm_sqrt_scalar[i], invm_scalar[i]);
@@ -250,7 +249,7 @@ private:
   {
     for (unsigned int i = 0; i < data.size(); ++i)
       {
-        data[i][1].cell_loop(&InvMManager::compute_local_vector, this, jxw_vector[i], 0);
+        data[i].cell_loop(&InvMManager::compute_local_vector, this, jxw_vector[i], 0);
         invert(invm_vector[i], jxw_vector[i]);
         //
         sqrt(invm_sqrt_vector[i], invm_vector[i]);
@@ -266,7 +265,7 @@ private:
                        [[maybe_unused]] const int                  &src,
                        const std::pair<unsigned int, unsigned int> &cell_range) const
   {
-    dealii::FEEvaluation<dim, degree, degree + 1, 1, number, ScalarValue> fe_eval(_data);
+    dealii::FEEvaluation<dim, degree, degree + 1, 1, number> fe_eval(_data, 0);
     for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
       {
         fe_eval.reinit(cell);
@@ -285,7 +284,7 @@ private:
                        [[maybe_unused]] const int                  &src,
                        const std::pair<unsigned int, unsigned int> &cell_range) const
   {
-    dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(_data);
+    dealii::FEEvaluation<dim, degree, degree + 1, dim, number> fe_eval(_data, 1);
     for (unsigned int cell = cell_range.first; cell < cell_range.second; ++cell)
       {
         fe_eval.reinit(cell);
@@ -327,7 +326,7 @@ private:
   /**
    * @brief Matrix-free object.
    */
-  std::vector<std::array<MatrixFree<dim, number>, 2>> data;
+  std::vector<MatrixFree<dim, number>> data;
 
   unsigned int num_levels;
 

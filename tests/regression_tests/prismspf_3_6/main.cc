@@ -6,13 +6,13 @@
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/problem.h>
 
-using namespace prisms;
+using namespace prismspf;
 
 int
 main(int argc, char *argv[])
 {
   // Initialize MPI
-  prisms::MPI_InitFinalize mpi_init(argc, argv, 1);
+  prismspf::MPI_InitFinalize mpi_init(argc, argv, 1);
 
   // Restrict deal.II console printing
   dealii::deallog.depth_console(0);
