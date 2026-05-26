@@ -4,13 +4,13 @@
 #pragma once
 
 #include <deal.II/base/data_out_base.h>
+#include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/utilities.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
-#include <prismspf/core/variable_attributes.h>
 
 #include <prismspf/user_inputs/parameter_base.h>
 

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/parameter_handler.h>
 #include <deal.II/distributed/tria.h>
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_tools.h>
@@ -287,6 +288,20 @@ struct SpatialDiscretization
     return increment % remeshing_period == 0;
   }
 
+  /**
+   * @brief Declare the parameters to be read from an input file.
+   */
+  void
+  declare_parameters(dealii::ParameterHandler &parameter_handler,
+                     unsigned int              max_criteria = 5) const;
+
+  /**
+   * @brief Assign the parameters read from an input file to this object.
+   */
+  void
+  assign_parameters(dealii::ParameterHandler &parameter_handler,
+                    unsigned int              max_criteria = 5);
+
   // Triangulation type
   TriangulationType type = TriangulationType::Rectangular;
 
@@ -360,6 +375,217 @@ SpatialDiscretization<dim>::print_parameter_summary() const
     }
 
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
+}
+
+template <unsigned int dim>
+inline void
+SpatialDiscretization<dim>::declare_parameters(
+  dealii::ParameterHandler &parameter_handler,
+  unsigned int              max_criteria) const
+{
+  parameter_handler.declare_entry("global refinement",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The number of initial refinements of the coarse mesh.",
+                                  true);
+
+  parameter_handler.enter_subsection("Rectangular mesh");
+  {
+    parameter_handler.declare_entry("x size",
+                                    "0.0",
+                                    dealii::Patterns::Double(0.0, DBL_MAX),
+                                    "The size of the domain in the x direction.");
+    parameter_handler.declare_entry("y size",
+                                    "0.0",
+                                    dealii::Patterns::Double(0.0, DBL_MAX),
+                                    "The size of the domain in the y direction.");
+    parameter_handler.declare_entry("z size",
+                                    "0.0",
+                                    dealii::Patterns::Double(0.0, DBL_MAX),
+                                    "The size of the domain in the z direction.");
+    parameter_handler.declare_entry("x lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the x direction.");
+    parameter_handler.declare_entry("y lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the y direction.");
+    parameter_handler.declare_entry("z lower bound",
+                                    "0.0",
+                                    dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+                                    "The lower bound of the domain in the z direction.");
+    parameter_handler.declare_entry(
+      "x subdivisions",
+      "1",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of mesh subdivisions in the x direction.");
+    parameter_handler.declare_entry(
+      "y subdivisions",
+      "1",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of mesh subdivisions in the y direction.");
+    parameter_handler.declare_entry(
+      "z subdivisions",
+      "1",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of mesh subdivisions in the z direction.");
+
+    parameter_handler.declare_entry("periodic x",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the x-direction.");
+    parameter_handler.declare_entry("periodic y",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the y-direction.");
+    parameter_handler.declare_entry("periodic z",
+                                    "false",
+                                    dealii::Patterns::Bool(),
+                                    "Whether to have periodicity in the z-direction.");
+  }
+  parameter_handler.leave_subsection();
+
+  parameter_handler.enter_subsection("Spherical mesh");
+  {
+    parameter_handler.declare_entry("radius",
+                                    "0",
+                                    dealii::Patterns::Double(0.0, DBL_MAX),
+                                    "The radius of the domain.");
+  }
+  parameter_handler.leave_subsection();
+
+  parameter_handler.declare_entry("mesh adaptivity",
+                                  "false",
+                                  dealii::Patterns::Bool(),
+                                  "Whether to enable mesh adaptivity.");
+  parameter_handler.declare_entry("max refinement",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The maximum level of refinement.");
+  parameter_handler.declare_entry("min refinement",
+                                  "0",
+                                  dealii::Patterns::Integer(0, INT_MAX),
+                                  "The minimum level of refinement.");
+  parameter_handler.declare_entry(
+    "remeshing period",
+    "2147483647",
+    dealii::Patterns::Integer(1, INT_MAX),
+    "The number of time steps between mesh refinement operations.");
+
+  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+    {
+      std::string subsection_text =
+        "refinement criterion: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        parameter_handler.declare_entry(
+          "variables",
+          "",
+          dealii::Patterns::Anything(),
+          "The names of the fields that will use this refinement criterion.");
+        parameter_handler.declare_entry(
+          "type",
+          "none",
+          dealii::Patterns::Selection("none|value|gradient|value_and_gradient"),
+          "The type of criterion used to determine if a cell should be "
+          "refined. The options are none, value, gradient, value_and_gradient.");
+        parameter_handler.declare_entry(
+          "value lower bound",
+          "0.0",
+          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+          "The lower bound for the window determining where the mesh should be "
+          "refined.");
+        parameter_handler.declare_entry(
+          "value upper bound",
+          "0.0",
+          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
+          "The upper bound for the window determining where the mesh should be "
+          "refined.");
+        parameter_handler.declare_entry("gradient magnitude lower bound",
+                                        "2147483647",
+                                        dealii::Patterns::Double(0.0, DBL_MAX),
+                                        "The magnitude of the gradient above "
+                                        "which the mesh should be refined.");
+        parameter_handler.declare_alias("gradient magnitude lower bound",
+                                        "gradient lower bound");
+      }
+      parameter_handler.leave_subsection();
+    }
+}
+
+template <unsigned int dim>
+inline void
+SpatialDiscretization<dim>::assign_parameters(dealii::ParameterHandler &parameter_handler,
+                                              unsigned int              max_criteria)
+{
+  // Rectangular mesh
+  parameter_handler.enter_subsection("Rectangular mesh");
+  {
+    static const std::vector<std::string> axis_labels = {"x", "y", "z"};
+    RectangularMesh<dim>                 &rect        = rectangular_mesh;
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        rect.size[i] = parameter_handler.get_double(axis_labels[i] + " size");
+        rect.lower_bound[i] =
+          parameter_handler.get_double(axis_labels[i] + " lower bound");
+        rect.subdivisions[i] = static_cast<unsigned int>(
+          parameter_handler.get_integer(axis_labels[i] + " subdivisions"));
+        if (parameter_handler.get_bool("periodic " + axis_labels[i]))
+          {
+            rect.periodic_directions.insert(i);
+          }
+      }
+  }
+  parameter_handler.leave_subsection();
+  // Spherical mesh
+  parameter_handler.enter_subsection("Spherical mesh");
+  {
+    spherical_mesh.radius = parameter_handler.get_double("radius");
+  }
+  parameter_handler.leave_subsection();
+
+  global_refinement =
+    (static_cast<unsigned int>(parameter_handler.get_integer("global refinement")));
+
+  has_adaptivity = (parameter_handler.get_bool("mesh adaptivity"));
+
+  remeshing_period =
+    (static_cast<unsigned int>(parameter_handler.get_integer("remeshing period")));
+
+  max_refinement =
+    (static_cast<unsigned int>(parameter_handler.get_integer("max refinement")));
+  min_refinement =
+    (static_cast<unsigned int>(parameter_handler.get_integer("min refinement")));
+
+  for (unsigned int criterion_id = 0; criterion_id < max_criteria; criterion_id++)
+    {
+      std::string subsection_text =
+        "refinement criterion: " + std::to_string(criterion_id);
+      parameter_handler.enter_subsection(subsection_text);
+      {
+        std::vector<std::string> field_names =
+          dealii::Utilities::split_string_list(parameter_handler.get("variables"));
+        static const std::map<std::string, RefinementFlags> crit_map {
+          {"",                   RefinementFlags::Nothing                          },
+          {"none",               RefinementFlags::Nothing                          },
+          {"value",              RefinementFlags::Value                            },
+          {"gradient",           RefinementFlags::Gradient                         },
+          {"value_and_gradient", RefinementFlags::Value | RefinementFlags::Gradient}
+        };
+        // todo: make case insensitive
+        RefinementCriterion criterion(crit_map.at(parameter_handler.get("type")),
+                                      parameter_handler.get_double("value lower bound"),
+                                      parameter_handler.get_double("value upper bound"),
+                                      parameter_handler.get_double(
+                                        "gradient magnitude lower bound"));
+        for (const auto &field_name : field_names)
+          {
+            refinement_criteria[field_name] = criterion;
+          }
+      }
+      parameter_handler.leave_subsection();
+    }
 }
 
 PRISMS_PF_END_NAMESPACE

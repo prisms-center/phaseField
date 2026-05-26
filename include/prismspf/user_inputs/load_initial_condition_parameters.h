@@ -4,7 +4,10 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/types.h>
+
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/type_enums.h>
@@ -122,6 +125,20 @@ public:
     return ic_files;
   }
 
+  /**
+   * @brief Declare the parameters to be read from an input file.
+   */
+  void
+  declare_parameters(dealii::ParameterHandler &parameter_handler,
+                     unsigned int              max_criteria = 5) const;
+
+  /**
+   * @brief Assign the parameters read from an input file to this object.
+   */
+  void
+  assign_parameters(dealii::ParameterHandler &parameter_handler,
+                    unsigned int              max_criteria = 5);
+
 private:
   // Whether to read initial conditions from file
   bool read_initial_conditions_from_file = false;
@@ -183,6 +200,112 @@ LoadInitialConditionParameters::print_parameter_summary() const
         }
 
       ConditionalOStreams::pout_summary() << "\n" << std::flush;
+    }
+}
+
+inline void
+LoadInitialConditionParameters::declare_parameters(
+  dealii::ParameterHandler &parameter_handler,
+  unsigned int              max_criteria) const
+{
+  parameter_handler.declare_entry("read initial conditions from file",
+                                  "false",
+                                  dealii::Patterns::Bool(),
+                                  "Whether to read any initial conditions from file.");
+
+  for (unsigned int i = 0; i < max_criteria; i++)
+    {
+      parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
+      {
+        parameter_handler.declare_entry("file name",
+                                        "",
+                                        dealii::Patterns::Anything(),
+                                        "The file name to load from for each variable.");
+        parameter_handler.declare_entry("dataset format",
+                                        "vtk_unstructured_grid",
+                                        dealii::Patterns::Anything(),
+                                        "The type of grid in the file.");
+        parameter_handler.declare_entry("file variable names",
+                                        "",
+                                        dealii::Patterns::List(
+                                          dealii::Patterns::Anything()),
+                                        "The name of the variable in the file.");
+        parameter_handler.declare_entry("simulation variable names",
+                                        "",
+                                        dealii::Patterns::List(
+                                          dealii::Patterns::Anything()),
+                                        "The name of the variable in the file.");
+        parameter_handler.declare_entry(
+          "data points in x direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the x direction.");
+        parameter_handler.declare_entry(
+          "data points in y direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the y direction.");
+        parameter_handler.declare_entry(
+          "data points in z direction",
+          "-1",
+          dealii::Patterns::Integer(-1, INT_MAX),
+          "The number of data points of the input file in the z direction.");
+      }
+      parameter_handler.leave_subsection();
+    }
+}
+
+inline void
+LoadInitialConditionParameters::assign_parameters(
+  dealii::ParameterHandler &parameter_handler,
+  unsigned int              max_criteria)
+{
+  set_read_initial_conditions_from_file(
+    parameter_handler.get_bool("read initial conditions from file"));
+  static std::array<std::string, 3> axis_labels = {
+    {"x", "y", "z"}
+  };
+  for (unsigned int i = 0; i < max_criteria; i++)
+    {
+      parameter_handler.enter_subsection("initial condition file " + std::to_string(i));
+      {
+        // Check if the file is specified
+        if (!parameter_handler.get("file name").empty())
+          {
+            // Create the LoadICFile object
+            InitialConditionFile ic_file;
+            ic_file.filename              = parameter_handler.get("file name");
+            const std::string type_string = parameter_handler.get("dataset format");
+            bool              found_type  = false;
+            for (unsigned int j = 0;
+                 j < static_cast<unsigned int>(DataFormatType::LastEntry);
+                 j++)
+              {
+                if (boost::iequals(type_string,
+                                   to_string(static_cast<DataFormatType>(j))))
+                  {
+                    ic_file.dataset_format = static_cast<DataFormatType>(j);
+                    found_type             = true;
+                    break;
+                  }
+              }
+            AssertThrow(found_type,
+                        dealii::ExcMessage("Unsupported dataset format: " + type_string));
+            ic_file.file_variable_names = dealii::Utilities::split_string_list(
+              parameter_handler.get("file variable names"));
+            ic_file.simulation_variable_names = dealii::Utilities::split_string_list(
+              parameter_handler.get("simulation variable names"));
+            // Defaults to 0 for unused dimensions/cases that don't require it
+            for (unsigned int k = 0; k < 3; ++k)
+              {
+                ic_file.n_data_points.at(k) =
+                  static_cast<unsigned int>(parameter_handler.get_integer(
+                    "data points in " + axis_labels.at(k) + " direction"));
+              }
+            add_initial_condition_file(ic_file);
+          }
+      }
+      parameter_handler.leave_subsection();
     }
 }
 

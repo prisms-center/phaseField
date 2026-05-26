@@ -10,7 +10,6 @@
 
 #include <prismspf/user_inputs/checkpoint_parameters.h>
 #include <prismspf/user_inputs/constraint_parameters.h>
-#include <prismspf/user_inputs/input_file_reader.h>
 #include <prismspf/user_inputs/linear_solve_parameters.h>
 #include <prismspf/user_inputs/load_initial_condition_parameters.h>
 #include <prismspf/user_inputs/miscellaneous_parameters.h>
@@ -32,14 +31,36 @@ struct UserInputParameters
 {
 public:
   /**
+   * @brief Number of subsections to declare for certain field and solver parameters.
+   */
+  constexpr static unsigned int default_max_criteria = 5;
+
+  /**
    * @brief Default Constructor.
    */
   UserInputParameters() = default;
+
   /**
    * @brief Constructor. Reads in user input parameters from file and loads them into
    * member variables.
    */
-  explicit UserInputParameters(const std::string &file_name);
+  explicit UserInputParameters(const std::string &file_name,
+                               unsigned int       max_criteria = default_max_criteria);
+
+  /**
+   * @brief Tell parameter handler to expect the parameters by declaring them.
+   */
+  void
+  declare_parameters(dealii::ParameterHandler &parameter_handler,
+                     unsigned int              max_criteria = default_max_criteria) const;
+
+  /**
+   * @brief Read the parameters from the parameter handler and assign them to the
+   * appropriate member variables.
+   */
+  void
+  assign_parameters(dealii::ParameterHandler &parameter_handler,
+                    unsigned int              max_criteria = default_max_criteria);
 
   /**
    * @brief Ensure that the parameters are compatible with a set of fields and solvers.
@@ -82,92 +103,6 @@ public:
     return "";
   }
 
-private:
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to the
-   * spatial discretiziation.
-   */
-  void
-  assign_spatial_discretization_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to the
-   * temporal discretiziation.
-   */
-  void
-  assign_temporal_discretization_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to linear
-   * solves.
-   */
-  void
-  assign_linear_solve_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * nonlinear solves.
-   */
-  void
-  assign_nonlinear_solve_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * outputs.
-   */
-  void
-  assign_output_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * checkpoints.
-   */
-  void
-  assign_checkpoint_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * loading in initial condition.
-   */
-  void
-  assign_load_initial_condition_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * nucleation.
-   */
-  void
-  assign_nucleation_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * grain remapping and grain vtk load-in.
-   */
-  void
-  assign_grain_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * boundaries.
-   */
-  void
-  assign_boundary_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user inputs to parameters for anything related to
-   * miscellaneous parameters.
-   */
-  void
-  assign_miscellaneous_parameters(dealii::ParameterHandler &parameter_handler);
-
-  /**
-   * @brief Assign the provided user constants.
-   */
-  void
-  load_model_constants(const InputFileReader    &input_file_reader,
-                       dealii::ParameterHandler &parameter_handler);
-
-public:
   // Spatial discretization parameters
   SpatialDiscretization<dim> spatial_discretization;
 
@@ -201,5 +136,56 @@ public:
   // User constants
   UserConstants<dim> user_constants;
 };
+
+template <unsigned int dim>
+inline UserInputParameters<dim>::UserInputParameters(const std::string &file_name,
+                                                     unsigned int       max_criteria)
+{
+  // user_constants is a special little princess that needs to know the file contents
+  // before we declare the parameters.
+  user_constants.file_name = file_name;
+  dealii::ParameterHandler parameter_handler;
+  declare_parameters(parameter_handler, max_criteria);
+  parameter_handler.parse_input(file_name);
+  assign_parameters(parameter_handler, max_criteria);
+}
+
+template <unsigned int dim>
+inline void
+UserInputParameters<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler,
+                                             unsigned int              max_criteria) const
+{
+  // Perform and postprocessing of user inputs and run checks
+  spatial_discretization.declare_parameters(parameter_handler, max_criteria);
+  temporal_discretization.declare_parameters(parameter_handler);
+  linear_solve_parameters.declare_parameters(parameter_handler, max_criteria);
+  nonlinear_solve_parameters.declare_parameters(parameter_handler, max_criteria);
+  output_parameters.declare_parameters(parameter_handler);
+  checkpoint_parameters.declare_parameters(parameter_handler);
+  boundary_parameters.declare_parameters(parameter_handler, max_criteria);
+  nucleation_parameters.declare_parameters(parameter_handler);
+  misc_parameters.declare_parameters(parameter_handler);
+  load_ic_parameters.declare_parameters(parameter_handler);
+  user_constants.declare_parameters(parameter_handler);
+}
+
+template <unsigned int dim>
+inline void
+UserInputParameters<dim>::assign_parameters(dealii::ParameterHandler &parameter_handler,
+                                            unsigned int              max_criteria)
+{
+  // Perform and postprocessing of user inputs and run checks
+  spatial_discretization.assign_parameters(parameter_handler, max_criteria);
+  temporal_discretization.assign_parameters(parameter_handler);
+  linear_solve_parameters.assign_parameters(parameter_handler, max_criteria);
+  nonlinear_solve_parameters.assign_parameters(parameter_handler, max_criteria);
+  output_parameters.assign_parameters(parameter_handler, temporal_discretization);
+  checkpoint_parameters.assign_parameters(parameter_handler, temporal_discretization);
+  boundary_parameters.assign_parameters(parameter_handler, max_criteria);
+  nucleation_parameters.assign_parameters(parameter_handler);
+  misc_parameters.assign_parameters(parameter_handler);
+  load_ic_parameters.assign_parameters(parameter_handler);
+  user_constants.assign_parameters(parameter_handler);
+}
 
 PRISMS_PF_END_NAMESPACE
