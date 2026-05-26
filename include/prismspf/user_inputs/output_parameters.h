@@ -4,6 +4,7 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
+#include <deal.II/base/parameter_handler.h>
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/exceptions.h>
@@ -138,6 +139,19 @@ struct OutputParameters
     return output_list.size();
   }
 
+  /**
+   * @brief Declare the parameters to be read from an input file.
+   */
+  void
+  declare_parameters(dealii::ParameterHandler &parameter_handler) const;
+
+  /**
+   * @brief Assign the parameters read from an input file to this object.
+   */
+  void
+  assign_parameters(dealii::ParameterHandler     &parameter_handler,
+                    const TemporalDiscretization &temporal_discretization);
+
   // Output directory
   std::string directory = "solutions";
 
@@ -192,6 +206,101 @@ OutputParameters::print_parameter_summary() const
       ConditionalOStreams::pout_summary() << iteration << " ";
     }
   ConditionalOStreams::pout_summary() << "\n\n" << std::flush;
+}
+
+inline void
+OutputParameters::declare_parameters(dealii::ParameterHandler &parameter_handler) const
+{
+  parameter_handler.enter_subsection("output");
+  {
+    parameter_handler.declare_entry("directory",
+                                    "solutions",
+                                    dealii::Patterns::Anything(),
+                                    "The name of the output directory.");
+    parameter_handler.declare_entry("file name",
+                                    "solution",
+                                    dealii::Patterns::Anything(),
+                                    "The prefix of the output files, before the "
+                                    "time step and processor info are added.");
+    parameter_handler.declare_entry(
+      "file type",
+      "vtu",
+      dealii::Patterns::Selection("vtu|vtk|pvtu|xdmf"),
+      "The output file type (either vtu, pvtu, vtk, or xdmf).");
+    parameter_handler.declare_entry(
+      "subdivisions",
+      "0",
+      dealii::Patterns::Integer(0, INT_MAX),
+      "The number of subdivisions to apply to the mesh when building output patches.");
+    parameter_handler.declare_entry(
+      "condition",
+      "EQUAL_SPACING",
+      dealii::Patterns::Selection("EQUAL_SPACING|LOG_SPACING|N_PER_DECADE|LIST"),
+      "The spacing type for outputting the solution fields (either EQUAL_SPACING, "
+      "LOG_SPACING, N_PER_DECADE, or LIST).");
+    parameter_handler.declare_entry(
+      "list",
+      "0",
+      dealii::Patterns::List(dealii::Patterns::Integer(0, INT_MAX), 0, INT_MAX, ","),
+      "The list of time steps to output, used for the LIST type.");
+    parameter_handler.declare_entry("number",
+                                    "10",
+                                    dealii::Patterns::Integer(0, INT_MAX),
+                                    "The number of outputs (or number of outputs "
+                                    "per decade for the N_PER_DECADE type).");
+    parameter_handler.declare_entry(
+      "print step period",
+      "2147483647",
+      dealii::Patterns::Integer(1, INT_MAX),
+      "The number of time steps between updates to the screen.");
+    parameter_handler.declare_entry(
+      "timing information with output",
+      "false",
+      dealii::Patterns::Bool(),
+      "Whether to print the summary table of the wall time and wall time for "
+      "individual subroutines every time the code outputs.");
+    parameter_handler.declare_alias("directory", "folder name");
+  }
+  parameter_handler.leave_subsection();
+}
+
+inline void
+OutputParameters::assign_parameters(dealii::ParameterHandler     &parameter_handler,
+                                    const TemporalDiscretization &temporal_discretization)
+{
+  parameter_handler.enter_subsection("output");
+  {
+    directory = parameter_handler.get("directory");
+    file_name = parameter_handler.get("file name");
+    file_type = parameter_handler.get("file type");
+    patch_subdivisions =
+      static_cast<unsigned int>(parameter_handler.get_integer("subdivisions"));
+
+    std::string  condition = parameter_handler.get("condition");
+    unsigned int num_outputs =
+      static_cast<unsigned int>(parameter_handler.get_integer("number"));
+    unsigned int num_increments = temporal_discretization.num_increments;
+    if (condition == "EQUAL_SPACING")
+      {
+        add_equal_spacing_outputs(num_outputs, num_increments);
+      }
+    else if (condition == "LOG_SPACING")
+      {
+        add_log_spacing_outputs(num_outputs, num_increments);
+      }
+    else if (condition == "N_PER_DECADE")
+      {
+        add_n_per_decade_outputs(num_outputs, num_increments);
+      }
+    add_output_list(dealii::Utilities::string_to_int(
+      dealii::Utilities::split_string_list(parameter_handler.get("list"))));
+
+    print_output_period =
+      static_cast<unsigned int>(parameter_handler.get_integer("print step period"));
+    print_timing_with_output =
+      parameter_handler.get_bool("timing information with output");
+  }
+  parameter_handler.leave_subsection();
 }
 
 PRISMS_PF_END_NAMESPACE

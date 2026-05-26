@@ -1,9 +1,5 @@
 # Manually specify files to be included
-set(
-  _sources
-  input_file_reader.cc
-  user_input_parameters.cc
-)
+set(_sources user_input_parameters.cc)
 
 set(
   _headers
@@ -13,7 +9,6 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/constraint_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/miscellaneous_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/temporal_discretization.h
-  ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/input_file_reader.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/nonlinear_solve_parameters.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/user_constants.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/user_inputs/io_parameters.h

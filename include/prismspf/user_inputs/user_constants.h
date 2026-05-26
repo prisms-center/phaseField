@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <deal.II/base/parameter_handler.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/utilities.h>
 
@@ -16,6 +17,7 @@
 
 #include <prismspf/config.h>
 
+#include <fstream>
 #include <map>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -105,7 +107,7 @@ public:
   get_elasticity_tensor(const std::string &constant_name) const;
 
   /**
-   * @brief Print all user-specified constants
+   * @brief Add user-specified constants
    */
   void
   add_user_constant(const std::string        &constant_name,
@@ -119,6 +121,48 @@ public:
    */
   void
   print() const;
+
+  static void
+  strip_spaces(std::string &line);
+
+  static bool
+  check_keyword_match(const std::string &line, const std::string &keyword);
+
+  /**
+   * @brief Look for a keyword in a line and if it is found, extract the entry name and
+   * value. This is used to extract the model constant names from the input file.
+   */
+  static bool
+  parse_line(std::string        line,
+             const std::string &keyword,
+             const std::string &entry_name,
+             std::string       &out_string,
+             bool               expect_equals_sign);
+
+  /**
+   * @brief Get names of user-specified parameters from file.
+   */
+  static std::set<std::string>
+  get_names(const std::string &input_file_name);
+
+  /**
+   * @brief Declare the parameters to be read from an input file.
+   * @pre file_name is set.
+   */
+  void
+  declare_parameters(dealii::ParameterHandler &parameter_handler) const;
+
+  /**
+   * @brief Assign the parameters read from an input file to this object.
+   * @pre file_name is set and same as the file used in declare_parameters.
+   */
+  void
+  assign_parameters(dealii::ParameterHandler &parameter_handler);
+
+  /**
+   * @brief File to be parsed to extract the user-defined constants.
+   */
+  std::string file_name;
 
 private:
   /**
@@ -912,6 +956,206 @@ UserConstants<dim>::print() const
           ConditionalOStreams::pout_summary() << "\n";
         }
       ConditionalOStreams::pout_summary() << "\n" << std::flush;
+    }
+}
+
+template <unsigned int dim>
+void
+UserConstants<dim>::strip_spaces(std::string &line)
+{
+  while ((!line.empty()) && (line[0] == ' ' || line[0] == '\t'))
+    {
+      line.erase(0, 1);
+    }
+  while ((!line.empty()) &&
+         (line[line.size() - 1] == ' ' || line[line.size() - 1] == '\t'))
+    {
+      line.erase(line.size() - 1, std::string::npos);
+    }
+}
+
+template <unsigned int dim>
+bool
+UserConstants<dim>::check_keyword_match(const std::string &line,
+                                        const std::string &keyword)
+{
+  // Early return if the line is less than the keyword size
+  if (line.size() < keyword.size())
+    {
+      return false;
+    }
+
+  // Check that the line begins with the keyword
+  for (unsigned int i = 0; i < keyword.size(); i++)
+    {
+      if (line[i] != keyword[i])
+        {
+          return false;
+        }
+    }
+
+  return true;
+}
+
+template <unsigned int dim>
+bool
+UserConstants<dim>::parse_line(std::string        line,
+                               const std::string &keyword,
+                               const std::string &entry_name,
+                               std::string       &out_string,
+                               bool               expect_equals_sign)
+{
+  // Remove spaces from the front and back
+  strip_spaces(line);
+
+  // Check whether the line starts with 'keyword'. If not, try next line (if the entry is
+  // "", then zero spaces after the keyword is ok)
+  if (!check_keyword_match(line, keyword))
+    {
+      return false;
+    }
+
+  if (!entry_name.empty())
+    {
+      if (line[keyword.size()] != ' ' && line[keyword.size()] != '\t')
+        {
+          return false;
+        }
+    }
+
+  // Delete the "keyword" and any more spaces, if present
+  line.erase(0, keyword.size());
+  strip_spaces(line);
+
+  // now see whether the next word is the word we look for
+  if (!line.starts_with(entry_name))
+    {
+      return false;
+    }
+
+  line.erase(0, entry_name.size());
+  strip_spaces(line);
+
+  // we'd expect an equals size here if expect_equals_sign is true
+  if (expect_equals_sign)
+    {
+      if ((line.empty()) || (line[0] != '='))
+        {
+          return false;
+        }
+    }
+
+  // remove comment
+  const std::string::size_type pos = line.find('#');
+  if (pos != std::string::npos)
+    {
+      line.erase(pos);
+    }
+
+  // trim the equals sign at the beginning and possibly following spaces
+  // as well as spaces at the end
+  if (expect_equals_sign)
+    {
+      line.erase(0, 1);
+    }
+  strip_spaces(line);
+
+  out_string = line;
+  return true;
+}
+
+template <unsigned int dim>
+std::set<std::string>
+UserConstants<dim>::get_names(const std::string &input_file_name)
+{
+  const std::string keyword             = "set";
+  const std::string entry_name_begining = "Model constant";
+  std::ifstream     input_file;
+  input_file.open(input_file_name);
+
+  std::string line;
+  std::string entry;
+
+  std::set<std::string> entry_name_end_list;
+
+  // Loop through each line
+  while (std::getline(input_file, line))
+    {
+      if (parse_line(line, keyword, entry_name_begining, entry, false))
+        {
+          // Strip whitespace, the equals sign, and everything after the equals
+          // sign
+
+          // Strip whitespace at the beginning
+          while ((!entry.empty()) && (entry[0] == ' ' || entry[0] == '\t'))
+            {
+              entry.erase(0, 1);
+            }
+
+          // Strip everything up to the equals sign
+          while ((!entry.empty()) && (entry[entry.size() - 1] != '='))
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
+
+          // Strip the equals sign
+          entry.erase(entry.size() - 1, std::string::npos);
+
+          // Strip whitespace between the entry name and the equals sign
+          while ((!entry.empty()) &&
+                 (entry[entry.size() - 1] == ' ' || entry[entry.size() - 1] == '\t'))
+            {
+              entry.erase(entry.size() - 1, std::string::npos);
+            }
+
+          // Add it to the list
+          AssertThrow(entry_name_end_list.insert(entry).second,
+                      dealii::ExcMessage(
+                        "Non-unique constant name in parameters.prm. The constant that "
+                        "you attempted to create was \"" +
+                        entry + "\"."));
+        }
+    }
+  return entry_name_end_list;
+}
+
+template <unsigned int dim>
+void
+UserConstants<dim>::declare_parameters(dealii::ParameterHandler &parameter_handler) const
+{
+  if (file_name.empty())
+    {
+      return;
+    }
+  const std::set<std::string> model_constant_names = get_names(file_name);
+  for (const std::string &constant_name : model_constant_names)
+    {
+      std::string constants_text = "Model constant ";
+      constants_text.append(constant_name);
+      parameter_handler.declare_entry(constants_text,
+                                      "0",
+                                      dealii::Patterns::Anything(),
+                                      "The value of a user-defined constant.");
+    }
+}
+
+template <unsigned int dim>
+void
+UserConstants<dim>::assign_parameters(dealii::ParameterHandler &parameter_handler)
+{
+  if (file_name.empty())
+    {
+      return;
+    }
+  const std::set<std::string> model_constant_names = get_names(file_name);
+  for (const std::string &constant_name : model_constant_names)
+    {
+      std::string constants_text = "Model constant ";
+      constants_text.append(constant_name);
+
+      std::vector<std::string> model_constants_strings =
+        dealii::Utilities::split_string_list(parameter_handler.get(constants_text));
+      add_user_constant(constant_name, model_constants_strings);
     }
 }
 
