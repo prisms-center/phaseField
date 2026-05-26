@@ -6,6 +6,7 @@ var classLinearSolver =
     [ "init", "classLinearSolver.html#a6c0484fc8d1c9b8baa1dd8200ae6e913", null ],
     [ "initialize_chebyshev", "classLinearSolver.html#ab61cac6b1981ff3d3a1dfcd6854cd3a4", null ],
     [ "initialize_preconditioner", "classLinearSolver.html#a19aa1bd667f6d8e78bfbf65e2490478e", null ],
+    [ "initialize_solver", "classLinearSolver.html#a2f4ed8dbe6a14461d458144cce52e374", null ],
     [ "normalization_value", "classLinearSolver.html#a4f977b595684df41ac232ef6b7e17c8c", null ],
     [ "reinit", "classLinearSolver.html#afebd4080229eba14d6c1c16541ea3661", null ],
     [ "solve_impl", "classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e", null ],

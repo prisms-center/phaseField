@@ -16,5 +16,6 @@ var searchData=
   ['reset_13',['RESET',['../classTerminalColor.html#a636af85482f680b481768f2e41d57bc8',1,'TerminalColor']]],
   ['rhs_5foperator_14',['rhs_operator',['../classExplicitSolver.html#a1e6d1d7ee4048dd29420cf982ab34f30',1,'ExplicitSolver::rhs_operator'],['../classLinearSolver.html#a24d2e9496552c6bf1355d9fb9ea9f76b',1,'LinearSolver::rhs_operator']]],
   ['rhs_5fvector_15',['rhs_vector',['../classLinearSolver.html#a32eab3de4f0a4c01e3b9ee4b33f3b563',1,'LinearSolver']]],
-  ['rng_16',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]]
+  ['richardson_5fparameters_16',['richardson_parameters',['../structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b',1,'LinearSolverParameters']]],
+  ['rng_17',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]]
 ];

@@ -77,10 +77,10 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classInputFileReader.html#ae384c1fa8782783eaf1573a1cbcb1541",
-"classRefinementManager.html#aefe253068c3b65278f93f25771278452",
-"classUserInputParameters.html#aa5d23cb09251f292b1b5c9c54c19cf5c",
-"namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab158d849906462dbb04e776b12f75722",
-"structNucleationParameters.html#abcb5b0a4cfcc295d5c8e8c5a851bfeac"
+"classRefinementManager.html#aede2c7cf263c1871b74909698e6057b3",
+"classUserInputParameters.html#aa145806b67475d99432284d91edde027",
+"namespacePRISMS__PF__BEGIN__NAMESPACE.html#a98086cf878f2f16ac184d1513ab16ef4",
+"structNucleationParameters.html#ab2f100d3dbdfae859311aeec34f9f1b4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['edge_5fconstrained_5findices_0',['edge_constrained_indices',['../classMFOperator.html#ab0bfa67fb856a88caa5fcc03056107f3',1,'MFOperator']]],
-  ['eig_5fcg_5fn_5fiterations_1',['eig_cg_n_iterations',['../structLinearSolverParameters.html#a332de98b33d544018bc47924bee53920',1,'LinearSolverParameters::eig_cg_n_iterations'],['../namespaceDefaults.html#ad7531b8494683016a6acb0dd20264ec8',1,'Defaults::eig_cg_n_iterations']]],
+  ['eig_5fcg_5fn_5fiterations_1',['eig_cg_n_iterations',['../namespaceDefaults.html#ad7531b8494683016a6acb0dd20264ec8',1,'Defaults']]],
   ['el_2',['el',['../classMFOperator.html#af39bdaf8d61e5a1fa5c6c820394f1fb5',1,'MFOperator']]],
   ['elasticitymodel_3',['ElasticityModel',['../type__enums_8h.html#a1a86717d44634f6efc9531d43737590a',1,'type_enums.h']]],
   ['end_5fsection_4',['end_section',['../classTimer.html#ae1dc504d4bd75188b95693a4951149fd',1,'Timer']]],

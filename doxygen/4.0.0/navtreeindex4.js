@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"namespacePRISMS__PF__BEGIN__NAMESPACE.html#a98086cf878f2f16ac184d1513ab16ef4":[5,0,3,1],
 "namespacePRISMS__PF__BEGIN__NAMESPACE.html#ab158d849906462dbb04e776b12f75722":[5,0,3,2],
 "namespaceSymmetry.html":[5,0,5],
 "namespaceSymmetry.html#a3e19e722b1fbdcc5bc7780337be4f73a":[5,0,5,5],
@@ -194,15 +195,16 @@ var NAVTREEINDEX4 =
 "structLinearSolveParameters.html#a4b44ec09435ecabcb72b8660b25aa55f":[7,0,26,2],
 "structLinearSolveParameters.html#ab17d374849a9c2d5596de791fd8b25fb":[7,0,26,0],
 "structLinearSolverParameters.html":[7,0,28],
-"structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c":[7,0,28,1],
-"structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3":[7,0,28,2],
-"structLinearSolverParameters.html#a332de98b33d544018bc47924bee53920":[7,0,28,0],
-"structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76":[7,0,28,7],
-"structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680":[7,0,28,8],
-"structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986":[7,0,28,3],
-"structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa":[7,0,28,6],
-"structLinearSolverParameters.html#aab59e11a916740acb1c0b20f9eb28712":[7,0,28,4],
-"structLinearSolverParameters.html#afdf7bb1ca9629c165cc7c31878984f4e":[7,0,28,5],
+"structLinearSolverParameters.html#a009eb184b311853eb752e173b2c7999c":[7,0,28,3],
+"structLinearSolverParameters.html#a2bace2f96efd6f8d66ebd2f4204472a3":[7,0,28,4],
+"structLinearSolverParameters.html#a35d761b1365ce4b7104fcb9d2349cf76":[7,0,28,8],
+"structLinearSolverParameters.html#a4adc712bba3f460180a7942902cb00a4":[7,0,28,2],
+"structLinearSolverParameters.html#a5c94596720e70821dda70f423a422680":[7,0,28,9],
+"structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2":[7,0,28,1],
+"structLinearSolverParameters.html#a7ce3a6e58fc1f327502450351cb1a986":[7,0,28,5],
+"structLinearSolverParameters.html#a8f5d5c47c7a548b36a51b510e47fc2aa":[7,0,28,7],
+"structLinearSolverParameters.html#aad1f05f97ed320cb77fb3cf0d67bd864":[7,0,28,0],
+"structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b":[7,0,28,6],
 "structLoadInitialConditionParameters.html":[7,0,29],
 "structLoadInitialConditionParameters.html#a04b303c7cba699aafa61739906edf095":[7,0,29,5],
 "structLoadInitialConditionParameters.html#a11dfb63880c51d147d272a7f815d535d":[7,0,29,10],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "structNucleationParameters.html#a7d85b207721475dc5da813b4d5ed085f":[7,0,39,21],
 "structNucleationParameters.html#a8b8ae2bf211b71ac73fd2629f9327a12":[7,0,39,18],
 "structNucleationParameters.html#aa0b1462bef472a169a0b892ad0c3c239":[7,0,39,8],
-"structNucleationParameters.html#aa7621adf83c282aa605554b021b64b57":[7,0,39,2],
-"structNucleationParameters.html#ab2f100d3dbdfae859311aeec34f9f1b4":[7,0,39,16],
-"structNucleationParameters.html#ab636c7b8965b6f6b4ea1f5511e1d8aee":[7,0,39,19]
+"structNucleationParameters.html#aa7621adf83c282aa605554b021b64b57":[7,0,39,2]
 };

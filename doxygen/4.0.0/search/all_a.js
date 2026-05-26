@@ -17,7 +17,7 @@ var searchData=
   ['linearsolver_14',['LinearSolver',['../classLinearSolver.html',1,'LinearSolver&lt; dim, degree, number &gt;'],['../classMGSolver.html#aa31a5ab34e8c785947bb10182bc12f71',1,'MGSolver::LinearSolver'],['../classLinearSolver.html#ae3b77af5f056e684117a2d707189f971',1,'LinearSolver::LinearSolver()']]],
   ['linearsolverparameters_15',['LinearSolverParameters',['../structLinearSolverParameters.html',1,'']]],
   ['links_20contact_20info_16',['Helpful Links &amp; Contact Info',['../index.html#links_contact',1,'']]],
-  ['list_17',['Deprecated List',['../deprecated.html',1,'']]],
+  ['list_17',['List',['../deprecated.html',1,'Deprecated List'],['../todo.html',1,'Todo List']]],
   ['load_5fic_5fparameters_18',['load_ic_parameters',['../classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245',1,'UserInputParameters']]],
   ['load_5finitial_5fcondition_5fparameters_2eh_19',['load_initial_condition_parameters.h',['../load__initial__condition__parameters_8h.html',1,'']]],
   ['load_5fmodel_5fconstants_20',['load_model_constants',['../classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573',1,'UserInputParameters']]],

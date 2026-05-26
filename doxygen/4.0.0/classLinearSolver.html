@@ -225,6 +225,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a19aa1bd667f6d8e78bfbf65e2490478e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab61cac6b1981ff3d3a1dfcd6854cd3a4" id="r_ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab61cac6b1981ff3d3a1dfcd6854cd3a4">initialize_chebyshev</a> ()</td></tr>
 <tr class="separator:ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f4ed8dbe6a14461d458144cce52e374" id="r_a2f4ed8dbe6a14461d458144cce52e374"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f4ed8dbe6a14461d458144cce52e374">initialize_solver</a> ()</td></tr>
+<tr class="separator:a2f4ed8dbe6a14461d458144cce52e374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -273,6 +275,7 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
 class LinearSolver&lt; dim, degree, number &gt;</div><p>This class handles the explicit solves of all explicit fields. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>Separate implementation from header. </dd></dl>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a978c802315f6716d0c013da3290a8dbe" name="a978c802315f6716d0c013da3290a8dbe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a978c802315f6716d0c013da3290a8dbe">&#9670;&#160;</a></span>PreconditionChebyshev</h2>
@@ -448,6 +451,33 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::initialize_preconditioner </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2f4ed8dbe6a14461d458144cce52e374" name="a2f4ed8dbe6a14461d458144cce52e374"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f4ed8dbe6a14461d458144cce52e374">&#9670;&#160;</a></span>initialize_solver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classLinearSolver.html">LinearSolver</a>&lt; dim, degree, number &gt;::initialize_solver </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>

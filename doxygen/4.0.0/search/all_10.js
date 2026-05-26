@@ -40,9 +40,10 @@ var searchData=
   ['returngetter_37',['ReturnGetter',['../field__container_8h.html#ab0365f90a85baf585da947322627e7c6',1,'field_container.h']]],
   ['rhs_5foperator_38',['rhs_operator',['../classExplicitSolver.html#a1e6d1d7ee4048dd29420cf982ab34f30',1,'ExplicitSolver::rhs_operator'],['../classLinearSolver.html#a24d2e9496552c6bf1355d9fb9ea9f76b',1,'LinearSolver::rhs_operator']]],
   ['rhs_5fvector_39',['rhs_vector',['../classLinearSolver.html#a32eab3de4f0a4c01e3b9ee4b33f3b563',1,'LinearSolver']]],
-  ['rmseperfield_40',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
-  ['rmsetotal_41',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
-  ['rng_42',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
-  ['rngengine_43',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
-  ['run_20a_20simulation_44',['Run a simulation',['../structure.html#problem',1,'']]]
+  ['richardson_5fparameters_40',['richardson_parameters',['../structLinearSolverParameters.html#ab9c8dea40aa9980414ad69d19b9d5c7b',1,'LinearSolverParameters']]],
+  ['rmseperfield_41',['RMSEPerField',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a429ddc9697410939181b58898469d8a9',1,'type_enums.h']]],
+  ['rmsetotal_42',['RMSETotal',['../type__enums_8h.html#a2658de27ec5c27a74fb176ec89d8c700a97a89bb2ce90ae05d35fc96471c3d33c',1,'type_enums.h']]],
+  ['rng_43',['rng',['../structMiscellaneousParameters.html#ad8c58d9a535b72b35342ce324257ae93',1,'MiscellaneousParameters']]],
+  ['rngengine_44',['RNGEngine',['../miscellaneous__parameters_8h.html#a2fe62be60f96bff6325ff1c9a36aef93',1,'miscellaneous_parameters.h']]],
+  ['run_20a_20simulation_45',['Run a simulation',['../structure.html#problem',1,'']]]
 ];

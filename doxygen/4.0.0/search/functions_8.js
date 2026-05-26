@@ -9,11 +9,12 @@ var searchData=
   ['initialize_6',['initialize',['../classInvMManager.html#ae0cb61f7ead72f764db3c5bd06cd4a12',1,'InvMManager::initialize()'],['../classMFOperator.html#a911839831126b222cc12242536004189',1,'MFOperator::initialize()']]],
   ['initialize_5fchebyshev_7',['initialize_chebyshev',['../classLinearSolver.html#ab61cac6b1981ff3d3a1dfcd6854cd3a4',1,'LinearSolver']]],
   ['initialize_5fpreconditioner_8',['initialize_preconditioner',['../classLinearSolver.html#a19aa1bd667f6d8e78bfbf65e2490478e',1,'LinearSolver']]],
-  ['inputfilereader_9',['InputFileReader',['../classInputFileReader.html#aa320e6ded8304f238a445bd920dd9272',1,'InputFileReader']]],
-  ['integrate_10',['integrate',['../structFieldContainer_1_1FEEValuationDeps.html#a419ad4e46ade2ce497141916a97387d1',1,'FieldContainer::FEEValuationDeps::integrate()'],['../classFieldContainer.html#a6b7f0f176d59695d0770cb85c59f4888',1,'FieldContainer::integrate()'],['../classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6',1,'Integrator::integrate()']]],
-  ['integrate_5fand_5fdistribute_11',['integrate_and_distribute',['../structFieldContainer_1_1FEEValuationDeps.html#acad46cf09446961fc4441d88b687e7e6',1,'FieldContainer::FEEValuationDeps::integrate_and_distribute()'],['../classFieldContainer.html#aa819a5fcb462c6253a5aebbc3def745d',1,'FieldContainer::integrate_and_distribute()']]],
-  ['interpolate_12',['interpolate',['../classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123',1,'ReadBinary']]],
-  ['invert_13',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
-  ['invmmanager_14',['InvMManager',['../classInvMManager.html#a010d55b73253a017a15b43813698ac99',1,'InvMManager']]],
-  ['is_5fsupported_15',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
+  ['initialize_5fsolver_9',['initialize_solver',['../classLinearSolver.html#a2f4ed8dbe6a14461d458144cce52e374',1,'LinearSolver']]],
+  ['inputfilereader_10',['InputFileReader',['../classInputFileReader.html#aa320e6ded8304f238a445bd920dd9272',1,'InputFileReader']]],
+  ['integrate_11',['integrate',['../structFieldContainer_1_1FEEValuationDeps.html#a419ad4e46ade2ce497141916a97387d1',1,'FieldContainer::FEEValuationDeps::integrate()'],['../classFieldContainer.html#a6b7f0f176d59695d0770cb85c59f4888',1,'FieldContainer::integrate()'],['../classIntegrator.html#ab49b0feb1acc51106acf14361a7088b6',1,'Integrator::integrate()']]],
+  ['integrate_5fand_5fdistribute_12',['integrate_and_distribute',['../structFieldContainer_1_1FEEValuationDeps.html#acad46cf09446961fc4441d88b687e7e6',1,'FieldContainer::FEEValuationDeps::integrate_and_distribute()'],['../classFieldContainer.html#aa819a5fcb462c6253a5aebbc3def745d',1,'FieldContainer::integrate_and_distribute()']]],
+  ['interpolate_13',['interpolate',['../classReadBinary.html#abd5c48fc6cade6fc580aa891aec56123',1,'ReadBinary']]],
+  ['invert_14',['invert',['../classInvMManager.html#ada8b05c17b9e592477d28c51938b71d5',1,'InvMManager']]],
+  ['invmmanager_15',['InvMManager',['../classInvMManager.html#a010d55b73253a017a15b43813698ac99',1,'InvMManager']]],
+  ['is_5fsupported_16',['is_supported',['../classTerminalColor.html#af3188275fba832421adc9ed88dab517c',1,'TerminalColor']]]
 ];
