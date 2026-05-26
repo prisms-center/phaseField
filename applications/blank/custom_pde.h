@@ -18,8 +18,7 @@ public:
   using PDEOperatorBase<dim, degree, number>::get_user_inputs;
   using PDEOperatorBase<dim, degree, number>::get_pf_tools;
 
-  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
-                     PhaseFieldTools<dim>           &_pf_tools)
+  CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools) {};
 
 private:

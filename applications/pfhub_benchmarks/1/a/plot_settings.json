@@ -1,0 +1,19 @@
+{
+  "database_directory": "solutions",
+  "database_name": "solution_*.vtu database",
+  "frame_directory": "frames",
+  "gapless": true,
+  "label_axes": false,
+  "pseudocolor": {
+    "c": {
+      "color_table": "RdBu",
+      "invert": true,
+      "legend": false,
+      "max": 0.7,
+      "min": 0.3,
+      "use_minmax": true
+    }
+  },
+  "show_time": false,
+  "view": "windowless"
+}

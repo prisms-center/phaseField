@@ -23,7 +23,7 @@ performant and unsuitable for large simulations.
   </tr>
   <tr>
     <td>Source</td>
-    <td>Moderate to High</td>
+    <td>Moderate</td>
     <td>From source is the most flexible and performant way to install PRISMS-PF. However,
 it does require some basic knowledge of build systems like CMake</td>
   </tr>
@@ -90,14 +90,8 @@ directory higher to preserve your changes. In other words,
 docker run -ti -v
 ~/prisms_pf_docker/phaseField:/home/dealii/phaseField prismspf/prismspf:latest
 ```
-You can then run the applications in the container as you would normally. For example,
-to run the `allen_cahn` application, you can use the following commands:
-```
-cd allen_cahn/explicit
-cmake .
-make
-mpirun -n 1 ./main
-```
+You can then run the applications in the container as you would normally. See the \ref
+tutorial for more information.
 
 */
 
@@ -106,37 +100,56 @@ mpirun -n 1 ./main
 \subsection installation_prerequisites Prerequisites
 Before you can install PRISMS-PF, you will need to have some prerequisites installed on
 your machine. These include:
-- Git (to clone the repository)
-- A C++ compiler with C++20 support (we recommend GCC or Clang)
-- CMake (version 3.13.4 or higher)
-- LAPACK (for linear algebra operations)
-- MPI (we recommend OpenMPI or MPICH)
+- A C++ compiler with C++20 support
+- CMake (3.25+)
+- MPI
 - p4est (for adaptive octree meshing)
-- VTK (for file I/O) **[optional]**
-- Caliper (for profiling) **[optional]**
-- deal.II (version 9.6 or higher)
+- deal.II (9.6.0+)
 
 You can install these prerequisites however you like. The
-first five are typically available on most OSes through your package manager. For example,
+first three are typically available on most OS through your package manager. For example,
 on Ubuntu, you can install them with:
 ```
-sudo apt-get install git lsb-release git subversion wget bc libgmp-dev build-essential
-autoconf automake cmake libtool gfortran python3 libboost-all-dev zlib1g-dev openmpi-bin
-openmpi-common libopenmpi-dev libblas3 libblas-dev liblapack3 liblapack-dev
+sudo apt-get install git lsb-release git subversion \
+wget bc libgmp-dev build-essential autoconf automake \
+cmake libtool gfortran python3 libboost-all-dev \
+zlib1g-dev openmpi-bin openmpi-common libopenmpi-dev \
+libblas3 libblas-dev liblapack3 liblapack-dev \
 libsuitesparse-dev
 ```
 To install p4est and deal.II, we recommend following the instructions on the [deal.II
-installation guide](https://dealii.org/current_release/download/).
-We suggest building
-deal.II and p4est using deal.II's automatic installation script
-[candi](https://github.com/dealii/candi).
+installation guide](https://dealii.org/current_release/download/). Building deal.II and
+p4est using deal.II's automatic installation script
+[candi](https://github.com/dealii/candi) is by far the best option for most users.
 
 ```
 git clone https://github.com/dealii/candi.git
 cd candi
 ```
 Modify the `candi.cfg` file, commenting out any PACKAGES other than dealii and p4est.
-Then run:
+Also, turn on the native optimizations option. You should have something like the
+following.
+
+@code
+# Option {ON|OFF}: Enable machine-specific optimizations (e.g. -march=native)?
+NATIVE_OPTIMIZATIONS=ON
+@endcode
+
+@code
+# These packages determine the active components of deal.II:
+PACKAGES="${PACKAGES} once:p4est"
+PACKAGES="${PACKAGES} dealii"
+@endcode
+
+@remark If you are building deal.II on a different architecture than you plan to run
+PRISMS-PF, you can specify the architecture in the `DEAL_II_CONFOPTS=""` section with
+`-march=<arch>`.
+
+@remark If you have trouble with deal.II auto-detecting packages or with the system
+installation of Boost try adding the following.
+`DEAL_II_CONFOPTS="-DDEAL_II_ALLOW_AUTODETECTION=OFF -DDEAL_II_FORCE_BUNDLED_BOOST=ON"`
+
+Then perform the configuration, compilation, and installation with
 ```
 ./candi.sh
 ```
@@ -144,51 +157,210 @@ or
 ```
 ./candi.sh -j <nprocs>
 ```
-to compile with multiple processors (much faster). (Note that we have found that
-specifying too many processors can sometimes lead to build failures, so if you run into
-issues, try reducing the number of processors specified.)
+to compile with multiple processors (much faster).
+
+@note We have found that specifying too many processors can sometimes lead to build
+failures, so if you run into issues, try reducing the number of processors specified. If
+this doesn't work \ref contact us.
 
 This will install both p4est and deal.II in a local directory (by
-default,`$HOME/dealii-candi/`). Be sure to permanently set the `DEAL_II_DIR` environment
-variable to point to the deal.II installation.
-
-To install VTK, we recommend installing from source.
-```
-git clone https://gitlab.kitware.com/vtk/vtk.git vtk-clone
-mkdir vtk-build
-mkdir vtk-install
-cd vtk-build
-cmake ../vtk-clone -DCMAKE_BUILD_TYPE=Release -DVTK_GROUP_ENABLE_QT=OFF
--DVTK_GROUP_ENABLE_MPI=YES -DVTK_USE_MPI=ON -DVTK_BUILD_TESTING=OFF
--DCMAKE_INSTALL_PREFIX=../vtk-install
-
-make -j <numprocs> install
-```
-Be sure to permanently set the `VTK_DIR` environment variable to point to the VTK
-installation (e.g.,`$HOME/vtk-install/lib/cmake/vtk-9.xx`).
+default,`$HOME/dealii-candi/`). You can override the installation path with the prefix
+command (`./candi.sh -p /path/to/install`). Be sure to permanently set the `DEAL_II_DIR`
+environment variable to point to the deal.II installation. The candi script will prompt
+you with steps on how to do this.
 
 \subsection install_prismspf Installing PRISMS-PF
 
 Once you have all the prerequisites installed, you can clone the PRISMS-PF repository
-from GitHub, configure the build with CMake, and compile the code:
+from GitHub, configure, build, and install the code.
+
+First, clone the repository and navigate to the main directory.
 ```
 git clone https://github.com/prisms-center/phaseField.git
 cd phaseField
-mkdir build
-cd build
-cmake -DPRISMS_PF_WITH_VTK=ON -DCMAKE_INSTALL_PREFIX=<prisms-install-dir> ..
-make -j <nprocs> install
 ```
-This will build the PRISMS-PF library in both debug and release modes.
-Next, set the `PRISMS_PF_DIR` environment variable to point to the PRISMS-PF installation
-directory (the directory containing the `lib` and `include` directories).
+
+Next, we'll configure the library. We have a table of configuration options below.
+Additionally, if you have CMake 3.28+ you can use our `CMakePresets.json`.
+
+
+\subsubsection cmake_gen_config General Configuration
+<table>
+  <tr>
+    <th></th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_AUTODETECTION`</td>
+    <td>ON</td>
+    <td>
+    Try to detect \ref cmake_opt_dependencies that are in path
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_UNIT_TESTS`</td>
+    <td>OFF</td>
+    <td>
+    Build the unit tests
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_REGRESSION_TESTS`</td>
+    <td>OFF</td>
+    <td>
+    Build the regression tests
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_PERFORMANCE_TESTS`</td>
+    <td>OFF</td>
+    <td>
+    Build the performance tests
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_EXAMPLES`</td>
+    <td>OFF</td>
+    <td>
+    Build the examples
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_DOCS`</td>
+    <td>OFF</td>
+    <td>
+    Build the documentation
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_CLANG_TIDY`</td>
+    <td>OFF</td>
+    <td>
+    Run clang-tidy during the build stage
+    </td>
+  </tr>
+</table>
+
+\subsubsection cmake_feature_config Feature Configuration
+<table>
+  <tr>
+    <th></th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_64BIT_INDICES`</td>
+    <td>OFF</td>
+    <td>
+    Use 64-bit indices for large scale simulations (>2.147 billion DoFs). This relies on
+the fact that deal.II is also configured with this option on.
+
+Leaving this on when unnecessary will result in worse performance.
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_ADDITIONAL_DEGREES`</td>
+    <td>OFF</td>
+    <td>
+    Compile the core library with element degrees 3+. When turned off, explicit templates
+will only be compiled for elements degrees 1 and 2. Turning it on will allow access to
+higher element degrees on the application level, but increases compile time.
+
+Note that deal.II is typically configured with element degrees up to 6. If you want higher
+element degrees, you must configure deal.II accordingly.
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_THREADS`</td>
+    <td>ON</td>
+    <td>
+    Use threading when possible for MPI processes in `Release` mode. When turned off, each
+MPI process will only use one thread.
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_GPU`</td>
+    <td>OFF</td>
+    <td>
+    <span style="color:red">[Experimental]</span> Use GPU backends instead of CPU. This is
+still under active development
+    </td>
+  </tr>
+</table>
+
+\subsubsection cmake_opt_dependencies Optional Dependencies
+<table>
+  <tr>
+    <th></th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_WITH_VTK`</td>
+    <td>OFF</td>
+    <td>
+    Enable additional VTK file I/O options
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_WITH_HDF5`</td>
+    <td>OFF</td>
+    <td>
+    Enable HDF5 file I/O options
+    </td>
+  </tr>
+  <tr>
+    <td>`PRISMS_PF_WITH_CALIPER`</td>
+    <td>OFF</td>
+    <td>
+    Enable Caliper as a profiler
+    </td>
+  </tr>
+</table>
+
+First, set the `PRISMS_PF_DIR` environment variable to point to where you want to install
+PRISMS-PF. You can add this to your rc file to have permanent access to `$PRISMS_PF_DIR`.
+```
+export PRISMS_PF_DIR="path/to/install"
+```
+
+The most basic configuration is as follows:
+```
+cmake -DCMAKE_BUILD_TYPE=DebugRelease -B build
+cmake --build build -j <nprocs>
+cmake --install build --prefix $PRISMS_PF_DIR
+```
+where `<nprocs>` is how processors to build in parallel with.
+
+This will build the PRISMS-PF library in both `Debug` and `Release` modes (something that
+deal.II does that we think is nice). If you'd like to use typical CMake build types you
+can also do that.
+
 You can now compile and run any of the applications in the `applications` directory. For
-example, to compile and run the `allen_cahn` application, you can use the
+example, to compile and run the explicit `allen_cahn` application, you can use the
 following commands:
 ```
 cd applications/allen_cahn/explicit
-cmake .
+cmake -DCMAKE_BUILD_TYPE=Release .
 make
-mpirun -n <nprocs> ./main
+mpirun -n <nprocs> main
 ```
+
+Unlike before, there is no `DebugRelease` build type on the application level. As an
+application you must choose between `Debug` and `Release`. `Debug` is the default build
+type for applications.
+
+@remark Let's talk about build types! `Debug` is slooww, concerningly so sometimes.
+However, it's for good reason. We have a bunch of assertions that are being checked! If
+you have something wrong with your application, you'll get a meaningful error that will
+tell you how to fix it. This is good when developing applications. **Always run in `Debug`
+when developing applications**. If you're playing around with model parameters or want to
+run non-test systems use `Release`. However, if something goes wrong, you may get an
+unintelligible error message or a SEGFAULT.
+<br> <br>
+Let me repeat myself. **Always run in `Debug` when developing applications**
+<br>
+\- @landinjm & @fractalsbyx
+
 */

@@ -9,6 +9,8 @@
 
 #include <prismspf/config.h>
 
+#include <exception>
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 // NOLINTBEGIN(readability-identifier-naming)
@@ -27,6 +29,25 @@ PRISMS_PF_BEGIN_NAMESPACE
 // NOLINTEND(readability-identifier-naming)
 
 // NOLINTBEGIN
+
+class ExcNaN : public std::exception
+{
+private:
+  std::string message;
+
+public:
+  // Constructor to store a custom message
+  explicit ExcNaN(const std::string &msg = "")
+    : message("PRISMS-PF detected somewhere that a value was NaN.\n" + msg)
+  {}
+
+  // Overriding the virtual what() method
+  const char *
+  what() const noexcept override
+  {
+    return message.c_str();
+  }
+};
 
 /**
  * Exception for parts of the library that have yet to be implemented yet. The argument is

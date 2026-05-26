@@ -35,20 +35,26 @@ FieldContainer<dim, degree, number>::FieldContainer(
   // Loop over the dependency map
   for (const auto &[field_index, dependency] : dependency_map)
     {
-      const auto mf_id_pair =
+      const auto &[solution_level, block_index] =
         solution_indexer->get_solution_level_and_block_index(field_index, relative_level);
       if (field_attributes[field_index].field_type == TensorRank::Scalar)
         {
           feeval_deps_scalar[field_index] = FEEValuationDeps<TensorRank::Scalar>(
+            matrix_free,
             dependency,
-            mf_id_pair,
+            *solution_level,
+            field_index,
+            block_index,
             solve_block->id == solution_indexer->get_solve_block(field_index).id);
         }
       else if (field_attributes[field_index].field_type == TensorRank::Vector)
         {
           feeval_deps_vector[field_index] = FEEValuationDeps<TensorRank::Vector>(
+            matrix_free,
             dependency,
-            mf_id_pair,
+            *solution_level,
+            field_index,
+            block_index,
             solve_block->id == solution_indexer->get_solve_block(field_index).id);
         }
       else

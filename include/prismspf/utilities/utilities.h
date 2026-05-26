@@ -10,6 +10,7 @@
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/types.h>
+#include <deal.II/base/utilities.h>
 #include <deal.II/base/vectorization.h>
 #include <deal.II/matrix_free/evaluation_flags.h>
 
@@ -62,6 +63,19 @@ private:
   cali::ConfigManager mgr;
 #endif
 };
+
+template <typename dealii_vector>
+void
+set_zero_entries_to_one(dealii_vector &vec)
+{
+  for (const auto index : vec.locally_owned_elements())
+    {
+      if (vec[index] == 0.0)
+        {
+          vec[index] = 1.0;
+        }
+    }
+}
 
 /**
  * @brief Helper function that converts a string to some type, given a mapping.
@@ -164,95 +178,207 @@ pmod(const Number &value, const Number &modulus)
 }
 
 /**
- * @brief Voigt notation index range
+ * @brief Stabilization term as defined by
+ * [Tezduyar](https://doi.org/10.1016/0045-7825(92)90141-6)
+ *
+ * For the element size, we use the diameter of a sphere with equivalent volume as the
+ * cell. This is then divided by the degree.
  */
-template <unsigned int dim>
-constexpr unsigned int voigt_tensor_size = (2 * dim) - 1 + (dim / 3);
-
-/**
- * @brief Compute the stress with a given displacement and elasticity tensor. This assumes
- * that the provided parameters are in Voigt notation.
- */
-template <unsigned int dim, typename T>
-inline DEAL_II_ALWAYS_INLINE void
-compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
-               const dealii::Tensor<1, voigt_tensor_size<dim>, T> &strain,
-               dealii::Tensor<1, voigt_tensor_size<dim>, T>       &stress)
+template <unsigned int dim, unsigned int degree, typename T>
+inline DEAL_II_ALWAYS_INLINE T
+stabilization_parameter(const T                         &timestep,
+                        const T                         &element_volume,
+                        const dealii::Tensor<1, dim, T> &velocity,
+                        const T                         &kinematic_viscosity)
 {
-  stress = elasticity_tensor * strain;
-}
+  using dealii::Utilities::fixed_power;
+  using std::cbrt;
+  using std::sqrt;
 
-/**
- * @brief Compute the stress with a given displacement and elasticity tensor. Note: this
- * function internally converts to Voigt notation.
- */
-template <unsigned int dim, typename T>
-inline DEAL_II_ALWAYS_INLINE void
-compute_stress(const dealii::Tensor<2, voigt_tensor_size<dim>, T> &elasticity_tensor,
-               const dealii::Tensor<2, dim, T>                    &strain,
-               dealii::Tensor<2, dim, T>                          &stress)
-{
-  dealii::Tensor<1, voigt_tensor_size<dim>, T> sigma;
-  dealii::Tensor<1, voigt_tensor_size<dim>, T> epsilon;
+  constexpr auto degree_modifier  = T(1) / T(degree);
+  constexpr auto inv_pi           = T(1) / T(M_PI);
+  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
 
-  if constexpr (dim == 3)
+  auto element_size = T(0);
+  if constexpr (dim == 1)
     {
-      const int xx_dir = 0;
-      const int yy_dir = 1;
-      const int zz_dir = 2;
-      const int yz_dir = 3;
-      const int xz_dir = 4;
-      const int xy_dir = 5;
-
-      epsilon[xx_dir] = strain[xx_dir][xx_dir];
-      epsilon[yy_dir] = strain[yy_dir][yy_dir];
-      epsilon[zz_dir] = strain[zz_dir][zz_dir];
-      // In Voigt notation: epsilon are engineering shear strains
-      epsilon[yz_dir] = strain[yy_dir][zz_dir] + strain[zz_dir][yy_dir];
-      epsilon[xz_dir] = strain[xx_dir][zz_dir] + strain[zz_dir][xx_dir];
-      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
-
-      // Multiply elasticity_tensor and epsilon to get sigma
-      sigma = elasticity_tensor * epsilon;
-
-      stress[xx_dir][xx_dir] = sigma[xx_dir];
-      stress[yy_dir][yy_dir] = sigma[yy_dir];
-      stress[zz_dir][zz_dir] = sigma[zz_dir];
-
-      stress[yy_dir][zz_dir] = sigma[yz_dir];
-      stress[zz_dir][yy_dir] = sigma[yz_dir];
-
-      stress[xx_dir][zz_dir] = sigma[xz_dir];
-      stress[zz_dir][xx_dir] = sigma[xz_dir];
-
-      stress[xx_dir][yy_dir] = sigma[xy_dir];
-      stress[yy_dir][xx_dir] = sigma[xy_dir];
+      element_size = element_volume;
     }
   else if constexpr (dim == 2)
     {
-      const int xx_dir = 0;
-      const int yy_dir = 1;
-      const int xy_dir = 2;
-
-      epsilon[xx_dir] = strain[xx_dir][xx_dir];
-      epsilon[yy_dir] = strain[yy_dir][yy_dir];
-      // In Voigt notation: epsilon are engineering shear strains
-      epsilon[xy_dir] = strain[xx_dir][yy_dir] + strain[yy_dir][xx_dir];
-
-      // Multiply elasticity_tensor and epsilon to get sigma
-      sigma = elasticity_tensor * epsilon;
-
-      stress[xx_dir][xx_dir] = sigma[xx_dir];
-      stress[yy_dir][yy_dir] = sigma[yy_dir];
-      stress[xx_dir][yy_dir] = sigma[xy_dir];
-      stress[yy_dir][xx_dir] = sigma[xy_dir];
+      element_size = T(2) * sqrt(element_volume * inv_pi);
+    }
+  else if constexpr (dim == 3)
+    {
+      element_size = cbrt(T(6) * element_volume * inv_pi);
     }
   else
     {
-      const int xx_dir = 0;
-
-      stress[xx_dir][xx_dir] = elasticity_tensor[xx_dir][xx_dir] * strain[xx_dir][xx_dir];
+      Assert(false, dealii::ExcMessage("Invalid dimension for the stabilization term."));
     }
+  element_size *= degree_modifier;
+  const auto element_size_2     = element_size * element_size;
+  const auto element_size_2_inv = T(1) / element_size_2;
+  const auto element_size_4_inv = element_size_2_inv * element_size_2_inv;
+
+  const T term_time = fixed_power<2>(T(2) / timestep);
+  const T term_adv  = T(4) * velocity_l2_norm * element_size_2_inv;
+  const T term_diff = T(144) * fixed_power<2>(kinematic_viscosity) * element_size_4_inv;
+
+  return T(1) / sqrt(term_time + term_adv + term_diff);
+}
+
+/**
+ * @brief Stabilization term as defined by
+ * [Tezduyar](https://doi.org/10.1016/0045-7825(92)90141-6)
+ *
+ * For the element size, we use the diameter of a sphere with equivalent volume as the
+ * cell. This is then divided by the degree.
+ *
+ * @note This is for steady state problems
+ */
+template <unsigned int dim, unsigned int degree, typename T>
+inline DEAL_II_ALWAYS_INLINE T
+stabilization_parameter(const T                         &element_volume,
+                        const dealii::Tensor<1, dim, T> &velocity,
+                        const T                         &kinematic_viscosity)
+{
+  using dealii::Utilities::fixed_power;
+  using std::cbrt;
+  using std::sqrt;
+
+  constexpr auto degree_modifier  = T(1) / T(degree);
+  constexpr auto inv_pi           = T(1) / T(M_PI);
+  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+
+  auto element_size = T(0);
+  if constexpr (dim == 1)
+    {
+      element_size = element_volume;
+    }
+  else if constexpr (dim == 2)
+    {
+      element_size = T(2) * sqrt(element_volume * inv_pi);
+    }
+  else if constexpr (dim == 3)
+    {
+      element_size = cbrt(T(6) * element_volume * inv_pi);
+    }
+  else
+    {
+      Assert(false, dealii::ExcMessage("Invalid dimension for the stabilization term."));
+    }
+  element_size *= degree_modifier;
+  const auto element_size_2     = element_size * element_size;
+  const auto element_size_2_inv = T(1) / element_size_2;
+  const auto element_size_4_inv = element_size_2_inv * element_size_2_inv;
+
+  const T term_adv  = T(4) * velocity_l2_norm * element_size_2_inv;
+  const T term_diff = T(144) * fixed_power<2>(kinematic_viscosity) * element_size_4_inv;
+
+  return T(1) / sqrt(term_adv + term_diff);
+}
+
+/**
+ * @brief Stabilization term as defined by
+ * [Tezduyar](https://doi.org/10.1016/0045-7825(92)90141-6)
+ *
+ * For the element size, we use the diameter of a sphere with equivalent volume as the
+ * cell. This is then divided by the degree.
+ *
+ * @note This is for pure advection transient problems
+ */
+template <unsigned int dim, unsigned int degree, typename T>
+inline DEAL_II_ALWAYS_INLINE T
+stabilization_parameter(const T                         &timestep,
+                        const T                         &element_volume,
+                        const dealii::Tensor<1, dim, T> &velocity)
+{
+  using dealii::Utilities::fixed_power;
+  using std::cbrt;
+  using std::sqrt;
+
+  constexpr auto degree_modifier  = T(1) / T(degree);
+  constexpr auto inv_pi           = T(1) / T(M_PI);
+  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+
+  auto element_size = T(0);
+  if constexpr (dim == 1)
+    {
+      element_size = element_volume;
+    }
+  else if constexpr (dim == 2)
+    {
+      element_size = T(2) * sqrt(element_volume * inv_pi);
+    }
+  else if constexpr (dim == 3)
+    {
+      element_size = cbrt(T(6) * element_volume * inv_pi);
+    }
+  else
+    {
+      Assert(false, dealii::ExcMessage("Invalid dimension for the stabilization term."));
+    }
+  element_size *= degree_modifier;
+  const auto element_size_2     = element_size * element_size;
+  const auto element_size_2_inv = T(1) / element_size_2;
+  const auto element_size_4_inv = element_size_2_inv * element_size_2_inv;
+
+  const T term_time = fixed_power<2>(T(2) / timestep);
+  const T term_adv  = T(4) * velocity_l2_norm * element_size_2_inv;
+
+  return T(1) / sqrt(term_time + term_adv);
+}
+
+/**
+ * @brief Stabilization term as defined by
+ * [Tezduyar](https://doi.org/10.1016/0045-7825(92)90141-6)
+ *
+ * For the element size, we use the diameter of a sphere with equivalent volume as the
+ * cell. This is then divided by the degree.
+ *
+ * @note This is for pure advection steady-state problems
+ */
+template <unsigned int dim, unsigned int degree, typename T>
+inline DEAL_II_ALWAYS_INLINE T
+stabilization_parameter(const T                         &element_volume,
+                        const dealii::Tensor<1, dim, T> &velocity)
+{
+  using dealii::Utilities::fixed_power;
+  using std::cbrt;
+  using std::sqrt;
+
+  constexpr auto degree_modifier  = T(1) / T(degree);
+  constexpr auto inv_pi           = T(1) / T(M_PI);
+  const auto     velocity_l2_norm = velocity.norm_square() + T(1e-12);
+
+  auto element_size = T(0);
+  if constexpr (dim == 1)
+    {
+      element_size = element_volume;
+    }
+  else if constexpr (dim == 2)
+    {
+      element_size = T(2) * sqrt(element_volume * inv_pi);
+    }
+  else if constexpr (dim == 3)
+    {
+      element_size = cbrt(T(6) * element_volume * inv_pi);
+    }
+  else
+    {
+      Assert(false, dealii::ExcMessage("Invalid dimension for the stabilization term."));
+    }
+  element_size *= degree_modifier;
+  const auto element_size_2     = element_size * element_size;
+  const auto element_size_2_inv = T(1) / element_size_2;
+  const auto element_size_4_inv = element_size_2_inv * element_size_2_inv;
+
+  const T term_adv = T(4) * velocity_l2_norm * element_size_2_inv;
+  // NOTE: I could simplify the math here, but I won't bother for now since I imagine the
+  // use case is pretty limited.
+
+  return T(1) / sqrt(term_adv);
 }
 
 /**

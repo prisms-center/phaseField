@@ -3,6 +3,8 @@
 
 #include <prismspf/core/pde_operator_base.h>
 
+#include <prismspf/utilities/mechanics.h>
+
 #include <random>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -23,8 +25,7 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
-                     PhaseFieldTools<dim>           &_pf_tools)
+  CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
     , stiffness(get_user_inputs().user_constants.get_elasticity_tensor("stiffness"))
   {}
@@ -55,7 +56,7 @@ private:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_block_id == 1) // linear residual
+    if (solve_block_id == 1) // linear rhs
       {
         ScalarValue dist_from_inclusion = variable_list.get_q_point_location().norm();
         ScalarValue inclusion_radius(10.0);
@@ -68,7 +69,9 @@ private:
             transformation_strain[i][i] = strain_value;
           }
         VectorGrad stress;
-        compute_stress<dim, ScalarValue>(stiffness, transformation_strain, stress);
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                    transformation_strain,
+                                                    stress);
         variable_list.set_gradient_term(0, -stress);
       }
   }
@@ -82,14 +85,12 @@ private:
       {
         VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         VectorGrad stress;
-        compute_stress<dim, ScalarValue>(stiffness, ux, stress);
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness, ux, stress);
         variable_list.set_gradient_term(0, stress);
       }
   }
 
-  constexpr static unsigned int CIJ_tensor_size = (2 * dim) - 1 + (dim / 3);
-
-  dealii::Tensor<2, CIJ_tensor_size, number> stiffness;
+  dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
 };
 
 PRISMS_PF_END_NAMESPACE

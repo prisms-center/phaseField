@@ -233,7 +233,6 @@ UserInputParameters<dim>::assign_boundary_parameters(
         std::vector<std::string> conditions_strings =
           dealii::Utilities::split_string_list(parameter_handler.get("conditions"));
 
-        // Make component conditions TODO: pinned pts
         ComponentConditions component_conditions;
         if (conditions_strings.size() == 1)
           {
@@ -253,9 +252,6 @@ UserInputParameters<dim>::assign_boundary_parameters(
                   condition_from_string(conditions_strings[boundary_id]);
               }
           }
-        parameter_handler.enter_subsection("pinning point");
-        {}
-        parameter_handler.leave_subsection();
 
         // Attach conditions to fields
         for (const auto &field_comp_name : field_names)
@@ -318,6 +314,10 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           dealii::Utilities::split_string_list(parameter_handler.get("solver_ids")));
 
         LinearSolverParameters linear_solver_parameters;
+
+        // Set the linear solver type
+        linear_solver_parameters.solver_type = parameter_handler.get("solver type");
+
         // Set the tolerance type
         static const std::map<std::string, SolverToleranceType> tolerance_types = {
           {"AbsoluteResidual",   AbsoluteResidual  },
@@ -346,19 +346,68 @@ UserInputParameters<dim>::assign_linear_solve_parameters(
           static_cast<unsigned int>(parameter_handler.get_integer("max iterations"));
 
         // Set preconditioner type and related parameters
+        static const std::map<std::string, PreconditionerType> preconditioner_map = {
+          {"None",      None     },
+          {"none",      None     },
+          {"",          None     },
+          {"Chebyshev", Chebyshev},
+          {"chebyshev", Chebyshev},
+          {"GMG",       GMG      },
+          {"gmg",       GMG      }
+        };
         linear_solver_parameters.preconditioner =
-          boost::iequals(parameter_handler.get("preconditioner type"), "GMG")
-            ? PreconditionerType::GMG
-            : PreconditionerType::None;
+          preconditioner_map.at(parameter_handler.get("preconditioner type"));
 
-        linear_solver_parameters.smoothing_range =
-          parameter_handler.get_double("smoothing range");
+        parameter_handler.enter_subsection("Chebyshev");
+        {
+          linear_solver_parameters.chebyshev_parameters.degree =
+            static_cast<unsigned int>(parameter_handler.get_integer("smoother degree"));
 
-        linear_solver_parameters.smoother_degree =
-          static_cast<unsigned int>(parameter_handler.get_integer("smoother degree"));
+          linear_solver_parameters.chebyshev_parameters.smoothing_range =
+            parameter_handler.get_double("smoothing range");
 
-        linear_solver_parameters.eig_cg_n_iterations = static_cast<unsigned int>(
-          parameter_handler.get_integer("eigenvalue cg iterations"));
+          linear_solver_parameters.chebyshev_parameters.eig_cg_n_iterations =
+            static_cast<unsigned int>(
+              parameter_handler.get_integer("eigenvalue cg iterations"));
+        }
+        parameter_handler.leave_subsection();
+        parameter_handler.enter_subsection("Richardson");
+        {
+          linear_solver_parameters.richardson_parameters.omega =
+            parameter_handler.get_double("omega");
+          linear_solver_parameters.richardson_parameters.use_preconditioned_residual =
+            parameter_handler.get_bool("use preconditioned residual");
+        }
+        parameter_handler.leave_subsection();
+        parameter_handler.enter_subsection("BiCGStab");
+        {
+          linear_solver_parameters.bicgstab_parameters.exact_residual =
+            parameter_handler.get_bool("exact residual");
+          linear_solver_parameters.bicgstab_parameters.breakdown =
+            parameter_handler.get_double("breakdown");
+        }
+        parameter_handler.leave_subsection();
+        parameter_handler.enter_subsection("GMRES");
+        {
+          using OStrat = dealii::LinearAlgebra::OrthogonalizationStrategy;
+          static const std::map<std::string, OStrat> orthogonalization_strategy_names = {
+            {"classical_gram_schmidt",         OStrat::classical_gram_schmidt        },
+            {"modified_gram_schmidt",          OStrat::modified_gram_schmidt         },
+            {"delayed_classical_gram_schmidt", OStrat::delayed_classical_gram_schmidt}
+          };
+          linear_solver_parameters.gmres_parameters.orthogonalization_strategy =
+            orthogonalization_strategy_names.at(
+              parameter_handler.get("orthogonalization strategy"));
+          linear_solver_parameters.gmres_parameters.right_preconditioning =
+            parameter_handler.get_bool("right preconditioning");
+          linear_solver_parameters.gmres_parameters.use_default_residual =
+            parameter_handler.get_bool("use default residual");
+          linear_solver_parameters.gmres_parameters.force_re_orthogonalization =
+            parameter_handler.get_bool("force re-orthogonalization");
+          linear_solver_parameters.gmres_parameters.batched_mode =
+            parameter_handler.get_bool("batched mode");
+        }
+        parameter_handler.leave_subsection();
 
         linear_solver_parameters.min_mg_level =
           static_cast<unsigned int>(parameter_handler.get_integer("min mg level"));

@@ -15,8 +15,6 @@
 
 #include <prismspf/config.h>
 
-#include <memory>
-
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
@@ -29,84 +27,102 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit DoFManager(const std::vector<FieldAttributes> &field_attributes);
+  DoFManager() = default;
 
   /**
-   * @brief Constructor.
+   * @brief Constructor. calls reinit
    */
   DoFManager(const std::vector<FieldAttributes> &field_attributes,
-             const TriangulationManager<dim>    &triangulation_handler);
+             const TriangulationManager<dim>    &triangulation_manager);
+  /**
+   * @brief Disable copying.
+   */
+  DoFManager(const DoFManager &)  = delete;
+  DoFManager(const DoFManager &&) = delete;
+  DoFManager
+  operator=(const DoFManager &) = delete;
+  DoFManager &
+  operator=(DoFManager &&other) = delete;
 
   /**
-   * @brief Initialize the DoFHandlers
+   * @brief Destructor.
+   */
+  ~DoFManager() = default;
+
+  /**
+   * @brief Resize the DoFHandlers set.
+   * @note May invalidate existing DoFHandler pointers.
    */
   void
-  init(const TriangulationManager<dim> &triangulation_handler);
+  init(unsigned int num_levels);
 
   /**
    * @brief Reinitialize the DoFHandlers
+   * @pre init() must have been called with the correct number of levels.
+   * @note May invalidate existing DoFHandler pointers if number of levels changes.
    */
   void
-  reinit(const TriangulationManager<dim> &triangulation_handler);
+  reinit(const TriangulationManager<dim> &triangulation_manager);
 
   /**
-   * @brief Getter function for the DoFHandlers (constant reference).
+   * @brief Reinitialize the DoFHandlers
+   * @pre reinit() must have been called.
    */
-  [[nodiscard]] std::vector<const dealii::DoFHandler<dim> *>
-  get_field_dof_handlers(const std::set<unsigned int> &field_indices,
-                         unsigned int                  relative_level = 0) const;
+  void
+  reinit_mapping(const std::vector<FieldAttributes> &field_attributes);
+
+  /**
+   * @brief Getter function for all the DoFHandlers.
+   * @pre reinit_mapping() must have been called.
+   */
+  [[nodiscard]] const std::vector<std::vector<const dealii::DoFHandler<dim> *>> &
+  get_field_dof_handlers_levels() const;
+
+  /**
+   * @brief Getter function for all the DoFHandlers on a level.
+   * @pre reinit_mapping() must have been called.
+   */
+  [[nodiscard]] const std::vector<const dealii::DoFHandler<dim> *> &
+  get_field_dof_handlers(unsigned int relative_level = 0) const;
 
   /**
    * @brief Getter function for the DoFHandler (reference).
+   * @pre reinit_mapping() must have been called.
    */
   [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_field_dof_handler(Types::Index field_index, unsigned int relative_level = 0) const
-  {
-    return *dof_handlers[field_index][relative_level];
-  }
+  get_field_dof_handler(Types::Index field_index, unsigned int relative_level = 0) const;
 
   /**
    * @brief Getter function for the scalar and vector DoFHandlers.
    */
-  const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &
-  get_dof_handlers() const
-  {
-    return level_dof_handlers;
-  }
+  [[nodiscard]] const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &
+  get_dof_handlers_levels() const;
+
+  /**
+   * @brief Getter function for the scalar and vector DoFHandlers on a level.
+   */
+  [[nodiscard]] const std::array<dealii::DoFHandler<dim>, 2> &
+  get_dof_handlers(unsigned int relative_level = 0) const;
 
   /**
    * @brief Getter function for a specific scalar or vector DoFHandler.
    */
   [[nodiscard]] const dealii::DoFHandler<dim> &
-  get_dof_handler(const unsigned int &rank, unsigned int relative_level = 0) const
-  {
-    return level_dof_handlers[relative_level][rank];
-  }
+  get_dof_handler(const unsigned int &rank, unsigned int relative_level = 0) const;
 
   /**
    * @brief Get the total DoFs excluding multigrid DoFs.
+   * @pre reinit_mapping() must have been called.
    */
   [[nodiscard]] dealii::types::global_dof_index
-  get_total_dofs() const
-  {
-    dealii::types::global_dof_index n_dofs = 0;
-    for (const auto &dof_handler_set : dof_handlers)
-      {
-        n_dofs += dof_handler_set[0]->n_dofs();
-      }
-    return n_dofs;
-  }
+  get_total_dofs() const;
 
 private:
   /**
-   * @brief Collection of the triangulation DoFs. The number of DoFHandlers should be
-   * equal to or less than the number of fields. Technically, there's a small
-   * optimization we can use when multiple fields have the same constraints and
-   * quadrature rule, allowing us to share the same DoFHandler. An example of this might
-   * be grain growth.
-   * Outer vector is indexed by field index. Inner vector is indexed by relative mg level.
+   * @brief Pointers to the dof handlers for each field on every mg level.
+   * Outer vector is indexed by relative mg level. Inner vector is indexed by field index.
    */
-  std::vector<std::vector<const dealii::DoFHandler<dim> *>> dof_handlers;
+  std::vector<std::vector<const dealii::DoFHandler<dim> *>> field_dof_handlers;
 
   /**
    * @brief A scalar and a vector dof handler for each level

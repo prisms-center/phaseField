@@ -34,6 +34,7 @@ set(
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/solution_output.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/timer.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/constraint_manager.h
+  ${PROJECT_SOURCE_DIR}/include/prismspf/core/matrix_free_manager.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/exceptions.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/group_solution_handler.h
   ${PROJECT_SOURCE_DIR}/include/prismspf/core/parse_cmd_options.h

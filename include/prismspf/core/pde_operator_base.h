@@ -16,6 +16,9 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+template <unsigned int dim, unsigned int degree, typename number>
+class SolveContext;
+
 /**
  * @brief This class contains the user implementation of each PDE operator.
  */
@@ -88,6 +91,24 @@ public:
   {}
 
   /**
+   * @brief Function called right before a solve block. Gives access to all the internal
+   * classes, so you can break things here.
+   */
+  virtual void
+  pre_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                  [[maybe_unused]] unsigned int                       solver_id)
+  {}
+
+  /**
+   * @brief Function called right after a solve block.Gives access to all the internal
+   * classes, so you can break things here.
+   */
+  virtual void
+  post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                   [[maybe_unused]] unsigned int                       solver_id)
+  {}
+
+  /**
    * @brief Get the user inputs (constant reference).
    */
   [[nodiscard]] const UserInputParameters<dim> &
@@ -107,6 +128,24 @@ public:
     return *pf_tools;
   }
 
+  /**
+   * @brief Set user triggered stop.
+   */
+  void
+  set_user_stop(bool flag)
+  {
+    user_stop = flag;
+  }
+
+  /**
+   * @brief Get user triggered stop.
+   */
+  bool
+  get_user_stop()
+  {
+    return user_stop;
+  }
+
 private:
   /**
    * @brief The user-inputs.
@@ -117,6 +156,11 @@ private:
    * @brief Phase field tools.
    */
   const PhaseFieldTools<dim> *pf_tools = nullptr;
+
+  /**
+   * @brief User triggered stop.
+   */
+  bool user_stop = false;
 };
 
 PRISMS_PF_END_NAMESPACE

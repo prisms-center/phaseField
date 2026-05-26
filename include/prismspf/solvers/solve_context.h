@@ -4,11 +4,12 @@
 #pragma once
 
 #include <deal.II/base/exceptions.h>
-#include <deal.II/base/mg_level_object.h>
-#include <deal.II/fe/mapping_q1.h>
 
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
+#include <prismspf/core/field_attributes.h>
+#include <prismspf/core/invm_manager.h>
+#include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/simulation_timer.h>
 #include <prismspf/core/solution_indexer.h>
@@ -17,9 +18,6 @@
 #include <prismspf/user_inputs/user_input_parameters.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/field_attributes.h"
-#include "prismspf/core/invm_manager.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
@@ -38,22 +36,26 @@ public:
   /**
    * @brief Constructor.
    */
-  SolveContext(std::vector<FieldAttributes>                _field_attributes,
-               const UserInputParameters<dim>             &_user_inputs,
-               TriangulationManager<dim>                  &_triangulation_manager,
-               DoFManager<dim, degree>                    &_dof_manager,
-               ConstraintManager<dim, degree, number>     &_constraint_manager,
-               SolutionIndexer<dim, number>               &_solution_indexer,
-               const PDEOperatorBase<dim, degree, number> &_pde_operator)
+  SolveContext(std::vector<FieldAttributes>            _field_attributes,
+               const UserInputParameters<dim>         &_user_inputs,
+               TriangulationManager<dim>              &_triangulation_manager,
+               DoFManager<dim, degree>                &_dof_manager,
+               ConstraintManager<dim, degree, number> &_constraint_manager,
+               SolutionIndexer<dim, number>           &_solution_indexer,
+               PDEOperatorBase<dim, degree, number>   &_pde_operator)
     : field_attributes(std::move(_field_attributes))
     , user_inputs(&_user_inputs)
     , triangulation_manager(&_triangulation_manager)
     , dof_manager(&_dof_manager)
     , constraint_manager(&_constraint_manager)
+    , matrix_free_manager()
     , solution_indexer(&_solution_indexer)
     , invm_manager(*dof_manager, *constraint_manager, true, true)
     , sim_timer(user_inputs->temporal_discretization.dt)
-    , pde_operator(&_pde_operator) {};
+    , pde_operator(&_pde_operator)
+  {
+    matrix_free_manager.reinit(*dof_manager, *constraint_manager);
+  };
 
   /**
    * @brief Get the field attributes.
@@ -135,6 +137,24 @@ public:
   }
 
   /**
+   * @brief Get the MatrixFree manager.
+   */
+  [[nodiscard]] const MatrixFreeManager<dim, number> &
+  get_matrix_free_manager() const
+  {
+    return matrix_free_manager;
+  }
+
+  /**
+   * @brief Get the MatrixFree manager.
+   */
+  [[nodiscard]] MatrixFreeManager<dim, number> &
+  get_matrix_free_manager()
+  {
+    return matrix_free_manager;
+  }
+
+  /**
    * @brief Get the solution manager.
    */
   [[nodiscard]] SolutionIndexer<dim, number> &
@@ -190,6 +210,16 @@ public:
     return *pde_operator;
   }
 
+  /**
+   * @brief Get a shared pointer to the pde operator.
+   */
+  [[nodiscard]] PDEOperatorBase<dim, degree, number> &
+  get_pde_operator()
+  {
+    Assert(pde_operator != nullptr, dealii::ExcNotInitialized());
+    return *pde_operator;
+  }
+
 private:
   /**
    * @brief Field attributes.
@@ -217,6 +247,11 @@ private:
   ConstraintManager<dim, degree, number> *constraint_manager;
 
   /**
+   * @brief MatrixFree object shared for all the fields.
+   */
+  MatrixFreeManager<dim, number> matrix_free_manager;
+
+  /**
    * @brief Solution manager.
    */
   SolutionIndexer<dim, number> *solution_indexer;
@@ -234,7 +269,7 @@ private:
   /**
    * @brief PDE operator.
    */
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  PDEOperatorBase<dim, degree, number> *pde_operator;
 };
 
 PRISMS_PF_END_NAMESPACE

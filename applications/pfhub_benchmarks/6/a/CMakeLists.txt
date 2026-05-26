@@ -2,16 +2,16 @@
 #  CMake script for the PRISMS-PF applications
 ##
 
-cmake_minimum_required(VERSION 3.28)
-cmake_policy(VERSION 3.28)
+cmake_minimum_required(VERSION 3.25)
+cmake_policy(VERSION 3.25)
 
 # Name the application
-set(APPLICATION_NAME "cahn_hilliard_explicit")
+set(APPLICATION_NAME "pfhub_benchmark_6_a")
 
 # Create a project for the application
 project(${APPLICATION_NAME} CXX)
 
-# Set the build type to debug is not specified
+# Set the build type to debug if not specified
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
 endif()

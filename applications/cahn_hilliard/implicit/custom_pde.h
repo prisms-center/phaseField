@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
 #include <prismspf/core/pde_operator_base.h>
+#include <prismspf/core/type_enums.h>
 
 #include <random>
 
@@ -23,8 +24,7 @@ public:
   /**
    * @brief Constructor.
    */
-  explicit CustomPDE(const UserInputParameters<dim> &_user_inputs,
-                     PhaseFieldTools<dim>           &_pf_tools)
+  CustomPDE(const UserInputParameters<dim> &_user_inputs, PhaseFieldTools<dim> &_pf_tools)
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
     , McV(get_user_inputs().user_constants.get_double("McV"))
     , KcV(get_user_inputs().user_constants.get_double("KcV"))
@@ -93,29 +93,26 @@ private:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
+    const double dt = sim_timer.get_timestep();
     if (solve_block_id == 0) // c
       {
-        ScalarValue c   = variable_list.template get_value<Scalar, OldOne>(0);
-        ScalarGrad  mux = variable_list.template get_gradient<Scalar, OldOne>(1);
+        ScalarValue c_val   = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  c_grad  = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue mu_val  = variable_list.template get_value<Scalar, Current>(1);
+        ScalarGrad  mu_grad = variable_list.template get_gradient<Scalar, Current>(1);
 
-        ScalarValue eq_c  = c;
-        ScalarGrad  eqx_c = -McV * sim_timer.get_timestep() * mux;
+        ScalarValue c_old = variable_list.template get_value<Scalar, OldOne>(0);
 
-        variable_list.set_value_term(0, eq_c);
-        variable_list.set_gradient_term(0, eqx_c);
-      }
-    else if (solve_block_id == 1) // mu
-      {
-        ScalarValue c  = variable_list.template get_value<Scalar, Current>(0);
-        ScalarGrad  cx = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue r_c_val = (c_old - c_val);
+        VectorValue r_c_vec = (dt * McV * mu_grad);
 
-        ScalarValue fcV = WcV * c * (c - 1.0) * (c - 0.5);
+        ScalarValue r_mu_val = mu_val - WcV * c_val * (c_val - 1.0) * (c_val - 0.5);
+        VectorValue r_mu_vec = KcV * c_grad;
 
-        ScalarValue eq_mu  = fcV;
-        ScalarGrad  eqx_mu = KcV * cx;
-
-        variable_list.set_value_term(1, eq_mu);
-        variable_list.set_gradient_term(1, eqx_mu);
+        variable_list.set_value_term(0, r_c_val);
+        variable_list.set_gradient_term(0, -r_c_vec);
+        variable_list.set_value_term(1, r_mu_val);
+        variable_list.set_gradient_term(1, -r_mu_vec);
       }
     else if (solve_block_id == 2) // pp
       {
@@ -127,6 +124,44 @@ private:
         ScalarValue f_grad = 0.5 * KcV * cx.norm_square();
         f_tot              = f_chem + f_grad;
         variable_list.set_value_term(2, f_tot);
+      }
+  }
+
+  void
+  compute_lhs([[maybe_unused]] FieldContainer<dim, degree, number> &variable_list,
+              [[maybe_unused]] const SimulationTimer               &sim_timer,
+              [[maybe_unused]] unsigned int solve_block_id) const override
+  {
+    const double dt = sim_timer.get_timestep();
+    if (solve_block_id == 0) // c
+      {
+        ScalarValue c_val   = variable_list.template get_value<Scalar, Current>(0);
+        ScalarGrad  c_grad  = variable_list.template get_gradient<Scalar, Current>(0);
+        ScalarValue mu_val  = variable_list.template get_value<Scalar, Current>(1);
+        ScalarGrad  mu_grad = variable_list.template get_gradient<Scalar, Current>(1);
+
+        ScalarValue delta_c_val  = variable_list.template get_value<Scalar, Change>(0);
+        ScalarGrad  delta_c_grad = variable_list.template get_gradient<Scalar, Change>(0);
+        ScalarValue delta_mu_val = variable_list.template get_value<Scalar, Change>(1);
+        ScalarGrad delta_mu_grad = variable_list.template get_gradient<Scalar, Change>(1);
+
+        ScalarValue j_c_c_val = (-delta_c_val);
+        // VectorValue j_c_dc_vec = ;
+
+        // ScalarValue j_c_mu_val = ;
+        VectorValue j_c_mu_vec = (dt * McV * delta_mu_grad);
+
+        ScalarValue j_mu_c_val =
+          -WcV * (0.5 + 3.0 * (c_val * (c_val - 1.0))) * delta_c_val;
+        VectorValue j_mu_c_vec = KcV * delta_c_grad;
+
+        ScalarValue j_mu_mu_val = delta_mu_val;
+        // VectorValue j_mu_mu_vec = ;
+
+        variable_list.set_value_term(0, -j_c_c_val);
+        variable_list.set_gradient_term(0, j_c_mu_vec);
+        variable_list.set_value_term(1, -j_mu_c_val - j_mu_mu_val);
+        variable_list.set_gradient_term(1, j_mu_c_vec);
       }
   }
 
