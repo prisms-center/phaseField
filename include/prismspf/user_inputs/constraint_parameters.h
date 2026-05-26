@@ -141,9 +141,6 @@ struct FieldConstraints
 {
   std::array<ComponentConditions, dim> component_constraints;
 
-  // std::unordered_set<std::pair<dealii::Point<dim>, dealii::Tensor<1, dim>>>
-  // pinned_points;
-
   [[nodiscard]] bool
   has_time_dependent_bcs() const
   {
@@ -207,7 +204,6 @@ BoundaryParameters<dim>::print_parameter_summary() const
     {
       // Todo
     }
-  // TODO print pinned points
 
   ConditionalOStreams::pout_summary() << "\n" << std::flush;
 }

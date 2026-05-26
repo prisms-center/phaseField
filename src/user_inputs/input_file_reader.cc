@@ -737,45 +737,6 @@ InputFileReader::declare_bc_parameters()
                                         "",
                                         dealii::Patterns::Anything(),
                                         "List of conditions.");
-        parameter_handler.enter_subsection("pinning point");
-        {
-          parameter_handler.declare_entry("enable pinned point",
-                                          "false",
-                                          dealii::Patterns::Bool(),
-                                          "Whether to use a pinned point");
-
-          parameter_handler.declare_entry("x",
-                                          "0.0",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "X-coordinate of the point");
-          parameter_handler.declare_entry("y",
-                                          "0.0",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Y-coordinate of the point");
-          parameter_handler.declare_entry("z",
-                                          "0.0",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Z-coordinate of the point");
-
-          parameter_handler.declare_entry("value",
-                                          "2147483647",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Value of pinned point.");
-
-          parameter_handler.declare_entry("x value",
-                                          "2147483647",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Value of pinned point for the x-component.");
-          parameter_handler.declare_entry("y value",
-                                          "2147483647",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Value of pinned point for the y-component.");
-          parameter_handler.declare_entry("z value",
-                                          "2147483647",
-                                          dealii::Patterns::Double(-DBL_MAX, DBL_MAX),
-                                          "Value of pinned point for the z-component.");
-        }
-        parameter_handler.leave_subsection();
       }
       parameter_handler.leave_subsection();
     }
