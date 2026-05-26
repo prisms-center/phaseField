@@ -2,11 +2,11 @@
 
 #include <deal.II/base/vectorization.h>
 
+#include <prismspf/core/math.h>
+
 #include <prismspf/utilities/vectorized_operations.h>
 
 #include <prismspf/config.h>
-
-#include <prismspf/core/math.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
