@@ -44,9 +44,6 @@ public:
   NewtonSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
     : LinearSolver<dim, degree, number>(_solve_block, _solve_context)
-    , newton_params(
-        solve_context->get_user_inputs().nonlinear_solve_parameters.newton_solvers.at(
-          solve_block.id))
   {}
 
   /**
@@ -75,9 +72,10 @@ public:
   void
   solve_impl() override
   {
-    const number newton_step_length = newton_params.step_length;
-    const number newton_tolerance = newton_params.tolerance_value * normalization_value();
-    unsigned int newton_max_iterations = newton_params.max_iterations;
+    const number newton_step_length = newton_params().step_length;
+    const number newton_tolerance =
+      newton_params().tolerance_value * normalization_value();
+    unsigned int newton_max_iterations = newton_params().max_iterations;
 
     BlockVector<number>             &newton_residual = rhs_vector;
     MFOperator<dim, degree, number> &rhs_op          = rhs_operator;
@@ -154,9 +152,14 @@ public:
       }
   }
 
-protected:
-  BlockVector<number>       newton_update; //"change" term
-  NonlinearSolverParameters newton_params;
+private:
+  BlockVector<number> newton_update; //"change" term
+
+  [[nodiscard]] const NonlinearSolverParameters &
+  newton_params() const
+  {
+    return solve_block.nonlinear_solver_parameters;
+  };
 };
 
 PRISMS_PF_END_NAMESPACE

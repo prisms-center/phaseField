@@ -20,6 +20,8 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include "prismspf/user_inputs/linear_solve_parameters.h"
+
 #include <filesystem>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -124,7 +126,55 @@ Problem<dim, degree, number>::Problem(
   , solvers(make_solvers(solve_blocks, solve_context))
   , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , grid_refiner(solve_context)
-{}
+{
+  std::map<unsigned int, LinearSolverParameters> linear_solver_parameters_copy =
+    _user_inputs.linear_solve_parameters.linear_solvers;
+  std::map<unsigned int, NonlinearSolverParameters> nonlinear_solver_parameters_copy =
+    _user_inputs.nonlinear_solve_parameters.newton_solvers;
+  const LinearSolverParameters    default_linear_solver_parameters;
+  const NonlinearSolverParameters default_nonlinear_solver_parameters;
+  for (auto &solve_block : solve_blocks)
+    {
+      solve_block.validate();
+      if (const auto &lin_param_it = linear_solver_parameters_copy.find(solve_block.id);
+          lin_param_it != linear_solver_parameters_copy.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding linear solver parameters for solve block " << solve_block.id
+            << " with user input parameters.\n";
+          solve_block.linear_solver_parameters = lin_param_it->second;
+          linear_solver_parameters_copy.erase(lin_param_it);
+        }
+      if (const auto &nonlin_param_it =
+            nonlinear_solver_parameters_copy.find(solve_block.id);
+          nonlin_param_it != nonlinear_solver_parameters_copy.end())
+        {
+          ConditionalOStreams::pout_base()
+            << "Overriding newton solver parameters for solve block " << solve_block.id
+            << " with user input parameters.\n";
+          solve_block.nonlinear_solver_parameters = nonlin_param_it->second;
+          nonlinear_solver_parameters_copy.erase(nonlin_param_it);
+        }
+      for (const auto &remaining_lin_params : linear_solver_parameters_copy)
+        {
+          ConditionalOStreams::pout_base()
+            << "Warning: Linear solver parameters provided by user inputs for solve "
+               "block "
+            << remaining_lin_params.first
+            << " which does not exist in the solve blocks. These parameters will be "
+               "ignored.\n";
+        }
+      for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
+        {
+          ConditionalOStreams::pout_base()
+            << "Warning: Nonlinear solver parameters provided by user inputs for solve "
+               "block "
+            << remaining_nonlin_params.first
+            << " which does not exist in the solve blocks. These parameters will be "
+               "ignored.\n";
+        }
+    }
+}
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
