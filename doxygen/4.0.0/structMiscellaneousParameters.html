@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7eeedf3e3c99408c14d6ad70bd856db4" id="r_a7eeedf3e3c99408c14d6ad70bd856db4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7eeedf3e3c99408c14d6ad70bd856db4">set_random_seed</a> (const unsigned int &amp;_random_seed)</td></tr>
 <tr class="memdesc:a7eeedf3e3c99408c14d6ad70bd856db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the random seed and initialize the RNG.  <br /></td></tr>
 <tr class="separator:a7eeedf3e3c99408c14d6ad70bd856db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971433e469bd1bf02279c6bdd7bbca5c" id="r_a971433e469bd1bf02279c6bdd7bbca5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a971433e469bd1bf02279c6bdd7bbca5c">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler) const</td></tr>
+<tr class="memdesc:a971433e469bd1bf02279c6bdd7bbca5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a971433e469bd1bf02279c6bdd7bbca5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7831bf6fbd6590d380384b7193c33044" id="r_a7831bf6fbd6590d380384b7193c33044"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7831bf6fbd6590d380384b7193c33044">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="memdesc:a7831bf6fbd6590d380384b7193c33044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:a7831bf6fbd6590d380384b7193c33044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -155,6 +161,60 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds miscellaneous parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7831bf6fbd6590d380384b7193c33044" name="a7831bf6fbd6590d380384b7193c33044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7831bf6fbd6590d380384b7193c33044">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MiscellaneousParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
+<a id="a971433e469bd1bf02279c6bdd7bbca5c" name="a971433e469bd1bf02279c6bdd7bbca5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a971433e469bd1bf02279c6bdd7bbca5c">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MiscellaneousParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
+
+</div>
+</div>
 <a id="aba161e4fdfd5843a6295f41eccaa3a7a" name="aba161e4fdfd5843a6295f41eccaa3a7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba161e4fdfd5843a6295f41eccaa3a7a">&#9670;&#160;</a></span>postprocess_and_validate()</h2>
 

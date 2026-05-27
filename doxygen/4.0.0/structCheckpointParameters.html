@@ -163,6 +163,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb27e7ccf1cb34da6a29fe0cc22d7db7" id="r_afb27e7ccf1cb34da6a29fe0cc22d7db7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb27e7ccf1cb34da6a29fe0cc22d7db7">get_num_checkpoints</a> () const</td></tr>
 <tr class="memdesc:afb27e7ccf1cb34da6a29fe0cc22d7db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of checkpoints that will be made.  <br /></td></tr>
 <tr class="separator:afb27e7ccf1cb34da6a29fe0cc22d7db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24d2bef9244140f69ada261d87d34989" id="r_a24d2bef9244140f69ada261d87d34989"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24d2bef9244140f69ada261d87d34989">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler) const</td></tr>
+<tr class="memdesc:a24d2bef9244140f69ada261d87d34989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a24d2bef9244140f69ada261d87d34989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a69a191e8544339d5c146942738cb49" id="r_a9a69a191e8544339d5c146942738cb49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a69a191e8544339d5c146942738cb49">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
+<tr class="memdesc:a9a69a191e8544339d5c146942738cb49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:a9a69a191e8544339d5c146942738cb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -300,6 +306,37 @@ template&lt;typename ListType&gt; </div>
 
 </div>
 </div>
+<a id="a9a69a191e8544339d5c146942738cb49" name="a9a69a191e8544339d5c146942738cb49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a69a191e8544339d5c146942738cb49">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>temporal_discretization</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
 <a id="a3e6a9355197b649e732f9a60da105eb9" name="a3e6a9355197b649e732f9a60da105eb9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3e6a9355197b649e732f9a60da105eb9">&#9670;&#160;</a></span>clear_checkpoint_list()</h2>
 
@@ -324,6 +361,33 @@ template&lt;typename ListType&gt; </div>
 </div><div class="memdoc">
 
 <p>Set the user checkpoint list. </p>
+
+</div>
+</div>
+<a id="a24d2bef9244140f69ada261d87d34989" name="a24d2bef9244140f69ada261d87d34989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24d2bef9244140f69ada261d87d34989">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CheckpointParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
 
 </div>
 </div>

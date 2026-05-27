@@ -1,5 +1,7 @@
 var structSpatialDiscretization =
 [
+    [ "assign_parameters", "structSpatialDiscretization.html#ac6cb55398a3da6ce4263cf047cf20916", null ],
+    [ "declare_parameters", "structSpatialDiscretization.html#aaa8c018a28300598461fde6310701e8c", null ],
     [ "print_parameter_summary", "structSpatialDiscretization.html#afcb82b50f54ed9a6609d8332f4242e1d", null ],
     [ "should_refine_mesh", "structSpatialDiscretization.html#abb46608c90654b84560721fe15f48b4a", null ],
     [ "validate", "structSpatialDiscretization.html#a6b3af6772b0cf43ff9aba658871edb28", null ],

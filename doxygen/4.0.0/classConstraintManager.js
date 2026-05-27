@@ -14,7 +14,6 @@ var classConstraintManager =
     [ "make_one_boundary_constraint", "classConstraintManager.html#a5d0d27d70067a7e0a39ec4039c806353", null ],
     [ "make_periodic_constraints", "classConstraintManager.html#a576440ff12a5e701e56948d5a1b9b2f2", null ],
     [ "reinit", "classConstraintManager.html#a775e41870762993e3e9724edd8862f4a", null ],
-    [ "set_pinned_point", "classConstraintManager.html#acd5b12c461c69dc7d3a87cbbb58e2163", null ],
     [ "update_time_dependent_constraints", "classConstraintManager.html#a0b8f4b72311aa20bdd080ede6f7b37a1", null ],
     [ "boundary_parameters", "classConstraintManager.html#a4a24b2f56ff3262849a25db75200d31e", null ],
     [ "dof_manager", "classConstraintManager.html#acf9518f4b5fcf56bc43591bd823ebc9d", null ],

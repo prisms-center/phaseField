@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb46608c90654b84560721fe15f48b4a" id="r_abb46608c90654b84560721fe15f48b4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb46608c90654b84560721fe15f48b4a">should_refine_mesh</a> (unsigned int increment) const</td></tr>
 <tr class="memdesc:abb46608c90654b84560721fe15f48b4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the provided increment is a valid grid refinement step.  <br /></td></tr>
 <tr class="separator:abb46608c90654b84560721fe15f48b4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa8c018a28300598461fde6310701e8c" id="r_aaa8c018a28300598461fde6310701e8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa8c018a28300598461fde6310701e8c">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
+<tr class="memdesc:aaa8c018a28300598461fde6310701e8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:aaa8c018a28300598461fde6310701e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6cb55398a3da6ce4263cf047cf20916" id="r_ac6cb55398a3da6ce4263cf047cf20916"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac6cb55398a3da6ce4263cf047cf20916">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
+<tr class="memdesc:ac6cb55398a3da6ce4263cf047cf20916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:ac6cb55398a3da6ce4263cf047cf20916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -172,6 +178,72 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct SpatialDiscretization&lt; dim &gt;</div><p>Struct that holds spatial discretization parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac6cb55398a3da6ce4263cf047cf20916" name="ac6cb55398a3da6ce4263cf047cf20916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6cb55398a3da6ce4263cf047cf20916">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
+<a id="aaa8c018a28300598461fde6310701e8c" name="aaa8c018a28300598461fde6310701e8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa8c018a28300598461fde6310701e8c">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structSpatialDiscretization.html">SpatialDiscretization</a>&lt; dim &gt;::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
+
+</div>
+</div>
 <a id="afcb82b50f54ed9a6609d8332f4242e1d" name="afcb82b50f54ed9a6609d8332f4242e1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afcb82b50f54ed9a6609d8332f4242e1d">&#9670;&#160;</a></span>print_parameter_summary()</h2>
 

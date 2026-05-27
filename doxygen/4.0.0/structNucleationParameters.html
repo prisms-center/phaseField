@@ -187,6 +187,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a621c085967cdec97f364b3b120207301" id="r_a621c085967cdec97f364b3b120207301"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a621c085967cdec97f364b3b120207301">postprocessed_nucleation_rate_exists</a> () const</td></tr>
 <tr class="memdesc:a621c085967cdec97f364b3b120207301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether a postprocessed nucleation rate exists.  <br /></td></tr>
 <tr class="separator:a621c085967cdec97f364b3b120207301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ec72af9b167758dc751ff1e04da4e22" id="r_a6ec72af9b167758dc751ff1e04da4e22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ec72af9b167758dc751ff1e04da4e22">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler) const</td></tr>
+<tr class="memdesc:a6ec72af9b167758dc751ff1e04da4e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a6ec72af9b167758dc751ff1e04da4e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae81861380841aa290b696cb160a0bab9" id="r_ae81861380841aa290b696cb160a0bab9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae81861380841aa290b696cb160a0bab9">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="memdesc:ae81861380841aa290b696cb160a0bab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:ae81861380841aa290b696cb160a0bab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -208,6 +214,33 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds nucleation parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae81861380841aa290b696cb160a0bab9" name="ae81861380841aa290b696cb160a0bab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae81861380841aa290b696cb160a0bab9">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NucleationParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
 <a id="a44e3ffa7bbd1431c3a453565b293b4db" name="a44e3ffa7bbd1431c3a453565b293b4db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44e3ffa7bbd1431c3a453565b293b4db">&#9670;&#160;</a></span>check_active()</h2>
 
@@ -238,6 +271,33 @@ template&lt;unsigned int dim&gt; </div>
 </div><div class="memdoc">
 
 <p>Check if a nucleus is still active based on its seed time and increment. A nucleus is considered active if the current time or increment is within the greater of the seeding time or seeding increments. The exclusion distance and active refinement are only applied to active nuclei. </p>
+
+</div>
+</div>
+<a id="a6ec72af9b167758dc751ff1e04da4e22" name="a6ec72af9b167758dc751ff1e04da4e22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ec72af9b167758dc751ff1e04da4e22">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NucleationParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
 
 </div>
 </div>

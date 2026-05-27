@@ -29,7 +29,6 @@ var hierarchy =
     ] ],
     [ "GroupSolutionHandler< dim, number >", "classGroupSolutionHandler.html", null ],
     [ "InitialConditionFile", "structInitialConditionFile.html", null ],
-    [ "InputFileReader", "classInputFileReader.html", null ],
     [ "Integrator< dim, degree, number >", "classIntegrator.html", null ],
     [ "InvMManager< dim, degree, number >", "classInvMManager.html", null ],
     [ "LinearSolveParameters", "structLinearSolveParameters.html", null ],

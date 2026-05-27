@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab589cf6b8c580374fac7a40c9fbe3483" id="r_ab589cf6b8c580374fac7a40c9fbe3483"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab589cf6b8c580374fac7a40c9fbe3483">has_time_dependent_bcs</a> () const</td></tr>
 <tr class="memdesc:ab589cf6b8c580374fac7a40c9fbe3483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there are time-dependent boundary conditions.  <br /></td></tr>
 <tr class="separator:ab589cf6b8c580374fac7a40c9fbe3483"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1410586849f51b1bae533e76a068a890" id="r_a1410586849f51b1bae533e76a068a890"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1410586849f51b1bae533e76a068a890">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
+<tr class="memdesc:a1410586849f51b1bae533e76a068a890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a1410586849f51b1bae533e76a068a890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a442021fec64413430f49944fbd639661" id="r_a442021fec64413430f49944fbd639661"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a442021fec64413430f49944fbd639661">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
+<tr class="memdesc:a442021fec64413430f49944fbd639661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:a442021fec64413430f49944fbd639661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -154,6 +160,72 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim&gt;<br />
 struct BoundaryParameters&lt; dim &gt;</div><p>Struct that holds boundary parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a442021fec64413430f49944fbd639661" name="a442021fec64413430f49944fbd639661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a442021fec64413430f49944fbd639661">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
+<a id="a1410586849f51b1bae533e76a068a890" name="a1410586849f51b1bae533e76a068a890"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1410586849f51b1bae533e76a068a890">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structBoundaryParameters.html">BoundaryParameters</a>&lt; dim &gt;::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
+
+</div>
+</div>
 <a id="ab589cf6b8c580374fac7a40c9fbe3483" name="ab589cf6b8c580374fac7a40c9fbe3483"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab589cf6b8c580374fac7a40c9fbe3483">&#9670;&#160;</a></span>has_time_dependent_bcs()</h2>
 

@@ -2,7 +2,6 @@ var dir_8e29679e8d9320f4689771ebd9c97198 =
 [
     [ "checkpoint_parameters.h", "checkpoint__parameters_8h.html", "checkpoint__parameters_8h" ],
     [ "constraint_parameters.h", "constraint__parameters_8h.html", "constraint__parameters_8h" ],
-    [ "input_file_reader.h", "input__file__reader_8h.html", "input__file__reader_8h" ],
     [ "io_parameters.h", "io__parameters_8h.html", "io__parameters_8h" ],
     [ "linear_solve_parameters.h", "linear__solve__parameters_8h.html", "linear__solve__parameters_8h" ],
     [ "load_initial_condition_parameters.h", "load__initial__condition__parameters_8h.html", "load__initial__condition__parameters_8h" ],

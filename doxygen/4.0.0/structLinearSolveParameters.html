@@ -141,6 +141,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab17d374849a9c2d5596de791fd8b25fb" id="r_ab17d374849a9c2d5596de791fd8b25fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab17d374849a9c2d5596de791fd8b25fb">print_parameter_summary</a> () const</td></tr>
 <tr class="memdesc:ab17d374849a9c2d5596de791fd8b25fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters to summary.log.  <br /></td></tr>
 <tr class="separator:ab17d374849a9c2d5596de791fd8b25fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab781f43157fc9b24c0c9b6e4904cfcba" id="r_ab781f43157fc9b24c0c9b6e4904cfcba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab781f43157fc9b24c0c9b6e4904cfcba">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
+<tr class="memdesc:ab781f43157fc9b24c0c9b6e4904cfcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:ab781f43157fc9b24c0c9b6e4904cfcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60020933352c9ccb32b3bbf298f58a97" id="r_a60020933352c9ccb32b3bbf298f58a97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60020933352c9ccb32b3bbf298f58a97">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
+<tr class="memdesc:a60020933352c9ccb32b3bbf298f58a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:a60020933352c9ccb32b3bbf298f58a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -150,6 +156,68 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct that holds linear solver parameters. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a60020933352c9ccb32b3bbf298f58a97" name="a60020933352c9ccb32b3bbf298f58a97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60020933352c9ccb32b3bbf298f58a97">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LinearSolveParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
+<a id="ab781f43157fc9b24c0c9b6e4904cfcba" name="ab781f43157fc9b24c0c9b6e4904cfcba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab781f43157fc9b24c0c9b6e4904cfcba">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LinearSolveParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
+
+</div>
+</div>
 <a id="ab17d374849a9c2d5596de791fd8b25fb" name="ab17d374849a9c2d5596de791fd8b25fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab17d374849a9c2d5596de791fd8b25fb">&#9670;&#160;</a></span>print_parameter_summary()</h2>
 

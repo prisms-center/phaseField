@@ -163,6 +163,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9c1e71e4d92d59708de1e24cb57beb9" id="r_ad9c1e71e4d92d59708de1e24cb57beb9"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9c1e71e4d92d59708de1e24cb57beb9">get_num_outputs</a> () const</td></tr>
 <tr class="memdesc:ad9c1e71e4d92d59708de1e24cb57beb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of outputs that will be made.  <br /></td></tr>
 <tr class="separator:ad9c1e71e4d92d59708de1e24cb57beb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2f4de77f281045102449b7d4872ba6" id="r_a3a2f4de77f281045102449b7d4872ba6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a2f4de77f281045102449b7d4872ba6">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler) const</td></tr>
+<tr class="memdesc:a3a2f4de77f281045102449b7d4872ba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:a3a2f4de77f281045102449b7d4872ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef7565ead9e8ff1e5282103399a446f2" id="r_aef7565ead9e8ff1e5282103399a446f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef7565ead9e8ff1e5282103399a446f2">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;temporal_discretization)</td></tr>
+<tr class="memdesc:aef7565ead9e8ff1e5282103399a446f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:aef7565ead9e8ff1e5282103399a446f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -306,6 +312,37 @@ template&lt;typename ListType&gt; </div>
 
 </div>
 </div>
+<a id="aef7565ead9e8ff1e5282103399a446f2" name="aef7565ead9e8ff1e5282103399a446f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7565ead9e8ff1e5282103399a446f2">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structTemporalDiscretization.html">TemporalDiscretization</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>temporal_discretization</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
 <a id="a47f7f604c11eb9a4761497f0ae53ae87" name="a47f7f604c11eb9a4761497f0ae53ae87"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a47f7f604c11eb9a4761497f0ae53ae87">&#9670;&#160;</a></span>clear_output_list()</h2>
 
@@ -330,6 +367,33 @@ template&lt;typename ListType&gt; </div>
 </div><div class="memdoc">
 
 <p>Set the user output list. </p>
+
+</div>
+</div>
+<a id="a3a2f4de77f281045102449b7d4872ba6" name="a3a2f4de77f281045102449b7d4872ba6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a2f4de77f281045102449b7d4872ba6">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OutputParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
 
 </div>
 </div>

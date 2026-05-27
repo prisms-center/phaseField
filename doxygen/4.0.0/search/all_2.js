@@ -12,7 +12,7 @@ var searchData=
   ['chebyshev_5fparameters_9',['chebyshev_parameters',['../structLinearSolverParameters.html#a5fc96be612df55d4a3061a7715db3df2',1,'LinearSolverParameters']]],
   ['check_5factive_10',['check_active',['../structNucleationParameters.html#a44e3ffa7bbd1431c3a453565b293b4db',1,'NucleationParameters']]],
   ['check_5ffile_5fsize_11',['check_file_size',['../classReadBinary.html#a9052cfb142e6c758e2fa78ef19356116',1,'ReadBinary']]],
-  ['check_5fkeyword_5fmatch_12',['check_keyword_match',['../classInputFileReader.html#ad5ce03dd27de671823a6e03d8043f725',1,'InputFileReader']]],
+  ['check_5fkeyword_5fmatch_12',['check_keyword_match',['../classUserConstants.html#a82d6f3fdf5bb545a08f5bb6424ad930f',1,'UserConstants']]],
   ['checkpoint_5flist_13',['checkpoint_list',['../structCheckpointParameters.html#a078b90a817bbc50ddfa40d0718f4af4c',1,'CheckpointParameters']]],
   ['checkpoint_5fparameters_14',['checkpoint_parameters',['../classUserInputParameters.html#a779b73013b2e21809aeabcb1d97a06ef',1,'UserInputParameters']]],
   ['checkpoint_5fparameters_2eh_15',['checkpoint_parameters.h',['../checkpoint__parameters_8h.html',1,'']]],

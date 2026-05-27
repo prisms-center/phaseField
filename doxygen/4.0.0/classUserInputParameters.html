@@ -123,7 +123,7 @@ $(function(){initNavTree('classUserInputParameters.html',''); initResizable(true
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classUserInputParameters-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">UserInputParameters&lt; dim &gt; Struct Template Reference</div></div>
 </div><!--header-->
@@ -141,9 +141,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1a6cb34c8ad976c6e99eec85cf963c9" id="r_af1a6cb34c8ad976c6e99eec85cf963c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1a6cb34c8ad976c6e99eec85cf963c9">UserInputParameters</a> ()=default</td></tr>
 <tr class="memdesc:af1a6cb34c8ad976c6e99eec85cf963c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor.  <br /></td></tr>
 <tr class="separator:af1a6cb34c8ad976c6e99eec85cf963c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17a1508ccbd794e104cb6270b300e507" id="r_a17a1508ccbd794e104cb6270b300e507"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17a1508ccbd794e104cb6270b300e507">UserInputParameters</a> (const std::string &amp;file_name)</td></tr>
-<tr class="memdesc:a17a1508ccbd794e104cb6270b300e507"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. Reads in user input parameters from file and loads them into member variables.  <br /></td></tr>
-<tr class="separator:a17a1508ccbd794e104cb6270b300e507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59028c45078a54893a81bc5dcbb02f5e" id="r_a59028c45078a54893a81bc5dcbb02f5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59028c45078a54893a81bc5dcbb02f5e">UserInputParameters</a> (const std::string &amp;file_name, unsigned int max_criteria=<a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a>)</td></tr>
+<tr class="memdesc:a59028c45078a54893a81bc5dcbb02f5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. Reads in user input parameters from file and loads them into member variables.  <br /></td></tr>
+<tr class="separator:a59028c45078a54893a81bc5dcbb02f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ffbf81d4daeabf6cb0d9f80d7cef2f" id="r_ac3ffbf81d4daeabf6cb0d9f80d7cef2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3ffbf81d4daeabf6cb0d9f80d7cef2f">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=<a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a>) const</td></tr>
+<tr class="memdesc:ac3ffbf81d4daeabf6cb0d9f80d7cef2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tell parameter handler to expect the parameters by declaring them.  <br /></td></tr>
+<tr class="separator:ac3ffbf81d4daeabf6cb0d9f80d7cef2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2509560c58bb1b3f3a0e7a9348d4a4da" id="r_a2509560c58bb1b3f3a0e7a9348d4a4da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2509560c58bb1b3f3a0e7a9348d4a4da">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=<a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a>)</td></tr>
+<tr class="memdesc:a2509560c58bb1b3f3a0e7a9348d4a4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the parameters from the parameter handler and assign them to the appropriate member variables.  <br /></td></tr>
+<tr class="separator:a2509560c58bb1b3f3a0e7a9348d4a4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03cd2f852f76e780b86943f43504d3ca" id="r_a03cd2f852f76e780b86943f43504d3ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03cd2f852f76e780b86943f43504d3ca">validate</a> (const std::vector&lt; <a class="el" href="structFieldAttributes.html">FieldAttributes</a> &gt; &amp;field_attributes, const std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt; &amp;solve_blocks)</td></tr>
 <tr class="memdesc:a03cd2f852f76e780b86943f43504d3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure that the parameters are compatible with a set of fields and solvers.  <br /></td></tr>
 <tr class="separator:a03cd2f852f76e780b86943f43504d3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,44 +182,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aff16df7f532fd2f58fa2863e63461be9" id="r_aff16df7f532fd2f58fa2863e63461be9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff16df7f532fd2f58fa2863e63461be9">user_constants</a></td></tr>
 <tr class="separator:aff16df7f532fd2f58fa2863e63461be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a6ffce11a04c3fe2e2edc9c6fb0f7aa6f" id="r_a6ffce11a04c3fe2e2edc9c6fb0f7aa6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">assign_spatial_discretization_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a6ffce11a04c3fe2e2edc9c6fb0f7aa6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to the spatial discretiziation.  <br /></td></tr>
-<tr class="separator:a6ffce11a04c3fe2e2edc9c6fb0f7aa6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f162328bb15924d5c106c6730bf5e0f" id="r_a0f162328bb15924d5c106c6730bf5e0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f162328bb15924d5c106c6730bf5e0f">assign_temporal_discretization_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a0f162328bb15924d5c106c6730bf5e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to the temporal discretiziation.  <br /></td></tr>
-<tr class="separator:a0f162328bb15924d5c106c6730bf5e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1050c51b634b9c33d9647af7f922a3a5" id="r_a1050c51b634b9c33d9647af7f922a3a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1050c51b634b9c33d9647af7f922a3a5">assign_linear_solve_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a1050c51b634b9c33d9647af7f922a3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to linear solves.  <br /></td></tr>
-<tr class="separator:a1050c51b634b9c33d9647af7f922a3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef02e115ea13695b185cbc78989820c" id="r_a7ef02e115ea13695b185cbc78989820c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ef02e115ea13695b185cbc78989820c">assign_nonlinear_solve_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a7ef02e115ea13695b185cbc78989820c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to nonlinear solves.  <br /></td></tr>
-<tr class="separator:a7ef02e115ea13695b185cbc78989820c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6651bef02013ca63d78c3deb49f031f0" id="r_a6651bef02013ca63d78c3deb49f031f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6651bef02013ca63d78c3deb49f031f0">assign_output_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a6651bef02013ca63d78c3deb49f031f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to outputs.  <br /></td></tr>
-<tr class="separator:a6651bef02013ca63d78c3deb49f031f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af12d1068105bfcddd9b6e49cd3d80400" id="r_af12d1068105bfcddd9b6e49cd3d80400"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af12d1068105bfcddd9b6e49cd3d80400">assign_checkpoint_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:af12d1068105bfcddd9b6e49cd3d80400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to checkpoints.  <br /></td></tr>
-<tr class="separator:af12d1068105bfcddd9b6e49cd3d80400"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b616c195352863b5b69aa6bd4055fb1" id="r_a6b616c195352863b5b69aa6bd4055fb1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b616c195352863b5b69aa6bd4055fb1">assign_load_initial_condition_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a6b616c195352863b5b69aa6bd4055fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to loading in initial condition.  <br /></td></tr>
-<tr class="separator:a6b616c195352863b5b69aa6bd4055fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a584575f6f8c2cfa44c9b420f35e1a83e" id="r_a584575f6f8c2cfa44c9b420f35e1a83e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a584575f6f8c2cfa44c9b420f35e1a83e">assign_nucleation_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a584575f6f8c2cfa44c9b420f35e1a83e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to nucleation.  <br /></td></tr>
-<tr class="separator:a584575f6f8c2cfa44c9b420f35e1a83e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d2673b835a4c8f59b073ecbe29513af" id="r_a1d2673b835a4c8f59b073ecbe29513af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d2673b835a4c8f59b073ecbe29513af">assign_grain_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a1d2673b835a4c8f59b073ecbe29513af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to grain remapping and grain vtk load-in.  <br /></td></tr>
-<tr class="separator:a1d2673b835a4c8f59b073ecbe29513af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7909becd32d37c394dde69710010bde6" id="r_a7909becd32d37c394dde69710010bde6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7909becd32d37c394dde69710010bde6">assign_boundary_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a7909becd32d37c394dde69710010bde6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to boundaries.  <br /></td></tr>
-<tr class="separator:a7909becd32d37c394dde69710010bde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f3e2fa561880287afc797e8375abe97" id="r_a8f3e2fa561880287afc797e8375abe97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f3e2fa561880287afc797e8375abe97">assign_miscellaneous_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a8f3e2fa561880287afc797e8375abe97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user inputs to parameters for anything related to miscellaneous parameters.  <br /></td></tr>
-<tr class="separator:a8f3e2fa561880287afc797e8375abe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a128cf310372defe3c5411bd0a61d8573" id="r_a128cf310372defe3c5411bd0a61d8573"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a128cf310372defe3c5411bd0a61d8573">load_model_constants</a> (const <a class="el" href="classInputFileReader.html">InputFileReader</a> &amp;input_file_reader, dealii::ParameterHandler &amp;parameter_handler)</td></tr>
-<tr class="memdesc:a128cf310372defe3c5411bd0a61d8573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the provided user constants.  <br /></td></tr>
-<tr class="separator:a128cf310372defe3c5411bd0a61d8573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a62888ce1d7346835d3783191846de06c" id="r_a62888ce1d7346835d3783191846de06c"><td class="memItemLeft" align="right" valign="top">static constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a> = 5</td></tr>
+<tr class="memdesc:a62888ce1d7346835d3783191846de06c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of subsections to declare for certain field and solver parameters.  <br /></td></tr>
+<tr class="separator:a62888ce1d7346835d3783191846de06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af1a6cb34c8ad976c6e99eec85cf963c9" name="af1a6cb34c8ad976c6e99eec85cf963c9"></a>
@@ -245,8 +218,8 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
-<a id="a17a1508ccbd794e104cb6270b300e507" name="a17a1508ccbd794e104cb6270b300e507"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17a1508ccbd794e104cb6270b300e507">&#9670;&#160;</a></span>UserInputParameters() <span class="overload">[2/2]</span></h2>
+<a id="a59028c45078a54893a81bc5dcbb02f5e" name="a59028c45078a54893a81bc5dcbb02f5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59028c45078a54893a81bc5dcbb02f5e">&#9670;&#160;</a></span>UserInputParameters() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,15 +230,19 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;<a class="el" href="classUserInputParameters.html">::UserInputParameters</a> </td>
+          <td class="memname"><a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;<a class="el" href="classUserInputParameters.html">::UserInputParameters</a> </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>file_name</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>file_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -275,8 +252,8 @@ template&lt;unsigned int dim&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7909becd32d37c394dde69710010bde6" name="a7909becd32d37c394dde69710010bde6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7909becd32d37c394dde69710010bde6">&#9670;&#160;</a></span>assign_boundary_parameters()</h2>
+<a id="a2509560c58bb1b3f3a0e7a9348d4a4da" name="a2509560c58bb1b3f3a0e7a9348d4a4da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2509560c58bb1b3f3a0e7a9348d4a4da">&#9670;&#160;</a></span>assign_parameters()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,343 +264,57 @@ template&lt;unsigned int dim&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_boundary_parameters </td>
+          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_parameters </td>
           <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to boundaries. </p>
-
-</div>
-</div>
-<a id="af12d1068105bfcddd9b6e49cd3d80400" name="af12d1068105bfcddd9b6e49cd3d80400"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af12d1068105bfcddd9b6e49cd3d80400">&#9670;&#160;</a></span>assign_checkpoint_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_checkpoint_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to checkpoints. </p>
-
-</div>
-</div>
-<a id="a1d2673b835a4c8f59b073ecbe29513af" name="a1d2673b835a4c8f59b073ecbe29513af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d2673b835a4c8f59b073ecbe29513af">&#9670;&#160;</a></span>assign_grain_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_grain_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to grain remapping and grain vtk load-in. </p>
-
-</div>
-</div>
-<a id="a1050c51b634b9c33d9647af7f922a3a5" name="a1050c51b634b9c33d9647af7f922a3a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1050c51b634b9c33d9647af7f922a3a5">&#9670;&#160;</a></span>assign_linear_solve_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_linear_solve_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to linear solves. </p>
-
-</div>
-</div>
-<a id="a6b616c195352863b5b69aa6bd4055fb1" name="a6b616c195352863b5b69aa6bd4055fb1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b616c195352863b5b69aa6bd4055fb1">&#9670;&#160;</a></span>assign_load_initial_condition_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_load_initial_condition_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to loading in initial condition. </p>
-
-</div>
-</div>
-<a id="a8f3e2fa561880287afc797e8375abe97" name="a8f3e2fa561880287afc797e8375abe97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f3e2fa561880287afc797e8375abe97">&#9670;&#160;</a></span>assign_miscellaneous_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_miscellaneous_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to miscellaneous parameters. </p>
-
-</div>
-</div>
-<a id="a7ef02e115ea13695b185cbc78989820c" name="a7ef02e115ea13695b185cbc78989820c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ef02e115ea13695b185cbc78989820c">&#9670;&#160;</a></span>assign_nonlinear_solve_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_nonlinear_solve_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to nonlinear solves. </p>
-
-</div>
-</div>
-<a id="a584575f6f8c2cfa44c9b420f35e1a83e" name="a584575f6f8c2cfa44c9b420f35e1a83e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a584575f6f8c2cfa44c9b420f35e1a83e">&#9670;&#160;</a></span>assign_nucleation_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_nucleation_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to nucleation. </p>
-
-</div>
-</div>
-<a id="a6651bef02013ca63d78c3deb49f031f0" name="a6651bef02013ca63d78c3deb49f031f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6651bef02013ca63d78c3deb49f031f0">&#9670;&#160;</a></span>assign_output_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_output_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to outputs. </p>
-
-</div>
-</div>
-<a id="a6ffce11a04c3fe2e2edc9c6fb0f7aa6f" name="a6ffce11a04c3fe2e2edc9c6fb0f7aa6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ffce11a04c3fe2e2edc9c6fb0f7aa6f">&#9670;&#160;</a></span>assign_spatial_discretization_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_spatial_discretization_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to the spatial discretiziation. </p>
-
-</div>
-</div>
-<a id="a0f162328bb15924d5c106c6730bf5e0f" name="a0f162328bb15924d5c106c6730bf5e0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f162328bb15924d5c106c6730bf5e0f">&#9670;&#160;</a></span>assign_temporal_discretization_parameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::assign_temporal_discretization_parameters </td>
-          <td>(</td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Assign the provided user inputs to parameters for anything related to the temporal discretiziation. </p>
-
-</div>
-</div>
-<a id="a128cf310372defe3c5411bd0a61d8573" name="a128cf310372defe3c5411bd0a61d8573"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a128cf310372defe3c5411bd0a61d8573">&#9670;&#160;</a></span>load_model_constants()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::load_model_constants </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classInputFileReader.html">InputFileReader</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>input_file_reader</em></span>, </td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>&#160;)</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Assign the provided user constants. </p>
+<p>Read the parameters from the parameter handler and assign them to the appropriate member variables. </p>
+
+</div>
+</div>
+<a id="ac3ffbf81d4daeabf6cb0d9f80d7cef2f" name="ac3ffbf81d4daeabf6cb0d9f80d7cef2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ffbf81d4daeabf6cb0d9f80d7cef2f">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a62888ce1d7346835d3783191846de06c">default_max_criteria</a></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tell parameter handler to expect the parameters by declaring them. </p>
 
 </div>
 </div>
@@ -719,6 +410,32 @@ template&lt;unsigned int dim&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62888ce1d7346835d3783191846de06c" name="a62888ce1d7346835d3783191846de06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62888ce1d7346835d3783191846de06c">&#9670;&#160;</a></span>default_max_criteria</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="classUserInputParameters.html">UserInputParameters</a>&lt; dim &gt;::default_max_criteria = 5</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of subsections to declare for certain field and solver parameters. </p>
 
 </div>
 </div>
@@ -869,7 +586,6 @@ template&lt;unsigned int dim&gt; </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li>include/prismspf/core/<a class="el" href="dirichlet_8h_source.html">dirichlet.h</a></li>
 <li>include/prismspf/user_inputs/<a class="el" href="user__input__parameters_8h_source.html">user_input_parameters.h</a></li>
-<li>src/user_inputs/<a class="el" href="user__input__parameters_8cc.html">user_input_parameters.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

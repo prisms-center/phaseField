@@ -1,6 +1,8 @@
 var structNucleationParameters =
 [
+    [ "assign_parameters", "structNucleationParameters.html#ae81861380841aa290b696cb160a0bab9", null ],
     [ "check_active", "structNucleationParameters.html#a44e3ffa7bbd1431c3a453565b293b4db", null ],
+    [ "declare_parameters", "structNucleationParameters.html#a6ec72af9b167758dc751ff1e04da4e22", null ],
     [ "get_exclusion_distance", "structNucleationParameters.html#a242594dd8e0b4d72469fa620d2092f37", null ],
     [ "get_nucleation_period", "structNucleationParameters.html#aa7621adf83c282aa605554b021b64b57", null ],
     [ "get_refinement_radius", "structNucleationParameters.html#af6b8d32cc895fa58a18fb6c9cf6e6449", null ],

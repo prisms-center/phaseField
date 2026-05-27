@@ -25,7 +25,6 @@ var annotated_dup =
     [ "GroupSolutionHandler", "classGroupSolutionHandler.html", "classGroupSolutionHandler" ],
     [ "InitialCondition", "classInitialCondition.html", "classInitialCondition" ],
     [ "InitialConditionFile", "structInitialConditionFile.html", "structInitialConditionFile" ],
-    [ "InputFileReader", "classInputFileReader.html", "classInputFileReader" ],
     [ "Integrator", "classIntegrator.html", "classIntegrator" ],
     [ "InvMManager", "classInvMManager.html", "classInvMManager" ],
     [ "LinearSolveParameters", "structLinearSolveParameters.html", "structLinearSolveParameters" ],

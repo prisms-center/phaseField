@@ -124,6 +124,8 @@ $(function(){initNavTree('classUserConstants.html',''); initResizable(true); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classUserConstants-members.html">List of all members</a>  </div>
@@ -174,11 +176,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a83c4cdb1a1b5c417183c0cbd12e75ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the elasticity tensor from the <code>model_constants</code> that are defined from the parameters.prm parser. This is essentially just a wrapper for boost::get.  <br /></td></tr>
 <tr class="separator:a83c4cdb1a1b5c417183c0cbd12e75ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5579bbb1335c38ae05a523b9572af082" id="r_a5579bbb1335c38ae05a523b9572af082"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5579bbb1335c38ae05a523b9572af082">add_user_constant</a> (const std::string &amp;constant_name, std::vector&lt; std::string &gt; &amp;model_constants_strings)</td></tr>
-<tr class="memdesc:a5579bbb1335c38ae05a523b9572af082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print all user-specified constants.  <br /></td></tr>
+<tr class="memdesc:a5579bbb1335c38ae05a523b9572af082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add user-specified constants.  <br /></td></tr>
 <tr class="separator:a5579bbb1335c38ae05a523b9572af082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc1db15a0df4d6603bbafe3e6c426aad" id="r_adc1db15a0df4d6603bbafe3e6c426aad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc1db15a0df4d6603bbafe3e6c426aad">print</a> () const</td></tr>
 <tr class="memdesc:adc1db15a0df4d6603bbafe3e6c426aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print all user-specified constants.  <br /></td></tr>
 <tr class="separator:adc1db15a0df4d6603bbafe3e6c426aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa908a9ccd10476dd68f8bdb31eda8b9c" id="r_aa908a9ccd10476dd68f8bdb31eda8b9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa908a9ccd10476dd68f8bdb31eda8b9c">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler) const</td></tr>
+<tr class="memdesc:aa908a9ccd10476dd68f8bdb31eda8b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:aa908a9ccd10476dd68f8bdb31eda8b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefc6cfff323bb520e40f67ea5f7a1638" id="r_aefc6cfff323bb520e40f67ea5f7a1638"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefc6cfff323bb520e40f67ea5f7a1638">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler)</td></tr>
+<tr class="memdesc:aefc6cfff323bb520e40f67ea5f7a1638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:aefc6cfff323bb520e40f67ea5f7a1638"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae5833a3b79c639faafa5e99a791dc245" id="r_ae5833a3b79c639faafa5e99a791dc245"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5833a3b79c639faafa5e99a791dc245">strip_spaces</a> (std::string &amp;line)</td></tr>
+<tr class="separator:ae5833a3b79c639faafa5e99a791dc245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82d6f3fdf5bb545a08f5bb6424ad930f" id="r_a82d6f3fdf5bb545a08f5bb6424ad930f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82d6f3fdf5bb545a08f5bb6424ad930f">check_keyword_match</a> (const std::string &amp;line, const std::string &amp;keyword)</td></tr>
+<tr class="separator:a82d6f3fdf5bb545a08f5bb6424ad930f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1f20ed4c709eccd97e3439a89068c56" id="r_ad1f20ed4c709eccd97e3439a89068c56"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1f20ed4c709eccd97e3439a89068c56">parse_line</a> (std::string line, const std::string &amp;keyword, const std::string &amp;entry_name, std::string &amp;out_string, bool expect_equals_sign)</td></tr>
+<tr class="memdesc:ad1f20ed4c709eccd97e3439a89068c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look for a keyword in a line and if it is found, extract the entry name and value. This is used to extract the model constant names from the input file.  <br /></td></tr>
+<tr class="separator:ad1f20ed4c709eccd97e3439a89068c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70845655d38a5c582b9db6c82ad368e4" id="r_a70845655d38a5c582b9db6c82ad368e4"><td class="memItemLeft" align="right" valign="top">static std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70845655d38a5c582b9db6c82ad368e4">get_names</a> (const std::string &amp;input_file_name)</td></tr>
+<tr class="memdesc:a70845655d38a5c582b9db6c82ad368e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get names of user-specified parameters from file.  <br /></td></tr>
+<tr class="separator:a70845655d38a5c582b9db6c82ad368e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ab64829c591a81af44b41bc9292fabbc9" id="r_ab64829c591a81af44b41bc9292fabbc9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab64829c591a81af44b41bc9292fabbc9">file_name</a></td></tr>
+<tr class="memdesc:ab64829c591a81af44b41bc9292fabbc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">File to be parsed to extract the user-defined constants.  <br /></td></tr>
+<tr class="separator:ab64829c591a81af44b41bc9292fabbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -265,7 +292,60 @@ template&lt;unsigned int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Print all user-specified constants. </p>
+<p>Add user-specified constants. </p>
+
+</div>
+</div>
+<a id="aefc6cfff323bb520e40f67ea5f7a1638" name="aefc6cfff323bb520e40f67ea5f7a1638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefc6cfff323bb520e40f67ea5f7a1638">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>file_name is set and same as the file used in declare_parameters. </dd></dl>
+
+</div>
+</div>
+<a id="a82d6f3fdf5bb545a08f5bb6424ad930f" name="a82d6f3fdf5bb545a08f5bb6424ad930f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82d6f3fdf5bb545a08f5bb6424ad930f">&#9670;&#160;</a></span>check_keyword_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::check_keyword_match </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>line</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>keyword</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -394,6 +474,28 @@ template&lt;unsigned int dim&gt; </div>
 </div><div class="memdoc">
 
 <p>Assign the specified user constant to whatever type. </p>
+
+</div>
+</div>
+<a id="aa908a9ccd10476dd68f8bdb31eda8b9c" name="aa908a9ccd10476dd68f8bdb31eda8b9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa908a9ccd10476dd68f8bdb31eda8b9c">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
+<dl class="section pre"><dt>Precondition</dt><dd>file_name is set. </dd></dl>
 
 </div>
 </div>
@@ -609,6 +711,35 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
+<a id="a70845655d38a5c582b9db6c82ad368e4" name="a70845655d38a5c582b9db6c82ad368e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70845655d38a5c582b9db6c82ad368e4">&#9670;&#160;</a></span>get_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::set&lt; std::string &gt; <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::get_names </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>input_file_name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get names of user-specified parameters from file. </p>
+
+</div>
+</div>
 <a id="a4a755509e5cb4b1007d745317fc9db65" name="a4a755509e5cb4b1007d745317fc9db65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a755509e5cb4b1007d745317fc9db65">&#9670;&#160;</a></span>get_rank_1_tensor()</h2>
 
@@ -714,6 +845,54 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
+<a id="ad1f20ed4c709eccd97e3439a89068c56" name="ad1f20ed4c709eccd97e3439a89068c56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1f20ed4c709eccd97e3439a89068c56">&#9670;&#160;</a></span>parse_line()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::parse_line </td>
+          <td>(</td>
+          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>line</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>keyword</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>entry_name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>out_string</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>expect_equals_sign</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Look for a keyword in a line and if it is found, extract the entry name and value. This is used to extract the model constant names from the input file. </p>
+
+</div>
+</div>
 <a id="a69d613be0a7bf23d387729f3af6e1214" name="a69d613be0a7bf23d387729f3af6e1214"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69d613be0a7bf23d387729f3af6e1214">&#9670;&#160;</a></span>primitive_model_constant()</h2>
 
@@ -793,7 +972,52 @@ template&lt;unsigned int dim&gt; </div>
 
 </div>
 </div>
+<a id="ae5833a3b79c639faafa5e99a791dc245" name="ae5833a3b79c639faafa5e99a791dc245"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5833a3b79c639faafa5e99a791dc245">&#9670;&#160;</a></span>strip_spaces()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::strip_spaces </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>line</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab64829c591a81af44b41bc9292fabbc9" name="ab64829c591a81af44b41bc9292fabbc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab64829c591a81af44b41bc9292fabbc9">&#9670;&#160;</a></span>file_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="classUserConstants.html">UserConstants</a>&lt; dim &gt;::file_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>File to be parsed to extract the user-defined constants. </p>
+
+</div>
+</div>
 <a id="a57cdd0e2ae29f6f27bc1f4cb3e370d21" name="a57cdd0e2ae29f6f27bc1f4cb3e370d21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57cdd0e2ae29f6f27bc1f4cb3e370d21">&#9670;&#160;</a></span>model_constants</h2>
 

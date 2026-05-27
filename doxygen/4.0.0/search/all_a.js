@@ -20,9 +20,8 @@ var searchData=
   ['list_17',['List',['../deprecated.html',1,'Deprecated List'],['../todo.html',1,'Todo List']]],
   ['load_5fic_5fparameters_18',['load_ic_parameters',['../classUserInputParameters.html#a6f7551ac1a336225f19b951e02fe4245',1,'UserInputParameters']]],
   ['load_5finitial_5fcondition_5fparameters_2eh_19',['load_initial_condition_parameters.h',['../load__initial__condition__parameters_8h.html',1,'']]],
-  ['load_5fmodel_5fconstants_20',['load_model_constants',['../classUserInputParameters.html#a128cf310372defe3c5411bd0a61d8573',1,'UserInputParameters']]],
-  ['loadinitialconditionparameters_21',['LoadInitialConditionParameters',['../structLoadInitialConditionParameters.html',1,'']]],
-  ['location_22',['location',['../structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f',1,'Nucleus']]],
-  ['location_5fvectorized_23',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]],
-  ['lower_5fbound_24',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
+  ['loadinitialconditionparameters_20',['LoadInitialConditionParameters',['../structLoadInitialConditionParameters.html',1,'']]],
+  ['location_21',['location',['../structNucleus.html#addb86426dbd7ded2fc1cb9f1e624788f',1,'Nucleus']]],
+  ['location_5fvectorized_22',['location_vectorized',['../structNucleus.html#a65645a28ec2c1d62dbae42e288c1cf6b',1,'Nucleus']]],
+  ['lower_5fbound_23',['lower_bound',['../structRectangularMesh.html#a2d9983893c8ed8dfaf90845075906d39',1,'RectangularMesh']]]
 ];

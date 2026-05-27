@@ -160,6 +160,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b4f44cab20ec79dc2e475a3ca034749" id="r_a9b4f44cab20ec79dc2e475a3ca034749"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structInitialConditionFile.html">InitialConditionFile</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b4f44cab20ec79dc2e475a3ca034749">get_initial_condition_files</a> () const</td></tr>
 <tr class="memdesc:a9b4f44cab20ec79dc2e475a3ca034749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the initial condition files.  <br /></td></tr>
 <tr class="separator:a9b4f44cab20ec79dc2e475a3ca034749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f7f162999237040330d8347e2afbee" id="r_aa1f7f162999237040330d8347e2afbee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1f7f162999237040330d8347e2afbee">declare_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5) const</td></tr>
+<tr class="memdesc:aa1f7f162999237040330d8347e2afbee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare the parameters to be read from an input file.  <br /></td></tr>
+<tr class="separator:aa1f7f162999237040330d8347e2afbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc738f8570e9711e08655046ffc381b4" id="r_acc738f8570e9711e08655046ffc381b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc738f8570e9711e08655046ffc381b4">assign_parameters</a> (dealii::ParameterHandler &amp;parameter_handler, unsigned int max_criteria=5)</td></tr>
+<tr class="memdesc:acc738f8570e9711e08655046ffc381b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the parameters read from an input file to this object.  <br /></td></tr>
+<tr class="separator:acc738f8570e9711e08655046ffc381b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -204,6 +210,37 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="acc738f8570e9711e08655046ffc381b4" name="acc738f8570e9711e08655046ffc381b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc738f8570e9711e08655046ffc381b4">&#9670;&#160;</a></span>assign_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::assign_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign the parameters read from an input file to this object. </p>
+
+</div>
+</div>
 <a id="af152262d872c80c51c1bba8e057f2b0a" name="af152262d872c80c51c1bba8e057f2b0a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af152262d872c80c51c1bba8e057f2b0a">&#9670;&#160;</a></span>clear()</h2>
 
@@ -228,6 +265,37 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Clear the initial condition parameters. </p>
+
+</div>
+</div>
+<a id="aa1f7f162999237040330d8347e2afbee" name="aa1f7f162999237040330d8347e2afbee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f7f162999237040330d8347e2afbee">&#9670;&#160;</a></span>declare_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoadInitialConditionParameters::declare_parameters </td>
+          <td>(</td>
+          <td class="paramtype">dealii::ParameterHandler &amp;</td>          <td class="paramname"><span class="paramname"><em>parameter_handler</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>max_criteria</em></span><span class="paramdefsep"> = </span><span class="paramdefval">5</span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Declare the parameters to be read from an input file. </p>
 
 </div>
 </div>

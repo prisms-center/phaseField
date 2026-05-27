@@ -2,6 +2,8 @@ var structTemporalDiscretization =
 [
     [ "TemporalDiscretization", "structTemporalDiscretization.html#ac16ce380c093e25bf24a57397b98721b", null ],
     [ "TemporalDiscretization", "structTemporalDiscretization.html#a95c375da58dd972a05883942ab6f9577", null ],
+    [ "assign_parameters", "structTemporalDiscretization.html#a394e4f1566a2b421c80837d920d4700e", null ],
+    [ "declare_parameters", "structTemporalDiscretization.html#ad1a5784268bcdc6dfc6c159f586d375b", null ],
     [ "print_parameter_summary", "structTemporalDiscretization.html#aed1cf3ad555ab888b7244eacfe681523", null ],
     [ "validate", "structTemporalDiscretization.html#a198927e1a8ff1477f3e5c1c90b86cfed", null ],
     [ "dt", "structTemporalDiscretization.html#a1f89d720b24f674d48958f657258179a", null ],
