@@ -51,9 +51,6 @@ public:
   LinearSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_block, _solve_context)
-    , lin_params(
-        solve_context->get_user_inputs().linear_solve_parameters.linear_solvers.at(
-          solve_block.id))
     , rhs_operator(solve_context->get_pde_operator(),
                    &PDEOperatorBase<dim, degree, number>::compute_rhs,
                    solve_context->get_field_attributes(),
@@ -81,21 +78,21 @@ public:
 
     // Initialize rhs_operator
     rhs_operator.initialize(solutions);
-    rhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+    rhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
                                         solve_block.field_indices,
                                         0));
     // Initialize lhs_operator
     lhs_operator.initialize(solutions);
-    lhs_operator.set_scaling_diagonal(lin_params.tolerance_type != AbsoluteResidual,
+    lhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
                                         solve_block.field_indices,
                                         0));
 
-    linear_solver_control.set_max_steps(lin_params.max_iterations);
-    linear_solver_control.set_tolerance(lin_params.tolerance * normalization_value());
+    linear_solver_control.set_max_steps(lin_params().max_iterations);
+    linear_solver_control.set_tolerance(lin_params().tolerance * normalization_value());
     initialize_solver();
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
@@ -170,14 +167,14 @@ public:
     // Linear solve
     try
       {
-        if (lin_params.preconditioner == None)
+        if (lin_params().preconditioner == None)
           {
             lin_solver.solve(lhs_matrix,
                              x_vector,
                              b_vector,
                              dealii::PreconditionIdentity());
           }
-        if (lin_params.preconditioner == Chebyshev)
+        if (lin_params().preconditioner == Chebyshev)
           {
             lhs_matrix.reinit_matrix_diagonal(x_vector);
             lhs_matrix.eval_matrix_diagonal();
@@ -192,7 +189,7 @@ public:
           << "[Increment " << solve_context->get_simulation_timer().get_increment()
           << "] "
           << "Warning: linear solver did not converge as per set tolerances before "
-          << lin_params.max_iterations << " iterations.\n";
+          << lin_params().max_iterations << " iterations.\n";
       }
     if (solve_context->get_user_inputs().output_parameters.should_output(
           solve_context->get_simulation_timer().get_increment()))
@@ -218,7 +215,7 @@ protected:
   double
   normalization_value()
   {
-    SolverToleranceType type  = lin_params.tolerance_type;
+    SolverToleranceType type  = lin_params().tolerance_type;
     double              value = 1.0;
     if (type == RMSEPerField || type == RMSETotal)
       {
@@ -234,11 +231,11 @@ protected:
   void
   initialize_preconditioner()
   {
-    if (lin_params.preconditioner == None)
+    if (lin_params().preconditioner == None)
       {
         void(0); // do nothing
       }
-    if (lin_params.preconditioner == Chebyshev)
+    if (lin_params().preconditioner == Chebyshev)
       {
         initialize_chebyshev();
       }
@@ -247,7 +244,7 @@ protected:
   void
   initialize_chebyshev()
   {
-    const auto &chebyshev_params = lin_params.chebyshev_parameters;
+    const auto &chebyshev_params = lin_params().chebyshev_parameters;
     precond_data.degree          = chebyshev_params.degree;
     precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
     precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
@@ -261,9 +258,9 @@ protected:
   void
   initialize_solver()
   {
-    const auto &richardson_parameters = lin_params.richardson_parameters;
-    const auto &bicgstab_parameters   = lin_params.bicgstab_parameters;
-    const auto &gmres_parameters      = lin_params.gmres_parameters;
+    const auto &richardson_parameters = lin_params().richardson_parameters;
+    const auto &bicgstab_parameters   = lin_params().bicgstab_parameters;
+    const auto &gmres_parameters      = lin_params().gmres_parameters;
     const typename dealii::SolverRichardson<BlockVector<number>>::AdditionalData
       local_richardson_parameters(richardson_parameters.omega,
                                   richardson_parameters.use_preconditioned_residual);
@@ -286,7 +283,7 @@ protected:
     lin_solver.set_data(local_gmres_parameters);
     lin_solver.set_data(local_fgmres_parameters);
 
-    lin_solver.select(lin_params.solver_type);
+    lin_solver.select(lin_params().solver_type);
     lin_solver.set_control(linear_solver_control);
   }
 
@@ -294,7 +291,11 @@ private:
   /**
    * @brief Linear solver parameters
    */
-  LinearSolverParameters lin_params;
+  const LinearSolverParameters &
+  lin_params() const
+  {
+    return solve_block.linear_solver_parameters;
+  }
 
   /**
    * @brief Solver control. Contains max iterations and tolerance.

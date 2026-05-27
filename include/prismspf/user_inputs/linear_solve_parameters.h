@@ -19,7 +19,7 @@
 PRISMS_PF_BEGIN_NAMESPACE
 
 /**
- * @brief Struct that stores relevant linear solve information of a certain field
+ * @brief Struct that stores relevant linear solve information of a certain solve block.
  */
 struct LinearSolverParameters
 {
@@ -302,7 +302,8 @@ LinearSolveParameters::assign_parameters(dealii::ParameterHandler &parameter_han
           }
         else
           {
-            AssertThrow(false, UnreachableCode());
+            AssertThrow(false,
+                        dealii::ExcMessage("Invalid tolerance type: " + type_string));
           }
 
         // Set the tolerance value

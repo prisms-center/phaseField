@@ -10,6 +10,9 @@
 #include <prismspf/core/type_enums.h>
 #include <prismspf/core/types.h>
 
+#include <prismspf/user_inputs/linear_solve_parameters.h>
+#include <prismspf/user_inputs/nonlinear_solve_parameters.h>
+
 #include <prismspf/config.h>
 
 #include <set>
@@ -104,6 +107,18 @@ public:
   DependencyMap dependencies_lhs;
 
   /**
+   * @brief Linear solver parameters. Only used for linear and newton solve blocks.
+   * @note May be overridden by user input parameters.
+   */
+  LinearSolverParameters linear_solver_parameters;
+
+  /**
+   * @brief Linear solver parameters. Only used for linear and newton solve blocks.
+   * @note May be overridden by user input parameters.
+   */
+  NonlinearSolverParameters nonlinear_solver_parameters;
+
+  /**
    * @brief Solves that occur inside the parent solve. This is only really meant for
    * implicit solves with higher order spatial derivatives.
    */
@@ -122,76 +137,79 @@ public:
   }
 
   void
-  validate() const
-  {
-    AssertThrow(
-      solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
-        solve_type == SolveType::Linear || solve_type == SolveType::Newton,
-      dealii::ExcMessage(
-        "A valid solve type must be selected (Constant | Explicit | Linear | Newton)\n"));
-    AssertThrow(!field_indices.empty(),
-                dealii::ExcMessage("This solve block must manage at least 1 field.\n"));
-    if (solve_type == SolveType::Newton)
-      {
-        for (unsigned int field_index : field_indices)
-          {
-            const auto &dep_it_rhs = dependencies_rhs.find(field_index);
-            AssertThrow(dep_it_rhs != dependencies_rhs.end(),
-                        dealii::ExcMessage("Every field in a newton solve should appear "
-                                           "in the residual (RHS) expression.\n"));
-            AssertThrow(dep_it_rhs->second.flag != EvalFlags::nothing,
-                        dealii::ExcMessage("Every field in a newton solve should appear "
-                                           "in the residual (RHS) expression.\n"));
-            const auto &dep_it_lhs = dependencies_lhs.find(field_index);
-            AssertThrow(dep_it_lhs != dependencies_lhs.end(),
-                        dealii::ExcMessage(
-                          "Every field in a newton solve should appear as a Delta term"
-                          "in the residual Jacobian (LHS) expression.\n"));
-            AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
-                        dealii::ExcMessage(
-                          "Every field in a newton solve should appear as a Delta term"
-                          "in the residual Jacobian (LHS) expression.\n"));
-          }
-      }
-    else if (solve_type == SolveType::Linear)
-      {
-        for (unsigned int field_index : field_indices)
-          {
-            const auto &dep_it_lhs = dependencies_lhs.find(field_index);
-            AssertThrow(dep_it_lhs != dependencies_lhs.end(),
-                        dealii::ExcMessage(
-                          "Every field in a linear solve should appear "
-                          "in the (LHS) expression. Be sure to use the src_flag.\n"));
-            AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
-                        dealii::ExcMessage(
-                          "Every field in a linear solve should appear "
-                          "in the (LHS) expression. Be sure to use the src_flag.\n"));
-          }
-      }
-    else if (solve_type == SolveType::Explicit)
-      {
-        AssertThrow(dependencies_lhs.empty(),
-                    dealii::ExcMessage("Explicit solves do not have an LHS, "
-                                       "and should have no LHS dependencies.\n"));
-      }
-    else if (solve_type == SolveType::Constant)
-      {
-        AssertThrow(dependencies_rhs.empty() && dependencies_lhs.empty(),
-                    dealii::ExcMessage("Constant \"solves\" do not have an RHS or LHS, "
-                                       "and should have no dependencies.\n"));
-      }
-    for (const auto &[field_index, dependency] : dependencies_rhs)
-      {
-        AssertThrow(dependency.src_flag == EvalFlags::nothing,
-                    dealii::ExcMessage(
-                      "Trial/Change terms should not appear in RHS expressions.\n"));
-      }
-    for (const SolveBlock &aux : aux_solve_container)
-      {
-        aux.validate();
-      }
-  }
+  validate() const;
 };
+
+inline void
+SolveBlock::validate() const
+{
+  AssertThrow(
+    solve_type == SolveType::Constant || solve_type == SolveType::Explicit ||
+      solve_type == SolveType::Linear || solve_type == SolveType::Newton,
+    dealii::ExcMessage(
+      "A valid solve type must be selected (Constant | Explicit | Linear | Newton)\n"));
+  AssertThrow(!field_indices.empty(),
+              dealii::ExcMessage("This solve block must manage at least 1 field.\n"));
+  if (solve_type == SolveType::Newton)
+    {
+      for (unsigned int field_index : field_indices)
+        {
+          const auto &dep_it_rhs = dependencies_rhs.find(field_index);
+          AssertThrow(dep_it_rhs != dependencies_rhs.end(),
+                      dealii::ExcMessage("Every field in a newton solve should appear "
+                                         "in the residual (RHS) expression.\n"));
+          AssertThrow(dep_it_rhs->second.flag != EvalFlags::nothing,
+                      dealii::ExcMessage("Every field in a newton solve should appear "
+                                         "in the residual (RHS) expression.\n"));
+          const auto &dep_it_lhs = dependencies_lhs.find(field_index);
+          AssertThrow(dep_it_lhs != dependencies_lhs.end(),
+                      dealii::ExcMessage(
+                        "Every field in a newton solve should appear as a Delta term"
+                        "in the residual Jacobian (LHS) expression.\n"));
+          AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
+                      dealii::ExcMessage(
+                        "Every field in a newton solve should appear as a Delta term"
+                        "in the residual Jacobian (LHS) expression.\n"));
+        }
+    }
+  else if (solve_type == SolveType::Linear)
+    {
+      for (unsigned int field_index : field_indices)
+        {
+          const auto &dep_it_lhs = dependencies_lhs.find(field_index);
+          AssertThrow(dep_it_lhs != dependencies_lhs.end(),
+                      dealii::ExcMessage(
+                        "Every field in a linear solve should appear "
+                        "in the (LHS) expression. Be sure to use the src_flag.\n"));
+          AssertThrow(dep_it_lhs->second.src_flag != EvalFlags::nothing,
+                      dealii::ExcMessage(
+                        "Every field in a linear solve should appear "
+                        "in the (LHS) expression. Be sure to use the src_flag.\n"));
+        }
+    }
+  else if (solve_type == SolveType::Explicit)
+    {
+      AssertThrow(dependencies_lhs.empty(),
+                  dealii::ExcMessage("Explicit solves do not have an LHS, "
+                                     "and should have no LHS dependencies.\n"));
+    }
+  else if (solve_type == SolveType::Constant)
+    {
+      AssertThrow(dependencies_rhs.empty() && dependencies_lhs.empty(),
+                  dealii::ExcMessage("Constant \"solves\" do not have an RHS or LHS, "
+                                     "and should have no dependencies.\n"));
+    }
+  for (const auto &[field_index, dependency] : dependencies_rhs)
+    {
+      AssertThrow(dependency.src_flag == EvalFlags::nothing,
+                  dealii::ExcMessage(
+                    "Trial/Change terms should not appear in RHS expressions.\n"));
+    }
+  for (const SolveBlock &aux : aux_solve_container)
+    {
+      aux.validate();
+    }
+}
 
 using SolveGroup = SolveBlock;
 

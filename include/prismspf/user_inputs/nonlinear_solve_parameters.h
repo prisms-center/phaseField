@@ -19,7 +19,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 struct NonlinearSolverParameters
 {
   // Nonlinear step length
-  mutable double step_length = 1.0;
+  double step_length = 1.0;
 
   // Max number of iterations for the nonlinear solve
   unsigned int max_iterations = Defaults::iterations;
