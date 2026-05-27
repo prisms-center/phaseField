@@ -10,43 +10,6 @@ PRISMS-PF is a powerful, massively parallel finite element code for conducting p
 ![PRISMS-PF Example Results](assets/example_bar.png)
 
 ***
-## Announcements
-
-- 8/16/2025: [Version 3.0.0-rc1 released.](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) This version is a pre-release of v3.0.0, a major update from v2.4.2. The core library has been rewritten to accommodateate certain features and reduce technical debt, increasing the longevity of our project. The main changes are improvements in performance (including the use of new numerical methods to solve partial differential equations) and new applications. For a full list of changes in this version, please consult the [v3.0.0-rc1 pre-release](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) document. Note that certain features such as grain remapping and nucleation haven't been implemented. Additionally, the user-interface and documentation haven't been finalized or updated, so new users may struggle. However, we are still working on porting capabilities from v2.4. These will come out in more pre-release candidates in the coming weeks.
-
-- 2/27/2025: [Version 2.4.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) This version is a minor update from 2.3. The main changes are minor bug fixes, compatibility with clang, gcc, and intel-oneapi compilers that support the c++17 standard, and the requirement to use deal.II version 9.5.0 or later. For a full list of changes in this version, please consult the [v2.4.1 release](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) document.
-- 1/11/2024: [Version 2.4 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4) This version is a moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, improved testing and continuous integration, code auto-formatting, and bug fixes. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
-- 7/23/2023: [Version 2.3 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.3) This version contains moderate changes from version 2.2, including new applications, new postprocessing scripts, improvements in performance, bug fixes and compatibility with the latest version of deal.II. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
-- 8/13/2023: We are pleased to announce that PRISMS-PF is now compatible with deal.II 9.4.2 or older (up to 9.2.0). We are in the process of ensuring compatibility with the latest deal.II version (9.5.1). Note that from now on the oldest deal.II version compatible with PRISMS-PF is 9.2.0. You can find all of the deal.II available versions for different platforms [here](https://www.dealii.org/downloads/). Please report any issues [here](https://github.com/prisms-center/phaseField/issues) or [contact us](mailto:prisms-pf@umich.edu) directly.
-- 7/16/2023: We are pleased to announce the release of a new application, alloySolidification_uniform, to simulate solidification of a binary alloy at uniform temperature. In the model implemented [A. Karma, Phys. Rev. Lett. 87, 115701 (2001)] latent heat is assumed to diffuse much faster than impurities and, therefore, the temperature field is considered to be fixed by external conditions. In contrast to alloySolidification, this application considers solidification under uniform temperature and no solute diffusion in the solid. The implementation of the model in this application has been validated by comparing them the results to those reported in Figure 1 from the paper cited above.
-- 7/16/2023: 2023 PRISMS Workshop and Training Sessions. Everyone interested in PRISMS-PF (or in materials modeling, in general) is encouraged to attend the 2023 PRISMS Center Workshop (August 21-25), returning this year as an in person event. The training sessions will be on 21-23 of August and the symposia will be on 24-25 of August. The training part will include two sessions dedicated to a hands-on tutorial for PRISMS-PF on Monday Aug. 21:\
-10AM - 12PM (EDT)\
-1PM - 3PM (EDT)\
-For more information and to register please visit [this page](http://www.prisms-center.org/#/workshop) (all attendees must register). There will also be training sessions for other PRISMS frameworks (see registration page for details).
-- 6/30/2022: New Microgalvanic Corrosion (corrosion_microgalvanic) application release! This application simulates the evolution of the metal-electrolyte interface during free immersion due to the microgalvanic coupling between the anodic and cathodic metals. A manuscript detailing the implementation of the model, the scaling performance of the code, and simulation examples in 2D and 3D has been submitted to MRS Communications (currently under revision). 
-- 7/26/2021: 2021 PRISMS Virtual Workshop and Training Sessions. Everyone interested in PRISMS-PF (or in materials modeling, in general) is invited to attend the 2021 PRISMS Center Workshop (August 3-6) and training sessions (August 9-13). Both of these events will be held virtually this year. The training part will include two sessions dedicated to a hands-on tutorial for PRISMS-PF on the following dates:
-Monday, Aug. 9, 10 AM -12 PM (EDT)
-Wednesday, Aug. 11, 10 AM -12 PM (EDT). 
-Registration for both the workshop and the training is free! Please register on [this page](https://docs.google.com/forms/d/e/1FAIpQLSfLY5TxU768H2XW0FJuXQtqarpoW0NWLJ9p0ucqAEgXQCaNQA/viewform) (all attendees must register). There will also be training sessions for other PRISMS frameworks (see registration page for details).
-- 7/23/2021: PRISMS-PF Docker Image Update. We have updated the PRISMS-PF Docker image to use the current version of PRISMS-PF (2.2).  This new image solves the discrepancy between the previous input parameters filename extension (parameters.in) and the current filename for each application (parameters.prm).  The image is availabel in the PRISMS-PF [Docker repository](https://hub.docker.com/r/prismspf/prismspf). Please follow the updated [instructions for the Docker installation](https://prisms-center.github.io/phaseField/doxygen/install_prismspf.html) to download and launch containers using the new image.
-- 7/23/2021: [Version 2.2 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.2) This version contains moderate changes from version 2.1.2, the main one being the release of new applications. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
-- 7/6/2021: New Spinodal Decomposition (spinodalDecomposition) application release! This application simulates domain coarsening in time following spinodal decomposition, which is goverened by Cahn-Hilliard dynamics. In contrast to the Cahn-Hilliard application, the initial condition for the concentration is set to uniformly distributed random values around a concentration within the spinodal region. 
-- 3/15/2021: New Alloy Solidification (alloySolidification) application release! This application simulates the directional solidification of a binary alloy  in the dilute limit, taking into account solute segregation, which leads to dendritic growth. The model employed [Echebarria et al., Phys. Rev. E 70, 061604 (2004)] includes an anti-trapping solute current required to correct for spurious effects that arise from considering an interface thickness much larger than the physical solid-liquid interface.
-- 3/8/2021: We have uploaded new video tutorial covering the installation of prerequisited for PRISMS-PF. This video can be watched on the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA) and is also available in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section.
-- 12/1/2020: We have uploaded new directory to the PRISMS-PF GitHub repository which includes scripts to perform processing tasks on output data files generated by PRISMS-PF. These scripts are written in Python and work in combination with the [VisIt CLI](https://www.visitusers.org/index.php?title=Using_CLI#Starting_the_CLI). Currently, we have three scripts to calculate: (1) phase fraction, (2) number of domains, and (3) area of an interface but more will be added soon. A description of each of these scripts as well as installation instructions for the VisIt CLI can be found [here](https://github.com/prisms-center/phaseField/tree/master/postprocess_scripts). 
-- 11/24/2020: We have uploaded new video tutorial covering a simple example on how to set up and run a simulation for explicit nucleation and growth in PRISMS-PF. This video can be watched on the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA) and is also available in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section.
-- 10/13/2020: We have updated PRISMS-PF to make it compatible with the latest [deal.II](https://www.dealii.org/) version (9.2.0). The main change from the previous deal.II version (9.1.2) is that now only input files with the ".prm" extension are accepted. In order to comply with that, the default name for the input file in all PRISMS-PF applications has been changed to "parameters.prm" ("parameters.in" will no longer work). After cloning the latest PRISMS-PF repository, make sure to use the correct extension for input files when creating new applications. Please report any issues [here](https://github.com/prisms-center/phaseField/issues).
-- 9/25/2020: The PRISMS-PF [GUI-based nanoHUB tool](https://nanohub.org/tools/prismspfmisfit), which calculates the equilibrium shape of a precipitate particle due to anisotropic interfacial energy and misfit strain, has been updated for improved performance.
-- 8/16/2020: A new video tutorial covering PRISMS-PF installation, running of a sample application and results visualization has been uploaded to the new [PRISMS Center YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA). It is also visible in the [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md) section. More PRISMS-PF tutorial videos will be available soon. 
-- 8/1/2020: We are working on resolving compatibility issues between PRISMS-PF and the latest version of deal.ii (9.2.0). Until we have a working version, please use [deal.ii version 9.1.1](https://www.dealii.org/9.1.1/index.html). We will send an update when these issues are resolved.
-- 6/23/2020: PRISMS-PF Docker Image Update. We have updated the PRISMS-PF Docker image to use the current version of PRISMS-PF (2.1.2). This update should solve the compatibility issues between the core library and the applications from the previous image. We have also created a [new repository](https://hub.docker.com/r/prismspf/prismspf) on Docker Hub where the new image, as well as all upcoming images, will be stored. Please follow the updated [instructions for the Docker installation](https://prisms-center.github.io/phaseField/doxygen/install_prismspf.html) to download and launch containers using the new image.
-- 6/13/2020: New corrosion application release! This application simulates the evolution of the metal-electrolyte interface during the anodic corrosion reaction. The model employed [Chadwick et al., J. Electrochem. Soc.,10, C633-C646 (2018)] uses the phase-field and smoothed-boundary methods to track the moving metal/electrolyte interface and to couple it to mass transport (diffusion and migration) within the electrolyte and Butler-Volmer electrochemical kinetics. 
-- 3/26/2020: A new open-access article titled [PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method](https://www.nature.com/articles/s41524-020-0298-5) has been published on *npj Computational Materials*. In this article we introduce PRISMS-PF as a new open-source framework for phase-field modeling, emphasizing ease of use, flexibility and adaptability to a wide range of applications, and computational performance. We recommend this article to everyone interested in an overview of the PRISMS-PF framework and its applications. Please use this publication as the standard reference when citing PRISMS-PF. We'll keep an eye on references to that paper, but if you use PRISMS-PF in your work, please send us the citation so that we can advertise your work on the PRISMS-PF website and can pass usage information to our funding agency.
-
-([older announcements](pages/announcements.md))
-
-***
-
 ### Features and Capabilities
 
 - Matrix-free finite element framework for improved performance over traditional finite element approaches
@@ -57,6 +20,30 @@ Registration for both the workshop and the training is free! Please register on 
 - Grain-remapping algorithm to facilitate simulations of polycrystals with thousands of grains
 - Simple interface to solve an arbitrary number of coupled PDEs
 - Straightforward Docker-based installation
+
+***
+## General Links
+- [PRISMS Center homepage](http://www.prisms-center.org/#/home) <br>
+- [PRISMS-PF code repository](https://github.com/prisms-center/phaseField) <br>
+- [YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA/playlists)
+- [Virtual Machine](http://www.prisms-center.org/#/ctools/software) (contains most of the PRISMS Center tools, including PRISMS-PF)
+
+***
+## Getting Started
+- [Quick start guide](https://github.com/prisms-center/phaseField#quick-start-guide) <br>
+- [Manual](doxygen/index.html) <br>
+
+***
+## Getting Help
+- [Discussions](https://github.com/prisms-center/phaseField/discussions) <br>
+- [Manual](doxygen/index.html) <br>
+
+***
+## Announcements
+
+- 8/16/2025: [Version 3.0.0-rc1 released.](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) This version is a pre-release of v3.0.0, a major update from v2.4.2. The core library has been rewritten to accommodateate certain features and reduce technical debt, increasing the longevity of our project. The main changes are improvements in performance (including the use of new numerical methods to solve partial differential equations) and new applications. For a full list of changes in this version, please consult the [v3.0.0-rc1 pre-release](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) document. Note that certain features such as grain remapping and nucleation haven't been implemented. Additionally, the user-interface and documentation haven't been finalized or updated, so new users may struggle. However, we are still working on porting capabilities from v2.4. These will come out in more pre-release candidates in the coming weeks.
+- 2/27/2025: [Version 2.4.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) This version is a minor update from 2.3. The main changes are minor bug fixes, compatibility with clang, gcc, and intel-oneapi compilers that support the c++17 standard, and the requirement to use deal.II version 9.5.0 or later. For a full list of changes in this version, please consult the [v2.4.1 release](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) document.
+- 1/11/2024: [Version 2.4 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4) This version is a moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, improved testing and continuous integration, code auto-formatting, and bug fixes. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
 
 ### Acknowledgements
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
@@ -75,28 +62,6 @@ If additionally you would like to cite a specific release of PRISMS-PF, please u
 PRISMS-PF, v2.1.2 (2019). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.3357005.
 
 For DOI information for other releases, please refer to [this site](https://zenodo.org/record/3357005).
-
-***
-
-## General Links
-- [PRISMS Center homepage](http://www.prisms-center.org/#/home) <br>
-- [PRISMS-PF code repository](https://github.com/prisms-center/phaseField) <br>
-- [YouTube channel](https://www.youtube.com/channel/UCZXc3007JuBCGKDcneD_umA/playlists)
-- [Virtual Machine](http://www.prisms-center.org/#/ctools/software) (contains most of the PRISMS Center tools, including PRISMS-PF)
-
-***
-## Getting Started
-- [Quick start guide](https://github.com/prisms-center/phaseField#quick-start-guide) <br>
-- [Installation instructions](doxygen/install.html) <br>
-- [User manual](doxygen/index.html) <br>
-- [Repository of training slides and exercises](https://goo.gl/BBTkJ8)
-- [Tutorials](https://github.com/prisms-center/phaseField/blob/gh-pages/pages/tutorial.md)
-
-***
-## Getting Help
-- [PRISMS-PF forum](https://groups.google.com/forum/#!forum/prisms-pf-users) <br>
-- [Code documentation](doxygen/index.html) <br>
-- [Email the developers](mailto:prismsphasefield.dev@umich.edu)
 
 ***
 ## Publications That Use PRISMS-PF
