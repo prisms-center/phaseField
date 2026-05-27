@@ -13,7 +13,16 @@ cmake_policy(VERSION 3.25)
 
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-  message(FATAL_ERROR "In-source build prohibited. Use a separate build directory.")
+  message(
+    FATAL_ERROR
+    "In-source build prohibited. \n"
+    "Use a separate build directory with:\n  cmake -B build"
+  )
+endif()
+
+# Set the build type to DebugRelease if unspecified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "DebugRelease" CACHE STRING "Build type" FORCE)
 endif()
 
 # Project declaration, language, and version
@@ -320,11 +329,6 @@ if(PRISMS_PF_WITH_CALIPER)
 endif()
 
 # TODO: Add VTK
-
-# Set the build type to DebugRelease if unspecified
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "DebugRelease" CACHE STRING "Build type" FORCE)
-endif()
 
 # FetchCotent MakeAvailable for the other vendored dependencies
 set(PRISMS_PF_VENDORED_PACKAGES libassert)
