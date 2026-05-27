@@ -174,16 +174,6 @@ private:
                             const dealii::ComponentMask       &mask) const;
 
   /**
-   * @brief Set the dirichlet constraint for the pinned point.
-   */
-  void
-  set_pinned_point(dealii::AffineConstraints<number> &constraint,
-                   const dealii::Point<dim>          &target_point,
-                   const std::array<number, dim>     &value,
-                   const dealii::DoFHandler<dim>     &dof_handler,
-                   TensorRank                         tensor_rank) const;
-
-  /**
    * @brief User-inputs constraint parameters.
    */
   const BoundaryParameters<dim> *boundary_parameters;

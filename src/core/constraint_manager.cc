@@ -418,44 +418,6 @@ ConstraintManager<dim, degree, number>::make_periodic_constraints(
                                                                    mask);
 }
 
-template <unsigned int dim, unsigned int degree, typename number>
-void
-ConstraintManager<dim, degree, number>::set_pinned_point(
-  dealii::AffineConstraints<number> &constraint,
-  const dealii::Point<dim>          &target_point,
-  const std::array<number, dim>     &value,
-  const dealii::DoFHandler<dim>     &dof_handler,
-  const TensorRank                   tensor_rank) const
-{
-  const double tolerance = 1.0e-2;
-
-  for (const auto &cell : dof_handler.active_cell_iterators())
-    {
-      if (!cell->is_locally_owned())
-        {
-          continue;
-        }
-
-      for (unsigned int vertex = 0; vertex < dealii::GeometryInfo<dim>::vertices_per_cell;
-           ++vertex)
-        {
-          const auto vertex_point = cell->vertex(vertex);
-          if (target_point.distance(vertex_point) >= tolerance * cell->diameter())
-            {
-              continue;
-            }
-
-          const unsigned int dof_index = cell->vertex_dof_index(vertex, 0);
-          const unsigned int dimension = tensor_rank == TensorRank::Vector ? dim : 1;
-          for (unsigned int component = 0; component < dimension; ++component)
-            {
-              constraint.add_line(dof_index + component);
-              constraint.set_inhomogeneity(dof_index + component, value.at(component));
-            }
-        }
-    }
-}
-
 #include "core/constraint_manager.inst"
 
 PRISMS_PF_END_NAMESPACE
