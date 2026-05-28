@@ -165,7 +165,7 @@ UserInputParameters<dim>::declare_parameters(dealii::ParameterHandler &parameter
   boundary_parameters.declare_parameters(parameter_handler, max_criteria);
   nucleation_parameters.declare_parameters(parameter_handler);
   misc_parameters.declare_parameters(parameter_handler);
-  load_ic_parameters.declare_parameters(parameter_handler);
+  load_ic_parameters.declare_parameters(parameter_handler, max_criteria);
   user_constants.declare_parameters(parameter_handler);
 }
 
@@ -184,7 +184,7 @@ UserInputParameters<dim>::assign_parameters(dealii::ParameterHandler &parameter_
   boundary_parameters.assign_parameters(parameter_handler, max_criteria);
   nucleation_parameters.assign_parameters(parameter_handler);
   misc_parameters.assign_parameters(parameter_handler);
-  load_ic_parameters.assign_parameters(parameter_handler);
+  load_ic_parameters.assign_parameters(parameter_handler, max_criteria);
   user_constants.assign_parameters(parameter_handler);
 }
 
