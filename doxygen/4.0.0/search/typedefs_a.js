@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_0',['Operator',['../classMFOperator.html#abfc621e434b61003c6e0ba1aba7f5ed9',1,'MFOperator']]]
+  ['preconditionchebyshev_0',['PreconditionChebyshev',['../classLinearSolver.html#a978c802315f6716d0c013da3290a8dbe',1,'LinearSolver']]]
 ];

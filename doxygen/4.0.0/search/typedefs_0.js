@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['adddata_0',['AddData',['../classCGSolver.html#aef6a7a4b6b6c36c0c34b08e0422d8933',1,'CGSolver']]]
+  ['blockvector_0',['BlockVector',['../group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15',1,'group_solution_handler.h']]]
 ];

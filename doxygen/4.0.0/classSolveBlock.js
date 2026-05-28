@@ -11,6 +11,8 @@ var classSolveBlock =
     [ "dependencies_rhs", "classSolveBlock.html#a49b6c02b6129a0bcbf621618f8677e18", null ],
     [ "field_indices", "classSolveBlock.html#aed4db27b24952789059c00d833b912d6", null ],
     [ "id", "classSolveBlock.html#a2363ae65d25ccdd7e2f28a937f526693", null ],
+    [ "linear_solver_parameters", "classSolveBlock.html#a03ddf441a7044dab4e5ee7c589d5083c", null ],
+    [ "nonlinear_solver_parameters", "classSolveBlock.html#acb1b8fe4cc3c654af46862ed063ad5ff", null ],
     [ "solve_timing", "classSolveBlock.html#a1c571692d3e43eb50246b8b386129af4", null ],
     [ "solve_type", "classSolveBlock.html#a0739672b68537b448b8c247060e494ef", null ]
 ];

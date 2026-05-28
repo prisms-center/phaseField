@@ -80,9 +80,6 @@ var hierarchy =
         [ "NewtonSolver< dim, degree, number >", "classNewtonSolver.html", null ]
       ] ]
     ] ],
-    [ "dealii::SolverCG", null, [
-      [ "CGSolver< number >", "classCGSolver.html", null ]
-    ] ],
     [ "SpatialDiscretization< dim >", "structSpatialDiscretization.html", null ],
     [ "SphericalMesh< dim >", "structSphericalMesh.html", null ],
     [ "boost::static_visitor", null, [

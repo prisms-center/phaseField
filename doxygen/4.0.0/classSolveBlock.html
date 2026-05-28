@@ -133,6 +133,11 @@ $(function(){initNavTree('classSolveBlock.html',''); initResizable(true); });
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="solve__block_8h_source.html">solve_block.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for SolveBlock:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classSolveBlock__coll__graph.svg" width="490" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -172,6 +177,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aaf78a26bf373ac60e1b41466aa9848d3" id="r_aaf78a26bf373ac60e1b41466aa9848d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="dependencies_8h.html#aafb41d5a064cbd9406420e91178ff01d">DependencyMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf78a26bf373ac60e1b41466aa9848d3">dependencies_lhs</a></td></tr>
 <tr class="memdesc:aaf78a26bf373ac60e1b41466aa9848d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dependencies for the lhs equation(s)  <br /></td></tr>
 <tr class="separator:aaf78a26bf373ac60e1b41466aa9848d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03ddf441a7044dab4e5ee7c589d5083c" id="r_a03ddf441a7044dab4e5ee7c589d5083c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03ddf441a7044dab4e5ee7c589d5083c">linear_solver_parameters</a></td></tr>
+<tr class="memdesc:a03ddf441a7044dab4e5ee7c589d5083c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear solver parameters. Only used for linear and newton solve blocks.  <br /></td></tr>
+<tr class="separator:a03ddf441a7044dab4e5ee7c589d5083c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb1b8fe4cc3c654af46862ed063ad5ff" id="r_acb1b8fe4cc3c654af46862ed063ad5ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb1b8fe4cc3c654af46862ed063ad5ff">nonlinear_solver_parameters</a></td></tr>
+<tr class="memdesc:acb1b8fe4cc3c654af46862ed063ad5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear solver parameters. Only used for linear and newton solve blocks.  <br /></td></tr>
+<tr class="separator:acb1b8fe4cc3c654af46862ed063ad5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5544f4ba511f662ece6aa9ab413e936a" id="r_a5544f4ba511f662ece6aa9ab413e936a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classSolveBlock.html">SolveBlock</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5544f4ba511f662ece6aa9ab413e936a">aux_solve_container</a></td></tr>
 <tr class="memdesc:a5544f4ba511f662ece6aa9ab413e936a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves that occur inside the parent solve. This is only really meant for implicit solves with higher order spatial derivatives.  <br /></td></tr>
 <tr class="separator:a5544f4ba511f662ece6aa9ab413e936a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -411,6 +422,40 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Unique identifier. Use this in 'if' statements or switch cases in equations lhs and rhs. </p>
+
+</div>
+</div>
+<a id="a03ddf441a7044dab4e5ee7c589d5083c" name="a03ddf441a7044dab4e5ee7c589d5083c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ddf441a7044dab4e5ee7c589d5083c">&#9670;&#160;</a></span>linear_solver_parameters</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structLinearSolverParameters.html">LinearSolverParameters</a> SolveBlock::linear_solver_parameters</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Linear solver parameters. Only used for linear and newton solve blocks. </p>
+<dl class="section note"><dt>Note</dt><dd>May be overridden by user input parameters. </dd></dl>
+
+</div>
+</div>
+<a id="acb1b8fe4cc3c654af46862ed063ad5ff" name="acb1b8fe4cc3c654af46862ed063ad5ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb1b8fe4cc3c654af46862ed063ad5ff">&#9670;&#160;</a></span>nonlinear_solver_parameters</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> SolveBlock::nonlinear_solver_parameters</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Linear solver parameters. Only used for linear and newton solve blocks. </p>
+<dl class="section note"><dt>Note</dt><dd>May be overridden by user input parameters. </dd></dl>
 
 </div>
 </div>

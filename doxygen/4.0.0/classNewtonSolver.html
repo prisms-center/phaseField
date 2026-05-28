@@ -122,7 +122,8 @@ $(function(){initNavTree('classNewtonSolver.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classNewtonSolver-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">NewtonSolver&lt; dim, degree, number &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -140,7 +141,7 @@ Inheritance diagram for NewtonSolver&lt; dim, degree, number &gt;:</div>
 <div class="dynheader">
 Collaboration diagram for NewtonSolver&lt; dim, degree, number &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classNewtonSolver__coll__graph.svg" width="508" height="368"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classNewtonSolver__coll__graph.svg" width="490" height="430"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -213,12 +214,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2f12aec653c061a5bdc2e3f5bdde048b inherit pub_methods_classSolverBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the solver context.  <br /></td></tr>
 <tr class="separator:a2f12aec653c061a5bdc2e3f5bdde048b inherit pub_methods_classSolverBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aa0c5b64710d0db2524b148631f4d3446" id="r_aa0c5b64710d0db2524b148631f4d3446"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0c5b64710d0db2524b148631f4d3446">newton_params</a> () const</td></tr>
+<tr class="separator:aa0c5b64710d0db2524b148631f4d3446"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
 <tr class="memitem:a5cf17bca4557e9d65b23e9f9aa2fac7b" id="r_a5cf17bca4557e9d65b23e9f9aa2fac7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__solution__handler_8h.html#ac3c985dc29b3bf1104df7ebd51bc7c15">BlockVector</a>&lt; number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cf17bca4557e9d65b23e9f9aa2fac7b">newton_update</a></td></tr>
 <tr class="separator:a5cf17bca4557e9d65b23e9f9aa2fac7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ed196406b73421f1a902e0a0b8523ff" id="r_a3ed196406b73421f1a902e0a0b8523ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed196406b73421f1a902e0a0b8523ff">newton_params</a></td></tr>
-<tr class="separator:a3ed196406b73421f1a902e0a0b8523ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_types_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_types_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
+<tr class="memitem:a978c802315f6716d0c013da3290a8dbe inherit pro_types_classLinearSolver" id="r_a978c802315f6716d0c013da3290a8dbe"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a></td></tr>
+<tr class="separator:a978c802315f6716d0c013da3290a8dbe inherit pro_types_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
+<tr class="memitem:a4f977b595684df41ac232ef6b7e17c8c inherit pro_methods_classLinearSolver" id="r_a4f977b595684df41ac232ef6b7e17c8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a4f977b595684df41ac232ef6b7e17c8c">normalization_value</a> ()</td></tr>
+<tr class="separator:a4f977b595684df41ac232ef6b7e17c8c inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19aa1bd667f6d8e78bfbf65e2490478e inherit pro_methods_classLinearSolver" id="r_a19aa1bd667f6d8e78bfbf65e2490478e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a19aa1bd667f6d8e78bfbf65e2490478e">initialize_preconditioner</a> ()</td></tr>
+<tr class="separator:a19aa1bd667f6d8e78bfbf65e2490478e inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61cac6b1981ff3d3a1dfcd6854cd3a4 inherit pro_methods_classLinearSolver" id="r_ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#ab61cac6b1981ff3d3a1dfcd6854cd3a4">initialize_chebyshev</a> ()</td></tr>
+<tr class="separator:ab61cac6b1981ff3d3a1dfcd6854cd3a4 inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f4ed8dbe6a14461d458144cce52e374 inherit pro_methods_classLinearSolver" id="r_a2f4ed8dbe6a14461d458144cce52e374"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a2f4ed8dbe6a14461d458144cce52e374">initialize_solver</a> ()</td></tr>
+<tr class="separator:a2f4ed8dbe6a14461d458144cce52e374 inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
 <tr class="memitem:a24d2e9496552c6bf1355d9fb9ea9f76b inherit pro_attribs_classLinearSolver" id="r_a24d2e9496552c6bf1355d9fb9ea9f76b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classMFOperator.html">MFOperator</a>&lt; dim, degree, number &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a24d2e9496552c6bf1355d9fb9ea9f76b">rhs_operator</a></td></tr>
 <tr class="memdesc:a24d2e9496552c6bf1355d9fb9ea9f76b inherit pro_attribs_classLinearSolver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix free operators.  <br /></td></tr>
@@ -239,21 +258,6 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a98409232846d6bd3316279b5d47cee06 inherit pro_attribs_classSolverBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33adc8d479b23f8d0e79186f411839a5 inherit pro_attribs_classSolverBase" id="r_a33adc8d479b23f8d0e79186f411839a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classSolverBase.html">SolverBase</a>&lt; dim, degree, number &gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverBase.html#a33adc8d479b23f8d0e79186f411839a5">aux_solvers</a></td></tr>
 <tr class="separator:a33adc8d479b23f8d0e79186f411839a5 inherit pro_attribs_classSolverBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_types_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_types_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
-<tr class="memitem:a978c802315f6716d0c013da3290a8dbe inherit pro_types_classLinearSolver" id="r_a978c802315f6716d0c013da3290a8dbe"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a978c802315f6716d0c013da3290a8dbe">PreconditionChebyshev</a></td></tr>
-<tr class="separator:a978c802315f6716d0c013da3290a8dbe inherit pro_types_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classLinearSolver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classLinearSolver')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classLinearSolver.html">LinearSolver&lt; dim, degree, number &gt;</a></td></tr>
-<tr class="memitem:a4f977b595684df41ac232ef6b7e17c8c inherit pro_methods_classLinearSolver" id="r_a4f977b595684df41ac232ef6b7e17c8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a4f977b595684df41ac232ef6b7e17c8c">normalization_value</a> ()</td></tr>
-<tr class="separator:a4f977b595684df41ac232ef6b7e17c8c inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19aa1bd667f6d8e78bfbf65e2490478e inherit pro_methods_classLinearSolver" id="r_a19aa1bd667f6d8e78bfbf65e2490478e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a19aa1bd667f6d8e78bfbf65e2490478e">initialize_preconditioner</a> ()</td></tr>
-<tr class="separator:a19aa1bd667f6d8e78bfbf65e2490478e inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab61cac6b1981ff3d3a1dfcd6854cd3a4 inherit pro_methods_classLinearSolver" id="r_ab61cac6b1981ff3d3a1dfcd6854cd3a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#ab61cac6b1981ff3d3a1dfcd6854cd3a4">initialize_chebyshev</a> ()</td></tr>
-<tr class="separator:ab61cac6b1981ff3d3a1dfcd6854cd3a4 inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f4ed8dbe6a14461d458144cce52e374 inherit pro_methods_classLinearSolver" id="r_a2f4ed8dbe6a14461d458144cce52e374"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinearSolver.html#a2f4ed8dbe6a14461d458144cce52e374">initialize_solver</a> ()</td></tr>
-<tr class="separator:a2f4ed8dbe6a14461d458144cce52e374 inherit pro_methods_classLinearSolver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, unsigned int degree, typename number&gt;<br />
@@ -325,6 +329,33 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 
 </div>
 </div>
+<a id="aa0c5b64710d0db2524b148631f4d3446" name="aa0c5b64710d0db2524b148631f4d3446"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0c5b64710d0db2524b148631f4d3446">&#9670;&#160;</a></span>newton_params()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> &amp; <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::newton_params </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a2267ec75641bb4c1fdee4d5b5d32777f" name="a2267ec75641bb4c1fdee4d5b5d32777f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2267ec75641bb4c1fdee4d5b5d32777f">&#9670;&#160;</a></span>reinit()</h2>
 
@@ -388,30 +419,6 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a3ed196406b73421f1a902e0a0b8523ff" name="a3ed196406b73421f1a902e0a0b8523ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ed196406b73421f1a902e0a0b8523ff">&#9670;&#160;</a></span>newton_params</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structNonlinearSolverParameters.html">NonlinearSolverParameters</a> <a class="el" href="classNewtonSolver.html">NewtonSolver</a>&lt; dim, degree, number &gt;::newton_params</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a5cf17bca4557e9d65b23e9f9aa2fac7b" name="a5cf17bca4557e9d65b23e9f9aa2fac7b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5cf17bca4557e9d65b23e9f9aa2fac7b">&#9670;&#160;</a></span>newton_update</h2>
 
@@ -429,7 +436,7 @@ template&lt;unsigned int dim, unsigned int degree, typename number&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -1,9 +1,13 @@
 <map id="MFOperator&lt; dim, degree, number &gt;" name="MFOperator&lt; dim, degree, number &gt;">
-<area shape="rect" id="Node000001" title="This class exists to evaluate a single user&#45;defined operator for the matrix&#45;free implementation of so..." alt="" coords="208,115,403,160"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,235,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,39,272,112,269,117,152,44"/>
-<area shape="rect" id="Node000003" href="$classSolveBlock.html" title="Structure to hold the attributes of a solve&#45;block." alt="" coords="259,5,352,33"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="308,48,308,115,303,115,303,48"/>
-<area shape="rect" id="Node000004" href="$classSimulationTimer.html" title=" " alt="" coords="377,5,506,33"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="430,48,414,71,394,93,358,117,356,112,390,89,410,68,425,45"/>
+<area shape="rect" id="Node000001" title="This class exists to evaluate a single user&#45;defined operator for the matrix&#45;free implementation of so..." alt="" coords="208,208,403,252"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,235,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,132,272,205,269,209,152,136"/>
+<area shape="rect" id="Node000003" href="$classSolveBlock.html" title="Structure to hold the attributes of a solve&#45;block." alt="" coords="259,98,352,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="308,141,308,207,303,207,303,141"/>
+<area shape="rect" id="Node000004" href="$structLinearSolverParameters.html" title="Struct that stores relevant linear solve information of a certain solve block." alt="" coords="110,5,287,33"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="196,48,197,61,201,72,223,86,259,97,258,103,221,91,197,76,191,62,190,48"/>
+<area shape="rect" id="Node000005" href="$structNonlinearSolverParameters.html" title="Struct that stores relevant nonlinear solve information of a certain field." alt="" coords="311,5,510,33"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="399,48,376,76,340,100,337,95,373,72,395,45"/>
+<area shape="rect" id="Node000006" href="$classSimulationTimer.html" title=" " alt="" coords="377,98,506,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="430,141,414,164,394,186,358,209,356,205,390,182,410,160,425,138"/>
 </map>

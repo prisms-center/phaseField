@@ -5,7 +5,6 @@ var annotated_dup =
     ] ],
     [ "BoundaryParameters", "structBoundaryParameters.html", "structBoundaryParameters" ],
     [ "CellMarkerBase", "classCellMarkerBase.html", "classCellMarkerBase" ],
-    [ "CGSolver", "classCGSolver.html", "classCGSolver" ],
     [ "CheckpointParameters", "structCheckpointParameters.html", "structCheckpointParameters" ],
     [ "ComponentConditions", "structComponentConditions.html", "structComponentConditions" ],
     [ "ConditionalOStreams", "classConditionalOStreams.html", "classConditionalOStreams" ],
