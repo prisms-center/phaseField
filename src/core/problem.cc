@@ -123,16 +123,12 @@ Problem<dim, degree, number>::Problem(
                   constraint_manager,
                   solution_indexer,
                   _pde_operator)
-  , solvers(make_solvers(solve_blocks, solve_context))
-  , solution_indexer(field_attributes.size(), get_solution_managers_from_solvers(solvers))
   , grid_refiner(solve_context)
 {
   std::map<unsigned int, LinearSolverParameters> linear_solver_parameters_copy =
     _user_inputs.linear_solve_parameters.linear_solvers;
   std::map<unsigned int, NonlinearSolverParameters> nonlinear_solver_parameters_copy =
     _user_inputs.nonlinear_solve_parameters.newton_solvers;
-  const LinearSolverParameters    default_linear_solver_parameters;
-  const NonlinearSolverParameters default_nonlinear_solver_parameters;
   for (auto &solve_block : solve_blocks)
     {
       solve_block.validate();
@@ -155,24 +151,24 @@ Problem<dim, degree, number>::Problem(
           solve_block.nonlinear_solver_parameters = nonlin_param_it->second;
           nonlinear_solver_parameters_copy.erase(nonlin_param_it);
         }
-      for (const auto &remaining_lin_params : linear_solver_parameters_copy)
-        {
-          ConditionalOStreams::pout_base()
-            << "Warning: Linear solver parameters provided by user inputs for solve "
-               "block "
-            << remaining_lin_params.first
-            << " which does not exist in the solve blocks. These parameters will be "
-               "ignored.\n";
-        }
-      for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
-        {
-          ConditionalOStreams::pout_base()
-            << "Warning: Nonlinear solver parameters provided by user inputs for solve "
-               "block "
-            << remaining_nonlin_params.first
-            << " which does not exist in the solve blocks. These parameters will be "
-               "ignored.\n";
-        }
+    }
+  for (const auto &remaining_lin_params : linear_solver_parameters_copy)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Linear solver parameters provided by user inputs for solve "
+           "block "
+        << remaining_lin_params.first
+        << " which does not exist in the solve blocks. These parameters will be "
+           "ignored.\n";
+    }
+  for (const auto &remaining_nonlin_params : nonlinear_solver_parameters_copy)
+    {
+      ConditionalOStreams::pout_base()
+        << "Warning: Nonlinear solver parameters provided by user inputs for solve "
+           "block "
+        << remaining_nonlin_params.first
+        << " which does not exist in the solve blocks. These parameters will be "
+           "ignored.\n";
     }
 }
 
@@ -219,6 +215,9 @@ Problem<dim, degree, number>::init_system()
 
   // Initialize the solvers
   Timer::start_section("Initialize Solvers");
+  solvers = make_solvers(solve_blocks, solve_context);
+  solution_indexer.init(field_attributes.size(),
+                        get_solution_managers_from_solvers(solvers));
   for (auto &solver : solvers)
     {
       solver->init(get_all_dependency_sets(solve_blocks));

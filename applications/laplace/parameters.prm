@@ -12,6 +12,7 @@ subsection linear solver parameters: 0
   set max iterations           = 1000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1e-10
+  set preconditioner = Chebyshev
 end
 
 subsection boundary conditions: 0

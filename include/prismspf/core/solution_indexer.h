@@ -22,8 +22,14 @@ public:
   /**
    * @brief Constructor.
    */
-  SolutionIndexer(unsigned int num_fields, // attributes_list.size()
-                  std::vector<GroupSolutionHandler<dim, number> *> solution_handlers);
+  SolutionIndexer() = default;
+
+  /**
+   * @brief Initialize the solution indexer.
+   */
+  void
+  init(unsigned int                                            num_fields,
+       const std::vector<GroupSolutionHandler<dim, number> *> &solution_handlers);
 
   /**
    * @brief Get a solution vector of a given field index.

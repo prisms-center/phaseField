@@ -249,8 +249,8 @@ protected:
     precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
     precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
 
-    precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
     lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
+    precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
 
     precond_chebyshev.initialize(lhs_operator, precond_data);
   }
