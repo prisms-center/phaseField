@@ -182,8 +182,7 @@ public:
             lin_solver.solve(lhs_matrix, x_vector, b_vector, precond_chebyshev);
           }
       }
-    catch (...) // TODO: more specific catch so that we dont ignore
-                // non-convergence-related errors.
+    catch (dealii::SolverControl::NoConvergence &exc)
       {
         ConditionalOStreams::pout_base()
           << "[Increment " << solve_context->get_simulation_timer().get_increment()
