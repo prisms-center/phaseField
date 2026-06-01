@@ -62,7 +62,7 @@ var searchData=
   ['solution_5flevels_59',['solution_levels',['../classGroupSolutionHandler.html#a52ce086db80558ad294ac80696972f98',1,'GroupSolutionHandler']]],
   ['solution_5foutput_2ecc_60',['solution_output.cc',['../solution__output_8cc.html',1,'']]],
   ['solution_5foutput_2eh_61',['solution_output.h',['../solution__output_8h.html',1,'']]],
-  ['solutionindexer_62',['SolutionIndexer',['../classSolutionIndexer.html',1,'SolutionIndexer&lt; dim, number &gt;'],['../classSolutionIndexer.html#a39b7e25098bad9233b2b349cb883730f',1,'SolutionIndexer::SolutionIndexer()']]],
+  ['solutionindexer_62',['SolutionIndexer',['../classSolutionIndexer.html',1,'SolutionIndexer&lt; dim, number &gt;'],['../classSolutionIndexer.html#a73d323dde30248907d109b5653fb8f8f',1,'SolutionIndexer::SolutionIndexer()']]],
   ['solutionlevel_63',['SolutionLevel',['../structSolutionLevel.html',1,'']]],
   ['solutionoutput_64',['SolutionOutput',['../classSolutionOutput.html',1,'SolutionOutput&lt; dim, degree, number &gt;'],['../classSolutionOutput.html#ac3adcefec90c9afe938025839b18cdf8',1,'SolutionOutput::SolutionOutput()']]],
   ['solutions_65',['solutions',['../structSolutionLevel.html#ad218f21f1582d03a872f0480481105e5',1,'SolutionLevel::solutions'],['../classSolutionIndexer.html#a092890bc737fd2f9456d6cada9bde6ae',1,'SolutionIndexer::solutions'],['../classSolverBase.html#a98409232846d6bd3316279b5d47cee06',1,'SolverBase::solutions'],['../classMGSolver.html#a98409232846d6bd3316279b5d47cee06',1,'MGSolver::solutions']]],

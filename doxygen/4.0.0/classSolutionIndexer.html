@@ -135,9 +135,12 @@ $(function(){initNavTree('classSolutionIndexer.html',''); initResizable(true); }
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a39b7e25098bad9233b2b349cb883730f" id="r_a39b7e25098bad9233b2b349cb883730f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39b7e25098bad9233b2b349cb883730f">SolutionIndexer</a> (unsigned int num_fields, std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt; solution_handlers)</td></tr>
-<tr class="memdesc:a39b7e25098bad9233b2b349cb883730f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
-<tr class="separator:a39b7e25098bad9233b2b349cb883730f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d323dde30248907d109b5653fb8f8f" id="r_a73d323dde30248907d109b5653fb8f8f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73d323dde30248907d109b5653fb8f8f">SolutionIndexer</a> ()=default</td></tr>
+<tr class="memdesc:a73d323dde30248907d109b5653fb8f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
+<tr class="separator:a73d323dde30248907d109b5653fb8f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a948fb2485049a689024e232b2a919425" id="r_a948fb2485049a689024e232b2a919425"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a948fb2485049a689024e232b2a919425">init</a> (unsigned int num_fields, const std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt; &amp;solution_handlers)</td></tr>
+<tr class="memdesc:a948fb2485049a689024e232b2a919425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the solution indexer.  <br /></td></tr>
+<tr class="separator:a948fb2485049a689024e232b2a919425"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0b6911a2596c7c3c5f21e0172fd2516" id="r_ae0b6911a2596c7c3c5f21e0172fd2516"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__solution__handler_8h.html#a34eeef510d886fdd12be13504c2d932a">SolutionVector</a>&lt; number &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0b6911a2596c7c3c5f21e0172fd2516">get_solution_vector</a> (unsigned int global_index, unsigned int relative_level=0) const</td></tr>
 <tr class="memdesc:ae0b6911a2596c7c3c5f21e0172fd2516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a solution vector of a given field index.  <br /></td></tr>
 <tr class="separator:ae0b6911a2596c7c3c5f21e0172fd2516"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,25 +172,29 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;unsigned int dim, typename number&gt;<br />
 class SolutionIndexer&lt; dim, number &gt;</div><p>Class that provides access to solution vectors spread across different groups. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a39b7e25098bad9233b2b349cb883730f" name="a39b7e25098bad9233b2b349cb883730f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39b7e25098bad9233b2b349cb883730f">&#9670;&#160;</a></span>SolutionIndexer()</h2>
+<a id="a73d323dde30248907d109b5653fb8f8f" name="a73d323dde30248907d109b5653fb8f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73d323dde30248907d109b5653fb8f8f">&#9670;&#160;</a></span>SolutionIndexer()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;unsigned int dim, typename number&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt;<a class="el" href="classSolutionIndexer.html">::SolutionIndexer</a> </td>
+          <td class="memname"><a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt;<a class="el" href="classSolutionIndexer.html">::SolutionIndexer</a> </td>
           <td>(</td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_fields</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt;</td>          <td class="paramname"><span class="paramname"><em>solution_handlers</em></span>&#160;)</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel default">default</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
@@ -425,6 +432,31 @@ template&lt;unsigned int dim, typename number&gt; </div>
 </div><div class="memdoc">
 
 <p>Get the solve group of a given field index. </p>
+
+</div>
+</div>
+<a id="a948fb2485049a689024e232b2a919425" name="a948fb2485049a689024e232b2a919425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a948fb2485049a689024e232b2a919425">&#9670;&#160;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;unsigned int dim, typename number&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">PRISMS_PF_BEGIN_NAMESPACE void <a class="el" href="classSolutionIndexer.html">SolutionIndexer</a>&lt; dim, number &gt;::init </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>num_fields</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classGroupSolutionHandler.html">GroupSolutionHandler</a>&lt; dim, number &gt; * &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>solution_handlers</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the solution indexer. </p>
 
 </div>
 </div>

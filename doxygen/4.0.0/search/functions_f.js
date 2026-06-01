@@ -31,7 +31,7 @@ var searchData=
   ['sin_5farctan_28',['sin_arctan',['../namespaceSymmetry.html#a97f4ed2e6e0d2ca2631ca98d1b3050a3',1,'Symmetry']]],
   ['sin_5fpsi_29',['sin_psi',['../namespaceSymmetry.html#aa6048cd1b64132621ce379f1cca79e48',1,'Symmetry']]],
   ['sin_5ftheta_30',['sin_theta',['../namespaceSymmetry.html#a3e19e722b1fbdcc5bc7780337be4f73a',1,'Symmetry']]],
-  ['solutionindexer_31',['SolutionIndexer',['../classSolutionIndexer.html#a39b7e25098bad9233b2b349cb883730f',1,'SolutionIndexer']]],
+  ['solutionindexer_31',['SolutionIndexer',['../classSolutionIndexer.html#a73d323dde30248907d109b5653fb8f8f',1,'SolutionIndexer']]],
   ['solutionoutput_32',['SolutionOutput',['../classSolutionOutput.html#ac3adcefec90c9afe938025839b18cdf8',1,'SolutionOutput']]],
   ['solve_33',['solve',['../classProblem.html#a9db5e4c168870694e8d6bbcbe32d2d0b',1,'Problem::solve()'],['../classSolverBase.html#a3c0e0369dfd96d47bc23525f9a9e06dd',1,'SolverBase::solve()']]],
   ['solve_5fimpl_34',['solve_impl',['../classExplicitSolver.html#ab8a44e969ae8a6841f4c65baf6b932d8',1,'ExplicitSolver::solve_impl()'],['../classLinearSolver.html#ae2409c641f1732fac9d07a865136a68e',1,'LinearSolver::solve_impl()'],['../classMGSolver.html#a3cddddb526f8a5c73192359ed4e4f25c',1,'MGSolver::solve_impl()'],['../classNewtonSolver.html#a64e42f20afbf2e75a400056b97d43b22',1,'NewtonSolver::solve_impl()'],['../classSolverBase.html#a84e7b40e9ed956b72903ab8f297485bf',1,'SolverBase::solve_impl()']]],
