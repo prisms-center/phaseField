@@ -151,7 +151,18 @@ MFOperator<dim, degree, number>::compute_local_field_diagonal(
     {
       for (unsigned int i = 0; i < dofs_per_component; ++i)
         {
-          variable_list.submit_dof_value(some_field_index, zero<Rank>(), i);
+          if (field_attributes[some_field_index].field_type == TensorRank::Scalar)
+            {
+              variable_list.submit_dof_value(some_field_index,
+                                             zero<TensorRank::Scalar>(),
+                                             i);
+            }
+          else if (field_attributes[some_field_index].field_type == TensorRank::Vector)
+            {
+              variable_list.submit_dof_value(some_field_index,
+                                             zero<TensorRank::Vector>(),
+                                             i);
+            }
         }
     }
   // Object to hold the local diagonal
