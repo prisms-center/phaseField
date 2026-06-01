@@ -7,10 +7,9 @@
 
 #include <prismspf/core/exceptions.h>
 #include <prismspf/core/field_container.h>
+#include <prismspf/core/group_solution_handler.h>
 
 #include <prismspf/solvers/mf_operator.h>
-
-#include "prismspf/core/group_solution_handler.h"
 
 PRISMS_PF_BEGIN_NAMESPACE
 
