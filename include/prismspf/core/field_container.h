@@ -1355,12 +1355,11 @@ FieldContainer<dim, degree, number>::submit_dof_value(Types::Index   field_index
                    dealii::ExcMessage("Error: Field index " +
                                       std::to_string(field_index) +
                                       " is not associated with any field."));
-  auto &relevant_feeval_vector =
-    get_relevant_feeval_vector<RankFromVal<ValType>>()[field_index];
+  auto &relevant_feevals = get_relevant_feevals<RankFromVal<ValType>>()[field_index];
   try
     {
-      relevant_feeval_vector.template get<DependencyType::DST>()
-        .submit_dof_value(val, dof_index);
+      relevant_feevals.template get<DependencyType::DST>().submit_dof_value(val,
+                                                                            dof_index);
     }
   catch (...)
     {
