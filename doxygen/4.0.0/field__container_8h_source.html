@@ -1354,12 +1354,12 @@ $(function(){initNavTree('field__container_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>                   dealii::ExcMessage(<span class="stringliteral">&quot;Error: Field index &quot;</span> +</div>
 <div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>                                      std::to_string(field_index) +</div>
 <div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>                                      <span class="stringliteral">&quot; is not associated with any field.&quot;</span>));</div>
-<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>  <span class="keyword">auto</span> &amp;relevant_feeval_vector =</div>
+<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span>  <span class="keyword">auto</span> &amp;relevant_feevals =</div>
 <div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>    <a class="code hl_function" href="classFieldContainer.html#a01a83450b12439b773e43e72415311bd">get_relevant_feeval_vector&lt;RankFromVal&lt;ValType&gt;</a>&gt;()[field_index];</div>
 <div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>  <span class="keywordflow">try</span></div>
 <div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>    {</div>
-<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>      relevant_feeval_vector.template get&lt;DependencyType::DST&gt;()</div>
-<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>        .submit_dof_value(val, dof_index);</div>
+<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>      relevant_feevals.template get&lt;DependencyType::DST&gt;().submit_dof_value(val,</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>                                                                            dof_index);</div>
 <div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>    }</div>
 <div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span>  <span class="keywordflow">catch</span> (...)</div>
 <div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>    {</div>
