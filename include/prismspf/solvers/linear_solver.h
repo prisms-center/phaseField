@@ -112,6 +112,7 @@ public:
     inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
     solutions.apply_constraints(inhomogeneous_values, 0);
     inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    initialize_preconditioner();
   }
 
   /**
