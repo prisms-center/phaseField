@@ -222,7 +222,7 @@ MFOperator<dim, degree, number>::eval_matrix_diagonal()
 {
   auto &diag     = diagonal_entries->get_vector();
   auto &inv_diag = inverse_diagonal_entries->get_vector();
-  compute_diagonal(diag, diag);
+  compute_diagonal(diag, inv_diag); // using inv_diag as dummy
   for (unsigned int i : diag.locally_owned_elements())
     {
       number diag_el = diag[i];
