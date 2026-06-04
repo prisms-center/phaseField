@@ -170,8 +170,12 @@ ConstraintManager<dim, degree, number>::reinit(
           generic_constraint.close();
         }
     }
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
+    {
+      mg_constraints[field_index].initialize(
+        dof_manager->get_field_dof_handler(field_index, 0));
+    }
   // The map from user inputs has string keys for now.
-
   std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
     boundary_parameters->boundary_condition_list;
   for (unsigned int relative_level = 0; relative_level < field_constraints.size();
@@ -200,14 +204,7 @@ ConstraintManager<dim, degree, number>::reinit(
           constraint.close();
         }
     }
-  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
-    {
-      mg_constraints[field_index].initialize(
-        dof_manager->get_field_dof_handler(field_index, 0),
-        dealii::MGLevelObject<dealii::IndexSet>(
-          0,
-          dof_manager->get_dof_handlers_levels().size())); // TODO mg levels
-    }
+
   for (unsigned int relative_level = 0; relative_level < generic_constraints.size();
        ++relative_level)
     {
@@ -215,20 +212,6 @@ ConstraintManager<dim, degree, number>::reinit(
       for (unsigned int field_index = 0; field_index < field_attributes.size();
            field_index++)
         {
-          if constexpr (std::is_same_v<number, double>)
-            {
-              mg_constraints[field_index].add_user_constraints(
-                level,
-                field_constraints[relative_level][field_index]);
-            }
-          else
-            {
-              dealii::AffineConstraints<double> double_precision_constraint;
-              double_precision_constraint.copy_from(
-                field_constraints[relative_level][field_index]);
-              mg_constraints[field_index]
-                .add_user_constraints(level, double_precision_constraint);
-            }
         }
     }
 }
@@ -399,16 +382,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-{
-  std::array<dealii::ComponentMask, dim> masks {};
-  for (unsigned int i = 0; i < dim; ++i)
-    {
-      dealii::ComponentMask temp_mask(dim, false);
-      temp_mask.set(i, true);
-      masks.at(i) = temp_mask;
-    }
-  return masks;
-}();
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

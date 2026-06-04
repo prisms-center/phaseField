@@ -36,7 +36,9 @@ TriangulationManager<1U>::TriangulationManager(bool _has_multigrid)
 template <unsigned int dim>
 TriangulationManager<dim>::TriangulationManager(bool _has_multigrid)
   : has_multigrid(_has_multigrid)
-  , triangulation(MPI_COMM_WORLD, Triangulation<dim>::limit_level_difference_at_vertices)
+  , triangulation(MPI_COMM_WORLD,
+                  Triangulation<dim>::limit_level_difference_at_vertices,
+                  Triangulation<dim>::construct_multigrid_hierarchy)
 {}
 
 template <unsigned int dim>
