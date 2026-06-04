@@ -194,7 +194,7 @@ public:
 
             lin_solver.solve(lhs_matrix, x_vector, b_vector, precond_chebyshev);
           }
-        else if (lin_params().preconditioner == PreconditionerType::GMG)
+        else if (lin_params().preconditioner == GMG)
           {
             // TODO: recalculate diagonals
             lin_solver.solve(lhs_operator, x_vector, b_vector, *multigrid_preconditioner);
@@ -258,7 +258,7 @@ protected:
       }
     if (lin_params().preconditioner == GMG)
       {
-        void(0); // todo mg
+        initialize_multigrid();
       }
   }
 
@@ -351,7 +351,7 @@ private:
     multigrid_preconditioner;
 
   void
-  init_multigrid()
+  initialize_multigrid()
   {
     const unsigned int min_level = lin_params().min_mg_level;
     const unsigned int max_level =
@@ -365,28 +365,13 @@ private:
       &PDEOperatorBase<dim, degree, number>::compute_lhs,
       solve_context->get_field_attributes(),
       solve_context->get_solution_indexer(),
-      0,
+      solve_context->get_matrix_free_manager(),
       solve_block.dependencies_lhs,
       solve_context->get_simulation_timer());
     for (unsigned level = min_level; level < max_level; ++level)
       {
         const unsigned int relative_level = level - min_level;
-        mg_lhs_operators[level]           = lhs_operator;
-        /* mg_lhs_operators[level]           = MFOperator<dim, degree, number>(
-          solve_context->get_pde_operator(),
-          &PDEOperatorBase<dim, degree, number>::compute_lhs,
-          solve_context->get_field_attributes(),
-          solve_context->get_solution_indexer(),
-          relative_level,
-          solve_block.dependencies_lhs,
-          solve_context->get_simulation_timer());
-        mg_lhs_operators[level].initialize(solutions);
-        mg_lhs_operators[level].set_scaling_diagonal(
-          true,
-          solve_context->get_invm_manager().get_invm_sqrt(
-            solve_context->get_field_attributes(),
-            solve_block.field_indices,
-            relative_level)); */
+        mg_lhs_operators[level].set_relative_level(relative_level);
       }
 
     // 3. MG transfer
@@ -398,7 +383,7 @@ private:
     MGTransferType                    mg_transfer(mg_trans_mf); // Constraints?
     // NOTE: dof_handler.distribute_mg_dofs() must have been called
     mg_transfer.build(
-      solve_context->get_dof_manager().get_field_dof_handlers(solve_block.field_indices,
+      solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
                                                               0));
 
     // 4. MG Smoother (takes in operators) This is similar to a solver, but is
@@ -406,8 +391,7 @@ private:
     // Preconditioner for smoother.
     // TODO: use PreconditionBlockJacobi or other block preconditioner instead of
     // PreconditionChebyshev
-    using SmootherPrecond =
-      dealii::PreconditionChebyshev<MFOperator<dim, degree, number>, BlockVector<number>>;
+    using SmootherPrecond = PreconditionChebyshev;
     dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
       min_level,
       max_level);
@@ -415,20 +399,17 @@ private:
     for (unsigned int level = min_level; level <= max_level; ++level)
       {
         smoother_data[level].smoothing_range     = chebyshev_params.smoothing_range;
-        smoother_data[level].degree              = chebyshev_params.smoother_degree;
+        smoother_data[level].degree              = chebyshev_params.degree;
         smoother_data[level].eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
         // smoother_data[level].preconditioner; // todo
         smoother_data[level].constraints.close(); // todo
 
-        unsigned int        relative_level = level - min_level;
-        BlockVector<number> identity;
-        identity.reinit(solutions.get_solution_full_vector(relative_level));
-        for (int index : identity.locally_owned_elements())
-          {
-            identity[index] = 1.0;
-          }
-        smoother_data[level].preconditioner =
-          std::make_shared<dealii::DiagonalMatrix<BlockVector<number>>>(identity);
+        unsigned int relative_level = level - min_level;
+
+        mg_lhs_operators[level].reinit_matrix_diagonal(
+          solutions.get_solution_full_vector(relative_level));
+        precond_data.preconditioner =
+          mg_lhs_operators[level].get_matrix_diagonal_inverse();
       }
     // Wrapper around a generic preconditioner to be used as a smoother
     using Smoother = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
@@ -456,7 +437,7 @@ private:
     // 7. Turn MG into a preconditioner object
     multigrid_preconditioner =
       std::make_shared<dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>>(
-        solve_context->get_dof_manager().get_field_dof_handlers(solve_block.field_indices,
+        solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
                                                                 0),
         multigrid,
         mg_transfer);

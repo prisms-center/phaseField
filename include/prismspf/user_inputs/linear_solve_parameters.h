@@ -163,10 +163,12 @@ LinearSolveParameters::declare_parameters(dealii::ParameterHandler &parameter_ha
           dealii::Patterns::Integer(1, INT_MAX),
           "The maximum number of linear solver iterations before the loop "
           "is stopped.");
-        parameter_handler.declare_entry("preconditioner type",
-                                        "None",
-                                        dealii::Patterns::Selection("None|Chebyshev"),
-                                        "The preconditioner type for the linear solver.");
+        parameter_handler.declare_entry(
+          "preconditioner type",
+          "None",
+          dealii::Patterns::Selection(
+            "|None|Chebyshev|GMG|none|chebyshev|gmg|MG|mg|multigrid"),
+          "The preconditioner type for the linear solver.");
         parameter_handler.enter_subsection("Chebyshev");
         {
           parameter_handler.declare_entry("smoothing range",
@@ -322,7 +324,10 @@ LinearSolveParameters::assign_parameters(dealii::ParameterHandler &parameter_han
           {"Chebyshev", Chebyshev},
           {"chebyshev", Chebyshev},
           {"GMG",       GMG      },
-          {"gmg",       GMG      }
+          {"gmg",       GMG      },
+          {"MG",        GMG      },
+          {"mg",        GMG      },
+          {"multigrid", GMG      }
         };
         linear_solver_parameters.preconditioner =
           preconditioner_map.at(parameter_handler.get("preconditioner type"));

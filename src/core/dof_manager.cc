@@ -42,6 +42,10 @@ DoFManager<dim, degree>::reinit(const TriangulationManager<dim> &triangulation_m
             level_dof_handlers[relative_level].at(rank);
           dof_handler.reinit(triangulation_manager.get_triangulation(relative_level));
           dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems.at(rank));
+          if (relative_level == 0)
+            {
+              dof_handler.distribute_mg_dofs();
+            }
         }
     }
 }

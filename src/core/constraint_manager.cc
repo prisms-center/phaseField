@@ -52,6 +52,7 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
     {
       constraint_level.resize(field_attributes.size());
     }
+  mg_constraints.resize(field_attributes.size());
   reinit(field_attributes);
 }
 
@@ -86,7 +87,7 @@ ConstraintManager<dim, degree, number>::get_constraint(Types::Index index,
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<const dealii::MGConstrainedDoFs *>
-ConstraintManager<dim, degree, number>::get_mg_constraints(
+ConstraintManager<dim, degree, number>::get_block_mg_constraints(
   const std::set<Types::Index> &field_indices) const
 {
   std::vector<const dealii::MGConstrainedDoFs *> selected_constraints;
@@ -198,6 +199,14 @@ ConstraintManager<dim, degree, number>::reinit(
         {
           constraint.close();
         }
+    }
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
+    {
+      mg_constraints[field_index].initialize(
+        dof_manager->get_field_dof_handler(field_index, 0),
+        dealii::MGLevelObject<dealii::IndexSet>(
+          0,
+          dof_manager->get_dof_handlers_levels().size())); // TODO mg levels
     }
   for (unsigned int relative_level = 0; relative_level < generic_constraints.size();
        ++relative_level)
@@ -390,16 +399,16 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
 template <unsigned int dim, unsigned int degree, typename number>
 const std::array<dealii::ComponentMask, dim>
   ConstraintManager<dim, degree, number>::vector_component_mask = []()
-  {
-    std::array<dealii::ComponentMask, dim> masks {};
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        dealii::ComponentMask temp_mask(dim, false);
-        temp_mask.set(i, true);
-        masks.at(i) = temp_mask;
-      }
-    return masks;
-  }();
+{
+  std::array<dealii::ComponentMask, dim> masks {};
+  for (unsigned int i = 0; i < dim; ++i)
+    {
+      dealii::ComponentMask temp_mask(dim, false);
+      temp_mask.set(i, true);
+      masks.at(i) = temp_mask;
+    }
+  return masks;
+}();
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};

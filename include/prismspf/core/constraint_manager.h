@@ -81,7 +81,7 @@ public:
    * @brief Getter function for the constraints.
    */
   [[nodiscard]] std::vector<const dealii::MGConstrainedDoFs *>
-  get_mg_constraints(const std::set<unsigned int> &field_indices) const;
+  get_block_mg_constraints(const std::set<unsigned int> &field_indices) const;
 
   /**
    * @brief Getter function for the constraint of an index (constant reference).
