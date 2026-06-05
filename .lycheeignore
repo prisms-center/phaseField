@@ -6,9 +6,3 @@ https://www.gnu.org/licenses/lgpl-2.1
 # that's the best way to provide links to scientific
 # papers
 https:\/\/doi\.org\/[^\s]+
-
-# Some doxygen paths that get filled out after
-# generation
-^(?!.*\$\relpath\^\$projectlogo).*$
-^(?!.*\$\relpath\^\$stylesheet).*$
-^(?!.*\$\relpath\^\$tabs.css).*$
