@@ -196,6 +196,30 @@ ConstraintManager<dim, degree, number>::reinit(
             field_index);
         }
     }
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
+    {
+      unsigned int num_comps =
+        field_attributes[field_index].field_type == TensorRank::Vector ? dim : 1;
+      for (unsigned int comp = 0; comp < num_comps; comp++)
+        {
+          std::set<unsigned int>     constrained_boundary_ids;
+          const ComponentConditions &comp_bcs =
+            boundary_condition_list[field_attributes[field_index].name]
+              .component_constraints.at(comp);
+          for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
+            {
+              if (boundary_type == Condition::Dirichlet ||
+                  boundary_type == Condition::TimeDependentDirichlet)
+                {
+                  constrained_boundary_ids.insert(boundary_id);
+                }
+            }
+          mg_constraints[field_index].make_zero_boundary_constraints(
+            dof_manager->get_field_dof_handler(field_index, 0),
+            constrained_boundary_ids,
+            num_comps == 1 ? scalar_empty_mask : vector_component_mask.at(comp));
+        }
+    }
   // close all constraints.
   for (auto &constraints_vector : field_constraints)
     {

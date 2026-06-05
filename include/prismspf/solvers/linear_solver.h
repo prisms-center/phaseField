@@ -353,9 +353,10 @@ private:
   void
   initialize_multigrid()
   {
-    const unsigned int min_level = lin_params().min_mg_level;
-    const unsigned int max_level =
+    const unsigned int max_refinement =
       solve_context->get_user_inputs().spatial_discretization.max_refinement;
+    const unsigned int min_level = max_refinement - (lin_params().mg_depth) + 1;
+    const unsigned int max_level = max_refinement;
 
     // 1. Level operators
     dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators(

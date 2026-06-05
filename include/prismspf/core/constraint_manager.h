@@ -214,7 +214,6 @@ private:
 
   /**
    * @brief Multigrid constraints. Outer vector is indexed by field index.
-   * @todo We should probably just use MGConstrainedDoFs to store all constraints.
    */
   std::vector<dealii::MGConstrainedDoFs> mg_constraints;
 

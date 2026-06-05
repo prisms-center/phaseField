@@ -51,8 +51,8 @@ struct LinearSolverParameters
   // gmres_parameters for both solvers
   // dealii::SolverFGMRES<>::AdditionalData     fgmres_parameters;
 
-  // The minimum multigrid level
-  unsigned int min_mg_level = 0;
+  // The multigrid depth
+  unsigned int mg_depth = 1;
 };
 
 /**
@@ -186,7 +186,6 @@ LinearSolveParameters::declare_parameters(dealii::ParameterHandler &parameter_ha
             "The maximum number of CG iterations used to find the maximum eigenvalue.");
         }
         parameter_handler.leave_subsection();
-
         parameter_handler.enter_subsection("Richardson");
         {
           parameter_handler.declare_entry("omega",
@@ -247,10 +246,11 @@ LinearSolveParameters::declare_parameters(dealii::ParameterHandler &parameter_ha
         }
         parameter_handler.leave_subsection();
 
-        parameter_handler.declare_entry("min mg level",
-                                        "0",
-                                        dealii::Patterns::Integer(0, INT_MAX),
-                                        "The minimum multigrid level.");
+        parameter_handler.declare_entry("mg depth",
+                                        "1",
+                                        dealii::Patterns::Integer(1, INT_MAX),
+                                        "The depth of the multigrid hierarchy.");
+
         parameter_handler.declare_alias("tolerance value", "tolerance");
         parameter_handler.declare_alias("solver_ids", "solve blocks");
         parameter_handler.declare_alias("solver_ids", "solve_blocks");
@@ -264,6 +264,7 @@ LinearSolveParameters::declare_parameters(dealii::ParameterHandler &parameter_ha
         parameter_handler.declare_alias("solver type", "type");
         parameter_handler.declare_alias("preconditioner type", "preconditioner_type");
         parameter_handler.declare_alias("preconditioner type", "preconditioner");
+        parameter_handler.declare_alias("mg depth", "mg_depth");
       }
       parameter_handler.leave_subsection();
     }
@@ -383,8 +384,8 @@ LinearSolveParameters::assign_parameters(dealii::ParameterHandler &parameter_han
         }
         parameter_handler.leave_subsection();
 
-        linear_solver_parameters.min_mg_level =
-          static_cast<unsigned int>(parameter_handler.get_integer("min mg level"));
+        linear_solver_parameters.mg_depth =
+          static_cast<unsigned int>(parameter_handler.get_integer("mg depth"));
         for (auto solver_id : solver_ids)
           {
             linear_solvers[static_cast<unsigned int>(solver_id)] =

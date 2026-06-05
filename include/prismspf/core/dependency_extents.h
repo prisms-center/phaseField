@@ -11,7 +11,6 @@
 
 #include <vector>
 
-
 PRISMS_PF_BEGIN_NAMESPACE
 inline unsigned int
 oldest(Dependency dependencies)
@@ -75,14 +74,14 @@ struct DependencyExtents
 
 struct NewDependencyExtents
 {
-  std::vector<unsigned int> max_age_per_level;
+  std::vector<unsigned int> max_age_per_level = {0};
 
   NewDependencyExtents(const std::set<unsigned int> &field_indices,
                        const std::list<SolveBlock>  &solve_blocks)
   {
     for (const SolveBlock &solve_block : solve_blocks)
       {
-        const unsigned int max_level = 0; // solve_block.max_level; //TODO
+        const unsigned int num_levels = solve_block.linear_solver_parameters.mg_depth;
         for (unsigned int field_index : field_indices)
           {
             {
@@ -94,13 +93,15 @@ struct NewDependencyExtents
                     {
                       continue;
                     }
-                  if (max_level >= max_age_per_level.size())
+                  if (num_levels > max_age_per_level.size())
                     {
-                      max_age_per_level.resize(max_level + 1, 0);
+                      max_age_per_level.resize(num_levels, 0);
                     }
-                  for (unsigned int level = 0; level <= max_level; ++level)
+                  for (unsigned int relative_level = 0; relative_level < num_levels;
+                       ++relative_level)
                     {
-                      max_age_per_level[level] = std::max(max_age_per_level[level], age);
+                      max_age_per_level[relative_level] =
+                        std::max(max_age_per_level[relative_level], age);
                     }
                 }
             }
@@ -113,13 +114,15 @@ struct NewDependencyExtents
                     {
                       continue;
                     }
-                  if (max_level >= max_age_per_level.size())
+                  if (num_levels > max_age_per_level.size())
                     {
-                      max_age_per_level.resize(max_level + 1, 0);
+                      max_age_per_level.resize(num_levels, 0);
                     }
-                  for (unsigned int level = 0; level <= max_level; ++level)
+                  for (unsigned int relative_level = 0; relative_level < num_levels;
+                       ++relative_level)
                     {
-                      max_age_per_level[level] = std::max(max_age_per_level[level], age);
+                      max_age_per_level[relative_level] =
+                        std::max(max_age_per_level[relative_level], age);
                     }
                 }
             }
