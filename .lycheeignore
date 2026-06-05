@@ -2,3 +2,8 @@
 # maybe this can be fixed, but it's not important for 
 # the utility
 https://www.doxygen.org/index.html
+
+# DOIs will always redirect, but we don't care since
+# that's the best way to provide links to scientific
+# papers
+https:\/\/doi\.org\/[^\s]+

@@ -1,4 +1,5 @@
 exclude_path = [
   "doxygen/2.4.2",
-	"doxygen/3.0.0",
+  "doxygen/3.0.0",
+  "_layouts",
 ]
