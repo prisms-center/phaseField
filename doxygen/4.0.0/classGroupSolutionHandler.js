@@ -25,6 +25,7 @@ var classGroupSolutionHandler =
     [ "init", "classGroupSolutionHandler.html#a0740fb13dd11234364a4bbbc9ef093ac", null ],
     [ "init_solution_transfer", "classGroupSolutionHandler.html#aad59e8680a215f2a182a79cc4e014c82", null ],
     [ "prepare_for_solution_transfer", "classGroupSolutionHandler.html#a7221007eaafaaf3931454c31019d554e", null ],
+    [ "print_solution_full_vector", "classGroupSolutionHandler.html#adaa154854df37ebe202ecea4635716c6", null ],
     [ "reinit", "classGroupSolutionHandler.html#a4d4f593868a98d0427a318e66e6fa00f", null ],
     [ "update", "classGroupSolutionHandler.html#a4d5b8e388818074bdf30ed39a1528b63", null ],
     [ "update_ghosts", "classGroupSolutionHandler.html#a717c138ec2317b4356aaf16b90b6dcdd", null ],

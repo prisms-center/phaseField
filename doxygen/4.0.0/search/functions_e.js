@@ -13,7 +13,6 @@ var searchData=
   ['reinit_5fand_5feval_10',['reinit_and_eval',['../structFieldContainer_1_1FEEValuationDeps.html#a95f2b279a285c1c99cf65e8a015cdccb',1,'FieldContainer::FEEValuationDeps::reinit_and_eval()'],['../classFieldContainer.html#a6ef16a1dd696ec5b1e8a0f1d31d1a1fd',1,'FieldContainer::reinit_and_eval()']]],
   ['reinit_5fmapping_11',['reinit_mapping',['../classDoFManager.html#af5e464f4d25ae12fe34143b91397a7f4',1,'DoFManager']]],
   ['reinit_5fmatrix_5fdiagonal_12',['reinit_matrix_diagonal',['../classMFOperator.html#ac66143e3c4c3e49957e94921f50d0751',1,'MFOperator']]],
-  ['reinit_5fsystem_13',['reinit_system',['../classProblem.html#a69d61609e181a94de2112db45980f65f',1,'Problem']]],
-  ['remove_5fparentheses_14',['remove_parentheses',['../classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6',1,'UserConstants']]],
-  ['reset_15',['reset',['../classSimulationTimer.html#afa462fedaa49d65c5c3dea5e63f89c0a',1,'SimulationTimer']]]
+  ['remove_5fparentheses_13',['remove_parentheses',['../classUserConstants.html#afb4d4b8a027a3611d044b85a7567ecb6',1,'UserConstants']]],
+  ['reset_14',['reset',['../classSimulationTimer.html#afa462fedaa49d65c5c3dea5e63f89c0a',1,'SimulationTimer']]]
 ];

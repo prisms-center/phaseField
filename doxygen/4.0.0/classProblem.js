@@ -1,8 +1,8 @@
 var classProblem =
 [
     [ "Problem", "classProblem.html#a5e6f5ce511161375318a2e5d185883ec", null ],
+    [ "get_solve_context", "classProblem.html#ad886f0474b653bafe3e286e0dd673ae8", null ],
     [ "init_system", "classProblem.html#a0ab4e0dbdf0e935e3803c439ac2e2512", null ],
-    [ "reinit_system", "classProblem.html#a69d61609e181a94de2112db45980f65f", null ],
     [ "solve", "classProblem.html#a9db5e4c168870694e8d6bbcbe32d2d0b", null ],
     [ "solve_increment", "classProblem.html#a4d18b5598daf20435ce09829b8983616", null ],
     [ "constraint_manager", "classProblem.html#a8c8b80bf8d60855c1ca66c9c991fb3b2", null ],
