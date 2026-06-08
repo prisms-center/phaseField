@@ -473,6 +473,13 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
   return exit_status;
 }
 
+template <unsigned int dim, unsigned int degree, typename number>
+const SolveContext<dim, degree, number> &
+Problem<dim, degree, number>::get_solve_context() const
+{
+  return solve_context;
+}
+
 #include "core/problem.inst"
 
 PRISMS_PF_END_NAMESPACE
