@@ -34,22 +34,21 @@ public:
   ExplicitSolver(SolveBlock                               _solve_block,
                  const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_block, _solve_context)
-    , rhs_operator(solve_context->get_pde_operator(),
-                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                   solve_context->get_field_attributes(),
-                   solve_context->get_solution_indexer(),
-                   solve_context->get_matrix_free_manager(),
-                   solve_block.dependencies_rhs,
-                   solve_context->get_simulation_timer())
   {}
 
   void
   init(const std::list<SolveBlock> &all_solve_blocks) override
   {
     SolverBase<dim, degree, number>::init(all_solve_blocks);
-    unsigned int num_levels = solve_context->get_dof_manager().get_dof_handlers().size();
-    // Initialize rhs_operators
-    rhs_operator.initialize(solutions);
+    // Initialize rhs_operator
+    rhs_operator.init(solve_context->get_pde_operator(),
+                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                      solve_context->get_field_attributes(),
+                      solve_context->get_solution_indexer(),
+                      solve_context->get_matrix_free_manager(),
+                      solve_context->get_simulation_timer(),
+                      solve_block,
+                      solve_block.dependencies_rhs);
     rhs_operator.set_scaling_diagonal(
       true,
       solve_context->get_invm_manager().get_invm(solve_context->get_field_attributes(),

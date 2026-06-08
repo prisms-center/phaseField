@@ -78,14 +78,14 @@ public:
     else
       {
         static Value<Rank> ident = []()
-          {
-            Value<Rank> obj;
-            for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
-              {
-                obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
-              }
-            return obj;
-          }();
+        {
+          Value<Rank> obj;
+          for (int i = 0; i < Value<Rank>::n_independent_components; ++i)
+            {
+              obj[Value<Rank>::unrolled_to_component_indices(i)] = 1.0;
+            }
+          return obj;
+        }();
         return ident;
       }
   }
@@ -106,51 +106,37 @@ public:
 
   /**
    * @brief Constructor.
-   * @note It might be better to provide a SolveContext object instead of individual
-   * components
    */
-  MFOperator(const PDEOperatorBase<dim, degree, number> &operator_owner,
-             Operator                                    oper,
-             const std::vector<FieldAttributes>         &_field_attributes,
-             const SolutionIndexer<dim, number>         &_solution_indexer,
-             const MatrixFreeManager<dim, number>       &_matrix_free_manager,
-             DependencyMap                               _dependency_map,
-             const SimulationTimer                      &_sim_timer)
-    : MATRIX_FREE_OPERATOR_BASE()
-    , pde_operator(&operator_owner)
-    , pde_op(oper)
-    , field_attributes(_field_attributes)
-    , solution_indexer(&_solution_indexer)
-    , matrix_free_manager(&_matrix_free_manager)
-    , dependency_map(std::move(_dependency_map))
-    , sim_timer(&_sim_timer)
-  {
-    set_relative_level(0);
-  }
+  MFOperator() = default;
 
   /**
    * @brief Initialize.
-   * @note This will look stylistically strange. We pass in the solution handler for the
-   * fields being solved here, but we don't actually use any of the field data from it.
-   * This is because the purpose of this MFOperator class is to provide an operator with
-   * the signature `vmult(VectorType &dst, const VectorType &src)`. Because we are
-   * using block vectors, for the MFOperator to work, it needs to have access to the index
-   * mapping, which is stored in the solution handler.
-   *
-   * Additionally, we modify dependency_map to include an entry for every field being
-   * solved. This is to avoid a troublesome problem downstream in FieldContainer, where we
-   * only want to initialize FEEvals for what is needed. (There could be a better way
-   * of handling this, but this is the least complicated for now.)
+   * @pre MatrixFreeManager and SolutionIndexer have been initialized.
    */
   void
-  initialize(const GroupSolutionHandler<dim, number> &dst_solution)
+  init(const PDEOperatorBase<dim, degree, number> &operator_owner,
+       Operator                                    oper,
+       std::vector<FieldAttributes>                _field_attributes,
+       const SolutionIndexer<dim, number>         &_solution_indexer,
+       const MatrixFreeManager<dim, number>       &_matrix_free_manager,
+       const SimulationTimer                      &_sim_timer,
+       SolveBlock                                  _solve_block,
+       DependencyMap                               _dependency_map)
   {
-    solve_block          = dst_solution.get_solve_block();
-    field_to_block_index = dst_solution.get_global_to_block_index();
+    pde_operator         = &operator_owner;
+    pde_op               = oper;
+    field_attributes     = std::move(_field_attributes);
+    solution_indexer     = &_solution_indexer;
+    matrix_free_manager  = &_matrix_free_manager;
+    sim_timer            = &_sim_timer;
+    solve_block          = std::move(_solve_block);
+    dependency_map       = std::move(_dependency_map);
+    field_to_block_index = solution_indexer->get_block_indices();
     for (unsigned int field_index : solve_block.field_indices)
       {
         dependency_map[field_index]; // creates entry if not already present
       }
+    set_relative_level(0);
   }
 
   void
@@ -299,11 +285,11 @@ private:
   /**
    * @brief PDE operator object (owning class instance of pde_op) for user defined PDEs.
    */
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator = nullptr;
   /**
    * @brief The actual PDE operator function ptr (eg. compute_rhs) for user defined PDEs.
    */
-  Operator pde_op;
+  Operator pde_op = nullptr;
 
   /**
    * @brief Read-access to fields.

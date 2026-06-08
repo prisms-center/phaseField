@@ -10,6 +10,8 @@
 
 PRISMS_PF_BEGIN_NAMESPACE
 
+// TODO add initialization checks.
+
 template <unsigned int dim, typename number>
 void
 SolutionIndexer<dim, number>::init(
@@ -18,11 +20,14 @@ SolutionIndexer<dim, number>::init(
 {
   solutions.clear();
   solutions.resize(num_fields, nullptr);
+  block_indices.clear();
+  block_indices.resize(num_fields, -1);
   for (GroupSolutionHandler<dim, number> *solution_handler : solution_handlers)
     {
       for (unsigned int field_index : solution_handler->get_solve_block().field_indices)
         {
-          solutions[field_index] = solution_handler;
+          solutions[field_index]     = solution_handler;
+          block_indices[field_index] = solution_handler->get_block_index(field_index);
         }
     }
 }
@@ -90,9 +95,16 @@ SolutionIndexer<dim, number>::get_solution_level_and_block_index(
 template <unsigned int dim, typename number>
 unsigned int
 SolutionIndexer<dim, number>::get_block_index(unsigned int global_index) const
-
 {
-  return solutions[global_index]->get_block_index(global_index);
+  // return solutions[global_index]->get_block_index(global_index);
+  return block_indices[global_index];
+}
+
+template <unsigned int dim, typename number>
+std::vector<unsigned int>
+SolutionIndexer<dim, number>::get_block_indices() const
+{
+  return block_indices;
 }
 
 #include "core/solution_indexer.inst"

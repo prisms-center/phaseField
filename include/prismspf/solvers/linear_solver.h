@@ -64,20 +64,6 @@ public:
   LinearSolver(SolveBlock                               _solve_block,
                const SolveContext<dim, degree, number> &_solve_context)
     : SolverBase<dim, degree, number>(_solve_block, _solve_context)
-    , rhs_operator(solve_context->get_pde_operator(),
-                   &PDEOperatorBase<dim, degree, number>::compute_rhs,
-                   solve_context->get_field_attributes(),
-                   solve_context->get_solution_indexer(),
-                   solve_context->get_matrix_free_manager(),
-                   solve_block.dependencies_rhs,
-                   solve_context->get_simulation_timer())
-    , lhs_operator(solve_context->get_pde_operator(),
-                   &PDEOperatorBase<dim, degree, number>::compute_lhs,
-                   solve_context->get_field_attributes(),
-                   solve_context->get_solution_indexer(),
-                   solve_context->get_matrix_free_manager(),
-                   solve_block.dependencies_lhs,
-                   solve_context->get_simulation_timer())
   {}
 
   /**
@@ -90,14 +76,28 @@ public:
     rhs_vector.reinit(solutions.get_solution_full_vector(0));
 
     // Initialize rhs_operator
-    rhs_operator.initialize(solutions);
+    rhs_operator.init(solve_context->get_pde_operator(),
+                      &PDEOperatorBase<dim, degree, number>::compute_rhs,
+                      solve_context->get_field_attributes(),
+                      solve_context->get_solution_indexer(),
+                      solve_context->get_matrix_free_manager(),
+                      solve_context->get_simulation_timer(),
+                      solve_block,
+                      solve_block.dependencies_rhs);
     rhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
                                         solve_block.field_indices,
                                         0));
     // Initialize lhs_operator
-    lhs_operator.initialize(solutions);
+    lhs_operator.init(solve_context->get_pde_operator(),
+                      &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                      solve_context->get_field_attributes(),
+                      solve_context->get_solution_indexer(),
+                      solve_context->get_matrix_free_manager(),
+                      solve_context->get_simulation_timer(),
+                      solve_block,
+                      solve_block.dependencies_lhs);
     lhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
@@ -346,6 +346,27 @@ private:
   PreconditionChebyshev::AdditionalData precond_data;
 
   /**
+   * @brief Multigrid context. Everything multigrid needs to be alive to use.
+   */
+  struct MGContext
+  {
+    using SmootherPrecond = PreconditionChebyshev;
+    using Smoother = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
+                                                    SmootherPrecond,
+                                                    BlockVector<number>>;
+
+    // dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators; // not, ez
+    std::vector<dealii::MGConstrainedDoFs> mg_constraints; // dc
+    // MGTransferType                                         mg_transfer;      //not
+    Smoother                                               mg_smoother;      // dc
+    dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver; // dc
+    dealii::mg::Matrix<BlockVector<number>>                mg_matrix;        // dc
+    // dealii::Multigrid<BlockVector<number>>                 multigrid;        //not
+    // dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>
+    //  multigrid_preconditioner; // not
+  };
+
+  /**
    * @brief Multigrid preconditioner
    */
   std::shared_ptr<dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>>
@@ -354,25 +375,32 @@ private:
   void
   initialize_multigrid()
   {
+    MGContext          mg_context;
     const unsigned int max_refinement =
       solve_context->get_user_inputs().spatial_discretization.max_refinement;
     const unsigned int min_level = max_refinement - (lin_params().mg_depth) + 1;
     const unsigned int max_level = max_refinement;
 
     // 1. Level operators
-    dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators(
-      min_level,
-      max_level,
-      solve_context->get_pde_operator(),
-      &PDEOperatorBase<dim, degree, number>::compute_lhs,
-      solve_context->get_field_attributes(),
-      solve_context->get_solution_indexer(),
-      solve_context->get_matrix_free_manager(),
-      solve_block.dependencies_lhs,
-      solve_context->get_simulation_timer());
+    dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators(min_level,
+                                                                            max_level);
     for (unsigned level = min_level; level < max_level; ++level)
       {
         const unsigned int relative_level = level - min_level;
+        mg_lhs_operators[level].init(solve_context->get_pde_operator(),
+                                     &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                                     solve_context->get_field_attributes(),
+                                     solve_context->get_solution_indexer(),
+                                     solve_context->get_matrix_free_manager(),
+                                     solve_context->get_simulation_timer(),
+                                     solve_block,
+                                     solve_block.dependencies_lhs);
+        mg_lhs_operators[level].set_scaling_diagonal(
+          lin_params().tolerance_type != AbsoluteResidual,
+          solve_context->get_invm_manager().get_invm_sqrt(
+            solve_context->get_field_attributes(),
+            solve_block.field_indices,
+            relative_level));
         mg_lhs_operators[level].set_relative_level(relative_level);
       }
 

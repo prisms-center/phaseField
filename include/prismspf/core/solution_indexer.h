@@ -76,8 +76,15 @@ public:
   [[nodiscard]] unsigned int
   get_block_index(unsigned int global_index) const;
 
+  /**
+   * @brief Get the block index of a field within its solve group
+   */
+  [[nodiscard]] std::vector<unsigned int>
+  get_block_indices() const;
+
 private:
   std::vector<GroupSolutionHandler<dim, number> *> solutions;
+  std::vector<unsigned int>                        block_indices;
 };
 
 PRISMS_PF_END_NAMESPACE
