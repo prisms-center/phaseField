@@ -253,6 +253,12 @@ public:
   void
   execute_solution_transfer();
 
+  /**
+   * @brief Print the solution vector set.
+   */
+  void
+  print_solution_full_vector(std::ostream &out, unsigned int relative_level = 0) const;
+
 private:
   /**
    * @brief Information about the solve block this handler is responsible for.
