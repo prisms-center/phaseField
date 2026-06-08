@@ -43,7 +43,6 @@ public:
   void
   solve();
 
-private:
   /**
    * @brief Solve a single increment of the given PDEs. Returns nonzero if any exit_early
    * condition is raised.
@@ -58,11 +57,12 @@ private:
   init_system();
 
   /**
-   * @brief Reinitialize the system.
+   * @brief Get the solve context object.
    */
-  void
-  reinit_system();
+  const SolveContext<dim, degree, number> &
+  get_solve_context() const;
 
+private:
   /**
    * @brief Field attributes.
    */
@@ -99,7 +99,7 @@ private:
   ConstraintManager<dim, degree, number> constraint_manager;
 
   /**
-   * @brief Solver context.
+   * @brief Solve context.
    */
   SolveContext<dim, degree, number> solve_context;
 

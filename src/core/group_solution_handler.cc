@@ -380,6 +380,16 @@ GroupSolutionHandler<dim, number>::update(unsigned int relative_level)
     }
 }
 
+template <unsigned int dim, typename number>
+void
+GroupSolutionHandler<dim, number>::print_solution_full_vector(
+  std::ostream &out,
+  unsigned int  relative_level) const
+{
+  // Print the solutions with 12 digits of precision
+  get_solution_full_vector(relative_level).print(out, 12);
+}
+
 #include "core/group_solution_handler.inst"
 
 PRISMS_PF_END_NAMESPACE
