@@ -23,6 +23,7 @@
 #include <prismspf/config.h>
 
 #include <memory>
+#include <string>
 //
 #include <deal.II/lac/precondition_block.h>
 #include <deal.II/multigrid/mg_coarse.h>
@@ -380,9 +381,11 @@ private:
     // MGTransferBlockGlobalCoarsening ?
     // MGTransferBlockMatrixFree ?
 
-    dealii::MGTransferMF<dim, number> mg_trans_mf;
-    MGTransferType                    mg_transfer(mg_trans_mf); // Constraints?
-    // NOTE: dof_handler.distribute_mg_dofs() must have been called
+    // 3.1 MG Constraints
+    std::vector<dealii::MGConstrainedDoFs> mg_constraints = make_mg_constraints();
+
+    // dealii::MGTransferMF<dim, number> mg_trans_mf;
+    MGTransferType mg_transfer(mg_constraints);
     mg_transfer.build(
       solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
                                                               0));
@@ -442,6 +445,53 @@ private:
                                                                 0),
         multigrid,
         mg_transfer);
+  }
+
+  /**
+   * @brief Multigrid constraints.
+   */
+  std::vector<dealii::MGConstrainedDoFs>
+  make_mg_constraints()
+  {
+    std::vector<dealii::MGConstrainedDoFs> mg_constraints(
+      solve_block.field_indices.size());
+    for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+         block_index++)
+      {
+        unsigned int field_index = solutions.get_block_to_global_index()[block_index];
+        mg_constraints[block_index].initialize(
+          solve_context->get_dof_manager().get_field_dof_handler(field_index, 0));
+      }
+    std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
+      solve_context->get_user_inputs().boundary_parameters.boundary_condition_list;
+    const std::vector<FieldAttributes> &field_attributes =
+      solve_context->get_field_attributes();
+    for (unsigned int field_index : solve_block.field_indices)
+      {
+        const FieldAttributes &field = field_attributes[field_index];
+        unsigned int num_comps       = (field.field_type == TensorRank::Vector) ? dim : 1;
+        for (unsigned int comp = 0; comp < num_comps; comp++)
+          {
+            std::set<unsigned int>     constrained_boundary_ids;
+            const ComponentConditions &comp_bcs =
+              boundary_condition_list[field.name].component_constraints.at(comp);
+            for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
+              {
+                if (boundary_type == Condition::Dirichlet ||
+                    boundary_type == Condition::TimeDependentDirichlet)
+                  {
+                    constrained_boundary_ids.insert(boundary_id);
+                  }
+              }
+            mg_constraints[field_index].make_zero_boundary_constraints(
+              solve_context->get_dof_manager().get_field_dof_handler(field_index, 0),
+              constrained_boundary_ids,
+              num_comps == 1
+                ? ConstraintManager<dim, degree, number>::scalar_empty_mask
+                : ConstraintManager<dim, degree, number>::vector_component_mask.at(comp));
+          }
+      }
+    return mg_constraints;
   }
 };
 

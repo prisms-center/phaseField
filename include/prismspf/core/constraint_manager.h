@@ -80,18 +80,6 @@ public:
   /**
    * @brief Getter function for the constraints.
    */
-  [[nodiscard]] std::vector<const dealii::MGConstrainedDoFs *>
-  get_block_mg_constraints(const std::set<unsigned int> &field_indices) const;
-
-  /**
-   * @brief Getter function for the constraint of an index (constant reference).
-   */
-  [[nodiscard]] const dealii::MGConstrainedDoFs &
-  get_mg_constraint(Types::Index index) const;
-
-  /**
-   * @brief Getter function for the constraints.
-   */
   [[nodiscard]] const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
   get_generic_constraints_levels() const;
 
@@ -120,13 +108,13 @@ public:
   void
   update_time_dependent_constraints(const std::vector<FieldAttributes> &field_attributes);
 
-private:
   /**
    * @brief Create a component mask.
    */
   static const std::array<dealii::ComponentMask, dim> vector_component_mask;
   static const dealii::ComponentMask                  scalar_empty_mask;
 
+private:
   /**
    * @brief Construct constraints for a single field based on the boundary conditions.
    */
@@ -213,14 +201,27 @@ private:
   std::vector<std::vector<dealii::AffineConstraints<number>>> field_constraints;
 
   /**
-   * @brief Multigrid constraints. Outer vector is indexed by field index.
-   */
-  std::vector<dealii::MGConstrainedDoFs> mg_constraints;
-
-  /**
    * @brief Constraints not specific to any field. We need this for invm
    */
   std::vector<std::array<dealii::AffineConstraints<number>, 2>> generic_constraints;
 };
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline const std::array<dealii::ComponentMask, dim>
+  ConstraintManager<dim, degree, number>::vector_component_mask = []()
+  {
+    std::array<dealii::ComponentMask, dim> masks {};
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        dealii::ComponentMask temp_mask(dim, false);
+        temp_mask.set(i, true);
+        masks.at(i) = temp_mask;
+      }
+    return masks;
+  }();
+
+template <unsigned int dim, unsigned int degree, typename number>
+inline const dealii::ComponentMask
+  ConstraintManager<dim, degree, number>::scalar_empty_mask {};
 
 PRISMS_PF_END_NAMESPACE

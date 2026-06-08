@@ -52,7 +52,6 @@ ConstraintManager<dim, degree, number>::ConstraintManager(
     {
       constraint_level.resize(field_attributes.size());
     }
-  mg_constraints.resize(field_attributes.size());
   reinit(field_attributes);
 }
 
@@ -83,27 +82,6 @@ ConstraintManager<dim, degree, number>::get_constraint(Types::Index index,
                                                        unsigned int relative_level) const
 {
   return field_constraints[relative_level][index];
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-std::vector<const dealii::MGConstrainedDoFs *>
-ConstraintManager<dim, degree, number>::get_block_mg_constraints(
-  const std::set<Types::Index> &field_indices) const
-{
-  std::vector<const dealii::MGConstrainedDoFs *> selected_constraints;
-  selected_constraints.reserve(field_indices.size());
-  for (const unsigned int index : field_indices)
-    {
-      selected_constraints.push_back(&(mg_constraints[index]));
-    }
-  return selected_constraints;
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-const dealii::MGConstrainedDoFs &
-ConstraintManager<dim, degree, number>::get_mg_constraint(Types::Index index) const
-{
-  return mg_constraints[index];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -170,11 +148,6 @@ ConstraintManager<dim, degree, number>::reinit(
           generic_constraint.close();
         }
     }
-  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
-    {
-      mg_constraints[field_index].initialize(
-        dof_manager->get_field_dof_handler(field_index, 0));
-    }
   // The map from user inputs has string keys for now.
   std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
     boundary_parameters->boundary_condition_list;
@@ -194,30 +167,6 @@ ConstraintManager<dim, degree, number>::reinit(
             boundary_condition_list[field_attributes[field_index].name],
             field_attributes[field_index].field_type,
             field_index);
-        }
-    }
-  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
-    {
-      unsigned int num_comps =
-        field_attributes[field_index].field_type == TensorRank::Vector ? dim : 1;
-      for (unsigned int comp = 0; comp < num_comps; comp++)
-        {
-          std::set<unsigned int>     constrained_boundary_ids;
-          const ComponentConditions &comp_bcs =
-            boundary_condition_list[field_attributes[field_index].name]
-              .component_constraints.at(comp);
-          for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
-            {
-              if (boundary_type == Condition::Dirichlet ||
-                  boundary_type == Condition::TimeDependentDirichlet)
-                {
-                  constrained_boundary_ids.insert(boundary_id);
-                }
-            }
-          mg_constraints[field_index].make_zero_boundary_constraints(
-            dof_manager->get_field_dof_handler(field_index, 0),
-            constrained_boundary_ids,
-            num_comps == 1 ? scalar_empty_mask : vector_component_mask.at(comp));
         }
     }
   // close all constraints.
@@ -402,23 +351,6 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
         }
     }
 }
-
-template <unsigned int dim, unsigned int degree, typename number>
-const std::array<dealii::ComponentMask, dim>
-  ConstraintManager<dim, degree, number>::vector_component_mask = []()
-  {
-    std::array<dealii::ComponentMask, dim> masks {};
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        dealii::ComponentMask temp_mask(dim, false);
-        temp_mask.set(i, true);
-        masks.at(i) = temp_mask;
-      }
-    return masks;
-  }();
-
-template <unsigned int dim, unsigned int degree, typename number>
-const dealii::ComponentMask ConstraintManager<dim, degree, number>::scalar_empty_mask {};
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
