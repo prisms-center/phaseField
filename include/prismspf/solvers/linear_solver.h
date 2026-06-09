@@ -41,6 +41,182 @@ template <unsigned int dim, unsigned int degree, typename number>
 class SolveContext;
 
 /**
+ * @brief Multigrid context. Everything multigrid needs to be alive to use.
+ */
+template <unsigned int dim, unsigned int degree, typename number>
+class MGContext
+{
+public:
+  using PreconditionChebyshev =
+    dealii::PreconditionChebyshev<MFOperator<dim, degree, number>,
+                                  BlockVector<number>,
+                                  dealii::DiagonalMatrix<BlockVector<number>>>;
+  using SmootherPrecond = PreconditionChebyshev;
+  using Smoother        = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
+                                                  SmootherPrecond,
+                                                  BlockVector<number>>;
+  using MGTransferType =
+    dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
+  // dc = default constructible, ndc = not default constructible
+  dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators; // dc
+  std::vector<dealii::MGConstrainedDoFs>                 mg_constraints;   // dc
+  MGTransferType                                         mg_transfer;      // ndc
+  Smoother                                               mg_smoother;      // dc
+  dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver; // dc
+  dealii::mg::Matrix<BlockVector<number>>                mg_matrix;        // dc
+  dealii::Multigrid<BlockVector<number>>                 multigrid;        // ndc
+  dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>
+    multigrid_preconditioner; // ndc
+
+  MGContext()
+    : mg_transfer(mg_constraints)
+    , multigrid(mg_matrix,
+                mg_coarse_solver,
+                mg_transfer,
+                mg_smoother,
+                mg_smoother,
+                0,
+                0,
+                dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle)
+    , multigrid_preconditioner(std::vector<const dealii::DoFHandler<dim> *>(),
+                               multigrid,
+                               mg_transfer)
+  {}
+
+  void
+  init(unsigned int                             min_level,
+       unsigned int                             max_level,
+       const SolveBlock                        &solve_block,
+       const LinearSolverParameters            &lin_params,
+       const SolveContext<dim, degree, number> &solve_context,
+       const GroupSolutionHandler<dim, number> &solutions)
+  {
+    // 1. Level operators
+    mg_lhs_operators =
+      dealii::MGLevelObject<MFOperator<dim, degree, number>>(min_level, max_level);
+    for (unsigned level = min_level; level <= max_level; ++level)
+      {
+        const unsigned int relative_level = level - min_level;
+        mg_lhs_operators[level].init(solve_context.get_pde_operator(),
+                                     &PDEOperatorBase<dim, degree, number>::compute_lhs,
+                                     solve_context.get_field_attributes(),
+                                     solve_context.get_solution_indexer(),
+                                     solve_context.get_matrix_free_manager(),
+                                     solve_context.get_simulation_timer(),
+                                     solve_block,
+                                     solve_block.dependencies_lhs);
+        mg_lhs_operators[level].set_scaling_diagonal(
+          lin_params.tolerance_type != AbsoluteResidual,
+          solve_context.get_invm_manager().get_invm_sqrt(
+            solve_context.get_field_attributes(),
+            solve_block.field_indices,
+            relative_level));
+        mg_lhs_operators[level].set_relative_level(relative_level);
+      }
+
+    // 2. MG Constraints (homogeneous)
+    mg_constraints = make_mg_constraints(solve_block, solve_context, solutions);
+
+    // 3. MG Transfer
+    mg_transfer.initialize_constraints(mg_constraints);
+    mg_transfer.build(
+      solve_context.get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
+                                                             0));
+
+    // 4. MG Smoother
+    dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
+      min_level,
+      max_level);
+    const auto &chebyshev_params = lin_params.chebyshev_parameters;
+    for (unsigned int level = min_level; level <= max_level; ++level)
+      {
+        unsigned int relative_level              = level - min_level;
+        smoother_data[level].smoothing_range     = chebyshev_params.smoothing_range;
+        smoother_data[level].degree              = chebyshev_params.degree;
+        smoother_data[level].eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
+        smoother_data[level].constraints.close(); // todo
+
+        mg_lhs_operators[level].reinit_matrix_diagonal(
+          solutions.get_solution_full_vector(relative_level));
+        smoother_data[level].preconditioner =
+          mg_lhs_operators[level].get_matrix_diagonal_inverse();
+      }
+    mg_smoother.initialize(mg_lhs_operators, smoother_data);
+
+    // 5. Coarse grid solver
+    mg_coarse_solver.initialize(mg_smoother);
+
+    // 6. Multigrid object
+    mg_matrix = dealii::mg::Matrix<BlockVector<number>>(mg_lhs_operators);
+    multigrid = dealii::Multigrid<BlockVector<number>>(
+      mg_matrix,
+      mg_coarse_solver,
+      mg_transfer,
+      mg_smoother,
+      mg_smoother,
+      min_level,
+      max_level,
+      dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle);
+
+    // multigrid_preconditioner =
+    //   dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>(
+    //     solve_context.get_dof_manager()
+    //       .get_block_dof_handlers(solve_block.field_indices, 0),
+    //     multigrid,
+    //     mg_transfer);
+  }
+
+  /**
+   * @brief Multigrid constraints.
+   */
+  std::vector<dealii::MGConstrainedDoFs>
+  make_mg_constraints(const SolveBlock                        &solve_block,
+                      const SolveContext<dim, degree, number> &solve_context,
+                      const GroupSolutionHandler<dim, number> &solutions)
+  {
+    std::vector<dealii::MGConstrainedDoFs> mg_constraints(
+      solve_block.field_indices.size());
+    for (unsigned int block_index = 0; block_index < solve_block.field_indices.size();
+         block_index++)
+      {
+        unsigned int field_index = solutions.get_block_to_global_index()[block_index];
+        mg_constraints[block_index].initialize(
+          solve_context.get_dof_manager().get_field_dof_handler(field_index, 0));
+      }
+    std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
+      solve_context.get_user_inputs().boundary_parameters.boundary_condition_list;
+    const std::vector<FieldAttributes> &field_attributes =
+      solve_context.get_field_attributes();
+    for (unsigned int field_index : solve_block.field_indices)
+      {
+        const FieldAttributes &field = field_attributes[field_index];
+        unsigned int num_comps       = (field.field_type == TensorRank::Vector) ? dim : 1;
+        for (unsigned int comp = 0; comp < num_comps; comp++)
+          {
+            std::set<unsigned int>     constrained_boundary_ids;
+            const ComponentConditions &comp_bcs =
+              boundary_condition_list[field.name].component_constraints.at(comp);
+            for (const auto &[boundary_id, boundary_type] : comp_bcs.conditions)
+              {
+                if (boundary_type == Condition::Dirichlet ||
+                    boundary_type == Condition::TimeDependentDirichlet)
+                  {
+                    constrained_boundary_ids.insert(boundary_id);
+                  }
+              }
+            mg_constraints[field_index].make_zero_boundary_constraints(
+              solve_context.get_dof_manager().get_field_dof_handler(field_index, 0),
+              constrained_boundary_ids,
+              num_comps == 1
+                ? ConstraintManager<dim, degree, number>::scalar_empty_mask
+                : ConstraintManager<dim, degree, number>::vector_component_mask.at(comp));
+          }
+      }
+    return mg_constraints;
+  }
+};
+
+/**
  * @brief This class handles the explicit solves of all explicit fields
  * @todo Separate implementation from header.
  */
@@ -319,8 +495,6 @@ private:
     return solve_block.linear_solver_parameters;
   }
 
-  using MGTransferType =
-    dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
   /**
    * @brief Solver control. Contains max iterations and tolerance.
    */
@@ -345,134 +519,31 @@ private:
   PreconditionChebyshev                 precond_chebyshev;
   PreconditionChebyshev::AdditionalData precond_data;
 
-  /**
-   * @brief Multigrid context. Everything multigrid needs to be alive to use.
-   */
-  struct MGContext
-  {
-    using SmootherPrecond = PreconditionChebyshev;
-    using Smoother = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
-                                                    SmootherPrecond,
-                                                    BlockVector<number>>;
+  MGContext<dim, degree, number> mg_context;
 
-    // dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators; // not, ez
-    std::vector<dealii::MGConstrainedDoFs> mg_constraints; // dc
-    // MGTransferType                                         mg_transfer;      //not
-    Smoother                                               mg_smoother;      // dc
-    dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver; // dc
-    dealii::mg::Matrix<BlockVector<number>>                mg_matrix;        // dc
-    // dealii::Multigrid<BlockVector<number>>                 multigrid;        //not
-    // dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>
-    //  multigrid_preconditioner; // not
-  };
-
+  using PreconditionMG =
+    dealii::PreconditionMG<dim,
+                           BlockVector<number>,
+                           typename MGContext<dim, degree, number>::MGTransferType>;
   /**
    * @brief Multigrid preconditioner
    */
-  std::shared_ptr<dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>>
-    multigrid_preconditioner;
+  std::shared_ptr<PreconditionMG> multigrid_preconditioner = nullptr;
 
   void
   initialize_multigrid()
   {
-    MGContext          mg_context;
-    const unsigned int max_refinement =
-      solve_context->get_user_inputs().spatial_discretization.max_refinement;
-    const unsigned int min_level = max_refinement - (lin_params().mg_depth) + 1;
-    const unsigned int max_level = max_refinement;
-
-    // 1. Level operators
-    dealii::MGLevelObject<MFOperator<dim, degree, number>> mg_lhs_operators(min_level,
-                                                                            max_level);
-    for (unsigned level = min_level; level < max_level; ++level)
-      {
-        const unsigned int relative_level = level - min_level;
-        mg_lhs_operators[level].init(solve_context->get_pde_operator(),
-                                     &PDEOperatorBase<dim, degree, number>::compute_lhs,
-                                     solve_context->get_field_attributes(),
-                                     solve_context->get_solution_indexer(),
-                                     solve_context->get_matrix_free_manager(),
-                                     solve_context->get_simulation_timer(),
-                                     solve_block,
-                                     solve_block.dependencies_lhs);
-        mg_lhs_operators[level].set_scaling_diagonal(
-          lin_params().tolerance_type != AbsoluteResidual,
-          solve_context->get_invm_manager().get_invm_sqrt(
-            solve_context->get_field_attributes(),
-            solve_block.field_indices,
-            relative_level));
-        mg_lhs_operators[level].set_relative_level(relative_level);
-      }
-
-    // 3. MG transfer
-    // dealii::MGTransferGlobalCoarsening<dim, BlockVector<number>> ?
-    // MGTransferBlockGlobalCoarsening ?
-    // MGTransferBlockMatrixFree ?
-
-    // 3.1 MG Constraints
-    std::vector<dealii::MGConstrainedDoFs> mg_constraints = make_mg_constraints();
-
-    // dealii::MGTransferMF<dim, number> mg_trans_mf;
-    MGTransferType mg_transfer(mg_constraints);
-    mg_transfer.build(
+    const unsigned int global_refinement =
+      solve_context->get_user_inputs().spatial_discretization.global_refinement;
+    const unsigned int min_level = global_refinement - (lin_params().mg_depth) + 1;
+    const unsigned int max_level = global_refinement;
+    mg_context
+      .init(min_level, max_level, solve_block, lin_params(), *solve_context, solutions);
+    multigrid_preconditioner = std::make_shared<PreconditionMG>(
       solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
-                                                              0));
-
-    // 4. MG Smoother (takes in operators) This is similar to a solver, but is
-    // conceptually different.
-    // Preconditioner for smoother.
-    // TODO: use PreconditionBlockJacobi or other block preconditioner instead of
-    // PreconditionChebyshev
-    using SmootherPrecond = PreconditionChebyshev;
-    dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
-      min_level,
-      max_level);
-    const auto &chebyshev_params = lin_params().chebyshev_parameters;
-    for (unsigned int level = min_level; level <= max_level; ++level)
-      {
-        smoother_data[level].smoothing_range     = chebyshev_params.smoothing_range;
-        smoother_data[level].degree              = chebyshev_params.degree;
-        smoother_data[level].eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
-        // smoother_data[level].preconditioner; // todo
-        smoother_data[level].constraints.close(); // todo
-
-        unsigned int relative_level = level - min_level;
-
-        mg_lhs_operators[level].reinit_matrix_diagonal(
-          solutions.get_solution_full_vector(relative_level));
-        precond_data.preconditioner =
-          mg_lhs_operators[level].get_matrix_diagonal_inverse();
-      }
-    // Wrapper around a generic preconditioner to be used as a smoother
-    using Smoother = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
-                                                    SmootherPrecond,
-                                                    BlockVector<number>>;
-    Smoother mg_smoother;
-    mg_smoother.initialize(mg_lhs_operators, smoother_data);
-
-    // 5. Coarse grid solver
-    dealii::MGCoarseGridApplySmoother<BlockVector<number>> mg_coarse_solver;
-    mg_coarse_solver.initialize(mg_smoother);
-
-    // 6. Multigrid object
-    dealii::mg::Matrix<BlockVector<number>> mg_matrix(mg_lhs_operators);
-    dealii::Multigrid<BlockVector<number>>  multigrid(
-      mg_matrix,
-      mg_coarse_solver,
-      mg_transfer,
-      mg_smoother,
-      mg_smoother,
-      min_level,
-      max_level,
-      dealii::Multigrid<BlockVector<number>>::Cycle::v_cycle);
-
-    // 7. Turn MG into a preconditioner object
-    multigrid_preconditioner =
-      std::make_shared<dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>>(
-        solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
-                                                                0),
-        multigrid,
-        mg_transfer);
+                                                              0),
+      mg_context.multigrid,
+      mg_context.mg_transfer);
   }
 
   /**
