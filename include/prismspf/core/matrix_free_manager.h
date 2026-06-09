@@ -56,6 +56,15 @@ public:
   [[nodiscard]] const MatrixFree<dim, number> &
   get_generic_matrix_free(unsigned int relative_level) const;
 
+  [[nodiscard]] std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
+  get_block_partitioners(const std::set<unsigned int> &field_indices,
+                         unsigned int                  relative_level = 0) const;
+
+  void
+  initialize_block_vector(BlockVector<number>          &vec,
+                          const std::set<unsigned int> &field_indices,
+                          unsigned int                  relative_level = 0) const;
+
 private:
   /**
    * @brief MatrixFree object on each level for every field.
@@ -145,6 +154,33 @@ const MatrixFree<dim, number> &
 MatrixFreeManager<dim, number>::get_generic_matrix_free(unsigned int relative_level) const
 {
   return generic_matrix_free_levels[relative_level];
+}
+
+template <unsigned int dim, typename number>
+std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
+MatrixFreeManager<dim, number>::get_block_partitioners(
+  const std::set<unsigned int> &field_indices,
+  unsigned int                  relative_level) const
+{
+  // These partitioners basically just provide the number of elements in a distributed way
+  std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>> partitioners;
+  partitioners.reserve(field_indices.size());
+  for (unsigned int field_index : field_indices)
+    {
+      partitioners.push_back(
+        shared_matrix_free_levels[relative_level].get_vector_partitioner(field_index));
+    }
+  return partitioners;
+}
+
+template <unsigned int dim, typename number>
+void
+MatrixFreeManager<dim, number>::initialize_block_vector(
+  BlockVector<number>          &vec,
+  const std::set<unsigned int> &field_indices,
+  unsigned int                  relative_level) const
+{
+  vec.reinit(get_block_partitioners(field_indices, relative_level));
 }
 
 PRISMS_PF_END_NAMESPACE

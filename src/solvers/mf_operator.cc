@@ -210,10 +210,14 @@ MFOperator<dim, degree, number>::compute_local_field_diagonal(
 
 template <unsigned int dim, unsigned int degree, typename number>
 void
-MFOperator<dim, degree, number>::reinit_matrix_diagonal(const BlockVector<number> &shape)
+MFOperator<dim, degree, number>::reinit_matrix_diagonal()
 {
-  diagonal_entries->get_vector().reinit(shape);
-  inverse_diagonal_entries->get_vector().reinit(shape);
+  matrix_free_manager->initialize_block_vector(diagonal_entries->get_vector(),
+                                               solve_block.field_indices,
+                                               relative_level);
+  matrix_free_manager->initialize_block_vector(inverse_diagonal_entries->get_vector(),
+                                               solve_block.field_indices,
+                                               relative_level);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

@@ -257,7 +257,7 @@ public:
    * @brief Reinit diagonal matrix to have the correct shape.
    */
   void
-  reinit_matrix_diagonal(const BlockVector<number> &shape);
+  reinit_matrix_diagonal();
 
   /**
    * @brief Evaluate matrix diagonal (and inverse).

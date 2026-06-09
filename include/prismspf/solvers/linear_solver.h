@@ -136,8 +136,7 @@ public:
         smoother_data[level].eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
         smoother_data[level].constraints.close(); // todo
 
-        mg_lhs_operators[level].reinit_matrix_diagonal(
-          solutions.get_solution_full_vector(relative_level));
+        mg_lhs_operators[level].reinit_matrix_diagonal();
         smoother_data[level].preconditioner =
           mg_lhs_operators[level].get_matrix_diagonal_inverse();
       }
@@ -366,7 +365,7 @@ public:
           }
         else if (lin_params().preconditioner == Chebyshev)
           {
-            lhs_matrix.reinit_matrix_diagonal(x_vector);
+            lhs_matrix.reinit_matrix_diagonal();
             lhs_matrix.eval_matrix_diagonal();
 
             lin_solver.solve(lhs_matrix, x_vector, b_vector, precond_chebyshev);
@@ -374,6 +373,13 @@ public:
         else if (lin_params().preconditioner == GMG)
           {
             // TODO: recalculate diagonals
+            auto &lhs_ops = mg_context.mg_lhs_operators;
+            for (unsigned int level = lhs_ops.min_level(); level <= lhs_ops.max_level();
+                 ++level)
+              {
+                lhs_ops[level].reinit_matrix_diagonal(); // todo
+                lhs_ops[level].eval_matrix_diagonal();
+              }
             lin_solver.solve(lhs_operator, x_vector, b_vector, *multigrid_preconditioner);
           }
       }
@@ -447,7 +453,7 @@ protected:
     precond_data.smoothing_range = chebyshev_params.smoothing_range; // ≈ λ_min / λ_max
     precond_data.eig_cg_n_iterations = chebyshev_params.eig_cg_n_iterations;
 
-    lhs_operator.reinit_matrix_diagonal(solutions.get_solution_full_vector(0));
+    lhs_operator.reinit_matrix_diagonal();
     precond_data.preconditioner = lhs_operator.get_matrix_diagonal_inverse();
 
     precond_chebyshev.initialize(lhs_operator, precond_data);
