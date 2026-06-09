@@ -9,5 +9,6 @@ var solve__block_8h =
       [ "Uninitialized", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da254bd1cf3c287ac4eb3d47320b1c92b6", null ],
       [ "PostProcess", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5daa2658079745aba85e114e0e02f5106ad", null ],
       [ "NucleationRate", "solve__block_8h.html#a9ad39c03995e9a9abf3766c96d65cc5da64439573dc47a5939a70ca832cb05327", null ]
-    ] ]
+    ] ],
+    [ "validate_solve_blocks", "solve__block_8h.html#ae1c97b02149d0ddada518e50a41a5b72", null ]
 ];
