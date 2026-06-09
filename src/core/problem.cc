@@ -105,7 +105,7 @@ Problem<dim, degree, number>::Problem(
   PhaseFieldTools<dim>                 &_pf_tools,
   PDEOperatorBase<dim, degree, number> &_pde_operator)
   : field_attributes(_field_attributes)
-  , solve_blocks(_solve_blocks)
+  , solve_blocks(validate_solve_blocks(_solve_blocks, _field_attributes))
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
   , triangulation_manager(_user_inputs.spatial_discretization, false)

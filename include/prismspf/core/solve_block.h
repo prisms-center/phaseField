@@ -220,7 +220,7 @@ SolveBlock::validate() const
     }
 }
 
-inline void
+inline const std::vector<SolveBlock> &
 validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
                       const std::vector<FieldAttributes> &field_attributes)
 {
@@ -319,16 +319,18 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
     {
       for (const auto &[field_index, dependency] : solve_block.dependencies_rhs)
         {
-          if (dependency.flag != EvalFlags::nothing)
+          if (dependency.flag != EvalFlags::nothing &&
+              solve_block.solve_type != SolveType::Newton)
             {
-              AssertThrow(
-                solved_field_indices.find(field_index) != solved_field_indices.end(),
-                dealii::ExcMessage(
-                  "Solve block with id " + std::to_string(solve_block.id) +
-                  " has a dependency on the current value of field with index " +
-                  std::to_string(field_index) +
-                  " which is not solved in a previous solve block. This is not "
-                  "allowed.\n"));
+              AssertThrow(solved_field_indices.find(field_index) !=
+                            solved_field_indices.end(),
+                          dealii::ExcMessage(
+                            "Solve block with id " + std::to_string(solve_block.id) +
+                            " has an rhs dependency on the current value of field \"" +
+                            field_attributes[field_index].name + "\" with index " +
+                            std::to_string(field_index) +
+                            " which is not solved in a previous solve block. This is not "
+                            "allowed.\n"));
             }
         }
       for (const auto &[field_index, dependency] : solve_block.dependencies_lhs)
@@ -336,14 +338,15 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
           if (dependency.flag != EvalFlags::nothing &&
               solve_block.solve_type != SolveType::Newton)
             {
-              AssertThrow(
-                solved_field_indices.find(field_index) != solved_field_indices.end(),
-                dealii::ExcMessage(
-                  "Solve block with id " + std::to_string(solve_block.id) +
-                  " has a dependency on the current value of field with index " +
-                  std::to_string(field_index) +
-                  " which is not solved in a previous solve block. This is not "
-                  "allowed.\n"));
+              AssertThrow(solved_field_indices.find(field_index) !=
+                            solved_field_indices.end(),
+                          dealii::ExcMessage(
+                            "Solve block with id " + std::to_string(solve_block.id) +
+                            " has a lhs dependency on the current value of field \"" +
+                            field_attributes[field_index].name + "\" with index " +
+                            std::to_string(field_index) +
+                            " which is not solved in a previous solve block. This is not "
+                            "allowed.\n"));
             }
         }
       for (unsigned int field_index : solve_block.field_indices)
@@ -351,6 +354,7 @@ validate_solve_blocks(const std::vector<SolveBlock>      &solve_blocks,
           solved_field_indices.insert(field_index);
         }
     }
+  return solve_blocks;
 }
 
 using SolveGroup = SolveBlock;
