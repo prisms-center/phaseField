@@ -10,6 +10,7 @@
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
+#include <prismspf/core/matrix_free_manager.h>
 #include <prismspf/core/system_wide.h>
 #include <prismspf/core/timer.h>
 #include <prismspf/core/triangulation_manager.h>
@@ -20,8 +21,6 @@
 #include <prismspf/user_inputs/spatial_discretization.h>
 
 #include <prismspf/config.h>
-
-#include "prismspf/core/matrix_free_manager.h"
 
 #include <memory>
 
@@ -400,10 +399,10 @@ private:
                   marker_functions.begin(),
                   marker_functions.end(),
                   [&](const std::shared_ptr<const CellMarkerBase<dim>> &marker_function)
-                  {
-                    return marker_function->flag(*cell,
-                                                 solve_context->get_simulation_timer());
-                  }))
+                    {
+                      return marker_function->flag(*cell,
+                                                   solve_context->get_simulation_timer());
+                    }))
               {
                 cell->set_user_flag();
                 cell->clear_coarsen_flag();
@@ -449,8 +448,11 @@ private:
     triangulation_manager.execute_grid_refinement();
 
     // Redistribute DoFs and reinit the solvers
-    triangulation_manager.reinit();
-    dof_manager.reinit(triangulation_manager);
+    if (triangulation_manager.has_mg())
+      {
+        triangulation_manager.init_mg();
+      }
+    dof_manager.reinit(triangulation_manager, triangulation_manager.has_mg());
     constraint_manager.reinit(solve_context->get_field_attributes());
     matrix_free_manager.reinit(dof_manager, constraint_manager);
 

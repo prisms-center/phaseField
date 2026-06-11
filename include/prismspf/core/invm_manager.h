@@ -36,14 +36,13 @@ public:
    * @param _calculate_scalar Whether to calculate the scalar invm (element volume).
    * @param _calculate_vector Whether to calculate the vector invm (for vector fields).
    */
-  explicit InvMManager(const DoFManager<dim, degree>                &dof_manager,
-                       const ConstraintManager<dim, degree, number> &constraint_manager,
-                       bool                                          _calculate_scalar,
-                       bool                                          _calculate_vector)
-    : num_levels(dof_manager.get_dof_handlers_levels().size())
-    , calculate_scalar(_calculate_scalar)
-    , calculate_vector(_calculate_vector)
+  InvMManager() = default;
+
+  void
+  reinit(const DoFManager<dim, degree>                &dof_manager,
+         const ConstraintManager<dim, degree, number> &constraint_manager)
   {
+    num_levels = dof_manager.get_dof_handlers_levels().size();
     data.resize(num_levels);
     jxw_scalar.resize(num_levels);
     invm_scalar.resize(num_levels);
@@ -51,13 +50,6 @@ public:
     jxw_vector.resize(num_levels);
     invm_vector.resize(num_levels);
     invm_sqrt_vector.resize(num_levels);
-    reinit(dof_manager, constraint_manager);
-  }
-
-  void
-  reinit(const DoFManager<dim, degree>                &dof_manager,
-         const ConstraintManager<dim, degree, number> &constraint_manager)
-  {
     const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
       dof_manager.get_dof_handlers_levels();
     const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &constraints =
@@ -328,10 +320,10 @@ private:
    */
   std::vector<MatrixFree<dim, number>> data;
 
-  unsigned int num_levels;
+  unsigned int num_levels = 0;
 
-  bool calculate_scalar = false;
-  bool calculate_vector = false;
+  bool calculate_scalar = true;
+  bool calculate_vector = true;
 
   /**
    * @brief Vector that stores element volumes
@@ -344,14 +336,14 @@ private:
   std::vector<SolutionVector<number>> invm_sqrt_vector;
 
   inline static const VectorValue one = []()
-  {
-    VectorValue one1;
-    for (unsigned int i = 0; i < dim; ++i)
-      {
-        one1[i] = 1.0;
-      }
-    return one1;
-  }();
+    {
+      VectorValue one1;
+      for (unsigned int i = 0; i < dim; ++i)
+        {
+          one1[i] = 1.0;
+        }
+      return one1;
+    }();
 };
 
 PRISMS_PF_END_NAMESPACE

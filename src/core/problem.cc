@@ -206,7 +206,7 @@ Problem<dim, degree, number>::init_system()
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.reinit(triangulation_manager);
+  dof_manager.reinit(triangulation_manager, triangulation_manager.has_mg());
   dof_manager.reinit_mapping(field_attributes);
   Timer::end_section("reinitialize DoFHandlers");
 
@@ -221,8 +221,17 @@ Problem<dim, degree, number>::init_system()
   constraint_manager.reinit(field_attributes);
   Timer::end_section("Create constraints");
 
+  Timer::start_section("Initialize MatrixFree");
+  solve_context.get_matrix_free_manager().reinit(solve_context.get_dof_manager(),
+                                                 solve_context.get_constraint_manager());
+  Timer::end_section("Initialize MatrixFree");
+
   // InvM
+  Timer::start_section("Initialize InvM");
+  solve_context.get_invm_manager().reinit(solve_context.get_dof_manager(),
+                                          solve_context.get_constraint_manager());
   solve_context.get_invm_manager().compute_invm();
+  Timer::end_section("Initialize InvM");
 
   // Initialize the solvers
   Timer::start_section("Initialize Solvers");
