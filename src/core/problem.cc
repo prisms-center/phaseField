@@ -123,8 +123,6 @@ Problem<dim, degree, number>::Problem(
   , solve_blocks(validate_solve_blocks(_solve_blocks, _field_attributes))
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
-  , triangulation_manager(_user_inputs.spatial_discretization, false)
-  , dof_manager(field_attributes, triangulation_manager)
   , constraint_manager(field_attributes,
                        _user_inputs.boundary_parameters,
                        _user_inputs.spatial_discretization,
@@ -205,10 +203,10 @@ Problem<dim, degree, number>::init_system()
 
   // Create the mesh
   // See *1
-  /* ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
   triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
-  Timer::end_section("Generate mesh"); */
+  Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;

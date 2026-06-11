@@ -30,11 +30,6 @@ public:
   DoFManager() = default;
 
   /**
-   * @brief Constructor. calls reinit
-   */
-  DoFManager(const std::vector<FieldAttributes> &field_attributes,
-             const TriangulationManager<dim>    &triangulation_manager);
-  /**
    * @brief Disable copying.
    */
   DoFManager(const DoFManager &)  = delete;
@@ -50,19 +45,14 @@ public:
   ~DoFManager() = default;
 
   /**
-   * @brief Resize the DoFHandlers set.
-   * @note May invalidate existing DoFHandler pointers.
-   */
-  void
-  init(unsigned int num_levels);
-
-  /**
    * @brief Reinitialize the DoFHandlers
+   * @param triangulation_manager The triangulation manager.
+   * @param init_mg Whether to initialize the multigrid DoFHandlers.
    * @pre init() must have been called with the correct number of levels.
    * @note May invalidate existing DoFHandler pointers if number of levels changes.
    */
   void
-  reinit(const TriangulationManager<dim> &triangulation_manager);
+  reinit(const TriangulationManager<dim> &triangulation_manager, bool with_mg = true);
 
   /**
    * @brief Reinitialize the DoFHandlers

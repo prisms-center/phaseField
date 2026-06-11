@@ -63,6 +63,13 @@ TriangulationManager<dim>::has_mg() const
 }
 
 template <unsigned int dim>
+unsigned int
+TriangulationManager<dim>::num_levels() const
+{
+  return coarsened_triangulations.size();
+}
+
+template <unsigned int dim>
 const Triangulation<dim> &
 TriangulationManager<dim>::get_triangulation() const
 {

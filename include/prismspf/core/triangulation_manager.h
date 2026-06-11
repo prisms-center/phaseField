@@ -47,6 +47,13 @@ public:
   has_mg() const;
 
   /**
+   * @brief Get the number of levels in the multigrid.
+   * Returns zero if multigrid is not initialized.
+   */
+  [[nodiscard]] unsigned int
+  num_levels() const;
+
+  /**
    * @brief Getter function for triangulation.
    */
   [[nodiscard]] const Triangulation<dim> &
