@@ -53,8 +53,8 @@ public:
                                   dealii::DiagonalMatrix<BlockVector<number>>>;
   using SmootherPrecond = PreconditionChebyshev;
   using Smoother        = dealii::MGSmootherPrecondition<MFOperator<dim, degree, number>,
-                                                  SmootherPrecond,
-                                                  BlockVector<number>>;
+                                                         SmootherPrecond,
+                                                         BlockVector<number>>;
   using MGTransferType =
     dealii::MGTransferBlockGlobalCoarsening<dim, BlockVector<number>>;
   // dc = default constructible, ndc = not default constructible

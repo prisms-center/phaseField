@@ -9,6 +9,7 @@
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/grid_refinement.h>
 #include <deal.II/grid/grid_tools.h>
+#include <deal.II/grid/grid_tools_geometry.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/multigrid/mg_transfer_global_coarsening.h>
@@ -18,49 +19,47 @@
 
 #include <prismspf/user_inputs/spatial_discretization.h>
 
-#include <prismspf/config.h>
-
 #include <fstream>
-#include <memory>
 #include <mpi.h>
 #include <vector>
 
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <>
-TriangulationManager<1U>::TriangulationManager(bool _has_multigrid)
-  : has_multigrid(_has_multigrid)
-  , triangulation(Triangulation<1U>::limit_level_difference_at_vertices)
+TriangulationManager<1U>::TriangulationManager()
+  : triangulation(Triangulation<1U>::limit_level_difference_at_vertices)
 {}
 
 template <unsigned int dim>
-TriangulationManager<dim>::TriangulationManager(bool _has_multigrid)
-  : has_multigrid(_has_multigrid)
-  , triangulation(MPI_COMM_WORLD,
+TriangulationManager<dim>::TriangulationManager()
+  : triangulation(MPI_COMM_WORLD,
                   Triangulation<dim>::limit_level_difference_at_vertices,
                   Triangulation<dim>::construct_multigrid_hierarchy)
 {}
 
 template <unsigned int dim>
 void
-TriangulationManager<dim>::reinit()
+TriangulationManager<dim>::init_mg()
 {
-  if (has_multigrid)
-    {
-      coarsened_triangulations =
-        dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
-          triangulation);
-      std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
-    }
-  else
-    {
-      coarsened_triangulations.clear();
-      auto *temp = new dealii::Triangulation<dim>();
-      temp->copy_triangulation(triangulation);
-      std::shared_ptr<const dealii::Triangulation<dim>> shared(temp);
-      coarsened_triangulations.push_back(shared);
-    }
+  coarsened_triangulations =
+    dealii::MGTransferGlobalCoarseningTools::create_geometric_coarsening_sequence(
+      triangulation);
+  std::reverse(coarsened_triangulations.begin(), coarsened_triangulations.end());
   // TODO (landinjm): p-multigrid
+}
+
+template <unsigned int dim>
+void
+TriangulationManager<dim>::clear_mg()
+{
+  coarsened_triangulations.clear();
+}
+
+template <unsigned int dim>
+bool
+TriangulationManager<dim>::has_mg() const
+{
+  return !coarsened_triangulations.empty();
 }
 
 template <unsigned int dim>
@@ -74,19 +73,11 @@ template <unsigned int dim>
 const dealii::Triangulation<dim> &
 TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 {
-  if (has_multigrid)
-    {
-      Assert(!coarsened_triangulations.empty(), dealii::ExcNotInitialized());
-      Assert(coarsened_triangulations.size() >= relative_level,
-             dealii::ExcMessage(
-               "The coarse triangulation set does not contain that specified level"));
-      return *coarsened_triangulations[relative_level];
-    }
-  // else
-  Assert(relative_level == 0,
+  Assert(has_mg(), dealii::ExcNotInitialized());
+  Assert(relative_level < coarsened_triangulations.size(),
          dealii::ExcMessage(
-           "Request for coarse triangulation when multigrid is disabled."));
-  return triangulation;
+           "The coarse triangulation set does not contain that specified level"));
+  return *(coarsened_triangulations[relative_level]);
 }
 
 template <unsigned int dim>
@@ -136,10 +127,6 @@ TriangulationManager<dim>::generate_mesh(
   triangulation.refine_global(discretization_params.global_refinement);
 
   volume = dealii::GridTools::volume(triangulation);
-
-  // Create the triangulations for the coarser levels if we have multigrid for any of the
-  // fields
-  reinit();
 }
 
 template <unsigned int dim>
