@@ -123,11 +123,6 @@ Problem<dim, degree, number>::Problem(
   , solve_blocks(validate_solve_blocks(_solve_blocks, _field_attributes))
   , user_inputs_ptr(&_user_inputs)
   , pf_tools(&_pf_tools)
-  , constraint_manager(field_attributes,
-                       _user_inputs.boundary_parameters,
-                       _user_inputs.spatial_discretization,
-                       dof_manager,
-                       _pde_operator)
   , solve_context(field_attributes,
                   _user_inputs,
                   triangulation_manager,
@@ -219,6 +214,10 @@ Problem<dim, degree, number>::init_system()
   // See *1
   ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
   Timer::start_section("Create constraints");
+  constraint_manager.init(user_inputs.boundary_parameters,
+                          user_inputs.spatial_discretization,
+                          dof_manager,
+                          solve_context.get_pde_operator());
   constraint_manager.reinit(field_attributes);
   Timer::end_section("Create constraints");
 

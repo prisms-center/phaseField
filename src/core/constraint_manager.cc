@@ -27,32 +27,24 @@
 #include <string>
 #include <vector>
 
+// TODO add checks for things being initialized properly.
+
 PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree, typename number>
-ConstraintManager<dim, degree, number>::ConstraintManager(
-  const std::vector<FieldAttributes>         &field_attributes,
+void
+ConstraintManager<dim, degree, number>::init(
   const BoundaryParameters<dim>              &_boundary_parameters,
   const SpatialDiscretization<dim>           &_spatial_discretization,
   const DoFManager<dim, degree>              &_dof_manager,
   const PDEOperatorBase<dim, degree, number> &_pde_operator)
-  : boundary_parameters(&_boundary_parameters)
-  , spatial_discretization(&_spatial_discretization)
-  , dof_manager(&_dof_manager)
-  , pde_operator(&_pde_operator)
-  , field_constraints()
-  , generic_constraints()
 {
-  /* TODO (fractalsbyx) figure out mg depth. Careful. Aux fields inherit this from
-   * primary fields, as well as any dependencies*/
+  boundary_parameters     = &_boundary_parameters;
+  spatial_discretization  = &_spatial_discretization;
+  dof_manager             = &_dof_manager;
+  pde_operator            = &_pde_operator;
   unsigned int num_levels = dof_manager->get_dof_handlers_levels().size();
-  field_constraints.resize(num_levels);
   generic_constraints.resize(num_levels);
-  for (auto &constraint_level : field_constraints)
-    {
-      constraint_level.resize(field_attributes.size());
-    }
-  reinit(field_attributes);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -113,6 +105,11 @@ void
 ConstraintManager<dim, degree, number>::reinit(
   const std::vector<FieldAttributes> &field_attributes)
 {
+  field_constraints.resize(generic_constraints.size());
+  for (auto &constraint_level : field_constraints)
+    {
+      constraint_level.resize(field_attributes.size());
+    }
   const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
     dof_manager->get_dof_handlers_levels();
   for (unsigned int relative_level = 0; relative_level < generic_constraints.size();

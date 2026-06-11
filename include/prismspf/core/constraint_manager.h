@@ -53,11 +53,16 @@ public:
   /**
    * @brief Constructor.
    */
-  ConstraintManager(const std::vector<FieldAttributes>         &field_attributes,
-                    const BoundaryParameters<dim>              &_boundary_parameters,
-                    const SpatialDiscretization<dim>           &_spatial_discretization,
-                    const DoFManager<dim, degree>              &_dof_manager,
-                    const PDEOperatorBase<dim, degree, number> &_pde_operator);
+  ConstraintManager() = default;
+
+  /**
+   * @brief Initialize the constraint manager.
+   */
+  void
+  init(const BoundaryParameters<dim>              &_boundary_parameters,
+       const SpatialDiscretization<dim>           &_spatial_discretization,
+       const DoFManager<dim, degree>              &_dof_manager,
+       const PDEOperatorBase<dim, degree, number> &_pde_operator);
 
   /**
    * @brief Getter function for a selection of the constraints.
@@ -177,22 +182,22 @@ private:
   /**
    * @brief User-inputs constraint parameters.
    */
-  const BoundaryParameters<dim> *boundary_parameters;
+  const BoundaryParameters<dim> *boundary_parameters = nullptr;
 
   /**
    * @brief User-inputs discretization.
    */
-  const SpatialDiscretization<dim> *spatial_discretization;
+  const SpatialDiscretization<dim> *spatial_discretization = nullptr;
 
   /**
    * @brief Dof manager pointer.
    */
-  const DoFManager<dim, degree> *dof_manager;
+  const DoFManager<dim, degree> *dof_manager = nullptr;
 
   /**
    * @brief PDE operator.
    */
-  const PDEOperatorBase<dim, degree, number> *pde_operator;
+  const PDEOperatorBase<dim, degree, number> *pde_operator = nullptr;
 
   /**
    * @brief Constraints. Outer vector is indexed by field index. Inner vector is indexed
