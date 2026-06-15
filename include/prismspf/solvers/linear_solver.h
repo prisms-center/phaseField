@@ -96,7 +96,7 @@ public:
       dealii::MGLevelObject<MFOperator<dim, degree, number>>(min_level, max_level);
     for (unsigned level = min_level; level <= max_level; ++level)
       {
-        const unsigned int relative_level = level - min_level;
+        const unsigned int relative_level = max_level - level;
         mg_lhs_operators[level].init(solve_context.get_pde_operator(),
                                      &PDEOperatorBase<dim, degree, number>::compute_lhs,
                                      solve_context.get_field_attributes(),

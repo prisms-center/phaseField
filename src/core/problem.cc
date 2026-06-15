@@ -21,6 +21,7 @@
 #include <prismspf/user_inputs/temporal_discretization.h>
 #include <prismspf/user_inputs/user_input_parameters.h>
 
+#include <algorithm>
 #include <filesystem>
 
 PRISMS_PF_BEGIN_NAMESPACE
@@ -89,6 +90,22 @@ namespace
         output.push_back(solve_block);
       }
     return output;
+  }
+
+  /**
+   * @brief Check if any solve block uses multigrid.
+   * @param solve_blocks The vector of solve blocks to check.
+   * @return True if any solve block uses multigrid, false otherwise.
+   */
+  bool
+  has_multigrid(const std::vector<SolveBlock> &solve_blocks)
+  {
+    return std::any_of(solve_blocks.begin(),
+                       solve_blocks.end(),
+                       [](const SolveBlock &sb)
+                       {
+                         return sb.linear_solver_parameters.preconditioner == GMG;
+                       });
   }
 } // namespace
 
@@ -196,11 +213,16 @@ Problem<dim, degree, number>::init_system()
     << "\n"
     << std::flush;
 
+  bool use_mg = has_multigrid(solve_blocks);
+
   // Create the mesh
-  // See *1
   ConditionalOStreams::pout_base() << "Creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
   triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
+  if (use_mg)
+    {
+      triangulation_manager.init_mg();
+    }
   Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
