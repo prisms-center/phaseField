@@ -156,6 +156,7 @@ ConstraintManager<dim, degree, number>::reinit(
         {
           dealii::AffineConstraints<number> &constraint =
             field_constraints[relative_level][field_index];
+          constraint.clear();
           const dealii::DoFHandler<dim> &dof_handler =
             dof_manager->get_field_dof_handler(field_index, relative_level);
           make_constraints_for_single_field(

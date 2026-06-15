@@ -115,6 +115,13 @@ public:
           }
 
         // Solve for Newton update. (-dr/du|Du)
+        if (solutions.num_levels() > 1)
+          {
+            solutions.mg_transfer_down(
+              solve_context->get_dof_manager(),
+              solve_context->get_user_inputs().spatial_discretization.global_refinement,
+              false);
+          }
         total_lin_iters += do_linear_solve(newton_residual, lhs_op, newton_update);
         newton_update.update_ghost_values();
 

@@ -168,7 +168,7 @@ public:
   /**
    * @brief Multigrid constraints.
    */
-  std::vector<dealii::MGConstrainedDoFs>
+  static std::vector<dealii::MGConstrainedDoFs>
   make_mg_constraints(const SolveBlock                        &solve_block,
                       const SolveContext<dim, degree, number> &solve_context,
                       const GroupSolutionHandler<dim, number> &solutions)

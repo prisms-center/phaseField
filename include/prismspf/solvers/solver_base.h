@@ -39,7 +39,7 @@ public:
     , solve_context(&_solve_context)
     , solutions(solve_block,
                 solve_context->get_field_attributes(),
-                solve_context->get_matrix_free_manager().get_shared_matrix_free_levels())
+                solve_context->get_matrix_free_manager())
   {}
 
   /**
@@ -88,6 +88,11 @@ public:
 
     // Apply constraints.
     solutions.apply_constraints();
+
+    if (solutions.num_levels() > 1)
+      {
+        solutions.reinit_mg_transfer(solve_context->get_dof_manager());
+      }
   }
 
   /**
@@ -99,6 +104,14 @@ public:
     // Apply constraints.
     solutions.reinit();
     solutions.apply_constraints();
+    if (solutions.num_levels() > 1)
+      {
+        solutions.reinit_mg_transfer(solve_context->get_dof_manager());
+        solutions.mg_transfer_down(
+          solve_context->get_dof_manager(),
+          solve_context->get_user_inputs().spatial_discretization.global_refinement,
+          true);
+      }
   }
 
   /**
@@ -125,6 +138,13 @@ public:
     if (solve_context->get_simulation_timer().get_increment() == 0)
       {
         solutions.apply_initial_condition_for_old_fields();
+      }
+    if (solutions.num_levels() > 1)
+      {
+        solutions.mg_transfer_down(
+          solve_context->get_dof_manager(),
+          solve_context->get_user_inputs().spatial_discretization.global_refinement,
+          false);
       }
   }
 

@@ -20,12 +20,11 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, typename number>
 GroupSolutionHandler<dim, number>::GroupSolutionHandler(
-  SolveBlock                                  _solve_block,
-  const std::vector<FieldAttributes>         &_attributes_list,
-  const std::vector<MatrixFree<dim, number>> &_matrix_free_levels)
+  SolveBlock                            _solve_block,
+  const std::vector<FieldAttributes>   &_attributes_list,
+  const MatrixFreeManager<dim, number> &_matrix_free_manager)
   : solve_block(std::move(_solve_block))
-  , matrix_free_levels(&_matrix_free_levels)
-  , mg_transfer(dealii::MGTransferMF<dim, number>())
+  , matrix_free_manager(&_matrix_free_manager)
 {
   block_to_global_index.assign(solve_block.field_indices.begin(),
                                solve_block.field_indices.end());
@@ -131,8 +130,8 @@ template <unsigned int dim, typename number>
 const std::vector<MatrixFree<dim, number>> &
 GroupSolutionHandler<dim, number>::get_matrix_free_levels() const
 {
-  Assert(matrix_free_levels != nullptr, dealii::ExcNotInitialized());
-  return *matrix_free_levels;
+  Assert(matrix_free_manager != nullptr, dealii::ExcNotInitialized());
+  return matrix_free_manager->get_shared_matrix_free_levels();
 }
 
 template <unsigned int dim, typename number>
@@ -203,18 +202,13 @@ GroupSolutionHandler<dim, number>::reinit()
       auto                             &solution_level = solution_levels[relative_level];
       BlockVector<number>              &solutions      = solution_level.solutions;
       std::vector<BlockVector<number>> &old_solutions  = solution_level.old_solutions;
-      const MatrixFree<dim, number>    &matrix_free =
-        get_matrix_free_levels()[relative_level];
 
       // These partitioners basically just provide the number of elements in a distributed
       // way
       std::vector<std::shared_ptr<const dealii::Utilities::MPI::Partitioner>>
-        partitioners;
-      partitioners.reserve(solve_block.field_indices.size());
-      for (unsigned int field_index : solve_block.field_indices)
-        {
-          partitioners.push_back(matrix_free.get_vector_partitioner(field_index));
-        }
+        partitioners =
+          matrix_free_manager->get_block_partitioners(solve_block.field_indices,
+                                                      relative_level);
       // TODO (fractalsbyx): Check that the default MPI communicator is correct here
       solutions.reinit(partitioners);
       solutions.collect_sizes();
@@ -224,8 +218,6 @@ GroupSolutionHandler<dim, number>::reinit()
           old_solution.collect_sizes();
         }
     }
-  // mg_transfer.build(dof_manager.get_field_dof_handlers(solve_block.field_indices, 0));
-  // todo
 }
 
 template <unsigned int dim, typename number>
@@ -282,54 +274,6 @@ GroupSolutionHandler<dim, number>::execute_solution_transfer()
     }
   update_ghosts(0);
   apply_constraints_to_all(0);
-}
-
-template <unsigned int dim, typename number>
-template <unsigned int degree>
-void
-GroupSolutionHandler<dim, number>::mg_transfer_down(
-  const DoFManager<dim, degree> &dof_manager,
-  unsigned int                   finest_level,
-  bool                           transfer_old_solutions)
-{
-  dealii::MGLevelObject<BlockVector<number>> temp_mg_solutions(1 + finest_level -
-                                                                 solution_levels.size(),
-                                                               finest_level);
-
-  const auto dof_handlers =
-    dof_manager.get_block_dof_handlers(solve_block.field_indices, 0);
-
-  // transfer regular solutions to mg levels
-  mg_transfer.copy_to_mg(dof_handlers, temp_mg_solutions, solution_levels[0].solutions);
-  // swap to actual mg solution vectors
-  for (unsigned int relative_level = 0; relative_level < solution_levels.size();
-       ++relative_level)
-    {
-      unsigned int level = finest_level - relative_level;
-      solution_levels[relative_level].solutions.swap(temp_mg_solutions[level]);
-    }
-  if (!transfer_old_solutions)
-    {
-      return;
-    }
-  // transfer old solutions
-  for (unsigned int age_index = 0; age_index < solution_levels[0].old_solutions.size();
-       ++age_index)
-    {
-      mg_transfer.copy_to_mg(dof_handlers,
-                             temp_mg_solutions,
-                             solution_levels[0].old_solutions[age_index]);
-      for (unsigned int relative_level = 0; relative_level < solution_levels.size();
-           ++relative_level)
-        {
-          unsigned int level = finest_level - relative_level;
-          if (age_index < solution_levels[relative_level].old_solutions.size())
-            {
-              solution_levels[relative_level].old_solutions[age_index].swap(
-                temp_mg_solutions[level]);
-            }
-        }
-    }
 }
 
 // TODO (fractalsbyx): Check if this is necessary for all solutions
@@ -439,6 +383,13 @@ GroupSolutionHandler<dim, number>::print_solution_full_vector(
 {
   // Print the solutions with 12 digits of precision
   get_solution_full_vector(relative_level).print(out, 12);
+}
+
+template <unsigned int dim, typename number>
+unsigned int
+GroupSolutionHandler<dim, number>::num_levels()
+{
+  return solution_levels.size();
 }
 
 #include "core/group_solution_handler.inst"

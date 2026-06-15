@@ -13,12 +13,28 @@
 
 #include <prismspf/core/constraint_manager.h>
 #include <prismspf/core/dof_manager.h>
-#include <prismspf/core/group_solution_handler.h>
 #include <prismspf/core/system_wide.h>
 
 #include <prismspf/config.h>
 
 PRISMS_PF_BEGIN_NAMESPACE
+
+/**
+ * @brief Typedef for dealii::MatrixFree.
+ */
+using dealii::MatrixFree;
+
+/**
+ * @brief Typedef for solution block vector.
+ */
+template <typename number>
+using BlockVector = dealii::LinearAlgebra::distributed::BlockVector<number>;
+
+/**
+ * @brief Typedef for solution vector.
+ */
+template <typename number>
+using SolutionVector = typename BlockVector<number>::BlockType;
 
 /**
  * @brief Containers for matrix free objects
