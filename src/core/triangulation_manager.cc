@@ -66,6 +66,10 @@ template <unsigned int dim>
 unsigned int
 TriangulationManager<dim>::num_levels() const
 {
+  if (!has_mg())
+    {
+      return 1;
+    }
   return coarsened_triangulations.size();
 }
 
@@ -80,10 +84,14 @@ template <unsigned int dim>
 const dealii::Triangulation<dim> &
 TriangulationManager<dim>::get_triangulation(unsigned int relative_level) const
 {
-  Assert(has_mg(), dealii::ExcNotInitialized());
-  Assert(relative_level < coarsened_triangulations.size(),
-         dealii::ExcMessage(
-           "The coarse triangulation set does not contain that specified level"));
+  if (!has_mg())
+    {
+      if (relative_level == 0)
+        {
+          return triangulation;
+        }
+      AssertThrow(false, dealii::ExcMessage("Invalid relative level for triangulation."));
+    }
   return *(coarsened_triangulations[relative_level]);
 }
 

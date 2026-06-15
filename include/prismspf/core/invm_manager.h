@@ -336,14 +336,14 @@ private:
   std::vector<SolutionVector<number>> invm_sqrt_vector;
 
   inline static const VectorValue one = []()
-    {
-      VectorValue one1;
-      for (unsigned int i = 0; i < dim; ++i)
-        {
-          one1[i] = 1.0;
-        }
-      return one1;
-    }();
+  {
+    VectorValue one1;
+    for (unsigned int i = 0; i < dim; ++i)
+      {
+        one1[i] = 1.0;
+      }
+    return one1;
+  }();
 };
 
 PRISMS_PF_END_NAMESPACE

@@ -45,14 +45,20 @@ public:
   ~DoFManager() = default;
 
   /**
+   * @brief Resize the DoFHandlers set.
+   * @note Will invalidate existing DoFHandler pointers.
+   */
+  void
+  init(unsigned int num_levels = 1);
+
+  /**
    * @brief Reinitialize the DoFHandlers
    * @param triangulation_manager The triangulation manager.
    * @param init_mg Whether to initialize the multigrid DoFHandlers.
    * @pre init() must have been called with the correct number of levels.
-   * @note May invalidate existing DoFHandler pointers if number of levels changes.
    */
   void
-  reinit(const TriangulationManager<dim> &triangulation_manager, bool with_mg = true);
+  reinit(const TriangulationManager<dim> &triangulation_manager);
 
   /**
    * @brief Reinitialize the DoFHandlers

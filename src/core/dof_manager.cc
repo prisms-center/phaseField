@@ -12,41 +12,31 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 template <unsigned int dim, unsigned int degree>
 void
-DoFManager<dim, degree>::reinit(const TriangulationManager<dim> &triangulation_manager,
-                                bool                             with_mg)
+DoFManager<dim, degree>::init(unsigned int num_levels)
 {
-  if (!with_mg)
+  level_dof_handlers = std::vector<std::array<dealii::DoFHandler<dim>, 2>>(num_levels);
+}
+
+template <unsigned int dim, unsigned int degree>
+void
+DoFManager<dim, degree>::reinit(const TriangulationManager<dim> &triangulation_manager)
+{
+  AssertThrow(level_dof_handlers.size() >= triangulation_manager.num_levels(),
+              dealii::ExcMessage(
+                "DoFManager requests more levels than initialized in triangulation."));
+  for (unsigned int relative_level = 0; relative_level < level_dof_handlers.size();
+       ++relative_level)
     {
-      level_dof_handlers = std::vector<std::array<dealii::DoFHandler<dim>, 2>>(1);
+      // reinit actual dofhandlers
       for (unsigned int rank = 0; rank < 2; ++rank)
         {
-          dealii::DoFHandler<dim> &dof_handler = level_dof_handlers[0].at(rank);
-          dof_handler.reinit(triangulation_manager.get_triangulation());
+          dealii::DoFHandler<dim> &dof_handler =
+            level_dof_handlers[relative_level].at(rank);
+          dof_handler.reinit(triangulation_manager.get_triangulation(relative_level));
           dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems.at(rank));
-        }
-    }
-  else
-    {
-      AssertThrow(triangulation_manager.has_mg(),
-                  dealii::ExcMessage(
-                    "Multigrid is not initialized in the triangulation manager."));
-      const unsigned int num_levels = triangulation_manager.num_levels();
-      level_dof_handlers =
-        std::vector<std::array<dealii::DoFHandler<dim>, 2>>(num_levels);
-      for (unsigned int relative_level = 0; relative_level < level_dof_handlers.size();
-           ++relative_level)
-        {
-          // reinit actual dofhandlers
-          for (unsigned int rank = 0; rank < 2; ++rank)
+          if (relative_level == 0)
             {
-              dealii::DoFHandler<dim> &dof_handler =
-                level_dof_handlers[relative_level].at(rank);
-              dof_handler.reinit(triangulation_manager.get_triangulation(relative_level));
-              dof_handler.distribute_dofs(SystemWide<dim, degree>::fe_systems.at(rank));
-              if (relative_level == 0 && with_mg)
-                {
-                  dof_handler.distribute_mg_dofs();
-                }
+              dof_handler.distribute_mg_dofs();
             }
         }
     }

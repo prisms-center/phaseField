@@ -198,21 +198,22 @@ Problem<dim, degree, number>::init_system()
 
   // Create the mesh
   // See *1
-  ConditionalOStreams::pout_base() << "creating triangulation...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating triangulation...\n" << std::flush;
   Timer::start_section("Generate mesh");
   triangulation_manager.generate_mesh(user_inputs.spatial_discretization);
   Timer::end_section("Generate mesh");
 
   // Create the dof handlers.
-  ConditionalOStreams::pout_base() << "creating DoFHandlers...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.reinit(triangulation_manager, triangulation_manager.has_mg());
+  dof_manager.init(triangulation_manager.num_levels());
+  dof_manager.reinit(triangulation_manager);
   dof_manager.reinit_mapping(field_attributes);
   Timer::end_section("reinitialize DoFHandlers");
 
   // Create the constraints
   // See *1
-  ConditionalOStreams::pout_base() << "creating constraints...\n" << std::flush;
+  ConditionalOStreams::pout_base() << "Creating constraints...\n" << std::flush;
   Timer::start_section("Create constraints");
   constraint_manager.init(user_inputs.boundary_parameters,
                           user_inputs.spatial_discretization,
