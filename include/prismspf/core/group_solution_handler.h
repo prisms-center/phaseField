@@ -12,6 +12,7 @@
 
 #include <prismspf/core/conditional_ostreams.h>
 #include <prismspf/core/constraint_manager.h>
+#include <prismspf/core/dependency_extents.h>
 #include <prismspf/core/dof_manager.h>
 #include <prismspf/core/field_attributes.h>
 #include <prismspf/core/matrix_free_manager.h>
@@ -72,66 +73,74 @@ public:
    * typically used for output.
    */
   [[nodiscard]] BlockVector<number> &
-  get_solution_full_vector(unsigned int relative_level = 0);
+  get_solution_full_vector();
 
   /**
    * @brief Get the const solution vector set. This contains all the normal fields and is
    * typically used for output.
    */
   [[nodiscard]] const BlockVector<number> &
-  get_solution_full_vector(unsigned int relative_level = 0) const;
+  get_solution_full_vector() const;
 
   /**
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] SolutionVector<number> &
-  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
+  get_solution_vector(unsigned int global_index);
 
   /**
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] const SolutionVector<number> &
-  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
+  get_solution_vector(unsigned int global_index) const;
 
   /**
    * @brief Get the old solution vector set at a given age.
    */
   [[nodiscard]] BlockVector<number> &
-  get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0);
+  get_old_solution_full_vector(unsigned int age);
 
   /**
    * @brief Get the old solution vector set at a given age.
    */
   [[nodiscard]] const BlockVector<number> &
-  get_old_solution_full_vector(unsigned int age, unsigned int relative_level = 0) const;
+  get_old_solution_full_vector(unsigned int age) const;
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
   [[nodiscard]] SolutionVector<number> &
-  get_old_solution_vector(unsigned int age,
-                          unsigned int global_index,
-                          unsigned int relative_level = 0);
+  get_old_solution_vector(unsigned int age, unsigned int global_index);
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
   [[nodiscard]] const SolutionVector<number> &
-  get_old_solution_vector(unsigned int age,
-                          unsigned int global_index,
-                          unsigned int relative_level = 0) const;
+  get_old_solution_vector(unsigned int age, unsigned int global_index) const;
 
   /**
    * @brief Get the solutions object at a level.
    */
   [[nodiscard]] SolutionLevel<dim, number> &
-  get_solution_level(unsigned int relative_level = 0);
+  get_primary_solutions();
 
   /**
    * @brief Get the solutions object at a level.
    */
   [[nodiscard]] const SolutionLevel<dim, number> &
-  get_solution_level(unsigned int relative_level = 0) const;
+  get_primary_solutions() const;
+
+  /**
+   * @brief Get the solutions object at a level.
+   */
+  [[nodiscard]] SolutionLevel<dim, number> &
+  get_solution_level(unsigned int relative_level = -1);
+
+  /**
+   * @brief Get the solutions object at a level.
+   */
+  [[nodiscard]] const SolutionLevel<dim, number> &
+  get_solution_level(unsigned int relative_level = -1) const;
 
   /**
    * @brief Get the underlying matrix_free objects.
@@ -168,7 +177,7 @@ public:
    * @pre MatrixFree is already reinit.
    */
   void
-  init(const std::vector<unsigned int> &max_age_per_level);
+  init(const NewDependencyExtents &extents);
 
   /**
    * @brief Reinitialize the solution set.
@@ -181,32 +190,31 @@ public:
    * @brief Update the ghost values.
    */
   void
-  update_ghosts(unsigned int relative_level = 0) const;
+  update_ghosts() const;
 
   /**
    * @brief Zero out the ghost values.
    */
   void
-  zero_out_ghosts(unsigned int relative_level = 0) const;
+  zero_out_ghosts() const;
 
   /**
    * @brief Apply the constraints to the solution vector.
    */
   void
-  apply_constraints(unsigned int relative_level = 0);
+  apply_constraints();
 
   /**
    * @brief Apply the constraints to another vector.
    */
   void
-  apply_constraints(BlockVector<number> &solution_vector,
-                    unsigned int         relative_level = 0);
+  apply_constraints(BlockVector<number> &solution_vectors);
 
   /**
    * @brief Apply the given constraints to all the solution vectors, including old.
    */
   void
-  apply_constraints_to_all(unsigned int relative_level);
+  apply_constraints_to_all();
 
   /**
    * @brief Apply initial condition to the old fields. For now, this simply copies the
@@ -219,7 +227,7 @@ public:
    * @brief Update and propagate the old solutions.
    */
   void
-  update(unsigned int relative_level = 0);
+  update();
 
   /**
    * @brief Reinit the solution transfer objects.
@@ -265,7 +273,7 @@ public:
    * @brief Print the solution vector set.
    */
   void
-  print_solution_full_vector(std::ostream &out, unsigned int relative_level = 0) const;
+  print_solution_full_vector(std::ostream &out) const;
 
 private:
   /**
@@ -284,7 +292,12 @@ private:
   std::vector<unsigned int> global_to_block_index;
 
   /**
-   * @brief Solutions of each level.
+   * @brief Primary solutions
+   */
+  SolutionLevel<dim, number> primary_solutions;
+
+  /**
+   * @brief Solutions projected to each mg level as dependencies.
    */
   std::vector<SolutionLevel<dim, number>> solution_levels;
 
@@ -329,12 +342,12 @@ GroupSolutionHandler<dim, number>::reinit_mg_transfer(
     {
       unsigned int field_index = block_to_global_index[block_index];
       mg_constraints[block_index].initialize(
-        dof_manager.get_field_dof_handler(field_index, 0));
+        dof_manager.get_field_dof_handler(field_index));
       ConditionalOStreams::pout_base()
-        << dof_manager.get_field_dof_handler(field_index, 0).n_dofs();
+        << dof_manager.get_field_dof_handler(field_index).n_dofs();
       // 2. Initialize MG Transfer
       mg_transfer[block_index].initialize_constraints(mg_constraints[block_index]);
-      mg_transfer[block_index].build(dof_manager.get_field_dof_handler(field_index, 0));
+      mg_transfer[block_index].build(dof_manager.get_field_dof_handler(field_index));
     }
 }
 
@@ -354,7 +367,7 @@ GroupSolutionHandler<dim, number>::mg_transfer_down(
         1 + finest_level - solution_levels.size(),
         finest_level);
 
-      const auto &dof_handler = dof_manager.get_field_dof_handler(field_index, 0);
+      const auto &dof_handler = dof_manager.get_field_dof_handler(field_index);
 
       // transfer regular solutions to mg levels
       mg_transfer[block_index].interpolate_to_mg(dof_handler,

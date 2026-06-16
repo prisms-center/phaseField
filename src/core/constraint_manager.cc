@@ -43,25 +43,17 @@ ConstraintManager<dim, degree, number>::init(
   spatial_discretization  = &_spatial_discretization;
   dof_manager             = &_dof_manager;
   pde_operator            = &_pde_operator;
-  unsigned int num_levels = dof_manager->get_dof_handlers_levels().size();
-  generic_constraints.resize(num_levels);
-}
-
-template <unsigned int dim, unsigned int degree, typename number>
-const std::vector<std::vector<dealii::AffineConstraints<number>>> &
-ConstraintManager<dim, degree, number>::get_field_constraints_levels() const
-{
-  return field_constraints;
+  unsigned int num_levels = dof_manager->has_mg() ? dof_manager->num_levels() : 0;
+  mg_generic_constraints.resize(num_levels);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 std::vector<const dealii::AffineConstraints<number> *>
-ConstraintManager<dim, degree, number>::get_field_constraints(
-  unsigned int relative_level) const
+ConstraintManager<dim, degree, number>::get_field_constraints() const
 {
   std::vector<const dealii::AffineConstraints<number> *> all_constraints;
-  all_constraints.reserve(field_constraints[relative_level].size());
-  for (const auto &constraint : field_constraints[relative_level])
+  all_constraints.reserve(field_constraints.size());
+  for (const auto &constraint : field_constraints)
     {
       all_constraints.push_back(&constraint);
     }
@@ -70,34 +62,79 @@ ConstraintManager<dim, degree, number>::get_field_constraints(
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::AffineConstraints<number> &
-ConstraintManager<dim, degree, number>::get_constraint(Types::Index index,
-                                                       unsigned int relative_level) const
+ConstraintManager<dim, degree, number>::get_field_constraint(Types::Index index) const
 {
-  return field_constraints[relative_level][index];
+  return field_constraints[index];
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
-ConstraintManager<dim, degree, number>::get_generic_constraints_levels() const
+const std::array<dealii::AffineConstraints<number>, 2> &
+ConstraintManager<dim, degree, number>::get_generic_constraints() const
 {
   return generic_constraints;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
-const std::array<dealii::AffineConstraints<number>, 2> &
-ConstraintManager<dim, degree, number>::get_generic_constraints(
+const dealii::AffineConstraints<number> &
+ConstraintManager<dim, degree, number>::get_generic_constraint(unsigned int rank) const
+{
+  return generic_constraints.at(rank);
+}
+
+//--------------------------------------------------------------------------------
+
+template <unsigned int dim, unsigned int degree, typename number>
+const std::vector<std::vector<dealii::AffineConstraints<number>>> &
+ConstraintManager<dim, degree, number>::get_mg_field_constraints_levels() const
+{
+  return mg_field_constraints;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+std::vector<const dealii::AffineConstraints<number> *>
+ConstraintManager<dim, degree, number>::get_mg_field_constraints(
   unsigned int relative_level) const
 {
-  return generic_constraints[relative_level];
+  std::vector<const dealii::AffineConstraints<number> *> all_constraints;
+  all_constraints.reserve(mg_field_constraints[relative_level].size());
+  for (const auto &constraint : mg_field_constraints[relative_level])
+    {
+      all_constraints.push_back(&constraint);
+    }
+  return all_constraints;
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
 const dealii::AffineConstraints<number> &
-ConstraintManager<dim, degree, number>::get_generic_constraint(
+ConstraintManager<dim, degree, number>::get_mg_field_constraint(
+  Types::Index index,
+  unsigned int relative_level) const
+{
+  return mg_field_constraints[relative_level][index];
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const std::vector<std::array<dealii::AffineConstraints<number>, 2>> &
+ConstraintManager<dim, degree, number>::get_mg_generic_constraints_levels() const
+{
+  return mg_generic_constraints;
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const std::array<dealii::AffineConstraints<number>, 2> &
+ConstraintManager<dim, degree, number>::get_mg_generic_constraints(
+  unsigned int relative_level) const
+{
+  return mg_generic_constraints[relative_level];
+}
+
+template <unsigned int dim, unsigned int degree, typename number>
+const dealii::AffineConstraints<number> &
+ConstraintManager<dim, degree, number>::get_mg_generic_constraint(
   unsigned int rank,
   unsigned int relative_level) const
 {
-  return generic_constraints[relative_level].at(rank);
+  return mg_generic_constraints[relative_level].at(rank);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -105,27 +142,58 @@ void
 ConstraintManager<dim, degree, number>::reinit(
   const std::vector<FieldAttributes> &field_attributes)
 {
-  field_constraints.resize(generic_constraints.size());
-  for (auto &constraint_level : field_constraints)
+  field_constraints.resize(field_attributes.size());
+  mg_field_constraints.resize(mg_generic_constraints.size());
+  for (auto &constraint_level : mg_field_constraints)
     {
       constraint_level.resize(field_attributes.size());
     }
-  const std::vector<std::array<dealii::DoFHandler<dim>, 2>> &dof_handlers =
-    dof_manager->get_dof_handlers_levels();
-  for (unsigned int relative_level = 0; relative_level < generic_constraints.size();
-       ++relative_level)
+  const std::array<dealii::DoFHandler<dim>, 2> &dof_handlers =
+    dof_manager->get_dof_handlers();
+  for (unsigned int rank = 0; rank < 2; ++rank)
     {
-      for (unsigned int rank = 0; rank < 2; ++rank)
+      const dealii::DoFHandler<dim> &dof_handler = dof_handlers.at(rank);
+      {
+        dealii::AffineConstraints<number> &generic_constraint =
+          generic_constraints.at(rank);
+
+        generic_constraint.clear();
+        // reinit
+        generic_constraint.reinit(dof_handler.locally_owned_dofs(),
+                                  dealii::DoFTools::extract_locally_relevant_dofs(
+                                    dof_handler));
+        // periodicity
+        if (spatial_discretization->type == TriangulationType::Rectangular)
+          {
+            std::vector<dealii::GridTools::PeriodicFacePair<
+              typename dealii::DoFHandler<dim>::cell_iterator>>
+              periodicity_vector;
+            spatial_discretization->rectangular_mesh
+              .collect_periodic_faces(dof_handler, periodicity_vector);
+            dealii::DoFTools::make_periodicity_constraints<dim, dim, number>(
+              periodicity_vector,
+              generic_constraint);
+          }
+        // hanging node
+        // dealii::DoFTools::make_hanging_node_constraints(dof_handler,
+        //                                                generic_constraint);
+
+        generic_constraint.close();
+      }
+      for (unsigned int relative_level = 0;
+           relative_level < mg_generic_constraints.size();
+           ++relative_level)
         {
           dealii::AffineConstraints<number> &generic_constraint =
-            generic_constraints[relative_level].at(rank);
-          const dealii::DoFHandler<dim> &dof_handler =
-            dof_handlers[relative_level].at(rank);
+            mg_generic_constraints[relative_level].at(rank);
+
           generic_constraint.clear();
           // reinit
-          generic_constraint.reinit(dof_handler.locally_owned_dofs(),
-                                    dealii::DoFTools::extract_locally_relevant_dofs(
-                                      dof_handler));
+          const unsigned int fine_level = dof_handler.get_triangulation().n_levels() - 1;
+          const unsigned int level      = fine_level - relative_level;
+          generic_constraint.reinit(
+            dof_handler.locally_owned_mg_dofs(level),
+            dealii::DoFTools::extract_locally_relevant_level_dofs(dof_handler, level));
           // periodicity
           if (spatial_discretization->type == TriangulationType::Rectangular)
             {
@@ -148,17 +216,28 @@ ConstraintManager<dim, degree, number>::reinit(
   // The map from user inputs has string keys for now.
   std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
     boundary_parameters->boundary_condition_list;
-  for (unsigned int relative_level = 0; relative_level < field_constraints.size();
-       ++relative_level)
+  for (unsigned int field_index = 0; field_index < field_attributes.size(); field_index++)
     {
-      for (unsigned int field_index = 0; field_index < field_attributes.size();
-           field_index++)
+      const dealii::DoFHandler<dim> &dof_handler =
+        dof_manager->get_field_dof_handler(field_index);
+      {
+        dealii::AffineConstraints<number> &constraint = field_constraints[field_index];
+        constraint.clear();
+
+        make_constraints_for_single_field(
+          constraint,
+          dof_handler,
+          boundary_condition_list[field_attributes[field_index].name],
+          field_attributes[field_index].field_type,
+          field_index);
+      }
+      for (unsigned int relative_level = 0; relative_level < mg_field_constraints.size();
+           ++relative_level)
         {
           dealii::AffineConstraints<number> &constraint =
-            field_constraints[relative_level][field_index];
+            mg_field_constraints[relative_level][field_index];
           constraint.clear();
-          const dealii::DoFHandler<dim> &dof_handler =
-            dof_manager->get_field_dof_handler(field_index, relative_level);
+
           make_constraints_for_single_field(
             constraint,
             dof_handler,
@@ -168,21 +247,26 @@ ConstraintManager<dim, degree, number>::reinit(
         }
     }
   // close all constraints.
-  for (auto &constraints_vector : field_constraints)
+  for (dealii::AffineConstraints<number> &constraint : generic_constraints)
     {
-      for (dealii::AffineConstraints<number> &constraint : constraints_vector)
+      constraint.close();
+    }
+  for (auto &constraints_arr : mg_generic_constraints)
+    {
+      for (dealii::AffineConstraints<number> &constraint : constraints_arr)
         {
           constraint.close();
         }
     }
-
-  for (unsigned int relative_level = 0; relative_level < generic_constraints.size();
-       ++relative_level)
+  for (dealii::AffineConstraints<number> &constraint : field_constraints)
     {
-      unsigned int level = 0; // TODO mg top - relative_level
-      for (unsigned int field_index = 0; field_index < field_attributes.size();
-           field_index++)
+      constraint.close();
+    }
+  for (auto &constraints_vector : mg_field_constraints)
+    {
+      for (dealii::AffineConstraints<number> &constraint : constraints_vector)
         {
+          constraint.close();
         }
     }
 }
@@ -194,12 +278,24 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
   const dealii::DoFHandler<dim>     &dof_handler,
   const FieldConstraints<dim>       &_field_constraints,
   TensorRank                         tensor_rank,
-  Types::Index                       field_index)
+  Types::Index                       field_index,
+  unsigned int                       relative_level)
 {
   // 0. Reinitialize constraint with the correct dof numbering
   constraint.clear();
-  constraint.reinit(dof_handler.locally_owned_dofs(),
-                    dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+  if (relative_level == -1)
+    {
+      constraint.reinit(dof_handler.locally_owned_dofs(),
+                        dealii::DoFTools::extract_locally_relevant_dofs(dof_handler));
+    }
+  else
+    {
+      const unsigned int fine_level = dof_handler.get_triangulation().n_levels() - 1;
+      const unsigned int level      = fine_level - relative_level;
+      constraint.reinit(dof_handler.locally_owned_mg_dofs(level),
+                        dealii::DoFTools::extract_locally_relevant_level_dofs(dof_handler,
+                                                                              level));
+    }
 
   // 1. Make periodicity constraints. Note, this *does* have to be done to both the
   // triangulation and the constraints. Adding periodicity to the triangulation alone
@@ -330,21 +426,37 @@ ConstraintManager<dim, degree, number>::update_time_dependent_constraints(
     {
       if (field_constraints_params.has_time_dependent_bcs())
         {
-          const unsigned int field_index = field_indices.at(name);
-          for (unsigned int relative_level = 0; relative_level < field_constraints.size();
+          const unsigned int             field_index = field_indices.at(name);
+          const dealii::DoFHandler<dim> &dof_handler =
+            dof_manager->get_field_dof_handler(field_index);
+          {
+            dealii::AffineConstraints<number> &constraint =
+              field_constraints[field_index];
+            constraint.clear();
+
+            make_constraints_for_single_field(constraint,
+                                              dof_handler,
+                                              field_constraints_params,
+                                              field_attributes[field_index].field_type,
+                                              field_index,
+                                              -1);
+            constraint.close();
+          }
+          for (unsigned int relative_level = 0;
+               relative_level < mg_field_constraints.size();
                ++relative_level)
             {
               dealii::AffineConstraints<number> &constraint =
-                field_constraints[relative_level][field_index];
+                mg_field_constraints[relative_level][field_index];
               constraint.clear();
-              const dealii::DoFHandler<dim> &dof_handler =
-                dof_manager->get_field_dof_handler(field_index, relative_level);
 
               make_constraints_for_single_field(constraint,
                                                 dof_handler,
                                                 field_constraints_params,
                                                 field_attributes[field_index].field_type,
-                                                field_index);
+                                                field_index,
+                                                relative_level);
+              constraint.close();
             }
         }
     }

@@ -228,7 +228,6 @@ Problem<dim, degree, number>::init_system()
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "Creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.init(triangulation_manager.num_levels());
   dof_manager.reinit(triangulation_manager);
   dof_manager.reinit_mapping(field_attributes);
   Timer::end_section("reinitialize DoFHandlers");
@@ -251,8 +250,7 @@ Problem<dim, degree, number>::init_system()
 
   // InvM
   Timer::start_section("Initialize InvM");
-  solve_context.get_invm_manager().reinit(solve_context.get_dof_manager(),
-                                          solve_context.get_constraint_manager());
+  solve_context.get_invm_manager().reinit(solve_context.get_matrix_free_manager());
   solve_context.get_invm_manager().compute_invm();
   Timer::end_section("Initialize InvM");
 
@@ -500,8 +498,7 @@ Problem<dim, degree, number>::solve_increment(SimulationTimer &sim_timer)
             {
               // This is equivalent to integration
               ConditionalOStreams::pout_base()
-                << solution *
-                     solve_context.get_invm_manager().get_jxw(TensorRank::Scalar, 0)
+                << solution * solve_context.get_invm_manager().get_jxw(TensorRank::Scalar)
                 << "\n";
             }
         }

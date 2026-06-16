@@ -136,7 +136,7 @@ public:
       {
         dependency_map[field_index]; // creates entry if not already present
       }
-    set_relative_level(0);
+    set_relative_level(-1);
   }
 
   void
@@ -144,7 +144,14 @@ public:
   {
     relative_level = _relative_level;
     AssertThrow(matrix_free_manager != nullptr, dealii::ExcNotInitialized());
-    data = &(matrix_free_manager->get_shared_matrix_free(relative_level));
+    if (relative_level == -1)
+      {
+        data = &(matrix_free_manager->get_shared_matrix_free());
+      }
+    else
+      {
+        data = &(matrix_free_manager->get_mg_shared_matrix_free(relative_level));
+      }
   }
 
   // public:
@@ -309,7 +316,7 @@ private:
   /**
    * @brief Level so that correct fields are read from indexer.
    */
-  unsigned int relative_level = 0;
+  unsigned int relative_level = -1;
 
   /**
    * @brief Which fields should be available to the solve.

@@ -52,8 +52,7 @@ public:
     rhs_operator.set_scaling_diagonal(
       true,
       solve_context->get_invm_manager().get_invm(solve_context->get_field_attributes(),
-                                                 solve_block.field_indices,
-                                                 0));
+                                                 solve_block.field_indices));
   }
 
   /**
@@ -64,17 +63,17 @@ public:
   {
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
-    solutions.zero_out_ghosts(0);
+    solutions.zero_out_ghosts();
     Timer::end_section("Zero ghosts");
 
-    rhs_operator.compute_operator(solutions.get_solution_full_vector(0));
+    rhs_operator.compute_operator(solutions.get_solution_full_vector());
 
     // Apply constraints
-    solutions.apply_constraints(0);
+    solutions.apply_constraints();
 
     // Update the ghosts
     Timer::start_section("Update ghosts");
-    solutions.update_ghosts(0);
+    solutions.update_ghosts();
     Timer::end_section("Update ghosts");
   }
 

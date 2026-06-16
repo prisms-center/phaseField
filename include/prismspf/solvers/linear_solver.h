@@ -120,8 +120,7 @@ public:
     // 3. MG Transfer
     mg_transfer.initialize_constraints(mg_constraints);
     mg_transfer.build(
-      solve_context.get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
-                                                             0));
+      solve_context.get_dof_manager().get_block_dof_handlers(solve_block.field_indices));
 
     // 4. MG Smoother
     dealii::MGLevelObject<typename SmootherPrecond::AdditionalData> smoother_data(
@@ -160,7 +159,7 @@ public:
     // multigrid_preconditioner =
     //   dealii::PreconditionMG<dim, BlockVector<number>, MGTransferType>(
     //     solve_context.get_dof_manager()
-    //       .get_block_dof_handlers(solve_block.field_indices, 0),
+    //       .get_block_dof_handlers(solve_block.field_indices),
     //     multigrid,
     //     mg_transfer);
   }
@@ -180,7 +179,7 @@ public:
       {
         unsigned int field_index = solutions.get_block_to_global_index()[block_index];
         mg_constraints[block_index].initialize(
-          solve_context.get_dof_manager().get_field_dof_handler(field_index, 0));
+          solve_context.get_dof_manager().get_field_dof_handler(field_index));
       }
     std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
       solve_context.get_user_inputs().boundary_parameters.boundary_condition_list;
@@ -204,7 +203,7 @@ public:
                   }
               }
             mg_constraints[field_index].make_zero_boundary_constraints(
-              solve_context.get_dof_manager().get_field_dof_handler(field_index, 0),
+              solve_context.get_dof_manager().get_field_dof_handler(field_index),
               constrained_boundary_ids,
               num_comps == 1
                 ? ConstraintManager<dim, degree, number>::scalar_empty_mask
@@ -248,7 +247,7 @@ public:
   init(const std::list<SolveBlock> &all_solve_blocks) override
   {
     SolverBase<dim, degree, number>::init(all_solve_blocks);
-    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+    rhs_vector.reinit(solutions.get_solution_full_vector());
 
     // Initialize rhs_operator
     rhs_operator.init(solve_context->get_pde_operator(),
@@ -262,8 +261,7 @@ public:
     rhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
-                                        solve_block.field_indices,
-                                        0));
+                                        solve_block.field_indices));
     // Initialize lhs_operator
     lhs_operator.init(solve_context->get_pde_operator(),
                       &PDEOperatorBase<dim, degree, number>::compute_lhs,
@@ -276,15 +274,14 @@ public:
     lhs_operator.set_scaling_diagonal(lin_params().tolerance_type != AbsoluteResidual,
                                       solve_context->get_invm_manager().get_invm_sqrt(
                                         solve_context->get_field_attributes(),
-                                        solve_block.field_indices,
-                                        0));
+                                        solve_block.field_indices));
 
     linear_solver_control.set_max_steps(lin_params().max_iterations);
     linear_solver_control.set_tolerance(lin_params().tolerance * normalization_value());
     initialize_solver();
-    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogeneous_values, 0);
-    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector());
+    solutions.apply_constraints(inhomogeneous_values);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector());
     initialize_preconditioner();
   }
 
@@ -295,11 +292,11 @@ public:
   reinit() override
   {
     SolverBase<dim, degree, number>::reinit();
-    rhs_vector.reinit(solutions.get_solution_full_vector(0));
+    rhs_vector.reinit(solutions.get_solution_full_vector());
 
-    inhomogeneous_values.reinit(solutions.get_solution_full_vector(0));
-    solutions.apply_constraints(inhomogeneous_values, 0);
-    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector(0));
+    inhomogeneous_values.reinit(solutions.get_solution_full_vector());
+    solutions.apply_constraints(inhomogeneous_values);
+    inhomogeneous_rhs.reinit(solutions.get_solution_full_vector());
     initialize_preconditioner();
   }
 
@@ -311,7 +308,7 @@ public:
   {
     // Zero out the ghosts
     Timer::start_section("Zero ghosts");
-    solutions.zero_out_ghosts(0);
+    solutions.zero_out_ghosts();
     Timer::end_section("Zero ghosts");
 
     // Set up rhs vector
@@ -321,7 +318,7 @@ public:
     // as the initial guess in the next increment. See Note 2. `inhomogeneous_rhs` is
     // not actually what it is being used as here, we just don't want to allocate a
     // whole new vector for this purpose
-    solutions.get_solution_full_vector(0).swap(inhomogeneous_rhs);
+    solutions.get_solution_full_vector().swap(inhomogeneous_rhs);
     // Get the homogeneous rhs
     lhs_operator.read_plain = true;
     lhs_operator.compute_operator(inhomogeneous_rhs, inhomogeneous_values);
@@ -329,22 +326,22 @@ public:
     rhs_vector -= inhomogeneous_rhs;
 
     // Linear solve
-    do_linear_solve(rhs_vector, lhs_operator, solutions.get_solution_full_vector(0));
+    do_linear_solve(rhs_vector, lhs_operator, solutions.get_solution_full_vector());
 
     // Note 2. Make a copy of the solution to use as the initial guess in the next
     // increment. See Note 1. `inhomogeneous_rhs` is not actually what it is being
     // used as here, we just don't want to allocate a whole new vector for this
     // purpose
-    inhomogeneous_rhs = solutions.get_solution_full_vector(0);
+    inhomogeneous_rhs = solutions.get_solution_full_vector();
     // Add back in nonzero dirichlet conditions
-    solutions.get_solution_full_vector(0) += inhomogeneous_values;
+    solutions.get_solution_full_vector() += inhomogeneous_values;
 
     // Apply constraints
-    solutions.apply_constraints(0);
+    solutions.apply_constraints();
 
     // Update the ghosts
     Timer::start_section("Update ghosts");
-    solutions.update_ghosts(0);
+    solutions.update_ghosts();
     Timer::end_section("Update ghosts");
   }
 
@@ -546,8 +543,7 @@ private:
     mg_context
       .init(min_level, max_level, solve_block, lin_params(), *solve_context, solutions);
     multigrid_preconditioner = std::make_shared<PreconditionMG>(
-      solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices,
-                                                              0),
+      solve_context->get_dof_manager().get_block_dof_handlers(solve_block.field_indices),
       mg_context.multigrid,
       mg_context.mg_transfer);
   }
@@ -565,7 +561,7 @@ private:
       {
         unsigned int field_index = solutions.get_block_to_global_index()[block_index];
         mg_constraints[block_index].initialize(
-          solve_context->get_dof_manager().get_field_dof_handler(field_index, 0));
+          solve_context->get_dof_manager().get_field_dof_handler(field_index));
       }
     std::unordered_map<std::string, FieldConstraints<dim>> boundary_condition_list =
       solve_context->get_user_inputs().boundary_parameters.boundary_condition_list;
@@ -589,7 +585,7 @@ private:
                   }
               }
             mg_constraints[field_index].make_zero_boundary_constraints(
-              solve_context->get_dof_manager().get_field_dof_handler(field_index, 0),
+              solve_context->get_dof_manager().get_field_dof_handler(field_index),
               constrained_boundary_ids,
               num_comps == 1
                 ? ConstraintManager<dim, degree, number>::scalar_empty_mask

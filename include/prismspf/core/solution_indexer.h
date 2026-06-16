@@ -13,7 +13,7 @@ PRISMS_PF_BEGIN_NAMESPACE
 
 /**
  * @brief Class that provides access to solution vectors spread across different
- * groups.
+ * blocks.
  */
 template <unsigned int dim, typename number>
 class SolutionIndexer
@@ -35,27 +35,23 @@ public:
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] const SolutionVector<number> &
-  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0) const;
+  get_solution_vector(unsigned int global_index) const;
   /**
    * @brief Get a solution vector of a given field index.
    */
   [[nodiscard]] SolutionVector<number> &
-  get_solution_vector(unsigned int global_index, unsigned int relative_level = 0);
+  get_solution_vector(unsigned int global_index);
 
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
   [[nodiscard]] const SolutionVector<number> &
-  get_old_solution_vector(unsigned int age,
-                          unsigned int global_index,
-                          unsigned int relative_level = 0) const;
+  get_old_solution_vector(unsigned int age, unsigned int global_index) const;
   /**
    * @brief Get a solution vector of a given field index at a given age.
    */
   [[nodiscard]] SolutionVector<number> &
-  get_old_solution_vector(unsigned int age,
-                          unsigned int global_index,
-                          unsigned int relative_level = 0);
+  get_old_solution_vector(unsigned int age, unsigned int global_index);
 
   /**
    * @brief Get the solve group of a given field index.
@@ -68,7 +64,7 @@ public:
    */
   [[nodiscard]] std::pair<const SolutionLevel<dim, number> *, unsigned int>
   get_solution_level_and_block_index(unsigned int index,
-                                     unsigned int relative_level = 0) const;
+                                     unsigned int relative_level = -1) const;
 
   /**
    * @brief Get the block index of a field within its solve group

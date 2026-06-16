@@ -34,44 +34,36 @@ SolutionIndexer<dim, number>::init(
 
 template <unsigned int dim, typename number>
 auto
-SolutionIndexer<dim, number>::get_solution_vector(unsigned int global_index,
-                                                  unsigned int relative_level) const
+SolutionIndexer<dim, number>::get_solution_vector(unsigned int global_index) const
   -> const SolutionVector<number> &
 {
-  return solutions[global_index]->get_solution_vector(global_index, relative_level);
+  return solutions[global_index]->get_solution_vector(global_index);
 }
 
 template <unsigned int dim, typename number>
 auto
-SolutionIndexer<dim, number>::get_solution_vector(unsigned int global_index,
-                                                  unsigned int relative_level)
+SolutionIndexer<dim, number>::get_solution_vector(unsigned int global_index)
   -> SolutionVector<number> &
 {
-  return solutions[global_index]->get_solution_vector(global_index, relative_level);
+  return solutions[global_index]->get_solution_vector(global_index);
 }
 
 template <unsigned int dim, typename number>
 auto
 SolutionIndexer<dim, number>::get_old_solution_vector(unsigned int age,
-                                                      unsigned int global_index,
-                                                      unsigned int relative_level) const
+                                                      unsigned int global_index) const
   -> const SolutionVector<number> &
 {
-  return solutions[global_index]->get_old_solution_vector(age,
-                                                          global_index,
-                                                          relative_level);
+  return solutions[global_index]->get_old_solution_vector(age, global_index);
 }
 
 template <unsigned int dim, typename number>
 auto
 SolutionIndexer<dim, number>::get_old_solution_vector(unsigned int age,
-                                                      unsigned int global_index,
-                                                      unsigned int relative_level)
+                                                      unsigned int global_index)
   -> SolutionVector<number> &
 {
-  return solutions[global_index]->get_old_solution_vector(age,
-                                                          global_index,
-                                                          relative_level);
+  return solutions[global_index]->get_old_solution_vector(age, global_index);
 }
 
 template <unsigned int dim, typename number>
@@ -89,6 +81,11 @@ SolutionIndexer<dim, number>::get_solution_level_and_block_index(
   -> std::pair<const SolutionLevel<dim, number> *, unsigned int>
 {
   auto &sol = solutions[global_index];
+  if (relative_level == -1)
+    {
+      return {&(sol->get_primary_solutions()), sol->get_block_index(global_index)};
+    }
+  // else
   return {&(sol->get_solution_level(relative_level)), sol->get_block_index(global_index)};
 }
 

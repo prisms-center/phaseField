@@ -84,7 +84,7 @@ public:
   init(const std::list<SolveBlock> &all_solve_blocks)
   {
     NewDependencyExtents extents(solve_block.field_indices, all_solve_blocks);
-    solutions.init(extents.max_age_per_level);
+    solutions.init(extents);
 
     // Apply constraints.
     solutions.apply_constraints();

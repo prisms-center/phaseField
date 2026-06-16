@@ -74,7 +74,8 @@ struct DependencyExtents
 
 struct NewDependencyExtents
 {
-  std::vector<unsigned int> max_age_per_level = {0};
+  unsigned int              max_age = 0;
+  std::vector<unsigned int> max_age_per_level;
 
   NewDependencyExtents(const std::set<unsigned int> &field_indices,
                        const std::list<SolveBlock>  &solve_blocks)
@@ -93,16 +94,8 @@ struct NewDependencyExtents
                     {
                       continue;
                     }
-                  if (num_levels > max_age_per_level.size())
-                    {
-                      max_age_per_level.resize(num_levels, 0);
-                    }
-                  for (unsigned int relative_level = 0; relative_level < num_levels;
-                       ++relative_level)
-                    {
-                      max_age_per_level[relative_level] =
-                        std::max(max_age_per_level[relative_level], age);
-                    }
+                  max_age = std::max(max_age, age);
+                  // ignore mg_dependencies for rhs
                 }
             }
             {
@@ -114,6 +107,8 @@ struct NewDependencyExtents
                     {
                       continue;
                     }
+                  max_age = std::max(max_age, age);
+                  // mg dependencies
                   if (num_levels > max_age_per_level.size())
                     {
                       max_age_per_level.resize(num_levels, 0);

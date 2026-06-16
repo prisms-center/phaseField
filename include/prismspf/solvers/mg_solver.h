@@ -81,7 +81,7 @@ public:
     dealii::MGTransferBlockMatrixFree<dim, number> mg_transfer; // Constraints?
     // NOTE: dof_handler.distribute_mg_dofs() must have been called
     mg_transfer.build(
-      solve_context->dof_manager.get_field_dof_handlers(solve_block.field_indices, 0));
+      solve_context->dof_manager.get_field_dof_handlers(solve_block.field_indices));
 
     // 4. MG Smoother (takes in operators) This is similar to a solver, but is
     // conceptually different.
@@ -139,10 +139,10 @@ public:
     dealii::PreconditionMG<dim,
                            BlockVector<number>,
                            dealii::MGTransferBlockMatrixFree<dim, number>>
-      preconditioner_mg(
-        solve_context->dof_manager.get_field_dof_handlers(solve_block.field_indices, 0),
-        multigrid,
-        mg_transfer);
+      preconditioner_mg(solve_context->dof_manager.get_field_dof_handlers(
+                          solve_block.field_indices),
+                        multigrid,
+                        mg_transfer);
 
     // 8. Solve the system with CG + MG preconditioner
     dealii::SolverControl                 cg_solver_control(/* TODO */);
