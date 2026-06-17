@@ -139,7 +139,7 @@ public:
       {
         solutions.apply_initial_condition_for_old_fields();
       }
-    if (solutions.num_levels() > 1)
+    if (solutions.num_levels() > 0)
       {
         solutions.mg_transfer_down(
           solve_context->get_dof_manager(),

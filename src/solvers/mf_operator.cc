@@ -214,6 +214,13 @@ MFOperator<dim, degree, number>::reinit_matrix_diagonal()
 {
   if (relative_level == -1)
     {
+      matrix_free_manager->initialize_block_vector(diagonal_entries->get_vector(),
+                                                   solve_block.field_indices);
+      matrix_free_manager->initialize_block_vector(inverse_diagonal_entries->get_vector(),
+                                                   solve_block.field_indices);
+    }
+  else
+    {
       matrix_free_manager->initialize_mg_block_vector(diagonal_entries->get_vector(),
                                                       solve_block.field_indices,
                                                       relative_level);
@@ -222,10 +229,6 @@ MFOperator<dim, degree, number>::reinit_matrix_diagonal()
         solve_block.field_indices,
         relative_level);
     }
-  matrix_free_manager->initialize_block_vector(diagonal_entries->get_vector(),
-                                               solve_block.field_indices);
-  matrix_free_manager->initialize_block_vector(inverse_diagonal_entries->get_vector(),
-                                               solve_block.field_indices);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>

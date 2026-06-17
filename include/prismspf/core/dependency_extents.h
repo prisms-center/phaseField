@@ -82,7 +82,10 @@ struct NewDependencyExtents
   {
     for (const SolveBlock &solve_block : solve_blocks)
       {
-        const unsigned int num_levels = solve_block.linear_solver_parameters.mg_depth;
+        const unsigned int num_levels =
+          solve_block.linear_solver_parameters.preconditioner == GMG
+            ? solve_block.linear_solver_parameters.mg_depth
+            : 0;
         for (unsigned int field_index : field_indices)
           {
             {

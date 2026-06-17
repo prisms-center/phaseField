@@ -451,7 +451,7 @@ private:
       {
         triangulation_manager.init_mg();
       }
-    dof_manager.reinit(triangulation_manager);
+    dof_manager.reinit(triangulation_manager, dof_manager.has_mg());
     constraint_manager.reinit(solve_context->get_field_attributes());
     matrix_free_manager.reinit(dof_manager, constraint_manager);
 

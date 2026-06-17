@@ -243,7 +243,8 @@ ConstraintManager<dim, degree, number>::reinit(
             dof_handler,
             boundary_condition_list[field_attributes[field_index].name],
             field_attributes[field_index].field_type,
-            field_index);
+            field_index,
+            relative_level);
         }
     }
   // close all constraints.
@@ -313,7 +314,12 @@ ConstraintManager<dim, degree, number>::make_constraints_for_single_field(
     }
 
   // 2. Make hanging node constraints
-  dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
+  // note: dealii step-37 doesn't add hanging node constraints. (probably because a single
+  // level doesn't have hanging nodes)
+  if (relative_level == -1)
+    {
+      dealii::DoFTools::make_hanging_node_constraints(dof_handler, constraint);
+    }
 
   // 3. Make boundary constraints
   make_bc_constraints(constraint,

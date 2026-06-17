@@ -228,7 +228,7 @@ Problem<dim, degree, number>::init_system()
   // Create the dof handlers.
   ConditionalOStreams::pout_base() << "Creating DoFHandlers...\n" << std::flush;
   Timer::start_section("reinitialize DoFHandlers");
-  dof_manager.reinit(triangulation_manager);
+  dof_manager.reinit(triangulation_manager, use_mg);
   dof_manager.reinit_mapping(field_attributes);
   Timer::end_section("reinitialize DoFHandlers");
 

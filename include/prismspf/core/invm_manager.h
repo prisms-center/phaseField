@@ -275,8 +275,8 @@ inline void
 InvMManager<dim, degree, number>::reinit(
   const MatrixFreeManager<dim, number> &matrix_free_manager)
 {
-  mf_manager_ptr          = &matrix_free_manager;
-  unsigned int num_levels = matrix_free_manager.get_generic_matrix_free_levels().size();
+  mf_manager_ptr = &matrix_free_manager;
+  num_levels     = matrix_free_manager.get_generic_matrix_free_levels().size();
   mg_jxw_scalar.resize(num_levels);
   mg_invm_scalar.resize(num_levels);
   mg_invm_sqrt_scalar.resize(num_levels);

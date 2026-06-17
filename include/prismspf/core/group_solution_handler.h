@@ -343,8 +343,6 @@ GroupSolutionHandler<dim, number>::reinit_mg_transfer(
       unsigned int field_index = block_to_global_index[block_index];
       mg_constraints[block_index].initialize(
         dof_manager.get_field_dof_handler(field_index));
-      ConditionalOStreams::pout_base()
-        << dof_manager.get_field_dof_handler(field_index).n_dofs();
       // 2. Initialize MG Transfer
       mg_transfer[block_index].initialize_constraints(mg_constraints[block_index]);
       mg_transfer[block_index].build(dof_manager.get_field_dof_handler(field_index));
@@ -372,30 +370,23 @@ GroupSolutionHandler<dim, number>::mg_transfer_down(
       // transfer regular solutions to mg levels
       mg_transfer[block_index].interpolate_to_mg(dof_handler,
                                                  temp_mg_solutions,
-                                                 solution_levels[0].solutions.block(
+                                                 primary_solutions.solutions.block(
                                                    block_index));
       // swap to actual mg solution vectors
       for (unsigned int relative_level = 0; relative_level < solution_levels.size();
            ++relative_level)
         {
           unsigned int level = finest_level - relative_level;
-          ConditionalOStreams::pout_base()
-            << "R: " << relative_level << "\nL: " << level << "\n Pre: "
-            << solution_levels[relative_level].solutions.block(block_index).size();
           solution_levels[relative_level]
             .solutions.block(block_index)
             .swap(temp_mg_solutions[level]);
-          ConditionalOStreams::pout_base()
-            << "\n Post: "
-            << solution_levels[relative_level].solutions.block(block_index).size() << "\n"
-            << std::flush;
         }
 
       if (!transfer_old_solutions)
         {
           return;
         }
-      // transfer old solutions
+      // Transfer old solutions
       for (unsigned int age_index = 0;
            age_index < solution_levels[0].old_solutions.size();
            ++age_index)
