@@ -38,6 +38,11 @@ jobs:
 
       - name: Run tests
         run: |
+          jobs=$(( $(nproc) / 2 ))
+          [ "$jobs" -lt 1 ] && jobs=1
+          export CMAKE_BUILD_PARALLEL_LEVEL=$jobs
+
+          echo "Using $CMAKE_BUILD_PARALLEL_LEVEL build jobs"
           cmake --workflow --preset test
 
       - name: Compile Applications
