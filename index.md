@@ -38,13 +38,6 @@ PRISMS-PF is a powerful, massively parallel finite element code for conducting p
 - [Discussions](https://github.com/prisms-center/phaseField/discussions) <br>
 - [Manual](doxygen/index.html) <br>
 
-***
-## Announcements
-
-- 8/16/2025: [Version 3.0.0-rc1 released.](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) This version is a pre-release of v3.0.0, a major update from v2.4.2. The core library has been rewritten to accommodateate certain features and reduce technical debt, increasing the longevity of our project. The main changes are improvements in performance (including the use of new numerical methods to solve partial differential equations) and new applications. For a full list of changes in this version, please consult the [v3.0.0-rc1 pre-release](https://github.com/prisms-center/phaseField/releases/tag/v3.0.0-rc1) document. Note that certain features such as grain remapping and nucleation haven't been implemented. Additionally, the user-interface and documentation haven't been finalized or updated, so new users may struggle. However, we are still working on porting capabilities from v2.4. These will come out in more pre-release candidates in the coming weeks.
-- 2/27/2025: [Version 2.4.1 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) This version is a minor update from 2.3. The main changes are minor bug fixes, compatibility with clang, gcc, and intel-oneapi compilers that support the c++17 standard, and the requirement to use deal.II version 9.5.0 or later. For a full list of changes in this version, please consult the [v2.4.1 release](https://github.com/prisms-center/phaseField/releases/tag/v2.4.1) document.
-- 1/11/2024: [Version 2.4 released.](https://github.com/prisms-center/phaseField/releases/tag/v2.4) This version is a moderate update from 2.3. The main changes are compatibility with deal.II 9.6.0, support for the use of up to 6th order elements, improved testing and continuous integration, code auto-formatting, and bug fixes. For a detailed discussion of the new features, bug fixes and other changes in this version, please consult the [version_changes.md](https://github.com/prisms-center/phaseField/blob/master/version_changes.md) document.
-
 ### Acknowledgements
 This code is developed by the PRedictive Integrated Structural Materials Science (PRISMS) Center at University of Michigan which is supported by the U.S. Department of Energy (DOE), Office of Basic Energy Sciences, Division of Materials Sciences and Engineering under Award #DE-SC0008637.
 
@@ -53,18 +46,19 @@ PRISMS-PF is released under the GNU Lesser General Public License (LGPL).
 
 ### Citing PRISMS-PF
 
-Please cite [the following reference](https://www.nature.com/articles/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
+Please cite [the following reference](https://doi.org/10.1038/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
 
 S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method. _npj Computational Materials_ __6__, 29 (2020).
 
 If additionally you would like to cite a specific release of PRISMS-PF, please use the following format:
 
-PRISMS-PF, v2.1.2 (2019). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.3357005.
+PRISMS-PF, v3.0.0 (2026). Available from https://github.com/prisms-center/phaseField. DOI: 10.5281/zenodo.19261983.
 
 For DOI information for other releases, please refer to [this site](https://zenodo.org/record/3357005).
 
-***
 ## Publications That Use PRISMS-PF
+
+Note: If you use PRISMS-PF in one of your publications, please send the publication information to [prismsphasefield.dev@umich.edu](mailto:prisms-pf@umich.edu) to help us demonstrate our impact to our funding agency.
 
 [Wang and Liu, Multiscale thermo-kinetic characterization for β′ and β1 precipitation in Mg-Sm alloys, Acta Mater. 254, 119011 (2023)](https://doi.org/10.1016/j.actamat.2023.119011)
 
@@ -85,17 +79,12 @@ phase-field approach to model complex morphologies in alloys, arXiv preprint (20
 
 [Brewick, Simulating Pitting Corrosion in AM 316L Microstructures Through Phase Field Methods and Computational Modeling, J. Electrochem. Soc. 169, 011503 (2022)](https://iopscience.iop.org/article/10.1149/1945-7111/ac4935)
 
-\*[DeWitt, Rudraraju, Montiel, Andrews and Thornton, PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method, npj Comput Mater 6, 29 (2020)](https://www.nature.com/articles/s41524-020-0298-5)
+[DeWitt, Rudraraju, Montiel, Andrews and Thornton, PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method, npj Comput Mater 6, 29 (2020)](https://www.nature.com/articles/s41524-020-0298-5)
 
 [Aagesen, Adams, Allison, et al., PRISMS: An Integrated, Open-Source Framework for Accelerating Predictive Structural Materials Science,  JOM 70, 2298–2314 (2018)](https://link.springer.com/article/10.1007%2Fs11837-018-3079-6)
 
 [DeWitt, Solomon, Natarajan, Araullo-Peters, Rudraraju, Aagesen, Puchala, Marquis, Van der Ven, Thornton, and Allison, Misfit-driven β′′′ precipitate composition and morphology in Mg-Nd alloys, Acta Materialia, 136, 378-389 (2017)](https://www.sciencedirect.com/science/article/pii/S1359645417305281)
 
-\* Please use this publication as the standard reference when citing PRISMS-PF.
-
-Note: If you use PRISMS-PF in one of your publications, please send the publication information to [prismsphasefield.dev@umich.edu](mailto:prismsphasefield.dev@umich.edu) to help us demonstrate our impact to our funding agency.
-
-***
 ## Publications That Cite PRISMS-PF
 
 [Gao, Peng, Zhang, et al., Profound strengthening and toughening effect of reinforcement aspect ratio in composite with network architecture, Journal of Alloys and Compounds, 167444 (2022)](https://doi.org/10.1016/j.jallcom.2022.167444)
