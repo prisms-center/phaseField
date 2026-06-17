@@ -6,3 +6,6 @@ https://www.gnu.org/licenses/lgpl-2.1
 # that's the best way to provide links to scientific
 # papers
 https:\/\/doi\.org\/[^\s]+
+
+# We want Zenodo to redirect to the latest verion
+https://zenodo.org/badge/latestdoi/22602327
