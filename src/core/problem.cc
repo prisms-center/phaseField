@@ -107,22 +107,22 @@ namespace
                          return sb.linear_solver_parameters.preconditioner == GMG;
                        });
   }
-} // namespace
 
-template <unsigned int dim, unsigned int degree, typename number>
-std::vector<GroupSolutionHandler<dim, number> *>
-get_solution_managers_from_solvers(
-  const std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
-{
-  // Todo: upgrade to recursive for aux solvers
-  std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
-  solution_managers.reserve(solvers.size());
-  for (const auto &solver : solvers)
-    {
-      solution_managers.push_back(&(solver->get_solution_manager()));
-    }
-  return solution_managers;
-}
+  template <unsigned int dim, unsigned int degree, typename number>
+  std::vector<GroupSolutionHandler<dim, number> *>
+  get_solution_managers_from_solvers(
+    const std::vector<std::shared_ptr<SolverBase<dim, degree, number>>> &solvers)
+  {
+    // Todo: upgrade to recursive for aux solvers
+    std::vector<GroupSolutionHandler<dim, number> *> solution_managers;
+    solution_managers.reserve(solvers.size());
+    for (const auto &solver : solvers)
+      {
+        solution_managers.push_back(&(solver->get_solution_manager()));
+      }
+    return solution_managers;
+  }
+} // namespace
 
 // *1 Big TODO: Make these classes default-constructible, then use their `init()`
 // functions. Also, it may be wise to make SolveContext the owner of all these as well
