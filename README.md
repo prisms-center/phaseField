@@ -80,7 +80,7 @@ Outputs are most commonly visualized in the following open source applications:
 
 ## Citing PRISMS-PF
 
-Please cite [the following reference](https://www.nature.com/articles/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
+Please cite [the following reference](https://doi.org/10.1038/s41524-020-0298-5) when discussing PRISMS-PF in a publication:
 
 S. DeWitt, S. Rudraraju, D. Montiel, W.B. Andrews, and K. Thornton. PRISMS-PF: A general framework for phase-field modeling with a matrix-free finite element method. _npj Computuational Materials_ __6__, 29 (2020).
 
